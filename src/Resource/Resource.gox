@@ -1,0 +1,73 @@
+//  Resource  -  Compile time resource data embeded in the executable
+//
+//  E.B.Smith  -  June, 2015
+
+
+package Resource
+
+
+import (
+    "bytes"
+    "strings"
+    "reflect"
+    "io/ioutil"
+    "compress/gzip"
+    "encoding/base64"
+    "Server/ServerUtil"
+    "violent.blue/GoKit/Log"
+)
+
+
+type ResourceData struct {
+    name    string
+    data    string
+    header  gzip.Header
+}
+
+
+var Resource ResourceData = ResourceData{}
+
+
+func (resource *ResourceData) Name() string {
+    return resource.name
+}
+
+
+func (resource *ResourceData) Header() gzip.Header {
+    return resource.header
+}
+
+
+func (resource *ResourceData) Bytes() *[]byte {
+    compressedBytes, error := base64.StdEncoding.DecodeString(resource.data)
+    if error != nil { return nil; }
+
+    buffer := bytes.NewBuffer(compressedBytes)
+    gz, error := gzip.NewReader(buffer)
+    if error != nil { log.LogError(error); return nil; }
+    defer gz.Close()
+
+    rawbytes, error := ioutil.ReadAll(gz)
+    if error != nil { log.LogError(error); return nil; }
+    resource.header = gz.Header
+
+    return &rawbytes;
+}
+
+
+func (resource *ResourceData) ResourceBytesNamed(name string) *[]byte {
+    name = ServerUtil.ReplaceCharactersNotInSetWithRune(name, "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_", '_')
+    name = strings.Title(name)
+    log.Debug("Loading resource '%s'.", name)
+    methodV := reflect.ValueOf(resource).MethodByName(name)
+    if methodV.IsValid() {
+        values := methodV.Call([]reflect.Value{ })
+        //log.Debug("Values: %+v.", values)
+        if len(values) == 1 && values[0].CanInterface() {
+            data, found := values[0].Interface().(*ResourceData)
+            if (found) { return data.Bytes() }
+        }
+    }
+    return nil
+}
+

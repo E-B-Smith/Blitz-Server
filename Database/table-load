@@ -1,0 +1,30 @@
+#!/bin/bash
+set -euo pipefail
+
+olddatabase=happylabsdatabase
+database=happylabs
+databaseuser=happylabs
+
+loaded=0
+dumppath=~/dump/$olddatabase
+
+
+for file in $dumppath/*.csv
+do
+
+    tablename=$(basename "$file")
+    tablename="${tablename%.*}"
+
+    columns="$(head -n1 $dumppath/$tablename.csv)"
+    copy="\\copy $tablename ($columns) from '$file' with (format csv, header true)"
+
+    echo ">>> Loading $tablename..." 1>&2
+    # echo ">>> Copy statement: $copy" 1>&2
+    psql $database -U $database -t -X --pset pager=off -c "truncate $tablename;"
+    psql $database -U $database -t -X --pset pager=off -c "$copy"
+    psql $database -U $database -t -X --pset pager=off -c "select count(*) from $tablename;"
+    let "loaded+=1"
+
+done
+
+echo ">>> Loaded $loaded tables." 1>&2

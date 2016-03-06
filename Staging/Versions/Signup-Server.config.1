@@ -1,0 +1,16 @@
+
+#  BeingHappy Signup-Server configuration
+
+service-name        Signup-Server
+service-prefix      "/signup"
+service-file-path   Signup
+service-port        10006
+server-url          "https://bh.gy"
+
+database-uri        "postgres://happylabs:happylabs@localhost:5432/happylabs"
+
+log-level           LogLevelAll
+log-name            "~/log/Signup-Server.log"
+
+templates-path      templates
+web-log             "/var/log/nginx/access.log"

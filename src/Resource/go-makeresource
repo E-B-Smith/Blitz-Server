@@ -1,0 +1,172 @@
+#!/bin/bash
+set -euo pipefail
+
+function ShowUsage() {
+go-makeresource is a tool to embed any sort of file as resource in a go program.
+
+Usage:
+
+  -v  --verbose
+
+  -h  --help
+
+}
+
+
+bVerbose=false
+outputfile=ResourceData.go
+packagename=main
+bytesin=0
+bytesout=0
+
+function fs_stat()  {
+    local format="$1"
+    local file="$2"
+    if [[ `uname` == "Linux" ]]; then
+        format="-c%s"
+    fi
+    stat "$format" "$file"
+}
+
+
+function WriteResource() {
+    local inputfile="$1"
+    local resourcename=$(basename "$inputfile")
+    # resourcename=${resourcename%.*}
+    resourcename=$(echo $resourcename  |  sed s/[^0-9a-zA-Z_]/_/g)
+    resourcename=$(echo $resourcename  |  awk '{print toupper(substr($0,1,1))substr($0,2)}')
+
+    local insize=$(fs_stat -f%z "$inputfile")
+    bytesin=$((bytesin + insize))
+    if $bVerbose; then
+        printf "  Input: $inputfile\n Output: $outputfile\nResource: $resourcename\n-------\n" >&2
+    fi
+
+cat >> "$outputfile" <<RESOURCE
+
+
+func (resource *ResourceData) $resourcename() *ResourceData {
+    return &ResourceData{
+    name: "$resourcename",
+    data:
+\`
+RESOURCE
+
+cat "$inputfile" | gzip --best --stdout | openssl base64 >> "$outputfile"
+
+cat >> "$outputfile" <<FOOTER
+\`   }
+}
+
+FOOTER
+}
+
+
+function WriteHeader() {
+cat > "$outputfile" <<HEADER
+//  $outputfile  -  Generated resource file.
+//  Resources - E.B.Smith  -  `date`
+
+
+package $packagename
+
+
+import (
+    "bytes"
+    "strings"
+    "reflect"
+    "io/ioutil"
+    "compress/gzip"
+    "encoding/base64"
+    "violent.blue/GoKit/Log"
+    "violent.blue/GoKit/Util"
+)
+
+
+type ResourceData struct {
+    name    string
+    data    string
+    header  gzip.Header
+}
+
+
+var Resource ResourceData = ResourceData{}
+
+
+func (resource *ResourceData) Name() string {
+    return resource.name
+}
+
+
+func (resource *ResourceData) Header() gzip.Header {
+    return resource.header
+}
+
+
+func (resource *ResourceData) Bytes() *[]byte {
+    compressedBytes, error := base64.StdEncoding.DecodeString(resource.data)
+    if error != nil { return nil; }
+
+    buffer := bytes.NewBuffer(compressedBytes)
+    gz, error := gzip.NewReader(buffer)
+    if error != nil { Log.LogError(error); return nil; }
+    defer gz.Close()
+
+    rawbytes, error := ioutil.ReadAll(gz)
+    if error != nil { Log.LogError(error); return nil; }
+    resource.header = gz.Header
+
+    return &rawbytes;
+}
+
+
+func (resource *ResourceData) ResourceBytesNamed(name string) *[]byte {
+    name = Util.ReplaceCharactersNotInSetWithRune(name, "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_", '_')
+    name = strings.Title(name)
+    Log.Debugf("Loading resource '%s'.", name)
+    methodV := reflect.ValueOf(resource).MethodByName(name)
+    if methodV.IsValid() {
+        values := methodV.Call([]reflect.Value{ })
+        //Log.Debugf("Values: %+v.", values)
+        if len(values) == 1 && values[0].CanInterface() {
+            data, found := values[0].Interface().(*ResourceData)
+            if (found) { return data.Bytes() }
+        }
+    }
+    return nil
+}
+HEADER
+}
+
+
+#
+#   Main
+#
+
+
+pathname=$(pwd)
+packagename=$(basename "$pathname")
+WriteHeader
+
+while (( $# > 0 )); do
+    if [[ "$1" == "-v" || "$1" == "--verbose" ]]; then
+        bVerbose=true
+        shift
+        continue
+    elif [[ "$1" == "-h" || "$1" == "--help" ]]; then
+        ShowUsage
+        exit 0
+    fi
+    break
+done
+
+
+count=0
+for filename in $@; do
+    WriteResource "$filename"
+    count=$((count+1))
+    done
+
+bytesout=$(fs_stat -f%z "$outputfile")
+echo ">>> Wrote $count resources. Bytes in: $bytesin. Bytes out: $bytesout." >&2
+

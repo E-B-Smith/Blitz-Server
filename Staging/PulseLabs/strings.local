@@ -1,0 +1,7 @@
+
+#   PulseLabs localization file
+
+kLinkErrorRedirectURL       = "http://beinghappy.io/";
+kConfirmConfirmedWelcome    = "Confirmed. Welcome to PulseLabs.";
+kConfirmConfirmingContact   = "Confirming contact info...";
+kConfirmAppURL              = "%s/?action=confirm&message=%s&code=%s&contact=%s";

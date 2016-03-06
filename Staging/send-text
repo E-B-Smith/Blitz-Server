@@ -1,0 +1,93 @@
+#!/bin/bash
+set -euo pipefail
+IFS=$'\n'
+function usage() {
+    send-text [ -h ] | [ -f <files> ] | <number> <message>
+}
+
+
+testing=true
+files=()
+numbers=()
+message=""
+sendcount=0
+
+
+function sendtext() {
+    local number="$1"
+    local name="$2"
+
+    message=$(printf "Hello $name!\n\nYou can download the BeingHappy beta at\nhttps://violent.blue/beinghappy/ios\n\n- Ritu & Edward")
+
+    if $testing; then
+        printf "$number:$message\n"
+    else
+        echo "Sending to $name..."
+        curl -sS -X POST 'https://api.twilio.com/2010-04-01/Accounts/AC5f879594f852bb0052429f9ac0090ec0/Messages.json' \
+        --data-urlencode "To=$number"  \
+        --data-urlencode 'From=+14153196030'  \
+        --data-urlencode "Body=$message" \
+        -u AC5f879594f852bb0052429f9ac0090ec0:7de42f76a24d47854c4c909e7789b2bd \
+            > /dev/null
+    fi
+}
+
+
+function TrimWhiteSpace() {
+    local var="$*"
+    var="${var#"${var%%[![:space:]]*}"}"   # remove leading whitespace characters
+    var="${var%"${var##*[![:space:]]}"}"   # remove trailing whitespace characters
+    echo -n "$var"
+}
+
+
+function sendBatch() {
+    while read line
+    do
+        name="${line#* }"
+        name=$(TrimWhiteSpace $name)
+        number="${line%% *}"
+        number=$(TrimWhiteSpace $number)
+        sendtext "$number" "$name"
+        (( sendcount++ ))
+    done <<PHONEDATA
+4156152570        Edward
+4158767000        Ritu
+4156027626        Jorge
+7183440017        Thomas
+5103163549        Akriti
+2146294121        Jubal
+4152500451        Stas
+9727575754        Kimika
+9492358272        Jenifer
+4157069739        Rey
+PHONEDATA
+}
+
+
+while getopts ":hn:f:" option; do
+    case "$option" in
+    n)  numbers+=("$OPTARG")    ;;
+    m)  message="$OPTARG"       ;;
+    f)  files+=("$OPTARG")      ;;
+    h)  usage; exit 0           ;;
+    :)  echo ">>> Error: Option '-$OPTARG' requires an argument." 1>&2; exit 1 ;;
+    ?)  echo ">>> Error: Unknown option '-$OPTARG'." 1>&2; exit 1 ;;
+    esac
+done
+
+
+while (( $# < $OPTIND )); do
+    files+="${@:$OPTIND:1}"
+    let OPTIND++
+done
+
+if [[ "$message" == "" ]]; then
+    echo ">>> Error: No message to send." 1>&2
+    exit 1
+fi
+
+
+
+
+printf "\n>>> Sent $sendcount messages.\n"

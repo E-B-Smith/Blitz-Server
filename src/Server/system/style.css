@@ -1,0 +1,135 @@
+*   {
+    font-size: 11px;
+    font-family: "Lucida Console", Monaco, monospace;
+    background-color: white;
+    color: rgb(120, 120, 120);
+    }
+html
+    {
+    background-color: white;
+    }
+body
+    {
+    margin: 0 auto;
+    width: 100%;
+    height: 100%;
+    }
+a   {
+    font-size: 1.0em;
+    font-weight: bolder;
+    }
+input
+    {
+    margin-bottom: 1em;
+    font-size: 1.2em;
+    border: 1px solid;
+    -webkit-appearance: none;
+    width: 35em;
+    height: 2.0em;
+    }
+h1  {
+    font-size: 1.3em;
+    }
+.submit
+    {
+    width: 10em;
+    border-radius: 2px;
+    }
+.error
+    {
+    color: red;
+    font-weight: bold;
+    }
+#logo
+    {
+    width: 75px;
+    }
+#header
+    {
+    font-size: 4em;
+    font-family: "Avenir", "Futura", "Lucida Grande", Verdana, Tahoma, Arial, sans-serif;
+    height: 75px;
+    line-height: 75px;
+    vertical-align: middle;
+    margin: 20px;
+    }
+#header div
+    {
+    font-size: inherit;
+    font-family: inherit;
+    display: inline-block;
+    vertical-align: top;
+    }
+#header span
+    {
+    font-size: inherit;
+    font-family: inherit;
+    margin-left: 10px;
+    color: rgb(151,151,151);
+    }
+#header span + span
+    {
+    margin-left: -0.25em;
+    color: #3399cc;
+    }
+#stats-body
+    {
+    margin: 1em 1em 1em 110px;
+    }
+.stats-red div
+    {
+    display: inline-block;
+    border: 1px solid red;
+    margin: 1em;
+    vertical-align: top;
+    }
+.stats-red pre
+    {
+    margin: 0 1em 0 1em;
+    }
+.stats-red h3
+    {
+    color: white;
+    margin: 0;
+    padding: 0em 1em 0 1em;
+    background-color: red;
+    }
+.stats-grey div
+    {
+    display: inline-block;
+    border: 1px solid grey;
+    margin: 1em;
+    vertical-align: top;
+    }
+.stats-grey pre
+    {
+    margin: 0 1em 0 1em;
+    }
+.stats-grey h3
+    {
+    color: white;
+    margin: 0;
+    padding: 0em 1em 0 1em;
+    background-color: grey;
+    }
+.stats-blue div
+    {
+    display: inline-block;
+    border: 1px solid #3399cc;
+    margin: 1em;
+    vertical-align: top;
+    }
+.stats-blue pre
+    {
+    margin: 0 1em 0 1em;
+    }
+.stats-blue h3
+    {
+    color: white;
+    margin: 0;
+    padding: 0em 1em 0 1em;
+    background-color: #3399cc;
+    }
+b   {
+    color: inherit;
+    }

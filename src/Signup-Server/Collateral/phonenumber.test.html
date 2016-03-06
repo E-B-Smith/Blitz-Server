@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script>
+function FormatPhoneNumber(phoneIn) {
+    //  Strip non-numbers --
+
+    if (phoneIn === null) {
+        return "";
+    }
+    var phonearray = phoneIn.match(/[0-9]*/g);
+    if (phonearray === null) {
+        return ""
+    }
+    var phone = "";
+    for (index = 0; index < phonearray.length; index++) {
+        phone += phonearray[index];
+    }
+
+    //  Format number --
+
+    if (phone.substr(0,1) == 1) {
+        phone = phone.substr(1)
+    }
+
+    var result = "";
+    if (phone.length == 0) {
+        result = "";
+    } else if (phone.length < 3) {
+        result = "(" + phone;
+    } else if (phone.length < 6) {
+        result = "(" + phone.substr(0, 3) + ") "
+        result += phone.substr(3)
+    } else {
+        var rest = phone.length - 6;
+        rest = Math.min(rest, 4);
+        result = "(" + phone.substr(0, 3) + ") ";
+        result += phone.substr(3, 3) + "-";
+        result += phone.substr(6, rest);
+    }
+    return result;
+}
+
+
+//  Test FormatPhoneNumber --
+
+var totalTests = 0;
+var totalFailures = 0;
+function TestCase(test, truth) {
+    totalTests++;
+    var result = FormatPhoneNumber(test)
+    if (result != truth) {
+        totalFailures++;
+        console.log("Test "+totalTests+": Wanted '"+truth+"' but got '"+result+"'.");
+    }
+}
+
+
+TestCase("4155525686", "(415) 552-5686")
+TestCase("(415) 552-5686", "(415) 552-5686")
+TestCase("(415) 552-5686", "(415) 552-5686")
+TestCase("(415) 552-568666666", "(415) 552-5686")
+TestCase("#$*^&415dgdg", "(415) ");
+TestCase("#$*^&4f1g5gdgdg", "(415) ");
+TestCase(null,              "");
+TestCase("",                "");
+TestCase("2",               "(2");
+TestCase("22",              "(22");
+TestCase("223",             "(223) ");
+TestCase("2234",            "(223) 4");
+TestCase("22345",           "(223) 45");
+TestCase("223456",          "(223) 456-");
+TestCase("2234567",         "(223) 456-7");
+TestCase("22345678",        "(223) 456-78");
+TestCase("223456789",       "(223) 456-789");
+TestCase("2234567890",      "(223) 456-7890");
+TestCase("22345678901",     "(223) 456-7890");
+
+TestCase("1 415 552 5686", "(415) 552-5686")
+
+console.log("Performed "+totalTests+" with "+totalFailures+" failures.");
+</script>
+</head>
+<body>
+</body>
+</html>

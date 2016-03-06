@@ -1,0 +1,65 @@
+#!/bin/bash
+set -euo pipefail
+scriptname=$(resolvepath "$0")
+scriptpath=$(dirname "$scriptname")
+scriptname=$(basename "$scriptname")
+cd "$scriptpath"
+
+
+if [ -z ${1+x} ]; then
+    echo ">>> A database name is expected on the command line." >&2
+    exit 1
+fi
+
+database="$1"
+if  ! askYN "Create database '$database'?"; then
+    exit 1
+fi
+
+echo ">>> Creating database '$database'..."
+databaselower=$(echo "$database" | tr '[:upper:]' '[:lower:]')
+
+
+psql postgres -U postgres -X --pset pager=off  -v ON_ERROR_STOP=1 <<DATABASE
+
+--  PulseLabs Postgres Database
+--
+--  E.B.Smith  -  March 2015
+
+create extension if not exists "uuid-ossp";
+create extension if not exists adminpack;
+
+drop schema if exists ${database}Schema cascade;
+drop database if exists ${database};
+drop user if exists ${database};
+
+
+create user ${database}
+   with createdb login password '${database}';
+
+create database ${database}
+   with encoding 'UTF8' owner ${database};
+
+\connect  $databaselower  $databaselower
+
+create schema ${database}Schema authorization ${database};
+alter user ${database} set search_path to ${database}Schema, public;
+\connect  $databaselower  $databaselower
+
+\include_relative CommonSchema.sql
+
+truncate AppTable;
+\copy AppTable (appID, appName, minAppVersion, minAppDataDate) from stdin with (format csv, header false, encoding utf8);
+io.beinghappy.happypulse-d,     PulseLabs,     1.2.0,   2016-02-08 05:48:42.357598+00
+io.beinghappy.beinghappy-d,     HappyLabs,     1.2.0,   2016-02-08 05:48:42.357598+00
+io.beinghappy.happypulse,       HappyPulse,    1.2.0,   2016-02-08 05:48:42.357598+00
+io.beinghappy.beinghappy,       BeingHappy,    1.2.0,   2016-02-08 05:48:42.357598+00
+\.
+
+select count(*) from AppTable;
+
+\include_relative load-stories.sql
+
+DATABASE
+
+printf "\n>>> Database initialized.\n"

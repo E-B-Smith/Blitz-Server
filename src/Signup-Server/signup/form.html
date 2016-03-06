@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-type" content="text/html; charset=UTF-8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="viewport" content="width=device-width, minimal-ui">
+<link href="./favicon.png"  type="image/png" rel="shortcut icon">
+<link rel="stylesheet" type="text/css" href="style.css">
+<script type="text/javascript" src="signup.js"></script>
+<title>BeingHappy : iOS Signup</title>
+</head>
+<body>
+<br><br>
+<img id='logo' src="Logo.png" alt="Logo">
+<br><br>
+<div id='message-box'>
+<b>
+Loading...
+</b>
+<br><br>
+BeingHappy<br>
+</div>
+
+<div id='form-div'>
+<br>
+<form method="post" action="form">
+{{ with .name }}
+<p class="error"> {{ . }} </p>
+{{ end }}
+<label><!-- Full Name -->
+<input type="text" placeholder="Name" name="name"/>
+</label>
+<br>
+
+{{ with .email }}
+<p class="error"> {{ . }} </p>
+{{ end }}
+<label><!-- E-Mail Address -->
+<input type="email" placeholder="E-mail" name="email"/>
+</label>
+<br>
+
+{{ with .phone }}
+<p class="error"> {{ . }} </p>
+{{ end }}
+<label><!-- Phone Number -->
+<input type="tel" placeholder="Phone Number" name="phone" id="phone" onkeyup="validatePhoneNumber()"/>
+</label>
+<br>
+
+<input type="submit" value="Sign-Up">
+</form>
+</div>
+
+<br>
+<br>
+
+</body>
+</html>

@@ -1,0 +1,35 @@
+#!/bin/bash
+set -euo pipefail
+
+errors=0
+
+function verifyKey() {
+    local file="$1"
+    local keyfile="$2"
+    fileChecksum=$(openssl x509 -noout -modulus -in "$file" | openssl md5)
+     keyChecksum=$(openssl rsa -noout -modulus -in  "$keyfile" | openssl md5)
+     #echo $fileChecksum
+     #echo $keyChecksum
+    if [[ "$fileChecksum" == "$keyChecksum" ]]; then
+        echo ">>> Matches: $file."
+    else
+        echo ">>>   Error: $file."
+        let 'errors++'
+    fi
+}
+
+cd Resources
+
+for file in *.pem; do
+    keyfile="${file%.*}".key
+    verifyKey "$file" "$keyfile"
+done
+
+
+if (( errors != 0 )); then
+    echo "Found $errors errors."
+    exit 1
+else
+    echo "All certs match."
+fi
+

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-type" content="text/html; charset=UTF-8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="viewport" content="width=device-width, minimal-ui">
+<link href="./favicon.png"  type="image/png" rel="shortcut icon">
+<link rel="stylesheet" type="text/css" href="style.css">
+<title>BeingHappy : iOS Profile</title>
+</head>
+<body>
+<br><br>
+<img id='logo' src="Logo.png" alt="Logo">
+<br><br>
+<div id='message-box'>
+<b>
+Install Profile
+</b>
+<br><br>
+A BeingHappy profile needs to be installed so that your phone is eligible for ad-hoc app distribution.<br><br>
+After clicking the 'Get Profile' button below, your iOS device will receive a profile like the one shown.<br><br>
+On the profile page, click 'Install' at the top right.
+<br>
+<img id='profile-image' src='Profile.png' alt='Install Profile'>
+
+<div id='form-div'>
+<form method="post" action="profile">
+{{ with .tempid }}
+<input type="hidden" name="tempid" value="{{ . }}">
+{{ end }}
+<input type="submit" value="Get Profile" class="submit">
+</form>
+</div>
+</div>
+
+<br>
+<br>
+</body>
+</html>

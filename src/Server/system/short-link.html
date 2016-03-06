@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-type" content="text/html; charset=UTF-8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="viewport" content="width=device-width, minimal-ui">
+<link href="./favicon.png"  type="image/png" rel="shortcut icon">
+<title>BeingHappy : Short Link</title>
+<link rel="stylesheet" type="text/css" href="style.css">
+<script type="text/javascript">
+
+var fieldWasCleared = false;
+function clearLongLinkField() {
+    'use strict';
+    if (fieldWasCleared !== true) {
+        fieldWasCleared = true;
+        var field = document.getElementById("longLink");
+        field.value = "";
+    }
+}
+function clearShortLinkField() {
+    'use strict';
+    if (fieldWasCleared !== true) {
+        fieldWasCleared = true;
+        var field = document.getElementById("shortLink");
+        field.value = "";
+    }
+}
+
+</script>
+</head>
+
+<body>
+<div id="header">
+<div>
+<img id="logo" src="Logo.png" alt="Logo">
+<div>
+<span>being</span>
+<span>happy</span>
+</div>
+</div>
+</div>
+
+
+<div id="stats-body">
+<h1>Link Shortner</h1>
+<div id='form-div'>
+<br>
+<form method="post" action="link">
+<p class="error">
+{{ with .longLinkError }} {{ . }}  {{ end }}
+</p>
+<label><!-- longLink -->
+<input type="text" placeholder="Long Link" name="longLink" id="longLink" onkeyup="clearShortLinkField()" value="{{ with .longLink }}{{ . }}{{ end }}"/>
+</label>
+<br>
+{{ with .longLink }} <a href="{{ . }}" target="_blank">{{ . }}</a>{{ end }}
+<br><br>
+
+<p class="error">
+{{ with .shortLinkError }} {{ . }}  {{ end }}
+</p>
+<label><!-- shortLink -->
+<input type="text" placeholder="Short Link" name="shortLink" id="shortLink" onkeyup="clearLongLinkField()" value="{{ with .shortLink }}{{ . }}{{ end }}"/>
+</label>
+<br>
+{{ with .shortLink }} <a href="{{ . }}" target="_blank">{{ . }}</a>{{ end }}
+<br><br>
+
+<input type="submit" value="Get Link" class="submit">
+</form>
+</div>
+</div>
+
+</body>
+</html>

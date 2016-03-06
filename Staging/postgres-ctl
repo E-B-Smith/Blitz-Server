@@ -1,0 +1,99 @@
+#!/bin/bash
+
+#  postgres-ctl  start | stop | status  -  Control a postgres database.
+#
+#  EB Smith  June, 2015
+
+set -euo pipefail
+scriptname=$(basename "$0")
+scriptpath="$( cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "$scriptpath"
+source beinghappyrc
+
+
+version=
+cluster=
+updown=
+
+
+pgdata="${PGDATA:-""}"
+if [[ "$pgdata" == "" ]]; then
+    if [[ `uname` == "Darwin" ]]; then
+        pgdata=~/Library/"Application Support"/Postgres/var-9.4
+    fi
+fi
+
+PostgresGetVersion() {
+    if [[ `uname` != "Darwin" ]]; then
+        local statusline=$(pg_lsclusters -h)
+        version=$(cut -d' ' -f1 <<<$statusline)
+        cluster=$(cut -d' ' -f2 <<<$statusline)
+         updown=$(cut -d' ' -f4 <<<$statusline)
+    fi
+}
+
+
+PostgresStatus() {
+    local bStarted=false
+    if [[ `uname` == "Darwin" ]]; then
+        if pg_ctl -D "$pgdata" status >/dev/null; then
+            bStarted=true
+        fi
+    else
+        statusline=$(pg_lsclusters -h)
+        updown=$(cut -d' ' -f4 <<<$statusline)
+        if [[ $updown == "online" || $updown == "up" ]]; then
+            bStarted=true
+        fi
+    fi
+
+    if $bStarted; then
+        echo "Started"
+        return 0
+    else
+        echo "Stopped"
+        return 1
+    fi
+}
+
+
+PostgresStart() {
+    if [[ `uname` == "Darwin" ]]; then
+        (pg_ctl -w start -D "${pgdata}" &>/dev/null || true)
+    else
+        PostgresGetVersion
+        (sudo pg_ctlcluster $version $cluster start -- -w &>/dev/null || true)
+    fi
+}
+
+
+PostgresStop() {
+    if [[ `uname` == "Darwin" ]]; then
+        (pg_ctl -w stop -D "${pgdata}" &>/dev/null || true)
+    else
+        PostgresGetVersion
+        (sudo pg_ctlcluster --force  $version $cluster stop -- -w &>/dev/null || true)
+    fi
+}
+
+
+if (( $# != 1 )); then
+    echo ">>> Error: $scriptname expects one argument." >&2
+    exit 1
+fi
+
+
+if   [[ $1 == "start" ]]; then
+    PostgresStart
+elif [[ $1 == "stop" ]]; then
+    PostgresStop
+elif [[ $1 == "status" ]]; then
+    :
+else
+    echo ">>> Error: Unknown option '$1'." >&2
+    exit 1
+fi
+
+
+PostgresStatus
+

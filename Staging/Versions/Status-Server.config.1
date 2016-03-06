@@ -1,0 +1,16 @@
+
+#  BeingHappy Status Server configuration
+
+service-name        Status-Server
+service-prefix      "/status"
+service-file-path   Status
+service-port        10008
+server-url          "https://bh.gy"
+
+database-uri        "postgres://happylabs:happylabs@localhost:5432/happylabs"
+
+log-level           LogLevelAll
+log-name            "~/log/Status-Server.log"
+
+templates-path      templates
+web-log             "/var/log/nginx/access.log"

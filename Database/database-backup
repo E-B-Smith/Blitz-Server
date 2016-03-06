@@ -1,0 +1,28 @@
+#!/bin/bash
+set -euo pipefail
+
+scriptname=$(resolvepath "$0")
+scriptpath=$(dirname "$scriptname")
+scriptname=$(basename "$scriptname")
+
+backuppath=~/backups
+if [[ `uname` == Darwin ]]; then
+    backuppath=~/Development/Database-Backup
+fi
+
+function backupDB() {
+    databasename="$1"
+    databaseuser="$2"
+    echo ">>> Backing up $databasename"
+    timestamp=`date +"%Y-%m-%d-%H-%M"`
+    pg_dump --username=$databaseuser $databasename > "$backuppath"/$databasename-$timestamp.sql
+}
+
+cd "$scriptpath"
+echo ">>> Backingup to $backuppath."
+(mkdir -p "$backuppath" || true)
+backupDB happinessdatabase happinessadmin
+backupDB happylabsdatabase happylabsadmin
+backupDB happylabs happylabs
+backupDB pulselabs pulselabs
+echo "Done."

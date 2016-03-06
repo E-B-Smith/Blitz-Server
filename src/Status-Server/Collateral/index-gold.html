@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-type" content="text/html; charset=UTF-8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="viewport" content="width=device-width, minimal-ui">
+<link href="./favicon.png"  type="image/png" rel="shortcut icon">
+<title>BeingHappy : Server Status</title>
+<link rel="stylesheet" type="text/css" href="style.css">
+<script type="text/javascript" src="stats.js"></script>
+</head>
+
+<body>
+<div id="header">
+<div>
+<img id="logo" src="Logo.png" alt="Logo">
+<div>
+<span>being</span>
+<span>happy</span>
+</div>
+</div>
+</div>
+
+<div id="stats-body">
+<div class="stats">
+<div><h3>Up Since</h3><pre><code>
+ message | Time
+---------+------
+(0 rows)
+
+</code></pre></div>
+<div><h3>Total Users</h3><pre><code>
+ count
+-------
+   141
+(1 row)
+
+</code></pre></div>
+<div><h3>Active Users</h3><pre><code>
+ count
+-------
+   138
+(1 row)
+
+</code></pre></div>
+<div><h3>Recent Activity</h3><pre><code>
+                userid                |          Last Active          |     name     |    modelname
+--------------------------------------+-------------------------------+--------------+-----------------
+ 2E65D1D5-C462-43E8-BF86-FB4A65383FB2 | 2015-03-22 16:19:20.000507-07 | Edward Smith | iPhoneSimulator
+ 825F1B25-F834-4074-85BD-5273D8B8697C | 2015-03-21 19:39:14.00039-07  | Ritu Raj     | iPhone7,2
+ B0CD1370-7C2C-4665-8417-14DFA3BFD8ED | 2015-03-21 15:32:06.000791-07 | Jorge Torres | iPhone5,1
+ 04CC4BC9-D9CB-405F-90D4-A5D19ED16301 | 2015-03-18 14:55:56.000232-07 | Edward Smith | iPhoneSimulator
+ 66A0AF6A-C28C-413E-B5AB-734C99882037 | 2015-03-17 13:41:03.000009-07 | Edward Smith | iPhoneSimulator
+ 53789A57-0436-4B6E-93B6-F9E5B06CE481 | 2015-03-16 19:16:00.000226-07 | Ritu Raj     | iPhone7,2
+(6 rows)
+
+</code></pre></div>
+<div><h3>Most Active Users</h3><pre><code>
+ count |                userid                |     name
+-------+--------------------------------------+--------------
+  2216 | 2E65D1D5-C462-43E8-BF86-FB4A65383FB2 | Edward Smith
+   751 | 66A0AF6A-C28C-413E-B5AB-734C99882037 | Edward Smith
+   317 | 04CC4BC9-D9CB-405F-90D4-A5D19ED16301 | Edward Smith
+   228 | 825F1B25-F834-4074-85BD-5273D8B8697C | Ritu Raj
+   145 | B0CD1370-7C2C-4665-8417-14DFA3BFD8ED | Jorge Torres
+   115 | 53789A57-0436-4B6E-93B6-F9E5B06CE481 | Ritu Raj
+(6 rows)
+
+</code></pre></div>
+<div><h3>Friends</h3><pre><code>
+                userid                |     name     |     name     |       Status
+--------------------------------------+--------------+--------------+---------------------
+ 04CC4BC9-D9CB-405F-90D4-A5D19ED16301 | Edward Smith | Anna Haro    | FriendStatusUnknown
+ 1EB79D3B-3A88-4A53-9AC1-BCF86B3EE891 | Anna Haro    | Edward Smith | FriendStatusInvited
+ 2E65D1D5-C462-43E8-BF86-FB4A65383FB2 | Edward Smith | Edward Smith | FriendStatusAsked
+ 2E65D1D5-C462-43E8-BF86-FB4A65383FB2 | Edward Smith | Ritu Raj     | FriendStatusAsked
+ 2E65D1D5-C462-43E8-BF86-FB4A65383FB2 | Edward Smith | Jorge Torres | FriendStatusUnknown
+ 2E65D1D5-C462-43E8-BF86-FB4A65383FB2 | Edward Smith | Ritu Raj     | FriendStatusAsked
+ 53789A57-0436-4B6E-93B6-F9E5B06CE481 | Ritu Raj     | Edward Smith | FriendStatusInvited
+ 734E89D3-B238-473C-B00E-AEBDF4BB7F65 | Jorge Torres | Edward Smith | FriendStatusInvited
+ 825F1B25-F834-4074-85BD-5273D8B8697C | Ritu Raj     | Edward Smith | FriendStatusUnknown
+(9 rows)
+
+</code></pre></div>
+<div><h3>Network Messages</h3><pre><code>
+ message | count | Avg Response Sec. | Bytes In | Bytes Out
+---------+-------+-------------------+----------+-----------
+(0 rows)
+
+</code></pre></div>
+
+</div>
+</div>
+</body>
+</html>
+

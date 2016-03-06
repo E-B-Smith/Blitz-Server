@@ -1,0 +1,71 @@
+#!/bin/bash
+set -euo pipefail
+
+
+subprojects=(
+"src/violent.blue/GoKit"
+    "ssh://git@git.violent.blue/~/GoKit.git"
+    "master"
+    "push"
+
+"src/github.com/lib/pq"
+    "ssh://git@github.com/lib/pq.git"
+    "master"
+    "nopush"
+
+"src/github.com/DHowett/go-plist"
+    "ssh://git@github.com/DHowett/go-plist.git"
+    "master"
+    "nopush"
+
+"src/github.com/golang/protobuf"
+    "ssh://git@github.com/golang/protobuf.git"
+    "master"
+    "nopush"
+
+"src/github.com/satori/go.uuid"
+    "ssh://git@github.com/satori/go.uuid.git"
+    "master"
+    "nopush"
+
+"src/golang.org/x/text"
+    "https://go.googlesource.com/text"
+    "master"
+    "nopush"
+)
+
+
+if (( $# != 1 )); then
+    echo ">>> A parameter of 'add', 'pull', 'push' is expected."
+    exit 1
+fi
+
+if [[ "$1" == "del" ]]; then
+    askYN "Really delete the subtrees?"
+    echo ">>> Deleting..."
+fi
+
+index=0
+while (( index < ${#subprojects[@]} )); do
+    path="${subprojects[index+0]}"
+    project="${subprojects[index+1]}"
+    branch="${subprojects[index+2]}"
+    pushable="${subprojects[index+3]}"
+
+    case "$1" in
+    "add")      (git subtree add --prefix="$path" "$project" "$branch" || true)     ;;
+    "del")      rm -Rf "$path" ;;
+    "pull")     git subtree pull  --prefix="$path"  --squash  "$project"  "$branch" ;;
+    "push")
+        if [[ "$pushable" == "push" ]]; then
+            git subtree push  --prefix="$path"  "$project"  "$branch"
+        fi
+        ;;
+    "test")     printf "$path:\t\t$project\t\t$branch\n"    ;;
+    *)          echo ">>> Unknown command '$1'."; exit 1    ;;
+    esac
+
+    let 'index += 4'
+done
+
+

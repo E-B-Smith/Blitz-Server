@@ -1,0 +1,142 @@
+#!/bin/bash
+
+#   server-ctrl
+#
+#   EB Smith, March 2015.
+
+#  server-ctrl [ server-name | all ]  [ start | stop | restart | status ]  [ --tail | -t ]
+
+
+set -euo pipefail
+source beinghappyrc
+scriptname=$(resolvepath "$0")
+scriptpath=$(dirname "$scriptname")
+scriptname=$(basename "$scriptname")
+cd "$scriptpath"
+
+
+bTail=false
+bForceStart=false
+AllServers=(
+    "BeingHappyLegacy-Server"       10001
+    "HappyLabs-Server"              10003
+    "BeingHappy-Server"             10005
+    "Signup-Server"                 10007
+    "Status-Server"                 10009
+    "PulseLabs-Server"              10011
+    "HappyPulse-Server"             10013
+)
+
+
+function doserverstuff() {
+    local verb=$1
+    local servername="$2"
+    local serverbin="$servername"
+
+    if [ ! -x "$serverbin" ]; then
+        echo ">>> Error: Executable '$serverbin' not found." 1>&2
+        exit 1
+    fi
+
+    configfile="$servername".config
+    logfile=~/log/"$servername".log
+    pidfile=~/.run/"$servername".pid
+    # echo $pidfile
+    pid=$(cat "$pidfile" 2>/dev/null | cut -f1 || true)
+    if (( ${#pid} == 0 )); then pid=0; fi
+    # echo "Pid is $pid."
+
+    if [[ "$verb" == "start" ]]; then
+        if [[ $pid > 100 && $bForceStart == false ]]; then
+            echo "$servername is already running."
+            return 0
+        fi
+    else
+        if (( $pid < 100 )); then
+            echo "$servername is not running."
+        elif [[ "$verb" == "status" ]]; then
+            echo ">>> $servername status:"
+            (kill -USR1 $pid || true)
+            sleep 1
+            if ! $bTail; then
+                tail -n5 $logfile
+            fi
+        else
+            echo "Killing $servername."
+            (kill -TERM $pid || true)
+            sleep 1
+        fi
+    fi
+
+    if [[ "$verb" == "start" || "$verb" == "restart" ]]; then
+        (nohup "$serverbin" -c "$configfile" &>/dev/null) &
+        echo "$servername started."
+        sleep 1
+    fi
+
+    if $bTail; then
+        tail -n20 -f "$logfile"
+    fi
+}
+
+
+servername=""
+verb="status"
+bAll=false
+
+
+while (( $# > 0 )); do
+    case "$1" in
+    "start" | "stop" | "restart" | "status" )
+        verb="$1"
+        ;;
+    "--tail" | "-t" )
+        bTail=true
+        ;;
+    "--force" | "-f" )
+        bForceStart=true
+        ;;
+    "all" )
+        bAll=true
+        ;;
+    * )
+        if [[ "$servername" == "" ]]; then
+            servername="$1"
+        else
+            echo ">>> Error: Extraneous parameter. Scanning '$1'." >&2
+            exit 1
+            fi
+        ;;
+    esac
+    shift
+done
+
+
+if [[ "$verb" == "status" ]]; then
+    idx=0
+    while (( $idx < "${#AllServers[*]}" ))
+    do
+        statusLine=$(echo status | nc localhost ${AllServers[idx+1]} | tr -d '\n' || true)
+        printf "%30s: %s\n"  "${AllServers[idx]}"  "$statusLine"
+        let 'idx += 2'
+    done
+    exit 0
+fi
+
+
+if $bAll; then
+    bTail=false
+    idx=0
+    while (( $idx < "${#AllServers[*]}" ))
+    do
+        doserverstuff $verb "${AllServers[idx]}"
+        let 'idx += 2'
+    done
+elif [[ "$servername" != "" ]]; then
+    doserverstuff $verb "$servername"
+else
+    echo ">>> Error: Server name expected." >&2
+    exit 1
+fi
+
+

@@ -1,0 +1,38 @@
+#!/bin/bash
+set -euo pipefail
+
+database=happylabsdatabase
+databaseuser=happylabsadmin
+schema=happinessschema
+
+dumppath=~/dump/$database
+rm -Rf $dumppath
+mkdir -p $dumppath
+
+
+while read tablename
+do
+
+    if [[ $tablename == "" ]]; then
+        continue
+    fi
+
+    echo ">>> Dumping $tablename..." 1>&2
+    copy="\\copy $tablename to '$dumppath/$tablename.csv' with (format csv, header true)"
+    # echo ">>> Copy statement: $copy" 1>&2
+    psql $database -U $databaseuser -t -X --pset pager=off -c "$copy"
+
+done < <(
+psql $database -U $databaseuser -t -X --pset pager=off <<PSQL
+select table_name
+    from information_schema.tables
+    where tables.table_schema = 'public'
+       or tables.table_schema = '$schema';
+PSQL
+)
+
+echo ">>> Done." 1>&2
+
+# select tables.table_schema, table_name
+#     from information_schema.tables
+#     order by tables.table_schema, table_name;

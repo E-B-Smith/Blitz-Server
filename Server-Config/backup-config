@@ -1,0 +1,110 @@
+#!/bin/bash
+
+#  config-backup  -  Backup the config files from the server.
+#
+#  EB Smith
+
+set -euo pipefail
+scriptname="$0"
+scriptpath="$( cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# userhost="ubuntu@shimmering"
+userhost="ubuntu@b1"
+configpath=Files
+bUpload=false
+bTesting=false
+scp="echo scp "
+ssh="echo ssh "
+
+
+function UpdateHostFile() {
+    local owner="$1"
+    local mode="$2"
+    local filename="$3"
+    if $bTesting; then
+        echo "----"
+    fi
+    if $bUpload; then
+        local pathname=$(dirname "$filename")
+        local name=$(basename "$filename")
+        $ssh $userhost mkdir -p /staging"$pathname"
+        $scp "$name"   "$userhost":/staging"$filename"
+        $ssh $userhost sudo chmod $mode  /staging"$filename"
+        $ssh $userhost sudo chown $owner /staging"$filename"
+        $ssh $userhost sudo mv -f /staging"$filename" "$filename"
+    else
+        $scp "$userhost":"$filename"     "$configpath"
+    fi
+}
+
+
+function UpdateHostFilePermissions() {
+    local owner="$1"
+    local mode="$2"
+    local filename="$3"
+    if $bTesting; then
+        echo "----"
+    fi
+    if $bUpload; then
+        $ssh $userhost sudo chmod $mode  "$filename"
+        $ssh $userhost sudo chown $owner "$filename"
+    fi
+}
+
+
+function cleanUpOnExit() {
+    if $bUpload; then
+        $ssh $userhost sudo rm -Rf /staging
+    fi
+}
+trap "cleanUpOnExit" EXIT
+
+
+while (( $# > 0 )); do
+    if [[ "$1" == "download" ]]; then
+        bUpload=false
+    elif [[ "$1" == "upload" ]]; then
+        bUpload=true
+    elif [[ "$1" == "test" ]]; then
+        bTesting=true
+    else
+        echo ">>> Error: Unknown option '$1'." >&2
+        exit 1
+    fi
+    shift
+done
+
+
+if ! $bTesting; then
+    scp="scp"
+    ssh="ssh"
+fi
+
+
+cd "$scriptpath"
+mkdir -p "$configpath"
+if $bUpload; then
+    echo ">>> Uploading '$userhost' configuration." >&2
+    cd "$configpath"
+    user="${userhost%@*}"
+    $ssh $userhost sudo rm -Rf /staging
+    $ssh $userhost sudo mkdir -p /staging
+    $ssh $userhost sudo chown -R $user:$user /staging
+    $ssh $userhost sudo chmod -R 700 /staging
+else
+    echo ">>> Downloading '$userhost' configuration." >&2
+fi
+
+
+UpdateHostFile  root:root    644 "/etc/ssh/ssh_config"
+UpdateHostFile  root:root    644 "/etc/ssh/sshd_config"
+UpdateHostFile  root:root    644 "/etc/nginx/sites-available/beinghappy-nginx.conf"
+UpdateHostFile  root:root    644 "/etc/hostname"
+UpdateHostFile  root:root    644 "/etc/hosts"
+UpdateHostFile  root:signers 644 "/etc/keys/htpasswd"
+UpdateHostFile  root:signers 644 "/etc/keys/chain.crt"
+UpdateHostFile  root:signers 644 "/etc/keys/bh.gy.crt"
+UpdateHostFile  root:signers 640 "/etc/keys/bh.gy.key"
+UpdateHostFile  root:signers 640 "/etc/keys/bh.gy.pem"
+UpdateHostFile  root:signers 640 "/etc/keys/dhparams.pem"
+UpdateHostFilePermissions    root:root    644 " /var/log/nginx/access.log"

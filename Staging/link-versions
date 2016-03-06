@@ -1,0 +1,39 @@
+#!/bin/bash
+#  Set up the symbolic links to the files --
+
+set -euo pipefail
+scriptname=$(resolvepath "$0")
+scriptpath=$(dirname "$scriptname")
+scriptname=$(basename "$scriptname")
+cd "$scriptpath"
+
+
+function linkFile() {
+    local fileToLink="$1"
+    local fileToLinkTo="$2"
+
+    ln -fsv Versions/"$fileToLinkTo"     "$fileToLink"
+}
+
+
+linkFile  BeingHappyLegacy-Server              BeingHappy-Server.Linux.1
+linkFile  BeingHappyLegacy-Server.config       BeingHappy-Server.config.2
+
+linkFile  BeingHappy-Server                    BeingHappy-Server.Linux
+linkFile  BeingHappy-Server.config             BeingHappy-Server.config.3
+
+linkFile  HappyLabs-Server                     BeingHappy-Server.Linux
+linkFile  HappyLabs-Server.config              HappyLabs-Server.config.1
+
+linkFile  PulseLabs-Server                     BeingHappy-Server.Linux
+linkFile  PulseLabs-Server.config              PulseLabs-Server.config.1
+
+linkFile  HappyPulse-Server                    BeingHappy-Server.Linux
+linkFile  HappyPulse-Server.config             HappyPulse-Server.config.1
+
+linkFile  Signup-Server                        Signup-Server.Linux
+linkFile  Signup-Server.config                 Signup-Server.config.1
+
+linkFile  Status-Server                        Status-Server.Linux
+linkFile  Status-Server.config                 Status-Server.config.1
+

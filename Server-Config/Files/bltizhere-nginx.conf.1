@@ -1,0 +1,294 @@
+# beinghappy-nginx.conf
+#
+# EB Smith  -  June 2015
+
+##
+# You should look at the following URL's in order to grasp a solid understanding
+# of Nginx configuration files in order to fully unleash the power of Nginx.
+# http://wiki.nginx.org/Pitfalls
+# http://wiki.nginx.org/QuickStart
+# http://wiki.nginx.org/Configuration
+#
+# Generally, you will want to move this file somewhere, and start with a clean
+# file but keep this around for reference. Or just disable in sites-enabled.
+#
+# Please see /usr/share/doc/nginx-doc/examples/ for more detailed examples.
+##
+
+
+server {
+    listen      80;
+    server_name www.bh.gy;
+    return 301 https://bh.gy$request_uri;
+}
+server {
+    listen      80;
+    server_name bh.gy;
+    return 301 https://bh.gy$request_uri;
+}
+
+
+server {
+    listen 443 ssl default_server;
+    listen [::]:443 ssl default_server ipv6only=on;
+    server_name localhost bh.gy;  #  Make 'localhost' work too.
+    add_header  Strict-Transport-Security "max-age=31536000; includeSubdomains";
+
+    ssl_certificate             /etc/keys/bh.gy.crt;
+    ssl_certificate_key         /etc/keys/bh.gy.pem;
+    ssl_dhparam                 /etc/keys/dhparams.pem;
+    ssl_protocols               TLSv1 TLSv1.1 TLSv1.2;
+    ssl_ciphers                 ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AES:ECDH+3DES:DH+3DES:RSA+AESGCM:RSA+AES:RSA+3DES:!aNULL:!MD5:!DSS;
+    ssl_prefer_server_ciphers   on;
+    ssl_stapling                on;
+    ssl_session_cache           builtin:1000 shared:SSL:10m;
+
+    root  /home/beinghappy/www;
+    index index.html index.htm;
+
+    try_files $uri $uri/ = 404;
+
+    location / {
+    }
+    location /webapp {
+        root  /home/webapp;
+        error_page 405 = $uri;
+    }
+    location /apple-app-site-association {
+        default_type "application/pkcs7-mime";
+    }
+
+    #  BeingHappy legacy production server
+
+    location /service {
+        proxy_pass          http://127.0.0.1:10000;
+        proxy_set_header    X-Real-IP $remote_addr;
+        proxy_set_header    X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header    Host $http_host;
+        proxy_set_header    X-Forwarded-Host $host;
+        proxy_set_header    X-Forwarded-Server $host;
+        proxy_redirect      off;
+        expires             off;
+    }
+    #  Production server control
+    location /service/system {
+        auth_basic          "Restricted";
+        auth_basic_user_file /etc/keys/htpasswd;
+        proxy_pass          http://127.0.0.1:10000;
+        proxy_set_header    X-Real-IP $remote_addr;
+        proxy_set_header    X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header    Host $http_host;
+        proxy_set_header    X-Forwarded-Host $host;
+        proxy_set_header    X-Forwarded-Server $host;
+        proxy_redirect      off;
+        expires             off;
+    }
+    #  Production link shortner
+    location ~ ^/s/.*$ {
+        proxy_pass          http://127.0.0.1:10000;
+        proxy_set_header    X-Real-IP $remote_addr;
+        proxy_set_header    X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header    Host $http_host;
+        proxy_set_header    X-Forwarded-Host $host;
+        proxy_set_header    X-Forwarded-Server $host;
+        proxy_redirect      off;
+        expires             off;
+    }
+
+    #  HappyLabs --
+
+    location /happylabs {
+        proxy_pass          http://127.0.0.1:10002;
+        proxy_set_header    X-Real-IP $remote_addr;
+        proxy_set_header    X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header    Host $http_host;
+        proxy_set_header    X-Forwarded-Host $host;
+        proxy_set_header    X-Forwarded-Server $host;
+        proxy_redirect      off;
+        expires             off;
+
+        location ~ /happylabs/(admin|message|shortlink) {
+            auth_basic          "Restricted";
+            auth_basic_user_file /etc/keys/htpasswd;
+
+            proxy_pass          http://127.0.0.1:10002;
+            proxy_set_header    X-Real-IP $remote_addr;
+            proxy_set_header    X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header    Host $http_host;
+            proxy_set_header    X-Forwarded-Host $host;
+            proxy_set_header    X-Forwarded-Server $host;
+            proxy_redirect      off;
+            expires             off;
+        }
+    }
+    #  HappyLabs link shortner
+    location ~ ^/hl/.*$ {
+        proxy_pass          http://127.0.0.1:10002;
+        proxy_set_header    X-Real-IP $remote_addr;
+        proxy_set_header    X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header    Host $http_host;
+        proxy_set_header    X-Forwarded-Host $host;
+        proxy_set_header    X-Forwarded-Server $host;
+        proxy_redirect      off;
+        expires             off;
+    }
+
+    #  BeingHappy production server, current --
+
+    location /beinghappy {
+        proxy_pass          http://127.0.0.1:10004;
+        proxy_set_header    X-Real-IP $remote_addr;
+        proxy_set_header    X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header    Host $http_host;
+        proxy_set_header    X-Forwarded-Host $host;
+        proxy_set_header    X-Forwarded-Server $host;
+        proxy_redirect      off;
+        expires             off;
+
+        location ~ /beinghappy/(admin|message|shortlink) {
+            auth_basic          "Restricted";
+            auth_basic_user_file /etc/keys/htpasswd;
+
+            proxy_pass          http://127.0.0.1:10004;
+            proxy_set_header    X-Real-IP $remote_addr;
+            proxy_set_header    X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header    Host $http_host;
+            proxy_set_header    X-Forwarded-Host $host;
+            proxy_set_header    X-Forwarded-Server $host;
+            proxy_redirect      off;
+            expires             off;
+        }
+    }
+    #  HappyLabs link shortner
+    location ~ ^/bh/.*$ {
+        proxy_pass          http://127.0.0.1:10004;
+        proxy_set_header    X-Real-IP $remote_addr;
+        proxy_set_header    X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header    Host $http_host;
+        proxy_set_header    X-Forwarded-Host $host;
+        proxy_set_header    X-Forwarded-Server $host;
+        proxy_redirect      off;
+        expires             off;
+    }
+
+    #  Micro servers --
+
+    location /signup {
+        proxy_pass          http://127.0.0.1:10006;
+        proxy_set_header    X-Real-IP $remote_addr;
+        proxy_set_header    X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header    Host $http_host;
+        proxy_set_header    X-Forwarded-Host $host;
+        proxy_set_header    X-Forwarded-Server $host;
+        proxy_redirect      off;
+        expires             off;
+    }
+    #  Status server
+    location /status {
+        auth_basic          "Restricted";
+        auth_basic_user_file /etc/keys/htpasswd;
+        proxy_pass          http://127.0.0.1:10008;
+        proxy_set_header    X-Real-IP $remote_addr;
+        proxy_set_header    X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header    Host $http_host;
+        proxy_set_header    X-Forwarded-Host $host;
+        proxy_set_header    X-Forwarded-Server $host;
+        proxy_redirect      off;
+        expires             off;
+    }
+    #  SMS response server
+    location /status/sms {
+        proxy_pass          http://127.0.0.1:10008;
+        proxy_set_header    X-Real-IP $remote_addr;
+        proxy_set_header    X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header    Host $http_host;
+        proxy_set_header    X-Forwarded-Host $host;
+        proxy_set_header    X-Forwarded-Server $host;
+        proxy_redirect      off;
+        expires             off;
+    }
+
+    #  Pulse --
+
+    #  PulseLabs
+    location /pulselabs {
+        proxy_pass          http://127.0.0.1:10010;
+        proxy_set_header    X-Real-IP $remote_addr;
+        proxy_set_header    X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header    Host $http_host;
+        proxy_set_header    X-Forwarded-Host $host;
+        proxy_set_header    X-Forwarded-Server $host;
+        proxy_redirect      off;
+        expires             off;
+
+        location ~ /pulselabs/(admin|message|shortlink) {
+            auth_basic          "Restricted";
+            auth_basic_user_file /etc/keys/htpasswd;
+
+            proxy_pass          http://127.0.0.1:10010;
+            proxy_set_header    X-Real-IP $remote_addr;
+            proxy_set_header    X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header    Host $http_host;
+            proxy_set_header    X-Forwarded-Host $host;
+            proxy_set_header    X-Forwarded-Server $host;
+            proxy_redirect      off;
+            expires             off;
+        }
+    }
+    #  PulseLabs link shortner
+    location ~ ^/pl/.*$ {
+        proxy_pass          http://127.0.0.1:10010;
+        proxy_set_header    X-Real-IP $remote_addr;
+        proxy_set_header    X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header    Host $http_host;
+        proxy_set_header    X-Forwarded-Host $host;
+        proxy_set_header    X-Forwarded-Server $host;
+        proxy_redirect      off;
+        expires             off;
+    }
+
+    #  HappyPulse production
+    location /happypulse {
+        proxy_pass          http://127.0.0.1:10012;
+        proxy_set_header    X-Real-IP $remote_addr;
+        proxy_set_header    X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header    Host $http_host;
+        proxy_set_header    X-Forwarded-Host $host;
+        proxy_set_header    X-Forwarded-Server $host;
+        proxy_redirect      off;
+        expires             off;
+
+        location ~ /happypulse/(admin|message|shortlink) {
+            auth_basic          "Restricted";
+            auth_basic_user_file /etc/keys/htpasswd;
+
+            proxy_pass          http://127.0.0.1:10012;
+            proxy_set_header    X-Real-IP $remote_addr;
+            proxy_set_header    X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header    Host $http_host;
+            proxy_set_header    X-Forwarded-Host $host;
+            proxy_set_header    X-Forwarded-Server $host;
+            proxy_redirect      off;
+            expires             off;
+        }
+    }
+    #  HappyPulse link shortner
+    location ~ ^/hp/.*$ {
+        proxy_pass          http://127.0.0.1:10012;
+        proxy_set_header    X-Real-IP $remote_addr;
+        proxy_set_header    X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header    Host $http_host;
+        proxy_set_header    X-Forwarded-Host $host;
+        proxy_set_header    X-Forwarded-Server $host;
+        proxy_redirect      off;
+        expires             off;
+    }
+
+    # Deny access to .htaccess files, if Apache's document root
+    # concurs with nginx's one
+
+    location ~ /\.ht {
+       deny all;
+    }
+}
+

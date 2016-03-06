@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-type" content="text/html; charset=UTF-8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="viewport" content="width=device-width, minimal-ui">
+<link href="./favicon.png"  type="image/png" rel="shortcut icon">
+<title>BeingHappy : System Message</title>
+<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<body>
+<div id="header">
+<div>
+<img id="logo" src="Logo.png" alt="Logo">
+<div>
+<span>being</span>
+<span>happy</span>
+</div>
+</div>
+</div>
+
+<div id="stats-body">
+<h1>System Message</h1>
+<div id='form-div'>
+<br>
+<form method="post" action="message">
+{{ with .messageText }}
+<p class="error"> {{ . }} </p>
+{{ end }}
+<label><!-- messageText -->
+<input type="text" placeholder="Message Body" name="messageText"/>
+</label>
+<br>
+
+{{ with .actionIcon }}
+<p class="error"> {{ . }} </p>
+{{ end }}
+<label><!-- Icon Name -->
+<input type="text" placeholder="Icon Name" name="actionIcon"/>
+</label>
+<br>
+
+{{ with .actionURL }}
+<p class="error"> {{ . }} </p>
+{{ end }}
+<label><!-- actionURL -->
+<input type="text" placeholder="Action URL" name="actionURL"/>
+</label>
+<br>
+
+<input type="submit" value="Send" class="submit">
+</form>
+</div>
+</div>
+
+</body>
+</html>

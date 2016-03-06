@@ -1,0 +1,47 @@
+//  ApplePushMain_test  -  Test the APN message.
+//
+//  E.B.Smith  -  November, 2015
+
+
+package main
+
+
+import (
+    "time"
+    "violent.blue/GoKit/Log"
+    "./ApplePushService"
+)
+
+
+func main () {
+    Log.LogLevel = Log.LevelAll
+
+    note := ApplePushService.Notification {
+        BundleID:       "io.beinghappy.happypulse-d",
+        ServiceType:    ApplePushService.ServiceTypeDevelopment,
+        DeviceToken:    "257BD78CD58BC1D173CB3F47B99B5F5FAA73A210AE0C09E083E210DE1F0375AC",
+        MessageID:      1,
+        MessageText:    "Hello!",
+        SoundName:      "Pulse.caf",
+    }
+
+    var error error
+    service := ApplePushService.NewService();
+    if error = service.Start(); error != nil {
+        Log.LogError(error)
+        return
+    }
+    if error = service.Send(&note); error != nil {
+        Log.LogError(error)
+        return
+    }
+    time.Sleep(time.Second*20.0)
+    statuses := service.Status()
+    for _, status := range statuses {
+        Log.Infof("Status: %s.", status.String())
+    }
+    if len(statuses) == 0 {
+        Log.Infof("No status!")
+    }
+    service.Stop()
+}
