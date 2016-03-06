@@ -1,0 +1,100 @@
+syntax = "proto2";
+
+package util;
+
+import "objectivec-descriptor.proto";
+
+option java_package = "com.blitz.util.proto";
+
+option java_generic_services = true;
+
+option java_multiple_files = true;
+
+option (google.protobuf.objectivec_file_options).package = "";
+
+option (google.protobuf.objectivec_file_options).class_prefix = "B";
+
+option (google.protobuf.objectivec_file_options).relax_camel_case = true;
+
+//----------------------------------------------------------------------------------------
+// Globals
+//----------------------------------------------------------------------------------------
+message Globals {
+  optional string SystemUserID = 1 [default = 'E4227250-C8E5-4DA9-8177-F084020910B8'];
+}
+
+//----------------------------------------------------------------------------------------
+// Basic Types
+//----------------------------------------------------------------------------------------
+message Coordinate {
+  optional double latitude = 1 [default = -360.0];
+  optional double longitude = 2 [default = -360.0];
+}
+
+message Size {
+  optional double width = 1 [default = 0.0];
+  optional double height = 2 [default = 0.0];
+}
+
+message CoordinateRegion {
+  optional Coordinate center = 1;
+  optional Size size = 2; //  In degrees
+}
+
+message CoordinatePolygon {
+  repeated Coordinate points = 1;
+}
+
+message Location {
+  optional Coordinate coordinate = 1;
+  optional double altitude = 2;
+  optional double speed = 3;
+  optional double course = 4;
+  optional string placename = 5;
+}
+
+message Timestamp {
+  required double epoch = 1;
+}
+
+message Timespan {
+  optional Timestamp startTimestamp = 1;
+  optional Timestamp stopTimestamp = 2;
+}
+
+message TimeInterval {
+  enum Granularity {
+    SECONDS = 1;
+    MINUTES = 2;
+    HOURS = 3;
+  }
+
+  optional double interval_ = 1;
+
+  optional Granularity granularity = 2;
+}
+
+message Void {
+  optional string debug_string = 1;
+}
+
+message KeyValue {
+  optional string key = 1;
+  repeated string value = 2;
+}
+
+enum Month {
+  JANUARY = 1;
+  FEBRUARY = 2;
+  MARCH = 3;
+  APRIL = 4;
+  MAY = 5;
+  JUNE = 6;
+  JULY = 7;
+  AUGUST = 8;
+  SEPTEMBER = 9;
+  OCTOBER = 10;
+  NOVEMBER = 11;
+  DECEMBER = 12;
+}
+

@@ -1,0 +1,37 @@
+#!/bin/bash
+
+set -euo pipefail
+IFS=$'\n'
+scriptname=$(basename "$0")
+scriptpath="$( cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "$scriptpath"/Proto
+
+
+objcbuildpath=../../Blitz-iOS/Shared/ProtocolBuffers/Message
+mkdir -p "$objcbuildpath"
+objcbuildpath=$(resolvepath "$objcbuildpath")
+rm -Rf   "$objcbuildpath"
+mkdir -p "$objcbuildpath"
+
+javabuildpath=../build/java
+mkdir -p "$javabuildpath"
+javabuildpath=$(resolvepath "$javabuildpath")
+rm -Rf   "$javabuildpath"
+mkdir -p "$javabuildpath"
+
+
+protoc google/protobuf/descriptor.proto \
+    --objc_out="$objcbuildpath" \
+    --java_out="$javabuildpath"
+
+for file in *.proto
+do
+    protoc "$file" \
+        --objc_out="$objcbuildpath" \
+        --java_out="$javabuildpath"
+done
+
+
+echo ">>> The proto files were built and installed in:" 1>&2
+echo ">>> $objcbuildpath" 1>&2
+echo ">>> $javabuildpath" 1>&2

@@ -1,0 +1,32 @@
+syntax = "proto2";
+
+package jobs;
+
+import "google/protobuf/descriptor.proto";
+import "objectivec-descriptor.proto";
+
+option java_package = "com.blitz.jobs.proto";
+option java_multiple_files = true;
+option java_generic_services = true;
+
+option (google.protobuf.objectivec_file_options).package = "";
+option (google.protobuf.objectivec_file_options).class_prefix = "B";
+option (google.protobuf.objectivec_file_options).relax_camel_case = true;
+
+message JobRequest {
+  optional string postId = 1;
+  optional string userId = 2;
+
+  optional int64 expireAfterMills = 10;
+}
+
+message JobResponse {
+  optional string debug_string = 1;
+}
+
+service JobsServer {
+  // Rpc end points related to sessions
+  rpc registerNewPostExpirationJob (JobRequest) returns (JobResponse) {
+
+  }
+}

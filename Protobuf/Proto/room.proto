@@ -1,0 +1,115 @@
+syntax = "proto2";
+
+package room;
+
+//import "google/protobuf/descriptor.proto";
+import "objectivec-descriptor.proto";
+
+option java_package = "com.blitz.room.proto";
+option java_generic_services = true;
+option java_multiple_files = true;
+
+option (google.protobuf.objectivec_file_options).package = "";
+option (google.protobuf.objectivec_file_options).class_prefix = "B";
+option (google.protobuf.objectivec_file_options).relax_camel_case = true;
+
+import "feed.proto";
+import "user.proto";
+import "util.proto";
+
+// ------------------------------------------------------------------------------------------------
+// Blitz (Conversation) History
+// ------------------------------------------------------------------------------------------------
+enum BlitzType {
+  BTUnknown = 0;
+  BTPublicChat = 1;
+  BTPrivateChat = 2;
+  BTPhoneCall = 3;
+}
+
+message BlitzHistory {
+  optional string blitzID = 1;
+  optional BlitzType blitzType = 2;
+  optional util.Timestamp createDate = 3;
+  optional util.Timestamp updateDate = 4;
+  optional util.Timestamp closedDate = 5;
+  optional string fromId = 6;
+  optional string toID = 7;
+  optional string chatRoomJID = 9;
+}
+
+message ChatRoomMetadata {
+  // Data about the participants of the room.
+  repeated user.UserProfile users = 1;
+  // The URL for the room icon image.
+  optional string roomImageUrl = 2;
+  // The room title.
+  optional string title = 3;
+  // The room description.
+  optional string description = 4;
+}
+
+enum RoomType {
+  PUBLIC = 1; // Anyone can join the room
+  PRIVATE = 2; // The room has restricted membership.
+}
+
+message BlitzRoom {
+  optional string roomId = 1;
+  optional string name = 2;
+  optional string topic = 3;      //  'desciption' is a reserved word in obj-c.
+  repeated string members = 4;
+
+  optional BlitzHistory recentBlitz = 5;
+
+  optional ChatRoomMetadata metadata = 6;
+
+  // The chat room can be a PUBLIC chat room, and this field will highlight that accordingly.
+  optional RoomType room_type = 7;
+
+  // The post id that originally started this chat room.
+  optional string origin_post_id = 8;
+}
+
+// ------------------------------------------------------------------------------------------------
+// Request to start a chat room with a user
+// ------------------------------------------------------------------------------------------------
+message RequestChatRoomRequest {
+  optional string fromUuid = 1; // the user requesting chat room.
+  optional string toUuid = 2;  // the other user who is requested to be in the chat room.
+
+  // The price profile of "toUuid" user that was selected.
+  optional util.KeyValue priceProfile = 3;
+
+  message Context {
+    optional feed.FeedPost post = 1;
+  }
+
+  // the context for this chat room like a feed post.
+  optional Context context = 4;
+
+  optional RoomType room_type = 5 [default = PRIVATE];
+}
+
+message RequestChatRoomResponse {
+  // TODO migrate this to use BlitzRoom instead of roomId and roomName.
+  // optional string roomId = 1;
+  // optional string roomName = 2;
+
+  // optional ChatRoomMetadata metadata = 3;
+  optional BlitzRoom room = 1;
+}
+
+// ------------------------------------------------------------------------------------------------
+// Request to get chat rooms history for a user.
+// ------------------------------------------------------------------------------------------------
+message BlitzRoomsHistoryRequest {
+  optional string userId = 1;
+}
+
+message BlitzRoomsHistoryResponse {
+  // The user that originally requested the history of rooms.
+  optional string userId = 1;
+  // Each chat room.
+  repeated BlitzRoom room = 2;
+}

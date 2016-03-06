@@ -1,0 +1,25 @@
+syntax = "proto2";
+
+package blacklist;
+
+import "objectivec-descriptor.proto";
+
+option java_package = "com.blitz.blacklist.proto";
+option java_generic_services = true;
+option java_multiple_files = true;
+
+option (google.protobuf.objectivec_file_options).package = "";
+option (google.protobuf.objectivec_file_options).class_prefix = "B";
+option (google.protobuf.objectivec_file_options).relax_camel_case = true;
+
+message UserFilter {
+  repeated string phone_number = 1;
+
+  repeated string uuid = 2;
+}
+
+message UserFilterList {
+  repeated UserFilter blacklist_filters = 1;
+
+  repeated UserFilter whitelist_filters = 2;
+}

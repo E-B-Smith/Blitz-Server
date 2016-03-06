@@ -1,0 +1,314 @@
+syntax = "proto2";
+
+package feed;
+
+//import "google/protobuf/descriptor.proto";
+import "objectivec-descriptor.proto";
+
+option java_package = "com.blitz.feed.proto";
+
+option java_generic_services = true;
+
+option java_multiple_files = true;
+
+option (google.protobuf.objectivec_file_options).package = "";
+
+option (google.protobuf.objectivec_file_options).class_prefix = "B";
+
+option (google.protobuf.objectivec_file_options).relax_camel_case = true;
+
+import "util.proto";
+
+//----------------------------------------------------------------------------------------
+// Follow request / response messages
+//----------------------------------------------------------------------------------------
+message FollowRequest {
+  oneof id {
+    // The userId of the user/topic for which the request is made.
+    string forId = 1;
+
+    // follow a particular feed post for updates. This enables following public chat rooms for a feed.
+    string post_id = 2; }
+  optional bool follow = 3 [default = true]; //  If true then follow, else un-follow.
+}
+
+message FollowResponse {
+  // This might be accepted or rejected depending on the state of users, and the privacy settings.
+  // Most errors will be handled by http error codes, like invalid userId.
+
+  enum Status {
+    OK = 1;
+    NOT_ALLOWED = 2;
+  }
+
+  optional Status status = 1;
+
+  // Debug message for easy debugging.
+  optional string debug_string = 100;
+}
+
+//----------------------------------------------------------------------------------------
+// Messages describing a feed post.
+//----------------------------------------------------------------------------------------
+
+// A generic feed post message.
+message FeedPost {
+  extensions 100 to max;
+
+  // A unique identifier for the post.
+  optional string post_id = 1;
+  // The user who posted the post originally.
+  optional string user_id = 2;
+  // The vanity id assigned for this user.
+  optional string vanity_id = 9;
+
+  // topics in raw ascii format.
+  repeated string raw_topic_string = 3;
+
+  optional util.TimeInterval expires_after_deprecated = 4;
+  optional util.Timespan timespanActive = 5;
+
+  optional util.Timestamp timestamp = 6;
+
+  optional int32 num_public_responses = 7;
+
+  optional bool post_annonymously = 8 [default = false];
+}
+
+message SurveyConfig {
+  optional bool allow_user_responses = 1 [default = true];
+
+  repeated ResponseContent survey_choices = 2;
+
+  enum SurveyChoiceType {
+    UNKNOWN = 1;
+    MULTIPLE_CHOICE = 2;
+    SINGLE_CHOICE = 3;
+  }
+
+  optional SurveyChoiceType survey_choice_type = 3 [default = MULTIPLE_CHOICE];
+}
+
+// A feed post of type QuestionPost.
+message QuestionPost {
+  extend FeedPost {
+    optional QuestionPost question = 100;
+  }
+
+  optional string title = 1;
+
+  optional string description = 2;
+
+  enum QuestionType {
+    OPEN_ENDED = 1;
+    SURVEY = 2;
+  }
+
+  optional QuestionType question_type = 3 [default = OPEN_ENDED];
+
+  optional SurveyConfig survey_config = 4;
+}
+
+message FeedPostRequest {
+  optional FeedPost post = 1;
+}
+
+message FeedPostResponse {
+  optional string post_id = 1;
+}
+
+//----------------------------------------------------------------------------------------
+// Messages describing request / response to modify a feed.
+//----------------------------------------------------------------------------------------
+message ModifyPostRequest {
+  optional string post_id = 1;
+
+  enum Action {
+    EDIT = 1;
+    DELETE = 2;
+  }
+
+  optional Action action = 2;
+
+  optional FeedPost post = 3;
+}
+
+message ModifyPostResponse {
+  optional string status = 1;
+}
+
+//----------------------------------------------------------------------------------------
+// Messages describing a feed post public response.
+//----------------------------------------------------------------------------------------
+message PublicResponses {
+  // Unordered list of responses.
+  repeated PublicResponse response = 1;
+  // Ordered list of response ids - to be used for displaying the responses.
+  repeated string ordered_response_ids = 2;
+  // List of stats for every response.
+  repeated ResponseStatistics stats = 3;
+}
+
+message VoteTagStatistics {
+  // The string describing the vote tag.
+  optional string vote_tag_text = 1;
+  // Total number of votes on this tag.
+  optional int32 num_votes = 2;
+  // Whether the user has selected this vote tag.
+  optional bool selected_by_user = 3;
+}
+
+message ResponseStatistics {
+  // The unique identifer for the response associated with these stats.
+  optional string response_id = 1;
+
+  // Field indicating if the user receiving these statistics did himself vote.
+  optional bool didVoteMyself = 2;
+
+  // The number of upvotes for this post.
+  optional int32 num_up_votes = 10;
+  // The timestamp for the last vote.
+  optional util.Timestamp last_vote_timestamp = 11;
+
+  // The list of tags like "Insightful" with their votes.
+  repeated VoteTagStatistics vote_tags = 20;
+}
+
+message ResponseContent {
+  optional string raw_text = 1;
+
+  optional string tldr_raw_text = 2;
+}
+
+message PublicResponse {
+  // The unique identifier for this response.
+  optional string response_id = 1;
+  // The id of the parent response. If this is a top level response, then this field is empty.
+  optional string parent_response_id = 5;
+  // The user id who posted this response.
+  optional string user_id = 2;
+  // The root post id for which this response was made.
+  optional string post_id = 3;
+
+  // The content of the response.
+  optional ResponseContent content = 4;
+
+  // The timestamp when the response was posted.
+  optional util.Timestamp timestamp = 10;
+}
+
+//----------------------------------------------------------------------------------------
+// Messages describing a feed.
+//----------------------------------------------------------------------------------------
+
+message Feed {
+  // The messages in the post.
+  repeated FeedPost post = 1;
+}
+
+//----------------------------------------------------------------------------------------
+// Messages describing a feed request / response.
+//----------------------------------------------------------------------------------------
+
+enum FeedType {
+  User = 0; // The user's self feed
+  Global = 1; // The feed of things happening globally.
+}
+
+enum FeedOrderType {
+  LATEST = 0;
+  TOP = 1;
+  EXPIRING = 2;
+}
+
+message FeedOrder {
+  optional FeedOrderType order_type = 1;
+
+  repeated string post_id = 2;
+}
+
+message FetchFeedRequest {
+  // The user id for whom the feed is requested for.
+  optional string user_id = 1;
+  // The type of the feed requested.
+  optional FeedType feed_type = 2;
+  // Number of items requested.
+  optional int32 num_items = 3;
+  // Pagination parameter
+  optional int32 start_index = 4;
+  // The order to the feeds
+  repeated FeedOrderType order_type = 5;
+}
+
+message FetchFeedResponse {
+  // The feed items requested !
+  optional Feed feed = 1;
+  // The different order of posts for different order types (top, etc)
+  repeated FeedOrder orders = 2;
+}
+
+//----------------------------------------------------------------------------------------
+// Messages describing a Topics
+//----------------------------------------------------------------------------------------
+
+// The tags associated with a Feed
+message TopicTag {
+  // The db id of this tag.
+  optional string tag_id = 1;
+  // The actual value of the topic tag.
+  optional string value = 2;
+}
+
+message TopicsListRequest {
+  // TODO this can contain various query parameters for fetching topic lists
+}
+
+message TopicsListResponse {
+  repeated TopicTag topic = 1;
+}
+
+//----------------------------------------------------------------------------------------
+// Messages describing a Public Response request.
+//----------------------------------------------------------------------------------------
+message PublicResponseRequest {
+  optional string post_id = 1;
+
+  optional ResponseContent content = 2;
+
+  optional util.Timestamp timestamp = 3;
+}
+
+message PublicResponseResponse {
+  optional string response_id_deprecated = 1;
+  optional PublicResponse publicResponse = 2;
+}
+
+message PublicResponseVoteRequest {
+  // The id of the response on which the user is voting on.
+  optional string response_id = 1;
+  optional util.Timestamp timestamp = 2;
+  // Whether this was an upvote.
+  optional bool isUpvote = 3;
+  // The post id for this response.
+  optional string post_id = 4;
+
+  message VoteTagRequest {
+    // The text of the vote tag
+    optional string vote_tag_text = 1;
+    // If true, the tag was selected. If false, the tag was chosen previously, and is now unselected.
+    optional bool select = 2;
+  }
+  optional VoteTagRequest vote_tag_request = 5;
+}
+
+message FetchResponsesRequest {
+  optional string post_id = 1;
+}
+
+message PublicResponseToResponseRequest {
+  // The response id of the response on which this new response is being made.
+  optional string parent_resp_id = 1;
+
+  optional PublicResponseRequest public_response_request = 2;
+}
+

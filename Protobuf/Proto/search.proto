@@ -1,0 +1,58 @@
+syntax = "proto2";
+
+package search;
+
+//import "google/protobuf/descriptor.proto";
+import "objectivec-descriptor.proto";
+
+option java_package = "com.blitz.search.proto";
+option java_generic_services = true;
+option java_multiple_files = true;
+
+option (google.protobuf.objectivec_file_options).package = "";
+option (google.protobuf.objectivec_file_options).class_prefix = "B";
+option (google.protobuf.objectivec_file_options).relax_camel_case = true;
+
+// -----------------------------------------------------------------------------------------------
+// Request / Response messages for Search
+// -----------------------------------------------------------------------------------------------
+message SearchRequest {
+  optional string asciiQuery = 1;
+
+  // Results pagination related fields: results from startIndex to endIndex.
+  optional int32 startIndex = 2;
+}
+
+message SearchResponseItem {
+  optional string uuid = 1;
+  optional string title = 2;
+}
+
+message SearchResponse {
+  repeated SearchResponseItem items = 1;
+}
+
+// -----------------------------------------------------------------------------------------------
+// Request / Response messages for autocomplete
+// -----------------------------------------------------------------------------------------------
+message AutocompleteRequest {
+  enum Type {
+    PROFILES = 1;
+    TOPICS = 2;
+    ANY = 3;
+  }
+  optional string query = 1;
+
+  optional Type type = 2 [default = ANY];
+}
+
+message AutocompleteResponseItems {
+  optional string suggested_query = 1;
+}
+
+message AutocompleteResponse {
+  repeated AutocompleteResponseItems items = 1;
+
+  // a string output good for debugging purposes.
+  optional string debug_string = 99;
+}
