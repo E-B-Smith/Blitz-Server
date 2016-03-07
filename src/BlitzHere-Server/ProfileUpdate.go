@@ -10,10 +10,8 @@ import (
     "time"
     "errors"
     "strings"
-    "net/http"
     "database/sql"
     "github.com/lib/pq"
-    "github.com/golang/protobuf/proto"
     "violent.blue/GoKit/Log"
     "violent.blue/GoKit/pgsql"
     "BlitzMessage"
@@ -109,7 +107,9 @@ func UpdateProfile(profile *BlitzMessage.UserProfile) error {
 //----------------------------------------------------------------------------------------
 
 
-func UpdateProfiles(writer http.ResponseWriter, userID string, profiles *BlitzMessage.UserProfileUpdate) {
+func UpdateProfiles(session *Session, profiles *BlitzMessage.UserProfileUpdate,
+        ) *BlitzMessage.ServerResponse {
+
     //  * Update each profile in the update request.
     Log.LogFunctionName()
 
@@ -143,15 +143,7 @@ func UpdateProfiles(writer http.ResponseWriter, userID string, profiles *BlitzMe
         ResponseCode: &code,
         ResponseMessage: &message,
     }
-
-    data, error := proto.Marshal(response)
-    if error != nil {
-        Log.Errorf("Error marshaling data: %v.", error)
-        SendError(writer, BlitzMessage.ResponseCode_RCServerError, error)
-        return
-    }
-
-    writer.Write(data)
+    return response
 }
 
 

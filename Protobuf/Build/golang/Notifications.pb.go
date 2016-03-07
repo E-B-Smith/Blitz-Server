@@ -90,7 +90,7 @@ func (x *NotificationStatus) UnmarshalJSON(data []byte) error {
 type Notification struct {
 	MessageID        *string             `protobuf:"bytes,1,opt,name=messageID" json:"messageID,omitempty"`
 	SenderID         *string             `protobuf:"bytes,2,opt,name=senderID" json:"senderID,omitempty"`
-	Recipients       *string             `protobuf:"bytes,3,opt,name=recipients" json:"recipients,omitempty"`
+	Recipients       []string            `protobuf:"bytes,3,rep,name=recipients" json:"recipients,omitempty"`
 	CreationDate     *Timestamp          `protobuf:"bytes,4,opt,name=creationDate" json:"creationDate,omitempty"`
 	NotificationDate *Timestamp          `protobuf:"bytes,5,opt,name=notificationDate" json:"notificationDate,omitempty"`
 	ReadDate         *Timestamp          `protobuf:"bytes,6,opt,name=readDate" json:"readDate,omitempty"`
@@ -120,11 +120,11 @@ func (m *Notification) GetSenderID() string {
 	return ""
 }
 
-func (m *Notification) GetRecipients() string {
-	if m != nil && m.Recipients != nil {
-		return *m.Recipients
+func (m *Notification) GetRecipients() []string {
+	if m != nil {
+		return m.Recipients
 	}
-	return ""
+	return nil
 }
 
 func (m *Notification) GetCreationDate() *Timestamp {

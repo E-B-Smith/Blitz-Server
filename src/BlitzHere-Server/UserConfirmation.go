@@ -13,9 +13,7 @@ import (
     "strings"
     "errors"
     "net/url"
-    "net/http"
     "html/template"
-    "github.com/golang/protobuf/proto"
     "violent.blue/GoKit/Log"
     "violent.blue/GoKit/Util"
     "BlitzMessage"
@@ -27,7 +25,9 @@ import (
 //----------------------------------------------------------------------------------------
 
 
-func UserIsConfirming(writer http.ResponseWriter, session *Session, confirmation *BlitzMessage.ConfirmationRequest) {
+func UserIsConfirming(session *Session, confirmation *BlitzMessage.ConfirmationRequest,
+        ) *BlitzMessage.ServerResponse {
+
     Log.LogFunctionName()
 
     var verified bool = false
@@ -62,8 +62,7 @@ func UserIsConfirming(writer http.ResponseWriter, session *Session, confirmation
         profile.UserStatus = &userStatus
         Log.LogError(error)
         //error = errors.New("Sorry, the confirmation has expired."))
-        SendError(writer, BlitzMessage.ResponseCode_RCInputInvalid, error)
-        return
+        return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
     }
 
     session.Secret = Util.NewUUIDString()
@@ -74,23 +73,14 @@ func UserIsConfirming(writer http.ResponseWriter, session *Session, confirmation
         Profile: profile,
     }
     responseCode    := BlitzMessage.ResponseCode_RCSuccess
-    responseMessage := config.Localizef("kConfirmConfirmedWelcome", "Confirmed. Welcome to BeingHappy.")
+    responseMessage := config.Localizef("kConfirmConfirmedWelcome", "Confirmed. Welcome to BlitzHere.")
     response := &BlitzMessage.ServerResponse {
         ResponseCode:       &responseCode,
         ResponseMessage:    &responseMessage,
-        Response:           &BlitzMessage.ServerResponse_ConfirmationRequest { ConfirmationRequest: &confirmed },
+        Response:           &BlitzMessage.ResponseType { ConfirmationRequest: &confirmed },
     }
-
-    data, error := proto.Marshal(response)
-    if error != nil {
-        Log.Errorf("Error marshaling data: %v.", error)
-        SendError(writer, BlitzMessage.ResponseCode_RCServerError, error)
-        return
-    }
-
-    writer.Write(data)
+    return response
 }
-
 
 
 //----------------------------------------------------------------------------------------
@@ -98,37 +88,33 @@ func UserIsConfirming(writer http.ResponseWriter, session *Session, confirmation
 //----------------------------------------------------------------------------------------
 
 
-func UserConfirmation(writer http.ResponseWriter, session *Session, confirmation *BlitzMessage.ConfirmationRequest) {
+func UserConfirmation(session *Session, confirmation *BlitzMessage.ConfirmationRequest,
+    ) *BlitzMessage.ServerResponse {
     Log.LogFunctionName()
 
     var error error
     profile := confirmation.Profile;
     if profile == nil {
-        SendError(writer, BlitzMessage.ResponseCode_RCInputInvalid, errors.New("A profile is required."))
-        return
+        return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, errors.New("A profile is required."))
     }
     if profile.Name != nil {
         profile.Name = StringPtrFromString(strings.TrimSpace(*profile.Name))
     }
     if profile.Name == nil || len(*profile.Name) <= 0 {
-        SendError(writer, BlitzMessage.ResponseCode_RCInputInvalid, errors.New("A name is required."))
-        return
+        return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, errors.New("A name is required."))
     }
     contact := confirmation.ContactInfo
     if contact == nil {
-        SendError(writer, BlitzMessage.ResponseCode_RCInputInvalid, errors.New("Contact info is required."))
-        return
+        return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, errors.New("Contact info is required."))
     }
     if contact.Contact == nil {
-        SendError(writer, BlitzMessage.ResponseCode_RCInputInvalid, errors.New("Contact info detail is required."))
-        return
+        return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, errors.New("Contact info detail is required."))
     }
 
     //  See if we're confirming a confirmation request --
 
     if confirmation.ConfirmationCode != nil {
-        UserIsConfirming(writer, session, confirmation)
-        return
+        return UserIsConfirming(session, confirmation)
     }
 
     var userStatus BlitzMessage.UserStatus = BlitzMessage.UserStatus_USConfirming
@@ -141,8 +127,7 @@ func UserConfirmation(writer http.ResponseWriter, session *Session, confirmation
     link, error = LinkShortner_ShortLinkFromLink(link)
     if error != nil {
         Log.LogError(error)
-        SendError(writer, BlitzMessage.ResponseCode_RCServerError, error)
-        return
+        return ServerResponseForError(BlitzMessage.ResponseCode_RCServerError, error)
     }
 
     var templateMap = struct {
@@ -169,30 +154,25 @@ func UserConfirmation(writer http.ResponseWriter, session *Session, confirmation
         case BlitzMessage.ContactType_CTEmail:
             email, error := Util.ValidatedEmailAddress(*contact.Contact)
             if error != nil {
-                SendError(writer, BlitzMessage.ResponseCode_RCInputInvalid, errors.New("A valid email address is required."))
-                return
+                return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, errors.New("A valid email address is required."))
             }
             error = config.SendEmail(email, confirmationSubject.String(), confirmationMessage.String())
             if error != nil {
-                SendError(writer, BlitzMessage.ResponseCode_RCServerError, error)
-                return
+                return ServerResponseForError(BlitzMessage.ResponseCode_RCServerError, error)
             }
 
         case BlitzMessage.ContactType_CTPhoneSMS:
             phone, error := Util.ValidatedPhoneNumber(*contact.Contact)
             if error != nil {
-                SendError(writer, BlitzMessage.ResponseCode_RCInputInvalid, errors.New("A valid phone number is required."))
-                return
+                return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, errors.New("A valid phone number is required."))
             }
             error = Util.SendSMS(phone, confirmationMessage.String())
             if error != nil {
-                SendError(writer, BlitzMessage.ResponseCode_RCServerError, error)
-                return
+                return ServerResponseForError(BlitzMessage.ResponseCode_RCServerError, error)
             }
 
         default:
-            SendError(writer, BlitzMessage.ResponseCode_RCInputInvalid, fmt.Errorf("Unknown confirmation type %d.", contact.ContactType))
-            return
+            return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, fmt.Errorf("Unknown confirmation type %d.", contact.ContactType))
     }
 
     UpdateProfile(profile)
@@ -202,28 +182,19 @@ func UserConfirmation(writer http.ResponseWriter, session *Session, confirmation
         ResponseCode: &code,
     }
 
-    data, error := proto.Marshal(response)
-    if error != nil {
-        Log.Errorf("Error marshaling data: %v.", error)
-        SendError(writer, BlitzMessage.ResponseCode_RCServerError, error)
-        return
-    }
-
-    writer.Write(data)
-
     //  Send a 'friend accepted' notification --
 
     if confirmation.InviterUserID != nil {
-        message := fmt.Sprintf("%s accepted your Pulse invite.", *profile.Name)
-        SendAppMessage(BlitzMessage.Default_Globals_SystemUserID,
+        message := fmt.Sprintf("%s accepted your connection.", *profile.Name)
+        SendNotificationMessage(BlitzMessage.Default_Globals_SystemUserID,
                 []string{ *confirmation.InviterUserID },
                 message,
-                BlitzMessage.MessageType_MTPulse,
-                "Pulse", "")
+                BlitzMessage.NotificationType_NTNotification,
+                "AppIcon", "")
     }
 
+    return response
 }
-
 
 
 //----------------------------------------------------------------------------------------
@@ -243,7 +214,8 @@ func CompareTime(a, b time.Time) int {
 }
 
 
-func AcceptInviteRequest(writer http.ResponseWriter, session *Session, invite *BlitzMessage.AcceptInviteRequest) {
+func AcceptInviteRequest(session *Session, invite *BlitzMessage.AcceptConnectionRequest,
+        ) *BlitzMessage.ServerResponse {
     //
     //  AcceptInvite
     //
@@ -259,20 +231,17 @@ func AcceptInviteRequest(writer http.ResponseWriter, session *Session, invite *B
     Log.LogFunctionName()
 
     if  invite.ContactInfo == nil || invite.UserID == nil {
-        SendError(writer, BlitzMessage.ResponseCode_RCInputInvalid, errors.New("No contact info"))
-        return
+        return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, errors.New("No contact info"))
     }
 
     currentProfile := ProfileForUserID(session.UserID)
     if currentProfile == nil {
-        SendError(writer, BlitzMessage.ResponseCode_RCInputInvalid, errors.New("No Profile"))
-        return
+        return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, errors.New("No Profile"))
     }
 
     inviteProfile := ProfileForUserID(*invite.UserID)
     if inviteProfile == nil {
-        SendError(writer, BlitzMessage.ResponseCode_RCInputInvalid, errors.New("No Profile"))
-        return
+        return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, errors.New("No Profile"))
     }
 
     var oldProfileID string
@@ -291,8 +260,7 @@ func AcceptInviteRequest(writer http.ResponseWriter, session *Session, invite *B
 
         error := MergeProfileIDIntoProfileID(oldProfileID, resultProfileID)
         if error != nil {
-            SendError(writer, BlitzMessage.ResponseCode_RCServerError, error)
-            return
+            return ServerResponseForError(BlitzMessage.ResponseCode_RCServerError, error)
         }
     }
 
@@ -305,38 +273,35 @@ func AcceptInviteRequest(writer http.ResponseWriter, session *Session, invite *B
 
     //  Write the response --
 
-    var profiles []*BlitzMessage.Profile = make([]*BlitzMessage.Profile, 0, 10)
+    var profiles []*BlitzMessage.UserProfile = make([]*BlitzMessage.UserProfile, 0, 10)
     profiles = append(profiles, currentProfile)
 
-    friends := FriendsForUserID(resultProfileID)
-    for _, friend := range friends {
-        profile := ProfileForUserID(*friend.FriendID)
+/*
+    eDebug -- Fix up.
+
+    connections := ConnectionsForUserID(resultProfileID)
+    for _, connection := range connections {
+        profile := ProfileForUserID(*connection.ConnectionID)
         if profile != nil {
             profiles = append(profiles, profile)
         }
     }
+*/
+    var connections = []*BlitzMessage.Connection {}
 
-    inviteResponse := BlitzMessage.AcceptInviteResponse {
-        UserID:     &resultProfileID,
-        FriendID:   invite.FriendID,
-        Message:    invite.Message,
-        Friends:    friends,
-        Profiles:   profiles,
+    inviteResponse := BlitzMessage.AcceptConnectionResponse {
+        UserID:         &resultProfileID,
+        ConnectionID:   invite.ConnectionID,
+        Message:        invite.Message,
+        Connections:    connections,
+        Profiles:       profiles,
     }
 
     code := BlitzMessage.ResponseCode_RCSuccess
     response := &BlitzMessage.ServerResponse {
         ResponseCode:   &code,
-        Response:       &BlitzMessage.ServerResponse_AcceptInviteResponse { AcceptInviteResponse: &inviteResponse},
+        Response:       &BlitzMessage.ResponseType { AcceptConnectionResponse: &inviteResponse},
     }
-
-    data, error := proto.Marshal(response)
-    if error != nil {
-        Log.Errorf("Error marshaling data: %v.", error)
-        SendError(writer, BlitzMessage.ResponseCode_RCServerError, error)
-        return
-    }
-
-    writer.Write(data)
+    return response
 }
 

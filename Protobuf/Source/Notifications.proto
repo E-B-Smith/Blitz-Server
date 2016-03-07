@@ -35,7 +35,7 @@ enum NotificationStatus {
 message Notification {
   optional string             messageID = 1;
   optional string             senderID = 2;
-  optional string             recipients = 3;
+  repeated string             recipients = 3;
   optional Timestamp          creationDate = 4;
   optional Timestamp          notificationDate = 5;
   optional Timestamp          readDate = 6;

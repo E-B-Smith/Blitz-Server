@@ -127,3 +127,17 @@ message UserProfileQuery {
   repeated string userIDs = 1;
 }
 
+
+message ConfirmationRequest {
+    optional ContactInfo  contactInfo     = 1;
+    optional UserProfile  profile         = 2;
+    optional string       confirmationCode= 3;
+    optional string       inviterUserID   = 4;
+}
+
+
+message ProfilesFromContactInfo {
+  repeated UserProfile profiles = 1;
+}
+
+

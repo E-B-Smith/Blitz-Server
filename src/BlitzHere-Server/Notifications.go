@@ -11,7 +11,6 @@ import (
     "errors"
     "database/sql"
     "github.com/lib/pq"
-    "github.com/golang/protobuf/proto"
     "violent.blue/GoKit/Log"
     "violent.blue/GoKit/pgsql"
     "violent.blue/GoKit/Util"
@@ -26,7 +25,7 @@ import (
 //----------------------------------------------------------------------------------------
 
 
-func NotificationFetchRequest(session *Session, fetch *BlitzMessage.NotificationUpdate) BlitzMessage.ServerResponse {
+func NotificationFetchRequest(session *Session, fetch *BlitzMessage.NotificationUpdate) *BlitzMessage.ServerResponse {
     //
     //  Fetch messages for the user for the given timespan --
     //
@@ -64,15 +63,14 @@ func NotificationFetchRequest(session *Session, fetch *BlitzMessage.Notification
             "  and creationDate >  $2 "+
             "  and creationDate <= $3 "+
             "    order by creationDate;",
-            userID, startDate, stopDate)
+            session.UserID, startDate, stopDate)
     defer func() { if rows != nil { rows.Close(); } }()
     if error != nil {
         Log.LogError(error)
-        SendError(httpWriter, BlitzMessage.ResponseCode_RCServerError, error)
-        return
+        return ServerResponseForError(BlitzMessage.ResponseCode_RCServerError, error)
     }
 
-    var messageArray []*BlitzMessage.Message
+    var messageArray []*BlitzMessage.Notification
     for rows.Next() {
         var (
             messageID string
@@ -103,8 +101,8 @@ func NotificationFetchRequest(session *Session, fetch *BlitzMessage.Notification
             warnings++
             continue
         }
-        mt := BlitzMessage.MessageType(messageType);
-        message := BlitzMessage.Message {
+        mt := BlitzMessage.NotificationType(messageType);
+        message := BlitzMessage.Notification {
             MessageID:   &messageID,
             SenderID:    &senderID,
             Recipients:  []string{recipientID},
@@ -122,10 +120,9 @@ func NotificationFetchRequest(session *Session, fetch *BlitzMessage.Notification
     Log.Debugf("Found %d message (%d warnings) in range %v to %v.", len(messageArray), warnings, startDate, stopDate)
 
     if len(messageArray) == 0 && warnings > 0 {
-        SendError(httpWriter, BlitzMessage.ResponseCode_RCServerError, errors.New("Messages are not available now."))
-        return
+        return ServerResponseForError(BlitzMessage.ResponseCode_RCServerError, errors.New("Messages are not available now."))
     }
-    messageUpdate := BlitzMessage.MessageUpdate {
+    messageUpdate := BlitzMessage.NotificationUpdate {
         Messages:   messageArray,
     }
 
@@ -139,17 +136,9 @@ func NotificationFetchRequest(session *Session, fetch *BlitzMessage.Notification
     code := BlitzMessage.ResponseCode_RCSuccess
     response := &BlitzMessage.ServerResponse {
         ResponseCode:   &code,
-        Response:       &BlitzMessage.ServerResponse_MessageResponse{ MessageResponse: &messageUpdate },
+        Response:       &BlitzMessage.ResponseType { NotificationUpdate: &messageUpdate },
     }
-
-    data, error := proto.Marshal(response)
-    if error != nil {
-        Log.Errorf("Error marshalling data: %v.", error)
-        SendError(httpWriter, BlitzMessage.ResponseCode_RCServerError, error)
-        return
-    }
-
-    httpWriter.Write(data)
+    return response
 }
 
 
@@ -201,7 +190,7 @@ func SendNotificationMessage(sender string, recipients []string, message string,
 
 func NotificationSendRequest(session *Session,
                              sendMessage *BlitzMessage.NotificationUpdate,
-                             ) BlitzMessage.ServerResponse {
+                             ) *BlitzMessage.ServerResponse {
     //
     //  * Save each new message to the database.
     //
@@ -249,7 +238,7 @@ func NotificationSendRequest(session *Session,
     code := BlitzMessage.ResponseCode_RCSuccess
     response := &BlitzMessage.ServerResponse {
         ResponseCode:   &code,
-        Response:       &BlitzMessage.ServerResponse_NotificationUpdate { NotificationUpdate: messageResponse },
+        Response:       &BlitzMessage.ResponseType { NotificationUpdate: messageResponse },
     }
 
     return response

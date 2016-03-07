@@ -47,9 +47,7 @@ message BlitzHereAppOptions {
 }
 
 message AppOptions {
-  oneof Options {
-    BlitzHereAppOptions  blitzHereOptions = 1;
-  }
+  optional BlitzHereAppOptions  blitzHereOptions = 1;
 }
 
 
@@ -60,7 +58,8 @@ message SessionResponse {
   repeated Notification       userNotifications = 4;   //  New messages for the user.
   optional UserProfile        userProfile     = 5;     //  The updated profile for the user.
   optional bool               resetAllAppData = 6;     //  The client should clear all data.
-  optional AppOptions         appOptions      = 7;
+  optional AcceptConnectionRequest connectionRequest = 7;
+  optional AppOptions         appOptions      = 8;
 }
 
 
@@ -69,22 +68,23 @@ message SessionResponse {
 //----------------------------------------------------------------------------------------
 
 
+message RequestType {
+  optional SessionRequest           sessionRequest    = 1;
+  optional UserTrackingBatch        userTrackingBatch = 2;
+  optional UserProfileUpdate        userProfileUpdate = 3;
+  optional UserProfileQuery         userProfileQuery  = 4;
+  optional ConfirmationRequest      confirmationRequest = 5;
+  optional NotificationUpdate       notificationSendRequest  = 6;
+  optional NotificationUpdate       notificationFetchRequest = 7;
+  optional DebugMessage             debugMessage        = 8;
+  optional ImageUpload              imageUpload         = 9;
+  optional AcceptConnectionRequest  acceptInviteRequest = 10;
+}
+
+
 message ClientRequest {
-  optional string sessionToken = 1;
-
-  oneof clientRequestMessage {
-    SessionRequest          sessionRequest    = 2;
-    UserTrackingBatch       userTrackingBatch = 3;
-    UserProfileUpdate       userProfileUpdate = 4;
-    UserProfileQuery        userProfileQuery  = 5;
-//  ConfirmationRequest confirmationRequest = 6;
-    NotificationUpdate      notificationSendRequest  = 7;
-    NotificationUpdate      notificationFetchRequest = 8;
-
-    DebugMessage    debugMessage        = 9;
-    ImageUpload     imageUpload         = 10;
-    AcceptConnectionRequest acceptInviteRequest = 15;
-  }
+  optional string       sessionToken  = 1;
+  optional RequestType  request       = 2;
 }
 
 
@@ -92,25 +92,29 @@ enum ResponseCode {
   RCSuccess       = 1;
   RCInputCorrupt  = 2;
   RCInputInvalid  = 3;
-  RCServerError   = 4;
-  RCNotAuthorized = 5;
-  RCClientTooOld  = 6;
+  RCServerWarning = 4;
+  RCServerError   = 5;
+  RCNotAuthorized = 6;
+  RCClientTooOld  = 7;
+}
+
+
+message ResponseType {
+  optional SessionResponse        sessionResponse     = 1;
+  optional UserTrackingResponse   userTrackingResponse= 2;
+  optional UserProfileUpdate      profileUpdate       = 3;
+  optional UserProfileQuery       profileQuery        = 4;
+  optional ConfirmationRequest    confirmationRequest = 5;
+  optional NotificationUpdate     notificationUpdate  = 6;
+  optional DebugMessage           debugMessage        = 7;
+  optional ImageUpload            imageUploadReply    = 8;
+  optional AcceptConnectionResponse acceptConnectionResponse = 9;
 }
 
 
 message ServerResponse {
-  required ResponseCode responseCode  = 1;
-  optional string responseMessage     = 2;
-
-  oneof response {
-    SessionResponse        sessionResponse   = 3;
-    UserTrackingResponse   userTrackingResponse = 4;
-    UserProfileUpdate       profileUpdate     = 5;
-    UserProfileQuery        profileQuery      = 6;
-    NotificationUpdate      notificationUpdate= 10;
-    DebugMessage            debugMessage      = 12;
-    ImageUpload             imageUploadReply  = 13;
-//  ConfirmationRequest     confirmationRequest   = 14;
-  }
+  optional ResponseCode   responseCode    = 1;
+  optional string         responseMessage = 2;
+  optional ResponseType   response        = 3;
 }
 

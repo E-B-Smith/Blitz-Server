@@ -13,6 +13,7 @@ import (
     "time"
     "flag"
     "path"
+    "errors"
     "strings"
     "reflect"
     "net/url"
@@ -76,6 +77,33 @@ func (m MessageFormat) String() string {
 
 
 //----------------------------------------------------------------------------------------
+//                                                                           WriteResponse
+//----------------------------------------------------------------------------------------
+
+
+func WriteResponse(writer http.ResponseWriter, response *BlitzMessage.ServerResponse, messageFormat MessageFormat) {
+    var error error
+    var data []byte
+    switch messageFormat {
+    case MFProtobuf:
+        writer.Header().Set("Content-Type", "application/x-protobuf")
+        data, error = proto.Marshal(response)
+    default:
+        writer.Header().Set("Content-Type", "application/json")
+        data, error = json.Marshal(response)
+        data = append(data, []byte("\n")...)
+        //Log.Debugf("%s", string(data))
+    }
+    if  error != nil {
+        Log.Errorf("Error marshaling data %s: %v.", messageFormat.String(), error)
+        http.Error(writer, "500 Internal Server Error", 500)
+    } else {
+        writer.Write(data)
+    }
+}
+
+
+//----------------------------------------------------------------------------------------
 //
 //                                                                 DispatchServiceRequests
 //
@@ -89,37 +117,39 @@ func DispatchServiceRequests(writer http.ResponseWriter, httpRequest *http.Reque
     Log.Debugf("========================================================================== "+
         "Dispatching new message with content length %d.", httpRequest.ContentLength)
 
-    var (
-        messageType     string
-        responseCode    int
-        responseMessage string
-    )
     startTimestamp := time.Now()
+    var request  interface{}
+    var requestType reflect.Type
+    var requestTypeName = "Unknown"
+    var response *BlitzMessage.ServerResponse
     defer func() {
         error := recover();
         if error != nil {
+            Log.Errorf("Panic! ==============================================================")
             Log.LogStackWithError(error)
-            if messageType == "" { messageType = "Panic" }
+            http.Error(writer, "500 Internal Server Error", 500)
         }
-        //Log.Debugf("Exit dispatch message.  Message timestamp: %v Response Writer: %v\nHeader: %v", startTimestamp, writer, writer.Header())
-        elapsed := time.Since(startTimestamp).Seconds()
-        Log.Debugf("Exit dispatch message.  Elapsed: %5.3f Timestamp: %v.", elapsed, startTimestamp)
-        Log.Debugf("==========================================================================")
+        elapsed :=  time.Since(startTimestamp).Seconds()
+        //Log.Debugf("Exit dispatch Nowhere.  Message timestamp: %v Response Writer: %v\nHeader: %v", startTimestamp, writer, writer.Header())
+        Log.Debugf("Exit dispatch Nowhere.  Elapsed: %5.3f Timestamp: %v.", elapsed, startTimestamp)
         outlength, _ := strconv.Atoi(writer.Header().Get("Content-Length"))
         outstatus, _ := strconv.Atoi(writer.Header().Get("Status-Code"))
-        _, error = config.DB.Exec("insert into MessageStatTable "+
+        var (code string; message string)
+        if response != nil && response.ResponseCode != nil { code = response.ResponseCode.String() }
+        if response != nil && response.ResponseMessage != nil { message = *response.ResponseMessage }
+        _, error = config.DB.Exec("insert into ServerStatTable "+
           "(timestamp, elapsed, message, bytesIn, bytesOut, statusCode, responseCode, responseMessage)"+
           " values ($1, $2, $3, $4, $5, $6, $7, $8);",
             startTimestamp,
             elapsed,
-            messageType,
+            requestTypeName,
             httpRequest.ContentLength,
             outlength,
             outstatus,
-            responseCode,
-            responseMessage)
+            code,
+            message)
         if error != nil {
-            Log.Errorf("Error writing MessageStatTable: %v.", error)
+            Log.Errorf("Error writing ServerStatTable: %v.", error)
         }
     } ()
 
@@ -156,24 +186,41 @@ func DispatchServiceRequests(writer http.ResponseWriter, httpRequest *http.Reque
 
     //  Find the message type to log it --
 
-    messageType = "Unknown"
-    clientRequestMessage := clientRequest.GetClientRequestMessage()
-    if clientRequestMessage == nil {
-        messageType = "None"
-    } else {
-        messageValue := reflect.ValueOf(clientRequestMessage)
-        if messageValue.Elem().IsValid() {
-           messageType = messageValue.Elem().Type().Name()
+    requestValue := reflect.ValueOf(*clientRequest.Request)
+    if ! requestValue.IsValid() {
+        Log.Errorf("Invalid request %+v.", clientRequest.Request)
+        response = ServerResponseForError(BlitzMessage.ResponseCode_RCInputCorrupt, error)
+        WriteResponse(writer, response, messageFormat)
+        return
+    }
+
+    for i := 0; i < requestValue.NumField(); i++ {
+        field := requestValue.Field(i)
+        if  field.IsValid() && ! field.IsNil() {
+            request = field.Interface()
+            break
         }
     }
+    if ! reflect.ValueOf(request).IsValid() {
+        error = errors.New("Invalid request type.")
+        Log.Errorf("Invalid request: %v.", error)
+        response = ServerResponseForError(BlitzMessage.ResponseCode_RCInputCorrupt, error)
+        WriteResponse(writer, response, messageFormat)
+        return
+    }
+
+    requestType = reflect.ValueOf(request).Elem().Type()
+    if requestType != nil { requestTypeName = requestType.Name() }
+    Log.Debugf("Request type '%s':\n'%+v'\n.", requestTypeName, request)
 
     //  Update the session if requested --
 
     sessionToken := clientRequest.GetSessionToken()
-    sessionRequest := clientRequest.GetSessionRequest()
+    sessionRequest := clientRequest.Request.GetSessionRequest()
     if  sessionRequest != nil {
         ipAddress := Util.IPAddressFromHTTPRequest(httpRequest)
-        UpdateSession(writer, ipAddress, sessionToken, sessionRequest)
+        response = UpdateSession(ipAddress, sessionToken, sessionRequest)
+        WriteResponse(writer, response, messageFormat)
         return
     }
 
@@ -181,33 +228,33 @@ func DispatchServiceRequests(writer http.ResponseWriter, httpRequest *http.Reque
 
     session := Session_SessionFromToken(sessionToken)
     if session == nil {
-        Log.Errorf("Invalid sessionToken '%s'.  Message type: %v.", sessionToken, messageType)
-        SendError(writer, BlitzMessage.ResponseCode_RCNotAuthorized, error)
+        Log.Errorf("Invalid sessionToken '%s'.  Message type: %v.", sessionToken, requestTypeName)
+        response = ServerResponseForError(BlitzMessage.ResponseCode_RCNotAuthorized, error)
+        WriteResponse(writer, response, messageFormat)
         return
     }
     userID := session.UserID
-    Log.Debugf("------------------------------------------ UserID %s messageType %s.", userID, messageType)
+    Log.Debugf("------------------------------------------ UserID %s messageType %s.", userID, requestType.Name())
+
+
+    //  Dispatch the message --
+
 
     error = nil
     switch requestMessageType := request.(type) {
 
     case *BlitzMessage.UserProfileUpdate:
-        response = UpdateProfiles(session, request)
+        response = UpdateProfiles(session, requestMessageType)
 
     case *BlitzMessage.UserProfileQuery:
-        response = QueryProfiles(userID, profileQuery)
+        response = QueryProfiles(session, requestMessageType)
 
-    case *BlitzMessage.UserTrackingBatch:
-        respose = UpdateUserTrackingEvents(writer, userID, eventRequest)
+    // case *BlitzMessage.UserTrackingBatch:
+    //     respose = UpdateUserTrackingEvents(writer, userID, eventRequest)
 
     default:
         error = fmt.Errorf("Unrecognized request '%+v'", request)
         response = ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
-    }
-
-    if response == nil {
-        if error == nil { error = fmt.Errorf("Unrecognized request '%+v'", request) }
-        response = ServerResponseForError(Nowhere.ResponseCode_RCInputInvalid, error)
     }
 
     WriteResponse(writer, response, messageFormat)
@@ -497,7 +544,6 @@ func Server() (returnValue int) {
     http.HandleFunc(config.ServicePrefix+"/api", DispatchServiceRequests)
     http.HandleFunc(config.ServicePrefix+"/hello", sendHello)
     http.HandleFunc(config.ServicePrefix+"/image", GetImage)
-    http.HandleFunc(config.ServicePrefix+"/send",  SendMessageGetMethod)
     http.HandleFunc(config.ServicePrefix+"/admin", AdminFormRequest)
     http.HandleFunc(config.ServicePrefix+"/message", SystemMessageFormRequest)
     http.HandleFunc(config.ServicePrefix+"/shortlink", LinkShortnerFormRequest)

@@ -12,7 +12,6 @@ import (
     "net/http"
     "hash/crc32"
     "database/sql"
-    "github.com/golang/protobuf/proto"
     "violent.blue/GoKit/Log"
     "violent.blue/GoKit/pgsql"
     "BlitzMessage"
@@ -26,21 +25,19 @@ import (
 //----------------------------------------------------------------------------------------
 
 
-func UploadImage(writer http.ResponseWriter, userID string, imageUpload *BlitzMessage.ImageUpload) {
+func UploadImage(session *Session, imageUpload *BlitzMessage.ImageUpload,
+        ) *BlitzMessage.ServerResponse {
     Log.LogFunctionName()
 
     if imageUpload.ImageData == nil || len(imageUpload.ImageData) == 0 {
-        SendError(writer, BlitzMessage.ResponseCode_RCInputInvalid, errors.New("No image in message"))
-        return
+        return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, errors.New("No image in message"))
     }
     imageData := imageUpload.ImageData[0]
     if len(imageData.ImageBytes) == 0 {
-        SendError(writer, BlitzMessage.ResponseCode_RCInputInvalid, errors.New("No image in message"))
-        return
+        return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, errors.New("No image in message"))
     }
     if len(imageData.ImageBytes) > 1000000 {
-        SendError(writer, BlitzMessage.ResponseCode_RCInputInvalid, errors.New("Image > 1 megabyte"))
-        return
+        return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, errors.New("Image > 1 megabyte"))
     }
     kDefaultType := "image/jpeg"
     if imageData.ContentType == nil || *imageData.ContentType == "" {
@@ -58,7 +55,7 @@ func UploadImage(writer http.ResponseWriter, userID string, imageUpload *BlitzMe
            contentType,
            crc32,
            imageData) values ($1, $2, $3, $4, $5);`,
-             userID,
+             session.UserID,
              imageData.ImageContent,
              imageData.ContentType,
              crc,
@@ -76,36 +73,33 @@ func UploadImage(writer http.ResponseWriter, userID string, imageUpload *BlitzMe
                  imageData.ContentType,
                  crc,
                  imageData.ImageBytes,
-                 userID)
+                 session.UserID)
     }
     if error != nil {
-        SendError(writer, BlitzMessage.ResponseCode_RCServerError, error)
-        return
+        return ServerResponseForError(BlitzMessage.ResponseCode_RCServerError, error)
     }
 
     imageURL := fmt.Sprintf("%s%s/image?uid=%s&h=%x",
         config.ServerURL,
         config.ServicePrefix,
-        userID,
+        session.UserID,
         crc,
     )
 
     result, error = config.DB.Exec(
         "update UserTable set imageURL = array[ $1 ] where userid = $2;",
-            imageURL, userID)
+            imageURL, session.UserID)
     Log.Debugf("ImageURL: %s Result: %+v Error: %v.", imageURL, result, error)
     if error != nil {
-        SendError(writer, BlitzMessage.ResponseCode_RCServerError, error)
-        return
+        return ServerResponseForError(BlitzMessage.ResponseCode_RCServerError, error)
     }
     var rowsUpdated int64 = 0
     if result != nil { rowsUpdated, _ = result.RowsAffected() }
     if rowsUpdated != 1 {
         Log.Errorf("Didn't update image URL in UserTable.")
-        SendError(writer, BlitzMessage.ResponseCode_RCServerError, errors.New("UserTable error"))
-        return
+        return ServerResponseForError(BlitzMessage.ResponseCode_RCServerError, errors.New("UserTable error"))
     }
-    Log.Debugf("Updated user '%s' image to '%s'.", userID, imageURL)
+    Log.Debugf("Updated user '%s' image to '%s'.", session.UserID, imageURL)
 
     replyImageData := BlitzMessage.ImageData {
         ImageContent: imageData.ImageContent,
@@ -118,16 +112,9 @@ func UploadImage(writer http.ResponseWriter, userID string, imageUpload *BlitzMe
     code := BlitzMessage.ResponseCode_RCSuccess
     response := &BlitzMessage.ServerResponse {
         ResponseCode: &code,
-        Response:     &BlitzMessage.ServerResponse_ImageUploadReply { ImageUploadReply:  &replyImageUpload },
+        Response:     &BlitzMessage.ResponseType { ImageUploadReply:  &replyImageUpload },
     }
-    data, error := proto.Marshal(response)
-    if error != nil {
-        Log.Errorf("Error marshaling data: %v.", error)
-        SendError(writer, BlitzMessage.ResponseCode_RCServerError, error)
-        return
-    }
-
-    writer.Write(data)
+    return response
 }
 
 

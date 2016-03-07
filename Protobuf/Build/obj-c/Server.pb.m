@@ -32,6 +32,7 @@ BOOL BResponseCodeIsValidValue(BResponseCode value) {
     case BResponseCodeRCSuccess:
     case BResponseCodeRCInputCorrupt:
     case BResponseCodeRCInputInvalid:
+    case BResponseCodeRCServerWarning:
     case BResponseCodeRCServerError:
     case BResponseCodeRCNotAuthorized:
     case BResponseCodeRCClientTooOld:
@@ -48,6 +49,8 @@ NSString *NSStringFromBResponseCode(BResponseCode value) {
       return @"BResponseCodeRCInputCorrupt";
     case BResponseCodeRCInputInvalid:
       return @"BResponseCodeRCInputInvalid";
+    case BResponseCodeRCServerWarning:
+      return @"BResponseCodeRCServerWarning";
     case BResponseCodeRCServerError:
       return @"BResponseCodeRCServerError";
     case BResponseCodeRCNotAuthorized:
@@ -1135,6 +1138,7 @@ static BAppOptions* defaultBAppOptionsInstance = nil;
 @property (strong) NSMutableArray * userNotificationsArray;
 @property (strong) BUserProfile* userProfile;
 @property BOOL resetAllAppData;
+@property (strong) BAcceptConnectionRequest* connectionRequest;
 @property (strong) BAppOptions* appOptions;
 @end
 
@@ -1182,6 +1186,13 @@ static BAppOptions* defaultBAppOptionsInstance = nil;
 - (void) setResetAllAppData:(BOOL) _value_ {
   resetAllAppData_ = !!_value_;
 }
+- (BOOL) hasConnectionRequest {
+  return !!hasConnectionRequest_;
+}
+- (void) setHasConnectionRequest:(BOOL) _value_ {
+  hasConnectionRequest_ = !!_value_;
+}
+@synthesize connectionRequest;
 - (BOOL) hasAppOptions {
   return !!hasAppOptions_;
 }
@@ -1196,6 +1207,7 @@ static BAppOptions* defaultBAppOptionsInstance = nil;
     self.serverURL = @"";
     self.userProfile = [BUserProfile defaultInstance];
     self.resetAllAppData = NO;
+    self.connectionRequest = [BAcceptConnectionRequest defaultInstance];
     self.appOptions = [BAppOptions defaultInstance];
   }
   return self;
@@ -1232,6 +1244,11 @@ static BSessionResponse* defaultBSessionResponseInstance = nil;
       return NO;
     }
   }
+  if (self.hasConnectionRequest) {
+    if (!self.connectionRequest.isInitialized) {
+      return NO;
+    }
+  }
   return YES;
 }
 - (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
@@ -1253,8 +1270,11 @@ static BSessionResponse* defaultBSessionResponseInstance = nil;
   if (self.hasResetAllAppData) {
     [output writeBool:6 value:self.resetAllAppData];
   }
+  if (self.hasConnectionRequest) {
+    [output writeMessage:7 value:self.connectionRequest];
+  }
   if (self.hasAppOptions) {
-    [output writeMessage:7 value:self.appOptions];
+    [output writeMessage:8 value:self.appOptions];
   }
   [self.unknownFields writeToCodedOutputStream:output];
 }
@@ -1283,8 +1303,11 @@ static BSessionResponse* defaultBSessionResponseInstance = nil;
   if (self.hasResetAllAppData) {
     size_ += computeBoolSize(6, self.resetAllAppData);
   }
+  if (self.hasConnectionRequest) {
+    size_ += computeMessageSize(7, self.connectionRequest);
+  }
   if (self.hasAppOptions) {
-    size_ += computeMessageSize(7, self.appOptions);
+    size_ += computeMessageSize(8, self.appOptions);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -1345,6 +1368,12 @@ static BSessionResponse* defaultBSessionResponseInstance = nil;
   if (self.hasResetAllAppData) {
     [output appendFormat:@"%@%@: %@\n", indent, @"resetAllAppData", [NSNumber numberWithBool:self.resetAllAppData]];
   }
+  if (self.hasConnectionRequest) {
+    [output appendFormat:@"%@%@ {\n", indent, @"connectionRequest"];
+    [self.connectionRequest writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
   if (self.hasAppOptions) {
     [output appendFormat:@"%@%@ {\n", indent, @"appOptions"];
     [self.appOptions writeDescriptionTo:output
@@ -1376,6 +1405,11 @@ static BSessionResponse* defaultBSessionResponseInstance = nil;
   if (self.hasResetAllAppData) {
     [dictionary setObject: [NSNumber numberWithBool:self.resetAllAppData] forKey: @"resetAllAppData"];
   }
+  if (self.hasConnectionRequest) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.connectionRequest storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"connectionRequest"];
+  }
   if (self.hasAppOptions) {
    NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
    [self.appOptions storeInDictionary:messageDictionary];
@@ -1403,6 +1437,8 @@ static BSessionResponse* defaultBSessionResponseInstance = nil;
       (!self.hasUserProfile || [self.userProfile isEqual:otherMessage.userProfile]) &&
       self.hasResetAllAppData == otherMessage.hasResetAllAppData &&
       (!self.hasResetAllAppData || self.resetAllAppData == otherMessage.resetAllAppData) &&
+      self.hasConnectionRequest == otherMessage.hasConnectionRequest &&
+      (!self.hasConnectionRequest || [self.connectionRequest isEqual:otherMessage.connectionRequest]) &&
       self.hasAppOptions == otherMessage.hasAppOptions &&
       (!self.hasAppOptions || [self.appOptions isEqual:otherMessage.appOptions]) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
@@ -1426,6 +1462,9 @@ static BSessionResponse* defaultBSessionResponseInstance = nil;
   }
   if (self.hasResetAllAppData) {
     hashCode = hashCode * 31 + [[NSNumber numberWithBool:self.resetAllAppData] hash];
+  }
+  if (self.hasConnectionRequest) {
+    hashCode = hashCode * 31 + [self.connectionRequest hash];
   }
   if (self.hasAppOptions) {
     hashCode = hashCode * 31 + [self.appOptions hash];
@@ -1495,6 +1534,9 @@ static BSessionResponse* defaultBSessionResponseInstance = nil;
   if (other.hasResetAllAppData) {
     [self setResetAllAppData:other.resetAllAppData];
   }
+  if (other.hasConnectionRequest) {
+    [self mergeConnectionRequest:other.connectionRequest];
+  }
   if (other.hasAppOptions) {
     [self mergeAppOptions:other.appOptions];
   }
@@ -1551,6 +1593,15 @@ static BSessionResponse* defaultBSessionResponseInstance = nil;
         break;
       }
       case 58: {
+        BAcceptConnectionRequestBuilder* subBuilder = [BAcceptConnectionRequest builder];
+        if (self.hasConnectionRequest) {
+          [subBuilder mergeFrom:self.connectionRequest];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setConnectionRequest:[subBuilder buildPartial]];
+        break;
+      }
+      case 66: {
         BAppOptionsBuilder* subBuilder = [BAppOptions builder];
         if (self.hasAppOptions) {
           [subBuilder mergeFrom:self.appOptions];
@@ -1677,6 +1728,36 @@ static BSessionResponse* defaultBSessionResponseInstance = nil;
   resultSessionResponse.resetAllAppData = NO;
   return self;
 }
+- (BOOL) hasConnectionRequest {
+  return resultSessionResponse.hasConnectionRequest;
+}
+- (BAcceptConnectionRequest*) connectionRequest {
+  return resultSessionResponse.connectionRequest;
+}
+- (BSessionResponseBuilder*) setConnectionRequest:(BAcceptConnectionRequest*) value {
+  resultSessionResponse.hasConnectionRequest = YES;
+  resultSessionResponse.connectionRequest = value;
+  return self;
+}
+- (BSessionResponseBuilder*) setConnectionRequestBuilder:(BAcceptConnectionRequestBuilder*) builderForValue {
+  return [self setConnectionRequest:[builderForValue build]];
+}
+- (BSessionResponseBuilder*) mergeConnectionRequest:(BAcceptConnectionRequest*) value {
+  if (resultSessionResponse.hasConnectionRequest &&
+      resultSessionResponse.connectionRequest != [BAcceptConnectionRequest defaultInstance]) {
+    resultSessionResponse.connectionRequest =
+      [[[BAcceptConnectionRequest builderWithPrototype:resultSessionResponse.connectionRequest] mergeFrom:value] buildPartial];
+  } else {
+    resultSessionResponse.connectionRequest = value;
+  }
+  resultSessionResponse.hasConnectionRequest = YES;
+  return self;
+}
+- (BSessionResponseBuilder*) clearConnectionRequest {
+  resultSessionResponse.hasConnectionRequest = NO;
+  resultSessionResponse.connectionRequest = [BAcceptConnectionRequest defaultInstance];
+  return self;
+}
 - (BOOL) hasAppOptions {
   return resultSessionResponse.hasAppOptions;
 }
@@ -1709,12 +1790,12 @@ static BSessionResponse* defaultBSessionResponseInstance = nil;
 }
 @end
 
-@interface BClientRequest ()
-@property (strong) NSString* sessionToken;
+@interface BRequestType ()
 @property (strong) BSessionRequest* sessionRequest;
 @property (strong) BUserTrackingBatch* userTrackingBatch;
 @property (strong) BUserProfileUpdate* userProfileUpdate;
 @property (strong) BUserProfileQuery* userProfileQuery;
+@property (strong) BConfirmationRequest* confirmationRequest;
 @property (strong) BNotificationUpdate* notificationSendRequest;
 @property (strong) BNotificationUpdate* notificationFetchRequest;
 @property (strong) BDebugMessage* debugMessage;
@@ -1722,15 +1803,8 @@ static BSessionResponse* defaultBSessionResponseInstance = nil;
 @property (strong) BAcceptConnectionRequest* acceptInviteRequest;
 @end
 
-@implementation BClientRequest
+@implementation BRequestType
 
-- (BOOL) hasSessionToken {
-  return !!hasSessionToken_;
-}
-- (void) setHasSessionToken:(BOOL) _value_ {
-  hasSessionToken_ = !!_value_;
-}
-@synthesize sessionToken;
 - (BOOL) hasSessionRequest {
   return !!hasSessionRequest_;
 }
@@ -1759,6 +1833,13 @@ static BSessionResponse* defaultBSessionResponseInstance = nil;
   hasUserProfileQuery_ = !!_value_;
 }
 @synthesize userProfileQuery;
+- (BOOL) hasConfirmationRequest {
+  return !!hasConfirmationRequest_;
+}
+- (void) setHasConfirmationRequest:(BOOL) _value_ {
+  hasConfirmationRequest_ = !!_value_;
+}
+@synthesize confirmationRequest;
 - (BOOL) hasNotificationSendRequest {
   return !!hasNotificationSendRequest_;
 }
@@ -1796,11 +1877,11 @@ static BSessionResponse* defaultBSessionResponseInstance = nil;
 @synthesize acceptInviteRequest;
 - (instancetype) init {
   if ((self = [super init])) {
-    self.sessionToken = @"";
     self.sessionRequest = [BSessionRequest defaultInstance];
     self.userTrackingBatch = [BUserTrackingBatch defaultInstance];
     self.userProfileUpdate = [BUserProfileUpdate defaultInstance];
     self.userProfileQuery = [BUserProfileQuery defaultInstance];
+    self.confirmationRequest = [BConfirmationRequest defaultInstance];
     self.notificationSendRequest = [BNotificationUpdate defaultInstance];
     self.notificationFetchRequest = [BNotificationUpdate defaultInstance];
     self.debugMessage = [BDebugMessage defaultInstance];
@@ -1809,17 +1890,17 @@ static BSessionResponse* defaultBSessionResponseInstance = nil;
   }
   return self;
 }
-static BClientRequest* defaultBClientRequestInstance = nil;
+static BRequestType* defaultBRequestTypeInstance = nil;
 + (void) initialize {
-  if (self == [BClientRequest class]) {
-    defaultBClientRequestInstance = [[BClientRequest alloc] init];
+  if (self == [BRequestType class]) {
+    defaultBRequestTypeInstance = [[BRequestType alloc] init];
   }
 }
 + (instancetype) defaultInstance {
-  return defaultBClientRequestInstance;
+  return defaultBRequestTypeInstance;
 }
 - (instancetype) defaultInstance {
-  return defaultBClientRequestInstance;
+  return defaultBRequestTypeInstance;
 }
 - (BOOL) isInitialized {
   if (self.hasSessionRequest) {
@@ -1834,6 +1915,11 @@ static BClientRequest* defaultBClientRequestInstance = nil;
   }
   if (self.hasUserProfileUpdate) {
     if (!self.userProfileUpdate.isInitialized) {
+      return NO;
+    }
+  }
+  if (self.hasConfirmationRequest) {
+    if (!self.confirmationRequest.isInitialized) {
       return NO;
     }
   }
@@ -1855,35 +1941,831 @@ static BClientRequest* defaultBClientRequestInstance = nil;
   return YES;
 }
 - (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
+  if (self.hasSessionRequest) {
+    [output writeMessage:1 value:self.sessionRequest];
+  }
+  if (self.hasUserTrackingBatch) {
+    [output writeMessage:2 value:self.userTrackingBatch];
+  }
+  if (self.hasUserProfileUpdate) {
+    [output writeMessage:3 value:self.userProfileUpdate];
+  }
+  if (self.hasUserProfileQuery) {
+    [output writeMessage:4 value:self.userProfileQuery];
+  }
+  if (self.hasConfirmationRequest) {
+    [output writeMessage:5 value:self.confirmationRequest];
+  }
+  if (self.hasNotificationSendRequest) {
+    [output writeMessage:6 value:self.notificationSendRequest];
+  }
+  if (self.hasNotificationFetchRequest) {
+    [output writeMessage:7 value:self.notificationFetchRequest];
+  }
+  if (self.hasDebugMessage) {
+    [output writeMessage:8 value:self.debugMessage];
+  }
+  if (self.hasImageUpload) {
+    [output writeMessage:9 value:self.imageUpload];
+  }
+  if (self.hasAcceptInviteRequest) {
+    [output writeMessage:10 value:self.acceptInviteRequest];
+  }
+  [self.unknownFields writeToCodedOutputStream:output];
+}
+- (SInt32) serializedSize {
+  __block SInt32 size_ = memoizedSerializedSize;
+  if (size_ != -1) {
+    return size_;
+  }
+
+  size_ = 0;
+  if (self.hasSessionRequest) {
+    size_ += computeMessageSize(1, self.sessionRequest);
+  }
+  if (self.hasUserTrackingBatch) {
+    size_ += computeMessageSize(2, self.userTrackingBatch);
+  }
+  if (self.hasUserProfileUpdate) {
+    size_ += computeMessageSize(3, self.userProfileUpdate);
+  }
+  if (self.hasUserProfileQuery) {
+    size_ += computeMessageSize(4, self.userProfileQuery);
+  }
+  if (self.hasConfirmationRequest) {
+    size_ += computeMessageSize(5, self.confirmationRequest);
+  }
+  if (self.hasNotificationSendRequest) {
+    size_ += computeMessageSize(6, self.notificationSendRequest);
+  }
+  if (self.hasNotificationFetchRequest) {
+    size_ += computeMessageSize(7, self.notificationFetchRequest);
+  }
+  if (self.hasDebugMessage) {
+    size_ += computeMessageSize(8, self.debugMessage);
+  }
+  if (self.hasImageUpload) {
+    size_ += computeMessageSize(9, self.imageUpload);
+  }
+  if (self.hasAcceptInviteRequest) {
+    size_ += computeMessageSize(10, self.acceptInviteRequest);
+  }
+  size_ += self.unknownFields.serializedSize;
+  memoizedSerializedSize = size_;
+  return size_;
+}
++ (BRequestType*) parseFromData:(NSData*) data {
+  return (BRequestType*)[[[BRequestType builder] mergeFromData:data] build];
+}
++ (BRequestType*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BRequestType*)[[[BRequestType builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
+}
++ (BRequestType*) parseFromInputStream:(NSInputStream*) input {
+  return (BRequestType*)[[[BRequestType builder] mergeFromInputStream:input] build];
+}
++ (BRequestType*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BRequestType*)[[[BRequestType builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (BRequestType*) parseFromCodedInputStream:(PBCodedInputStream*) input {
+  return (BRequestType*)[[[BRequestType builder] mergeFromCodedInputStream:input] build];
+}
++ (BRequestType*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BRequestType*)[[[BRequestType builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (BRequestTypeBuilder*) builder {
+  return [[BRequestTypeBuilder alloc] init];
+}
++ (BRequestTypeBuilder*) builderWithPrototype:(BRequestType*) prototype {
+  return [[BRequestType builder] mergeFrom:prototype];
+}
+- (BRequestTypeBuilder*) builder {
+  return [BRequestType builder];
+}
+- (BRequestTypeBuilder*) toBuilder {
+  return [BRequestType builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  if (self.hasSessionRequest) {
+    [output appendFormat:@"%@%@ {\n", indent, @"sessionRequest"];
+    [self.sessionRequest writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
+  if (self.hasUserTrackingBatch) {
+    [output appendFormat:@"%@%@ {\n", indent, @"userTrackingBatch"];
+    [self.userTrackingBatch writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
+  if (self.hasUserProfileUpdate) {
+    [output appendFormat:@"%@%@ {\n", indent, @"userProfileUpdate"];
+    [self.userProfileUpdate writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
+  if (self.hasUserProfileQuery) {
+    [output appendFormat:@"%@%@ {\n", indent, @"userProfileQuery"];
+    [self.userProfileQuery writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
+  if (self.hasConfirmationRequest) {
+    [output appendFormat:@"%@%@ {\n", indent, @"confirmationRequest"];
+    [self.confirmationRequest writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
+  if (self.hasNotificationSendRequest) {
+    [output appendFormat:@"%@%@ {\n", indent, @"notificationSendRequest"];
+    [self.notificationSendRequest writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
+  if (self.hasNotificationFetchRequest) {
+    [output appendFormat:@"%@%@ {\n", indent, @"notificationFetchRequest"];
+    [self.notificationFetchRequest writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
+  if (self.hasDebugMessage) {
+    [output appendFormat:@"%@%@ {\n", indent, @"debugMessage"];
+    [self.debugMessage writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
+  if (self.hasImageUpload) {
+    [output appendFormat:@"%@%@ {\n", indent, @"imageUpload"];
+    [self.imageUpload writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
+  if (self.hasAcceptInviteRequest) {
+    [output appendFormat:@"%@%@ {\n", indent, @"acceptInviteRequest"];
+    [self.acceptInviteRequest writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (void) storeInDictionary:(NSMutableDictionary *)dictionary {
+  if (self.hasSessionRequest) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.sessionRequest storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"sessionRequest"];
+  }
+  if (self.hasUserTrackingBatch) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.userTrackingBatch storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"userTrackingBatch"];
+  }
+  if (self.hasUserProfileUpdate) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.userProfileUpdate storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"userProfileUpdate"];
+  }
+  if (self.hasUserProfileQuery) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.userProfileQuery storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"userProfileQuery"];
+  }
+  if (self.hasConfirmationRequest) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.confirmationRequest storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"confirmationRequest"];
+  }
+  if (self.hasNotificationSendRequest) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.notificationSendRequest storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"notificationSendRequest"];
+  }
+  if (self.hasNotificationFetchRequest) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.notificationFetchRequest storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"notificationFetchRequest"];
+  }
+  if (self.hasDebugMessage) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.debugMessage storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"debugMessage"];
+  }
+  if (self.hasImageUpload) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.imageUpload storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"imageUpload"];
+  }
+  if (self.hasAcceptInviteRequest) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.acceptInviteRequest storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"acceptInviteRequest"];
+  }
+  [self.unknownFields storeInDictionary:dictionary];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[BRequestType class]]) {
+    return NO;
+  }
+  BRequestType *otherMessage = other;
+  return
+      self.hasSessionRequest == otherMessage.hasSessionRequest &&
+      (!self.hasSessionRequest || [self.sessionRequest isEqual:otherMessage.sessionRequest]) &&
+      self.hasUserTrackingBatch == otherMessage.hasUserTrackingBatch &&
+      (!self.hasUserTrackingBatch || [self.userTrackingBatch isEqual:otherMessage.userTrackingBatch]) &&
+      self.hasUserProfileUpdate == otherMessage.hasUserProfileUpdate &&
+      (!self.hasUserProfileUpdate || [self.userProfileUpdate isEqual:otherMessage.userProfileUpdate]) &&
+      self.hasUserProfileQuery == otherMessage.hasUserProfileQuery &&
+      (!self.hasUserProfileQuery || [self.userProfileQuery isEqual:otherMessage.userProfileQuery]) &&
+      self.hasConfirmationRequest == otherMessage.hasConfirmationRequest &&
+      (!self.hasConfirmationRequest || [self.confirmationRequest isEqual:otherMessage.confirmationRequest]) &&
+      self.hasNotificationSendRequest == otherMessage.hasNotificationSendRequest &&
+      (!self.hasNotificationSendRequest || [self.notificationSendRequest isEqual:otherMessage.notificationSendRequest]) &&
+      self.hasNotificationFetchRequest == otherMessage.hasNotificationFetchRequest &&
+      (!self.hasNotificationFetchRequest || [self.notificationFetchRequest isEqual:otherMessage.notificationFetchRequest]) &&
+      self.hasDebugMessage == otherMessage.hasDebugMessage &&
+      (!self.hasDebugMessage || [self.debugMessage isEqual:otherMessage.debugMessage]) &&
+      self.hasImageUpload == otherMessage.hasImageUpload &&
+      (!self.hasImageUpload || [self.imageUpload isEqual:otherMessage.imageUpload]) &&
+      self.hasAcceptInviteRequest == otherMessage.hasAcceptInviteRequest &&
+      (!self.hasAcceptInviteRequest || [self.acceptInviteRequest isEqual:otherMessage.acceptInviteRequest]) &&
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  __block NSUInteger hashCode = 7;
+  if (self.hasSessionRequest) {
+    hashCode = hashCode * 31 + [self.sessionRequest hash];
+  }
+  if (self.hasUserTrackingBatch) {
+    hashCode = hashCode * 31 + [self.userTrackingBatch hash];
+  }
+  if (self.hasUserProfileUpdate) {
+    hashCode = hashCode * 31 + [self.userProfileUpdate hash];
+  }
+  if (self.hasUserProfileQuery) {
+    hashCode = hashCode * 31 + [self.userProfileQuery hash];
+  }
+  if (self.hasConfirmationRequest) {
+    hashCode = hashCode * 31 + [self.confirmationRequest hash];
+  }
+  if (self.hasNotificationSendRequest) {
+    hashCode = hashCode * 31 + [self.notificationSendRequest hash];
+  }
+  if (self.hasNotificationFetchRequest) {
+    hashCode = hashCode * 31 + [self.notificationFetchRequest hash];
+  }
+  if (self.hasDebugMessage) {
+    hashCode = hashCode * 31 + [self.debugMessage hash];
+  }
+  if (self.hasImageUpload) {
+    hashCode = hashCode * 31 + [self.imageUpload hash];
+  }
+  if (self.hasAcceptInviteRequest) {
+    hashCode = hashCode * 31 + [self.acceptInviteRequest hash];
+  }
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
+}
+@end
+
+@interface BRequestTypeBuilder()
+@property (strong) BRequestType* resultRequestType;
+@end
+
+@implementation BRequestTypeBuilder
+@synthesize resultRequestType;
+- (instancetype) init {
+  if ((self = [super init])) {
+    self.resultRequestType = [[BRequestType alloc] init];
+  }
+  return self;
+}
+- (PBGeneratedMessage*) internalGetResult {
+  return resultRequestType;
+}
+- (BRequestTypeBuilder*) clear {
+  self.resultRequestType = [[BRequestType alloc] init];
+  return self;
+}
+- (BRequestTypeBuilder*) clone {
+  return [BRequestType builderWithPrototype:resultRequestType];
+}
+- (BRequestType*) defaultInstance {
+  return [BRequestType defaultInstance];
+}
+- (BRequestType*) build {
+  [self checkInitialized];
+  return [self buildPartial];
+}
+- (BRequestType*) buildPartial {
+  BRequestType* returnMe = resultRequestType;
+  self.resultRequestType = nil;
+  return returnMe;
+}
+- (BRequestTypeBuilder*) mergeFrom:(BRequestType*) other {
+  if (other == [BRequestType defaultInstance]) {
+    return self;
+  }
+  if (other.hasSessionRequest) {
+    [self mergeSessionRequest:other.sessionRequest];
+  }
+  if (other.hasUserTrackingBatch) {
+    [self mergeUserTrackingBatch:other.userTrackingBatch];
+  }
+  if (other.hasUserProfileUpdate) {
+    [self mergeUserProfileUpdate:other.userProfileUpdate];
+  }
+  if (other.hasUserProfileQuery) {
+    [self mergeUserProfileQuery:other.userProfileQuery];
+  }
+  if (other.hasConfirmationRequest) {
+    [self mergeConfirmationRequest:other.confirmationRequest];
+  }
+  if (other.hasNotificationSendRequest) {
+    [self mergeNotificationSendRequest:other.notificationSendRequest];
+  }
+  if (other.hasNotificationFetchRequest) {
+    [self mergeNotificationFetchRequest:other.notificationFetchRequest];
+  }
+  if (other.hasDebugMessage) {
+    [self mergeDebugMessage:other.debugMessage];
+  }
+  if (other.hasImageUpload) {
+    [self mergeImageUpload:other.imageUpload];
+  }
+  if (other.hasAcceptInviteRequest) {
+    [self mergeAcceptInviteRequest:other.acceptInviteRequest];
+  }
+  [self mergeUnknownFields:other.unknownFields];
+  return self;
+}
+- (BRequestTypeBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
+  return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
+}
+- (BRequestTypeBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  PBUnknownFieldSetBuilder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
+  while (YES) {
+    SInt32 tag = [input readTag];
+    switch (tag) {
+      case 0:
+        [self setUnknownFields:[unknownFields build]];
+        return self;
+      default: {
+        if (![self parseUnknownField:input unknownFields:unknownFields extensionRegistry:extensionRegistry tag:tag]) {
+          [self setUnknownFields:[unknownFields build]];
+          return self;
+        }
+        break;
+      }
+      case 10: {
+        BSessionRequestBuilder* subBuilder = [BSessionRequest builder];
+        if (self.hasSessionRequest) {
+          [subBuilder mergeFrom:self.sessionRequest];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setSessionRequest:[subBuilder buildPartial]];
+        break;
+      }
+      case 18: {
+        BUserTrackingBatchBuilder* subBuilder = [BUserTrackingBatch builder];
+        if (self.hasUserTrackingBatch) {
+          [subBuilder mergeFrom:self.userTrackingBatch];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setUserTrackingBatch:[subBuilder buildPartial]];
+        break;
+      }
+      case 26: {
+        BUserProfileUpdateBuilder* subBuilder = [BUserProfileUpdate builder];
+        if (self.hasUserProfileUpdate) {
+          [subBuilder mergeFrom:self.userProfileUpdate];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setUserProfileUpdate:[subBuilder buildPartial]];
+        break;
+      }
+      case 34: {
+        BUserProfileQueryBuilder* subBuilder = [BUserProfileQuery builder];
+        if (self.hasUserProfileQuery) {
+          [subBuilder mergeFrom:self.userProfileQuery];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setUserProfileQuery:[subBuilder buildPartial]];
+        break;
+      }
+      case 42: {
+        BConfirmationRequestBuilder* subBuilder = [BConfirmationRequest builder];
+        if (self.hasConfirmationRequest) {
+          [subBuilder mergeFrom:self.confirmationRequest];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setConfirmationRequest:[subBuilder buildPartial]];
+        break;
+      }
+      case 50: {
+        BNotificationUpdateBuilder* subBuilder = [BNotificationUpdate builder];
+        if (self.hasNotificationSendRequest) {
+          [subBuilder mergeFrom:self.notificationSendRequest];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setNotificationSendRequest:[subBuilder buildPartial]];
+        break;
+      }
+      case 58: {
+        BNotificationUpdateBuilder* subBuilder = [BNotificationUpdate builder];
+        if (self.hasNotificationFetchRequest) {
+          [subBuilder mergeFrom:self.notificationFetchRequest];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setNotificationFetchRequest:[subBuilder buildPartial]];
+        break;
+      }
+      case 66: {
+        BDebugMessageBuilder* subBuilder = [BDebugMessage builder];
+        if (self.hasDebugMessage) {
+          [subBuilder mergeFrom:self.debugMessage];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setDebugMessage:[subBuilder buildPartial]];
+        break;
+      }
+      case 74: {
+        BImageUploadBuilder* subBuilder = [BImageUpload builder];
+        if (self.hasImageUpload) {
+          [subBuilder mergeFrom:self.imageUpload];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setImageUpload:[subBuilder buildPartial]];
+        break;
+      }
+      case 82: {
+        BAcceptConnectionRequestBuilder* subBuilder = [BAcceptConnectionRequest builder];
+        if (self.hasAcceptInviteRequest) {
+          [subBuilder mergeFrom:self.acceptInviteRequest];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setAcceptInviteRequest:[subBuilder buildPartial]];
+        break;
+      }
+    }
+  }
+}
+- (BOOL) hasSessionRequest {
+  return resultRequestType.hasSessionRequest;
+}
+- (BSessionRequest*) sessionRequest {
+  return resultRequestType.sessionRequest;
+}
+- (BRequestTypeBuilder*) setSessionRequest:(BSessionRequest*) value {
+  resultRequestType.hasSessionRequest = YES;
+  resultRequestType.sessionRequest = value;
+  return self;
+}
+- (BRequestTypeBuilder*) setSessionRequestBuilder:(BSessionRequestBuilder*) builderForValue {
+  return [self setSessionRequest:[builderForValue build]];
+}
+- (BRequestTypeBuilder*) mergeSessionRequest:(BSessionRequest*) value {
+  if (resultRequestType.hasSessionRequest &&
+      resultRequestType.sessionRequest != [BSessionRequest defaultInstance]) {
+    resultRequestType.sessionRequest =
+      [[[BSessionRequest builderWithPrototype:resultRequestType.sessionRequest] mergeFrom:value] buildPartial];
+  } else {
+    resultRequestType.sessionRequest = value;
+  }
+  resultRequestType.hasSessionRequest = YES;
+  return self;
+}
+- (BRequestTypeBuilder*) clearSessionRequest {
+  resultRequestType.hasSessionRequest = NO;
+  resultRequestType.sessionRequest = [BSessionRequest defaultInstance];
+  return self;
+}
+- (BOOL) hasUserTrackingBatch {
+  return resultRequestType.hasUserTrackingBatch;
+}
+- (BUserTrackingBatch*) userTrackingBatch {
+  return resultRequestType.userTrackingBatch;
+}
+- (BRequestTypeBuilder*) setUserTrackingBatch:(BUserTrackingBatch*) value {
+  resultRequestType.hasUserTrackingBatch = YES;
+  resultRequestType.userTrackingBatch = value;
+  return self;
+}
+- (BRequestTypeBuilder*) setUserTrackingBatchBuilder:(BUserTrackingBatchBuilder*) builderForValue {
+  return [self setUserTrackingBatch:[builderForValue build]];
+}
+- (BRequestTypeBuilder*) mergeUserTrackingBatch:(BUserTrackingBatch*) value {
+  if (resultRequestType.hasUserTrackingBatch &&
+      resultRequestType.userTrackingBatch != [BUserTrackingBatch defaultInstance]) {
+    resultRequestType.userTrackingBatch =
+      [[[BUserTrackingBatch builderWithPrototype:resultRequestType.userTrackingBatch] mergeFrom:value] buildPartial];
+  } else {
+    resultRequestType.userTrackingBatch = value;
+  }
+  resultRequestType.hasUserTrackingBatch = YES;
+  return self;
+}
+- (BRequestTypeBuilder*) clearUserTrackingBatch {
+  resultRequestType.hasUserTrackingBatch = NO;
+  resultRequestType.userTrackingBatch = [BUserTrackingBatch defaultInstance];
+  return self;
+}
+- (BOOL) hasUserProfileUpdate {
+  return resultRequestType.hasUserProfileUpdate;
+}
+- (BUserProfileUpdate*) userProfileUpdate {
+  return resultRequestType.userProfileUpdate;
+}
+- (BRequestTypeBuilder*) setUserProfileUpdate:(BUserProfileUpdate*) value {
+  resultRequestType.hasUserProfileUpdate = YES;
+  resultRequestType.userProfileUpdate = value;
+  return self;
+}
+- (BRequestTypeBuilder*) setUserProfileUpdateBuilder:(BUserProfileUpdateBuilder*) builderForValue {
+  return [self setUserProfileUpdate:[builderForValue build]];
+}
+- (BRequestTypeBuilder*) mergeUserProfileUpdate:(BUserProfileUpdate*) value {
+  if (resultRequestType.hasUserProfileUpdate &&
+      resultRequestType.userProfileUpdate != [BUserProfileUpdate defaultInstance]) {
+    resultRequestType.userProfileUpdate =
+      [[[BUserProfileUpdate builderWithPrototype:resultRequestType.userProfileUpdate] mergeFrom:value] buildPartial];
+  } else {
+    resultRequestType.userProfileUpdate = value;
+  }
+  resultRequestType.hasUserProfileUpdate = YES;
+  return self;
+}
+- (BRequestTypeBuilder*) clearUserProfileUpdate {
+  resultRequestType.hasUserProfileUpdate = NO;
+  resultRequestType.userProfileUpdate = [BUserProfileUpdate defaultInstance];
+  return self;
+}
+- (BOOL) hasUserProfileQuery {
+  return resultRequestType.hasUserProfileQuery;
+}
+- (BUserProfileQuery*) userProfileQuery {
+  return resultRequestType.userProfileQuery;
+}
+- (BRequestTypeBuilder*) setUserProfileQuery:(BUserProfileQuery*) value {
+  resultRequestType.hasUserProfileQuery = YES;
+  resultRequestType.userProfileQuery = value;
+  return self;
+}
+- (BRequestTypeBuilder*) setUserProfileQueryBuilder:(BUserProfileQueryBuilder*) builderForValue {
+  return [self setUserProfileQuery:[builderForValue build]];
+}
+- (BRequestTypeBuilder*) mergeUserProfileQuery:(BUserProfileQuery*) value {
+  if (resultRequestType.hasUserProfileQuery &&
+      resultRequestType.userProfileQuery != [BUserProfileQuery defaultInstance]) {
+    resultRequestType.userProfileQuery =
+      [[[BUserProfileQuery builderWithPrototype:resultRequestType.userProfileQuery] mergeFrom:value] buildPartial];
+  } else {
+    resultRequestType.userProfileQuery = value;
+  }
+  resultRequestType.hasUserProfileQuery = YES;
+  return self;
+}
+- (BRequestTypeBuilder*) clearUserProfileQuery {
+  resultRequestType.hasUserProfileQuery = NO;
+  resultRequestType.userProfileQuery = [BUserProfileQuery defaultInstance];
+  return self;
+}
+- (BOOL) hasConfirmationRequest {
+  return resultRequestType.hasConfirmationRequest;
+}
+- (BConfirmationRequest*) confirmationRequest {
+  return resultRequestType.confirmationRequest;
+}
+- (BRequestTypeBuilder*) setConfirmationRequest:(BConfirmationRequest*) value {
+  resultRequestType.hasConfirmationRequest = YES;
+  resultRequestType.confirmationRequest = value;
+  return self;
+}
+- (BRequestTypeBuilder*) setConfirmationRequestBuilder:(BConfirmationRequestBuilder*) builderForValue {
+  return [self setConfirmationRequest:[builderForValue build]];
+}
+- (BRequestTypeBuilder*) mergeConfirmationRequest:(BConfirmationRequest*) value {
+  if (resultRequestType.hasConfirmationRequest &&
+      resultRequestType.confirmationRequest != [BConfirmationRequest defaultInstance]) {
+    resultRequestType.confirmationRequest =
+      [[[BConfirmationRequest builderWithPrototype:resultRequestType.confirmationRequest] mergeFrom:value] buildPartial];
+  } else {
+    resultRequestType.confirmationRequest = value;
+  }
+  resultRequestType.hasConfirmationRequest = YES;
+  return self;
+}
+- (BRequestTypeBuilder*) clearConfirmationRequest {
+  resultRequestType.hasConfirmationRequest = NO;
+  resultRequestType.confirmationRequest = [BConfirmationRequest defaultInstance];
+  return self;
+}
+- (BOOL) hasNotificationSendRequest {
+  return resultRequestType.hasNotificationSendRequest;
+}
+- (BNotificationUpdate*) notificationSendRequest {
+  return resultRequestType.notificationSendRequest;
+}
+- (BRequestTypeBuilder*) setNotificationSendRequest:(BNotificationUpdate*) value {
+  resultRequestType.hasNotificationSendRequest = YES;
+  resultRequestType.notificationSendRequest = value;
+  return self;
+}
+- (BRequestTypeBuilder*) setNotificationSendRequestBuilder:(BNotificationUpdateBuilder*) builderForValue {
+  return [self setNotificationSendRequest:[builderForValue build]];
+}
+- (BRequestTypeBuilder*) mergeNotificationSendRequest:(BNotificationUpdate*) value {
+  if (resultRequestType.hasNotificationSendRequest &&
+      resultRequestType.notificationSendRequest != [BNotificationUpdate defaultInstance]) {
+    resultRequestType.notificationSendRequest =
+      [[[BNotificationUpdate builderWithPrototype:resultRequestType.notificationSendRequest] mergeFrom:value] buildPartial];
+  } else {
+    resultRequestType.notificationSendRequest = value;
+  }
+  resultRequestType.hasNotificationSendRequest = YES;
+  return self;
+}
+- (BRequestTypeBuilder*) clearNotificationSendRequest {
+  resultRequestType.hasNotificationSendRequest = NO;
+  resultRequestType.notificationSendRequest = [BNotificationUpdate defaultInstance];
+  return self;
+}
+- (BOOL) hasNotificationFetchRequest {
+  return resultRequestType.hasNotificationFetchRequest;
+}
+- (BNotificationUpdate*) notificationFetchRequest {
+  return resultRequestType.notificationFetchRequest;
+}
+- (BRequestTypeBuilder*) setNotificationFetchRequest:(BNotificationUpdate*) value {
+  resultRequestType.hasNotificationFetchRequest = YES;
+  resultRequestType.notificationFetchRequest = value;
+  return self;
+}
+- (BRequestTypeBuilder*) setNotificationFetchRequestBuilder:(BNotificationUpdateBuilder*) builderForValue {
+  return [self setNotificationFetchRequest:[builderForValue build]];
+}
+- (BRequestTypeBuilder*) mergeNotificationFetchRequest:(BNotificationUpdate*) value {
+  if (resultRequestType.hasNotificationFetchRequest &&
+      resultRequestType.notificationFetchRequest != [BNotificationUpdate defaultInstance]) {
+    resultRequestType.notificationFetchRequest =
+      [[[BNotificationUpdate builderWithPrototype:resultRequestType.notificationFetchRequest] mergeFrom:value] buildPartial];
+  } else {
+    resultRequestType.notificationFetchRequest = value;
+  }
+  resultRequestType.hasNotificationFetchRequest = YES;
+  return self;
+}
+- (BRequestTypeBuilder*) clearNotificationFetchRequest {
+  resultRequestType.hasNotificationFetchRequest = NO;
+  resultRequestType.notificationFetchRequest = [BNotificationUpdate defaultInstance];
+  return self;
+}
+- (BOOL) hasDebugMessage {
+  return resultRequestType.hasDebugMessage;
+}
+- (BDebugMessage*) debugMessage {
+  return resultRequestType.debugMessage;
+}
+- (BRequestTypeBuilder*) setDebugMessage:(BDebugMessage*) value {
+  resultRequestType.hasDebugMessage = YES;
+  resultRequestType.debugMessage = value;
+  return self;
+}
+- (BRequestTypeBuilder*) setDebugMessageBuilder:(BDebugMessageBuilder*) builderForValue {
+  return [self setDebugMessage:[builderForValue build]];
+}
+- (BRequestTypeBuilder*) mergeDebugMessage:(BDebugMessage*) value {
+  if (resultRequestType.hasDebugMessage &&
+      resultRequestType.debugMessage != [BDebugMessage defaultInstance]) {
+    resultRequestType.debugMessage =
+      [[[BDebugMessage builderWithPrototype:resultRequestType.debugMessage] mergeFrom:value] buildPartial];
+  } else {
+    resultRequestType.debugMessage = value;
+  }
+  resultRequestType.hasDebugMessage = YES;
+  return self;
+}
+- (BRequestTypeBuilder*) clearDebugMessage {
+  resultRequestType.hasDebugMessage = NO;
+  resultRequestType.debugMessage = [BDebugMessage defaultInstance];
+  return self;
+}
+- (BOOL) hasImageUpload {
+  return resultRequestType.hasImageUpload;
+}
+- (BImageUpload*) imageUpload {
+  return resultRequestType.imageUpload;
+}
+- (BRequestTypeBuilder*) setImageUpload:(BImageUpload*) value {
+  resultRequestType.hasImageUpload = YES;
+  resultRequestType.imageUpload = value;
+  return self;
+}
+- (BRequestTypeBuilder*) setImageUploadBuilder:(BImageUploadBuilder*) builderForValue {
+  return [self setImageUpload:[builderForValue build]];
+}
+- (BRequestTypeBuilder*) mergeImageUpload:(BImageUpload*) value {
+  if (resultRequestType.hasImageUpload &&
+      resultRequestType.imageUpload != [BImageUpload defaultInstance]) {
+    resultRequestType.imageUpload =
+      [[[BImageUpload builderWithPrototype:resultRequestType.imageUpload] mergeFrom:value] buildPartial];
+  } else {
+    resultRequestType.imageUpload = value;
+  }
+  resultRequestType.hasImageUpload = YES;
+  return self;
+}
+- (BRequestTypeBuilder*) clearImageUpload {
+  resultRequestType.hasImageUpload = NO;
+  resultRequestType.imageUpload = [BImageUpload defaultInstance];
+  return self;
+}
+- (BOOL) hasAcceptInviteRequest {
+  return resultRequestType.hasAcceptInviteRequest;
+}
+- (BAcceptConnectionRequest*) acceptInviteRequest {
+  return resultRequestType.acceptInviteRequest;
+}
+- (BRequestTypeBuilder*) setAcceptInviteRequest:(BAcceptConnectionRequest*) value {
+  resultRequestType.hasAcceptInviteRequest = YES;
+  resultRequestType.acceptInviteRequest = value;
+  return self;
+}
+- (BRequestTypeBuilder*) setAcceptInviteRequestBuilder:(BAcceptConnectionRequestBuilder*) builderForValue {
+  return [self setAcceptInviteRequest:[builderForValue build]];
+}
+- (BRequestTypeBuilder*) mergeAcceptInviteRequest:(BAcceptConnectionRequest*) value {
+  if (resultRequestType.hasAcceptInviteRequest &&
+      resultRequestType.acceptInviteRequest != [BAcceptConnectionRequest defaultInstance]) {
+    resultRequestType.acceptInviteRequest =
+      [[[BAcceptConnectionRequest builderWithPrototype:resultRequestType.acceptInviteRequest] mergeFrom:value] buildPartial];
+  } else {
+    resultRequestType.acceptInviteRequest = value;
+  }
+  resultRequestType.hasAcceptInviteRequest = YES;
+  return self;
+}
+- (BRequestTypeBuilder*) clearAcceptInviteRequest {
+  resultRequestType.hasAcceptInviteRequest = NO;
+  resultRequestType.acceptInviteRequest = [BAcceptConnectionRequest defaultInstance];
+  return self;
+}
+@end
+
+@interface BClientRequest ()
+@property (strong) NSString* sessionToken;
+@property (strong) BRequestType* request;
+@end
+
+@implementation BClientRequest
+
+- (BOOL) hasSessionToken {
+  return !!hasSessionToken_;
+}
+- (void) setHasSessionToken:(BOOL) _value_ {
+  hasSessionToken_ = !!_value_;
+}
+@synthesize sessionToken;
+- (BOOL) hasRequest {
+  return !!hasRequest_;
+}
+- (void) setHasRequest:(BOOL) _value_ {
+  hasRequest_ = !!_value_;
+}
+@synthesize request;
+- (instancetype) init {
+  if ((self = [super init])) {
+    self.sessionToken = @"";
+    self.request = [BRequestType defaultInstance];
+  }
+  return self;
+}
+static BClientRequest* defaultBClientRequestInstance = nil;
++ (void) initialize {
+  if (self == [BClientRequest class]) {
+    defaultBClientRequestInstance = [[BClientRequest alloc] init];
+  }
+}
++ (instancetype) defaultInstance {
+  return defaultBClientRequestInstance;
+}
+- (instancetype) defaultInstance {
+  return defaultBClientRequestInstance;
+}
+- (BOOL) isInitialized {
+  if (self.hasRequest) {
+    if (!self.request.isInitialized) {
+      return NO;
+    }
+  }
+  return YES;
+}
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
   if (self.hasSessionToken) {
     [output writeString:1 value:self.sessionToken];
   }
-  if (self.hasSessionRequest) {
-    [output writeMessage:2 value:self.sessionRequest];
-  }
-  if (self.hasUserTrackingBatch) {
-    [output writeMessage:3 value:self.userTrackingBatch];
-  }
-  if (self.hasUserProfileUpdate) {
-    [output writeMessage:4 value:self.userProfileUpdate];
-  }
-  if (self.hasUserProfileQuery) {
-    [output writeMessage:5 value:self.userProfileQuery];
-  }
-  if (self.hasNotificationSendRequest) {
-    [output writeMessage:7 value:self.notificationSendRequest];
-  }
-  if (self.hasNotificationFetchRequest) {
-    [output writeMessage:8 value:self.notificationFetchRequest];
-  }
-  if (self.hasDebugMessage) {
-    [output writeMessage:9 value:self.debugMessage];
-  }
-  if (self.hasImageUpload) {
-    [output writeMessage:10 value:self.imageUpload];
-  }
-  if (self.hasAcceptInviteRequest) {
-    [output writeMessage:15 value:self.acceptInviteRequest];
+  if (self.hasRequest) {
+    [output writeMessage:2 value:self.request];
   }
   [self.unknownFields writeToCodedOutputStream:output];
 }
@@ -1897,32 +2779,8 @@ static BClientRequest* defaultBClientRequestInstance = nil;
   if (self.hasSessionToken) {
     size_ += computeStringSize(1, self.sessionToken);
   }
-  if (self.hasSessionRequest) {
-    size_ += computeMessageSize(2, self.sessionRequest);
-  }
-  if (self.hasUserTrackingBatch) {
-    size_ += computeMessageSize(3, self.userTrackingBatch);
-  }
-  if (self.hasUserProfileUpdate) {
-    size_ += computeMessageSize(4, self.userProfileUpdate);
-  }
-  if (self.hasUserProfileQuery) {
-    size_ += computeMessageSize(5, self.userProfileQuery);
-  }
-  if (self.hasNotificationSendRequest) {
-    size_ += computeMessageSize(7, self.notificationSendRequest);
-  }
-  if (self.hasNotificationFetchRequest) {
-    size_ += computeMessageSize(8, self.notificationFetchRequest);
-  }
-  if (self.hasDebugMessage) {
-    size_ += computeMessageSize(9, self.debugMessage);
-  }
-  if (self.hasImageUpload) {
-    size_ += computeMessageSize(10, self.imageUpload);
-  }
-  if (self.hasAcceptInviteRequest) {
-    size_ += computeMessageSize(15, self.acceptInviteRequest);
+  if (self.hasRequest) {
+    size_ += computeMessageSize(2, self.request);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -1962,57 +2820,9 @@ static BClientRequest* defaultBClientRequestInstance = nil;
   if (self.hasSessionToken) {
     [output appendFormat:@"%@%@: %@\n", indent, @"sessionToken", self.sessionToken];
   }
-  if (self.hasSessionRequest) {
-    [output appendFormat:@"%@%@ {\n", indent, @"sessionRequest"];
-    [self.sessionRequest writeDescriptionTo:output
-                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
-    [output appendFormat:@"%@}\n", indent];
-  }
-  if (self.hasUserTrackingBatch) {
-    [output appendFormat:@"%@%@ {\n", indent, @"userTrackingBatch"];
-    [self.userTrackingBatch writeDescriptionTo:output
-                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
-    [output appendFormat:@"%@}\n", indent];
-  }
-  if (self.hasUserProfileUpdate) {
-    [output appendFormat:@"%@%@ {\n", indent, @"userProfileUpdate"];
-    [self.userProfileUpdate writeDescriptionTo:output
-                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
-    [output appendFormat:@"%@}\n", indent];
-  }
-  if (self.hasUserProfileQuery) {
-    [output appendFormat:@"%@%@ {\n", indent, @"userProfileQuery"];
-    [self.userProfileQuery writeDescriptionTo:output
-                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
-    [output appendFormat:@"%@}\n", indent];
-  }
-  if (self.hasNotificationSendRequest) {
-    [output appendFormat:@"%@%@ {\n", indent, @"notificationSendRequest"];
-    [self.notificationSendRequest writeDescriptionTo:output
-                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
-    [output appendFormat:@"%@}\n", indent];
-  }
-  if (self.hasNotificationFetchRequest) {
-    [output appendFormat:@"%@%@ {\n", indent, @"notificationFetchRequest"];
-    [self.notificationFetchRequest writeDescriptionTo:output
-                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
-    [output appendFormat:@"%@}\n", indent];
-  }
-  if (self.hasDebugMessage) {
-    [output appendFormat:@"%@%@ {\n", indent, @"debugMessage"];
-    [self.debugMessage writeDescriptionTo:output
-                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
-    [output appendFormat:@"%@}\n", indent];
-  }
-  if (self.hasImageUpload) {
-    [output appendFormat:@"%@%@ {\n", indent, @"imageUpload"];
-    [self.imageUpload writeDescriptionTo:output
-                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
-    [output appendFormat:@"%@}\n", indent];
-  }
-  if (self.hasAcceptInviteRequest) {
-    [output appendFormat:@"%@%@ {\n", indent, @"acceptInviteRequest"];
-    [self.acceptInviteRequest writeDescriptionTo:output
+  if (self.hasRequest) {
+    [output appendFormat:@"%@%@ {\n", indent, @"request"];
+    [self.request writeDescriptionTo:output
                          withIndent:[NSString stringWithFormat:@"%@  ", indent]];
     [output appendFormat:@"%@}\n", indent];
   }
@@ -2022,50 +2832,10 @@ static BClientRequest* defaultBClientRequestInstance = nil;
   if (self.hasSessionToken) {
     [dictionary setObject: self.sessionToken forKey: @"sessionToken"];
   }
-  if (self.hasSessionRequest) {
+  if (self.hasRequest) {
    NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
-   [self.sessionRequest storeInDictionary:messageDictionary];
-   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"sessionRequest"];
-  }
-  if (self.hasUserTrackingBatch) {
-   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
-   [self.userTrackingBatch storeInDictionary:messageDictionary];
-   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"userTrackingBatch"];
-  }
-  if (self.hasUserProfileUpdate) {
-   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
-   [self.userProfileUpdate storeInDictionary:messageDictionary];
-   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"userProfileUpdate"];
-  }
-  if (self.hasUserProfileQuery) {
-   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
-   [self.userProfileQuery storeInDictionary:messageDictionary];
-   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"userProfileQuery"];
-  }
-  if (self.hasNotificationSendRequest) {
-   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
-   [self.notificationSendRequest storeInDictionary:messageDictionary];
-   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"notificationSendRequest"];
-  }
-  if (self.hasNotificationFetchRequest) {
-   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
-   [self.notificationFetchRequest storeInDictionary:messageDictionary];
-   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"notificationFetchRequest"];
-  }
-  if (self.hasDebugMessage) {
-   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
-   [self.debugMessage storeInDictionary:messageDictionary];
-   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"debugMessage"];
-  }
-  if (self.hasImageUpload) {
-   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
-   [self.imageUpload storeInDictionary:messageDictionary];
-   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"imageUpload"];
-  }
-  if (self.hasAcceptInviteRequest) {
-   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
-   [self.acceptInviteRequest storeInDictionary:messageDictionary];
-   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"acceptInviteRequest"];
+   [self.request storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"request"];
   }
   [self.unknownFields storeInDictionary:dictionary];
 }
@@ -2080,24 +2850,8 @@ static BClientRequest* defaultBClientRequestInstance = nil;
   return
       self.hasSessionToken == otherMessage.hasSessionToken &&
       (!self.hasSessionToken || [self.sessionToken isEqual:otherMessage.sessionToken]) &&
-      self.hasSessionRequest == otherMessage.hasSessionRequest &&
-      (!self.hasSessionRequest || [self.sessionRequest isEqual:otherMessage.sessionRequest]) &&
-      self.hasUserTrackingBatch == otherMessage.hasUserTrackingBatch &&
-      (!self.hasUserTrackingBatch || [self.userTrackingBatch isEqual:otherMessage.userTrackingBatch]) &&
-      self.hasUserProfileUpdate == otherMessage.hasUserProfileUpdate &&
-      (!self.hasUserProfileUpdate || [self.userProfileUpdate isEqual:otherMessage.userProfileUpdate]) &&
-      self.hasUserProfileQuery == otherMessage.hasUserProfileQuery &&
-      (!self.hasUserProfileQuery || [self.userProfileQuery isEqual:otherMessage.userProfileQuery]) &&
-      self.hasNotificationSendRequest == otherMessage.hasNotificationSendRequest &&
-      (!self.hasNotificationSendRequest || [self.notificationSendRequest isEqual:otherMessage.notificationSendRequest]) &&
-      self.hasNotificationFetchRequest == otherMessage.hasNotificationFetchRequest &&
-      (!self.hasNotificationFetchRequest || [self.notificationFetchRequest isEqual:otherMessage.notificationFetchRequest]) &&
-      self.hasDebugMessage == otherMessage.hasDebugMessage &&
-      (!self.hasDebugMessage || [self.debugMessage isEqual:otherMessage.debugMessage]) &&
-      self.hasImageUpload == otherMessage.hasImageUpload &&
-      (!self.hasImageUpload || [self.imageUpload isEqual:otherMessage.imageUpload]) &&
-      self.hasAcceptInviteRequest == otherMessage.hasAcceptInviteRequest &&
-      (!self.hasAcceptInviteRequest || [self.acceptInviteRequest isEqual:otherMessage.acceptInviteRequest]) &&
+      self.hasRequest == otherMessage.hasRequest &&
+      (!self.hasRequest || [self.request isEqual:otherMessage.request]) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
@@ -2105,32 +2859,8 @@ static BClientRequest* defaultBClientRequestInstance = nil;
   if (self.hasSessionToken) {
     hashCode = hashCode * 31 + [self.sessionToken hash];
   }
-  if (self.hasSessionRequest) {
-    hashCode = hashCode * 31 + [self.sessionRequest hash];
-  }
-  if (self.hasUserTrackingBatch) {
-    hashCode = hashCode * 31 + [self.userTrackingBatch hash];
-  }
-  if (self.hasUserProfileUpdate) {
-    hashCode = hashCode * 31 + [self.userProfileUpdate hash];
-  }
-  if (self.hasUserProfileQuery) {
-    hashCode = hashCode * 31 + [self.userProfileQuery hash];
-  }
-  if (self.hasNotificationSendRequest) {
-    hashCode = hashCode * 31 + [self.notificationSendRequest hash];
-  }
-  if (self.hasNotificationFetchRequest) {
-    hashCode = hashCode * 31 + [self.notificationFetchRequest hash];
-  }
-  if (self.hasDebugMessage) {
-    hashCode = hashCode * 31 + [self.debugMessage hash];
-  }
-  if (self.hasImageUpload) {
-    hashCode = hashCode * 31 + [self.imageUpload hash];
-  }
-  if (self.hasAcceptInviteRequest) {
-    hashCode = hashCode * 31 + [self.acceptInviteRequest hash];
+  if (self.hasRequest) {
+    hashCode = hashCode * 31 + [self.request hash];
   }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
@@ -2178,32 +2908,8 @@ static BClientRequest* defaultBClientRequestInstance = nil;
   if (other.hasSessionToken) {
     [self setSessionToken:other.sessionToken];
   }
-  if (other.hasSessionRequest) {
-    [self mergeSessionRequest:other.sessionRequest];
-  }
-  if (other.hasUserTrackingBatch) {
-    [self mergeUserTrackingBatch:other.userTrackingBatch];
-  }
-  if (other.hasUserProfileUpdate) {
-    [self mergeUserProfileUpdate:other.userProfileUpdate];
-  }
-  if (other.hasUserProfileQuery) {
-    [self mergeUserProfileQuery:other.userProfileQuery];
-  }
-  if (other.hasNotificationSendRequest) {
-    [self mergeNotificationSendRequest:other.notificationSendRequest];
-  }
-  if (other.hasNotificationFetchRequest) {
-    [self mergeNotificationFetchRequest:other.notificationFetchRequest];
-  }
-  if (other.hasDebugMessage) {
-    [self mergeDebugMessage:other.debugMessage];
-  }
-  if (other.hasImageUpload) {
-    [self mergeImageUpload:other.imageUpload];
-  }
-  if (other.hasAcceptInviteRequest) {
-    [self mergeAcceptInviteRequest:other.acceptInviteRequest];
+  if (other.hasRequest) {
+    [self mergeRequest:other.request];
   }
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -2231,84 +2937,12 @@ static BClientRequest* defaultBClientRequestInstance = nil;
         break;
       }
       case 18: {
-        BSessionRequestBuilder* subBuilder = [BSessionRequest builder];
-        if (self.hasSessionRequest) {
-          [subBuilder mergeFrom:self.sessionRequest];
+        BRequestTypeBuilder* subBuilder = [BRequestType builder];
+        if (self.hasRequest) {
+          [subBuilder mergeFrom:self.request];
         }
         [input readMessage:subBuilder extensionRegistry:extensionRegistry];
-        [self setSessionRequest:[subBuilder buildPartial]];
-        break;
-      }
-      case 26: {
-        BUserTrackingBatchBuilder* subBuilder = [BUserTrackingBatch builder];
-        if (self.hasUserTrackingBatch) {
-          [subBuilder mergeFrom:self.userTrackingBatch];
-        }
-        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
-        [self setUserTrackingBatch:[subBuilder buildPartial]];
-        break;
-      }
-      case 34: {
-        BUserProfileUpdateBuilder* subBuilder = [BUserProfileUpdate builder];
-        if (self.hasUserProfileUpdate) {
-          [subBuilder mergeFrom:self.userProfileUpdate];
-        }
-        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
-        [self setUserProfileUpdate:[subBuilder buildPartial]];
-        break;
-      }
-      case 42: {
-        BUserProfileQueryBuilder* subBuilder = [BUserProfileQuery builder];
-        if (self.hasUserProfileQuery) {
-          [subBuilder mergeFrom:self.userProfileQuery];
-        }
-        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
-        [self setUserProfileQuery:[subBuilder buildPartial]];
-        break;
-      }
-      case 58: {
-        BNotificationUpdateBuilder* subBuilder = [BNotificationUpdate builder];
-        if (self.hasNotificationSendRequest) {
-          [subBuilder mergeFrom:self.notificationSendRequest];
-        }
-        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
-        [self setNotificationSendRequest:[subBuilder buildPartial]];
-        break;
-      }
-      case 66: {
-        BNotificationUpdateBuilder* subBuilder = [BNotificationUpdate builder];
-        if (self.hasNotificationFetchRequest) {
-          [subBuilder mergeFrom:self.notificationFetchRequest];
-        }
-        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
-        [self setNotificationFetchRequest:[subBuilder buildPartial]];
-        break;
-      }
-      case 74: {
-        BDebugMessageBuilder* subBuilder = [BDebugMessage builder];
-        if (self.hasDebugMessage) {
-          [subBuilder mergeFrom:self.debugMessage];
-        }
-        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
-        [self setDebugMessage:[subBuilder buildPartial]];
-        break;
-      }
-      case 82: {
-        BImageUploadBuilder* subBuilder = [BImageUpload builder];
-        if (self.hasImageUpload) {
-          [subBuilder mergeFrom:self.imageUpload];
-        }
-        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
-        [self setImageUpload:[subBuilder buildPartial]];
-        break;
-      }
-      case 122: {
-        BAcceptConnectionRequestBuilder* subBuilder = [BAcceptConnectionRequest builder];
-        if (self.hasAcceptInviteRequest) {
-          [subBuilder mergeFrom:self.acceptInviteRequest];
-        }
-        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
-        [self setAcceptInviteRequest:[subBuilder buildPartial]];
+        [self setRequest:[subBuilder buildPartial]];
         break;
       }
     }
@@ -2330,306 +2964,52 @@ static BClientRequest* defaultBClientRequestInstance = nil;
   resultClientRequest.sessionToken = @"";
   return self;
 }
-- (BOOL) hasSessionRequest {
-  return resultClientRequest.hasSessionRequest;
+- (BOOL) hasRequest {
+  return resultClientRequest.hasRequest;
 }
-- (BSessionRequest*) sessionRequest {
-  return resultClientRequest.sessionRequest;
+- (BRequestType*) request {
+  return resultClientRequest.request;
 }
-- (BClientRequestBuilder*) setSessionRequest:(BSessionRequest*) value {
-  resultClientRequest.hasSessionRequest = YES;
-  resultClientRequest.sessionRequest = value;
+- (BClientRequestBuilder*) setRequest:(BRequestType*) value {
+  resultClientRequest.hasRequest = YES;
+  resultClientRequest.request = value;
   return self;
 }
-- (BClientRequestBuilder*) setSessionRequestBuilder:(BSessionRequestBuilder*) builderForValue {
-  return [self setSessionRequest:[builderForValue build]];
+- (BClientRequestBuilder*) setRequestBuilder:(BRequestTypeBuilder*) builderForValue {
+  return [self setRequest:[builderForValue build]];
 }
-- (BClientRequestBuilder*) mergeSessionRequest:(BSessionRequest*) value {
-  if (resultClientRequest.hasSessionRequest &&
-      resultClientRequest.sessionRequest != [BSessionRequest defaultInstance]) {
-    resultClientRequest.sessionRequest =
-      [[[BSessionRequest builderWithPrototype:resultClientRequest.sessionRequest] mergeFrom:value] buildPartial];
+- (BClientRequestBuilder*) mergeRequest:(BRequestType*) value {
+  if (resultClientRequest.hasRequest &&
+      resultClientRequest.request != [BRequestType defaultInstance]) {
+    resultClientRequest.request =
+      [[[BRequestType builderWithPrototype:resultClientRequest.request] mergeFrom:value] buildPartial];
   } else {
-    resultClientRequest.sessionRequest = value;
+    resultClientRequest.request = value;
   }
-  resultClientRequest.hasSessionRequest = YES;
+  resultClientRequest.hasRequest = YES;
   return self;
 }
-- (BClientRequestBuilder*) clearSessionRequest {
-  resultClientRequest.hasSessionRequest = NO;
-  resultClientRequest.sessionRequest = [BSessionRequest defaultInstance];
-  return self;
-}
-- (BOOL) hasUserTrackingBatch {
-  return resultClientRequest.hasUserTrackingBatch;
-}
-- (BUserTrackingBatch*) userTrackingBatch {
-  return resultClientRequest.userTrackingBatch;
-}
-- (BClientRequestBuilder*) setUserTrackingBatch:(BUserTrackingBatch*) value {
-  resultClientRequest.hasUserTrackingBatch = YES;
-  resultClientRequest.userTrackingBatch = value;
-  return self;
-}
-- (BClientRequestBuilder*) setUserTrackingBatchBuilder:(BUserTrackingBatchBuilder*) builderForValue {
-  return [self setUserTrackingBatch:[builderForValue build]];
-}
-- (BClientRequestBuilder*) mergeUserTrackingBatch:(BUserTrackingBatch*) value {
-  if (resultClientRequest.hasUserTrackingBatch &&
-      resultClientRequest.userTrackingBatch != [BUserTrackingBatch defaultInstance]) {
-    resultClientRequest.userTrackingBatch =
-      [[[BUserTrackingBatch builderWithPrototype:resultClientRequest.userTrackingBatch] mergeFrom:value] buildPartial];
-  } else {
-    resultClientRequest.userTrackingBatch = value;
-  }
-  resultClientRequest.hasUserTrackingBatch = YES;
-  return self;
-}
-- (BClientRequestBuilder*) clearUserTrackingBatch {
-  resultClientRequest.hasUserTrackingBatch = NO;
-  resultClientRequest.userTrackingBatch = [BUserTrackingBatch defaultInstance];
-  return self;
-}
-- (BOOL) hasUserProfileUpdate {
-  return resultClientRequest.hasUserProfileUpdate;
-}
-- (BUserProfileUpdate*) userProfileUpdate {
-  return resultClientRequest.userProfileUpdate;
-}
-- (BClientRequestBuilder*) setUserProfileUpdate:(BUserProfileUpdate*) value {
-  resultClientRequest.hasUserProfileUpdate = YES;
-  resultClientRequest.userProfileUpdate = value;
-  return self;
-}
-- (BClientRequestBuilder*) setUserProfileUpdateBuilder:(BUserProfileUpdateBuilder*) builderForValue {
-  return [self setUserProfileUpdate:[builderForValue build]];
-}
-- (BClientRequestBuilder*) mergeUserProfileUpdate:(BUserProfileUpdate*) value {
-  if (resultClientRequest.hasUserProfileUpdate &&
-      resultClientRequest.userProfileUpdate != [BUserProfileUpdate defaultInstance]) {
-    resultClientRequest.userProfileUpdate =
-      [[[BUserProfileUpdate builderWithPrototype:resultClientRequest.userProfileUpdate] mergeFrom:value] buildPartial];
-  } else {
-    resultClientRequest.userProfileUpdate = value;
-  }
-  resultClientRequest.hasUserProfileUpdate = YES;
-  return self;
-}
-- (BClientRequestBuilder*) clearUserProfileUpdate {
-  resultClientRequest.hasUserProfileUpdate = NO;
-  resultClientRequest.userProfileUpdate = [BUserProfileUpdate defaultInstance];
-  return self;
-}
-- (BOOL) hasUserProfileQuery {
-  return resultClientRequest.hasUserProfileQuery;
-}
-- (BUserProfileQuery*) userProfileQuery {
-  return resultClientRequest.userProfileQuery;
-}
-- (BClientRequestBuilder*) setUserProfileQuery:(BUserProfileQuery*) value {
-  resultClientRequest.hasUserProfileQuery = YES;
-  resultClientRequest.userProfileQuery = value;
-  return self;
-}
-- (BClientRequestBuilder*) setUserProfileQueryBuilder:(BUserProfileQueryBuilder*) builderForValue {
-  return [self setUserProfileQuery:[builderForValue build]];
-}
-- (BClientRequestBuilder*) mergeUserProfileQuery:(BUserProfileQuery*) value {
-  if (resultClientRequest.hasUserProfileQuery &&
-      resultClientRequest.userProfileQuery != [BUserProfileQuery defaultInstance]) {
-    resultClientRequest.userProfileQuery =
-      [[[BUserProfileQuery builderWithPrototype:resultClientRequest.userProfileQuery] mergeFrom:value] buildPartial];
-  } else {
-    resultClientRequest.userProfileQuery = value;
-  }
-  resultClientRequest.hasUserProfileQuery = YES;
-  return self;
-}
-- (BClientRequestBuilder*) clearUserProfileQuery {
-  resultClientRequest.hasUserProfileQuery = NO;
-  resultClientRequest.userProfileQuery = [BUserProfileQuery defaultInstance];
-  return self;
-}
-- (BOOL) hasNotificationSendRequest {
-  return resultClientRequest.hasNotificationSendRequest;
-}
-- (BNotificationUpdate*) notificationSendRequest {
-  return resultClientRequest.notificationSendRequest;
-}
-- (BClientRequestBuilder*) setNotificationSendRequest:(BNotificationUpdate*) value {
-  resultClientRequest.hasNotificationSendRequest = YES;
-  resultClientRequest.notificationSendRequest = value;
-  return self;
-}
-- (BClientRequestBuilder*) setNotificationSendRequestBuilder:(BNotificationUpdateBuilder*) builderForValue {
-  return [self setNotificationSendRequest:[builderForValue build]];
-}
-- (BClientRequestBuilder*) mergeNotificationSendRequest:(BNotificationUpdate*) value {
-  if (resultClientRequest.hasNotificationSendRequest &&
-      resultClientRequest.notificationSendRequest != [BNotificationUpdate defaultInstance]) {
-    resultClientRequest.notificationSendRequest =
-      [[[BNotificationUpdate builderWithPrototype:resultClientRequest.notificationSendRequest] mergeFrom:value] buildPartial];
-  } else {
-    resultClientRequest.notificationSendRequest = value;
-  }
-  resultClientRequest.hasNotificationSendRequest = YES;
-  return self;
-}
-- (BClientRequestBuilder*) clearNotificationSendRequest {
-  resultClientRequest.hasNotificationSendRequest = NO;
-  resultClientRequest.notificationSendRequest = [BNotificationUpdate defaultInstance];
-  return self;
-}
-- (BOOL) hasNotificationFetchRequest {
-  return resultClientRequest.hasNotificationFetchRequest;
-}
-- (BNotificationUpdate*) notificationFetchRequest {
-  return resultClientRequest.notificationFetchRequest;
-}
-- (BClientRequestBuilder*) setNotificationFetchRequest:(BNotificationUpdate*) value {
-  resultClientRequest.hasNotificationFetchRequest = YES;
-  resultClientRequest.notificationFetchRequest = value;
-  return self;
-}
-- (BClientRequestBuilder*) setNotificationFetchRequestBuilder:(BNotificationUpdateBuilder*) builderForValue {
-  return [self setNotificationFetchRequest:[builderForValue build]];
-}
-- (BClientRequestBuilder*) mergeNotificationFetchRequest:(BNotificationUpdate*) value {
-  if (resultClientRequest.hasNotificationFetchRequest &&
-      resultClientRequest.notificationFetchRequest != [BNotificationUpdate defaultInstance]) {
-    resultClientRequest.notificationFetchRequest =
-      [[[BNotificationUpdate builderWithPrototype:resultClientRequest.notificationFetchRequest] mergeFrom:value] buildPartial];
-  } else {
-    resultClientRequest.notificationFetchRequest = value;
-  }
-  resultClientRequest.hasNotificationFetchRequest = YES;
-  return self;
-}
-- (BClientRequestBuilder*) clearNotificationFetchRequest {
-  resultClientRequest.hasNotificationFetchRequest = NO;
-  resultClientRequest.notificationFetchRequest = [BNotificationUpdate defaultInstance];
-  return self;
-}
-- (BOOL) hasDebugMessage {
-  return resultClientRequest.hasDebugMessage;
-}
-- (BDebugMessage*) debugMessage {
-  return resultClientRequest.debugMessage;
-}
-- (BClientRequestBuilder*) setDebugMessage:(BDebugMessage*) value {
-  resultClientRequest.hasDebugMessage = YES;
-  resultClientRequest.debugMessage = value;
-  return self;
-}
-- (BClientRequestBuilder*) setDebugMessageBuilder:(BDebugMessageBuilder*) builderForValue {
-  return [self setDebugMessage:[builderForValue build]];
-}
-- (BClientRequestBuilder*) mergeDebugMessage:(BDebugMessage*) value {
-  if (resultClientRequest.hasDebugMessage &&
-      resultClientRequest.debugMessage != [BDebugMessage defaultInstance]) {
-    resultClientRequest.debugMessage =
-      [[[BDebugMessage builderWithPrototype:resultClientRequest.debugMessage] mergeFrom:value] buildPartial];
-  } else {
-    resultClientRequest.debugMessage = value;
-  }
-  resultClientRequest.hasDebugMessage = YES;
-  return self;
-}
-- (BClientRequestBuilder*) clearDebugMessage {
-  resultClientRequest.hasDebugMessage = NO;
-  resultClientRequest.debugMessage = [BDebugMessage defaultInstance];
-  return self;
-}
-- (BOOL) hasImageUpload {
-  return resultClientRequest.hasImageUpload;
-}
-- (BImageUpload*) imageUpload {
-  return resultClientRequest.imageUpload;
-}
-- (BClientRequestBuilder*) setImageUpload:(BImageUpload*) value {
-  resultClientRequest.hasImageUpload = YES;
-  resultClientRequest.imageUpload = value;
-  return self;
-}
-- (BClientRequestBuilder*) setImageUploadBuilder:(BImageUploadBuilder*) builderForValue {
-  return [self setImageUpload:[builderForValue build]];
-}
-- (BClientRequestBuilder*) mergeImageUpload:(BImageUpload*) value {
-  if (resultClientRequest.hasImageUpload &&
-      resultClientRequest.imageUpload != [BImageUpload defaultInstance]) {
-    resultClientRequest.imageUpload =
-      [[[BImageUpload builderWithPrototype:resultClientRequest.imageUpload] mergeFrom:value] buildPartial];
-  } else {
-    resultClientRequest.imageUpload = value;
-  }
-  resultClientRequest.hasImageUpload = YES;
-  return self;
-}
-- (BClientRequestBuilder*) clearImageUpload {
-  resultClientRequest.hasImageUpload = NO;
-  resultClientRequest.imageUpload = [BImageUpload defaultInstance];
-  return self;
-}
-- (BOOL) hasAcceptInviteRequest {
-  return resultClientRequest.hasAcceptInviteRequest;
-}
-- (BAcceptConnectionRequest*) acceptInviteRequest {
-  return resultClientRequest.acceptInviteRequest;
-}
-- (BClientRequestBuilder*) setAcceptInviteRequest:(BAcceptConnectionRequest*) value {
-  resultClientRequest.hasAcceptInviteRequest = YES;
-  resultClientRequest.acceptInviteRequest = value;
-  return self;
-}
-- (BClientRequestBuilder*) setAcceptInviteRequestBuilder:(BAcceptConnectionRequestBuilder*) builderForValue {
-  return [self setAcceptInviteRequest:[builderForValue build]];
-}
-- (BClientRequestBuilder*) mergeAcceptInviteRequest:(BAcceptConnectionRequest*) value {
-  if (resultClientRequest.hasAcceptInviteRequest &&
-      resultClientRequest.acceptInviteRequest != [BAcceptConnectionRequest defaultInstance]) {
-    resultClientRequest.acceptInviteRequest =
-      [[[BAcceptConnectionRequest builderWithPrototype:resultClientRequest.acceptInviteRequest] mergeFrom:value] buildPartial];
-  } else {
-    resultClientRequest.acceptInviteRequest = value;
-  }
-  resultClientRequest.hasAcceptInviteRequest = YES;
-  return self;
-}
-- (BClientRequestBuilder*) clearAcceptInviteRequest {
-  resultClientRequest.hasAcceptInviteRequest = NO;
-  resultClientRequest.acceptInviteRequest = [BAcceptConnectionRequest defaultInstance];
+- (BClientRequestBuilder*) clearRequest {
+  resultClientRequest.hasRequest = NO;
+  resultClientRequest.request = [BRequestType defaultInstance];
   return self;
 }
 @end
 
-@interface BServerResponse ()
-@property BResponseCode responseCode;
-@property (strong) NSString* responseMessage;
+@interface BResponseType ()
 @property (strong) BSessionResponse* sessionResponse;
 @property (strong) BUserTrackingResponse* userTrackingResponse;
 @property (strong) BUserProfileUpdate* profileUpdate;
 @property (strong) BUserProfileQuery* profileQuery;
+@property (strong) BConfirmationRequest* confirmationRequest;
 @property (strong) BNotificationUpdate* notificationUpdate;
 @property (strong) BDebugMessage* debugMessage;
 @property (strong) BImageUpload* imageUploadReply;
+@property (strong) BAcceptConnectionResponse* acceptConnectionResponse;
 @end
 
-@implementation BServerResponse
+@implementation BResponseType
 
-- (BOOL) hasResponseCode {
-  return !!hasResponseCode_;
-}
-- (void) setHasResponseCode:(BOOL) _value_ {
-  hasResponseCode_ = !!_value_;
-}
-@synthesize responseCode;
-- (BOOL) hasResponseMessage {
-  return !!hasResponseMessage_;
-}
-- (void) setHasResponseMessage:(BOOL) _value_ {
-  hasResponseMessage_ = !!_value_;
-}
-@synthesize responseMessage;
 - (BOOL) hasSessionResponse {
   return !!hasSessionResponse_;
 }
@@ -2658,6 +3038,13 @@ static BClientRequest* defaultBClientRequestInstance = nil;
   hasProfileQuery_ = !!_value_;
 }
 @synthesize profileQuery;
+- (BOOL) hasConfirmationRequest {
+  return !!hasConfirmationRequest_;
+}
+- (void) setHasConfirmationRequest:(BOOL) _value_ {
+  hasConfirmationRequest_ = !!_value_;
+}
+@synthesize confirmationRequest;
 - (BOOL) hasNotificationUpdate {
   return !!hasNotificationUpdate_;
 }
@@ -2679,17 +3066,814 @@ static BClientRequest* defaultBClientRequestInstance = nil;
   hasImageUploadReply_ = !!_value_;
 }
 @synthesize imageUploadReply;
+- (BOOL) hasAcceptConnectionResponse {
+  return !!hasAcceptConnectionResponse_;
+}
+- (void) setHasAcceptConnectionResponse:(BOOL) _value_ {
+  hasAcceptConnectionResponse_ = !!_value_;
+}
+@synthesize acceptConnectionResponse;
 - (instancetype) init {
   if ((self = [super init])) {
-    self.responseCode = BResponseCodeRCSuccess;
-    self.responseMessage = @"";
     self.sessionResponse = [BSessionResponse defaultInstance];
     self.userTrackingResponse = [BUserTrackingResponse defaultInstance];
     self.profileUpdate = [BUserProfileUpdate defaultInstance];
     self.profileQuery = [BUserProfileQuery defaultInstance];
+    self.confirmationRequest = [BConfirmationRequest defaultInstance];
     self.notificationUpdate = [BNotificationUpdate defaultInstance];
     self.debugMessage = [BDebugMessage defaultInstance];
     self.imageUploadReply = [BImageUpload defaultInstance];
+    self.acceptConnectionResponse = [BAcceptConnectionResponse defaultInstance];
+  }
+  return self;
+}
+static BResponseType* defaultBResponseTypeInstance = nil;
++ (void) initialize {
+  if (self == [BResponseType class]) {
+    defaultBResponseTypeInstance = [[BResponseType alloc] init];
+  }
+}
++ (instancetype) defaultInstance {
+  return defaultBResponseTypeInstance;
+}
+- (instancetype) defaultInstance {
+  return defaultBResponseTypeInstance;
+}
+- (BOOL) isInitialized {
+  if (self.hasSessionResponse) {
+    if (!self.sessionResponse.isInitialized) {
+      return NO;
+    }
+  }
+  if (self.hasUserTrackingResponse) {
+    if (!self.userTrackingResponse.isInitialized) {
+      return NO;
+    }
+  }
+  if (self.hasProfileUpdate) {
+    if (!self.profileUpdate.isInitialized) {
+      return NO;
+    }
+  }
+  if (self.hasConfirmationRequest) {
+    if (!self.confirmationRequest.isInitialized) {
+      return NO;
+    }
+  }
+  if (self.hasNotificationUpdate) {
+    if (!self.notificationUpdate.isInitialized) {
+      return NO;
+    }
+  }
+  if (self.hasAcceptConnectionResponse) {
+    if (!self.acceptConnectionResponse.isInitialized) {
+      return NO;
+    }
+  }
+  return YES;
+}
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
+  if (self.hasSessionResponse) {
+    [output writeMessage:1 value:self.sessionResponse];
+  }
+  if (self.hasUserTrackingResponse) {
+    [output writeMessage:2 value:self.userTrackingResponse];
+  }
+  if (self.hasProfileUpdate) {
+    [output writeMessage:3 value:self.profileUpdate];
+  }
+  if (self.hasProfileQuery) {
+    [output writeMessage:4 value:self.profileQuery];
+  }
+  if (self.hasConfirmationRequest) {
+    [output writeMessage:5 value:self.confirmationRequest];
+  }
+  if (self.hasNotificationUpdate) {
+    [output writeMessage:6 value:self.notificationUpdate];
+  }
+  if (self.hasDebugMessage) {
+    [output writeMessage:7 value:self.debugMessage];
+  }
+  if (self.hasImageUploadReply) {
+    [output writeMessage:8 value:self.imageUploadReply];
+  }
+  if (self.hasAcceptConnectionResponse) {
+    [output writeMessage:9 value:self.acceptConnectionResponse];
+  }
+  [self.unknownFields writeToCodedOutputStream:output];
+}
+- (SInt32) serializedSize {
+  __block SInt32 size_ = memoizedSerializedSize;
+  if (size_ != -1) {
+    return size_;
+  }
+
+  size_ = 0;
+  if (self.hasSessionResponse) {
+    size_ += computeMessageSize(1, self.sessionResponse);
+  }
+  if (self.hasUserTrackingResponse) {
+    size_ += computeMessageSize(2, self.userTrackingResponse);
+  }
+  if (self.hasProfileUpdate) {
+    size_ += computeMessageSize(3, self.profileUpdate);
+  }
+  if (self.hasProfileQuery) {
+    size_ += computeMessageSize(4, self.profileQuery);
+  }
+  if (self.hasConfirmationRequest) {
+    size_ += computeMessageSize(5, self.confirmationRequest);
+  }
+  if (self.hasNotificationUpdate) {
+    size_ += computeMessageSize(6, self.notificationUpdate);
+  }
+  if (self.hasDebugMessage) {
+    size_ += computeMessageSize(7, self.debugMessage);
+  }
+  if (self.hasImageUploadReply) {
+    size_ += computeMessageSize(8, self.imageUploadReply);
+  }
+  if (self.hasAcceptConnectionResponse) {
+    size_ += computeMessageSize(9, self.acceptConnectionResponse);
+  }
+  size_ += self.unknownFields.serializedSize;
+  memoizedSerializedSize = size_;
+  return size_;
+}
++ (BResponseType*) parseFromData:(NSData*) data {
+  return (BResponseType*)[[[BResponseType builder] mergeFromData:data] build];
+}
++ (BResponseType*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BResponseType*)[[[BResponseType builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
+}
++ (BResponseType*) parseFromInputStream:(NSInputStream*) input {
+  return (BResponseType*)[[[BResponseType builder] mergeFromInputStream:input] build];
+}
++ (BResponseType*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BResponseType*)[[[BResponseType builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (BResponseType*) parseFromCodedInputStream:(PBCodedInputStream*) input {
+  return (BResponseType*)[[[BResponseType builder] mergeFromCodedInputStream:input] build];
+}
++ (BResponseType*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BResponseType*)[[[BResponseType builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (BResponseTypeBuilder*) builder {
+  return [[BResponseTypeBuilder alloc] init];
+}
++ (BResponseTypeBuilder*) builderWithPrototype:(BResponseType*) prototype {
+  return [[BResponseType builder] mergeFrom:prototype];
+}
+- (BResponseTypeBuilder*) builder {
+  return [BResponseType builder];
+}
+- (BResponseTypeBuilder*) toBuilder {
+  return [BResponseType builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  if (self.hasSessionResponse) {
+    [output appendFormat:@"%@%@ {\n", indent, @"sessionResponse"];
+    [self.sessionResponse writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
+  if (self.hasUserTrackingResponse) {
+    [output appendFormat:@"%@%@ {\n", indent, @"userTrackingResponse"];
+    [self.userTrackingResponse writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
+  if (self.hasProfileUpdate) {
+    [output appendFormat:@"%@%@ {\n", indent, @"profileUpdate"];
+    [self.profileUpdate writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
+  if (self.hasProfileQuery) {
+    [output appendFormat:@"%@%@ {\n", indent, @"profileQuery"];
+    [self.profileQuery writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
+  if (self.hasConfirmationRequest) {
+    [output appendFormat:@"%@%@ {\n", indent, @"confirmationRequest"];
+    [self.confirmationRequest writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
+  if (self.hasNotificationUpdate) {
+    [output appendFormat:@"%@%@ {\n", indent, @"notificationUpdate"];
+    [self.notificationUpdate writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
+  if (self.hasDebugMessage) {
+    [output appendFormat:@"%@%@ {\n", indent, @"debugMessage"];
+    [self.debugMessage writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
+  if (self.hasImageUploadReply) {
+    [output appendFormat:@"%@%@ {\n", indent, @"imageUploadReply"];
+    [self.imageUploadReply writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
+  if (self.hasAcceptConnectionResponse) {
+    [output appendFormat:@"%@%@ {\n", indent, @"acceptConnectionResponse"];
+    [self.acceptConnectionResponse writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (void) storeInDictionary:(NSMutableDictionary *)dictionary {
+  if (self.hasSessionResponse) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.sessionResponse storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"sessionResponse"];
+  }
+  if (self.hasUserTrackingResponse) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.userTrackingResponse storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"userTrackingResponse"];
+  }
+  if (self.hasProfileUpdate) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.profileUpdate storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"profileUpdate"];
+  }
+  if (self.hasProfileQuery) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.profileQuery storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"profileQuery"];
+  }
+  if (self.hasConfirmationRequest) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.confirmationRequest storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"confirmationRequest"];
+  }
+  if (self.hasNotificationUpdate) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.notificationUpdate storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"notificationUpdate"];
+  }
+  if (self.hasDebugMessage) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.debugMessage storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"debugMessage"];
+  }
+  if (self.hasImageUploadReply) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.imageUploadReply storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"imageUploadReply"];
+  }
+  if (self.hasAcceptConnectionResponse) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.acceptConnectionResponse storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"acceptConnectionResponse"];
+  }
+  [self.unknownFields storeInDictionary:dictionary];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[BResponseType class]]) {
+    return NO;
+  }
+  BResponseType *otherMessage = other;
+  return
+      self.hasSessionResponse == otherMessage.hasSessionResponse &&
+      (!self.hasSessionResponse || [self.sessionResponse isEqual:otherMessage.sessionResponse]) &&
+      self.hasUserTrackingResponse == otherMessage.hasUserTrackingResponse &&
+      (!self.hasUserTrackingResponse || [self.userTrackingResponse isEqual:otherMessage.userTrackingResponse]) &&
+      self.hasProfileUpdate == otherMessage.hasProfileUpdate &&
+      (!self.hasProfileUpdate || [self.profileUpdate isEqual:otherMessage.profileUpdate]) &&
+      self.hasProfileQuery == otherMessage.hasProfileQuery &&
+      (!self.hasProfileQuery || [self.profileQuery isEqual:otherMessage.profileQuery]) &&
+      self.hasConfirmationRequest == otherMessage.hasConfirmationRequest &&
+      (!self.hasConfirmationRequest || [self.confirmationRequest isEqual:otherMessage.confirmationRequest]) &&
+      self.hasNotificationUpdate == otherMessage.hasNotificationUpdate &&
+      (!self.hasNotificationUpdate || [self.notificationUpdate isEqual:otherMessage.notificationUpdate]) &&
+      self.hasDebugMessage == otherMessage.hasDebugMessage &&
+      (!self.hasDebugMessage || [self.debugMessage isEqual:otherMessage.debugMessage]) &&
+      self.hasImageUploadReply == otherMessage.hasImageUploadReply &&
+      (!self.hasImageUploadReply || [self.imageUploadReply isEqual:otherMessage.imageUploadReply]) &&
+      self.hasAcceptConnectionResponse == otherMessage.hasAcceptConnectionResponse &&
+      (!self.hasAcceptConnectionResponse || [self.acceptConnectionResponse isEqual:otherMessage.acceptConnectionResponse]) &&
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  __block NSUInteger hashCode = 7;
+  if (self.hasSessionResponse) {
+    hashCode = hashCode * 31 + [self.sessionResponse hash];
+  }
+  if (self.hasUserTrackingResponse) {
+    hashCode = hashCode * 31 + [self.userTrackingResponse hash];
+  }
+  if (self.hasProfileUpdate) {
+    hashCode = hashCode * 31 + [self.profileUpdate hash];
+  }
+  if (self.hasProfileQuery) {
+    hashCode = hashCode * 31 + [self.profileQuery hash];
+  }
+  if (self.hasConfirmationRequest) {
+    hashCode = hashCode * 31 + [self.confirmationRequest hash];
+  }
+  if (self.hasNotificationUpdate) {
+    hashCode = hashCode * 31 + [self.notificationUpdate hash];
+  }
+  if (self.hasDebugMessage) {
+    hashCode = hashCode * 31 + [self.debugMessage hash];
+  }
+  if (self.hasImageUploadReply) {
+    hashCode = hashCode * 31 + [self.imageUploadReply hash];
+  }
+  if (self.hasAcceptConnectionResponse) {
+    hashCode = hashCode * 31 + [self.acceptConnectionResponse hash];
+  }
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
+}
+@end
+
+@interface BResponseTypeBuilder()
+@property (strong) BResponseType* resultResponseType;
+@end
+
+@implementation BResponseTypeBuilder
+@synthesize resultResponseType;
+- (instancetype) init {
+  if ((self = [super init])) {
+    self.resultResponseType = [[BResponseType alloc] init];
+  }
+  return self;
+}
+- (PBGeneratedMessage*) internalGetResult {
+  return resultResponseType;
+}
+- (BResponseTypeBuilder*) clear {
+  self.resultResponseType = [[BResponseType alloc] init];
+  return self;
+}
+- (BResponseTypeBuilder*) clone {
+  return [BResponseType builderWithPrototype:resultResponseType];
+}
+- (BResponseType*) defaultInstance {
+  return [BResponseType defaultInstance];
+}
+- (BResponseType*) build {
+  [self checkInitialized];
+  return [self buildPartial];
+}
+- (BResponseType*) buildPartial {
+  BResponseType* returnMe = resultResponseType;
+  self.resultResponseType = nil;
+  return returnMe;
+}
+- (BResponseTypeBuilder*) mergeFrom:(BResponseType*) other {
+  if (other == [BResponseType defaultInstance]) {
+    return self;
+  }
+  if (other.hasSessionResponse) {
+    [self mergeSessionResponse:other.sessionResponse];
+  }
+  if (other.hasUserTrackingResponse) {
+    [self mergeUserTrackingResponse:other.userTrackingResponse];
+  }
+  if (other.hasProfileUpdate) {
+    [self mergeProfileUpdate:other.profileUpdate];
+  }
+  if (other.hasProfileQuery) {
+    [self mergeProfileQuery:other.profileQuery];
+  }
+  if (other.hasConfirmationRequest) {
+    [self mergeConfirmationRequest:other.confirmationRequest];
+  }
+  if (other.hasNotificationUpdate) {
+    [self mergeNotificationUpdate:other.notificationUpdate];
+  }
+  if (other.hasDebugMessage) {
+    [self mergeDebugMessage:other.debugMessage];
+  }
+  if (other.hasImageUploadReply) {
+    [self mergeImageUploadReply:other.imageUploadReply];
+  }
+  if (other.hasAcceptConnectionResponse) {
+    [self mergeAcceptConnectionResponse:other.acceptConnectionResponse];
+  }
+  [self mergeUnknownFields:other.unknownFields];
+  return self;
+}
+- (BResponseTypeBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
+  return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
+}
+- (BResponseTypeBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  PBUnknownFieldSetBuilder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
+  while (YES) {
+    SInt32 tag = [input readTag];
+    switch (tag) {
+      case 0:
+        [self setUnknownFields:[unknownFields build]];
+        return self;
+      default: {
+        if (![self parseUnknownField:input unknownFields:unknownFields extensionRegistry:extensionRegistry tag:tag]) {
+          [self setUnknownFields:[unknownFields build]];
+          return self;
+        }
+        break;
+      }
+      case 10: {
+        BSessionResponseBuilder* subBuilder = [BSessionResponse builder];
+        if (self.hasSessionResponse) {
+          [subBuilder mergeFrom:self.sessionResponse];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setSessionResponse:[subBuilder buildPartial]];
+        break;
+      }
+      case 18: {
+        BUserTrackingResponseBuilder* subBuilder = [BUserTrackingResponse builder];
+        if (self.hasUserTrackingResponse) {
+          [subBuilder mergeFrom:self.userTrackingResponse];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setUserTrackingResponse:[subBuilder buildPartial]];
+        break;
+      }
+      case 26: {
+        BUserProfileUpdateBuilder* subBuilder = [BUserProfileUpdate builder];
+        if (self.hasProfileUpdate) {
+          [subBuilder mergeFrom:self.profileUpdate];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setProfileUpdate:[subBuilder buildPartial]];
+        break;
+      }
+      case 34: {
+        BUserProfileQueryBuilder* subBuilder = [BUserProfileQuery builder];
+        if (self.hasProfileQuery) {
+          [subBuilder mergeFrom:self.profileQuery];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setProfileQuery:[subBuilder buildPartial]];
+        break;
+      }
+      case 42: {
+        BConfirmationRequestBuilder* subBuilder = [BConfirmationRequest builder];
+        if (self.hasConfirmationRequest) {
+          [subBuilder mergeFrom:self.confirmationRequest];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setConfirmationRequest:[subBuilder buildPartial]];
+        break;
+      }
+      case 50: {
+        BNotificationUpdateBuilder* subBuilder = [BNotificationUpdate builder];
+        if (self.hasNotificationUpdate) {
+          [subBuilder mergeFrom:self.notificationUpdate];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setNotificationUpdate:[subBuilder buildPartial]];
+        break;
+      }
+      case 58: {
+        BDebugMessageBuilder* subBuilder = [BDebugMessage builder];
+        if (self.hasDebugMessage) {
+          [subBuilder mergeFrom:self.debugMessage];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setDebugMessage:[subBuilder buildPartial]];
+        break;
+      }
+      case 66: {
+        BImageUploadBuilder* subBuilder = [BImageUpload builder];
+        if (self.hasImageUploadReply) {
+          [subBuilder mergeFrom:self.imageUploadReply];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setImageUploadReply:[subBuilder buildPartial]];
+        break;
+      }
+      case 74: {
+        BAcceptConnectionResponseBuilder* subBuilder = [BAcceptConnectionResponse builder];
+        if (self.hasAcceptConnectionResponse) {
+          [subBuilder mergeFrom:self.acceptConnectionResponse];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setAcceptConnectionResponse:[subBuilder buildPartial]];
+        break;
+      }
+    }
+  }
+}
+- (BOOL) hasSessionResponse {
+  return resultResponseType.hasSessionResponse;
+}
+- (BSessionResponse*) sessionResponse {
+  return resultResponseType.sessionResponse;
+}
+- (BResponseTypeBuilder*) setSessionResponse:(BSessionResponse*) value {
+  resultResponseType.hasSessionResponse = YES;
+  resultResponseType.sessionResponse = value;
+  return self;
+}
+- (BResponseTypeBuilder*) setSessionResponseBuilder:(BSessionResponseBuilder*) builderForValue {
+  return [self setSessionResponse:[builderForValue build]];
+}
+- (BResponseTypeBuilder*) mergeSessionResponse:(BSessionResponse*) value {
+  if (resultResponseType.hasSessionResponse &&
+      resultResponseType.sessionResponse != [BSessionResponse defaultInstance]) {
+    resultResponseType.sessionResponse =
+      [[[BSessionResponse builderWithPrototype:resultResponseType.sessionResponse] mergeFrom:value] buildPartial];
+  } else {
+    resultResponseType.sessionResponse = value;
+  }
+  resultResponseType.hasSessionResponse = YES;
+  return self;
+}
+- (BResponseTypeBuilder*) clearSessionResponse {
+  resultResponseType.hasSessionResponse = NO;
+  resultResponseType.sessionResponse = [BSessionResponse defaultInstance];
+  return self;
+}
+- (BOOL) hasUserTrackingResponse {
+  return resultResponseType.hasUserTrackingResponse;
+}
+- (BUserTrackingResponse*) userTrackingResponse {
+  return resultResponseType.userTrackingResponse;
+}
+- (BResponseTypeBuilder*) setUserTrackingResponse:(BUserTrackingResponse*) value {
+  resultResponseType.hasUserTrackingResponse = YES;
+  resultResponseType.userTrackingResponse = value;
+  return self;
+}
+- (BResponseTypeBuilder*) setUserTrackingResponseBuilder:(BUserTrackingResponseBuilder*) builderForValue {
+  return [self setUserTrackingResponse:[builderForValue build]];
+}
+- (BResponseTypeBuilder*) mergeUserTrackingResponse:(BUserTrackingResponse*) value {
+  if (resultResponseType.hasUserTrackingResponse &&
+      resultResponseType.userTrackingResponse != [BUserTrackingResponse defaultInstance]) {
+    resultResponseType.userTrackingResponse =
+      [[[BUserTrackingResponse builderWithPrototype:resultResponseType.userTrackingResponse] mergeFrom:value] buildPartial];
+  } else {
+    resultResponseType.userTrackingResponse = value;
+  }
+  resultResponseType.hasUserTrackingResponse = YES;
+  return self;
+}
+- (BResponseTypeBuilder*) clearUserTrackingResponse {
+  resultResponseType.hasUserTrackingResponse = NO;
+  resultResponseType.userTrackingResponse = [BUserTrackingResponse defaultInstance];
+  return self;
+}
+- (BOOL) hasProfileUpdate {
+  return resultResponseType.hasProfileUpdate;
+}
+- (BUserProfileUpdate*) profileUpdate {
+  return resultResponseType.profileUpdate;
+}
+- (BResponseTypeBuilder*) setProfileUpdate:(BUserProfileUpdate*) value {
+  resultResponseType.hasProfileUpdate = YES;
+  resultResponseType.profileUpdate = value;
+  return self;
+}
+- (BResponseTypeBuilder*) setProfileUpdateBuilder:(BUserProfileUpdateBuilder*) builderForValue {
+  return [self setProfileUpdate:[builderForValue build]];
+}
+- (BResponseTypeBuilder*) mergeProfileUpdate:(BUserProfileUpdate*) value {
+  if (resultResponseType.hasProfileUpdate &&
+      resultResponseType.profileUpdate != [BUserProfileUpdate defaultInstance]) {
+    resultResponseType.profileUpdate =
+      [[[BUserProfileUpdate builderWithPrototype:resultResponseType.profileUpdate] mergeFrom:value] buildPartial];
+  } else {
+    resultResponseType.profileUpdate = value;
+  }
+  resultResponseType.hasProfileUpdate = YES;
+  return self;
+}
+- (BResponseTypeBuilder*) clearProfileUpdate {
+  resultResponseType.hasProfileUpdate = NO;
+  resultResponseType.profileUpdate = [BUserProfileUpdate defaultInstance];
+  return self;
+}
+- (BOOL) hasProfileQuery {
+  return resultResponseType.hasProfileQuery;
+}
+- (BUserProfileQuery*) profileQuery {
+  return resultResponseType.profileQuery;
+}
+- (BResponseTypeBuilder*) setProfileQuery:(BUserProfileQuery*) value {
+  resultResponseType.hasProfileQuery = YES;
+  resultResponseType.profileQuery = value;
+  return self;
+}
+- (BResponseTypeBuilder*) setProfileQueryBuilder:(BUserProfileQueryBuilder*) builderForValue {
+  return [self setProfileQuery:[builderForValue build]];
+}
+- (BResponseTypeBuilder*) mergeProfileQuery:(BUserProfileQuery*) value {
+  if (resultResponseType.hasProfileQuery &&
+      resultResponseType.profileQuery != [BUserProfileQuery defaultInstance]) {
+    resultResponseType.profileQuery =
+      [[[BUserProfileQuery builderWithPrototype:resultResponseType.profileQuery] mergeFrom:value] buildPartial];
+  } else {
+    resultResponseType.profileQuery = value;
+  }
+  resultResponseType.hasProfileQuery = YES;
+  return self;
+}
+- (BResponseTypeBuilder*) clearProfileQuery {
+  resultResponseType.hasProfileQuery = NO;
+  resultResponseType.profileQuery = [BUserProfileQuery defaultInstance];
+  return self;
+}
+- (BOOL) hasConfirmationRequest {
+  return resultResponseType.hasConfirmationRequest;
+}
+- (BConfirmationRequest*) confirmationRequest {
+  return resultResponseType.confirmationRequest;
+}
+- (BResponseTypeBuilder*) setConfirmationRequest:(BConfirmationRequest*) value {
+  resultResponseType.hasConfirmationRequest = YES;
+  resultResponseType.confirmationRequest = value;
+  return self;
+}
+- (BResponseTypeBuilder*) setConfirmationRequestBuilder:(BConfirmationRequestBuilder*) builderForValue {
+  return [self setConfirmationRequest:[builderForValue build]];
+}
+- (BResponseTypeBuilder*) mergeConfirmationRequest:(BConfirmationRequest*) value {
+  if (resultResponseType.hasConfirmationRequest &&
+      resultResponseType.confirmationRequest != [BConfirmationRequest defaultInstance]) {
+    resultResponseType.confirmationRequest =
+      [[[BConfirmationRequest builderWithPrototype:resultResponseType.confirmationRequest] mergeFrom:value] buildPartial];
+  } else {
+    resultResponseType.confirmationRequest = value;
+  }
+  resultResponseType.hasConfirmationRequest = YES;
+  return self;
+}
+- (BResponseTypeBuilder*) clearConfirmationRequest {
+  resultResponseType.hasConfirmationRequest = NO;
+  resultResponseType.confirmationRequest = [BConfirmationRequest defaultInstance];
+  return self;
+}
+- (BOOL) hasNotificationUpdate {
+  return resultResponseType.hasNotificationUpdate;
+}
+- (BNotificationUpdate*) notificationUpdate {
+  return resultResponseType.notificationUpdate;
+}
+- (BResponseTypeBuilder*) setNotificationUpdate:(BNotificationUpdate*) value {
+  resultResponseType.hasNotificationUpdate = YES;
+  resultResponseType.notificationUpdate = value;
+  return self;
+}
+- (BResponseTypeBuilder*) setNotificationUpdateBuilder:(BNotificationUpdateBuilder*) builderForValue {
+  return [self setNotificationUpdate:[builderForValue build]];
+}
+- (BResponseTypeBuilder*) mergeNotificationUpdate:(BNotificationUpdate*) value {
+  if (resultResponseType.hasNotificationUpdate &&
+      resultResponseType.notificationUpdate != [BNotificationUpdate defaultInstance]) {
+    resultResponseType.notificationUpdate =
+      [[[BNotificationUpdate builderWithPrototype:resultResponseType.notificationUpdate] mergeFrom:value] buildPartial];
+  } else {
+    resultResponseType.notificationUpdate = value;
+  }
+  resultResponseType.hasNotificationUpdate = YES;
+  return self;
+}
+- (BResponseTypeBuilder*) clearNotificationUpdate {
+  resultResponseType.hasNotificationUpdate = NO;
+  resultResponseType.notificationUpdate = [BNotificationUpdate defaultInstance];
+  return self;
+}
+- (BOOL) hasDebugMessage {
+  return resultResponseType.hasDebugMessage;
+}
+- (BDebugMessage*) debugMessage {
+  return resultResponseType.debugMessage;
+}
+- (BResponseTypeBuilder*) setDebugMessage:(BDebugMessage*) value {
+  resultResponseType.hasDebugMessage = YES;
+  resultResponseType.debugMessage = value;
+  return self;
+}
+- (BResponseTypeBuilder*) setDebugMessageBuilder:(BDebugMessageBuilder*) builderForValue {
+  return [self setDebugMessage:[builderForValue build]];
+}
+- (BResponseTypeBuilder*) mergeDebugMessage:(BDebugMessage*) value {
+  if (resultResponseType.hasDebugMessage &&
+      resultResponseType.debugMessage != [BDebugMessage defaultInstance]) {
+    resultResponseType.debugMessage =
+      [[[BDebugMessage builderWithPrototype:resultResponseType.debugMessage] mergeFrom:value] buildPartial];
+  } else {
+    resultResponseType.debugMessage = value;
+  }
+  resultResponseType.hasDebugMessage = YES;
+  return self;
+}
+- (BResponseTypeBuilder*) clearDebugMessage {
+  resultResponseType.hasDebugMessage = NO;
+  resultResponseType.debugMessage = [BDebugMessage defaultInstance];
+  return self;
+}
+- (BOOL) hasImageUploadReply {
+  return resultResponseType.hasImageUploadReply;
+}
+- (BImageUpload*) imageUploadReply {
+  return resultResponseType.imageUploadReply;
+}
+- (BResponseTypeBuilder*) setImageUploadReply:(BImageUpload*) value {
+  resultResponseType.hasImageUploadReply = YES;
+  resultResponseType.imageUploadReply = value;
+  return self;
+}
+- (BResponseTypeBuilder*) setImageUploadReplyBuilder:(BImageUploadBuilder*) builderForValue {
+  return [self setImageUploadReply:[builderForValue build]];
+}
+- (BResponseTypeBuilder*) mergeImageUploadReply:(BImageUpload*) value {
+  if (resultResponseType.hasImageUploadReply &&
+      resultResponseType.imageUploadReply != [BImageUpload defaultInstance]) {
+    resultResponseType.imageUploadReply =
+      [[[BImageUpload builderWithPrototype:resultResponseType.imageUploadReply] mergeFrom:value] buildPartial];
+  } else {
+    resultResponseType.imageUploadReply = value;
+  }
+  resultResponseType.hasImageUploadReply = YES;
+  return self;
+}
+- (BResponseTypeBuilder*) clearImageUploadReply {
+  resultResponseType.hasImageUploadReply = NO;
+  resultResponseType.imageUploadReply = [BImageUpload defaultInstance];
+  return self;
+}
+- (BOOL) hasAcceptConnectionResponse {
+  return resultResponseType.hasAcceptConnectionResponse;
+}
+- (BAcceptConnectionResponse*) acceptConnectionResponse {
+  return resultResponseType.acceptConnectionResponse;
+}
+- (BResponseTypeBuilder*) setAcceptConnectionResponse:(BAcceptConnectionResponse*) value {
+  resultResponseType.hasAcceptConnectionResponse = YES;
+  resultResponseType.acceptConnectionResponse = value;
+  return self;
+}
+- (BResponseTypeBuilder*) setAcceptConnectionResponseBuilder:(BAcceptConnectionResponseBuilder*) builderForValue {
+  return [self setAcceptConnectionResponse:[builderForValue build]];
+}
+- (BResponseTypeBuilder*) mergeAcceptConnectionResponse:(BAcceptConnectionResponse*) value {
+  if (resultResponseType.hasAcceptConnectionResponse &&
+      resultResponseType.acceptConnectionResponse != [BAcceptConnectionResponse defaultInstance]) {
+    resultResponseType.acceptConnectionResponse =
+      [[[BAcceptConnectionResponse builderWithPrototype:resultResponseType.acceptConnectionResponse] mergeFrom:value] buildPartial];
+  } else {
+    resultResponseType.acceptConnectionResponse = value;
+  }
+  resultResponseType.hasAcceptConnectionResponse = YES;
+  return self;
+}
+- (BResponseTypeBuilder*) clearAcceptConnectionResponse {
+  resultResponseType.hasAcceptConnectionResponse = NO;
+  resultResponseType.acceptConnectionResponse = [BAcceptConnectionResponse defaultInstance];
+  return self;
+}
+@end
+
+@interface BServerResponse ()
+@property BResponseCode responseCode;
+@property (strong) NSString* responseMessage;
+@property (strong) BResponseType* response;
+@end
+
+@implementation BServerResponse
+
+- (BOOL) hasResponseCode {
+  return !!hasResponseCode_;
+}
+- (void) setHasResponseCode:(BOOL) _value_ {
+  hasResponseCode_ = !!_value_;
+}
+@synthesize responseCode;
+- (BOOL) hasResponseMessage {
+  return !!hasResponseMessage_;
+}
+- (void) setHasResponseMessage:(BOOL) _value_ {
+  hasResponseMessage_ = !!_value_;
+}
+@synthesize responseMessage;
+- (BOOL) hasResponse {
+  return !!hasResponse_;
+}
+- (void) setHasResponse:(BOOL) _value_ {
+  hasResponse_ = !!_value_;
+}
+@synthesize response;
+- (instancetype) init {
+  if ((self = [super init])) {
+    self.responseCode = BResponseCodeRCSuccess;
+    self.responseMessage = @"";
+    self.response = [BResponseType defaultInstance];
   }
   return self;
 }
@@ -2706,26 +3890,8 @@ static BServerResponse* defaultBServerResponseInstance = nil;
   return defaultBServerResponseInstance;
 }
 - (BOOL) isInitialized {
-  if (!self.hasResponseCode) {
-    return NO;
-  }
-  if (self.hasSessionResponse) {
-    if (!self.sessionResponse.isInitialized) {
-      return NO;
-    }
-  }
-  if (self.hasUserTrackingResponse) {
-    if (!self.userTrackingResponse.isInitialized) {
-      return NO;
-    }
-  }
-  if (self.hasProfileUpdate) {
-    if (!self.profileUpdate.isInitialized) {
-      return NO;
-    }
-  }
-  if (self.hasNotificationUpdate) {
-    if (!self.notificationUpdate.isInitialized) {
+  if (self.hasResponse) {
+    if (!self.response.isInitialized) {
       return NO;
     }
   }
@@ -2738,26 +3904,8 @@ static BServerResponse* defaultBServerResponseInstance = nil;
   if (self.hasResponseMessage) {
     [output writeString:2 value:self.responseMessage];
   }
-  if (self.hasSessionResponse) {
-    [output writeMessage:3 value:self.sessionResponse];
-  }
-  if (self.hasUserTrackingResponse) {
-    [output writeMessage:4 value:self.userTrackingResponse];
-  }
-  if (self.hasProfileUpdate) {
-    [output writeMessage:5 value:self.profileUpdate];
-  }
-  if (self.hasProfileQuery) {
-    [output writeMessage:6 value:self.profileQuery];
-  }
-  if (self.hasNotificationUpdate) {
-    [output writeMessage:10 value:self.notificationUpdate];
-  }
-  if (self.hasDebugMessage) {
-    [output writeMessage:12 value:self.debugMessage];
-  }
-  if (self.hasImageUploadReply) {
-    [output writeMessage:13 value:self.imageUploadReply];
+  if (self.hasResponse) {
+    [output writeMessage:3 value:self.response];
   }
   [self.unknownFields writeToCodedOutputStream:output];
 }
@@ -2774,26 +3922,8 @@ static BServerResponse* defaultBServerResponseInstance = nil;
   if (self.hasResponseMessage) {
     size_ += computeStringSize(2, self.responseMessage);
   }
-  if (self.hasSessionResponse) {
-    size_ += computeMessageSize(3, self.sessionResponse);
-  }
-  if (self.hasUserTrackingResponse) {
-    size_ += computeMessageSize(4, self.userTrackingResponse);
-  }
-  if (self.hasProfileUpdate) {
-    size_ += computeMessageSize(5, self.profileUpdate);
-  }
-  if (self.hasProfileQuery) {
-    size_ += computeMessageSize(6, self.profileQuery);
-  }
-  if (self.hasNotificationUpdate) {
-    size_ += computeMessageSize(10, self.notificationUpdate);
-  }
-  if (self.hasDebugMessage) {
-    size_ += computeMessageSize(12, self.debugMessage);
-  }
-  if (self.hasImageUploadReply) {
-    size_ += computeMessageSize(13, self.imageUploadReply);
+  if (self.hasResponse) {
+    size_ += computeMessageSize(3, self.response);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -2836,45 +3966,9 @@ static BServerResponse* defaultBServerResponseInstance = nil;
   if (self.hasResponseMessage) {
     [output appendFormat:@"%@%@: %@\n", indent, @"responseMessage", self.responseMessage];
   }
-  if (self.hasSessionResponse) {
-    [output appendFormat:@"%@%@ {\n", indent, @"sessionResponse"];
-    [self.sessionResponse writeDescriptionTo:output
-                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
-    [output appendFormat:@"%@}\n", indent];
-  }
-  if (self.hasUserTrackingResponse) {
-    [output appendFormat:@"%@%@ {\n", indent, @"userTrackingResponse"];
-    [self.userTrackingResponse writeDescriptionTo:output
-                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
-    [output appendFormat:@"%@}\n", indent];
-  }
-  if (self.hasProfileUpdate) {
-    [output appendFormat:@"%@%@ {\n", indent, @"profileUpdate"];
-    [self.profileUpdate writeDescriptionTo:output
-                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
-    [output appendFormat:@"%@}\n", indent];
-  }
-  if (self.hasProfileQuery) {
-    [output appendFormat:@"%@%@ {\n", indent, @"profileQuery"];
-    [self.profileQuery writeDescriptionTo:output
-                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
-    [output appendFormat:@"%@}\n", indent];
-  }
-  if (self.hasNotificationUpdate) {
-    [output appendFormat:@"%@%@ {\n", indent, @"notificationUpdate"];
-    [self.notificationUpdate writeDescriptionTo:output
-                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
-    [output appendFormat:@"%@}\n", indent];
-  }
-  if (self.hasDebugMessage) {
-    [output appendFormat:@"%@%@ {\n", indent, @"debugMessage"];
-    [self.debugMessage writeDescriptionTo:output
-                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
-    [output appendFormat:@"%@}\n", indent];
-  }
-  if (self.hasImageUploadReply) {
-    [output appendFormat:@"%@%@ {\n", indent, @"imageUploadReply"];
-    [self.imageUploadReply writeDescriptionTo:output
+  if (self.hasResponse) {
+    [output appendFormat:@"%@%@ {\n", indent, @"response"];
+    [self.response writeDescriptionTo:output
                          withIndent:[NSString stringWithFormat:@"%@  ", indent]];
     [output appendFormat:@"%@}\n", indent];
   }
@@ -2887,40 +3981,10 @@ static BServerResponse* defaultBServerResponseInstance = nil;
   if (self.hasResponseMessage) {
     [dictionary setObject: self.responseMessage forKey: @"responseMessage"];
   }
-  if (self.hasSessionResponse) {
+  if (self.hasResponse) {
    NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
-   [self.sessionResponse storeInDictionary:messageDictionary];
-   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"sessionResponse"];
-  }
-  if (self.hasUserTrackingResponse) {
-   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
-   [self.userTrackingResponse storeInDictionary:messageDictionary];
-   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"userTrackingResponse"];
-  }
-  if (self.hasProfileUpdate) {
-   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
-   [self.profileUpdate storeInDictionary:messageDictionary];
-   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"profileUpdate"];
-  }
-  if (self.hasProfileQuery) {
-   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
-   [self.profileQuery storeInDictionary:messageDictionary];
-   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"profileQuery"];
-  }
-  if (self.hasNotificationUpdate) {
-   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
-   [self.notificationUpdate storeInDictionary:messageDictionary];
-   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"notificationUpdate"];
-  }
-  if (self.hasDebugMessage) {
-   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
-   [self.debugMessage storeInDictionary:messageDictionary];
-   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"debugMessage"];
-  }
-  if (self.hasImageUploadReply) {
-   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
-   [self.imageUploadReply storeInDictionary:messageDictionary];
-   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"imageUploadReply"];
+   [self.response storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"response"];
   }
   [self.unknownFields storeInDictionary:dictionary];
 }
@@ -2937,20 +4001,8 @@ static BServerResponse* defaultBServerResponseInstance = nil;
       (!self.hasResponseCode || self.responseCode == otherMessage.responseCode) &&
       self.hasResponseMessage == otherMessage.hasResponseMessage &&
       (!self.hasResponseMessage || [self.responseMessage isEqual:otherMessage.responseMessage]) &&
-      self.hasSessionResponse == otherMessage.hasSessionResponse &&
-      (!self.hasSessionResponse || [self.sessionResponse isEqual:otherMessage.sessionResponse]) &&
-      self.hasUserTrackingResponse == otherMessage.hasUserTrackingResponse &&
-      (!self.hasUserTrackingResponse || [self.userTrackingResponse isEqual:otherMessage.userTrackingResponse]) &&
-      self.hasProfileUpdate == otherMessage.hasProfileUpdate &&
-      (!self.hasProfileUpdate || [self.profileUpdate isEqual:otherMessage.profileUpdate]) &&
-      self.hasProfileQuery == otherMessage.hasProfileQuery &&
-      (!self.hasProfileQuery || [self.profileQuery isEqual:otherMessage.profileQuery]) &&
-      self.hasNotificationUpdate == otherMessage.hasNotificationUpdate &&
-      (!self.hasNotificationUpdate || [self.notificationUpdate isEqual:otherMessage.notificationUpdate]) &&
-      self.hasDebugMessage == otherMessage.hasDebugMessage &&
-      (!self.hasDebugMessage || [self.debugMessage isEqual:otherMessage.debugMessage]) &&
-      self.hasImageUploadReply == otherMessage.hasImageUploadReply &&
-      (!self.hasImageUploadReply || [self.imageUploadReply isEqual:otherMessage.imageUploadReply]) &&
+      self.hasResponse == otherMessage.hasResponse &&
+      (!self.hasResponse || [self.response isEqual:otherMessage.response]) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
@@ -2961,26 +4013,8 @@ static BServerResponse* defaultBServerResponseInstance = nil;
   if (self.hasResponseMessage) {
     hashCode = hashCode * 31 + [self.responseMessage hash];
   }
-  if (self.hasSessionResponse) {
-    hashCode = hashCode * 31 + [self.sessionResponse hash];
-  }
-  if (self.hasUserTrackingResponse) {
-    hashCode = hashCode * 31 + [self.userTrackingResponse hash];
-  }
-  if (self.hasProfileUpdate) {
-    hashCode = hashCode * 31 + [self.profileUpdate hash];
-  }
-  if (self.hasProfileQuery) {
-    hashCode = hashCode * 31 + [self.profileQuery hash];
-  }
-  if (self.hasNotificationUpdate) {
-    hashCode = hashCode * 31 + [self.notificationUpdate hash];
-  }
-  if (self.hasDebugMessage) {
-    hashCode = hashCode * 31 + [self.debugMessage hash];
-  }
-  if (self.hasImageUploadReply) {
-    hashCode = hashCode * 31 + [self.imageUploadReply hash];
+  if (self.hasResponse) {
+    hashCode = hashCode * 31 + [self.response hash];
   }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
@@ -3031,26 +4065,8 @@ static BServerResponse* defaultBServerResponseInstance = nil;
   if (other.hasResponseMessage) {
     [self setResponseMessage:other.responseMessage];
   }
-  if (other.hasSessionResponse) {
-    [self mergeSessionResponse:other.sessionResponse];
-  }
-  if (other.hasUserTrackingResponse) {
-    [self mergeUserTrackingResponse:other.userTrackingResponse];
-  }
-  if (other.hasProfileUpdate) {
-    [self mergeProfileUpdate:other.profileUpdate];
-  }
-  if (other.hasProfileQuery) {
-    [self mergeProfileQuery:other.profileQuery];
-  }
-  if (other.hasNotificationUpdate) {
-    [self mergeNotificationUpdate:other.notificationUpdate];
-  }
-  if (other.hasDebugMessage) {
-    [self mergeDebugMessage:other.debugMessage];
-  }
-  if (other.hasImageUploadReply) {
-    [self mergeImageUploadReply:other.imageUploadReply];
+  if (other.hasResponse) {
+    [self mergeResponse:other.response];
   }
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -3087,66 +4103,12 @@ static BServerResponse* defaultBServerResponseInstance = nil;
         break;
       }
       case 26: {
-        BSessionResponseBuilder* subBuilder = [BSessionResponse builder];
-        if (self.hasSessionResponse) {
-          [subBuilder mergeFrom:self.sessionResponse];
+        BResponseTypeBuilder* subBuilder = [BResponseType builder];
+        if (self.hasResponse) {
+          [subBuilder mergeFrom:self.response];
         }
         [input readMessage:subBuilder extensionRegistry:extensionRegistry];
-        [self setSessionResponse:[subBuilder buildPartial]];
-        break;
-      }
-      case 34: {
-        BUserTrackingResponseBuilder* subBuilder = [BUserTrackingResponse builder];
-        if (self.hasUserTrackingResponse) {
-          [subBuilder mergeFrom:self.userTrackingResponse];
-        }
-        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
-        [self setUserTrackingResponse:[subBuilder buildPartial]];
-        break;
-      }
-      case 42: {
-        BUserProfileUpdateBuilder* subBuilder = [BUserProfileUpdate builder];
-        if (self.hasProfileUpdate) {
-          [subBuilder mergeFrom:self.profileUpdate];
-        }
-        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
-        [self setProfileUpdate:[subBuilder buildPartial]];
-        break;
-      }
-      case 50: {
-        BUserProfileQueryBuilder* subBuilder = [BUserProfileQuery builder];
-        if (self.hasProfileQuery) {
-          [subBuilder mergeFrom:self.profileQuery];
-        }
-        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
-        [self setProfileQuery:[subBuilder buildPartial]];
-        break;
-      }
-      case 82: {
-        BNotificationUpdateBuilder* subBuilder = [BNotificationUpdate builder];
-        if (self.hasNotificationUpdate) {
-          [subBuilder mergeFrom:self.notificationUpdate];
-        }
-        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
-        [self setNotificationUpdate:[subBuilder buildPartial]];
-        break;
-      }
-      case 98: {
-        BDebugMessageBuilder* subBuilder = [BDebugMessage builder];
-        if (self.hasDebugMessage) {
-          [subBuilder mergeFrom:self.debugMessage];
-        }
-        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
-        [self setDebugMessage:[subBuilder buildPartial]];
-        break;
-      }
-      case 106: {
-        BImageUploadBuilder* subBuilder = [BImageUpload builder];
-        if (self.hasImageUploadReply) {
-          [subBuilder mergeFrom:self.imageUploadReply];
-        }
-        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
-        [self setImageUploadReply:[subBuilder buildPartial]];
+        [self setResponse:[subBuilder buildPartial]];
         break;
       }
     }
@@ -3184,214 +4146,34 @@ static BServerResponse* defaultBServerResponseInstance = nil;
   resultServerResponse.responseMessage = @"";
   return self;
 }
-- (BOOL) hasSessionResponse {
-  return resultServerResponse.hasSessionResponse;
+- (BOOL) hasResponse {
+  return resultServerResponse.hasResponse;
 }
-- (BSessionResponse*) sessionResponse {
-  return resultServerResponse.sessionResponse;
+- (BResponseType*) response {
+  return resultServerResponse.response;
 }
-- (BServerResponseBuilder*) setSessionResponse:(BSessionResponse*) value {
-  resultServerResponse.hasSessionResponse = YES;
-  resultServerResponse.sessionResponse = value;
+- (BServerResponseBuilder*) setResponse:(BResponseType*) value {
+  resultServerResponse.hasResponse = YES;
+  resultServerResponse.response = value;
   return self;
 }
-- (BServerResponseBuilder*) setSessionResponseBuilder:(BSessionResponseBuilder*) builderForValue {
-  return [self setSessionResponse:[builderForValue build]];
+- (BServerResponseBuilder*) setResponseBuilder:(BResponseTypeBuilder*) builderForValue {
+  return [self setResponse:[builderForValue build]];
 }
-- (BServerResponseBuilder*) mergeSessionResponse:(BSessionResponse*) value {
-  if (resultServerResponse.hasSessionResponse &&
-      resultServerResponse.sessionResponse != [BSessionResponse defaultInstance]) {
-    resultServerResponse.sessionResponse =
-      [[[BSessionResponse builderWithPrototype:resultServerResponse.sessionResponse] mergeFrom:value] buildPartial];
+- (BServerResponseBuilder*) mergeResponse:(BResponseType*) value {
+  if (resultServerResponse.hasResponse &&
+      resultServerResponse.response != [BResponseType defaultInstance]) {
+    resultServerResponse.response =
+      [[[BResponseType builderWithPrototype:resultServerResponse.response] mergeFrom:value] buildPartial];
   } else {
-    resultServerResponse.sessionResponse = value;
+    resultServerResponse.response = value;
   }
-  resultServerResponse.hasSessionResponse = YES;
+  resultServerResponse.hasResponse = YES;
   return self;
 }
-- (BServerResponseBuilder*) clearSessionResponse {
-  resultServerResponse.hasSessionResponse = NO;
-  resultServerResponse.sessionResponse = [BSessionResponse defaultInstance];
-  return self;
-}
-- (BOOL) hasUserTrackingResponse {
-  return resultServerResponse.hasUserTrackingResponse;
-}
-- (BUserTrackingResponse*) userTrackingResponse {
-  return resultServerResponse.userTrackingResponse;
-}
-- (BServerResponseBuilder*) setUserTrackingResponse:(BUserTrackingResponse*) value {
-  resultServerResponse.hasUserTrackingResponse = YES;
-  resultServerResponse.userTrackingResponse = value;
-  return self;
-}
-- (BServerResponseBuilder*) setUserTrackingResponseBuilder:(BUserTrackingResponseBuilder*) builderForValue {
-  return [self setUserTrackingResponse:[builderForValue build]];
-}
-- (BServerResponseBuilder*) mergeUserTrackingResponse:(BUserTrackingResponse*) value {
-  if (resultServerResponse.hasUserTrackingResponse &&
-      resultServerResponse.userTrackingResponse != [BUserTrackingResponse defaultInstance]) {
-    resultServerResponse.userTrackingResponse =
-      [[[BUserTrackingResponse builderWithPrototype:resultServerResponse.userTrackingResponse] mergeFrom:value] buildPartial];
-  } else {
-    resultServerResponse.userTrackingResponse = value;
-  }
-  resultServerResponse.hasUserTrackingResponse = YES;
-  return self;
-}
-- (BServerResponseBuilder*) clearUserTrackingResponse {
-  resultServerResponse.hasUserTrackingResponse = NO;
-  resultServerResponse.userTrackingResponse = [BUserTrackingResponse defaultInstance];
-  return self;
-}
-- (BOOL) hasProfileUpdate {
-  return resultServerResponse.hasProfileUpdate;
-}
-- (BUserProfileUpdate*) profileUpdate {
-  return resultServerResponse.profileUpdate;
-}
-- (BServerResponseBuilder*) setProfileUpdate:(BUserProfileUpdate*) value {
-  resultServerResponse.hasProfileUpdate = YES;
-  resultServerResponse.profileUpdate = value;
-  return self;
-}
-- (BServerResponseBuilder*) setProfileUpdateBuilder:(BUserProfileUpdateBuilder*) builderForValue {
-  return [self setProfileUpdate:[builderForValue build]];
-}
-- (BServerResponseBuilder*) mergeProfileUpdate:(BUserProfileUpdate*) value {
-  if (resultServerResponse.hasProfileUpdate &&
-      resultServerResponse.profileUpdate != [BUserProfileUpdate defaultInstance]) {
-    resultServerResponse.profileUpdate =
-      [[[BUserProfileUpdate builderWithPrototype:resultServerResponse.profileUpdate] mergeFrom:value] buildPartial];
-  } else {
-    resultServerResponse.profileUpdate = value;
-  }
-  resultServerResponse.hasProfileUpdate = YES;
-  return self;
-}
-- (BServerResponseBuilder*) clearProfileUpdate {
-  resultServerResponse.hasProfileUpdate = NO;
-  resultServerResponse.profileUpdate = [BUserProfileUpdate defaultInstance];
-  return self;
-}
-- (BOOL) hasProfileQuery {
-  return resultServerResponse.hasProfileQuery;
-}
-- (BUserProfileQuery*) profileQuery {
-  return resultServerResponse.profileQuery;
-}
-- (BServerResponseBuilder*) setProfileQuery:(BUserProfileQuery*) value {
-  resultServerResponse.hasProfileQuery = YES;
-  resultServerResponse.profileQuery = value;
-  return self;
-}
-- (BServerResponseBuilder*) setProfileQueryBuilder:(BUserProfileQueryBuilder*) builderForValue {
-  return [self setProfileQuery:[builderForValue build]];
-}
-- (BServerResponseBuilder*) mergeProfileQuery:(BUserProfileQuery*) value {
-  if (resultServerResponse.hasProfileQuery &&
-      resultServerResponse.profileQuery != [BUserProfileQuery defaultInstance]) {
-    resultServerResponse.profileQuery =
-      [[[BUserProfileQuery builderWithPrototype:resultServerResponse.profileQuery] mergeFrom:value] buildPartial];
-  } else {
-    resultServerResponse.profileQuery = value;
-  }
-  resultServerResponse.hasProfileQuery = YES;
-  return self;
-}
-- (BServerResponseBuilder*) clearProfileQuery {
-  resultServerResponse.hasProfileQuery = NO;
-  resultServerResponse.profileQuery = [BUserProfileQuery defaultInstance];
-  return self;
-}
-- (BOOL) hasNotificationUpdate {
-  return resultServerResponse.hasNotificationUpdate;
-}
-- (BNotificationUpdate*) notificationUpdate {
-  return resultServerResponse.notificationUpdate;
-}
-- (BServerResponseBuilder*) setNotificationUpdate:(BNotificationUpdate*) value {
-  resultServerResponse.hasNotificationUpdate = YES;
-  resultServerResponse.notificationUpdate = value;
-  return self;
-}
-- (BServerResponseBuilder*) setNotificationUpdateBuilder:(BNotificationUpdateBuilder*) builderForValue {
-  return [self setNotificationUpdate:[builderForValue build]];
-}
-- (BServerResponseBuilder*) mergeNotificationUpdate:(BNotificationUpdate*) value {
-  if (resultServerResponse.hasNotificationUpdate &&
-      resultServerResponse.notificationUpdate != [BNotificationUpdate defaultInstance]) {
-    resultServerResponse.notificationUpdate =
-      [[[BNotificationUpdate builderWithPrototype:resultServerResponse.notificationUpdate] mergeFrom:value] buildPartial];
-  } else {
-    resultServerResponse.notificationUpdate = value;
-  }
-  resultServerResponse.hasNotificationUpdate = YES;
-  return self;
-}
-- (BServerResponseBuilder*) clearNotificationUpdate {
-  resultServerResponse.hasNotificationUpdate = NO;
-  resultServerResponse.notificationUpdate = [BNotificationUpdate defaultInstance];
-  return self;
-}
-- (BOOL) hasDebugMessage {
-  return resultServerResponse.hasDebugMessage;
-}
-- (BDebugMessage*) debugMessage {
-  return resultServerResponse.debugMessage;
-}
-- (BServerResponseBuilder*) setDebugMessage:(BDebugMessage*) value {
-  resultServerResponse.hasDebugMessage = YES;
-  resultServerResponse.debugMessage = value;
-  return self;
-}
-- (BServerResponseBuilder*) setDebugMessageBuilder:(BDebugMessageBuilder*) builderForValue {
-  return [self setDebugMessage:[builderForValue build]];
-}
-- (BServerResponseBuilder*) mergeDebugMessage:(BDebugMessage*) value {
-  if (resultServerResponse.hasDebugMessage &&
-      resultServerResponse.debugMessage != [BDebugMessage defaultInstance]) {
-    resultServerResponse.debugMessage =
-      [[[BDebugMessage builderWithPrototype:resultServerResponse.debugMessage] mergeFrom:value] buildPartial];
-  } else {
-    resultServerResponse.debugMessage = value;
-  }
-  resultServerResponse.hasDebugMessage = YES;
-  return self;
-}
-- (BServerResponseBuilder*) clearDebugMessage {
-  resultServerResponse.hasDebugMessage = NO;
-  resultServerResponse.debugMessage = [BDebugMessage defaultInstance];
-  return self;
-}
-- (BOOL) hasImageUploadReply {
-  return resultServerResponse.hasImageUploadReply;
-}
-- (BImageUpload*) imageUploadReply {
-  return resultServerResponse.imageUploadReply;
-}
-- (BServerResponseBuilder*) setImageUploadReply:(BImageUpload*) value {
-  resultServerResponse.hasImageUploadReply = YES;
-  resultServerResponse.imageUploadReply = value;
-  return self;
-}
-- (BServerResponseBuilder*) setImageUploadReplyBuilder:(BImageUploadBuilder*) builderForValue {
-  return [self setImageUploadReply:[builderForValue build]];
-}
-- (BServerResponseBuilder*) mergeImageUploadReply:(BImageUpload*) value {
-  if (resultServerResponse.hasImageUploadReply &&
-      resultServerResponse.imageUploadReply != [BImageUpload defaultInstance]) {
-    resultServerResponse.imageUploadReply =
-      [[[BImageUpload builderWithPrototype:resultServerResponse.imageUploadReply] mergeFrom:value] buildPartial];
-  } else {
-    resultServerResponse.imageUploadReply = value;
-  }
-  resultServerResponse.hasImageUploadReply = YES;
-  return self;
-}
-- (BServerResponseBuilder*) clearImageUploadReply {
-  resultServerResponse.hasImageUploadReply = NO;
-  resultServerResponse.imageUploadReply = [BImageUpload defaultInstance];
+- (BServerResponseBuilder*) clearResponse {
+  resultServerResponse.hasResponse = NO;
+  resultServerResponse.response = [BResponseType defaultInstance];
   return self;
 }
 @end

@@ -60,7 +60,7 @@ message AcceptConnectionResponse {
   optional string     userID      = 1;
   optional string     connectionID= 2;
   optional string     message     = 3;
-  repeated Connection conections  = 4;
+  repeated Connection connections = 4;
   repeated UserProfile profiles   = 5;
 }
 

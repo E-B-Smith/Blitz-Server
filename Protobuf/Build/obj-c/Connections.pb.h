@@ -9,6 +9,8 @@
 @class BAcceptConnectionRequestBuilder;
 @class BAcceptConnectionResponse;
 @class BAcceptConnectionResponseBuilder;
+@class BConfirmationRequest;
+@class BConfirmationRequestBuilder;
 @class BConnection;
 @class BConnectionBuilder;
 @class BConnectionRequest;
@@ -37,6 +39,8 @@
 @class BKeyValueBuilder;
 @class BLocation;
 @class BLocationBuilder;
+@class BProfilesFromContactInfo;
+@class BProfilesFromContactInfoBuilder;
 @class BSize;
 @class BSizeBuilder;
 @class BSocialIdentity;
@@ -416,7 +420,7 @@ NSString *NSStringFromBConnectionStatus(BConnectionStatus value);
 #define AcceptConnectionResponse_userID @"userID"
 #define AcceptConnectionResponse_connectionID @"connectionID"
 #define AcceptConnectionResponse_message @"message"
-#define AcceptConnectionResponse_conections @"conections"
+#define AcceptConnectionResponse_connections @"connections"
 #define AcceptConnectionResponse_profiles @"profiles"
 @interface BAcceptConnectionResponse : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
@@ -426,7 +430,7 @@ NSString *NSStringFromBConnectionStatus(BConnectionStatus value);
   NSString* userID;
   NSString* connectionID;
   NSString* message;
-  NSMutableArray * conectionsArray;
+  NSMutableArray * connectionsArray;
   NSMutableArray * profilesArray;
 }
 - (BOOL) hasUserID;
@@ -435,9 +439,9 @@ NSString *NSStringFromBConnectionStatus(BConnectionStatus value);
 @property (readonly, strong) NSString* userID;
 @property (readonly, strong) NSString* connectionID;
 @property (readonly, strong) NSString* message;
-@property (readonly, strong) NSArray * conections;
+@property (readonly, strong) NSArray * connections;
 @property (readonly, strong) NSArray * profiles;
-- (BConnection*)conectionsAtIndex:(NSUInteger)index;
+- (BConnection*)connectionsAtIndex:(NSUInteger)index;
 - (BUserProfile*)profilesAtIndex:(NSUInteger)index;
 
 + (instancetype) defaultInstance;
@@ -490,11 +494,11 @@ NSString *NSStringFromBConnectionStatus(BConnectionStatus value);
 - (BAcceptConnectionResponseBuilder*) setMessage:(NSString*) value;
 - (BAcceptConnectionResponseBuilder*) clearMessage;
 
-- (NSMutableArray *)conections;
-- (BConnection*)conectionsAtIndex:(NSUInteger)index;
-- (BAcceptConnectionResponseBuilder *)addConections:(BConnection*)value;
-- (BAcceptConnectionResponseBuilder *)setConectionsArray:(NSArray *)array;
-- (BAcceptConnectionResponseBuilder *)clearConections;
+- (NSMutableArray *)connections;
+- (BConnection*)connectionsAtIndex:(NSUInteger)index;
+- (BAcceptConnectionResponseBuilder *)addConnections:(BConnection*)value;
+- (BAcceptConnectionResponseBuilder *)setConnectionsArray:(NSArray *)array;
+- (BAcceptConnectionResponseBuilder *)clearConnections;
 
 - (NSMutableArray *)profiles;
 - (BUserProfile*)profilesAtIndex:(NSUInteger)index;

@@ -54,8 +54,6 @@ func notifyTask() {
         Log.Debugf("Exit NotifyTask.")
     } ()
 
-    SendPulseReminders()
-
     notificationsToSend := 0
     notificationErrors := 0
 

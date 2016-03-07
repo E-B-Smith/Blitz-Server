@@ -3784,27 +3784,27 @@ public final class Connections {
         getMessageBytes();
 
     /**
-     * <code>repeated .BlitzMessage.Connection conections = 4;</code>
+     * <code>repeated .BlitzMessage.Connection connections = 4;</code>
      */
     java.util.List<com.blitzhere.BlitzMessage.Connections.Connection> 
-        getConectionsList();
+        getConnectionsList();
     /**
-     * <code>repeated .BlitzMessage.Connection conections = 4;</code>
+     * <code>repeated .BlitzMessage.Connection connections = 4;</code>
      */
-    com.blitzhere.BlitzMessage.Connections.Connection getConections(int index);
+    com.blitzhere.BlitzMessage.Connections.Connection getConnections(int index);
     /**
-     * <code>repeated .BlitzMessage.Connection conections = 4;</code>
+     * <code>repeated .BlitzMessage.Connection connections = 4;</code>
      */
-    int getConectionsCount();
+    int getConnectionsCount();
     /**
-     * <code>repeated .BlitzMessage.Connection conections = 4;</code>
+     * <code>repeated .BlitzMessage.Connection connections = 4;</code>
      */
     java.util.List<? extends com.blitzhere.BlitzMessage.Connections.ConnectionOrBuilder> 
-        getConectionsOrBuilderList();
+        getConnectionsOrBuilderList();
     /**
-     * <code>repeated .BlitzMessage.Connection conections = 4;</code>
+     * <code>repeated .BlitzMessage.Connection connections = 4;</code>
      */
-    com.blitzhere.BlitzMessage.Connections.ConnectionOrBuilder getConectionsOrBuilder(
+    com.blitzhere.BlitzMessage.Connections.ConnectionOrBuilder getConnectionsOrBuilder(
         int index);
 
     /**
@@ -3903,10 +3903,10 @@ public final class Connections {
             }
             case 34: {
               if (!((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
-                conections_ = new java.util.ArrayList<com.blitzhere.BlitzMessage.Connections.Connection>();
+                connections_ = new java.util.ArrayList<com.blitzhere.BlitzMessage.Connections.Connection>();
                 mutable_bitField0_ |= 0x00000008;
               }
-              conections_.add(input.readMessage(com.blitzhere.BlitzMessage.Connections.Connection.PARSER, extensionRegistry));
+              connections_.add(input.readMessage(com.blitzhere.BlitzMessage.Connections.Connection.PARSER, extensionRegistry));
               break;
             }
             case 42: {
@@ -3926,7 +3926,7 @@ public final class Connections {
             e.getMessage()).setUnfinishedMessage(this);
       } finally {
         if (((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
-          conections_ = java.util.Collections.unmodifiableList(conections_);
+          connections_ = java.util.Collections.unmodifiableList(connections_);
         }
         if (((mutable_bitField0_ & 0x00000010) == 0x00000010)) {
           profiles_ = java.util.Collections.unmodifiableList(profiles_);
@@ -4089,39 +4089,39 @@ public final class Connections {
       }
     }
 
-    public static final int CONECTIONS_FIELD_NUMBER = 4;
-    private java.util.List<com.blitzhere.BlitzMessage.Connections.Connection> conections_;
+    public static final int CONNECTIONS_FIELD_NUMBER = 4;
+    private java.util.List<com.blitzhere.BlitzMessage.Connections.Connection> connections_;
     /**
-     * <code>repeated .BlitzMessage.Connection conections = 4;</code>
+     * <code>repeated .BlitzMessage.Connection connections = 4;</code>
      */
-    public java.util.List<com.blitzhere.BlitzMessage.Connections.Connection> getConectionsList() {
-      return conections_;
+    public java.util.List<com.blitzhere.BlitzMessage.Connections.Connection> getConnectionsList() {
+      return connections_;
     }
     /**
-     * <code>repeated .BlitzMessage.Connection conections = 4;</code>
+     * <code>repeated .BlitzMessage.Connection connections = 4;</code>
      */
     public java.util.List<? extends com.blitzhere.BlitzMessage.Connections.ConnectionOrBuilder> 
-        getConectionsOrBuilderList() {
-      return conections_;
+        getConnectionsOrBuilderList() {
+      return connections_;
     }
     /**
-     * <code>repeated .BlitzMessage.Connection conections = 4;</code>
+     * <code>repeated .BlitzMessage.Connection connections = 4;</code>
      */
-    public int getConectionsCount() {
-      return conections_.size();
+    public int getConnectionsCount() {
+      return connections_.size();
     }
     /**
-     * <code>repeated .BlitzMessage.Connection conections = 4;</code>
+     * <code>repeated .BlitzMessage.Connection connections = 4;</code>
      */
-    public com.blitzhere.BlitzMessage.Connections.Connection getConections(int index) {
-      return conections_.get(index);
+    public com.blitzhere.BlitzMessage.Connections.Connection getConnections(int index) {
+      return connections_.get(index);
     }
     /**
-     * <code>repeated .BlitzMessage.Connection conections = 4;</code>
+     * <code>repeated .BlitzMessage.Connection connections = 4;</code>
      */
-    public com.blitzhere.BlitzMessage.Connections.ConnectionOrBuilder getConectionsOrBuilder(
+    public com.blitzhere.BlitzMessage.Connections.ConnectionOrBuilder getConnectionsOrBuilder(
         int index) {
-      return conections_.get(index);
+      return connections_.get(index);
     }
 
     public static final int PROFILES_FIELD_NUMBER = 5;
@@ -4163,7 +4163,7 @@ public final class Connections {
       userID_ = "";
       connectionID_ = "";
       message_ = "";
-      conections_ = java.util.Collections.emptyList();
+      connections_ = java.util.Collections.emptyList();
       profiles_ = java.util.Collections.emptyList();
     }
     private byte memoizedIsInitialized = -1;
@@ -4172,8 +4172,8 @@ public final class Connections {
       if (isInitialized == 1) return true;
       if (isInitialized == 0) return false;
 
-      for (int i = 0; i < getConectionsCount(); i++) {
-        if (!getConections(i).isInitialized()) {
+      for (int i = 0; i < getConnectionsCount(); i++) {
+        if (!getConnections(i).isInitialized()) {
           memoizedIsInitialized = 0;
           return false;
         }
@@ -4200,8 +4200,8 @@ public final class Connections {
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         output.writeBytes(3, getMessageBytes());
       }
-      for (int i = 0; i < conections_.size(); i++) {
-        output.writeMessage(4, conections_.get(i));
+      for (int i = 0; i < connections_.size(); i++) {
+        output.writeMessage(4, connections_.get(i));
       }
       for (int i = 0; i < profiles_.size(); i++) {
         output.writeMessage(5, profiles_.get(i));
@@ -4227,9 +4227,9 @@ public final class Connections {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(3, getMessageBytes());
       }
-      for (int i = 0; i < conections_.size(); i++) {
+      for (int i = 0; i < connections_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(4, conections_.get(i));
+          .computeMessageSize(4, connections_.get(i));
       }
       for (int i = 0; i < profiles_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
@@ -4344,7 +4344,7 @@ public final class Connections {
       }
       private void maybeForceBuilderInitialization() {
         if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-          getConectionsFieldBuilder();
+          getConnectionsFieldBuilder();
           getProfilesFieldBuilder();
         }
       }
@@ -4360,11 +4360,11 @@ public final class Connections {
         bitField0_ = (bitField0_ & ~0x00000002);
         message_ = "";
         bitField0_ = (bitField0_ & ~0x00000004);
-        if (conectionsBuilder_ == null) {
-          conections_ = java.util.Collections.emptyList();
+        if (connectionsBuilder_ == null) {
+          connections_ = java.util.Collections.emptyList();
           bitField0_ = (bitField0_ & ~0x00000008);
         } else {
-          conectionsBuilder_.clear();
+          connectionsBuilder_.clear();
         }
         if (profilesBuilder_ == null) {
           profiles_ = java.util.Collections.emptyList();
@@ -4412,14 +4412,14 @@ public final class Connections {
           to_bitField0_ |= 0x00000004;
         }
         result.message_ = message_;
-        if (conectionsBuilder_ == null) {
+        if (connectionsBuilder_ == null) {
           if (((bitField0_ & 0x00000008) == 0x00000008)) {
-            conections_ = java.util.Collections.unmodifiableList(conections_);
+            connections_ = java.util.Collections.unmodifiableList(connections_);
             bitField0_ = (bitField0_ & ~0x00000008);
           }
-          result.conections_ = conections_;
+          result.connections_ = connections_;
         } else {
-          result.conections_ = conectionsBuilder_.build();
+          result.connections_ = connectionsBuilder_.build();
         }
         if (profilesBuilder_ == null) {
           if (((bitField0_ & 0x00000010) == 0x00000010)) {
@@ -4461,29 +4461,29 @@ public final class Connections {
           message_ = other.message_;
           onChanged();
         }
-        if (conectionsBuilder_ == null) {
-          if (!other.conections_.isEmpty()) {
-            if (conections_.isEmpty()) {
-              conections_ = other.conections_;
+        if (connectionsBuilder_ == null) {
+          if (!other.connections_.isEmpty()) {
+            if (connections_.isEmpty()) {
+              connections_ = other.connections_;
               bitField0_ = (bitField0_ & ~0x00000008);
             } else {
-              ensureConectionsIsMutable();
-              conections_.addAll(other.conections_);
+              ensureConnectionsIsMutable();
+              connections_.addAll(other.connections_);
             }
             onChanged();
           }
         } else {
-          if (!other.conections_.isEmpty()) {
-            if (conectionsBuilder_.isEmpty()) {
-              conectionsBuilder_.dispose();
-              conectionsBuilder_ = null;
-              conections_ = other.conections_;
+          if (!other.connections_.isEmpty()) {
+            if (connectionsBuilder_.isEmpty()) {
+              connectionsBuilder_.dispose();
+              connectionsBuilder_ = null;
+              connections_ = other.connections_;
               bitField0_ = (bitField0_ & ~0x00000008);
-              conectionsBuilder_ = 
+              connectionsBuilder_ = 
                 com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
-                   getConectionsFieldBuilder() : null;
+                   getConnectionsFieldBuilder() : null;
             } else {
-              conectionsBuilder_.addAllMessages(other.conections_);
+              connectionsBuilder_.addAllMessages(other.connections_);
             }
           }
         }
@@ -4518,8 +4518,8 @@ public final class Connections {
       }
 
       public final boolean isInitialized() {
-        for (int i = 0; i < getConectionsCount(); i++) {
-          if (!getConections(i).isInitialized()) {
+        for (int i = 0; i < getConnectionsCount(); i++) {
+          if (!getConnections(i).isInitialized()) {
             
             return false;
           }
@@ -4780,244 +4780,244 @@ public final class Connections {
         return this;
       }
 
-      private java.util.List<com.blitzhere.BlitzMessage.Connections.Connection> conections_ =
+      private java.util.List<com.blitzhere.BlitzMessage.Connections.Connection> connections_ =
         java.util.Collections.emptyList();
-      private void ensureConectionsIsMutable() {
+      private void ensureConnectionsIsMutable() {
         if (!((bitField0_ & 0x00000008) == 0x00000008)) {
-          conections_ = new java.util.ArrayList<com.blitzhere.BlitzMessage.Connections.Connection>(conections_);
+          connections_ = new java.util.ArrayList<com.blitzhere.BlitzMessage.Connections.Connection>(connections_);
           bitField0_ |= 0x00000008;
          }
       }
 
       private com.google.protobuf.RepeatedFieldBuilder<
-          com.blitzhere.BlitzMessage.Connections.Connection, com.blitzhere.BlitzMessage.Connections.Connection.Builder, com.blitzhere.BlitzMessage.Connections.ConnectionOrBuilder> conectionsBuilder_;
+          com.blitzhere.BlitzMessage.Connections.Connection, com.blitzhere.BlitzMessage.Connections.Connection.Builder, com.blitzhere.BlitzMessage.Connections.ConnectionOrBuilder> connectionsBuilder_;
 
       /**
-       * <code>repeated .BlitzMessage.Connection conections = 4;</code>
+       * <code>repeated .BlitzMessage.Connection connections = 4;</code>
        */
-      public java.util.List<com.blitzhere.BlitzMessage.Connections.Connection> getConectionsList() {
-        if (conectionsBuilder_ == null) {
-          return java.util.Collections.unmodifiableList(conections_);
+      public java.util.List<com.blitzhere.BlitzMessage.Connections.Connection> getConnectionsList() {
+        if (connectionsBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(connections_);
         } else {
-          return conectionsBuilder_.getMessageList();
+          return connectionsBuilder_.getMessageList();
         }
       }
       /**
-       * <code>repeated .BlitzMessage.Connection conections = 4;</code>
+       * <code>repeated .BlitzMessage.Connection connections = 4;</code>
        */
-      public int getConectionsCount() {
-        if (conectionsBuilder_ == null) {
-          return conections_.size();
+      public int getConnectionsCount() {
+        if (connectionsBuilder_ == null) {
+          return connections_.size();
         } else {
-          return conectionsBuilder_.getCount();
+          return connectionsBuilder_.getCount();
         }
       }
       /**
-       * <code>repeated .BlitzMessage.Connection conections = 4;</code>
+       * <code>repeated .BlitzMessage.Connection connections = 4;</code>
        */
-      public com.blitzhere.BlitzMessage.Connections.Connection getConections(int index) {
-        if (conectionsBuilder_ == null) {
-          return conections_.get(index);
+      public com.blitzhere.BlitzMessage.Connections.Connection getConnections(int index) {
+        if (connectionsBuilder_ == null) {
+          return connections_.get(index);
         } else {
-          return conectionsBuilder_.getMessage(index);
+          return connectionsBuilder_.getMessage(index);
         }
       }
       /**
-       * <code>repeated .BlitzMessage.Connection conections = 4;</code>
+       * <code>repeated .BlitzMessage.Connection connections = 4;</code>
        */
-      public Builder setConections(
+      public Builder setConnections(
           int index, com.blitzhere.BlitzMessage.Connections.Connection value) {
-        if (conectionsBuilder_ == null) {
+        if (connectionsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          ensureConectionsIsMutable();
-          conections_.set(index, value);
+          ensureConnectionsIsMutable();
+          connections_.set(index, value);
           onChanged();
         } else {
-          conectionsBuilder_.setMessage(index, value);
+          connectionsBuilder_.setMessage(index, value);
         }
         return this;
       }
       /**
-       * <code>repeated .BlitzMessage.Connection conections = 4;</code>
+       * <code>repeated .BlitzMessage.Connection connections = 4;</code>
        */
-      public Builder setConections(
+      public Builder setConnections(
           int index, com.blitzhere.BlitzMessage.Connections.Connection.Builder builderForValue) {
-        if (conectionsBuilder_ == null) {
-          ensureConectionsIsMutable();
-          conections_.set(index, builderForValue.build());
+        if (connectionsBuilder_ == null) {
+          ensureConnectionsIsMutable();
+          connections_.set(index, builderForValue.build());
           onChanged();
         } else {
-          conectionsBuilder_.setMessage(index, builderForValue.build());
+          connectionsBuilder_.setMessage(index, builderForValue.build());
         }
         return this;
       }
       /**
-       * <code>repeated .BlitzMessage.Connection conections = 4;</code>
+       * <code>repeated .BlitzMessage.Connection connections = 4;</code>
        */
-      public Builder addConections(com.blitzhere.BlitzMessage.Connections.Connection value) {
-        if (conectionsBuilder_ == null) {
+      public Builder addConnections(com.blitzhere.BlitzMessage.Connections.Connection value) {
+        if (connectionsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          ensureConectionsIsMutable();
-          conections_.add(value);
+          ensureConnectionsIsMutable();
+          connections_.add(value);
           onChanged();
         } else {
-          conectionsBuilder_.addMessage(value);
+          connectionsBuilder_.addMessage(value);
         }
         return this;
       }
       /**
-       * <code>repeated .BlitzMessage.Connection conections = 4;</code>
+       * <code>repeated .BlitzMessage.Connection connections = 4;</code>
        */
-      public Builder addConections(
+      public Builder addConnections(
           int index, com.blitzhere.BlitzMessage.Connections.Connection value) {
-        if (conectionsBuilder_ == null) {
+        if (connectionsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          ensureConectionsIsMutable();
-          conections_.add(index, value);
+          ensureConnectionsIsMutable();
+          connections_.add(index, value);
           onChanged();
         } else {
-          conectionsBuilder_.addMessage(index, value);
+          connectionsBuilder_.addMessage(index, value);
         }
         return this;
       }
       /**
-       * <code>repeated .BlitzMessage.Connection conections = 4;</code>
+       * <code>repeated .BlitzMessage.Connection connections = 4;</code>
        */
-      public Builder addConections(
+      public Builder addConnections(
           com.blitzhere.BlitzMessage.Connections.Connection.Builder builderForValue) {
-        if (conectionsBuilder_ == null) {
-          ensureConectionsIsMutable();
-          conections_.add(builderForValue.build());
+        if (connectionsBuilder_ == null) {
+          ensureConnectionsIsMutable();
+          connections_.add(builderForValue.build());
           onChanged();
         } else {
-          conectionsBuilder_.addMessage(builderForValue.build());
+          connectionsBuilder_.addMessage(builderForValue.build());
         }
         return this;
       }
       /**
-       * <code>repeated .BlitzMessage.Connection conections = 4;</code>
+       * <code>repeated .BlitzMessage.Connection connections = 4;</code>
        */
-      public Builder addConections(
+      public Builder addConnections(
           int index, com.blitzhere.BlitzMessage.Connections.Connection.Builder builderForValue) {
-        if (conectionsBuilder_ == null) {
-          ensureConectionsIsMutable();
-          conections_.add(index, builderForValue.build());
+        if (connectionsBuilder_ == null) {
+          ensureConnectionsIsMutable();
+          connections_.add(index, builderForValue.build());
           onChanged();
         } else {
-          conectionsBuilder_.addMessage(index, builderForValue.build());
+          connectionsBuilder_.addMessage(index, builderForValue.build());
         }
         return this;
       }
       /**
-       * <code>repeated .BlitzMessage.Connection conections = 4;</code>
+       * <code>repeated .BlitzMessage.Connection connections = 4;</code>
        */
-      public Builder addAllConections(
+      public Builder addAllConnections(
           java.lang.Iterable<? extends com.blitzhere.BlitzMessage.Connections.Connection> values) {
-        if (conectionsBuilder_ == null) {
-          ensureConectionsIsMutable();
+        if (connectionsBuilder_ == null) {
+          ensureConnectionsIsMutable();
           com.google.protobuf.AbstractMessageLite.Builder.addAll(
-              values, conections_);
+              values, connections_);
           onChanged();
         } else {
-          conectionsBuilder_.addAllMessages(values);
+          connectionsBuilder_.addAllMessages(values);
         }
         return this;
       }
       /**
-       * <code>repeated .BlitzMessage.Connection conections = 4;</code>
+       * <code>repeated .BlitzMessage.Connection connections = 4;</code>
        */
-      public Builder clearConections() {
-        if (conectionsBuilder_ == null) {
-          conections_ = java.util.Collections.emptyList();
+      public Builder clearConnections() {
+        if (connectionsBuilder_ == null) {
+          connections_ = java.util.Collections.emptyList();
           bitField0_ = (bitField0_ & ~0x00000008);
           onChanged();
         } else {
-          conectionsBuilder_.clear();
+          connectionsBuilder_.clear();
         }
         return this;
       }
       /**
-       * <code>repeated .BlitzMessage.Connection conections = 4;</code>
+       * <code>repeated .BlitzMessage.Connection connections = 4;</code>
        */
-      public Builder removeConections(int index) {
-        if (conectionsBuilder_ == null) {
-          ensureConectionsIsMutable();
-          conections_.remove(index);
+      public Builder removeConnections(int index) {
+        if (connectionsBuilder_ == null) {
+          ensureConnectionsIsMutable();
+          connections_.remove(index);
           onChanged();
         } else {
-          conectionsBuilder_.remove(index);
+          connectionsBuilder_.remove(index);
         }
         return this;
       }
       /**
-       * <code>repeated .BlitzMessage.Connection conections = 4;</code>
+       * <code>repeated .BlitzMessage.Connection connections = 4;</code>
        */
-      public com.blitzhere.BlitzMessage.Connections.Connection.Builder getConectionsBuilder(
+      public com.blitzhere.BlitzMessage.Connections.Connection.Builder getConnectionsBuilder(
           int index) {
-        return getConectionsFieldBuilder().getBuilder(index);
+        return getConnectionsFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .BlitzMessage.Connection conections = 4;</code>
+       * <code>repeated .BlitzMessage.Connection connections = 4;</code>
        */
-      public com.blitzhere.BlitzMessage.Connections.ConnectionOrBuilder getConectionsOrBuilder(
+      public com.blitzhere.BlitzMessage.Connections.ConnectionOrBuilder getConnectionsOrBuilder(
           int index) {
-        if (conectionsBuilder_ == null) {
-          return conections_.get(index);  } else {
-          return conectionsBuilder_.getMessageOrBuilder(index);
+        if (connectionsBuilder_ == null) {
+          return connections_.get(index);  } else {
+          return connectionsBuilder_.getMessageOrBuilder(index);
         }
       }
       /**
-       * <code>repeated .BlitzMessage.Connection conections = 4;</code>
+       * <code>repeated .BlitzMessage.Connection connections = 4;</code>
        */
       public java.util.List<? extends com.blitzhere.BlitzMessage.Connections.ConnectionOrBuilder> 
-           getConectionsOrBuilderList() {
-        if (conectionsBuilder_ != null) {
-          return conectionsBuilder_.getMessageOrBuilderList();
+           getConnectionsOrBuilderList() {
+        if (connectionsBuilder_ != null) {
+          return connectionsBuilder_.getMessageOrBuilderList();
         } else {
-          return java.util.Collections.unmodifiableList(conections_);
+          return java.util.Collections.unmodifiableList(connections_);
         }
       }
       /**
-       * <code>repeated .BlitzMessage.Connection conections = 4;</code>
+       * <code>repeated .BlitzMessage.Connection connections = 4;</code>
        */
-      public com.blitzhere.BlitzMessage.Connections.Connection.Builder addConectionsBuilder() {
-        return getConectionsFieldBuilder().addBuilder(
+      public com.blitzhere.BlitzMessage.Connections.Connection.Builder addConnectionsBuilder() {
+        return getConnectionsFieldBuilder().addBuilder(
             com.blitzhere.BlitzMessage.Connections.Connection.getDefaultInstance());
       }
       /**
-       * <code>repeated .BlitzMessage.Connection conections = 4;</code>
+       * <code>repeated .BlitzMessage.Connection connections = 4;</code>
        */
-      public com.blitzhere.BlitzMessage.Connections.Connection.Builder addConectionsBuilder(
+      public com.blitzhere.BlitzMessage.Connections.Connection.Builder addConnectionsBuilder(
           int index) {
-        return getConectionsFieldBuilder().addBuilder(
+        return getConnectionsFieldBuilder().addBuilder(
             index, com.blitzhere.BlitzMessage.Connections.Connection.getDefaultInstance());
       }
       /**
-       * <code>repeated .BlitzMessage.Connection conections = 4;</code>
+       * <code>repeated .BlitzMessage.Connection connections = 4;</code>
        */
       public java.util.List<com.blitzhere.BlitzMessage.Connections.Connection.Builder> 
-           getConectionsBuilderList() {
-        return getConectionsFieldBuilder().getBuilderList();
+           getConnectionsBuilderList() {
+        return getConnectionsFieldBuilder().getBuilderList();
       }
       private com.google.protobuf.RepeatedFieldBuilder<
           com.blitzhere.BlitzMessage.Connections.Connection, com.blitzhere.BlitzMessage.Connections.Connection.Builder, com.blitzhere.BlitzMessage.Connections.ConnectionOrBuilder> 
-          getConectionsFieldBuilder() {
-        if (conectionsBuilder_ == null) {
-          conectionsBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+          getConnectionsFieldBuilder() {
+        if (connectionsBuilder_ == null) {
+          connectionsBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
               com.blitzhere.BlitzMessage.Connections.Connection, com.blitzhere.BlitzMessage.Connections.Connection.Builder, com.blitzhere.BlitzMessage.Connections.ConnectionOrBuilder>(
-                  conections_,
+                  connections_,
                   ((bitField0_ & 0x00000008) == 0x00000008),
                   getParentForChildren(),
                   isClean());
-          conections_ = null;
+          connections_ = null;
         }
-        return conectionsBuilder_;
+        return connectionsBuilder_;
       }
 
       private java.util.List<com.blitzhere.BlitzMessage.UserProfiles.UserProfile> profiles_ =
@@ -5319,15 +5319,15 @@ public final class Connections {
       "\t\022\017\n\007message\030\003 \001(\t\022.\n\013contactInfo\030\004 \001(\0132" +
       "\031.BlitzMessage.ContactInfo\022+\n\010profiles\030\005" +
       " \003(\0132\031.BlitzMessage.UserProfile\022\030\n\020confi" +
-      "rmationCode\030\006 \001(\t\"\254\001\n\030AcceptConnectionRe" +
+      "rmationCode\030\006 \001(\t\"\255\001\n\030AcceptConnectionRe" +
       "sponse\022\016\n\006userID\030\001 \001(\t\022\024\n\014connectionID\030\002" +
-      " \001(\t\022\017\n\007message\030\003 \001(\t\022,\n\nconections\030\004 \003(" +
-      "\0132\030.BlitzMessage.Connection\022+\n\010profiles\030" +
-      "\005 \003(\0132\031.BlitzMessage.UserProfile*^\n\020Conn" +
-      "ectionStatus\022\r\n\tCSUnknown\020\000\022\r\n\tCSInviter",
-      "\020\001\022\r\n\tCSInvitee\020\002\022\r\n\tCSIgnored\020\003\022\016\n\nCSAc" +
-      "cepted\020\004B/\n\032com.blitzhere.BlitzMessage\210\001" +
-      "\001\322>\002\n\000\322>\003\022\001B\322>\002\030\001"
+      " \001(\t\022\017\n\007message\030\003 \001(\t\022-\n\013connections\030\004 \003" +
+      "(\0132\030.BlitzMessage.Connection\022+\n\010profiles" +
+      "\030\005 \003(\0132\031.BlitzMessage.UserProfile*^\n\020Con" +
+      "nectionStatus\022\r\n\tCSUnknown\020\000\022\r\n\tCSInvite",
+      "r\020\001\022\r\n\tCSInvitee\020\002\022\r\n\tCSIgnored\020\003\022\016\n\nCSA" +
+      "ccepted\020\004B/\n\032com.blitzhere.BlitzMessage\210" +
+      "\001\001\322>\002\n\000\322>\003\022\001B\322>\002\030\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -5372,7 +5372,7 @@ public final class Connections {
     internal_static_BlitzMessage_AcceptConnectionResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_BlitzMessage_AcceptConnectionResponse_descriptor,
-        new java.lang.String[] { "UserID", "ConnectionID", "Message", "Conections", "Profiles", });
+        new java.lang.String[] { "UserID", "ConnectionID", "Message", "Connections", "Profiles", });
     com.google.protobuf.ExtensionRegistry registry =
         com.google.protobuf.ExtensionRegistry.newInstance();
     registry.add(google.protobuf.ObjectivecDescriptor.objectivecFileOptions);

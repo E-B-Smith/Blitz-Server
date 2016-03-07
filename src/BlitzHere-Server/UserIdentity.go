@@ -9,12 +9,10 @@ package main
 import (
     "fmt"
     "strings"
-    "net/http"
     "unicode/utf8"
     "violent.blue/GoKit/Log"
     "violent.blue/GoKit/Util"
     "violent.blue/GoKit/pgsql"
-    "github.com/golang/protobuf/proto"
     "BlitzMessage"
 )
 
@@ -115,7 +113,7 @@ func ExistingProfileFromIdentities(identities []string) *BlitzMessage.UserProfil
     Log.LogFunctionName()
 
     if len(identities) == 0 { return nil }
-    var profile *BlitzMessage.Profile = nil
+    var profile *BlitzMessage.UserProfile = nil
 
     queryP1 :=
         "select useridentitytable.userid from useridentitytable" +
@@ -173,7 +171,7 @@ func ExistingProfileFromIdentities(identities []string) *BlitzMessage.UserProfil
 func ProfilesFromContactInfo(profilesIn []*BlitzMessage.UserProfile) []*BlitzMessage.UserProfile {
     Log.LogFunctionName()
 
-    profileMap := make(map[string]*BlitzMessage.Profile)
+    profileMap := make(map[string]*BlitzMessage.UserProfile)
     for _, profile := range profilesIn {
         name := "<Anon>"
         if profile.Name != nil { name = *profile.Name }
@@ -220,7 +218,7 @@ func ProfilesFromContactInfo(profilesIn []*BlitzMessage.UserProfile) []*BlitzMes
         }
     }
 
-    profilesOut := make([]*BlitzMessage.Profile, 0, len(profileMap))
+    profilesOut := make([]*BlitzMessage.UserProfile, 0, len(profileMap))
     for _, profile := range profileMap {
         profilesOut = append(profilesOut, profile)
     }
@@ -229,27 +227,20 @@ func ProfilesFromContactInfo(profilesIn []*BlitzMessage.UserProfile) []*BlitzMes
 }
 
 
-func ProfilesFromContactInfoRequest(writer http.ResponseWriter,
-            session *Session,
-            profilesFromContactInfo *BlitzMessage.ProfilesFromContactInfo) {
+func ProfilesFromContactInfoRequest(
+        session *Session,
+        profilesFromContactInfo *BlitzMessage.ProfilesFromContactInfo,
+        ) *BlitzMessage.ServerResponse {
     Log.LogFunctionName()
 
-    profileUpdate := BlitzMessage.ProfileUpdate { }
+    profileUpdate := BlitzMessage.UserProfileUpdate { }
     profileUpdate.Profiles = ProfilesFromContactInfo(profilesFromContactInfo.Profiles)
 
     code := BlitzMessage.ResponseCode_RCSuccess
     response := &BlitzMessage.ServerResponse {
         ResponseCode:       &code,
-        Response:           &BlitzMessage.ServerResponse_ProfileUpdate { ProfileUpdate: &profileUpdate },
+        Response:           &BlitzMessage.ResponseType { ProfileUpdate: &profileUpdate },
     }
-
-    data, error := proto.Marshal(response)
-    if error != nil {
-        Log.Errorf("Error marshaling data: %v.", error)
-        SendError(writer, BlitzMessage.ResponseCode_RCServerError, error)
-        return
-    }
-
-    writer.Write(data)
+    return response
 }
 

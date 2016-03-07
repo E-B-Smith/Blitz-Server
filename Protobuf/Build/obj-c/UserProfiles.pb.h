@@ -5,6 +5,8 @@
 #import "Types.pb.h"
 // @@protoc_insertion_point(imports)
 
+@class BConfirmationRequest;
+@class BConfirmationRequestBuilder;
 @class BContactInfo;
 @class BContactInfoBuilder;
 @class BCoordinate;
@@ -27,6 +29,8 @@
 @class BKeyValueBuilder;
 @class BLocation;
 @class BLocationBuilder;
+@class BProfilesFromContactInfo;
+@class BProfilesFromContactInfoBuilder;
 @class BSize;
 @class BSizeBuilder;
 @class BSocialIdentity;
@@ -920,6 +924,140 @@ NSString *NSStringFromBImageContent(BImageContent value);
 - (BUserProfileQueryBuilder *)addUserIDs:(NSString*)value;
 - (BUserProfileQueryBuilder *)setUserIDsArray:(NSArray *)array;
 - (BUserProfileQueryBuilder *)clearUserIDs;
+@end
+
+#define ConfirmationRequest_contactInfo @"contactInfo"
+#define ConfirmationRequest_profile @"profile"
+#define ConfirmationRequest_confirmationCode @"confirmationCode"
+#define ConfirmationRequest_inviterUserID @"inviterUserID"
+@interface BConfirmationRequest : PBGeneratedMessage<GeneratedMessageProtocol> {
+@private
+  BOOL hasConfirmationCode_:1;
+  BOOL hasInviterUserID_:1;
+  BOOL hasContactInfo_:1;
+  BOOL hasProfile_:1;
+  NSString* confirmationCode;
+  NSString* inviterUserID;
+  BContactInfo* contactInfo;
+  BUserProfile* profile;
+}
+- (BOOL) hasContactInfo;
+- (BOOL) hasProfile;
+- (BOOL) hasConfirmationCode;
+- (BOOL) hasInviterUserID;
+@property (readonly, strong) BContactInfo* contactInfo;
+@property (readonly, strong) BUserProfile* profile;
+@property (readonly, strong) NSString* confirmationCode;
+@property (readonly, strong) NSString* inviterUserID;
+
++ (instancetype) defaultInstance;
+- (instancetype) defaultInstance;
+
+- (BOOL) isInitialized;
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
+- (BConfirmationRequestBuilder*) builder;
++ (BConfirmationRequestBuilder*) builder;
++ (BConfirmationRequestBuilder*) builderWithPrototype:(BConfirmationRequest*) prototype;
+- (BConfirmationRequestBuilder*) toBuilder;
+
++ (BConfirmationRequest*) parseFromData:(NSData*) data;
++ (BConfirmationRequest*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (BConfirmationRequest*) parseFromInputStream:(NSInputStream*) input;
++ (BConfirmationRequest*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (BConfirmationRequest*) parseFromCodedInputStream:(PBCodedInputStream*) input;
++ (BConfirmationRequest*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+@end
+
+@interface BConfirmationRequestBuilder : PBGeneratedMessageBuilder {
+@private
+  BConfirmationRequest* resultConfirmationRequest;
+}
+
+- (BConfirmationRequest*) defaultInstance;
+
+- (BConfirmationRequestBuilder*) clear;
+- (BConfirmationRequestBuilder*) clone;
+
+- (BConfirmationRequest*) build;
+- (BConfirmationRequest*) buildPartial;
+
+- (BConfirmationRequestBuilder*) mergeFrom:(BConfirmationRequest*) other;
+- (BConfirmationRequestBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
+- (BConfirmationRequestBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+
+- (BOOL) hasContactInfo;
+- (BContactInfo*) contactInfo;
+- (BConfirmationRequestBuilder*) setContactInfo:(BContactInfo*) value;
+- (BConfirmationRequestBuilder*) setContactInfoBuilder:(BContactInfoBuilder*) builderForValue;
+- (BConfirmationRequestBuilder*) mergeContactInfo:(BContactInfo*) value;
+- (BConfirmationRequestBuilder*) clearContactInfo;
+
+- (BOOL) hasProfile;
+- (BUserProfile*) profile;
+- (BConfirmationRequestBuilder*) setProfile:(BUserProfile*) value;
+- (BConfirmationRequestBuilder*) setProfileBuilder:(BUserProfileBuilder*) builderForValue;
+- (BConfirmationRequestBuilder*) mergeProfile:(BUserProfile*) value;
+- (BConfirmationRequestBuilder*) clearProfile;
+
+- (BOOL) hasConfirmationCode;
+- (NSString*) confirmationCode;
+- (BConfirmationRequestBuilder*) setConfirmationCode:(NSString*) value;
+- (BConfirmationRequestBuilder*) clearConfirmationCode;
+
+- (BOOL) hasInviterUserID;
+- (NSString*) inviterUserID;
+- (BConfirmationRequestBuilder*) setInviterUserID:(NSString*) value;
+- (BConfirmationRequestBuilder*) clearInviterUserID;
+@end
+
+#define ProfilesFromContactInfo_profiles @"profiles"
+@interface BProfilesFromContactInfo : PBGeneratedMessage<GeneratedMessageProtocol> {
+@private
+  NSMutableArray * profilesArray;
+}
+@property (readonly, strong) NSArray * profiles;
+- (BUserProfile*)profilesAtIndex:(NSUInteger)index;
+
++ (instancetype) defaultInstance;
+- (instancetype) defaultInstance;
+
+- (BOOL) isInitialized;
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
+- (BProfilesFromContactInfoBuilder*) builder;
++ (BProfilesFromContactInfoBuilder*) builder;
++ (BProfilesFromContactInfoBuilder*) builderWithPrototype:(BProfilesFromContactInfo*) prototype;
+- (BProfilesFromContactInfoBuilder*) toBuilder;
+
++ (BProfilesFromContactInfo*) parseFromData:(NSData*) data;
++ (BProfilesFromContactInfo*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (BProfilesFromContactInfo*) parseFromInputStream:(NSInputStream*) input;
++ (BProfilesFromContactInfo*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (BProfilesFromContactInfo*) parseFromCodedInputStream:(PBCodedInputStream*) input;
++ (BProfilesFromContactInfo*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+@end
+
+@interface BProfilesFromContactInfoBuilder : PBGeneratedMessageBuilder {
+@private
+  BProfilesFromContactInfo* resultProfilesFromContactInfo;
+}
+
+- (BProfilesFromContactInfo*) defaultInstance;
+
+- (BProfilesFromContactInfoBuilder*) clear;
+- (BProfilesFromContactInfoBuilder*) clone;
+
+- (BProfilesFromContactInfo*) build;
+- (BProfilesFromContactInfo*) buildPartial;
+
+- (BProfilesFromContactInfoBuilder*) mergeFrom:(BProfilesFromContactInfo*) other;
+- (BProfilesFromContactInfoBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
+- (BProfilesFromContactInfoBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+
+- (NSMutableArray *)profiles;
+- (BUserProfile*)profilesAtIndex:(NSUInteger)index;
+- (BProfilesFromContactInfoBuilder *)addProfiles:(BUserProfile*)value;
+- (BProfilesFromContactInfoBuilder *)setProfilesArray:(NSArray *)array;
+- (BProfilesFromContactInfoBuilder *)clearProfiles;
 @end
 
 

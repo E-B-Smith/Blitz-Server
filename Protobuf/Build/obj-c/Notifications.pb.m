@@ -71,7 +71,7 @@ NSString *NSStringFromBNotificationStatus(BNotificationStatus value) {
 @interface BNotification ()
 @property (strong) NSString* messageID;
 @property (strong) NSString* senderID;
-@property (strong) NSString* recipients;
+@property (strong) NSMutableArray * recipientsArray;
 @property (strong) BTimestamp* creationDate;
 @property (strong) BTimestamp* notificationDate;
 @property (strong) BTimestamp* readDate;
@@ -98,13 +98,8 @@ NSString *NSStringFromBNotificationStatus(BNotificationStatus value) {
   hasSenderID_ = !!_value_;
 }
 @synthesize senderID;
-- (BOOL) hasRecipients {
-  return !!hasRecipients_;
-}
-- (void) setHasRecipients:(BOOL) _value_ {
-  hasRecipients_ = !!_value_;
-}
-@synthesize recipients;
+@synthesize recipientsArray;
+@dynamic recipients;
 - (BOOL) hasCreationDate {
   return !!hasCreationDate_;
 }
@@ -165,7 +160,6 @@ NSString *NSStringFromBNotificationStatus(BNotificationStatus value) {
   if ((self = [super init])) {
     self.messageID = @"";
     self.senderID = @"";
-    self.recipients = @"";
     self.creationDate = [BTimestamp defaultInstance];
     self.notificationDate = [BTimestamp defaultInstance];
     self.readDate = [BTimestamp defaultInstance];
@@ -188,6 +182,12 @@ static BNotification* defaultBNotificationInstance = nil;
 }
 - (instancetype) defaultInstance {
   return defaultBNotificationInstance;
+}
+- (NSArray *)recipients {
+  return recipientsArray;
+}
+- (NSString*)recipientsAtIndex:(NSUInteger)index {
+  return [recipientsArray objectAtIndex:index];
 }
 - (BOOL) isInitialized {
   if (self.hasCreationDate) {
@@ -214,9 +214,9 @@ static BNotification* defaultBNotificationInstance = nil;
   if (self.hasSenderID) {
     [output writeString:2 value:self.senderID];
   }
-  if (self.hasRecipients) {
-    [output writeString:3 value:self.recipients];
-  }
+  [self.recipientsArray enumerateObjectsUsingBlock:^(NSString *element, NSUInteger idx, BOOL *stop) {
+    [output writeString:3 value:element];
+  }];
   if (self.hasCreationDate) {
     [output writeMessage:4 value:self.creationDate];
   }
@@ -256,8 +256,14 @@ static BNotification* defaultBNotificationInstance = nil;
   if (self.hasSenderID) {
     size_ += computeStringSize(2, self.senderID);
   }
-  if (self.hasRecipients) {
-    size_ += computeStringSize(3, self.recipients);
+  {
+    __block SInt32 dataSize = 0;
+    const NSUInteger count = self.recipientsArray.count;
+    [self.recipientsArray enumerateObjectsUsingBlock:^(NSString *element, NSUInteger idx, BOOL *stop) {
+      dataSize += computeStringSizeNoTag(element);
+    }];
+    size_ += dataSize;
+    size_ += (SInt32)(1 * count);
   }
   if (self.hasCreationDate) {
     size_ += computeMessageSize(4, self.creationDate);
@@ -324,9 +330,9 @@ static BNotification* defaultBNotificationInstance = nil;
   if (self.hasSenderID) {
     [output appendFormat:@"%@%@: %@\n", indent, @"senderID", self.senderID];
   }
-  if (self.hasRecipients) {
-    [output appendFormat:@"%@%@: %@\n", indent, @"recipients", self.recipients];
-  }
+  [self.recipientsArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"recipients", obj];
+  }];
   if (self.hasCreationDate) {
     [output appendFormat:@"%@%@ {\n", indent, @"creationDate"];
     [self.creationDate writeDescriptionTo:output
@@ -369,9 +375,7 @@ static BNotification* defaultBNotificationInstance = nil;
   if (self.hasSenderID) {
     [dictionary setObject: self.senderID forKey: @"senderID"];
   }
-  if (self.hasRecipients) {
-    [dictionary setObject: self.recipients forKey: @"recipients"];
-  }
+  [dictionary setObject:self.recipients forKey: @"recipients"];
   if (self.hasCreationDate) {
    NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
    [self.creationDate storeInDictionary:messageDictionary];
@@ -417,8 +421,7 @@ static BNotification* defaultBNotificationInstance = nil;
       (!self.hasMessageID || [self.messageID isEqual:otherMessage.messageID]) &&
       self.hasSenderID == otherMessage.hasSenderID &&
       (!self.hasSenderID || [self.senderID isEqual:otherMessage.senderID]) &&
-      self.hasRecipients == otherMessage.hasRecipients &&
-      (!self.hasRecipients || [self.recipients isEqual:otherMessage.recipients]) &&
+      [self.recipientsArray isEqualToArray:otherMessage.recipientsArray] &&
       self.hasCreationDate == otherMessage.hasCreationDate &&
       (!self.hasCreationDate || [self.creationDate isEqual:otherMessage.creationDate]) &&
       self.hasNotificationDate == otherMessage.hasNotificationDate &&
@@ -445,9 +448,9 @@ static BNotification* defaultBNotificationInstance = nil;
   if (self.hasSenderID) {
     hashCode = hashCode * 31 + [self.senderID hash];
   }
-  if (self.hasRecipients) {
-    hashCode = hashCode * 31 + [self.recipients hash];
-  }
+  [self.recipientsArray enumerateObjectsUsingBlock:^(NSString *element, NSUInteger idx, BOOL *stop) {
+    hashCode = hashCode * 31 + [element hash];
+  }];
   if (self.hasCreationDate) {
     hashCode = hashCode * 31 + [self.creationDate hash];
   }
@@ -521,8 +524,12 @@ static BNotification* defaultBNotificationInstance = nil;
   if (other.hasSenderID) {
     [self setSenderID:other.senderID];
   }
-  if (other.hasRecipients) {
-    [self setRecipients:other.recipients];
+  if (other.recipientsArray.count > 0) {
+    if (resultNotification.recipientsArray == nil) {
+      resultNotification.recipientsArray = [[NSMutableArray alloc] initWithArray:other.recipientsArray];
+    } else {
+      [resultNotification.recipientsArray addObjectsFromArray:other.recipientsArray];
+    }
   }
   if (other.hasCreationDate) {
     [self mergeCreationDate:other.creationDate];
@@ -578,7 +585,7 @@ static BNotification* defaultBNotificationInstance = nil;
         break;
       }
       case 26: {
-        [self setRecipients:[input readString]];
+        [self addRecipients:[input readString]];
         break;
       }
       case 34: {
@@ -673,20 +680,25 @@ static BNotification* defaultBNotificationInstance = nil;
   resultNotification.senderID = @"";
   return self;
 }
-- (BOOL) hasRecipients {
-  return resultNotification.hasRecipients;
+- (NSMutableArray *)recipients {
+  return resultNotification.recipientsArray;
 }
-- (NSString*) recipients {
-  return resultNotification.recipients;
+- (NSString*)recipientsAtIndex:(NSUInteger)index {
+  return [resultNotification recipientsAtIndex:index];
 }
-- (BNotificationBuilder*) setRecipients:(NSString*) value {
-  resultNotification.hasRecipients = YES;
-  resultNotification.recipients = value;
+- (BNotificationBuilder *)addRecipients:(NSString*)value {
+  if (resultNotification.recipientsArray == nil) {
+    resultNotification.recipientsArray = [[NSMutableArray alloc]init];
+  }
+  [resultNotification.recipientsArray addObject:value];
   return self;
 }
-- (BNotificationBuilder*) clearRecipients {
-  resultNotification.hasRecipients = NO;
-  resultNotification.recipients = @"";
+- (BNotificationBuilder *)setRecipientsArray:(NSArray *)array {
+  resultNotification.recipientsArray = [[NSMutableArray alloc] initWithArray:array];
+  return self;
+}
+- (BNotificationBuilder *)clearRecipients {
+  resultNotification.recipientsArray = nil;
   return self;
 }
 - (BOOL) hasCreationDate {

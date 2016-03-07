@@ -21,26 +21,29 @@ const (
 	ResponseCode_RCSuccess       ResponseCode = 1
 	ResponseCode_RCInputCorrupt  ResponseCode = 2
 	ResponseCode_RCInputInvalid  ResponseCode = 3
-	ResponseCode_RCServerError   ResponseCode = 4
-	ResponseCode_RCNotAuthorized ResponseCode = 5
-	ResponseCode_RCClientTooOld  ResponseCode = 6
+	ResponseCode_RCServerWarning ResponseCode = 4
+	ResponseCode_RCServerError   ResponseCode = 5
+	ResponseCode_RCNotAuthorized ResponseCode = 6
+	ResponseCode_RCClientTooOld  ResponseCode = 7
 )
 
 var ResponseCode_name = map[int32]string{
 	1: "RCSuccess",
 	2: "RCInputCorrupt",
 	3: "RCInputInvalid",
-	4: "RCServerError",
-	5: "RCNotAuthorized",
-	6: "RCClientTooOld",
+	4: "RCServerWarning",
+	5: "RCServerError",
+	6: "RCNotAuthorized",
+	7: "RCClientTooOld",
 }
 var ResponseCode_value = map[string]int32{
 	"RCSuccess":       1,
 	"RCInputCorrupt":  2,
 	"RCInputInvalid":  3,
-	"RCServerError":   4,
-	"RCNotAuthorized": 5,
-	"RCClientTooOld":  6,
+	"RCServerWarning": 4,
+	"RCServerError":   5,
+	"RCNotAuthorized": 6,
+	"RCClientTooOld":  7,
 }
 
 func (x ResponseCode) Enum() *ResponseCode {
@@ -125,9 +128,7 @@ func (m *BlitzHereAppOptions) String() string { return proto.CompactTextString(m
 func (*BlitzHereAppOptions) ProtoMessage()    {}
 
 type AppOptions struct {
-	// Types that are valid to be assigned to Options:
-	//	*AppOptions_BlitzHereOptions
-	Options          isAppOptions_Options `protobuf_oneof:"Options"`
+	BlitzHereOptions *BlitzHereAppOptions `protobuf:"bytes,1,opt,name=blitzHereOptions" json:"blitzHereOptions,omitempty"`
 	XXX_unrecognized []byte               `json:"-"`
 }
 
@@ -135,78 +136,23 @@ func (m *AppOptions) Reset()         { *m = AppOptions{} }
 func (m *AppOptions) String() string { return proto.CompactTextString(m) }
 func (*AppOptions) ProtoMessage()    {}
 
-type isAppOptions_Options interface {
-	isAppOptions_Options()
-}
-
-type AppOptions_BlitzHereOptions struct {
-	BlitzHereOptions *BlitzHereAppOptions `protobuf:"bytes,1,opt,name=blitzHereOptions,oneof"`
-}
-
-func (*AppOptions_BlitzHereOptions) isAppOptions_Options() {}
-
-func (m *AppOptions) GetOptions() isAppOptions_Options {
-	if m != nil {
-		return m.Options
-	}
-	return nil
-}
-
 func (m *AppOptions) GetBlitzHereOptions() *BlitzHereAppOptions {
-	if x, ok := m.GetOptions().(*AppOptions_BlitzHereOptions); ok {
-		return x.BlitzHereOptions
+	if m != nil {
+		return m.BlitzHereOptions
 	}
 	return nil
-}
-
-// XXX_OneofFuncs is for the internal use of the proto package.
-func (*AppOptions) XXX_OneofFuncs() (func(msg proto.Message, b *proto.Buffer) error, func(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error), []interface{}) {
-	return _AppOptions_OneofMarshaler, _AppOptions_OneofUnmarshaler, []interface{}{
-		(*AppOptions_BlitzHereOptions)(nil),
-	}
-}
-
-func _AppOptions_OneofMarshaler(msg proto.Message, b *proto.Buffer) error {
-	m := msg.(*AppOptions)
-	// Options
-	switch x := m.Options.(type) {
-	case *AppOptions_BlitzHereOptions:
-		b.EncodeVarint(1<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.BlitzHereOptions); err != nil {
-			return err
-		}
-	case nil:
-	default:
-		return fmt.Errorf("AppOptions.Options has unexpected type %T", x)
-	}
-	return nil
-}
-
-func _AppOptions_OneofUnmarshaler(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error) {
-	m := msg.(*AppOptions)
-	switch tag {
-	case 1: // Options.blitzHereOptions
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(BlitzHereAppOptions)
-		err := b.DecodeMessage(msg)
-		m.Options = &AppOptions_BlitzHereOptions{msg}
-		return true, err
-	default:
-		return false, nil
-	}
 }
 
 type SessionResponse struct {
-	UserID            *string         `protobuf:"bytes,1,opt,name=userID" json:"userID,omitempty"`
-	SessionToken      *string         `protobuf:"bytes,2,opt,name=sessionToken" json:"sessionToken,omitempty"`
-	ServerURL         *string         `protobuf:"bytes,3,opt,name=serverURL" json:"serverURL,omitempty"`
-	UserNotifications []*Notification `protobuf:"bytes,4,rep,name=userNotifications" json:"userNotifications,omitempty"`
-	UserProfile       *UserProfile    `protobuf:"bytes,5,opt,name=userProfile" json:"userProfile,omitempty"`
-	ResetAllAppData   *bool           `protobuf:"varint,6,opt,name=resetAllAppData" json:"resetAllAppData,omitempty"`
-	AppOptions        *AppOptions     `protobuf:"bytes,7,opt,name=appOptions" json:"appOptions,omitempty"`
-	XXX_unrecognized  []byte          `json:"-"`
+	UserID            *string                  `protobuf:"bytes,1,opt,name=userID" json:"userID,omitempty"`
+	SessionToken      *string                  `protobuf:"bytes,2,opt,name=sessionToken" json:"sessionToken,omitempty"`
+	ServerURL         *string                  `protobuf:"bytes,3,opt,name=serverURL" json:"serverURL,omitempty"`
+	UserNotifications []*Notification          `protobuf:"bytes,4,rep,name=userNotifications" json:"userNotifications,omitempty"`
+	UserProfile       *UserProfile             `protobuf:"bytes,5,opt,name=userProfile" json:"userProfile,omitempty"`
+	ResetAllAppData   *bool                    `protobuf:"varint,6,opt,name=resetAllAppData" json:"resetAllAppData,omitempty"`
+	ConnectionRequest *AcceptConnectionRequest `protobuf:"bytes,7,opt,name=connectionRequest" json:"connectionRequest,omitempty"`
+	AppOptions        *AppOptions              `protobuf:"bytes,8,opt,name=appOptions" json:"appOptions,omitempty"`
+	XXX_unrecognized  []byte                   `json:"-"`
 }
 
 func (m *SessionResponse) Reset()         { *m = SessionResponse{} }
@@ -255,6 +201,13 @@ func (m *SessionResponse) GetResetAllAppData() bool {
 	return false
 }
 
+func (m *SessionResponse) GetConnectionRequest() *AcceptConnectionRequest {
+	if m != nil {
+		return m.ConnectionRequest
+	}
+	return nil
+}
+
 func (m *SessionResponse) GetAppOptions() *AppOptions {
 	if m != nil {
 		return m.AppOptions
@@ -262,74 +215,103 @@ func (m *SessionResponse) GetAppOptions() *AppOptions {
 	return nil
 }
 
+type RequestType struct {
+	SessionRequest           *SessionRequest          `protobuf:"bytes,1,opt,name=sessionRequest" json:"sessionRequest,omitempty"`
+	UserTrackingBatch        *UserTrackingBatch       `protobuf:"bytes,2,opt,name=userTrackingBatch" json:"userTrackingBatch,omitempty"`
+	UserProfileUpdate        *UserProfileUpdate       `protobuf:"bytes,3,opt,name=userProfileUpdate" json:"userProfileUpdate,omitempty"`
+	UserProfileQuery         *UserProfileQuery        `protobuf:"bytes,4,opt,name=userProfileQuery" json:"userProfileQuery,omitempty"`
+	ConfirmationRequest      *ConfirmationRequest     `protobuf:"bytes,5,opt,name=confirmationRequest" json:"confirmationRequest,omitempty"`
+	NotificationSendRequest  *NotificationUpdate      `protobuf:"bytes,6,opt,name=notificationSendRequest" json:"notificationSendRequest,omitempty"`
+	NotificationFetchRequest *NotificationUpdate      `protobuf:"bytes,7,opt,name=notificationFetchRequest" json:"notificationFetchRequest,omitempty"`
+	DebugMessage             *DebugMessage            `protobuf:"bytes,8,opt,name=debugMessage" json:"debugMessage,omitempty"`
+	ImageUpload              *ImageUpload             `protobuf:"bytes,9,opt,name=imageUpload" json:"imageUpload,omitempty"`
+	AcceptInviteRequest      *AcceptConnectionRequest `protobuf:"bytes,10,opt,name=acceptInviteRequest" json:"acceptInviteRequest,omitempty"`
+	XXX_unrecognized         []byte                   `json:"-"`
+}
+
+func (m *RequestType) Reset()         { *m = RequestType{} }
+func (m *RequestType) String() string { return proto.CompactTextString(m) }
+func (*RequestType) ProtoMessage()    {}
+
+func (m *RequestType) GetSessionRequest() *SessionRequest {
+	if m != nil {
+		return m.SessionRequest
+	}
+	return nil
+}
+
+func (m *RequestType) GetUserTrackingBatch() *UserTrackingBatch {
+	if m != nil {
+		return m.UserTrackingBatch
+	}
+	return nil
+}
+
+func (m *RequestType) GetUserProfileUpdate() *UserProfileUpdate {
+	if m != nil {
+		return m.UserProfileUpdate
+	}
+	return nil
+}
+
+func (m *RequestType) GetUserProfileQuery() *UserProfileQuery {
+	if m != nil {
+		return m.UserProfileQuery
+	}
+	return nil
+}
+
+func (m *RequestType) GetConfirmationRequest() *ConfirmationRequest {
+	if m != nil {
+		return m.ConfirmationRequest
+	}
+	return nil
+}
+
+func (m *RequestType) GetNotificationSendRequest() *NotificationUpdate {
+	if m != nil {
+		return m.NotificationSendRequest
+	}
+	return nil
+}
+
+func (m *RequestType) GetNotificationFetchRequest() *NotificationUpdate {
+	if m != nil {
+		return m.NotificationFetchRequest
+	}
+	return nil
+}
+
+func (m *RequestType) GetDebugMessage() *DebugMessage {
+	if m != nil {
+		return m.DebugMessage
+	}
+	return nil
+}
+
+func (m *RequestType) GetImageUpload() *ImageUpload {
+	if m != nil {
+		return m.ImageUpload
+	}
+	return nil
+}
+
+func (m *RequestType) GetAcceptInviteRequest() *AcceptConnectionRequest {
+	if m != nil {
+		return m.AcceptInviteRequest
+	}
+	return nil
+}
+
 type ClientRequest struct {
-	SessionToken *string `protobuf:"bytes,1,opt,name=sessionToken" json:"sessionToken,omitempty"`
-	// Types that are valid to be assigned to ClientRequestMessage:
-	//	*ClientRequest_SessionRequest
-	//	*ClientRequest_UserTrackingBatch
-	//	*ClientRequest_UserProfileUpdate
-	//	*ClientRequest_UserProfileQuery
-	//	*ClientRequest_NotificationSendRequest
-	//	*ClientRequest_NotificationFetchRequest
-	//	*ClientRequest_DebugMessage
-	//	*ClientRequest_ImageUpload
-	//	*ClientRequest_AcceptInviteRequest
-	ClientRequestMessage isClientRequest_ClientRequestMessage `protobuf_oneof:"clientRequestMessage"`
-	XXX_unrecognized     []byte                               `json:"-"`
+	SessionToken     *string      `protobuf:"bytes,1,opt,name=sessionToken" json:"sessionToken,omitempty"`
+	Request          *RequestType `protobuf:"bytes,2,opt,name=request" json:"request,omitempty"`
+	XXX_unrecognized []byte       `json:"-"`
 }
 
 func (m *ClientRequest) Reset()         { *m = ClientRequest{} }
 func (m *ClientRequest) String() string { return proto.CompactTextString(m) }
 func (*ClientRequest) ProtoMessage()    {}
-
-type isClientRequest_ClientRequestMessage interface {
-	isClientRequest_ClientRequestMessage()
-}
-
-type ClientRequest_SessionRequest struct {
-	SessionRequest *SessionRequest `protobuf:"bytes,2,opt,name=sessionRequest,oneof"`
-}
-type ClientRequest_UserTrackingBatch struct {
-	UserTrackingBatch *UserTrackingBatch `protobuf:"bytes,3,opt,name=userTrackingBatch,oneof"`
-}
-type ClientRequest_UserProfileUpdate struct {
-	UserProfileUpdate *UserProfileUpdate `protobuf:"bytes,4,opt,name=userProfileUpdate,oneof"`
-}
-type ClientRequest_UserProfileQuery struct {
-	UserProfileQuery *UserProfileQuery `protobuf:"bytes,5,opt,name=userProfileQuery,oneof"`
-}
-type ClientRequest_NotificationSendRequest struct {
-	NotificationSendRequest *NotificationUpdate `protobuf:"bytes,7,opt,name=notificationSendRequest,oneof"`
-}
-type ClientRequest_NotificationFetchRequest struct {
-	NotificationFetchRequest *NotificationUpdate `protobuf:"bytes,8,opt,name=notificationFetchRequest,oneof"`
-}
-type ClientRequest_DebugMessage struct {
-	DebugMessage *DebugMessage `protobuf:"bytes,9,opt,name=debugMessage,oneof"`
-}
-type ClientRequest_ImageUpload struct {
-	ImageUpload *ImageUpload `protobuf:"bytes,10,opt,name=imageUpload,oneof"`
-}
-type ClientRequest_AcceptInviteRequest struct {
-	AcceptInviteRequest *AcceptConnectionRequest `protobuf:"bytes,15,opt,name=acceptInviteRequest,oneof"`
-}
-
-func (*ClientRequest_SessionRequest) isClientRequest_ClientRequestMessage()           {}
-func (*ClientRequest_UserTrackingBatch) isClientRequest_ClientRequestMessage()        {}
-func (*ClientRequest_UserProfileUpdate) isClientRequest_ClientRequestMessage()        {}
-func (*ClientRequest_UserProfileQuery) isClientRequest_ClientRequestMessage()         {}
-func (*ClientRequest_NotificationSendRequest) isClientRequest_ClientRequestMessage()  {}
-func (*ClientRequest_NotificationFetchRequest) isClientRequest_ClientRequestMessage() {}
-func (*ClientRequest_DebugMessage) isClientRequest_ClientRequestMessage()             {}
-func (*ClientRequest_ImageUpload) isClientRequest_ClientRequestMessage()              {}
-func (*ClientRequest_AcceptInviteRequest) isClientRequest_ClientRequestMessage()      {}
-
-func (m *ClientRequest) GetClientRequestMessage() isClientRequest_ClientRequestMessage {
-	if m != nil {
-		return m.ClientRequestMessage
-	}
-	return nil
-}
 
 func (m *ClientRequest) GetSessionToken() string {
 	if m != nil && m.SessionToken != nil {
@@ -338,279 +320,103 @@ func (m *ClientRequest) GetSessionToken() string {
 	return ""
 }
 
-func (m *ClientRequest) GetSessionRequest() *SessionRequest {
-	if x, ok := m.GetClientRequestMessage().(*ClientRequest_SessionRequest); ok {
-		return x.SessionRequest
+func (m *ClientRequest) GetRequest() *RequestType {
+	if m != nil {
+		return m.Request
 	}
 	return nil
 }
 
-func (m *ClientRequest) GetUserTrackingBatch() *UserTrackingBatch {
-	if x, ok := m.GetClientRequestMessage().(*ClientRequest_UserTrackingBatch); ok {
-		return x.UserTrackingBatch
+type ResponseType struct {
+	SessionResponse          *SessionResponse          `protobuf:"bytes,1,opt,name=sessionResponse" json:"sessionResponse,omitempty"`
+	UserTrackingResponse     *UserTrackingResponse     `protobuf:"bytes,2,opt,name=userTrackingResponse" json:"userTrackingResponse,omitempty"`
+	ProfileUpdate            *UserProfileUpdate        `protobuf:"bytes,3,opt,name=profileUpdate" json:"profileUpdate,omitempty"`
+	ProfileQuery             *UserProfileQuery         `protobuf:"bytes,4,opt,name=profileQuery" json:"profileQuery,omitempty"`
+	ConfirmationRequest      *ConfirmationRequest      `protobuf:"bytes,5,opt,name=confirmationRequest" json:"confirmationRequest,omitempty"`
+	NotificationUpdate       *NotificationUpdate       `protobuf:"bytes,6,opt,name=notificationUpdate" json:"notificationUpdate,omitempty"`
+	DebugMessage             *DebugMessage             `protobuf:"bytes,7,opt,name=debugMessage" json:"debugMessage,omitempty"`
+	ImageUploadReply         *ImageUpload              `protobuf:"bytes,8,opt,name=imageUploadReply" json:"imageUploadReply,omitempty"`
+	AcceptConnectionResponse *AcceptConnectionResponse `protobuf:"bytes,9,opt,name=acceptConnectionResponse" json:"acceptConnectionResponse,omitempty"`
+	XXX_unrecognized         []byte                    `json:"-"`
+}
+
+func (m *ResponseType) Reset()         { *m = ResponseType{} }
+func (m *ResponseType) String() string { return proto.CompactTextString(m) }
+func (*ResponseType) ProtoMessage()    {}
+
+func (m *ResponseType) GetSessionResponse() *SessionResponse {
+	if m != nil {
+		return m.SessionResponse
 	}
 	return nil
 }
 
-func (m *ClientRequest) GetUserProfileUpdate() *UserProfileUpdate {
-	if x, ok := m.GetClientRequestMessage().(*ClientRequest_UserProfileUpdate); ok {
-		return x.UserProfileUpdate
+func (m *ResponseType) GetUserTrackingResponse() *UserTrackingResponse {
+	if m != nil {
+		return m.UserTrackingResponse
 	}
 	return nil
 }
 
-func (m *ClientRequest) GetUserProfileQuery() *UserProfileQuery {
-	if x, ok := m.GetClientRequestMessage().(*ClientRequest_UserProfileQuery); ok {
-		return x.UserProfileQuery
+func (m *ResponseType) GetProfileUpdate() *UserProfileUpdate {
+	if m != nil {
+		return m.ProfileUpdate
 	}
 	return nil
 }
 
-func (m *ClientRequest) GetNotificationSendRequest() *NotificationUpdate {
-	if x, ok := m.GetClientRequestMessage().(*ClientRequest_NotificationSendRequest); ok {
-		return x.NotificationSendRequest
+func (m *ResponseType) GetProfileQuery() *UserProfileQuery {
+	if m != nil {
+		return m.ProfileQuery
 	}
 	return nil
 }
 
-func (m *ClientRequest) GetNotificationFetchRequest() *NotificationUpdate {
-	if x, ok := m.GetClientRequestMessage().(*ClientRequest_NotificationFetchRequest); ok {
-		return x.NotificationFetchRequest
+func (m *ResponseType) GetConfirmationRequest() *ConfirmationRequest {
+	if m != nil {
+		return m.ConfirmationRequest
 	}
 	return nil
 }
 
-func (m *ClientRequest) GetDebugMessage() *DebugMessage {
-	if x, ok := m.GetClientRequestMessage().(*ClientRequest_DebugMessage); ok {
-		return x.DebugMessage
+func (m *ResponseType) GetNotificationUpdate() *NotificationUpdate {
+	if m != nil {
+		return m.NotificationUpdate
 	}
 	return nil
 }
 
-func (m *ClientRequest) GetImageUpload() *ImageUpload {
-	if x, ok := m.GetClientRequestMessage().(*ClientRequest_ImageUpload); ok {
-		return x.ImageUpload
+func (m *ResponseType) GetDebugMessage() *DebugMessage {
+	if m != nil {
+		return m.DebugMessage
 	}
 	return nil
 }
 
-func (m *ClientRequest) GetAcceptInviteRequest() *AcceptConnectionRequest {
-	if x, ok := m.GetClientRequestMessage().(*ClientRequest_AcceptInviteRequest); ok {
-		return x.AcceptInviteRequest
+func (m *ResponseType) GetImageUploadReply() *ImageUpload {
+	if m != nil {
+		return m.ImageUploadReply
 	}
 	return nil
 }
 
-// XXX_OneofFuncs is for the internal use of the proto package.
-func (*ClientRequest) XXX_OneofFuncs() (func(msg proto.Message, b *proto.Buffer) error, func(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error), []interface{}) {
-	return _ClientRequest_OneofMarshaler, _ClientRequest_OneofUnmarshaler, []interface{}{
-		(*ClientRequest_SessionRequest)(nil),
-		(*ClientRequest_UserTrackingBatch)(nil),
-		(*ClientRequest_UserProfileUpdate)(nil),
-		(*ClientRequest_UserProfileQuery)(nil),
-		(*ClientRequest_NotificationSendRequest)(nil),
-		(*ClientRequest_NotificationFetchRequest)(nil),
-		(*ClientRequest_DebugMessage)(nil),
-		(*ClientRequest_ImageUpload)(nil),
-		(*ClientRequest_AcceptInviteRequest)(nil),
-	}
-}
-
-func _ClientRequest_OneofMarshaler(msg proto.Message, b *proto.Buffer) error {
-	m := msg.(*ClientRequest)
-	// clientRequestMessage
-	switch x := m.ClientRequestMessage.(type) {
-	case *ClientRequest_SessionRequest:
-		b.EncodeVarint(2<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.SessionRequest); err != nil {
-			return err
-		}
-	case *ClientRequest_UserTrackingBatch:
-		b.EncodeVarint(3<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.UserTrackingBatch); err != nil {
-			return err
-		}
-	case *ClientRequest_UserProfileUpdate:
-		b.EncodeVarint(4<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.UserProfileUpdate); err != nil {
-			return err
-		}
-	case *ClientRequest_UserProfileQuery:
-		b.EncodeVarint(5<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.UserProfileQuery); err != nil {
-			return err
-		}
-	case *ClientRequest_NotificationSendRequest:
-		b.EncodeVarint(7<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.NotificationSendRequest); err != nil {
-			return err
-		}
-	case *ClientRequest_NotificationFetchRequest:
-		b.EncodeVarint(8<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.NotificationFetchRequest); err != nil {
-			return err
-		}
-	case *ClientRequest_DebugMessage:
-		b.EncodeVarint(9<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.DebugMessage); err != nil {
-			return err
-		}
-	case *ClientRequest_ImageUpload:
-		b.EncodeVarint(10<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.ImageUpload); err != nil {
-			return err
-		}
-	case *ClientRequest_AcceptInviteRequest:
-		b.EncodeVarint(15<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.AcceptInviteRequest); err != nil {
-			return err
-		}
-	case nil:
-	default:
-		return fmt.Errorf("ClientRequest.ClientRequestMessage has unexpected type %T", x)
+func (m *ResponseType) GetAcceptConnectionResponse() *AcceptConnectionResponse {
+	if m != nil {
+		return m.AcceptConnectionResponse
 	}
 	return nil
-}
-
-func _ClientRequest_OneofUnmarshaler(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error) {
-	m := msg.(*ClientRequest)
-	switch tag {
-	case 2: // clientRequestMessage.sessionRequest
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(SessionRequest)
-		err := b.DecodeMessage(msg)
-		m.ClientRequestMessage = &ClientRequest_SessionRequest{msg}
-		return true, err
-	case 3: // clientRequestMessage.userTrackingBatch
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(UserTrackingBatch)
-		err := b.DecodeMessage(msg)
-		m.ClientRequestMessage = &ClientRequest_UserTrackingBatch{msg}
-		return true, err
-	case 4: // clientRequestMessage.userProfileUpdate
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(UserProfileUpdate)
-		err := b.DecodeMessage(msg)
-		m.ClientRequestMessage = &ClientRequest_UserProfileUpdate{msg}
-		return true, err
-	case 5: // clientRequestMessage.userProfileQuery
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(UserProfileQuery)
-		err := b.DecodeMessage(msg)
-		m.ClientRequestMessage = &ClientRequest_UserProfileQuery{msg}
-		return true, err
-	case 7: // clientRequestMessage.notificationSendRequest
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(NotificationUpdate)
-		err := b.DecodeMessage(msg)
-		m.ClientRequestMessage = &ClientRequest_NotificationSendRequest{msg}
-		return true, err
-	case 8: // clientRequestMessage.notificationFetchRequest
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(NotificationUpdate)
-		err := b.DecodeMessage(msg)
-		m.ClientRequestMessage = &ClientRequest_NotificationFetchRequest{msg}
-		return true, err
-	case 9: // clientRequestMessage.debugMessage
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(DebugMessage)
-		err := b.DecodeMessage(msg)
-		m.ClientRequestMessage = &ClientRequest_DebugMessage{msg}
-		return true, err
-	case 10: // clientRequestMessage.imageUpload
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(ImageUpload)
-		err := b.DecodeMessage(msg)
-		m.ClientRequestMessage = &ClientRequest_ImageUpload{msg}
-		return true, err
-	case 15: // clientRequestMessage.acceptInviteRequest
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(AcceptConnectionRequest)
-		err := b.DecodeMessage(msg)
-		m.ClientRequestMessage = &ClientRequest_AcceptInviteRequest{msg}
-		return true, err
-	default:
-		return false, nil
-	}
 }
 
 type ServerResponse struct {
-	ResponseCode    *ResponseCode `protobuf:"varint,1,req,name=responseCode,enum=BlitzMessage.ResponseCode" json:"responseCode,omitempty"`
-	ResponseMessage *string       `protobuf:"bytes,2,opt,name=responseMessage" json:"responseMessage,omitempty"`
-	// Types that are valid to be assigned to Response:
-	//	*ServerResponse_SessionResponse
-	//	*ServerResponse_UserTrackingResponse
-	//	*ServerResponse_ProfileUpdate
-	//	*ServerResponse_ProfileQuery
-	//	*ServerResponse_NotificationUpdate
-	//	*ServerResponse_DebugMessage
-	//	*ServerResponse_ImageUploadReply
-	Response         isServerResponse_Response `protobuf_oneof:"response"`
-	XXX_unrecognized []byte                    `json:"-"`
+	ResponseCode     *ResponseCode `protobuf:"varint,1,opt,name=responseCode,enum=BlitzMessage.ResponseCode" json:"responseCode,omitempty"`
+	ResponseMessage  *string       `protobuf:"bytes,2,opt,name=responseMessage" json:"responseMessage,omitempty"`
+	Response         *ResponseType `protobuf:"bytes,3,opt,name=response" json:"response,omitempty"`
+	XXX_unrecognized []byte        `json:"-"`
 }
 
 func (m *ServerResponse) Reset()         { *m = ServerResponse{} }
 func (m *ServerResponse) String() string { return proto.CompactTextString(m) }
 func (*ServerResponse) ProtoMessage()    {}
-
-type isServerResponse_Response interface {
-	isServerResponse_Response()
-}
-
-type ServerResponse_SessionResponse struct {
-	SessionResponse *SessionResponse `protobuf:"bytes,3,opt,name=sessionResponse,oneof"`
-}
-type ServerResponse_UserTrackingResponse struct {
-	UserTrackingResponse *UserTrackingResponse `protobuf:"bytes,4,opt,name=userTrackingResponse,oneof"`
-}
-type ServerResponse_ProfileUpdate struct {
-	ProfileUpdate *UserProfileUpdate `protobuf:"bytes,5,opt,name=profileUpdate,oneof"`
-}
-type ServerResponse_ProfileQuery struct {
-	ProfileQuery *UserProfileQuery `protobuf:"bytes,6,opt,name=profileQuery,oneof"`
-}
-type ServerResponse_NotificationUpdate struct {
-	NotificationUpdate *NotificationUpdate `protobuf:"bytes,10,opt,name=notificationUpdate,oneof"`
-}
-type ServerResponse_DebugMessage struct {
-	DebugMessage *DebugMessage `protobuf:"bytes,12,opt,name=debugMessage,oneof"`
-}
-type ServerResponse_ImageUploadReply struct {
-	ImageUploadReply *ImageUpload `protobuf:"bytes,13,opt,name=imageUploadReply,oneof"`
-}
-
-func (*ServerResponse_SessionResponse) isServerResponse_Response()      {}
-func (*ServerResponse_UserTrackingResponse) isServerResponse_Response() {}
-func (*ServerResponse_ProfileUpdate) isServerResponse_Response()        {}
-func (*ServerResponse_ProfileQuery) isServerResponse_Response()         {}
-func (*ServerResponse_NotificationUpdate) isServerResponse_Response()   {}
-func (*ServerResponse_DebugMessage) isServerResponse_Response()         {}
-func (*ServerResponse_ImageUploadReply) isServerResponse_Response()     {}
-
-func (m *ServerResponse) GetResponse() isServerResponse_Response {
-	if m != nil {
-		return m.Response
-	}
-	return nil
-}
 
 func (m *ServerResponse) GetResponseCode() ResponseCode {
 	if m != nil && m.ResponseCode != nil {
@@ -626,176 +432,11 @@ func (m *ServerResponse) GetResponseMessage() string {
 	return ""
 }
 
-func (m *ServerResponse) GetSessionResponse() *SessionResponse {
-	if x, ok := m.GetResponse().(*ServerResponse_SessionResponse); ok {
-		return x.SessionResponse
+func (m *ServerResponse) GetResponse() *ResponseType {
+	if m != nil {
+		return m.Response
 	}
 	return nil
-}
-
-func (m *ServerResponse) GetUserTrackingResponse() *UserTrackingResponse {
-	if x, ok := m.GetResponse().(*ServerResponse_UserTrackingResponse); ok {
-		return x.UserTrackingResponse
-	}
-	return nil
-}
-
-func (m *ServerResponse) GetProfileUpdate() *UserProfileUpdate {
-	if x, ok := m.GetResponse().(*ServerResponse_ProfileUpdate); ok {
-		return x.ProfileUpdate
-	}
-	return nil
-}
-
-func (m *ServerResponse) GetProfileQuery() *UserProfileQuery {
-	if x, ok := m.GetResponse().(*ServerResponse_ProfileQuery); ok {
-		return x.ProfileQuery
-	}
-	return nil
-}
-
-func (m *ServerResponse) GetNotificationUpdate() *NotificationUpdate {
-	if x, ok := m.GetResponse().(*ServerResponse_NotificationUpdate); ok {
-		return x.NotificationUpdate
-	}
-	return nil
-}
-
-func (m *ServerResponse) GetDebugMessage() *DebugMessage {
-	if x, ok := m.GetResponse().(*ServerResponse_DebugMessage); ok {
-		return x.DebugMessage
-	}
-	return nil
-}
-
-func (m *ServerResponse) GetImageUploadReply() *ImageUpload {
-	if x, ok := m.GetResponse().(*ServerResponse_ImageUploadReply); ok {
-		return x.ImageUploadReply
-	}
-	return nil
-}
-
-// XXX_OneofFuncs is for the internal use of the proto package.
-func (*ServerResponse) XXX_OneofFuncs() (func(msg proto.Message, b *proto.Buffer) error, func(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error), []interface{}) {
-	return _ServerResponse_OneofMarshaler, _ServerResponse_OneofUnmarshaler, []interface{}{
-		(*ServerResponse_SessionResponse)(nil),
-		(*ServerResponse_UserTrackingResponse)(nil),
-		(*ServerResponse_ProfileUpdate)(nil),
-		(*ServerResponse_ProfileQuery)(nil),
-		(*ServerResponse_NotificationUpdate)(nil),
-		(*ServerResponse_DebugMessage)(nil),
-		(*ServerResponse_ImageUploadReply)(nil),
-	}
-}
-
-func _ServerResponse_OneofMarshaler(msg proto.Message, b *proto.Buffer) error {
-	m := msg.(*ServerResponse)
-	// response
-	switch x := m.Response.(type) {
-	case *ServerResponse_SessionResponse:
-		b.EncodeVarint(3<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.SessionResponse); err != nil {
-			return err
-		}
-	case *ServerResponse_UserTrackingResponse:
-		b.EncodeVarint(4<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.UserTrackingResponse); err != nil {
-			return err
-		}
-	case *ServerResponse_ProfileUpdate:
-		b.EncodeVarint(5<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.ProfileUpdate); err != nil {
-			return err
-		}
-	case *ServerResponse_ProfileQuery:
-		b.EncodeVarint(6<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.ProfileQuery); err != nil {
-			return err
-		}
-	case *ServerResponse_NotificationUpdate:
-		b.EncodeVarint(10<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.NotificationUpdate); err != nil {
-			return err
-		}
-	case *ServerResponse_DebugMessage:
-		b.EncodeVarint(12<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.DebugMessage); err != nil {
-			return err
-		}
-	case *ServerResponse_ImageUploadReply:
-		b.EncodeVarint(13<<3 | proto.WireBytes)
-		if err := b.EncodeMessage(x.ImageUploadReply); err != nil {
-			return err
-		}
-	case nil:
-	default:
-		return fmt.Errorf("ServerResponse.Response has unexpected type %T", x)
-	}
-	return nil
-}
-
-func _ServerResponse_OneofUnmarshaler(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error) {
-	m := msg.(*ServerResponse)
-	switch tag {
-	case 3: // response.sessionResponse
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(SessionResponse)
-		err := b.DecodeMessage(msg)
-		m.Response = &ServerResponse_SessionResponse{msg}
-		return true, err
-	case 4: // response.userTrackingResponse
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(UserTrackingResponse)
-		err := b.DecodeMessage(msg)
-		m.Response = &ServerResponse_UserTrackingResponse{msg}
-		return true, err
-	case 5: // response.profileUpdate
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(UserProfileUpdate)
-		err := b.DecodeMessage(msg)
-		m.Response = &ServerResponse_ProfileUpdate{msg}
-		return true, err
-	case 6: // response.profileQuery
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(UserProfileQuery)
-		err := b.DecodeMessage(msg)
-		m.Response = &ServerResponse_ProfileQuery{msg}
-		return true, err
-	case 10: // response.notificationUpdate
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(NotificationUpdate)
-		err := b.DecodeMessage(msg)
-		m.Response = &ServerResponse_NotificationUpdate{msg}
-		return true, err
-	case 12: // response.debugMessage
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(DebugMessage)
-		err := b.DecodeMessage(msg)
-		m.Response = &ServerResponse_DebugMessage{msg}
-		return true, err
-	case 13: // response.imageUploadReply
-		if wire != proto.WireBytes {
-			return true, proto.ErrInternalBadWireType
-		}
-		msg := new(ImageUpload)
-		err := b.DecodeMessage(msg)
-		m.Response = &ServerResponse_ImageUploadReply{msg}
-		return true, err
-	default:
-		return false, nil
-	}
 }
 
 func init() {

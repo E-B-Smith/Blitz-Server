@@ -10,8 +10,6 @@ import (
     "fmt"
     "sync"
     "time"
-    "net/http"
-    "github.com/golang/protobuf/proto"
     "violent.blue/GoKit/Log"
     "violent.blue/GoKit/pgsql"
     "violent.blue/GoKit/Util"
@@ -268,7 +266,11 @@ func Session_InitializeSessions() {
 //----------------------------------------------------------------------------------------
 
 
-func UpdateSession(writer http.ResponseWriter, ipAddress string, sessionToken string, request *BlitzMessage.SessionRequest) {
+func UpdateSession(ipAddress string,
+                   sessionToken string,
+                   request *BlitzMessage.SessionRequest,
+                   ) *BlitzMessage.ServerResponse {
+
     //  * If the User doesn't exist:
     //      - Check the vendorID, otherwise
     //      - Check the advertsingID, otherwise
@@ -282,18 +284,15 @@ func UpdateSession(writer http.ResponseWriter, ipAddress string, sessionToken st
     //  Validate the userID --
 
     if request.Profile == nil {
-        SendError(writer, BlitzMessage.ResponseCode_RCInputInvalid, nil)
-        return
+        return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, nil)
     }
     userID, error := BlitzMessage.ValidateUserID(request.Profile.UserID)
     if error != nil {
-        SendError(writer, BlitzMessage.ResponseCode_RCInputInvalid, error)
-        return
+        return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
     }
 
     if request.DeviceInfo == nil || request.DeviceInfo.VendorUID == nil || request.DeviceInfo.AppID == nil {
-        SendError(writer, BlitzMessage.ResponseCode_RCInputInvalid, error)
-        return
+        return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
     }
 
     //  Check the app version --
@@ -305,8 +304,7 @@ func UpdateSession(writer http.ResponseWriter, ipAddress string, sessionToken st
     error = row.Scan(&appID, &minAppVersion, &minAppDataDate)
     if error != nil {
         Log.LogError(error)
-        SendError(writer, BlitzMessage.ResponseCode_RCInputInvalid, error)
-        return
+        return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
     }
 
     if  request.DeviceInfo.AppVersion == nil ||
@@ -314,8 +312,7 @@ func UpdateSession(writer http.ResponseWriter, ipAddress string, sessionToken st
         version := "Uknown"
         if request.DeviceInfo.AppVersion != nil { version = *request.DeviceInfo.AppVersion }
         error = fmt.Errorf("Client too old.  %s < %s.", version, minAppVersion)
-        SendError(writer, BlitzMessage.ResponseCode_RCClientTooOld, error)
-        return
+        return ServerResponseForError(BlitzMessage.ResponseCode_RCClientTooOld, error)
     }
 
     //  Check the session --
@@ -324,8 +321,7 @@ func UpdateSession(writer http.ResponseWriter, ipAddress string, sessionToken st
     if session == nil {
         session  = Session_CreateSession(userID, *request.DeviceInfo.VendorUID)
         if session == nil {
-            SendError(writer, BlitzMessage.ResponseCode_RCInputInvalid, error)
-            return
+            return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
         }
     }
 
@@ -333,20 +329,20 @@ func UpdateSession(writer http.ResponseWriter, ipAddress string, sessionToken st
 
     //  Check for a new user --
 
-    var invite *BlitzMessage.AcceptInviteRequest = nil
+    var invite *BlitzMessage.AcceptConnectionRequest = nil
     if request.Profile.UserStatus == nil || *request.Profile.UserStatus < BlitzMessage.UserStatus_USActive {
         //  Check to see if we have an invite saved --
         Log.Debugf("Checking new user for invite...")
         invite = InviteRequestForDevice(request.DeviceInfo)
         if invite != nil {
-            profile := ProfileForUserID(*invite.FriendID)
+            profile := ProfileForUserID(*invite.ConnectionID)
             if profile == nil {
                 invite = nil
             } else {
                 request.Profile = profile
                 senderProfile := ProfileForUserID(*invite.UserID)
                 if senderProfile != nil {
-                    invite.Profiles = [] *BlitzMessage.Profile { senderProfile }
+                    invite.Profiles = [] *BlitzMessage.UserProfile { senderProfile }
                 }
             }
         }
@@ -385,8 +381,7 @@ func UpdateSession(writer http.ResponseWriter, ipAddress string, sessionToken st
     Log.Debugf("Update user.")
     if *profile.UserStatus == BlitzMessage.UserStatus_USBlocked {
         Log.Warningf("Blocking user %s.", *profile.UserID)
-        SendError(writer, BlitzMessage.ResponseCode_RCInputInvalid, error)
-        return
+        return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
     } else if *profile.UserStatus < BlitzMessage.UserStatus_USActive {
         _, error = config.DB.Exec(
             "update usertable set (lastseen, userstatus) = ($1, $2) where userID = $3;",
@@ -449,12 +444,11 @@ func UpdateSession(writer http.ResponseWriter, ipAddress string, sessionToken st
             d.LocalIPAddress,
             userID)
     if error != nil {
-        SendError(writer, BlitzMessage.ResponseCode_RCInputInvalid, error)
-        return
+        return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
     }
 
     session.Device = *request.DeviceInfo
-    session.AppOptions = AppOptionsForSession(session)
+    //session.AppOptions = AppOptionsForSession(session)
 
     //UpdateProfile(profile)
     profile = ProfileForUserID(userID)
@@ -463,7 +457,7 @@ func UpdateSession(writer http.ResponseWriter, ipAddress string, sessionToken st
         UserID:             &userID,
         SessionToken:       &session.SessionToken,
         UserProfile:        profile,
-        InviteRequest:      invite,
+        ConnectionRequest:  invite,
         ResetAllAppData:    BoolPtrFromBool(false),
         AppOptions:         session.AppOptions,
     }
@@ -483,16 +477,9 @@ func UpdateSession(writer http.ResponseWriter, ipAddress string, sessionToken st
     code := BlitzMessage.ResponseCode_RCSuccess
     response := &BlitzMessage.ServerResponse {
         ResponseCode:   &code,
-        Response:       &BlitzMessage.ServerResponse_SessionResponse { SessionResponse: sessionResponse },
+        Response:       &BlitzMessage.ResponseType { SessionResponse: sessionResponse },
     }
-
-    data, error := proto.Marshal(response)
-    if error != nil {
-        Log.Errorf("Error marshaling data: %v.", error)
-        SendError(writer, BlitzMessage.ResponseCode_RCServerError, error)
-        return
-    }
-    writer.Write(data)
+    return response
 }
 
 

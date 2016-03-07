@@ -7,7 +7,6 @@ package main
 
 
 import (
-    "net/http"
     "database/sql"
     "github.com/lib/pq"
     "github.com/golang/protobuf/proto"
@@ -121,7 +120,7 @@ func ProfileForUserID(userID string) *BlitzMessage.UserProfile {
         return nil
     }
 
-    profile := new(BlitzMessage.Profile)
+    profile := new(BlitzMessage.UserProfile)
     profile.UserID      = proto.String(profileID)
     profile.UserStatus  = BlitzMessage.UserStatus(userStatus.Int64).Enum()
     profile.Name        = proto.String(name.String)
@@ -131,26 +130,17 @@ func ProfileForUserID(userID string) *BlitzMessage.UserProfile {
     Log.Debugf("Profile has %d images: %v.", len(profile.ImageURL), profile.ImageURL)
     profile.SocialIdentities = SocialIdentitiesWithUserID(userID)
     profile.CreationDate   = BlitzMessage.TimestampFromTime(creationDate.Time)
-    profile.UserSummary    = UserStatsSummary(userID)
-    profile.CircleSummary  = CircleStatsSummary(userID)
-    profile.GlobalSummary  = GlobalStatsSummary(userID)
-    profile.WeatherSummary = WeatherSummary(userID)
-    profile.HeartsSent     = HeartsSent(userID)
-    profile.HeartsReceived = HeartsReceived(userID)
-    profile.LatestScore    = LatestScoreForUserID(userID)
-    if profile.LatestScore != nil {
-        profile.LastHappyScore = profile.LatestScore.HappyScore
-    }
     AddContactInfoToProfile(profile)
 
     return profile
 }
 
 
-func QueryProfiles(writer http.ResponseWriter, userID string, profileQuery *BlitzMessage.UserProfileQuery) {
+func QueryProfiles(session *Session, profileQuery *BlitzMessage.UserProfileQuery,
+        ) *BlitzMessage.ServerResponse {
     Log.LogFunctionName()
 
-    var profileUpdate BlitzMessage.ProfileUpdate
+    var profileUpdate BlitzMessage.UserProfileUpdate
     for i := range profileQuery.UserIDs {
         profile := ProfileForUserID(profileQuery.UserIDs[i])
         if profile != nil {
@@ -164,16 +154,8 @@ func QueryProfiles(writer http.ResponseWriter, userID string, profileQuery *Blit
     response := &BlitzMessage.ServerResponse {
         ResponseCode:       &code,
         ResponseMessage:    &message,
-        Response:           &BlitzMessage.ServerResponse_ProfileUpdate { ProfileUpdate: &profileUpdate },
+        Response:           &BlitzMessage.ResponseType { ProfileUpdate: &profileUpdate },
     }
-
-    data, error := proto.Marshal(response)
-    if error != nil {
-        Log.Errorf("Error marshaling data: %v.", error)
-        SendError(writer, BlitzMessage.ResponseCode_RCServerError, error)
-        return
-    }
-
-    writer.Write(data)
+    return response
 }
 

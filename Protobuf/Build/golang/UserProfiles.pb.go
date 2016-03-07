@@ -577,6 +577,62 @@ func (m *UserProfileQuery) GetUserIDs() []string {
 	return nil
 }
 
+type ConfirmationRequest struct {
+	ContactInfo      *ContactInfo `protobuf:"bytes,1,opt,name=contactInfo" json:"contactInfo,omitempty"`
+	Profile          *UserProfile `protobuf:"bytes,2,opt,name=profile" json:"profile,omitempty"`
+	ConfirmationCode *string      `protobuf:"bytes,3,opt,name=confirmationCode" json:"confirmationCode,omitempty"`
+	InviterUserID    *string      `protobuf:"bytes,4,opt,name=inviterUserID" json:"inviterUserID,omitempty"`
+	XXX_unrecognized []byte       `json:"-"`
+}
+
+func (m *ConfirmationRequest) Reset()         { *m = ConfirmationRequest{} }
+func (m *ConfirmationRequest) String() string { return proto.CompactTextString(m) }
+func (*ConfirmationRequest) ProtoMessage()    {}
+
+func (m *ConfirmationRequest) GetContactInfo() *ContactInfo {
+	if m != nil {
+		return m.ContactInfo
+	}
+	return nil
+}
+
+func (m *ConfirmationRequest) GetProfile() *UserProfile {
+	if m != nil {
+		return m.Profile
+	}
+	return nil
+}
+
+func (m *ConfirmationRequest) GetConfirmationCode() string {
+	if m != nil && m.ConfirmationCode != nil {
+		return *m.ConfirmationCode
+	}
+	return ""
+}
+
+func (m *ConfirmationRequest) GetInviterUserID() string {
+	if m != nil && m.InviterUserID != nil {
+		return *m.InviterUserID
+	}
+	return ""
+}
+
+type ProfilesFromContactInfo struct {
+	Profiles         []*UserProfile `protobuf:"bytes,1,rep,name=profiles" json:"profiles,omitempty"`
+	XXX_unrecognized []byte         `json:"-"`
+}
+
+func (m *ProfilesFromContactInfo) Reset()         { *m = ProfilesFromContactInfo{} }
+func (m *ProfilesFromContactInfo) String() string { return proto.CompactTextString(m) }
+func (*ProfilesFromContactInfo) ProtoMessage()    {}
+
+func (m *ProfilesFromContactInfo) GetProfiles() []*UserProfile {
+	if m != nil {
+		return m.Profiles
+	}
+	return nil
+}
+
 func init() {
 	proto.RegisterEnum("BlitzMessage.ContactType", ContactType_name, ContactType_value)
 	proto.RegisterEnum("BlitzMessage.UserStatus", UserStatus_name, UserStatus_value)

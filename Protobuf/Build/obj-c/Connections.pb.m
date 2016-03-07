@@ -1445,7 +1445,7 @@ static BAcceptConnectionRequest* defaultBAcceptConnectionRequestInstance = nil;
 @property (strong) NSString* userID;
 @property (strong) NSString* connectionID;
 @property (strong) NSString* message;
-@property (strong) NSMutableArray * conectionsArray;
+@property (strong) NSMutableArray * connectionsArray;
 @property (strong) NSMutableArray * profilesArray;
 @end
 
@@ -1472,8 +1472,8 @@ static BAcceptConnectionRequest* defaultBAcceptConnectionRequestInstance = nil;
   hasMessage_ = !!_value_;
 }
 @synthesize message;
-@synthesize conectionsArray;
-@dynamic conections;
+@synthesize connectionsArray;
+@dynamic connections;
 @synthesize profilesArray;
 @dynamic profiles;
 - (instancetype) init {
@@ -1496,11 +1496,11 @@ static BAcceptConnectionResponse* defaultBAcceptConnectionResponseInstance = nil
 - (instancetype) defaultInstance {
   return defaultBAcceptConnectionResponseInstance;
 }
-- (NSArray *)conections {
-  return conectionsArray;
+- (NSArray *)connections {
+  return connectionsArray;
 }
-- (BConnection*)conectionsAtIndex:(NSUInteger)index {
-  return [conectionsArray objectAtIndex:index];
+- (BConnection*)connectionsAtIndex:(NSUInteger)index {
+  return [connectionsArray objectAtIndex:index];
 }
 - (NSArray *)profiles {
   return profilesArray;
@@ -1509,14 +1509,14 @@ static BAcceptConnectionResponse* defaultBAcceptConnectionResponseInstance = nil
   return [profilesArray objectAtIndex:index];
 }
 - (BOOL) isInitialized {
-  __block BOOL isInitconections = YES;
-   [self.conections enumerateObjectsUsingBlock:^(BConnection *element, NSUInteger idx, BOOL *stop) {
+  __block BOOL isInitconnections = YES;
+   [self.connections enumerateObjectsUsingBlock:^(BConnection *element, NSUInteger idx, BOOL *stop) {
     if (!element.isInitialized) {
-      isInitconections = NO;
+      isInitconnections = NO;
       *stop = YES;
     }
   }];
-  if (!isInitconections) return isInitconections;
+  if (!isInitconnections) return isInitconnections;
   __block BOOL isInitprofiles = YES;
    [self.profiles enumerateObjectsUsingBlock:^(BUserProfile *element, NSUInteger idx, BOOL *stop) {
     if (!element.isInitialized) {
@@ -1537,7 +1537,7 @@ static BAcceptConnectionResponse* defaultBAcceptConnectionResponseInstance = nil
   if (self.hasMessage) {
     [output writeString:3 value:self.message];
   }
-  [self.conectionsArray enumerateObjectsUsingBlock:^(BConnection *element, NSUInteger idx, BOOL *stop) {
+  [self.connectionsArray enumerateObjectsUsingBlock:^(BConnection *element, NSUInteger idx, BOOL *stop) {
     [output writeMessage:4 value:element];
   }];
   [self.profilesArray enumerateObjectsUsingBlock:^(BUserProfile *element, NSUInteger idx, BOOL *stop) {
@@ -1561,7 +1561,7 @@ static BAcceptConnectionResponse* defaultBAcceptConnectionResponseInstance = nil
   if (self.hasMessage) {
     size_ += computeStringSize(3, self.message);
   }
-  [self.conectionsArray enumerateObjectsUsingBlock:^(BConnection *element, NSUInteger idx, BOOL *stop) {
+  [self.connectionsArray enumerateObjectsUsingBlock:^(BConnection *element, NSUInteger idx, BOOL *stop) {
     size_ += computeMessageSize(4, element);
   }];
   [self.profilesArray enumerateObjectsUsingBlock:^(BUserProfile *element, NSUInteger idx, BOOL *stop) {
@@ -1611,8 +1611,8 @@ static BAcceptConnectionResponse* defaultBAcceptConnectionResponseInstance = nil
   if (self.hasMessage) {
     [output appendFormat:@"%@%@: %@\n", indent, @"message", self.message];
   }
-  [self.conectionsArray enumerateObjectsUsingBlock:^(BConnection *element, NSUInteger idx, BOOL *stop) {
-    [output appendFormat:@"%@%@ {\n", indent, @"conections"];
+  [self.connectionsArray enumerateObjectsUsingBlock:^(BConnection *element, NSUInteger idx, BOOL *stop) {
+    [output appendFormat:@"%@%@ {\n", indent, @"connections"];
     [element writeDescriptionTo:output
                      withIndent:[NSString stringWithFormat:@"%@  ", indent]];
     [output appendFormat:@"%@}\n", indent];
@@ -1635,10 +1635,10 @@ static BAcceptConnectionResponse* defaultBAcceptConnectionResponseInstance = nil
   if (self.hasMessage) {
     [dictionary setObject: self.message forKey: @"message"];
   }
-  for (BConnection* element in self.conectionsArray) {
+  for (BConnection* element in self.connectionsArray) {
     NSMutableDictionary *elementDictionary = [NSMutableDictionary dictionary];
     [element storeInDictionary:elementDictionary];
-    [dictionary setObject:[NSDictionary dictionaryWithDictionary:elementDictionary] forKey:@"conections"];
+    [dictionary setObject:[NSDictionary dictionaryWithDictionary:elementDictionary] forKey:@"connections"];
   }
   for (BUserProfile* element in self.profilesArray) {
     NSMutableDictionary *elementDictionary = [NSMutableDictionary dictionary];
@@ -1662,7 +1662,7 @@ static BAcceptConnectionResponse* defaultBAcceptConnectionResponseInstance = nil
       (!self.hasConnectionID || [self.connectionID isEqual:otherMessage.connectionID]) &&
       self.hasMessage == otherMessage.hasMessage &&
       (!self.hasMessage || [self.message isEqual:otherMessage.message]) &&
-      [self.conectionsArray isEqualToArray:otherMessage.conectionsArray] &&
+      [self.connectionsArray isEqualToArray:otherMessage.connectionsArray] &&
       [self.profilesArray isEqualToArray:otherMessage.profilesArray] &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
@@ -1677,7 +1677,7 @@ static BAcceptConnectionResponse* defaultBAcceptConnectionResponseInstance = nil
   if (self.hasMessage) {
     hashCode = hashCode * 31 + [self.message hash];
   }
-  [self.conectionsArray enumerateObjectsUsingBlock:^(BConnection *element, NSUInteger idx, BOOL *stop) {
+  [self.connectionsArray enumerateObjectsUsingBlock:^(BConnection *element, NSUInteger idx, BOOL *stop) {
     hashCode = hashCode * 31 + [element hash];
   }];
   [self.profilesArray enumerateObjectsUsingBlock:^(BUserProfile *element, NSUInteger idx, BOOL *stop) {
@@ -1735,11 +1735,11 @@ static BAcceptConnectionResponse* defaultBAcceptConnectionResponseInstance = nil
   if (other.hasMessage) {
     [self setMessage:other.message];
   }
-  if (other.conectionsArray.count > 0) {
-    if (resultAcceptConnectionResponse.conectionsArray == nil) {
-      resultAcceptConnectionResponse.conectionsArray = [[NSMutableArray alloc] initWithArray:other.conectionsArray];
+  if (other.connectionsArray.count > 0) {
+    if (resultAcceptConnectionResponse.connectionsArray == nil) {
+      resultAcceptConnectionResponse.connectionsArray = [[NSMutableArray alloc] initWithArray:other.connectionsArray];
     } else {
-      [resultAcceptConnectionResponse.conectionsArray addObjectsFromArray:other.conectionsArray];
+      [resultAcceptConnectionResponse.connectionsArray addObjectsFromArray:other.connectionsArray];
     }
   }
   if (other.profilesArray.count > 0) {
@@ -1785,7 +1785,7 @@ static BAcceptConnectionResponse* defaultBAcceptConnectionResponseInstance = nil
       case 34: {
         BConnectionBuilder* subBuilder = [BConnection builder];
         [input readMessage:subBuilder extensionRegistry:extensionRegistry];
-        [self addConections:[subBuilder buildPartial]];
+        [self addConnections:[subBuilder buildPartial]];
         break;
       }
       case 42: {
@@ -1845,25 +1845,25 @@ static BAcceptConnectionResponse* defaultBAcceptConnectionResponseInstance = nil
   resultAcceptConnectionResponse.message = @"";
   return self;
 }
-- (NSMutableArray *)conections {
-  return resultAcceptConnectionResponse.conectionsArray;
+- (NSMutableArray *)connections {
+  return resultAcceptConnectionResponse.connectionsArray;
 }
-- (BConnection*)conectionsAtIndex:(NSUInteger)index {
-  return [resultAcceptConnectionResponse conectionsAtIndex:index];
+- (BConnection*)connectionsAtIndex:(NSUInteger)index {
+  return [resultAcceptConnectionResponse connectionsAtIndex:index];
 }
-- (BAcceptConnectionResponseBuilder *)addConections:(BConnection*)value {
-  if (resultAcceptConnectionResponse.conectionsArray == nil) {
-    resultAcceptConnectionResponse.conectionsArray = [[NSMutableArray alloc]init];
+- (BAcceptConnectionResponseBuilder *)addConnections:(BConnection*)value {
+  if (resultAcceptConnectionResponse.connectionsArray == nil) {
+    resultAcceptConnectionResponse.connectionsArray = [[NSMutableArray alloc]init];
   }
-  [resultAcceptConnectionResponse.conectionsArray addObject:value];
+  [resultAcceptConnectionResponse.connectionsArray addObject:value];
   return self;
 }
-- (BAcceptConnectionResponseBuilder *)setConectionsArray:(NSArray *)array {
-  resultAcceptConnectionResponse.conectionsArray = [[NSMutableArray alloc]initWithArray:array];
+- (BAcceptConnectionResponseBuilder *)setConnectionsArray:(NSArray *)array {
+  resultAcceptConnectionResponse.connectionsArray = [[NSMutableArray alloc]initWithArray:array];
   return self;
 }
-- (BAcceptConnectionResponseBuilder *)clearConections {
-  resultAcceptConnectionResponse.conectionsArray = nil;
+- (BAcceptConnectionResponseBuilder *)clearConnections {
+  resultAcceptConnectionResponse.connectionsArray = nil;
   return self;
 }
 - (NSMutableArray *)profiles {

@@ -41,7 +41,9 @@ It has these top-level messages:
 	BlitzHereAppOptions
 	AppOptions
 	SessionResponse
+	RequestType
 	ClientRequest
+	ResponseType
 	ServerResponse
 	Globals
 	Coordinate
@@ -62,6 +64,8 @@ It has these top-level messages:
 	ImageUpload
 	UserProfileUpdate
 	UserProfileQuery
+	ConfirmationRequest
+	ProfilesFromContactInfo
 	UserTrackingEvent
 	UserTrackingBatch
 	UserTrackingResponse
@@ -261,7 +265,7 @@ type AcceptConnectionResponse struct {
 	UserID           *string        `protobuf:"bytes,1,opt,name=userID" json:"userID,omitempty"`
 	ConnectionID     *string        `protobuf:"bytes,2,opt,name=connectionID" json:"connectionID,omitempty"`
 	Message          *string        `protobuf:"bytes,3,opt,name=message" json:"message,omitempty"`
-	Conections       []*Connection  `protobuf:"bytes,4,rep,name=conections" json:"conections,omitempty"`
+	Connections      []*Connection  `protobuf:"bytes,4,rep,name=connections" json:"connections,omitempty"`
 	Profiles         []*UserProfile `protobuf:"bytes,5,rep,name=profiles" json:"profiles,omitempty"`
 	XXX_unrecognized []byte         `json:"-"`
 }
@@ -291,9 +295,9 @@ func (m *AcceptConnectionResponse) GetMessage() string {
 	return ""
 }
 
-func (m *AcceptConnectionResponse) GetConections() []*Connection {
+func (m *AcceptConnectionResponse) GetConnections() []*Connection {
 	if m != nil {
-		return m.Conections
+		return m.Connections
 	}
 	return nil
 }

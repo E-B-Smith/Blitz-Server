@@ -3940,5 +3940,645 @@ static BUserProfileQuery* defaultBUserProfileQueryInstance = nil;
 }
 @end
 
+@interface BConfirmationRequest ()
+@property (strong) BContactInfo* contactInfo;
+@property (strong) BUserProfile* profile;
+@property (strong) NSString* confirmationCode;
+@property (strong) NSString* inviterUserID;
+@end
+
+@implementation BConfirmationRequest
+
+- (BOOL) hasContactInfo {
+  return !!hasContactInfo_;
+}
+- (void) setHasContactInfo:(BOOL) _value_ {
+  hasContactInfo_ = !!_value_;
+}
+@synthesize contactInfo;
+- (BOOL) hasProfile {
+  return !!hasProfile_;
+}
+- (void) setHasProfile:(BOOL) _value_ {
+  hasProfile_ = !!_value_;
+}
+@synthesize profile;
+- (BOOL) hasConfirmationCode {
+  return !!hasConfirmationCode_;
+}
+- (void) setHasConfirmationCode:(BOOL) _value_ {
+  hasConfirmationCode_ = !!_value_;
+}
+@synthesize confirmationCode;
+- (BOOL) hasInviterUserID {
+  return !!hasInviterUserID_;
+}
+- (void) setHasInviterUserID:(BOOL) _value_ {
+  hasInviterUserID_ = !!_value_;
+}
+@synthesize inviterUserID;
+- (instancetype) init {
+  if ((self = [super init])) {
+    self.contactInfo = [BContactInfo defaultInstance];
+    self.profile = [BUserProfile defaultInstance];
+    self.confirmationCode = @"";
+    self.inviterUserID = @"";
+  }
+  return self;
+}
+static BConfirmationRequest* defaultBConfirmationRequestInstance = nil;
++ (void) initialize {
+  if (self == [BConfirmationRequest class]) {
+    defaultBConfirmationRequestInstance = [[BConfirmationRequest alloc] init];
+  }
+}
++ (instancetype) defaultInstance {
+  return defaultBConfirmationRequestInstance;
+}
+- (instancetype) defaultInstance {
+  return defaultBConfirmationRequestInstance;
+}
+- (BOOL) isInitialized {
+  if (self.hasContactInfo) {
+    if (!self.contactInfo.isInitialized) {
+      return NO;
+    }
+  }
+  if (self.hasProfile) {
+    if (!self.profile.isInitialized) {
+      return NO;
+    }
+  }
+  return YES;
+}
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
+  if (self.hasContactInfo) {
+    [output writeMessage:1 value:self.contactInfo];
+  }
+  if (self.hasProfile) {
+    [output writeMessage:2 value:self.profile];
+  }
+  if (self.hasConfirmationCode) {
+    [output writeString:3 value:self.confirmationCode];
+  }
+  if (self.hasInviterUserID) {
+    [output writeString:4 value:self.inviterUserID];
+  }
+  [self.unknownFields writeToCodedOutputStream:output];
+}
+- (SInt32) serializedSize {
+  __block SInt32 size_ = memoizedSerializedSize;
+  if (size_ != -1) {
+    return size_;
+  }
+
+  size_ = 0;
+  if (self.hasContactInfo) {
+    size_ += computeMessageSize(1, self.contactInfo);
+  }
+  if (self.hasProfile) {
+    size_ += computeMessageSize(2, self.profile);
+  }
+  if (self.hasConfirmationCode) {
+    size_ += computeStringSize(3, self.confirmationCode);
+  }
+  if (self.hasInviterUserID) {
+    size_ += computeStringSize(4, self.inviterUserID);
+  }
+  size_ += self.unknownFields.serializedSize;
+  memoizedSerializedSize = size_;
+  return size_;
+}
++ (BConfirmationRequest*) parseFromData:(NSData*) data {
+  return (BConfirmationRequest*)[[[BConfirmationRequest builder] mergeFromData:data] build];
+}
++ (BConfirmationRequest*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BConfirmationRequest*)[[[BConfirmationRequest builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
+}
++ (BConfirmationRequest*) parseFromInputStream:(NSInputStream*) input {
+  return (BConfirmationRequest*)[[[BConfirmationRequest builder] mergeFromInputStream:input] build];
+}
++ (BConfirmationRequest*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BConfirmationRequest*)[[[BConfirmationRequest builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (BConfirmationRequest*) parseFromCodedInputStream:(PBCodedInputStream*) input {
+  return (BConfirmationRequest*)[[[BConfirmationRequest builder] mergeFromCodedInputStream:input] build];
+}
++ (BConfirmationRequest*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BConfirmationRequest*)[[[BConfirmationRequest builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (BConfirmationRequestBuilder*) builder {
+  return [[BConfirmationRequestBuilder alloc] init];
+}
++ (BConfirmationRequestBuilder*) builderWithPrototype:(BConfirmationRequest*) prototype {
+  return [[BConfirmationRequest builder] mergeFrom:prototype];
+}
+- (BConfirmationRequestBuilder*) builder {
+  return [BConfirmationRequest builder];
+}
+- (BConfirmationRequestBuilder*) toBuilder {
+  return [BConfirmationRequest builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  if (self.hasContactInfo) {
+    [output appendFormat:@"%@%@ {\n", indent, @"contactInfo"];
+    [self.contactInfo writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
+  if (self.hasProfile) {
+    [output appendFormat:@"%@%@ {\n", indent, @"profile"];
+    [self.profile writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
+  if (self.hasConfirmationCode) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"confirmationCode", self.confirmationCode];
+  }
+  if (self.hasInviterUserID) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"inviterUserID", self.inviterUserID];
+  }
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (void) storeInDictionary:(NSMutableDictionary *)dictionary {
+  if (self.hasContactInfo) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.contactInfo storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"contactInfo"];
+  }
+  if (self.hasProfile) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.profile storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"profile"];
+  }
+  if (self.hasConfirmationCode) {
+    [dictionary setObject: self.confirmationCode forKey: @"confirmationCode"];
+  }
+  if (self.hasInviterUserID) {
+    [dictionary setObject: self.inviterUserID forKey: @"inviterUserID"];
+  }
+  [self.unknownFields storeInDictionary:dictionary];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[BConfirmationRequest class]]) {
+    return NO;
+  }
+  BConfirmationRequest *otherMessage = other;
+  return
+      self.hasContactInfo == otherMessage.hasContactInfo &&
+      (!self.hasContactInfo || [self.contactInfo isEqual:otherMessage.contactInfo]) &&
+      self.hasProfile == otherMessage.hasProfile &&
+      (!self.hasProfile || [self.profile isEqual:otherMessage.profile]) &&
+      self.hasConfirmationCode == otherMessage.hasConfirmationCode &&
+      (!self.hasConfirmationCode || [self.confirmationCode isEqual:otherMessage.confirmationCode]) &&
+      self.hasInviterUserID == otherMessage.hasInviterUserID &&
+      (!self.hasInviterUserID || [self.inviterUserID isEqual:otherMessage.inviterUserID]) &&
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  __block NSUInteger hashCode = 7;
+  if (self.hasContactInfo) {
+    hashCode = hashCode * 31 + [self.contactInfo hash];
+  }
+  if (self.hasProfile) {
+    hashCode = hashCode * 31 + [self.profile hash];
+  }
+  if (self.hasConfirmationCode) {
+    hashCode = hashCode * 31 + [self.confirmationCode hash];
+  }
+  if (self.hasInviterUserID) {
+    hashCode = hashCode * 31 + [self.inviterUserID hash];
+  }
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
+}
+@end
+
+@interface BConfirmationRequestBuilder()
+@property (strong) BConfirmationRequest* resultConfirmationRequest;
+@end
+
+@implementation BConfirmationRequestBuilder
+@synthesize resultConfirmationRequest;
+- (instancetype) init {
+  if ((self = [super init])) {
+    self.resultConfirmationRequest = [[BConfirmationRequest alloc] init];
+  }
+  return self;
+}
+- (PBGeneratedMessage*) internalGetResult {
+  return resultConfirmationRequest;
+}
+- (BConfirmationRequestBuilder*) clear {
+  self.resultConfirmationRequest = [[BConfirmationRequest alloc] init];
+  return self;
+}
+- (BConfirmationRequestBuilder*) clone {
+  return [BConfirmationRequest builderWithPrototype:resultConfirmationRequest];
+}
+- (BConfirmationRequest*) defaultInstance {
+  return [BConfirmationRequest defaultInstance];
+}
+- (BConfirmationRequest*) build {
+  [self checkInitialized];
+  return [self buildPartial];
+}
+- (BConfirmationRequest*) buildPartial {
+  BConfirmationRequest* returnMe = resultConfirmationRequest;
+  self.resultConfirmationRequest = nil;
+  return returnMe;
+}
+- (BConfirmationRequestBuilder*) mergeFrom:(BConfirmationRequest*) other {
+  if (other == [BConfirmationRequest defaultInstance]) {
+    return self;
+  }
+  if (other.hasContactInfo) {
+    [self mergeContactInfo:other.contactInfo];
+  }
+  if (other.hasProfile) {
+    [self mergeProfile:other.profile];
+  }
+  if (other.hasConfirmationCode) {
+    [self setConfirmationCode:other.confirmationCode];
+  }
+  if (other.hasInviterUserID) {
+    [self setInviterUserID:other.inviterUserID];
+  }
+  [self mergeUnknownFields:other.unknownFields];
+  return self;
+}
+- (BConfirmationRequestBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
+  return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
+}
+- (BConfirmationRequestBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  PBUnknownFieldSetBuilder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
+  while (YES) {
+    SInt32 tag = [input readTag];
+    switch (tag) {
+      case 0:
+        [self setUnknownFields:[unknownFields build]];
+        return self;
+      default: {
+        if (![self parseUnknownField:input unknownFields:unknownFields extensionRegistry:extensionRegistry tag:tag]) {
+          [self setUnknownFields:[unknownFields build]];
+          return self;
+        }
+        break;
+      }
+      case 10: {
+        BContactInfoBuilder* subBuilder = [BContactInfo builder];
+        if (self.hasContactInfo) {
+          [subBuilder mergeFrom:self.contactInfo];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setContactInfo:[subBuilder buildPartial]];
+        break;
+      }
+      case 18: {
+        BUserProfileBuilder* subBuilder = [BUserProfile builder];
+        if (self.hasProfile) {
+          [subBuilder mergeFrom:self.profile];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setProfile:[subBuilder buildPartial]];
+        break;
+      }
+      case 26: {
+        [self setConfirmationCode:[input readString]];
+        break;
+      }
+      case 34: {
+        [self setInviterUserID:[input readString]];
+        break;
+      }
+    }
+  }
+}
+- (BOOL) hasContactInfo {
+  return resultConfirmationRequest.hasContactInfo;
+}
+- (BContactInfo*) contactInfo {
+  return resultConfirmationRequest.contactInfo;
+}
+- (BConfirmationRequestBuilder*) setContactInfo:(BContactInfo*) value {
+  resultConfirmationRequest.hasContactInfo = YES;
+  resultConfirmationRequest.contactInfo = value;
+  return self;
+}
+- (BConfirmationRequestBuilder*) setContactInfoBuilder:(BContactInfoBuilder*) builderForValue {
+  return [self setContactInfo:[builderForValue build]];
+}
+- (BConfirmationRequestBuilder*) mergeContactInfo:(BContactInfo*) value {
+  if (resultConfirmationRequest.hasContactInfo &&
+      resultConfirmationRequest.contactInfo != [BContactInfo defaultInstance]) {
+    resultConfirmationRequest.contactInfo =
+      [[[BContactInfo builderWithPrototype:resultConfirmationRequest.contactInfo] mergeFrom:value] buildPartial];
+  } else {
+    resultConfirmationRequest.contactInfo = value;
+  }
+  resultConfirmationRequest.hasContactInfo = YES;
+  return self;
+}
+- (BConfirmationRequestBuilder*) clearContactInfo {
+  resultConfirmationRequest.hasContactInfo = NO;
+  resultConfirmationRequest.contactInfo = [BContactInfo defaultInstance];
+  return self;
+}
+- (BOOL) hasProfile {
+  return resultConfirmationRequest.hasProfile;
+}
+- (BUserProfile*) profile {
+  return resultConfirmationRequest.profile;
+}
+- (BConfirmationRequestBuilder*) setProfile:(BUserProfile*) value {
+  resultConfirmationRequest.hasProfile = YES;
+  resultConfirmationRequest.profile = value;
+  return self;
+}
+- (BConfirmationRequestBuilder*) setProfileBuilder:(BUserProfileBuilder*) builderForValue {
+  return [self setProfile:[builderForValue build]];
+}
+- (BConfirmationRequestBuilder*) mergeProfile:(BUserProfile*) value {
+  if (resultConfirmationRequest.hasProfile &&
+      resultConfirmationRequest.profile != [BUserProfile defaultInstance]) {
+    resultConfirmationRequest.profile =
+      [[[BUserProfile builderWithPrototype:resultConfirmationRequest.profile] mergeFrom:value] buildPartial];
+  } else {
+    resultConfirmationRequest.profile = value;
+  }
+  resultConfirmationRequest.hasProfile = YES;
+  return self;
+}
+- (BConfirmationRequestBuilder*) clearProfile {
+  resultConfirmationRequest.hasProfile = NO;
+  resultConfirmationRequest.profile = [BUserProfile defaultInstance];
+  return self;
+}
+- (BOOL) hasConfirmationCode {
+  return resultConfirmationRequest.hasConfirmationCode;
+}
+- (NSString*) confirmationCode {
+  return resultConfirmationRequest.confirmationCode;
+}
+- (BConfirmationRequestBuilder*) setConfirmationCode:(NSString*) value {
+  resultConfirmationRequest.hasConfirmationCode = YES;
+  resultConfirmationRequest.confirmationCode = value;
+  return self;
+}
+- (BConfirmationRequestBuilder*) clearConfirmationCode {
+  resultConfirmationRequest.hasConfirmationCode = NO;
+  resultConfirmationRequest.confirmationCode = @"";
+  return self;
+}
+- (BOOL) hasInviterUserID {
+  return resultConfirmationRequest.hasInviterUserID;
+}
+- (NSString*) inviterUserID {
+  return resultConfirmationRequest.inviterUserID;
+}
+- (BConfirmationRequestBuilder*) setInviterUserID:(NSString*) value {
+  resultConfirmationRequest.hasInviterUserID = YES;
+  resultConfirmationRequest.inviterUserID = value;
+  return self;
+}
+- (BConfirmationRequestBuilder*) clearInviterUserID {
+  resultConfirmationRequest.hasInviterUserID = NO;
+  resultConfirmationRequest.inviterUserID = @"";
+  return self;
+}
+@end
+
+@interface BProfilesFromContactInfo ()
+@property (strong) NSMutableArray * profilesArray;
+@end
+
+@implementation BProfilesFromContactInfo
+
+@synthesize profilesArray;
+@dynamic profiles;
+- (instancetype) init {
+  if ((self = [super init])) {
+  }
+  return self;
+}
+static BProfilesFromContactInfo* defaultBProfilesFromContactInfoInstance = nil;
++ (void) initialize {
+  if (self == [BProfilesFromContactInfo class]) {
+    defaultBProfilesFromContactInfoInstance = [[BProfilesFromContactInfo alloc] init];
+  }
+}
++ (instancetype) defaultInstance {
+  return defaultBProfilesFromContactInfoInstance;
+}
+- (instancetype) defaultInstance {
+  return defaultBProfilesFromContactInfoInstance;
+}
+- (NSArray *)profiles {
+  return profilesArray;
+}
+- (BUserProfile*)profilesAtIndex:(NSUInteger)index {
+  return [profilesArray objectAtIndex:index];
+}
+- (BOOL) isInitialized {
+  __block BOOL isInitprofiles = YES;
+   [self.profiles enumerateObjectsUsingBlock:^(BUserProfile *element, NSUInteger idx, BOOL *stop) {
+    if (!element.isInitialized) {
+      isInitprofiles = NO;
+      *stop = YES;
+    }
+  }];
+  if (!isInitprofiles) return isInitprofiles;
+  return YES;
+}
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
+  [self.profilesArray enumerateObjectsUsingBlock:^(BUserProfile *element, NSUInteger idx, BOOL *stop) {
+    [output writeMessage:1 value:element];
+  }];
+  [self.unknownFields writeToCodedOutputStream:output];
+}
+- (SInt32) serializedSize {
+  __block SInt32 size_ = memoizedSerializedSize;
+  if (size_ != -1) {
+    return size_;
+  }
+
+  size_ = 0;
+  [self.profilesArray enumerateObjectsUsingBlock:^(BUserProfile *element, NSUInteger idx, BOOL *stop) {
+    size_ += computeMessageSize(1, element);
+  }];
+  size_ += self.unknownFields.serializedSize;
+  memoizedSerializedSize = size_;
+  return size_;
+}
++ (BProfilesFromContactInfo*) parseFromData:(NSData*) data {
+  return (BProfilesFromContactInfo*)[[[BProfilesFromContactInfo builder] mergeFromData:data] build];
+}
++ (BProfilesFromContactInfo*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BProfilesFromContactInfo*)[[[BProfilesFromContactInfo builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
+}
++ (BProfilesFromContactInfo*) parseFromInputStream:(NSInputStream*) input {
+  return (BProfilesFromContactInfo*)[[[BProfilesFromContactInfo builder] mergeFromInputStream:input] build];
+}
++ (BProfilesFromContactInfo*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BProfilesFromContactInfo*)[[[BProfilesFromContactInfo builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (BProfilesFromContactInfo*) parseFromCodedInputStream:(PBCodedInputStream*) input {
+  return (BProfilesFromContactInfo*)[[[BProfilesFromContactInfo builder] mergeFromCodedInputStream:input] build];
+}
++ (BProfilesFromContactInfo*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BProfilesFromContactInfo*)[[[BProfilesFromContactInfo builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (BProfilesFromContactInfoBuilder*) builder {
+  return [[BProfilesFromContactInfoBuilder alloc] init];
+}
++ (BProfilesFromContactInfoBuilder*) builderWithPrototype:(BProfilesFromContactInfo*) prototype {
+  return [[BProfilesFromContactInfo builder] mergeFrom:prototype];
+}
+- (BProfilesFromContactInfoBuilder*) builder {
+  return [BProfilesFromContactInfo builder];
+}
+- (BProfilesFromContactInfoBuilder*) toBuilder {
+  return [BProfilesFromContactInfo builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  [self.profilesArray enumerateObjectsUsingBlock:^(BUserProfile *element, NSUInteger idx, BOOL *stop) {
+    [output appendFormat:@"%@%@ {\n", indent, @"profiles"];
+    [element writeDescriptionTo:output
+                     withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }];
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (void) storeInDictionary:(NSMutableDictionary *)dictionary {
+  for (BUserProfile* element in self.profilesArray) {
+    NSMutableDictionary *elementDictionary = [NSMutableDictionary dictionary];
+    [element storeInDictionary:elementDictionary];
+    [dictionary setObject:[NSDictionary dictionaryWithDictionary:elementDictionary] forKey:@"profiles"];
+  }
+  [self.unknownFields storeInDictionary:dictionary];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[BProfilesFromContactInfo class]]) {
+    return NO;
+  }
+  BProfilesFromContactInfo *otherMessage = other;
+  return
+      [self.profilesArray isEqualToArray:otherMessage.profilesArray] &&
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  __block NSUInteger hashCode = 7;
+  [self.profilesArray enumerateObjectsUsingBlock:^(BUserProfile *element, NSUInteger idx, BOOL *stop) {
+    hashCode = hashCode * 31 + [element hash];
+  }];
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
+}
+@end
+
+@interface BProfilesFromContactInfoBuilder()
+@property (strong) BProfilesFromContactInfo* resultProfilesFromContactInfo;
+@end
+
+@implementation BProfilesFromContactInfoBuilder
+@synthesize resultProfilesFromContactInfo;
+- (instancetype) init {
+  if ((self = [super init])) {
+    self.resultProfilesFromContactInfo = [[BProfilesFromContactInfo alloc] init];
+  }
+  return self;
+}
+- (PBGeneratedMessage*) internalGetResult {
+  return resultProfilesFromContactInfo;
+}
+- (BProfilesFromContactInfoBuilder*) clear {
+  self.resultProfilesFromContactInfo = [[BProfilesFromContactInfo alloc] init];
+  return self;
+}
+- (BProfilesFromContactInfoBuilder*) clone {
+  return [BProfilesFromContactInfo builderWithPrototype:resultProfilesFromContactInfo];
+}
+- (BProfilesFromContactInfo*) defaultInstance {
+  return [BProfilesFromContactInfo defaultInstance];
+}
+- (BProfilesFromContactInfo*) build {
+  [self checkInitialized];
+  return [self buildPartial];
+}
+- (BProfilesFromContactInfo*) buildPartial {
+  BProfilesFromContactInfo* returnMe = resultProfilesFromContactInfo;
+  self.resultProfilesFromContactInfo = nil;
+  return returnMe;
+}
+- (BProfilesFromContactInfoBuilder*) mergeFrom:(BProfilesFromContactInfo*) other {
+  if (other == [BProfilesFromContactInfo defaultInstance]) {
+    return self;
+  }
+  if (other.profilesArray.count > 0) {
+    if (resultProfilesFromContactInfo.profilesArray == nil) {
+      resultProfilesFromContactInfo.profilesArray = [[NSMutableArray alloc] initWithArray:other.profilesArray];
+    } else {
+      [resultProfilesFromContactInfo.profilesArray addObjectsFromArray:other.profilesArray];
+    }
+  }
+  [self mergeUnknownFields:other.unknownFields];
+  return self;
+}
+- (BProfilesFromContactInfoBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
+  return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
+}
+- (BProfilesFromContactInfoBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  PBUnknownFieldSetBuilder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
+  while (YES) {
+    SInt32 tag = [input readTag];
+    switch (tag) {
+      case 0:
+        [self setUnknownFields:[unknownFields build]];
+        return self;
+      default: {
+        if (![self parseUnknownField:input unknownFields:unknownFields extensionRegistry:extensionRegistry tag:tag]) {
+          [self setUnknownFields:[unknownFields build]];
+          return self;
+        }
+        break;
+      }
+      case 10: {
+        BUserProfileBuilder* subBuilder = [BUserProfile builder];
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self addProfiles:[subBuilder buildPartial]];
+        break;
+      }
+    }
+  }
+}
+- (NSMutableArray *)profiles {
+  return resultProfilesFromContactInfo.profilesArray;
+}
+- (BUserProfile*)profilesAtIndex:(NSUInteger)index {
+  return [resultProfilesFromContactInfo profilesAtIndex:index];
+}
+- (BProfilesFromContactInfoBuilder *)addProfiles:(BUserProfile*)value {
+  if (resultProfilesFromContactInfo.profilesArray == nil) {
+    resultProfilesFromContactInfo.profilesArray = [[NSMutableArray alloc]init];
+  }
+  [resultProfilesFromContactInfo.profilesArray addObject:value];
+  return self;
+}
+- (BProfilesFromContactInfoBuilder *)setProfilesArray:(NSArray *)array {
+  resultProfilesFromContactInfo.profilesArray = [[NSMutableArray alloc]initWithArray:array];
+  return self;
+}
+- (BProfilesFromContactInfoBuilder *)clearProfiles {
+  resultProfilesFromContactInfo.profilesArray = nil;
+  return self;
+}
+@end
+
 
 // @@protoc_insertion_point(global_scope)
