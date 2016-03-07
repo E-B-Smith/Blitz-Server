@@ -4,17 +4,28 @@
 
 #import "Types.pb.h"
 #import "Device.pb.h"
+#import "Connections.pb.h"
 #import "Notifications.pb.h"
 #import "UserProfiles.pb.h"
 #import "UserTracking.pb.h"
 // @@protoc_insertion_point(imports)
 
+@class BAcceptConnectionRequest;
+@class BAcceptConnectionRequestBuilder;
+@class BAcceptConnectionResponse;
+@class BAcceptConnectionResponseBuilder;
 @class BAppOptions;
 @class BAppOptionsBuilder;
-@class BBlitzHereOptions;
-@class BBlitzHereOptionsBuilder;
+@class BBlitzHereAppOptions;
+@class BBlitzHereAppOptionsBuilder;
 @class BClientRequest;
 @class BClientRequestBuilder;
+@class BConnection;
+@class BConnectionBuilder;
+@class BConnectionRequest;
+@class BConnectionRequestBuilder;
+@class BConnectionUpdate;
+@class BConnectionUpdateBuilder;
 @class BContactInfo;
 @class BContactInfoBuilder;
 @class BCoordinate;
@@ -125,10 +136,9 @@ typedef NS_ENUM(SInt32, BResponseCode) {
   BResponseCodeRCSuccess = 1,
   BResponseCodeRCInputCorrupt = 2,
   BResponseCodeRCInputInvalid = 3,
-  BResponseCodeRCServerWarning = 4,
-  BResponseCodeRCServerError = 5,
-  BResponseCodeRCNotAuthorized = 6,
-  BResponseCodeRCClientTooOld = 7,
+  BResponseCodeRCServerError = 4,
+  BResponseCodeRCNotAuthorized = 5,
+  BResponseCodeRCClientTooOld = 6,
 };
 
 BOOL BResponseCodeIsValidValue(BResponseCode value);
@@ -279,7 +289,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BSessionRequestBuilder*) clearLastAppDataResetDate;
 @end
 
-@interface BBlitzHereOptions : PBGeneratedMessage<GeneratedMessageProtocol> {
+@interface BBlitzHereAppOptions : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
 }
 
@@ -288,45 +298,45 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 
 - (BOOL) isInitialized;
 - (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
-- (BBlitzHereOptionsBuilder*) builder;
-+ (BBlitzHereOptionsBuilder*) builder;
-+ (BBlitzHereOptionsBuilder*) builderWithPrototype:(BBlitzHereOptions*) prototype;
-- (BBlitzHereOptionsBuilder*) toBuilder;
+- (BBlitzHereAppOptionsBuilder*) builder;
++ (BBlitzHereAppOptionsBuilder*) builder;
++ (BBlitzHereAppOptionsBuilder*) builderWithPrototype:(BBlitzHereAppOptions*) prototype;
+- (BBlitzHereAppOptionsBuilder*) toBuilder;
 
-+ (BBlitzHereOptions*) parseFromData:(NSData*) data;
-+ (BBlitzHereOptions*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
-+ (BBlitzHereOptions*) parseFromInputStream:(NSInputStream*) input;
-+ (BBlitzHereOptions*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
-+ (BBlitzHereOptions*) parseFromCodedInputStream:(PBCodedInputStream*) input;
-+ (BBlitzHereOptions*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (BBlitzHereAppOptions*) parseFromData:(NSData*) data;
++ (BBlitzHereAppOptions*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (BBlitzHereAppOptions*) parseFromInputStream:(NSInputStream*) input;
++ (BBlitzHereAppOptions*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (BBlitzHereAppOptions*) parseFromCodedInputStream:(PBCodedInputStream*) input;
++ (BBlitzHereAppOptions*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
 @end
 
-@interface BBlitzHereOptionsBuilder : PBGeneratedMessageBuilder {
+@interface BBlitzHereAppOptionsBuilder : PBGeneratedMessageBuilder {
 @private
-  BBlitzHereOptions* resultBlitzHereOptions;
+  BBlitzHereAppOptions* resultBlitzHereAppOptions;
 }
 
-- (BBlitzHereOptions*) defaultInstance;
+- (BBlitzHereAppOptions*) defaultInstance;
 
-- (BBlitzHereOptionsBuilder*) clear;
-- (BBlitzHereOptionsBuilder*) clone;
+- (BBlitzHereAppOptionsBuilder*) clear;
+- (BBlitzHereAppOptionsBuilder*) clone;
 
-- (BBlitzHereOptions*) build;
-- (BBlitzHereOptions*) buildPartial;
+- (BBlitzHereAppOptions*) build;
+- (BBlitzHereAppOptions*) buildPartial;
 
-- (BBlitzHereOptionsBuilder*) mergeFrom:(BBlitzHereOptions*) other;
-- (BBlitzHereOptionsBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
-- (BBlitzHereOptionsBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+- (BBlitzHereAppOptionsBuilder*) mergeFrom:(BBlitzHereAppOptions*) other;
+- (BBlitzHereAppOptionsBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
+- (BBlitzHereAppOptionsBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
 @end
 
 #define AppOptions_blitzHereOptions @"blitzHereOptions"
 @interface BAppOptions : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
   BOOL hasBlitzHereOptions_:1;
-  BBlitzHereOptions* blitzHereOptions;
+  BBlitzHereAppOptions* blitzHereOptions;
 }
 - (BOOL) hasBlitzHereOptions;
-@property (readonly, strong) BBlitzHereOptions* blitzHereOptions;
+@property (readonly, strong) BBlitzHereAppOptions* blitzHereOptions;
 
 + (instancetype) defaultInstance;
 - (instancetype) defaultInstance;
@@ -364,10 +374,10 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BAppOptionsBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
 
 - (BOOL) hasBlitzHereOptions;
-- (BBlitzHereOptions*) blitzHereOptions;
-- (BAppOptionsBuilder*) setBlitzHereOptions:(BBlitzHereOptions*) value;
-- (BAppOptionsBuilder*) setBlitzHereOptionsBuilder:(BBlitzHereOptionsBuilder*) builderForValue;
-- (BAppOptionsBuilder*) mergeBlitzHereOptions:(BBlitzHereOptions*) value;
+- (BBlitzHereAppOptions*) blitzHereOptions;
+- (BAppOptionsBuilder*) setBlitzHereOptions:(BBlitzHereAppOptions*) value;
+- (BAppOptionsBuilder*) setBlitzHereOptionsBuilder:(BBlitzHereAppOptionsBuilder*) builderForValue;
+- (BAppOptionsBuilder*) mergeBlitzHereOptions:(BBlitzHereAppOptions*) value;
 - (BAppOptionsBuilder*) clearBlitzHereOptions;
 @end
 
@@ -494,6 +504,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 #define ClientRequest_notificationFetchRequest @"notificationFetchRequest"
 #define ClientRequest_debugMessage @"debugMessage"
 #define ClientRequest_imageUpload @"imageUpload"
+#define ClientRequest_acceptInviteRequest @"acceptInviteRequest"
 @interface BClientRequest : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
   BOOL hasSessionToken_:1;
@@ -505,6 +516,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
   BOOL hasNotificationFetchRequest_:1;
   BOOL hasDebugMessage_:1;
   BOOL hasImageUpload_:1;
+  BOOL hasAcceptInviteRequest_:1;
   NSString* sessionToken;
   BSessionRequest* sessionRequest;
   BUserTrackingBatch* userTrackingBatch;
@@ -514,6 +526,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
   BNotificationUpdate* notificationFetchRequest;
   BDebugMessage* debugMessage;
   BImageUpload* imageUpload;
+  BAcceptConnectionRequest* acceptInviteRequest;
 }
 - (BOOL) hasSessionToken;
 - (BOOL) hasSessionRequest;
@@ -524,6 +537,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BOOL) hasNotificationFetchRequest;
 - (BOOL) hasDebugMessage;
 - (BOOL) hasImageUpload;
+- (BOOL) hasAcceptInviteRequest;
 @property (readonly, strong) NSString* sessionToken;
 @property (readonly, strong) BSessionRequest* sessionRequest;
 @property (readonly, strong) BUserTrackingBatch* userTrackingBatch;
@@ -533,6 +547,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 @property (readonly, strong) BNotificationUpdate* notificationFetchRequest;
 @property (readonly, strong) BDebugMessage* debugMessage;
 @property (readonly, strong) BImageUpload* imageUpload;
+@property (readonly, strong) BAcceptConnectionRequest* acceptInviteRequest;
 
 + (instancetype) defaultInstance;
 - (instancetype) defaultInstance;
@@ -629,6 +644,13 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BClientRequestBuilder*) setImageUploadBuilder:(BImageUploadBuilder*) builderForValue;
 - (BClientRequestBuilder*) mergeImageUpload:(BImageUpload*) value;
 - (BClientRequestBuilder*) clearImageUpload;
+
+- (BOOL) hasAcceptInviteRequest;
+- (BAcceptConnectionRequest*) acceptInviteRequest;
+- (BClientRequestBuilder*) setAcceptInviteRequest:(BAcceptConnectionRequest*) value;
+- (BClientRequestBuilder*) setAcceptInviteRequestBuilder:(BAcceptConnectionRequestBuilder*) builderForValue;
+- (BClientRequestBuilder*) mergeAcceptInviteRequest:(BAcceptConnectionRequest*) value;
+- (BClientRequestBuilder*) clearAcceptInviteRequest;
 @end
 
 #define ServerResponse_responseCode @"responseCode"

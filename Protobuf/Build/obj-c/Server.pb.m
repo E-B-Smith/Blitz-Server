@@ -16,6 +16,7 @@ static PBExtensionRegistry* extensionRegistry = nil;
     [ObjectivecDescriptorRoot registerAllExtensions:registry];
     [BTypesRoot registerAllExtensions:registry];
     [BDeviceRoot registerAllExtensions:registry];
+    [BConnectionsRoot registerAllExtensions:registry];
     [BNotificationsRoot registerAllExtensions:registry];
     [BUserProfilesRoot registerAllExtensions:registry];
     [BUserTrackingRoot registerAllExtensions:registry];
@@ -31,7 +32,6 @@ BOOL BResponseCodeIsValidValue(BResponseCode value) {
     case BResponseCodeRCSuccess:
     case BResponseCodeRCInputCorrupt:
     case BResponseCodeRCInputInvalid:
-    case BResponseCodeRCServerWarning:
     case BResponseCodeRCServerError:
     case BResponseCodeRCNotAuthorized:
     case BResponseCodeRCClientTooOld:
@@ -48,8 +48,6 @@ NSString *NSStringFromBResponseCode(BResponseCode value) {
       return @"BResponseCodeRCInputCorrupt";
     case BResponseCodeRCInputInvalid:
       return @"BResponseCodeRCInputInvalid";
-    case BResponseCodeRCServerWarning:
-      return @"BResponseCodeRCServerWarning";
     case BResponseCodeRCServerError:
       return @"BResponseCodeRCServerError";
     case BResponseCodeRCNotAuthorized:
@@ -743,27 +741,27 @@ static BSessionRequest* defaultBSessionRequestInstance = nil;
 }
 @end
 
-@interface BBlitzHereOptions ()
+@interface BBlitzHereAppOptions ()
 @end
 
-@implementation BBlitzHereOptions
+@implementation BBlitzHereAppOptions
 
 - (instancetype) init {
   if ((self = [super init])) {
   }
   return self;
 }
-static BBlitzHereOptions* defaultBBlitzHereOptionsInstance = nil;
+static BBlitzHereAppOptions* defaultBBlitzHereAppOptionsInstance = nil;
 + (void) initialize {
-  if (self == [BBlitzHereOptions class]) {
-    defaultBBlitzHereOptionsInstance = [[BBlitzHereOptions alloc] init];
+  if (self == [BBlitzHereAppOptions class]) {
+    defaultBBlitzHereAppOptionsInstance = [[BBlitzHereAppOptions alloc] init];
   }
 }
 + (instancetype) defaultInstance {
-  return defaultBBlitzHereOptionsInstance;
+  return defaultBBlitzHereAppOptionsInstance;
 }
 - (instancetype) defaultInstance {
-  return defaultBBlitzHereOptionsInstance;
+  return defaultBBlitzHereAppOptionsInstance;
 }
 - (BOOL) isInitialized {
   return YES;
@@ -782,35 +780,35 @@ static BBlitzHereOptions* defaultBBlitzHereOptionsInstance = nil;
   memoizedSerializedSize = size_;
   return size_;
 }
-+ (BBlitzHereOptions*) parseFromData:(NSData*) data {
-  return (BBlitzHereOptions*)[[[BBlitzHereOptions builder] mergeFromData:data] build];
++ (BBlitzHereAppOptions*) parseFromData:(NSData*) data {
+  return (BBlitzHereAppOptions*)[[[BBlitzHereAppOptions builder] mergeFromData:data] build];
 }
-+ (BBlitzHereOptions*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
-  return (BBlitzHereOptions*)[[[BBlitzHereOptions builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
++ (BBlitzHereAppOptions*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BBlitzHereAppOptions*)[[[BBlitzHereAppOptions builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
 }
-+ (BBlitzHereOptions*) parseFromInputStream:(NSInputStream*) input {
-  return (BBlitzHereOptions*)[[[BBlitzHereOptions builder] mergeFromInputStream:input] build];
++ (BBlitzHereAppOptions*) parseFromInputStream:(NSInputStream*) input {
+  return (BBlitzHereAppOptions*)[[[BBlitzHereAppOptions builder] mergeFromInputStream:input] build];
 }
-+ (BBlitzHereOptions*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
-  return (BBlitzHereOptions*)[[[BBlitzHereOptions builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
++ (BBlitzHereAppOptions*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BBlitzHereAppOptions*)[[[BBlitzHereAppOptions builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
 }
-+ (BBlitzHereOptions*) parseFromCodedInputStream:(PBCodedInputStream*) input {
-  return (BBlitzHereOptions*)[[[BBlitzHereOptions builder] mergeFromCodedInputStream:input] build];
++ (BBlitzHereAppOptions*) parseFromCodedInputStream:(PBCodedInputStream*) input {
+  return (BBlitzHereAppOptions*)[[[BBlitzHereAppOptions builder] mergeFromCodedInputStream:input] build];
 }
-+ (BBlitzHereOptions*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
-  return (BBlitzHereOptions*)[[[BBlitzHereOptions builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
++ (BBlitzHereAppOptions*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BBlitzHereAppOptions*)[[[BBlitzHereAppOptions builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
 }
-+ (BBlitzHereOptionsBuilder*) builder {
-  return [[BBlitzHereOptionsBuilder alloc] init];
++ (BBlitzHereAppOptionsBuilder*) builder {
+  return [[BBlitzHereAppOptionsBuilder alloc] init];
 }
-+ (BBlitzHereOptionsBuilder*) builderWithPrototype:(BBlitzHereOptions*) prototype {
-  return [[BBlitzHereOptions builder] mergeFrom:prototype];
++ (BBlitzHereAppOptionsBuilder*) builderWithPrototype:(BBlitzHereAppOptions*) prototype {
+  return [[BBlitzHereAppOptions builder] mergeFrom:prototype];
 }
-- (BBlitzHereOptionsBuilder*) builder {
-  return [BBlitzHereOptions builder];
+- (BBlitzHereAppOptionsBuilder*) builder {
+  return [BBlitzHereAppOptions builder];
 }
-- (BBlitzHereOptionsBuilder*) toBuilder {
-  return [BBlitzHereOptions builderWithPrototype:self];
+- (BBlitzHereAppOptionsBuilder*) toBuilder {
+  return [BBlitzHereAppOptions builderWithPrototype:self];
 }
 - (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
@@ -822,10 +820,10 @@ static BBlitzHereOptions* defaultBBlitzHereOptionsInstance = nil;
   if (other == self) {
     return YES;
   }
-  if (![other isKindOfClass:[BBlitzHereOptions class]]) {
+  if (![other isKindOfClass:[BBlitzHereAppOptions class]]) {
     return NO;
   }
-  BBlitzHereOptions *otherMessage = other;
+  BBlitzHereAppOptions *otherMessage = other;
   return
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
@@ -836,51 +834,51 @@ static BBlitzHereOptions* defaultBBlitzHereOptionsInstance = nil;
 }
 @end
 
-@interface BBlitzHereOptionsBuilder()
-@property (strong) BBlitzHereOptions* resultBlitzHereOptions;
+@interface BBlitzHereAppOptionsBuilder()
+@property (strong) BBlitzHereAppOptions* resultBlitzHereAppOptions;
 @end
 
-@implementation BBlitzHereOptionsBuilder
-@synthesize resultBlitzHereOptions;
+@implementation BBlitzHereAppOptionsBuilder
+@synthesize resultBlitzHereAppOptions;
 - (instancetype) init {
   if ((self = [super init])) {
-    self.resultBlitzHereOptions = [[BBlitzHereOptions alloc] init];
+    self.resultBlitzHereAppOptions = [[BBlitzHereAppOptions alloc] init];
   }
   return self;
 }
 - (PBGeneratedMessage*) internalGetResult {
-  return resultBlitzHereOptions;
+  return resultBlitzHereAppOptions;
 }
-- (BBlitzHereOptionsBuilder*) clear {
-  self.resultBlitzHereOptions = [[BBlitzHereOptions alloc] init];
+- (BBlitzHereAppOptionsBuilder*) clear {
+  self.resultBlitzHereAppOptions = [[BBlitzHereAppOptions alloc] init];
   return self;
 }
-- (BBlitzHereOptionsBuilder*) clone {
-  return [BBlitzHereOptions builderWithPrototype:resultBlitzHereOptions];
+- (BBlitzHereAppOptionsBuilder*) clone {
+  return [BBlitzHereAppOptions builderWithPrototype:resultBlitzHereAppOptions];
 }
-- (BBlitzHereOptions*) defaultInstance {
-  return [BBlitzHereOptions defaultInstance];
+- (BBlitzHereAppOptions*) defaultInstance {
+  return [BBlitzHereAppOptions defaultInstance];
 }
-- (BBlitzHereOptions*) build {
+- (BBlitzHereAppOptions*) build {
   [self checkInitialized];
   return [self buildPartial];
 }
-- (BBlitzHereOptions*) buildPartial {
-  BBlitzHereOptions* returnMe = resultBlitzHereOptions;
-  self.resultBlitzHereOptions = nil;
+- (BBlitzHereAppOptions*) buildPartial {
+  BBlitzHereAppOptions* returnMe = resultBlitzHereAppOptions;
+  self.resultBlitzHereAppOptions = nil;
   return returnMe;
 }
-- (BBlitzHereOptionsBuilder*) mergeFrom:(BBlitzHereOptions*) other {
-  if (other == [BBlitzHereOptions defaultInstance]) {
+- (BBlitzHereAppOptionsBuilder*) mergeFrom:(BBlitzHereAppOptions*) other {
+  if (other == [BBlitzHereAppOptions defaultInstance]) {
     return self;
   }
   [self mergeUnknownFields:other.unknownFields];
   return self;
 }
-- (BBlitzHereOptionsBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
+- (BBlitzHereAppOptionsBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
   return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
 }
-- (BBlitzHereOptionsBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+- (BBlitzHereAppOptionsBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
   PBUnknownFieldSetBuilder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
   while (YES) {
     SInt32 tag = [input readTag];
@@ -901,7 +899,7 @@ static BBlitzHereOptions* defaultBBlitzHereOptionsInstance = nil;
 @end
 
 @interface BAppOptions ()
-@property (strong) BBlitzHereOptions* blitzHereOptions;
+@property (strong) BBlitzHereAppOptions* blitzHereOptions;
 @end
 
 @implementation BAppOptions
@@ -915,7 +913,7 @@ static BBlitzHereOptions* defaultBBlitzHereOptionsInstance = nil;
 @synthesize blitzHereOptions;
 - (instancetype) init {
   if ((self = [super init])) {
-    self.blitzHereOptions = [BBlitzHereOptions defaultInstance];
+    self.blitzHereOptions = [BBlitzHereAppOptions defaultInstance];
   }
   return self;
 }
@@ -1087,7 +1085,7 @@ static BAppOptions* defaultBAppOptionsInstance = nil;
         break;
       }
       case 10: {
-        BBlitzHereOptionsBuilder* subBuilder = [BBlitzHereOptions builder];
+        BBlitzHereAppOptionsBuilder* subBuilder = [BBlitzHereAppOptions builder];
         if (self.hasBlitzHereOptions) {
           [subBuilder mergeFrom:self.blitzHereOptions];
         }
@@ -1101,22 +1099,22 @@ static BAppOptions* defaultBAppOptionsInstance = nil;
 - (BOOL) hasBlitzHereOptions {
   return resultAppOptions.hasBlitzHereOptions;
 }
-- (BBlitzHereOptions*) blitzHereOptions {
+- (BBlitzHereAppOptions*) blitzHereOptions {
   return resultAppOptions.blitzHereOptions;
 }
-- (BAppOptionsBuilder*) setBlitzHereOptions:(BBlitzHereOptions*) value {
+- (BAppOptionsBuilder*) setBlitzHereOptions:(BBlitzHereAppOptions*) value {
   resultAppOptions.hasBlitzHereOptions = YES;
   resultAppOptions.blitzHereOptions = value;
   return self;
 }
-- (BAppOptionsBuilder*) setBlitzHereOptionsBuilder:(BBlitzHereOptionsBuilder*) builderForValue {
+- (BAppOptionsBuilder*) setBlitzHereOptionsBuilder:(BBlitzHereAppOptionsBuilder*) builderForValue {
   return [self setBlitzHereOptions:[builderForValue build]];
 }
-- (BAppOptionsBuilder*) mergeBlitzHereOptions:(BBlitzHereOptions*) value {
+- (BAppOptionsBuilder*) mergeBlitzHereOptions:(BBlitzHereAppOptions*) value {
   if (resultAppOptions.hasBlitzHereOptions &&
-      resultAppOptions.blitzHereOptions != [BBlitzHereOptions defaultInstance]) {
+      resultAppOptions.blitzHereOptions != [BBlitzHereAppOptions defaultInstance]) {
     resultAppOptions.blitzHereOptions =
-      [[[BBlitzHereOptions builderWithPrototype:resultAppOptions.blitzHereOptions] mergeFrom:value] buildPartial];
+      [[[BBlitzHereAppOptions builderWithPrototype:resultAppOptions.blitzHereOptions] mergeFrom:value] buildPartial];
   } else {
     resultAppOptions.blitzHereOptions = value;
   }
@@ -1125,7 +1123,7 @@ static BAppOptions* defaultBAppOptionsInstance = nil;
 }
 - (BAppOptionsBuilder*) clearBlitzHereOptions {
   resultAppOptions.hasBlitzHereOptions = NO;
-  resultAppOptions.blitzHereOptions = [BBlitzHereOptions defaultInstance];
+  resultAppOptions.blitzHereOptions = [BBlitzHereAppOptions defaultInstance];
   return self;
 }
 @end
@@ -1721,6 +1719,7 @@ static BSessionResponse* defaultBSessionResponseInstance = nil;
 @property (strong) BNotificationUpdate* notificationFetchRequest;
 @property (strong) BDebugMessage* debugMessage;
 @property (strong) BImageUpload* imageUpload;
+@property (strong) BAcceptConnectionRequest* acceptInviteRequest;
 @end
 
 @implementation BClientRequest
@@ -1788,6 +1787,13 @@ static BSessionResponse* defaultBSessionResponseInstance = nil;
   hasImageUpload_ = !!_value_;
 }
 @synthesize imageUpload;
+- (BOOL) hasAcceptInviteRequest {
+  return !!hasAcceptInviteRequest_;
+}
+- (void) setHasAcceptInviteRequest:(BOOL) _value_ {
+  hasAcceptInviteRequest_ = !!_value_;
+}
+@synthesize acceptInviteRequest;
 - (instancetype) init {
   if ((self = [super init])) {
     self.sessionToken = @"";
@@ -1799,6 +1805,7 @@ static BSessionResponse* defaultBSessionResponseInstance = nil;
     self.notificationFetchRequest = [BNotificationUpdate defaultInstance];
     self.debugMessage = [BDebugMessage defaultInstance];
     self.imageUpload = [BImageUpload defaultInstance];
+    self.acceptInviteRequest = [BAcceptConnectionRequest defaultInstance];
   }
   return self;
 }
@@ -1840,6 +1847,11 @@ static BClientRequest* defaultBClientRequestInstance = nil;
       return NO;
     }
   }
+  if (self.hasAcceptInviteRequest) {
+    if (!self.acceptInviteRequest.isInitialized) {
+      return NO;
+    }
+  }
   return YES;
 }
 - (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
@@ -1869,6 +1881,9 @@ static BClientRequest* defaultBClientRequestInstance = nil;
   }
   if (self.hasImageUpload) {
     [output writeMessage:10 value:self.imageUpload];
+  }
+  if (self.hasAcceptInviteRequest) {
+    [output writeMessage:15 value:self.acceptInviteRequest];
   }
   [self.unknownFields writeToCodedOutputStream:output];
 }
@@ -1905,6 +1920,9 @@ static BClientRequest* defaultBClientRequestInstance = nil;
   }
   if (self.hasImageUpload) {
     size_ += computeMessageSize(10, self.imageUpload);
+  }
+  if (self.hasAcceptInviteRequest) {
+    size_ += computeMessageSize(15, self.acceptInviteRequest);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -1992,6 +2010,12 @@ static BClientRequest* defaultBClientRequestInstance = nil;
                          withIndent:[NSString stringWithFormat:@"%@  ", indent]];
     [output appendFormat:@"%@}\n", indent];
   }
+  if (self.hasAcceptInviteRequest) {
+    [output appendFormat:@"%@%@ {\n", indent, @"acceptInviteRequest"];
+    [self.acceptInviteRequest writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (void) storeInDictionary:(NSMutableDictionary *)dictionary {
@@ -2038,6 +2062,11 @@ static BClientRequest* defaultBClientRequestInstance = nil;
    [self.imageUpload storeInDictionary:messageDictionary];
    [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"imageUpload"];
   }
+  if (self.hasAcceptInviteRequest) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.acceptInviteRequest storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"acceptInviteRequest"];
+  }
   [self.unknownFields storeInDictionary:dictionary];
 }
 - (BOOL) isEqual:(id)other {
@@ -2067,6 +2096,8 @@ static BClientRequest* defaultBClientRequestInstance = nil;
       (!self.hasDebugMessage || [self.debugMessage isEqual:otherMessage.debugMessage]) &&
       self.hasImageUpload == otherMessage.hasImageUpload &&
       (!self.hasImageUpload || [self.imageUpload isEqual:otherMessage.imageUpload]) &&
+      self.hasAcceptInviteRequest == otherMessage.hasAcceptInviteRequest &&
+      (!self.hasAcceptInviteRequest || [self.acceptInviteRequest isEqual:otherMessage.acceptInviteRequest]) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
@@ -2097,6 +2128,9 @@ static BClientRequest* defaultBClientRequestInstance = nil;
   }
   if (self.hasImageUpload) {
     hashCode = hashCode * 31 + [self.imageUpload hash];
+  }
+  if (self.hasAcceptInviteRequest) {
+    hashCode = hashCode * 31 + [self.acceptInviteRequest hash];
   }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
@@ -2167,6 +2201,9 @@ static BClientRequest* defaultBClientRequestInstance = nil;
   }
   if (other.hasImageUpload) {
     [self mergeImageUpload:other.imageUpload];
+  }
+  if (other.hasAcceptInviteRequest) {
+    [self mergeAcceptInviteRequest:other.acceptInviteRequest];
   }
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -2263,6 +2300,15 @@ static BClientRequest* defaultBClientRequestInstance = nil;
         }
         [input readMessage:subBuilder extensionRegistry:extensionRegistry];
         [self setImageUpload:[subBuilder buildPartial]];
+        break;
+      }
+      case 122: {
+        BAcceptConnectionRequestBuilder* subBuilder = [BAcceptConnectionRequest builder];
+        if (self.hasAcceptInviteRequest) {
+          [subBuilder mergeFrom:self.acceptInviteRequest];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setAcceptInviteRequest:[subBuilder buildPartial]];
         break;
       }
     }
@@ -2522,6 +2568,36 @@ static BClientRequest* defaultBClientRequestInstance = nil;
 - (BClientRequestBuilder*) clearImageUpload {
   resultClientRequest.hasImageUpload = NO;
   resultClientRequest.imageUpload = [BImageUpload defaultInstance];
+  return self;
+}
+- (BOOL) hasAcceptInviteRequest {
+  return resultClientRequest.hasAcceptInviteRequest;
+}
+- (BAcceptConnectionRequest*) acceptInviteRequest {
+  return resultClientRequest.acceptInviteRequest;
+}
+- (BClientRequestBuilder*) setAcceptInviteRequest:(BAcceptConnectionRequest*) value {
+  resultClientRequest.hasAcceptInviteRequest = YES;
+  resultClientRequest.acceptInviteRequest = value;
+  return self;
+}
+- (BClientRequestBuilder*) setAcceptInviteRequestBuilder:(BAcceptConnectionRequestBuilder*) builderForValue {
+  return [self setAcceptInviteRequest:[builderForValue build]];
+}
+- (BClientRequestBuilder*) mergeAcceptInviteRequest:(BAcceptConnectionRequest*) value {
+  if (resultClientRequest.hasAcceptInviteRequest &&
+      resultClientRequest.acceptInviteRequest != [BAcceptConnectionRequest defaultInstance]) {
+    resultClientRequest.acceptInviteRequest =
+      [[[BAcceptConnectionRequest builderWithPrototype:resultClientRequest.acceptInviteRequest] mergeFrom:value] buildPartial];
+  } else {
+    resultClientRequest.acceptInviteRequest = value;
+  }
+  resultClientRequest.hasAcceptInviteRequest = YES;
+  return self;
+}
+- (BClientRequestBuilder*) clearAcceptInviteRequest {
+  resultClientRequest.hasAcceptInviteRequest = NO;
+  resultClientRequest.acceptInviteRequest = [BAcceptConnectionRequest defaultInstance];
   return self;
 }
 @end

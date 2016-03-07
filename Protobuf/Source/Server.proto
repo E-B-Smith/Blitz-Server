@@ -12,6 +12,7 @@ option (google.protobuf.objectivec_file_options).relax_camel_case = true;
 
 import "Types.proto";
 import "Device.proto";
+import "Connections.proto";
 import "Notifications.proto";
 import "UserProfiles.proto";
 import "UserTracking.proto";
@@ -41,13 +42,13 @@ message SessionRequest {
 }
 
 
-message BlitzHereOptions {
+message BlitzHereAppOptions {
   //  None now...
 }
 
 message AppOptions {
   oneof Options {
-    BlitzHereOptions  blitzHereOptions = 1;
+    BlitzHereAppOptions  blitzHereOptions = 1;
   }
 }
 
@@ -56,8 +57,8 @@ message SessionResponse {
   optional string             userID          = 1;
   optional string             sessionToken    = 2;
   optional string             serverURL       = 3;
-  repeated Notification       userNotifications = 4;       //  New messages for the user.
-  optional UserProfile        userProfile     = 5;       //  The updated profile for the user.
+  repeated Notification       userNotifications = 4;   //  New messages for the user.
+  optional UserProfile        userProfile     = 5;     //  The updated profile for the user.
   optional bool               resetAllAppData = 6;     //  The client should clear all data.
   optional AppOptions         appOptions      = 7;
 }
@@ -82,7 +83,7 @@ message ClientRequest {
 
     DebugMessage    debugMessage        = 9;
     ImageUpload     imageUpload         = 10;
-//  AcceptInviteRequest acceptInviteRequest = 15;
+    AcceptConnectionRequest acceptInviteRequest = 15;
   }
 }
 
@@ -91,10 +92,9 @@ enum ResponseCode {
   RCSuccess       = 1;
   RCInputCorrupt  = 2;
   RCInputInvalid  = 3;
-  RCServerWarning = 4;
-  RCServerError   = 5;
-  RCNotAuthorized = 6;
-  RCClientTooOld  = 7;
+  RCServerError   = 4;
+  RCNotAuthorized = 5;
+  RCClientTooOld  = 6;
 }
 
 
