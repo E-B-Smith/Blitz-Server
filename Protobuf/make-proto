@@ -1,37 +1,18 @@
 #!/bin/bash
-
 set -euo pipefail
-IFS=$'\n'
-scriptname=$(basename "$0")
-scriptpath="$( cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-cd "$scriptpath"/Proto
 
+echo ">>> Building proto files."; \
+#go install -v github.com/golang/protobuf/protoc-gen-go;
+mkdir -p Build/java
+mkdir -p Build/obj-c
+mkdir -p Build/golang
 
-objcbuildpath=../../Blitz-iOS/Shared/ProtocolBuffers/Message
-mkdir -p "$objcbuildpath"
-objcbuildpath=$(resolvepath "$objcbuildpath")
-rm -Rf   "$objcbuildpath"
-mkdir -p "$objcbuildpath"
+cd Source
+protoc  google/protobuf/descriptor.proto \
+    --java_out=../Build/java
 
-javabuildpath=../build/java
-mkdir -p "$javabuildpath"
-javabuildpath=$(resolvepath "$javabuildpath")
-rm -Rf   "$javabuildpath"
-mkdir -p "$javabuildpath"
-
-
-protoc google/protobuf/descriptor.proto \
-    --objc_out="$objcbuildpath" \
-    --java_out="$javabuildpath"
-
-for file in *.proto
-do
-    protoc "$file" \
-        --objc_out="$objcbuildpath" \
-        --java_out="$javabuildpath"
-done
-
-
-echo ">>> The proto files were built and installed in:" 1>&2
-echo ">>> $objcbuildpath" 1>&2
-echo ">>> $javabuildpath" 1>&2
+shopt -s extglob
+protoc !(objectivec-descriptor).proto \
+    --go_out=../Build/golang  \
+    --java_out=../Build/java  \
+    --objc_out=../Build/obj-c

@@ -1,0 +1,56 @@
+syntax = "proto2";
+package BlitzMessage;
+
+option java_package = "com.blitzhere.BlitzMessage";
+option java_generic_services = true;
+
+import "objectivec-descriptor.proto";
+option (google.protobuf.objectivec_file_options).package = "";
+option (google.protobuf.objectivec_file_options).class_prefix = "B";
+option (google.protobuf.objectivec_file_options).relax_camel_case = true;
+
+
+import "Types.proto";
+//----------------------------------------------------------------------------------------
+//
+//                                                                              DeviceInfo
+//
+//----------------------------------------------------------------------------------------
+
+
+enum PlatformType {
+  PTUnknown   = 0;
+  PTiOS       = 1;
+  PTAndroid   = 2;
+  PTWeb       = 3;
+}
+
+
+message DeviceInfo {
+  optional string vendorUID = 1;
+  optional string advertisingUID = 2;
+
+  optional PlatformType platformType = 3;
+  optional string modelName = 4;
+  optional string systemVersion = 5;
+  optional string language = 6;
+  optional string timezone = 7;
+  optional string phoneCountryCode = 8;
+
+  optional Size   screenSize  = 9;
+  optional float  screenScale = 10 [default = 1.0];
+
+  optional string appID = 11;                 //  BundleID for iOS
+  optional string appVersion = 12;
+  optional string notificationToken = 13;
+  optional Timestamp lastContentRefresh_Deprecated = 14;
+
+  repeated string userTags = 15;
+  optional string deviceUDID = 16;
+  optional bool   appIsReleaseVersion = 17;
+  optional float  colorDepth = 18;
+  optional string IPAddress = 19;
+  optional string systemBuildVersion = 20;
+  optional string localIPAddress = 21;
+}
+

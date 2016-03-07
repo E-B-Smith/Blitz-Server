@@ -1,0 +1,129 @@
+syntax = "proto2";
+package BlitzMessage;
+
+option java_package = "com.blitzhere.BlitzMessage";
+option java_generic_services = true;
+
+import "objectivec-descriptor.proto";
+option (google.protobuf.objectivec_file_options).package = "";
+option (google.protobuf.objectivec_file_options).class_prefix = "B";
+option (google.protobuf.objectivec_file_options).relax_camel_case = true;
+
+
+import "Types.proto";
+//----------------------------------------------------------------------------------------
+//
+//                                                                               User Info
+//
+//----------------------------------------------------------------------------------------
+
+
+message SocialIdentity {
+  required string socialService = 1;
+  optional string socialID      = 2;
+  optional string userName      = 3;
+  optional string displayName   = 4;
+  optional string userURI       = 5;
+  optional string authToken     = 6;
+  optional Timestamp authExpire = 7;
+  optional string authSecret    = 8;
+}
+
+
+enum ContactType {
+  CTUnknown = 0;
+  CTPhoneSMS= 1;
+  CTEmail   = 2;
+  CTChat    = 3;
+  CTSocialService = 4;
+}
+
+
+message ContactInfo {
+    required ContactType contactType  = 1;
+    required string   contact         = 2;
+    optional bool     isVerified      = 3;
+}
+
+
+message Employment {
+  optional string   jobTitle = 1;
+  optional string   company  = 2;
+  optional string   location = 3;
+  optional Timespan timespan = 4;
+  optional string   summary  = 5;
+}
+
+
+message Education {
+  optional string   schoolName = 1;
+  optional string   degree     = 2;
+  optional string   emphasis   = 3;
+  optional Timespan timespan   = 4;
+}
+
+
+enum UserStatus {
+  USUnknown    = 0;
+  USBlocked    = 1;
+  USInvited    = 2;
+  USActive     = 3;
+  USConfirming = 4;
+  USConfirmed  = 5;
+}
+
+
+enum Gender {
+  GUnknown  = 0;
+  GFemale   = 1;
+  GMale     = 2;
+  GOther    = 3;
+}
+
+
+message UserProfile {
+  optional string       userID        = 1;
+  optional Timestamp    lastSeen      = 11;
+  optional Timestamp    creationDate  = 12;
+  optional UserStatus   userStatus    = 4;
+  optional string       name          = 2;
+  optional Gender       gender        = 3;
+  optional Timestamp    birthday      = 5;
+  repeated string       imageURL      = 6;
+  repeated SocialIdentity socialIdentities = 9;
+  repeated ContactInfo  contactInfo   = 15;
+  repeated Employment   employment    = 16;
+  repeated Education    education     = 17;
+  repeated string       expertiseTags = 18;
+  repeated string       interestTags  = 19;
+}
+
+
+enum ImageContent {
+  ICUnknown        = 0;
+  ICUserProfile    = 1;
+  ICUserBackground = 2;
+}
+
+
+message ImageData {
+  optional ImageContent imageContent  = 1;
+  optional bytes        imageBytes    = 2;
+  optional string       contentType   = 3;
+  optional string       imageURL      = 4;
+}
+
+
+message ImageUpload {
+  repeated ImageData imageData = 1;
+}
+
+message UserProfileUpdate {
+  repeated UserProfile profiles = 1;
+}
+
+
+message UserProfileQuery {
+  repeated string userIDs = 1;
+}
+

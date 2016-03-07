@@ -1,0 +1,122 @@
+syntax = "proto2";
+package BlitzMessage;
+
+option java_package = "com.blitzhere.BlitzMessage";
+option java_generic_services = true;
+
+import "objectivec-descriptor.proto";
+option (google.protobuf.objectivec_file_options).package = "";
+option (google.protobuf.objectivec_file_options).class_prefix = "B";
+option (google.protobuf.objectivec_file_options).relax_camel_case = true;
+
+
+import "Types.proto";
+//----------------------------------------------------------------------------------------
+//
+//                                                                               Feed Post
+//
+//----------------------------------------------------------------------------------------
+
+
+enum FeedPostType {
+  FPUnknown             = 0;
+  FPOpenEndedQuestion   = 1;
+  FPSurveyQuestion      = 2;
+}
+
+
+enum FeedPostScope {
+  FPScopeUnknown        = 0;
+  FPScopeLocalNetwork   = 1;
+  FPScopeGlobalNetwork  = 2;
+}
+
+
+message FeedReplyTag {
+  optional string         tagName      = 1;
+  optional int32          voteCount    = 2;
+  optional bool           userHasVoted = 3;
+}
+
+
+message FeedReply {
+  optional string         replyId       = 1;
+  optional string         postId        = 2;
+  optional Timestamp      timestamp     = 3;
+  optional string         userId        = 4;
+  optional int32          voteCount     = 5;
+  optional bool           userHasVoted  = 6;
+  repeated FeedReplyTag   replyTags     = 7;
+  optional string         headlineText  = 8;
+  optional string         bodyText      = 9;
+  repeated string         topics        = 10;
+}
+
+
+message FeedPost {
+  optional string         postId          = 1;
+  optional string         userId          = 2;
+  optional string         userVanityId    = 3;
+  optional bool           anonymousPost   = 4 [default = false];
+  optional Timestamp      timestamp       = 5;
+  optional Timespan       timespanActive  = 6;
+  optional string         headlineText    = 7;
+  optional string         bodyText        = 8;
+  repeated string         topics          = 9;
+  optional FeedPostScope  postScope       = 10;
+  optional FeedPostType   postType        = 11;
+  repeated FeedReply      replies         = 12;   //  Top replies or choices.
+  optional bool           mayAddReply     = 13;
+  optional bool           mayChooseMulitpleReplies = 14;
+  optional bool           userHasFollowedPost = 15;
+}
+
+
+message FeedPostFetchRequest {
+  optional Timespan  timespan = 1;
+}
+
+
+message FeedPostFetchResponse {
+  repeated FeedPost  feedPosts = 1;    //  Feed posts in 'top' order.
+}
+
+
+enum UpdateVerb {
+  UVCreate    = 1;
+  UVUpdate    = 2;
+  UVDelete    = 3;
+}
+
+
+message FeedPostUpdateRequest {
+  optional UpdateVerb updateVerb = 1;
+  optional FeedPost   feedPost   = 2;
+}
+
+
+message FeedPostUpdateResponse {
+  optional FeedPost  feedPost = 1;
+}
+
+
+message FeedPostVote {
+  optional string     postId      = 1;
+  optional string     replyId     = 2;
+  repeated FeedReplyTag replyTags = 3;
+}
+
+
+enum EntityType {
+  ETUnknown   = 0;
+  ETUser      = 1;
+  ETFeedPost  = 2;
+}
+
+
+message FollowRequest {
+  optional UpdateVerb   updateVerb = 1;
+  optional EntityType   entityType = 2;
+  optional string       entityId   = 3;
+}
+

@@ -1,0 +1,40 @@
+syntax = "proto2";
+package BlitzMessage;
+
+option java_package = "com.blitzhere.BlitzMessage";
+option java_generic_services = true;
+
+import "objectivec-descriptor.proto";
+option (google.protobuf.objectivec_file_options).package = "";
+option (google.protobuf.objectivec_file_options).class_prefix = "B";
+option (google.protobuf.objectivec_file_options).relax_camel_case = true;
+
+
+//----------------------------------------------------------------------------------------
+//
+//                                                                                  Search
+//
+//----------------------------------------------------------------------------------------
+
+
+//----------------------------------------------------------------------------------------
+//                                                                            Autocomplete
+//----------------------------------------------------------------------------------------
+
+
+enum SearchType {
+  STSearchAll = 0;
+  STUsers     = 1;
+  STTopics    = 2;
+}
+
+
+message AutocompleteRequest {
+  optional string     query = 1;
+  optional SearchType type  = 2 [default = STSearchAll];
+}
+
+
+message AutocompleteResponse {
+  repeated string items = 1;
+}
