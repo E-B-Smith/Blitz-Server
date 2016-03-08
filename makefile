@@ -149,21 +149,22 @@ test: \
 
 
 deploy: \
-    FORCE \
     linux \
     ; \
         echo ">>> Deploying to $$userhost." ; \
         \
         ssh $$userhost mkdir -p "$$installpath"/bin  "$$installpath"/database; \
         rsync -aP --force  --progress  \
-            --exclude '.*' --exclude '*.log' --exclude 'log' \
+            --exclude '.*' \
+            --exclude '*.log' \
+            --exclude 'log' \
+            --exclude '*.Darwin*' \
             Staging/  \
             $$userhost:"$$installpath"/bin ;\
         if [[ $$? != 0 ]]; then exit 1; fi; \
         \
         rsync -aP --force  --progress \
             --exclude '.*' \
-            --exclude '*.Darwin*' \
             Database/  \
             $$userhost:"$$installpath"/database; \
         if [[ $$? != 0 ]]; then exit 1; fi; \

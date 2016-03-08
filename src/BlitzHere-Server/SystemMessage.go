@@ -101,7 +101,7 @@ func SystemMessageFormRequest(writer http.ResponseWriter, httpRequest *http.Requ
         var recipientID string
         rows.Scan(&recipientID)
         _, error := config.DB.Exec(
-            "insert into messagetable "+
+            "insert into NotificationTable "+
             "(messageID        "+
             ",senderID         "+
             ",recipientID      "+

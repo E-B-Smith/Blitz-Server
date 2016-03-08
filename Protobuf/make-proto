@@ -18,6 +18,11 @@ cd Source
 protoc  google/protobuf/descriptor.proto \
     --java_out=../Build/java
 
+protoc  objectivec-descriptor.proto \
+    --objc_out=../Build/obj-c
+mv ../Build/obj-c/ObjectivecDescriptor.pb.h  ../Build/obj-c/Descriptor.pb.h
+mv ../Build/obj-c/ObjectivecDescriptor.pb.m  ../Build/obj-c/Descriptor.pb.m
+
 shopt -s extglob
 protoc !(objectivec-descriptor).proto \
     --go_out=../Build/golang  \
@@ -29,14 +34,14 @@ cd ..
 path=../../Blitz-iOS/Shared/ProtocolBuffers/Message
 if [ -d "$path" ]; then
     echo ">>> Installing obj-c files in '$path'."
-    rm "$path/"*.pb.h  "$path"/*.pb.m
+    (rm "$path/"*.pb.h  "$path"/*.pb.m || true)
     rsync -av --exclude=".*" Build/obj-c/ "$path"/
 fi
 
 path=../src/BlitzMessage
 if [ -d "$path" ]; then
     echo ">>> Installing golang files in '$path'."
-    rm "$path"/*.pb.go
+    (rm "$path"/*.pb.go || true)
     for file in Build/golang/*; do
         echo ">>> Fixing '$file'."
         sed -i'.bak' -e 's,import _ ".",,' "$file"
@@ -44,8 +49,3 @@ if [ -d "$path" ]; then
     done
     rsync -av --exclude=".*" Build/golang/  "$path"/
 fi
-
-# sed -i'.bak' -e 's,import _ ".",,' golang/happiness.pb.go; \
-# $(rm) golang/happiness.pb.go.bak ; \
-# cp -av obj-c/ ../../iOS/Shared/ProtocolBuffers/ ; \
-# cp -av golang/ ../src/happiness/ ; \

@@ -58,7 +58,7 @@ func NotificationFetchRequest(session *Session, fetch *BlitzMessage.Notification
             "messageText, "+
             "actionIcon, "+
             "actionURL "+
-            "from MessageTable "+
+            "from NotificationTable "+
             "  where recipientID = $1 "+
             "  and creationDate >  $2 "+
             "  and creationDate <= $3 "+
@@ -155,7 +155,7 @@ func SendNotificationMessage(sender string, recipients []string, message string,
     for _, recipient := range recipients {
         if sender == recipient { continue; }
 
-        _, error := config.DB.Exec("insert into MessageTable "+
+        _, error := config.DB.Exec("insert into NotificationTable "+
             "(messageID, " +
             " senderID, "  +
             " recipientID,"+
@@ -201,7 +201,7 @@ func NotificationSendRequest(session *Session,
     for _, message := range sendMessage.Messages {
         Log.Debugf("Message %d has %d recipients.", messagesSent+1, len(message.Recipients))
         for _, recipientID := range message.Recipients {
-            _, error := config.DB.Exec("insert into MessageTable "+
+            _, error := config.DB.Exec("insert into NotificationTable "+
                 "(messageID, " +
                 " senderID, "  +
                 " recipientID,"+

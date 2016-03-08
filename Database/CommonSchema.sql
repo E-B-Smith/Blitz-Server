@@ -235,7 +235,7 @@ create table ConnectionTable
     (
      userID             UserID not null
     ,connectionID       UserID not null
-    ,connectionStatus   ConnectionStatus not null check (friendStatus > 0)
+    ,connectionStatus   ConnectionStatus not null check (connectionStatus > 0)
     ,isInCircle         boolean not null default false
     );
 create unique index ConnectionUniqueIndex on ConnectionTable(userID, connectionID);
@@ -325,7 +325,7 @@ create table NotificationTable
     ,creationDate       timestamptz     not null
     ,notificationDate   timestamptz
     ,readDate           timestamptz
-    ,messageType        MessageType     not null
+    ,notificationType   NotificationType not null
     ,messageText        text
     ,actionIcon         text
     ,actionURL          text

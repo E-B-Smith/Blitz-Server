@@ -138,7 +138,7 @@ func DispatchServiceRequests(writer http.ResponseWriter, httpRequest *http.Reque
         if response != nil && response.ResponseCode != nil { code = response.ResponseCode.String() }
         if response != nil && response.ResponseMessage != nil { message = *response.ResponseMessage }
         _, error = config.DB.Exec("insert into ServerStatTable "+
-          "(timestamp, elapsed, message, bytesIn, bytesOut, statusCode, responseCode, responseMessage)"+
+          "(timestamp, elapsed, messageType, bytesIn, bytesOut, statusCode, responseCode, responseMessage)"+
           " values ($1, $2, $3, $4, $5, $6, $7, $8);",
             startTimestamp,
             elapsed,
@@ -491,10 +491,10 @@ func Server() (returnValue int) {
     error = config.ConnectDatabase()
     if error != nil { return 1 }
 
-    _, error = config.DB.Exec("insert into MessageStatTable "+
-       "  (timestamp, message) values ($1, 'Started');", time.Now());
+    _, error = config.DB.Exec("insert into ServerStatTable "+
+       "  (timestamp, messageType) values ($1, 'Started');", time.Now());
     if error != nil {
-        Log.Errorf("Error writing MessageStatTable: %v.", error)
+        Log.Errorf("Error writing ServerStatTable: %v.", error)
     }
 
     //  Defer closing --
@@ -503,13 +503,13 @@ func Server() (returnValue int) {
         error := recover();
         if error != nil {
             message := fmt.Sprintf("%v", error)
-            config.DB.Exec("insert into MessageStatTable "+
-                "  (timestamp, message, responseMessage) values ($1, 'Fatal', $2);", time.Now(), message);
+            config.DB.Exec("insert into ServerStatTable "+
+                "  (timestamp, messageType, responseMessage) values ($1, 'Fatal', $2);", time.Now(), message);
         }
-        _, error = config.DB.Exec("insert into MessageStatTable "+
-            "  (timestamp, message) values ($1, 'Terminated');", time.Now())
+        _, error = config.DB.Exec("insert into ServerStatTable "+
+            "  (timestamp, messageType) values ($1, 'Terminated');", time.Now())
         if error != nil {
-            Log.Errorf("Error writing MessageStatTable: %v.", error)
+            Log.Errorf("Error writing ServerStatTable: %v.", error)
         }
         config.DisconnectDatabase()
     } ()

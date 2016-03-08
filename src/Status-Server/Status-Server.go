@@ -382,16 +382,16 @@ select to_char(Now(), 'FMDay FMMonth FMDD, FMHH12:MI am') as "Time";
 
 
 \echo <div><h3>Status</h3><pre><code>
-select message as "Message", StringFromTimeInterval(Now(), timestamp) as "Elapsed"
-    from MessageStatTable
-    where message in ( 'Started', 'Terminated' )
+select messageType as "Message", StringFromTimeInterval(Now(), timestamp) as "Elapsed"
+    from ServerStatTable
+    where messageType in ( 'Started', 'Terminated' )
     order by timestamp desc limit 1;
 \echo </code></pre></div>
 
 
 \echo <div><h3>Messages</h3><pre><code>
 select count(*) as "Count", sum(bytesin) as "Bytes In", sum(bytesout) as "Bytes Out"
-    from MessageStatTable;
+    from ServerStatTable;
 \echo </code></pre></div>
 
 
@@ -516,7 +516,7 @@ limit 20;
 \echo </code></pre></div>
 
 
-\echo <div><h3>Friendliest</h3><pre><code>
+\echo <div><h3>Most Connected</h3><pre><code>
 select friendtable.userid, usertable.name, count(*) as "friends"
     from friendtable
     left join usertable on usertable.userid = friendtable.userid
@@ -527,35 +527,13 @@ select friendtable.userid, usertable.name, count(*) as "friends"
 
 
 \echo <div><h3>Network Messages</h3><pre><code>
-select message as "Message", count(*) as "Count",
+select messageType as "Message", count(*) as "Count",
     to_char(sum(elapsed), '99990.9990') as "Tot. Sec.",
     to_char(avg(elapsed), '99990.9990') as "Avg Response Sec.",
     sum(bytesin) as "Bytes In", sum(bytesout) as "Bytes Out"
-    from MessageStatTable
-    group by message
+    from ServerStatTable
+    group by messageType
     order by "Tot. Sec." desc;
-\echo </code></pre></div>
-
-
-\echo <div><h3>Latest Scores</h3><pre><code>
-select
-  scoretable.userid,
-  name,
-  timestamp,
-  previousbasescore,
-  happyscore,
-  basescore,
-  displayscore,
-  physical,
-  mental,
-  vital,
-  environmental,
-  userresponse,
-  usertestassessment
-    from scoretable
-    join usertable on scoretable.userid = usertable.userid
-    order by timestamp desc
-    limit 20;
 \echo </code></pre></div>
 `
 

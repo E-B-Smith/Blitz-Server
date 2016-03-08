@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#   server-ctrl
+#   sc  -  server-ctrl
 #
 #   EB Smith, March 2015.
 
@@ -8,7 +8,7 @@
 
 
 set -euo pipefail
-source beinghappyrc
+source bashrc
 scriptname=$(resolvepath "$0")
 scriptpath=$(dirname "$scriptname")
 scriptname=$(basename "$scriptname")
@@ -18,13 +18,8 @@ cd "$scriptpath"
 bTail=false
 bForceStart=false
 AllServers=(
-    "BeingHappyLegacy-Server"       10001
-    "HappyLabs-Server"              10003
-    "BeingHappy-Server"             10005
-    "Signup-Server"                 10007
-    "Status-Server"                 10009
-    "PulseLabs-Server"              10011
-    "HappyPulse-Server"             10013
+    "BlitzLabs-Server"              10003
+#   "Status-Server"                 10009
 )
 
 

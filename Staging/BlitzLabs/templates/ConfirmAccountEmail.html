@@ -1,0 +1,10 @@
+{{define "ConfirmAccountEmailSubject.html"}}{{.AppName}} Profile Confirmation{{end}}
+{{define "ConfirmAccountEmail.html"}}
+Hi {{.UserName}}
+
+Confirm your {{.AppName}} profile.
+
+Open this link on your iPhone to confirm your profile.
+
+{{.AppDeepLink}}
+{{end}}

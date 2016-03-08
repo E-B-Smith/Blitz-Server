@@ -1,0 +1,27 @@
+
+#  Development BlitzLabs server configuration
+
+service-name        BlitzLabs-Server
+service-prefix      "/blitzlabs"
+service-file-path   BlitzLabs
+service-port        10002
+server-url          "https://shimmering.blue"
+
+database-uri        "postgres://blitzlabs:blitzlabs@localhost:5432/blitzlabs"
+
+log-level           LogLevelAll
+log-name            "~/log/BlitzLabs-Server.log"
+
+templates-path      templates
+localization-file   strings.local
+
+app-link-scheme     blitzlabs
+app-name            BlitzLabs
+app-link-url        https://shimmering.blue/blitzlabs
+app-store-url       https://shimmering.blue/ios/blitzlabs
+short-link-url      https://shimmering.blue/bl
+
+email-address       "BlitzLabs <blitzlabs@blitzhere.com>"
+email-account       SMTP_Injection
+# email-password      2d39b713d65cda9d44bb375ad2396e2933d9d23c
+# email-smtp-server   smtp.sparkpostmail.com:587

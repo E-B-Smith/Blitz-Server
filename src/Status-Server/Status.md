@@ -22,8 +22,8 @@ To Do
 Done
 ----
 * Up/Down time
-        select message, StringTimeInterval(Now(), timestamp)
-            from MessageStatTable
+        select messageType, StringTimeInterval(Now(), timestamp)
+            from ServerStatTable
             where message in ( 'Started', 'Terminated' )
             order by timestamp desc limit 1;
 
@@ -57,6 +57,6 @@ Done
             order by friendtable.userid;
 
 * Message type, message bytes in/out, response code, start/stop
-        select message, count(*), avg(elapsed) as "Avg Response Sec.",
+        select messageType, count(*), avg(elapsed) as "Avg Response Sec.",
             sum(bytesin) as "Bytes In", sum(bytesout) as "Bytes Out"
-            from MessageStatTable group by message;
+            from ServerStatTable group by message;

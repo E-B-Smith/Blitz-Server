@@ -5,7 +5,7 @@
 
 \echo <div><h3>Up Since</h3><pre><code>
 select message, StringTimeInterval(Now(), timestamp) as "Time"
-    from MessageStatTable
+    from ServerStatTable
     where message in ( 'Started', 'Terminated' )
     order by timestamp desc limit 1;
 \echo </code></pre></div>
@@ -59,8 +59,8 @@ select friendtable.userid, u1.name, u2.name, StringFromFriendStatus(friendstatus
 select message as "Message", count(*) as "Count",
     avg(elapsed) as "Avg Response Sec.",
     sum(bytesin) as "Bytes In", sum(bytesout) as "Bytes Out"
-    from MessageStatTable group by message
+    from ServerStatTable group by message
 union
 select ' ', count(*), avg(elapsed),  sum(bytesin), sum(bytesout)
-    from MessageStatTable;
+    from ServerStatTable;
 \echo </code></pre></div>

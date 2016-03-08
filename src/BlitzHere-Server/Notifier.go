@@ -25,19 +25,19 @@ import (
 /*
 
 select distinct on (1)
-    MessageTable.recipientID,
-    MessageTable.messageText,
+    NotificationTable.recipientID,
+    NotificationTable.messageText,
     DeviceTable.appID,
     DeviceTable.notificationToken,
     DeviceTable.appIsReleaseVersion
-      from MessageTable
-      join DeviceTable on DeviceTable.userID = MessageTable.recipientID
-        where MessageTable.notificationDate is null
+      from NotificationTable
+      join DeviceTable on DeviceTable.userID = NotificationTable.recipientID
+        where NotificationTable.notificationDate is null
           and DeviceTable.notificationToken is not null
           and DeviceTable.appID is not null
-        order by MessageTable.recipientID, MessageTable.creationDate
+        order by NotificationTable.recipientID, NotificationTable.creationDate
 
-    and MessageTable.senderID <> MessageTable.recipientID
+    and NotificationTable.senderID <> NotificationTable.recipientID
 
 */
 
@@ -59,23 +59,23 @@ func notifyTask() {
 
     rows, error := config.DB.Query(
 `       select distinct on (1)
-            MessageTable.recipientID,
-            MessageTable.messageText,
-            MessageTable.actionURL,
+            NotificationTable.recipientID,
+            NotificationTable.messageText,
+            NotificationTable.actionURL,
             DeviceTable.appID,
             DeviceTable.notificationToken,
             DeviceTable.appIsReleaseVersion
-              from MessageTable
-              join DeviceTable on DeviceTable.userID = MessageTable.recipientID
-                where MessageTable.notificationDate is null
+              from NotificationTable
+              join DeviceTable on DeviceTable.userID = NotificationTable.recipientID
+                where NotificationTable.notificationDate is null
                   and DeviceTable.notificationToken is not null
                   and DeviceTable.appID is not null
-                order by MessageTable.recipientID, MessageTable.creationDate;`)
-    defer rows.Close()
+                order by NotificationTable.recipientID, NotificationTable.creationDate;`)
     if error != nil {
         Log.LogError(error)
         return
     }
+    defer rows.Close()
 
     for rows.Next() {
         //  Send a notification for each pending message --
@@ -124,7 +124,7 @@ func notifyTask() {
         //  Mark the recipient as having been sent a message --
 
         _, error = config.DB.Exec(
-            `update MessageTable set notificationDate = $1
+            `update NotificationTable set notificationDate = $1
                 where notificationDate is null and recipientID = $2;`,
             time.Now(), recipientID)
         if error != nil { Log.LogError(error) }

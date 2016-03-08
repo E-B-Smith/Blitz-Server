@@ -16,20 +16,11 @@ function linkFile() {
 }
 
 
-linkFile  BeingHappyLegacy-Server              BeingHappy-Server.Linux.1
-linkFile  BeingHappyLegacy-Server.config       BeingHappy-Server.config.2
+linkFile  BlitzLabs-Server                     BlitzHere-Server.Linux
+linkFile  BlitzLabs-Server.config              BlitzLabs-Server.config.1
 
-linkFile  BeingHappy-Server                    BeingHappy-Server.Linux
-linkFile  BeingHappy-Server.config             BeingHappy-Server.config.3
-
-linkFile  HappyLabs-Server                     BeingHappy-Server.Linux
-linkFile  HappyLabs-Server.config              HappyLabs-Server.config.1
-
-linkFile  PulseLabs-Server                     BeingHappy-Server.Linux
-linkFile  PulseLabs-Server.config              PulseLabs-Server.config.1
-
-linkFile  HappyPulse-Server                    BeingHappy-Server.Linux
-linkFile  HappyPulse-Server.config             HappyPulse-Server.config.1
+linkFile  BlitzHere-Server                     BlitzHere-Server.Linux
+linkFile  BlitzHere-Server.config              BlitzHere-Server.config.1
 
 linkFile  Signup-Server                        Signup-Server.Linux
 linkFile  Signup-Server.config                 Signup-Server.config.1
