@@ -1,8 +1,15 @@
 #!/bin/bash
 set -euo pipefail
+IFS=$'\n'
+scriptpath="${BASH_SOURCE[0]}"
+scriptpath=$(cd "$(dirname "${scriptpath}")" && pwd)
+scriptname=$(basename "${BASH_SOURCE[0]}")
+cd "$scriptpath"
 
-echo ">>> Building proto files."; \
-#go install -v github.com/golang/protobuf/protoc-gen-go;
+echo ">>> Building proto files."
+
+go install -v github.com/golang/protobuf/protoc-gen-go
+
 mkdir -p Build/java
 mkdir -p Build/obj-c
 mkdir -p Build/golang
@@ -16,3 +23,24 @@ protoc !(objectivec-descriptor).proto \
     --go_out=../Build/golang  \
     --java_out=../Build/java  \
     --objc_out=../Build/obj-c
+
+cd ..
+
+path=../../Blitz-iOS/Shared/ProtocolBuffers/Message
+if [ -d "$path" ]; then
+    echo ">>> Installing obj-c files in '$path'."
+    rm "$path/"*.pb.h  "$path"/*.pb.m
+    cp -av Build/obj-c/ "$path"/
+fi
+
+path=../src/BlitzMessage
+if [ -d "$path" ]; then
+    echo ">>> Installing golang files in '$path'."
+    rm "$path"/*.pb.go
+    cp -av Build/golang/ "$path"/
+fi
+
+# sed -i'.bak' -e 's,import _ ".",,' golang/happiness.pb.go; \
+# $(rm) golang/happiness.pb.go.bak ; \
+# cp -av obj-c/ ../../iOS/Shared/ProtocolBuffers/ ; \
+# cp -av golang/ ../src/happiness/ ; \

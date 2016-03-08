@@ -1,7 +1,7 @@
 
---  Happiness Common Database Schema
+--  BlitzHere Common Database Schema
 --
---  E.B.Smith  -  November 2014
+--  E.B.Smith  -  March 2016
 
 
 create domain UUID as varchar(36);
@@ -92,70 +92,6 @@ create table SocialTable
     ,authExpire         timestamptz
     );
 create unique index SocialTableUniqueIndex on SocialTable(userID, service, socialID);
-
-
-create domain WeatherType as smallint;
-create domain PrecipitationType as smallint;
-
-
-create type Weather as
-    (
-     weatherType        WeatherType
-    ,temperature        real
-    ,cloudCover         real
-    ,precipitation      real
-    ,precipitationType  PrecipitationType
-    ,pressure           real
-    ,windSpeed          real
-    ,windBearing        real
-    );
-
-
-create type UserResponse as
-    (
-     emotionID          int
-    ,emotionCount       int
-    ,emotionValue       real
-    );
-
-
-create type ScoreComponent as
-    (
-     label              text
-    ,score              real
-    );
-
-
-create table ScoreTable
-    (
-     userID             UserID          not null
-    ,timestamp          timestamptz     not null
-    ,previousTimestamp  timestamptz
-    ,previousBaseScore  real
-    ,happyScore         real
-    ,baseScore          real
-    ,displayScore       real
-    ,physical           real
-    ,mental             real
-    ,vital              real
-    ,environmental      real
-    ,components         ScoreComponent[]
-    ,location           Location
-    ,weather            Weather
-    ,testID             text
-    ,userResponse       UserResponse[]
-    ,userTestAssessment real
-    ,unique(userID, timestamp)
-    );
-create unique index ScoreTableUniqueIndex on ScoreTable(userID, timestamp);
-
-
--- create table UserDeviceTable
---     (
---      userID             UserID      not null primary key
---     ,deviceID           DeviceID
---     );
--- create unique index UserDeviceTableUniqueIndex on UserDeviceTable(userID, deviceID);
 
 
 create table DeviceTable
@@ -274,50 +210,36 @@ function StringFromUserStatus(userStatus UserStatus) returns text as
     returns null on null input;
 
 
-create domain StoryType as smallint;
+create domain ConnectionStatus as smallint;
 
-
-create table StoryTable
-    (
-     storyID            text unique not null primary key
-    ,storyType          StoryType
-    ,creationDate       timestamptz
-    ,happyScore         real
-    ,storyText          text
-    ,storyAttribution   text
-    );
-
-
-create domain FriendStatus as smallint;
-
-create function StringFromFriendStatus(friendStatus FriendStatus) returns text as
+create function StringFromConnectionStatus(connectionStatus ConnectionStatus) returns text as
     $$
     declare
         statusString text[] := array
-          [ 'FriendStatusUnknown',
-            'FriendStatusInviter',
-            'FriendStatusInvitee',
-            'FriendStatusIgnored',
-            'FriendStatusAccepted',
-            'FriendStatusCircleDeprecated' ];
+          [ 'ConnectionStatusUnknown',
+            'ConnectionStatusInviter',
+            'ConnectionStatusInvitee',
+            'ConnectionStatusIgnored',
+            'ConnectionStatusAccepted',
+            'ConnectionStatusCircleDeprecated' ];
     begin
-    if friendStatus is null then return null; end if;
-    return statusString[friendStatus+1];
+    if connectionStatus is null then return null; end if;
+    return statusString[connectionStatus+1];
     end;
     $$
     language plpgsql immutable
     returns null on null input;
 
 
-create table FriendTable
+create table ConnectionTable
     (
-     userID         UserID not null
-    ,friendID       UserID not null
-    ,friendStatus   FriendStatus not null check (friendStatus > 0)
-    ,isInCircle     boolean not null default false
+     userID             UserID not null
+    ,connectionID       UserID not null
+    ,connectionStatus   ConnectionStatus not null check (friendStatus > 0)
+    ,isInCircle         boolean not null default false
     );
-create unique index FriendUniqueIndex on FriendTable(userID, friendID);
-create index FriendIndex on FriendTable(friendID);
+create unique index ConnectionUniqueIndex on ConnectionTable(userID, connectionID);
+create index ConnectionIndex on ConnectionTable(connectionID);
 
 
 create table UserIdentityTable
@@ -361,11 +283,11 @@ create table AppDownloadTable
     );
 
 
-create table MessageStatTable
+create table ServerStatTable
     (
      timestamp          timestamptz unique not null primary key
     ,elapsed            real
-    ,message            text
+    ,messageType        text
     ,bytesIn            int
     ,bytesOut           int
     ,statusCode         int
@@ -374,24 +296,17 @@ create table MessageStatTable
     );
 
 
-create domain MessageType as smallint;
+create domain NotificationType as smallint;
 
 
-create function StringFromMessageType(messageType MessageType) returns text as
+create function StringFromNotificationType(notificationType NotificationType) returns text as
     $$
     declare
 
     statusString text[] := array
-        [ 'MessageTypeUnknown',
-          'MessageTypeJoined',
-          'MessageTypeFriendRequest',
-          'MessageTypeFriendAccept',
-          'MessageTypeFriendCircle',
-          'MessageTypeScored',
-          'MessageTypeScoreRequest',
-          'MessageTypeHearted',
-          'MessageTypeHeartedBack',
-          'MessageTypeSystem' ];
+        [ 'NotificationTypeUnknown',
+          'NotificationTypeSystem'
+          'NotificationTypeNotification'];
 
     begin
     if messageType is null then return null; end if;
@@ -402,7 +317,7 @@ create function StringFromMessageType(messageType MessageType) returns text as
     returns null on null input;
 
 
-create table MessageTable
+create table NotificationTable
     (
      messageID          UUID            not null
     ,senderID           UserID          not null
@@ -415,8 +330,8 @@ create table MessageTable
     ,actionIcon         text
     ,actionURL          text
     );
-create unique index MessageUniqueIndex on MessageTable(messageID, senderID, recipientID);
-create index MessageDeliveryIndex on MessageTable(recipientID, creationDate);
+create unique index NotificationUniqueIndex on NotificationTable(messageID, senderID, recipientID);
+create index NotificationDeliveryIndex on NotificationTable(recipientID, creationDate);
 
 
 create domain ImageContent as smallint;
@@ -428,11 +343,13 @@ create function StringFromImageContent(imageContent ImageContent) returns text a
 
     labels text[] := array
         [ 'ImageContentUnknown',
-          'ImageContentProfile' ];
+          'ImageContentUserProfile'
+          'ImageContentUserBackground'
+        ];
 
     begin
-    if messageType is null then return null; end if;
-    return labels[messageType+1];
+    if imageContent is null then return null; end if;
+    return labels[imageContent+1];
     end;
     $$
     language plpgsql immutable
@@ -446,32 +363,6 @@ create table ImageTable
     ,contentType        text
     ,crc32              int8
     ,imageData          bytea
-    );
-
-
-create table TestTable
-    (
-     testID             UUID        unique not null primary key
-    ,testName           text
-    ,testNote           text
-    ,testItems          UUID[]
-    );
-
-
-create table TestItemTable
-    (
-     testItemID         UUID        unique not null primary key
-    ,itemNote           text
-    ,itemCaption        text
-    ,averageScore       real
-    ,maleScore          real
-    ,femaleScore        real
-    ,mental             real
-    ,physical           real
-    ,vital              real
-    ,color              RGBColor
-    ,imageOnURL         text
-    ,imageOffURL        text
     );
 
 
@@ -780,81 +671,9 @@ create table HTTPDeepLinkTable
 create unique index HTTPDeepLinkIndex on HTTPDeepLinkTable(deviceSignature, creationDate);
 
 
-
 ------------------------------------------------------------------------------------------
---
---                                                                                   Pulse
---
+--                                                                        Pretty Functions
 ------------------------------------------------------------------------------------------
-
-
-create type ColorRGB256 as
-    (
-     red        smallint
-    ,green      smallint
-    ,blue       smallint
-    );
-
-
-create domain PulseStatus as smallint;
-create domain PulseBeatState as smallint;
-
-
-create table PulseTable
-    (
-     pulseID            UUID            unique not null primary key
-    ,senderID           UserID          not null
-    ,pulseStatus        PulseStatus
-    ,title              text
-    ,body               text
-    ,color              ColorRGB256
-    ,teamIsVisible      boolean
-    ,creationDate       timestamptz
-    ,updateDate         timestamptz
-    ,testID             UUID
-    );
-create index PulseSenderIndex on PulseTable(senderID);
-
-
-create table PulseBeatTable
-    (
-     pulseID            UUID            not null
-    ,beatDate           timestamptz     not null
-    ,expirationDate     timestamptz     not null
-    ,updateDate         timestamptz
-    ,responseRate       real    --  These are all 0.0 - 1.0
-    ,happyScore         real
-    ,components         ScoreComponent[]
-    );
-create unique index PulseBeatDateIndex on PulseBeatTable(pulseID, beatDate);
-
-
-create table PulseBeatMemberTable
-    (
-     pulseID            UUID            not null
-    ,beatDate           timestamptz     not null
-    ,memberID           UserID          not null
-    ,memberPulseStatus  PulseStatus
-    ,beatState          PulseBeatState
-    ,scoreDate          timestamptz
-    );
-create unique index PulseBeatMemberTableUniqueIndex on PulseBeatMemberTable(pulseID, beatDate, memberID);
-create index PulseBeatMemberTableIndex on PulseBeatMemberTable(memberID);
-
-
-create table StoreTransactionTable
-    (
-     transactionID      UUID            not null primary key
-    ,storeID            text            not null
-    ,storeTransactionID text            not null
-    ,userID             UserID          not null
-    ,quantity           int             not null
-    ,purchase           text            not null
-    ,purchaseDate       timestamptz     not null
-    ,locale             text
-    ,localizedPrice     text
-    );
-create unique index StoreTransactionIndex on StoreTransactionTable(storeID, storeTransactionID);
 
 
 create function pretty_size(sz bigint) returns text as

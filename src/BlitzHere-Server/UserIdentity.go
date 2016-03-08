@@ -160,7 +160,6 @@ func ExistingProfileFromIdentities(identities []string) *BlitzMessage.UserProfil
 }
 
 
-
 //----------------------------------------------------------------------------------------
 //
 //                                                                 ProfilesFromContactInfo

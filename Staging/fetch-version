@@ -28,10 +28,10 @@ USAGE
 }
 
 
-baseurl="https://bh.gy/version"
-username="beinghappy"
-host="b1.bh.gy"
-versionfile="/home/beinghappy/www/version"
+baseurl="https://shimmering.blue/version"
+username="blitzhere"
+host="shimmering.blue"
+versionfile="/home/blitzhere/www/version"
 packagename=""
 url=""
 

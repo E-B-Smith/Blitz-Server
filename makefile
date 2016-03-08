@@ -9,8 +9,8 @@ buildLinux   = 0
 rm          := rm -Rf
 .SILENT:
 
-export userhost:=beinghappy@b1.bh.gy
-export installpath:=/home/beinghappy
+export userhost:=blitzhere@shimmering.blue
+export installpath:=/home/blitzhere
 export GOPATH:=$(makepath)
 export GOROOT:=
 export PATH:=$(makepath)/bin:$(PATH)
@@ -37,7 +37,7 @@ gobuild= \
 
 compile: FORCE \
     updateversion \
-    src/happiness/happiness.pb.go \
+    %.pb.go \
     src/ApplePushService/ResourceData.go \
     ; \
         echo ">>> Build version $(buildVersion) $(buildDate)."; \
@@ -48,7 +48,7 @@ compile: FORCE \
 
 updateversion: \
     ; \
-    $(eval buildVersion=$(shell Staging/fetch-version -i beinghappy)) \
+    $(eval buildVersion=$(shell Staging/fetch-version -i blitzhere)) \
     if [[ $$? != 0 || "$(buildVersion)" == "" ]]; then exit 1; fi; \
     echo ">>> Updated version to $(buildVersion)."
 
@@ -71,31 +71,12 @@ FORCE:
 
 
 proto \
-src/happiness/happiness.pb.go \
-Protobuf/obj-c/Happiness.pb.h \
-Protobuf/obj-c/Happiness.pb.m \
-Protobuf/java/io/beinghappy/happiness/Happiness.java : \
-    Protobuf/happiness.proto \
+%.pb.go : \
+    Protobuf/Source/%.proto \
     ; \
         echo ">>> Building proto files."; \
-        go install -v github.com/golang/protobuf/protoc-gen-go; \
-        cd Protobuf; \
-        mkdir -p java; \
-        mkdir -p obj-c; \
-        mkdir -p golang; \
-        protoc  google/protobuf/descriptor.proto \
-            --java_out=java ; \
-        protoc \
-            --go_out=golang \
-            --objc_out=obj-c \
-            --java_out=java \
-            happiness.proto ; \
-        if [[ $$? != 0 ]]; then echo $?; exit 1; fi; \
-        sed -i'.bak' -e 's,import _ ".",,' golang/happiness.pb.go; \
-        $(rm) golang/happiness.pb.go.bak ; \
-        cp -av obj-c/ ../../iOS/Shared/ProtocolBuffers/ ; \
-        cp -av golang/ ../src/happiness/ ; \
-        cd - > /dev/null
+        ./Protobuf/make-proto $< ; \
+        if [[ $$? != 0 ]]; then echo $?; exit 1; fi;
 
 
 Protobuf/Happiness.pb.m : src/happiness/happiness.pb.go
@@ -112,11 +93,9 @@ clean: \
         echo ">>> Cleaning..."; \
         $(rm) bin/*; \
         $(rm) pkg/*; \
-        $(rm) Protobuf/obj-c; \
-        $(rm) Protobuf/golang; \
-        $(rm) Protobuf/java; \
+        $(rm) Protobuf/Build; \
         $(rm) src/ApplePushService/ResourceData.go; \
-        $(rm) src/happiness/happiness.pb.go;
+        $(rm) src/BlitzMessage/*.pb.go;
 
 
 # Testing --

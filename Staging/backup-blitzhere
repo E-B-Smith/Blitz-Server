@@ -1,0 +1,21 @@
+#!/bin/bash
+set -euo pipefail
+
+backuppath=/home/sysadmin/backup
+
+function doBackup() {
+    local bupath="$1"
+    local name=$(basename "$bupath")
+    tar -cvpzf "$backuppath"/"$name".tar.gz \
+        --exclude="$backuppath" \
+        --exclude='*.log' \
+        "$bupath"
+}
+
+mkdir -p "$backuppath"
+
+doBackup /home/sysadmin
+doBackup /home/blitzhere
+doBackup /home/dev
+doBackup /home/ubuntu
+
