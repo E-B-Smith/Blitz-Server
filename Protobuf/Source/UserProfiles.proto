@@ -48,10 +48,11 @@ message ContactInfo {
 
 message Employment {
   optional string   jobTitle = 1;
-  optional string   company  = 2;
+  optional string   companyName = 2;
   optional string   location = 3;
-  optional Timespan timespan = 4;
-  optional string   summary  = 5;
+  optional string   industry = 4;
+  optional Timespan timespan = 5;
+  optional string   summary  = 6;
 }
 
 
@@ -81,24 +82,6 @@ enum Gender {
 }
 
 
-message UserProfile {
-  optional string       userID        = 1;
-  optional Timestamp    lastSeen      = 11;
-  optional Timestamp    creationDate  = 12;
-  optional UserStatus   userStatus    = 4;
-  optional string       name          = 2;
-  optional Gender       gender        = 3;
-  optional Timestamp    birthday      = 5;
-  repeated string       imageURL      = 6;
-  repeated SocialIdentity socialIdentities = 9;
-  repeated ContactInfo  contactInfo   = 15;
-  repeated Employment   employment    = 16;
-  repeated Education    education     = 17;
-  repeated string       expertiseTags = 18;
-  repeated string       interestTags  = 19;
-}
-
-
 enum ImageContent {
   ICUnknown        = 0;
   ICUserProfile    = 1;
@@ -107,10 +90,36 @@ enum ImageContent {
 
 
 message ImageData {
-  optional ImageContent imageContent  = 1;
-  optional bytes        imageBytes    = 2;
-  optional string       contentType   = 3;
-  optional string       imageURL      = 4;
+  optional ImageContent   imageContent  = 1;
+  optional bytes          imageBytes    = 2;
+  optional string         contentType   = 3;
+  optional string         imageURL      = 4;
+  optional Timestamp      dateAdded     = 5;
+}
+
+
+message UserProfile {
+  optional string       userID        = 1;
+  optional UserStatus   userStatus    = 2;
+  optional Timestamp    creationDate  = 3;
+  optional Timestamp    lastSeen      = 4;
+
+  optional string       name          = 5;
+  optional Gender       gender        = 6;
+  optional Timestamp    birthday      = 7;
+  repeated ImageData    images        = 8;
+  repeated SocialIdentity socialIdentities = 9;
+  repeated ContactInfo  contactInfo   = 10;
+
+  //  Blitz work fields --
+
+  optional Employment   currentEmployment = 11;
+
+  repeated Employment   employment    = 12;
+  repeated Education    education     = 13;
+  repeated string       expertiseTags = 14;
+  repeated string       interestTags  = 15;
+  optional string       backgroundSummary = 16;
 }
 
 

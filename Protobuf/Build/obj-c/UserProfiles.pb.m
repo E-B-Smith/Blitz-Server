@@ -1035,8 +1035,9 @@ static BContactInfo* defaultBContactInfoInstance = nil;
 
 @interface BEmployment ()
 @property (strong) NSString* jobTitle;
-@property (strong) NSString* company;
+@property (strong) NSString* companyName;
 @property (strong) NSString* location;
+@property (strong) NSString* industry;
 @property (strong) BTimespan* timespan;
 @property (strong) NSString* summary;
 @end
@@ -1050,13 +1051,13 @@ static BContactInfo* defaultBContactInfoInstance = nil;
   hasJobTitle_ = !!_value_;
 }
 @synthesize jobTitle;
-- (BOOL) hasCompany {
-  return !!hasCompany_;
+- (BOOL) hasCompanyName {
+  return !!hasCompanyName_;
 }
-- (void) setHasCompany:(BOOL) _value_ {
-  hasCompany_ = !!_value_;
+- (void) setHasCompanyName:(BOOL) _value_ {
+  hasCompanyName_ = !!_value_;
 }
-@synthesize company;
+@synthesize companyName;
 - (BOOL) hasLocation {
   return !!hasLocation_;
 }
@@ -1064,6 +1065,13 @@ static BContactInfo* defaultBContactInfoInstance = nil;
   hasLocation_ = !!_value_;
 }
 @synthesize location;
+- (BOOL) hasIndustry {
+  return !!hasIndustry_;
+}
+- (void) setHasIndustry:(BOOL) _value_ {
+  hasIndustry_ = !!_value_;
+}
+@synthesize industry;
 - (BOOL) hasTimespan {
   return !!hasTimespan_;
 }
@@ -1081,8 +1089,9 @@ static BContactInfo* defaultBContactInfoInstance = nil;
 - (instancetype) init {
   if ((self = [super init])) {
     self.jobTitle = @"";
-    self.company = @"";
+    self.companyName = @"";
     self.location = @"";
+    self.industry = @"";
     self.timespan = [BTimespan defaultInstance];
     self.summary = @"";
   }
@@ -1112,17 +1121,20 @@ static BEmployment* defaultBEmploymentInstance = nil;
   if (self.hasJobTitle) {
     [output writeString:1 value:self.jobTitle];
   }
-  if (self.hasCompany) {
-    [output writeString:2 value:self.company];
+  if (self.hasCompanyName) {
+    [output writeString:2 value:self.companyName];
   }
   if (self.hasLocation) {
     [output writeString:3 value:self.location];
   }
+  if (self.hasIndustry) {
+    [output writeString:4 value:self.industry];
+  }
   if (self.hasTimespan) {
-    [output writeMessage:4 value:self.timespan];
+    [output writeMessage:5 value:self.timespan];
   }
   if (self.hasSummary) {
-    [output writeString:5 value:self.summary];
+    [output writeString:6 value:self.summary];
   }
   [self.unknownFields writeToCodedOutputStream:output];
 }
@@ -1136,17 +1148,20 @@ static BEmployment* defaultBEmploymentInstance = nil;
   if (self.hasJobTitle) {
     size_ += computeStringSize(1, self.jobTitle);
   }
-  if (self.hasCompany) {
-    size_ += computeStringSize(2, self.company);
+  if (self.hasCompanyName) {
+    size_ += computeStringSize(2, self.companyName);
   }
   if (self.hasLocation) {
     size_ += computeStringSize(3, self.location);
   }
+  if (self.hasIndustry) {
+    size_ += computeStringSize(4, self.industry);
+  }
   if (self.hasTimespan) {
-    size_ += computeMessageSize(4, self.timespan);
+    size_ += computeMessageSize(5, self.timespan);
   }
   if (self.hasSummary) {
-    size_ += computeStringSize(5, self.summary);
+    size_ += computeStringSize(6, self.summary);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -1186,11 +1201,14 @@ static BEmployment* defaultBEmploymentInstance = nil;
   if (self.hasJobTitle) {
     [output appendFormat:@"%@%@: %@\n", indent, @"jobTitle", self.jobTitle];
   }
-  if (self.hasCompany) {
-    [output appendFormat:@"%@%@: %@\n", indent, @"company", self.company];
+  if (self.hasCompanyName) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"companyName", self.companyName];
   }
   if (self.hasLocation) {
     [output appendFormat:@"%@%@: %@\n", indent, @"location", self.location];
+  }
+  if (self.hasIndustry) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"industry", self.industry];
   }
   if (self.hasTimespan) {
     [output appendFormat:@"%@%@ {\n", indent, @"timespan"];
@@ -1207,11 +1225,14 @@ static BEmployment* defaultBEmploymentInstance = nil;
   if (self.hasJobTitle) {
     [dictionary setObject: self.jobTitle forKey: @"jobTitle"];
   }
-  if (self.hasCompany) {
-    [dictionary setObject: self.company forKey: @"company"];
+  if (self.hasCompanyName) {
+    [dictionary setObject: self.companyName forKey: @"companyName"];
   }
   if (self.hasLocation) {
     [dictionary setObject: self.location forKey: @"location"];
+  }
+  if (self.hasIndustry) {
+    [dictionary setObject: self.industry forKey: @"industry"];
   }
   if (self.hasTimespan) {
    NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
@@ -1234,10 +1255,12 @@ static BEmployment* defaultBEmploymentInstance = nil;
   return
       self.hasJobTitle == otherMessage.hasJobTitle &&
       (!self.hasJobTitle || [self.jobTitle isEqual:otherMessage.jobTitle]) &&
-      self.hasCompany == otherMessage.hasCompany &&
-      (!self.hasCompany || [self.company isEqual:otherMessage.company]) &&
+      self.hasCompanyName == otherMessage.hasCompanyName &&
+      (!self.hasCompanyName || [self.companyName isEqual:otherMessage.companyName]) &&
       self.hasLocation == otherMessage.hasLocation &&
       (!self.hasLocation || [self.location isEqual:otherMessage.location]) &&
+      self.hasIndustry == otherMessage.hasIndustry &&
+      (!self.hasIndustry || [self.industry isEqual:otherMessage.industry]) &&
       self.hasTimespan == otherMessage.hasTimespan &&
       (!self.hasTimespan || [self.timespan isEqual:otherMessage.timespan]) &&
       self.hasSummary == otherMessage.hasSummary &&
@@ -1249,11 +1272,14 @@ static BEmployment* defaultBEmploymentInstance = nil;
   if (self.hasJobTitle) {
     hashCode = hashCode * 31 + [self.jobTitle hash];
   }
-  if (self.hasCompany) {
-    hashCode = hashCode * 31 + [self.company hash];
+  if (self.hasCompanyName) {
+    hashCode = hashCode * 31 + [self.companyName hash];
   }
   if (self.hasLocation) {
     hashCode = hashCode * 31 + [self.location hash];
+  }
+  if (self.hasIndustry) {
+    hashCode = hashCode * 31 + [self.industry hash];
   }
   if (self.hasTimespan) {
     hashCode = hashCode * 31 + [self.timespan hash];
@@ -1307,11 +1333,14 @@ static BEmployment* defaultBEmploymentInstance = nil;
   if (other.hasJobTitle) {
     [self setJobTitle:other.jobTitle];
   }
-  if (other.hasCompany) {
-    [self setCompany:other.company];
+  if (other.hasCompanyName) {
+    [self setCompanyName:other.companyName];
   }
   if (other.hasLocation) {
     [self setLocation:other.location];
+  }
+  if (other.hasIndustry) {
+    [self setIndustry:other.industry];
   }
   if (other.hasTimespan) {
     [self mergeTimespan:other.timespan];
@@ -1345,7 +1374,7 @@ static BEmployment* defaultBEmploymentInstance = nil;
         break;
       }
       case 18: {
-        [self setCompany:[input readString]];
+        [self setCompanyName:[input readString]];
         break;
       }
       case 26: {
@@ -1353,6 +1382,10 @@ static BEmployment* defaultBEmploymentInstance = nil;
         break;
       }
       case 34: {
+        [self setIndustry:[input readString]];
+        break;
+      }
+      case 42: {
         BTimespanBuilder* subBuilder = [BTimespan builder];
         if (self.hasTimespan) {
           [subBuilder mergeFrom:self.timespan];
@@ -1361,7 +1394,7 @@ static BEmployment* defaultBEmploymentInstance = nil;
         [self setTimespan:[subBuilder buildPartial]];
         break;
       }
-      case 42: {
+      case 50: {
         [self setSummary:[input readString]];
         break;
       }
@@ -1384,20 +1417,20 @@ static BEmployment* defaultBEmploymentInstance = nil;
   resultEmployment.jobTitle = @"";
   return self;
 }
-- (BOOL) hasCompany {
-  return resultEmployment.hasCompany;
+- (BOOL) hasCompanyName {
+  return resultEmployment.hasCompanyName;
 }
-- (NSString*) company {
-  return resultEmployment.company;
+- (NSString*) companyName {
+  return resultEmployment.companyName;
 }
-- (BEmploymentBuilder*) setCompany:(NSString*) value {
-  resultEmployment.hasCompany = YES;
-  resultEmployment.company = value;
+- (BEmploymentBuilder*) setCompanyName:(NSString*) value {
+  resultEmployment.hasCompanyName = YES;
+  resultEmployment.companyName = value;
   return self;
 }
-- (BEmploymentBuilder*) clearCompany {
-  resultEmployment.hasCompany = NO;
-  resultEmployment.company = @"";
+- (BEmploymentBuilder*) clearCompanyName {
+  resultEmployment.hasCompanyName = NO;
+  resultEmployment.companyName = @"";
   return self;
 }
 - (BOOL) hasLocation {
@@ -1414,6 +1447,22 @@ static BEmployment* defaultBEmploymentInstance = nil;
 - (BEmploymentBuilder*) clearLocation {
   resultEmployment.hasLocation = NO;
   resultEmployment.location = @"";
+  return self;
+}
+- (BOOL) hasIndustry {
+  return resultEmployment.hasIndustry;
+}
+- (NSString*) industry {
+  return resultEmployment.industry;
+}
+- (BEmploymentBuilder*) setIndustry:(NSString*) value {
+  resultEmployment.hasIndustry = YES;
+  resultEmployment.industry = value;
+  return self;
+}
+- (BEmploymentBuilder*) clearIndustry {
+  resultEmployment.hasIndustry = NO;
+  resultEmployment.industry = @"";
   return self;
 }
 - (BOOL) hasTimespan {
@@ -1846,21 +1895,459 @@ static BEducation* defaultBEducationInstance = nil;
 }
 @end
 
+@interface BImageData ()
+@property BImageContent imageContent;
+@property (strong) NSData* imageBytes;
+@property (strong) NSString* contentType;
+@property (strong) NSString* imageURL;
+@property (strong) BTimestamp* dateAdded;
+@end
+
+@implementation BImageData
+
+- (BOOL) hasImageContent {
+  return !!hasImageContent_;
+}
+- (void) setHasImageContent:(BOOL) _value_ {
+  hasImageContent_ = !!_value_;
+}
+@synthesize imageContent;
+- (BOOL) hasImageBytes {
+  return !!hasImageBytes_;
+}
+- (void) setHasImageBytes:(BOOL) _value_ {
+  hasImageBytes_ = !!_value_;
+}
+@synthesize imageBytes;
+- (BOOL) hasContentType {
+  return !!hasContentType_;
+}
+- (void) setHasContentType:(BOOL) _value_ {
+  hasContentType_ = !!_value_;
+}
+@synthesize contentType;
+- (BOOL) hasImageURL {
+  return !!hasImageURL_;
+}
+- (void) setHasImageURL:(BOOL) _value_ {
+  hasImageURL_ = !!_value_;
+}
+@synthesize imageURL;
+- (BOOL) hasDateAdded {
+  return !!hasDateAdded_;
+}
+- (void) setHasDateAdded:(BOOL) _value_ {
+  hasDateAdded_ = !!_value_;
+}
+@synthesize dateAdded;
+- (instancetype) init {
+  if ((self = [super init])) {
+    self.imageContent = BImageContentICUnknown;
+    self.imageBytes = [NSData data];
+    self.contentType = @"";
+    self.imageURL = @"";
+    self.dateAdded = [BTimestamp defaultInstance];
+  }
+  return self;
+}
+static BImageData* defaultBImageDataInstance = nil;
++ (void) initialize {
+  if (self == [BImageData class]) {
+    defaultBImageDataInstance = [[BImageData alloc] init];
+  }
+}
++ (instancetype) defaultInstance {
+  return defaultBImageDataInstance;
+}
+- (instancetype) defaultInstance {
+  return defaultBImageDataInstance;
+}
+- (BOOL) isInitialized {
+  if (self.hasDateAdded) {
+    if (!self.dateAdded.isInitialized) {
+      return NO;
+    }
+  }
+  return YES;
+}
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
+  if (self.hasImageContent) {
+    [output writeEnum:1 value:self.imageContent];
+  }
+  if (self.hasImageBytes) {
+    [output writeData:2 value:self.imageBytes];
+  }
+  if (self.hasContentType) {
+    [output writeString:3 value:self.contentType];
+  }
+  if (self.hasImageURL) {
+    [output writeString:4 value:self.imageURL];
+  }
+  if (self.hasDateAdded) {
+    [output writeMessage:5 value:self.dateAdded];
+  }
+  [self.unknownFields writeToCodedOutputStream:output];
+}
+- (SInt32) serializedSize {
+  __block SInt32 size_ = memoizedSerializedSize;
+  if (size_ != -1) {
+    return size_;
+  }
+
+  size_ = 0;
+  if (self.hasImageContent) {
+    size_ += computeEnumSize(1, self.imageContent);
+  }
+  if (self.hasImageBytes) {
+    size_ += computeDataSize(2, self.imageBytes);
+  }
+  if (self.hasContentType) {
+    size_ += computeStringSize(3, self.contentType);
+  }
+  if (self.hasImageURL) {
+    size_ += computeStringSize(4, self.imageURL);
+  }
+  if (self.hasDateAdded) {
+    size_ += computeMessageSize(5, self.dateAdded);
+  }
+  size_ += self.unknownFields.serializedSize;
+  memoizedSerializedSize = size_;
+  return size_;
+}
++ (BImageData*) parseFromData:(NSData*) data {
+  return (BImageData*)[[[BImageData builder] mergeFromData:data] build];
+}
++ (BImageData*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BImageData*)[[[BImageData builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
+}
++ (BImageData*) parseFromInputStream:(NSInputStream*) input {
+  return (BImageData*)[[[BImageData builder] mergeFromInputStream:input] build];
+}
++ (BImageData*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BImageData*)[[[BImageData builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (BImageData*) parseFromCodedInputStream:(PBCodedInputStream*) input {
+  return (BImageData*)[[[BImageData builder] mergeFromCodedInputStream:input] build];
+}
++ (BImageData*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BImageData*)[[[BImageData builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (BImageDataBuilder*) builder {
+  return [[BImageDataBuilder alloc] init];
+}
++ (BImageDataBuilder*) builderWithPrototype:(BImageData*) prototype {
+  return [[BImageData builder] mergeFrom:prototype];
+}
+- (BImageDataBuilder*) builder {
+  return [BImageData builder];
+}
+- (BImageDataBuilder*) toBuilder {
+  return [BImageData builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  if (self.hasImageContent) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"imageContent", NSStringFromBImageContent(self.imageContent)];
+  }
+  if (self.hasImageBytes) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"imageBytes", self.imageBytes];
+  }
+  if (self.hasContentType) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"contentType", self.contentType];
+  }
+  if (self.hasImageURL) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"imageURL", self.imageURL];
+  }
+  if (self.hasDateAdded) {
+    [output appendFormat:@"%@%@ {\n", indent, @"dateAdded"];
+    [self.dateAdded writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (void) storeInDictionary:(NSMutableDictionary *)dictionary {
+  if (self.hasImageContent) {
+    [dictionary setObject: @(self.imageContent) forKey: @"imageContent"];
+  }
+  if (self.hasImageBytes) {
+    [dictionary setObject: self.imageBytes forKey: @"imageBytes"];
+  }
+  if (self.hasContentType) {
+    [dictionary setObject: self.contentType forKey: @"contentType"];
+  }
+  if (self.hasImageURL) {
+    [dictionary setObject: self.imageURL forKey: @"imageURL"];
+  }
+  if (self.hasDateAdded) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.dateAdded storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"dateAdded"];
+  }
+  [self.unknownFields storeInDictionary:dictionary];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[BImageData class]]) {
+    return NO;
+  }
+  BImageData *otherMessage = other;
+  return
+      self.hasImageContent == otherMessage.hasImageContent &&
+      (!self.hasImageContent || self.imageContent == otherMessage.imageContent) &&
+      self.hasImageBytes == otherMessage.hasImageBytes &&
+      (!self.hasImageBytes || [self.imageBytes isEqual:otherMessage.imageBytes]) &&
+      self.hasContentType == otherMessage.hasContentType &&
+      (!self.hasContentType || [self.contentType isEqual:otherMessage.contentType]) &&
+      self.hasImageURL == otherMessage.hasImageURL &&
+      (!self.hasImageURL || [self.imageURL isEqual:otherMessage.imageURL]) &&
+      self.hasDateAdded == otherMessage.hasDateAdded &&
+      (!self.hasDateAdded || [self.dateAdded isEqual:otherMessage.dateAdded]) &&
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  __block NSUInteger hashCode = 7;
+  if (self.hasImageContent) {
+    hashCode = hashCode * 31 + self.imageContent;
+  }
+  if (self.hasImageBytes) {
+    hashCode = hashCode * 31 + [self.imageBytes hash];
+  }
+  if (self.hasContentType) {
+    hashCode = hashCode * 31 + [self.contentType hash];
+  }
+  if (self.hasImageURL) {
+    hashCode = hashCode * 31 + [self.imageURL hash];
+  }
+  if (self.hasDateAdded) {
+    hashCode = hashCode * 31 + [self.dateAdded hash];
+  }
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
+}
+@end
+
+@interface BImageDataBuilder()
+@property (strong) BImageData* resultImageData;
+@end
+
+@implementation BImageDataBuilder
+@synthesize resultImageData;
+- (instancetype) init {
+  if ((self = [super init])) {
+    self.resultImageData = [[BImageData alloc] init];
+  }
+  return self;
+}
+- (PBGeneratedMessage*) internalGetResult {
+  return resultImageData;
+}
+- (BImageDataBuilder*) clear {
+  self.resultImageData = [[BImageData alloc] init];
+  return self;
+}
+- (BImageDataBuilder*) clone {
+  return [BImageData builderWithPrototype:resultImageData];
+}
+- (BImageData*) defaultInstance {
+  return [BImageData defaultInstance];
+}
+- (BImageData*) build {
+  [self checkInitialized];
+  return [self buildPartial];
+}
+- (BImageData*) buildPartial {
+  BImageData* returnMe = resultImageData;
+  self.resultImageData = nil;
+  return returnMe;
+}
+- (BImageDataBuilder*) mergeFrom:(BImageData*) other {
+  if (other == [BImageData defaultInstance]) {
+    return self;
+  }
+  if (other.hasImageContent) {
+    [self setImageContent:other.imageContent];
+  }
+  if (other.hasImageBytes) {
+    [self setImageBytes:other.imageBytes];
+  }
+  if (other.hasContentType) {
+    [self setContentType:other.contentType];
+  }
+  if (other.hasImageURL) {
+    [self setImageURL:other.imageURL];
+  }
+  if (other.hasDateAdded) {
+    [self mergeDateAdded:other.dateAdded];
+  }
+  [self mergeUnknownFields:other.unknownFields];
+  return self;
+}
+- (BImageDataBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
+  return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
+}
+- (BImageDataBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  PBUnknownFieldSetBuilder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
+  while (YES) {
+    SInt32 tag = [input readTag];
+    switch (tag) {
+      case 0:
+        [self setUnknownFields:[unknownFields build]];
+        return self;
+      default: {
+        if (![self parseUnknownField:input unknownFields:unknownFields extensionRegistry:extensionRegistry tag:tag]) {
+          [self setUnknownFields:[unknownFields build]];
+          return self;
+        }
+        break;
+      }
+      case 8: {
+        BImageContent value = (BImageContent)[input readEnum];
+        if (BImageContentIsValidValue(value)) {
+          [self setImageContent:value];
+        } else {
+          [unknownFields mergeVarintField:1 value:value];
+        }
+        break;
+      }
+      case 18: {
+        [self setImageBytes:[input readData]];
+        break;
+      }
+      case 26: {
+        [self setContentType:[input readString]];
+        break;
+      }
+      case 34: {
+        [self setImageURL:[input readString]];
+        break;
+      }
+      case 42: {
+        BTimestampBuilder* subBuilder = [BTimestamp builder];
+        if (self.hasDateAdded) {
+          [subBuilder mergeFrom:self.dateAdded];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setDateAdded:[subBuilder buildPartial]];
+        break;
+      }
+    }
+  }
+}
+- (BOOL) hasImageContent {
+  return resultImageData.hasImageContent;
+}
+- (BImageContent) imageContent {
+  return resultImageData.imageContent;
+}
+- (BImageDataBuilder*) setImageContent:(BImageContent) value {
+  resultImageData.hasImageContent = YES;
+  resultImageData.imageContent = value;
+  return self;
+}
+- (BImageDataBuilder*) clearImageContent {
+  resultImageData.hasImageContent = NO;
+  resultImageData.imageContent = BImageContentICUnknown;
+  return self;
+}
+- (BOOL) hasImageBytes {
+  return resultImageData.hasImageBytes;
+}
+- (NSData*) imageBytes {
+  return resultImageData.imageBytes;
+}
+- (BImageDataBuilder*) setImageBytes:(NSData*) value {
+  resultImageData.hasImageBytes = YES;
+  resultImageData.imageBytes = value;
+  return self;
+}
+- (BImageDataBuilder*) clearImageBytes {
+  resultImageData.hasImageBytes = NO;
+  resultImageData.imageBytes = [NSData data];
+  return self;
+}
+- (BOOL) hasContentType {
+  return resultImageData.hasContentType;
+}
+- (NSString*) contentType {
+  return resultImageData.contentType;
+}
+- (BImageDataBuilder*) setContentType:(NSString*) value {
+  resultImageData.hasContentType = YES;
+  resultImageData.contentType = value;
+  return self;
+}
+- (BImageDataBuilder*) clearContentType {
+  resultImageData.hasContentType = NO;
+  resultImageData.contentType = @"";
+  return self;
+}
+- (BOOL) hasImageURL {
+  return resultImageData.hasImageURL;
+}
+- (NSString*) imageURL {
+  return resultImageData.imageURL;
+}
+- (BImageDataBuilder*) setImageURL:(NSString*) value {
+  resultImageData.hasImageURL = YES;
+  resultImageData.imageURL = value;
+  return self;
+}
+- (BImageDataBuilder*) clearImageURL {
+  resultImageData.hasImageURL = NO;
+  resultImageData.imageURL = @"";
+  return self;
+}
+- (BOOL) hasDateAdded {
+  return resultImageData.hasDateAdded;
+}
+- (BTimestamp*) dateAdded {
+  return resultImageData.dateAdded;
+}
+- (BImageDataBuilder*) setDateAdded:(BTimestamp*) value {
+  resultImageData.hasDateAdded = YES;
+  resultImageData.dateAdded = value;
+  return self;
+}
+- (BImageDataBuilder*) setDateAddedBuilder:(BTimestampBuilder*) builderForValue {
+  return [self setDateAdded:[builderForValue build]];
+}
+- (BImageDataBuilder*) mergeDateAdded:(BTimestamp*) value {
+  if (resultImageData.hasDateAdded &&
+      resultImageData.dateAdded != [BTimestamp defaultInstance]) {
+    resultImageData.dateAdded =
+      [[[BTimestamp builderWithPrototype:resultImageData.dateAdded] mergeFrom:value] buildPartial];
+  } else {
+    resultImageData.dateAdded = value;
+  }
+  resultImageData.hasDateAdded = YES;
+  return self;
+}
+- (BImageDataBuilder*) clearDateAdded {
+  resultImageData.hasDateAdded = NO;
+  resultImageData.dateAdded = [BTimestamp defaultInstance];
+  return self;
+}
+@end
+
 @interface BUserProfile ()
 @property (strong) NSString* userID;
-@property (strong) BTimestamp* lastSeen;
-@property (strong) BTimestamp* creationDate;
 @property BUserStatus userStatus;
+@property (strong) BTimestamp* creationDate;
+@property (strong) BTimestamp* lastSeen;
 @property (strong) NSString* name;
 @property BGender gender;
 @property (strong) BTimestamp* birthday;
-@property (strong) NSMutableArray * imageURLArray;
+@property (strong) NSMutableArray * imagesArray;
 @property (strong) NSMutableArray * socialIdentitiesArray;
 @property (strong) NSMutableArray * contactInfoArray;
+@property (strong) BEmployment* currentEmployment;
 @property (strong) NSMutableArray * employmentArray;
 @property (strong) NSMutableArray * educationArray;
 @property (strong) NSMutableArray * expertiseTagsArray;
 @property (strong) NSMutableArray * interestTagsArray;
+@property (strong) NSString* backgroundSummary;
 @end
 
 @implementation BUserProfile
@@ -1872,20 +2359,6 @@ static BEducation* defaultBEducationInstance = nil;
   hasUserID_ = !!_value_;
 }
 @synthesize userID;
-- (BOOL) hasLastSeen {
-  return !!hasLastSeen_;
-}
-- (void) setHasLastSeen:(BOOL) _value_ {
-  hasLastSeen_ = !!_value_;
-}
-@synthesize lastSeen;
-- (BOOL) hasCreationDate {
-  return !!hasCreationDate_;
-}
-- (void) setHasCreationDate:(BOOL) _value_ {
-  hasCreationDate_ = !!_value_;
-}
-@synthesize creationDate;
 - (BOOL) hasUserStatus {
   return !!hasUserStatus_;
 }
@@ -1893,6 +2366,20 @@ static BEducation* defaultBEducationInstance = nil;
   hasUserStatus_ = !!_value_;
 }
 @synthesize userStatus;
+- (BOOL) hasCreationDate {
+  return !!hasCreationDate_;
+}
+- (void) setHasCreationDate:(BOOL) _value_ {
+  hasCreationDate_ = !!_value_;
+}
+@synthesize creationDate;
+- (BOOL) hasLastSeen {
+  return !!hasLastSeen_;
+}
+- (void) setHasLastSeen:(BOOL) _value_ {
+  hasLastSeen_ = !!_value_;
+}
+@synthesize lastSeen;
 - (BOOL) hasName {
   return !!hasName_;
 }
@@ -1914,12 +2401,19 @@ static BEducation* defaultBEducationInstance = nil;
   hasBirthday_ = !!_value_;
 }
 @synthesize birthday;
-@synthesize imageURLArray;
-@dynamic imageURL;
+@synthesize imagesArray;
+@dynamic images;
 @synthesize socialIdentitiesArray;
 @dynamic socialIdentities;
 @synthesize contactInfoArray;
 @dynamic contactInfo;
+- (BOOL) hasCurrentEmployment {
+  return !!hasCurrentEmployment_;
+}
+- (void) setHasCurrentEmployment:(BOOL) _value_ {
+  hasCurrentEmployment_ = !!_value_;
+}
+@synthesize currentEmployment;
 @synthesize employmentArray;
 @dynamic employment;
 @synthesize educationArray;
@@ -1928,15 +2422,24 @@ static BEducation* defaultBEducationInstance = nil;
 @dynamic expertiseTags;
 @synthesize interestTagsArray;
 @dynamic interestTags;
+- (BOOL) hasBackgroundSummary {
+  return !!hasBackgroundSummary_;
+}
+- (void) setHasBackgroundSummary:(BOOL) _value_ {
+  hasBackgroundSummary_ = !!_value_;
+}
+@synthesize backgroundSummary;
 - (instancetype) init {
   if ((self = [super init])) {
     self.userID = @"";
-    self.lastSeen = [BTimestamp defaultInstance];
-    self.creationDate = [BTimestamp defaultInstance];
     self.userStatus = BUserStatusUSUnknown;
+    self.creationDate = [BTimestamp defaultInstance];
+    self.lastSeen = [BTimestamp defaultInstance];
     self.name = @"";
     self.gender = BGenderGUnknown;
     self.birthday = [BTimestamp defaultInstance];
+    self.currentEmployment = [BEmployment defaultInstance];
+    self.backgroundSummary = @"";
   }
   return self;
 }
@@ -1952,11 +2455,11 @@ static BUserProfile* defaultBUserProfileInstance = nil;
 - (instancetype) defaultInstance {
   return defaultBUserProfileInstance;
 }
-- (NSArray *)imageURL {
-  return imageURLArray;
+- (NSArray *)images {
+  return imagesArray;
 }
-- (NSString*)imageURLAtIndex:(NSUInteger)index {
-  return [imageURLArray objectAtIndex:index];
+- (BImageData*)imagesAtIndex:(NSUInteger)index {
+  return [imagesArray objectAtIndex:index];
 }
 - (NSArray *)socialIdentities {
   return socialIdentitiesArray;
@@ -1995,13 +2498,13 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   return [interestTagsArray objectAtIndex:index];
 }
 - (BOOL) isInitialized {
-  if (self.hasLastSeen) {
-    if (!self.lastSeen.isInitialized) {
+  if (self.hasCreationDate) {
+    if (!self.creationDate.isInitialized) {
       return NO;
     }
   }
-  if (self.hasCreationDate) {
-    if (!self.creationDate.isInitialized) {
+  if (self.hasLastSeen) {
+    if (!self.lastSeen.isInitialized) {
       return NO;
     }
   }
@@ -2010,6 +2513,14 @@ static BUserProfile* defaultBUserProfileInstance = nil;
       return NO;
     }
   }
+  __block BOOL isInitimages = YES;
+   [self.images enumerateObjectsUsingBlock:^(BImageData *element, NSUInteger idx, BOOL *stop) {
+    if (!element.isInitialized) {
+      isInitimages = NO;
+      *stop = YES;
+    }
+  }];
+  if (!isInitimages) return isInitimages;
   __block BOOL isInitsocialIdentities = YES;
    [self.socialIdentities enumerateObjectsUsingBlock:^(BSocialIdentity *element, NSUInteger idx, BOOL *stop) {
     if (!element.isInitialized) {
@@ -2026,6 +2537,11 @@ static BUserProfile* defaultBUserProfileInstance = nil;
     }
   }];
   if (!isInitcontactInfo) return isInitcontactInfo;
+  if (self.hasCurrentEmployment) {
+    if (!self.currentEmployment.isInitialized) {
+      return NO;
+    }
+  }
   __block BOOL isInitemployment = YES;
    [self.employment enumerateObjectsUsingBlock:^(BEmployment *element, NSUInteger idx, BOOL *stop) {
     if (!element.isInitialized) {
@@ -2048,45 +2564,51 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   if (self.hasUserID) {
     [output writeString:1 value:self.userID];
   }
+  if (self.hasUserStatus) {
+    [output writeEnum:2 value:self.userStatus];
+  }
+  if (self.hasCreationDate) {
+    [output writeMessage:3 value:self.creationDate];
+  }
+  if (self.hasLastSeen) {
+    [output writeMessage:4 value:self.lastSeen];
+  }
   if (self.hasName) {
-    [output writeString:2 value:self.name];
+    [output writeString:5 value:self.name];
   }
   if (self.hasGender) {
-    [output writeEnum:3 value:self.gender];
-  }
-  if (self.hasUserStatus) {
-    [output writeEnum:4 value:self.userStatus];
+    [output writeEnum:6 value:self.gender];
   }
   if (self.hasBirthday) {
-    [output writeMessage:5 value:self.birthday];
+    [output writeMessage:7 value:self.birthday];
   }
-  [self.imageURLArray enumerateObjectsUsingBlock:^(NSString *element, NSUInteger idx, BOOL *stop) {
-    [output writeString:6 value:element];
+  [self.imagesArray enumerateObjectsUsingBlock:^(BImageData *element, NSUInteger idx, BOOL *stop) {
+    [output writeMessage:8 value:element];
   }];
   [self.socialIdentitiesArray enumerateObjectsUsingBlock:^(BSocialIdentity *element, NSUInteger idx, BOOL *stop) {
     [output writeMessage:9 value:element];
   }];
-  if (self.hasLastSeen) {
-    [output writeMessage:11 value:self.lastSeen];
-  }
-  if (self.hasCreationDate) {
-    [output writeMessage:12 value:self.creationDate];
-  }
   [self.contactInfoArray enumerateObjectsUsingBlock:^(BContactInfo *element, NSUInteger idx, BOOL *stop) {
-    [output writeMessage:15 value:element];
+    [output writeMessage:10 value:element];
   }];
+  if (self.hasCurrentEmployment) {
+    [output writeMessage:11 value:self.currentEmployment];
+  }
   [self.employmentArray enumerateObjectsUsingBlock:^(BEmployment *element, NSUInteger idx, BOOL *stop) {
-    [output writeMessage:16 value:element];
+    [output writeMessage:12 value:element];
   }];
   [self.educationArray enumerateObjectsUsingBlock:^(BEducation *element, NSUInteger idx, BOOL *stop) {
-    [output writeMessage:17 value:element];
+    [output writeMessage:13 value:element];
   }];
   [self.expertiseTagsArray enumerateObjectsUsingBlock:^(NSString *element, NSUInteger idx, BOOL *stop) {
-    [output writeString:18 value:element];
+    [output writeString:14 value:element];
   }];
   [self.interestTagsArray enumerateObjectsUsingBlock:^(NSString *element, NSUInteger idx, BOOL *stop) {
-    [output writeString:19 value:element];
+    [output writeString:15 value:element];
   }];
+  if (self.hasBackgroundSummary) {
+    [output writeString:16 value:self.backgroundSummary];
+  }
   [self.unknownFields writeToCodedOutputStream:output];
 }
 - (SInt32) serializedSize {
@@ -2099,44 +2621,41 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   if (self.hasUserID) {
     size_ += computeStringSize(1, self.userID);
   }
+  if (self.hasUserStatus) {
+    size_ += computeEnumSize(2, self.userStatus);
+  }
+  if (self.hasCreationDate) {
+    size_ += computeMessageSize(3, self.creationDate);
+  }
+  if (self.hasLastSeen) {
+    size_ += computeMessageSize(4, self.lastSeen);
+  }
   if (self.hasName) {
-    size_ += computeStringSize(2, self.name);
+    size_ += computeStringSize(5, self.name);
   }
   if (self.hasGender) {
-    size_ += computeEnumSize(3, self.gender);
-  }
-  if (self.hasUserStatus) {
-    size_ += computeEnumSize(4, self.userStatus);
+    size_ += computeEnumSize(6, self.gender);
   }
   if (self.hasBirthday) {
-    size_ += computeMessageSize(5, self.birthday);
+    size_ += computeMessageSize(7, self.birthday);
   }
-  {
-    __block SInt32 dataSize = 0;
-    const NSUInteger count = self.imageURLArray.count;
-    [self.imageURLArray enumerateObjectsUsingBlock:^(NSString *element, NSUInteger idx, BOOL *stop) {
-      dataSize += computeStringSizeNoTag(element);
-    }];
-    size_ += dataSize;
-    size_ += (SInt32)(1 * count);
-  }
+  [self.imagesArray enumerateObjectsUsingBlock:^(BImageData *element, NSUInteger idx, BOOL *stop) {
+    size_ += computeMessageSize(8, element);
+  }];
   [self.socialIdentitiesArray enumerateObjectsUsingBlock:^(BSocialIdentity *element, NSUInteger idx, BOOL *stop) {
     size_ += computeMessageSize(9, element);
   }];
-  if (self.hasLastSeen) {
-    size_ += computeMessageSize(11, self.lastSeen);
-  }
-  if (self.hasCreationDate) {
-    size_ += computeMessageSize(12, self.creationDate);
-  }
   [self.contactInfoArray enumerateObjectsUsingBlock:^(BContactInfo *element, NSUInteger idx, BOOL *stop) {
-    size_ += computeMessageSize(15, element);
+    size_ += computeMessageSize(10, element);
   }];
+  if (self.hasCurrentEmployment) {
+    size_ += computeMessageSize(11, self.currentEmployment);
+  }
   [self.employmentArray enumerateObjectsUsingBlock:^(BEmployment *element, NSUInteger idx, BOOL *stop) {
-    size_ += computeMessageSize(16, element);
+    size_ += computeMessageSize(12, element);
   }];
   [self.educationArray enumerateObjectsUsingBlock:^(BEducation *element, NSUInteger idx, BOOL *stop) {
-    size_ += computeMessageSize(17, element);
+    size_ += computeMessageSize(13, element);
   }];
   {
     __block SInt32 dataSize = 0;
@@ -2145,7 +2664,7 @@ static BUserProfile* defaultBUserProfileInstance = nil;
       dataSize += computeStringSizeNoTag(element);
     }];
     size_ += dataSize;
-    size_ += (SInt32)(2 * count);
+    size_ += (SInt32)(1 * count);
   }
   {
     __block SInt32 dataSize = 0;
@@ -2154,7 +2673,10 @@ static BUserProfile* defaultBUserProfileInstance = nil;
       dataSize += computeStringSizeNoTag(element);
     }];
     size_ += dataSize;
-    size_ += (SInt32)(2 * count);
+    size_ += (SInt32)(1 * count);
+  }
+  if (self.hasBackgroundSummary) {
+    size_ += computeStringSize(16, self.backgroundSummary);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -2194,35 +2716,8 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   if (self.hasUserID) {
     [output appendFormat:@"%@%@: %@\n", indent, @"userID", self.userID];
   }
-  if (self.hasName) {
-    [output appendFormat:@"%@%@: %@\n", indent, @"name", self.name];
-  }
-  if (self.hasGender) {
-    [output appendFormat:@"%@%@: %@\n", indent, @"gender", NSStringFromBGender(self.gender)];
-  }
   if (self.hasUserStatus) {
     [output appendFormat:@"%@%@: %@\n", indent, @"userStatus", NSStringFromBUserStatus(self.userStatus)];
-  }
-  if (self.hasBirthday) {
-    [output appendFormat:@"%@%@ {\n", indent, @"birthday"];
-    [self.birthday writeDescriptionTo:output
-                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
-    [output appendFormat:@"%@}\n", indent];
-  }
-  [self.imageURLArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-    [output appendFormat:@"%@%@: %@\n", indent, @"imageURL", obj];
-  }];
-  [self.socialIdentitiesArray enumerateObjectsUsingBlock:^(BSocialIdentity *element, NSUInteger idx, BOOL *stop) {
-    [output appendFormat:@"%@%@ {\n", indent, @"socialIdentities"];
-    [element writeDescriptionTo:output
-                     withIndent:[NSString stringWithFormat:@"%@  ", indent]];
-    [output appendFormat:@"%@}\n", indent];
-  }];
-  if (self.hasLastSeen) {
-    [output appendFormat:@"%@%@ {\n", indent, @"lastSeen"];
-    [self.lastSeen writeDescriptionTo:output
-                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
-    [output appendFormat:@"%@}\n", indent];
   }
   if (self.hasCreationDate) {
     [output appendFormat:@"%@%@ {\n", indent, @"creationDate"];
@@ -2230,12 +2725,48 @@ static BUserProfile* defaultBUserProfileInstance = nil;
                          withIndent:[NSString stringWithFormat:@"%@  ", indent]];
     [output appendFormat:@"%@}\n", indent];
   }
+  if (self.hasLastSeen) {
+    [output appendFormat:@"%@%@ {\n", indent, @"lastSeen"];
+    [self.lastSeen writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
+  if (self.hasName) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"name", self.name];
+  }
+  if (self.hasGender) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"gender", NSStringFromBGender(self.gender)];
+  }
+  if (self.hasBirthday) {
+    [output appendFormat:@"%@%@ {\n", indent, @"birthday"];
+    [self.birthday writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
+  [self.imagesArray enumerateObjectsUsingBlock:^(BImageData *element, NSUInteger idx, BOOL *stop) {
+    [output appendFormat:@"%@%@ {\n", indent, @"images"];
+    [element writeDescriptionTo:output
+                     withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }];
+  [self.socialIdentitiesArray enumerateObjectsUsingBlock:^(BSocialIdentity *element, NSUInteger idx, BOOL *stop) {
+    [output appendFormat:@"%@%@ {\n", indent, @"socialIdentities"];
+    [element writeDescriptionTo:output
+                     withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }];
   [self.contactInfoArray enumerateObjectsUsingBlock:^(BContactInfo *element, NSUInteger idx, BOOL *stop) {
     [output appendFormat:@"%@%@ {\n", indent, @"contactInfo"];
     [element writeDescriptionTo:output
                      withIndent:[NSString stringWithFormat:@"%@  ", indent]];
     [output appendFormat:@"%@}\n", indent];
   }];
+  if (self.hasCurrentEmployment) {
+    [output appendFormat:@"%@%@ {\n", indent, @"currentEmployment"];
+    [self.currentEmployment writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
   [self.employmentArray enumerateObjectsUsingBlock:^(BEmployment *element, NSUInteger idx, BOOL *stop) {
     [output appendFormat:@"%@%@ {\n", indent, @"employment"];
     [element writeDescriptionTo:output
@@ -2254,11 +2785,27 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   [self.interestTagsArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
     [output appendFormat:@"%@%@: %@\n", indent, @"interestTags", obj];
   }];
+  if (self.hasBackgroundSummary) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"backgroundSummary", self.backgroundSummary];
+  }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (void) storeInDictionary:(NSMutableDictionary *)dictionary {
   if (self.hasUserID) {
     [dictionary setObject: self.userID forKey: @"userID"];
+  }
+  if (self.hasUserStatus) {
+    [dictionary setObject: @(self.userStatus) forKey: @"userStatus"];
+  }
+  if (self.hasCreationDate) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.creationDate storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"creationDate"];
+  }
+  if (self.hasLastSeen) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.lastSeen storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"lastSeen"];
   }
   if (self.hasName) {
     [dictionary setObject: self.name forKey: @"name"];
@@ -2266,34 +2813,30 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   if (self.hasGender) {
     [dictionary setObject: @(self.gender) forKey: @"gender"];
   }
-  if (self.hasUserStatus) {
-    [dictionary setObject: @(self.userStatus) forKey: @"userStatus"];
-  }
   if (self.hasBirthday) {
    NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
    [self.birthday storeInDictionary:messageDictionary];
    [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"birthday"];
   }
-  [dictionary setObject:self.imageURL forKey: @"imageURL"];
+  for (BImageData* element in self.imagesArray) {
+    NSMutableDictionary *elementDictionary = [NSMutableDictionary dictionary];
+    [element storeInDictionary:elementDictionary];
+    [dictionary setObject:[NSDictionary dictionaryWithDictionary:elementDictionary] forKey:@"images"];
+  }
   for (BSocialIdentity* element in self.socialIdentitiesArray) {
     NSMutableDictionary *elementDictionary = [NSMutableDictionary dictionary];
     [element storeInDictionary:elementDictionary];
     [dictionary setObject:[NSDictionary dictionaryWithDictionary:elementDictionary] forKey:@"socialIdentities"];
   }
-  if (self.hasLastSeen) {
-   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
-   [self.lastSeen storeInDictionary:messageDictionary];
-   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"lastSeen"];
-  }
-  if (self.hasCreationDate) {
-   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
-   [self.creationDate storeInDictionary:messageDictionary];
-   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"creationDate"];
-  }
   for (BContactInfo* element in self.contactInfoArray) {
     NSMutableDictionary *elementDictionary = [NSMutableDictionary dictionary];
     [element storeInDictionary:elementDictionary];
     [dictionary setObject:[NSDictionary dictionaryWithDictionary:elementDictionary] forKey:@"contactInfo"];
+  }
+  if (self.hasCurrentEmployment) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.currentEmployment storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"currentEmployment"];
   }
   for (BEmployment* element in self.employmentArray) {
     NSMutableDictionary *elementDictionary = [NSMutableDictionary dictionary];
@@ -2307,6 +2850,9 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   }
   [dictionary setObject:self.expertiseTags forKey: @"expertiseTags"];
   [dictionary setObject:self.interestTags forKey: @"interestTags"];
+  if (self.hasBackgroundSummary) {
+    [dictionary setObject: self.backgroundSummary forKey: @"backgroundSummary"];
+  }
   [self.unknownFields storeInDictionary:dictionary];
 }
 - (BOOL) isEqual:(id)other {
@@ -2320,25 +2866,29 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   return
       self.hasUserID == otherMessage.hasUserID &&
       (!self.hasUserID || [self.userID isEqual:otherMessage.userID]) &&
+      self.hasUserStatus == otherMessage.hasUserStatus &&
+      (!self.hasUserStatus || self.userStatus == otherMessage.userStatus) &&
+      self.hasCreationDate == otherMessage.hasCreationDate &&
+      (!self.hasCreationDate || [self.creationDate isEqual:otherMessage.creationDate]) &&
+      self.hasLastSeen == otherMessage.hasLastSeen &&
+      (!self.hasLastSeen || [self.lastSeen isEqual:otherMessage.lastSeen]) &&
       self.hasName == otherMessage.hasName &&
       (!self.hasName || [self.name isEqual:otherMessage.name]) &&
       self.hasGender == otherMessage.hasGender &&
       (!self.hasGender || self.gender == otherMessage.gender) &&
-      self.hasUserStatus == otherMessage.hasUserStatus &&
-      (!self.hasUserStatus || self.userStatus == otherMessage.userStatus) &&
       self.hasBirthday == otherMessage.hasBirthday &&
       (!self.hasBirthday || [self.birthday isEqual:otherMessage.birthday]) &&
-      [self.imageURLArray isEqualToArray:otherMessage.imageURLArray] &&
+      [self.imagesArray isEqualToArray:otherMessage.imagesArray] &&
       [self.socialIdentitiesArray isEqualToArray:otherMessage.socialIdentitiesArray] &&
-      self.hasLastSeen == otherMessage.hasLastSeen &&
-      (!self.hasLastSeen || [self.lastSeen isEqual:otherMessage.lastSeen]) &&
-      self.hasCreationDate == otherMessage.hasCreationDate &&
-      (!self.hasCreationDate || [self.creationDate isEqual:otherMessage.creationDate]) &&
       [self.contactInfoArray isEqualToArray:otherMessage.contactInfoArray] &&
+      self.hasCurrentEmployment == otherMessage.hasCurrentEmployment &&
+      (!self.hasCurrentEmployment || [self.currentEmployment isEqual:otherMessage.currentEmployment]) &&
       [self.employmentArray isEqualToArray:otherMessage.employmentArray] &&
       [self.educationArray isEqualToArray:otherMessage.educationArray] &&
       [self.expertiseTagsArray isEqualToArray:otherMessage.expertiseTagsArray] &&
       [self.interestTagsArray isEqualToArray:otherMessage.interestTagsArray] &&
+      self.hasBackgroundSummary == otherMessage.hasBackgroundSummary &&
+      (!self.hasBackgroundSummary || [self.backgroundSummary isEqual:otherMessage.backgroundSummary]) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
@@ -2346,33 +2896,36 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   if (self.hasUserID) {
     hashCode = hashCode * 31 + [self.userID hash];
   }
+  if (self.hasUserStatus) {
+    hashCode = hashCode * 31 + self.userStatus;
+  }
+  if (self.hasCreationDate) {
+    hashCode = hashCode * 31 + [self.creationDate hash];
+  }
+  if (self.hasLastSeen) {
+    hashCode = hashCode * 31 + [self.lastSeen hash];
+  }
   if (self.hasName) {
     hashCode = hashCode * 31 + [self.name hash];
   }
   if (self.hasGender) {
     hashCode = hashCode * 31 + self.gender;
   }
-  if (self.hasUserStatus) {
-    hashCode = hashCode * 31 + self.userStatus;
-  }
   if (self.hasBirthday) {
     hashCode = hashCode * 31 + [self.birthday hash];
   }
-  [self.imageURLArray enumerateObjectsUsingBlock:^(NSString *element, NSUInteger idx, BOOL *stop) {
+  [self.imagesArray enumerateObjectsUsingBlock:^(BImageData *element, NSUInteger idx, BOOL *stop) {
     hashCode = hashCode * 31 + [element hash];
   }];
   [self.socialIdentitiesArray enumerateObjectsUsingBlock:^(BSocialIdentity *element, NSUInteger idx, BOOL *stop) {
     hashCode = hashCode * 31 + [element hash];
   }];
-  if (self.hasLastSeen) {
-    hashCode = hashCode * 31 + [self.lastSeen hash];
-  }
-  if (self.hasCreationDate) {
-    hashCode = hashCode * 31 + [self.creationDate hash];
-  }
   [self.contactInfoArray enumerateObjectsUsingBlock:^(BContactInfo *element, NSUInteger idx, BOOL *stop) {
     hashCode = hashCode * 31 + [element hash];
   }];
+  if (self.hasCurrentEmployment) {
+    hashCode = hashCode * 31 + [self.currentEmployment hash];
+  }
   [self.employmentArray enumerateObjectsUsingBlock:^(BEmployment *element, NSUInteger idx, BOOL *stop) {
     hashCode = hashCode * 31 + [element hash];
   }];
@@ -2385,6 +2938,9 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   [self.interestTagsArray enumerateObjectsUsingBlock:^(NSString *element, NSUInteger idx, BOOL *stop) {
     hashCode = hashCode * 31 + [element hash];
   }];
+  if (self.hasBackgroundSummary) {
+    hashCode = hashCode * 31 + [self.backgroundSummary hash];
+  }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
 }
@@ -2431,14 +2987,14 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   if (other.hasUserID) {
     [self setUserID:other.userID];
   }
-  if (other.hasLastSeen) {
-    [self mergeLastSeen:other.lastSeen];
+  if (other.hasUserStatus) {
+    [self setUserStatus:other.userStatus];
   }
   if (other.hasCreationDate) {
     [self mergeCreationDate:other.creationDate];
   }
-  if (other.hasUserStatus) {
-    [self setUserStatus:other.userStatus];
+  if (other.hasLastSeen) {
+    [self mergeLastSeen:other.lastSeen];
   }
   if (other.hasName) {
     [self setName:other.name];
@@ -2449,11 +3005,11 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   if (other.hasBirthday) {
     [self mergeBirthday:other.birthday];
   }
-  if (other.imageURLArray.count > 0) {
-    if (resultUserProfile.imageURLArray == nil) {
-      resultUserProfile.imageURLArray = [[NSMutableArray alloc] initWithArray:other.imageURLArray];
+  if (other.imagesArray.count > 0) {
+    if (resultUserProfile.imagesArray == nil) {
+      resultUserProfile.imagesArray = [[NSMutableArray alloc] initWithArray:other.imagesArray];
     } else {
-      [resultUserProfile.imageURLArray addObjectsFromArray:other.imageURLArray];
+      [resultUserProfile.imagesArray addObjectsFromArray:other.imagesArray];
     }
   }
   if (other.socialIdentitiesArray.count > 0) {
@@ -2469,6 +3025,9 @@ static BUserProfile* defaultBUserProfileInstance = nil;
     } else {
       [resultUserProfile.contactInfoArray addObjectsFromArray:other.contactInfoArray];
     }
+  }
+  if (other.hasCurrentEmployment) {
+    [self mergeCurrentEmployment:other.currentEmployment];
   }
   if (other.employmentArray.count > 0) {
     if (resultUserProfile.employmentArray == nil) {
@@ -2498,6 +3057,9 @@ static BUserProfile* defaultBUserProfileInstance = nil;
       [resultUserProfile.interestTagsArray addObjectsFromArray:other.interestTagsArray];
     }
   }
+  if (other.hasBackgroundSummary) {
+    [self setBackgroundSummary:other.backgroundSummary];
+  }
   [self mergeUnknownFields:other.unknownFields];
   return self;
 }
@@ -2523,57 +3085,16 @@ static BUserProfile* defaultBUserProfileInstance = nil;
         [self setUserID:[input readString]];
         break;
       }
-      case 18: {
-        [self setName:[input readString]];
-        break;
-      }
-      case 24: {
-        BGender value = (BGender)[input readEnum];
-        if (BGenderIsValidValue(value)) {
-          [self setGender:value];
-        } else {
-          [unknownFields mergeVarintField:3 value:value];
-        }
-        break;
-      }
-      case 32: {
+      case 16: {
         BUserStatus value = (BUserStatus)[input readEnum];
         if (BUserStatusIsValidValue(value)) {
           [self setUserStatus:value];
         } else {
-          [unknownFields mergeVarintField:4 value:value];
+          [unknownFields mergeVarintField:2 value:value];
         }
         break;
       }
-      case 42: {
-        BTimestampBuilder* subBuilder = [BTimestamp builder];
-        if (self.hasBirthday) {
-          [subBuilder mergeFrom:self.birthday];
-        }
-        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
-        [self setBirthday:[subBuilder buildPartial]];
-        break;
-      }
-      case 50: {
-        [self addImageURL:[input readString]];
-        break;
-      }
-      case 74: {
-        BSocialIdentityBuilder* subBuilder = [BSocialIdentity builder];
-        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
-        [self addSocialIdentities:[subBuilder buildPartial]];
-        break;
-      }
-      case 90: {
-        BTimestampBuilder* subBuilder = [BTimestamp builder];
-        if (self.hasLastSeen) {
-          [subBuilder mergeFrom:self.lastSeen];
-        }
-        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
-        [self setLastSeen:[subBuilder buildPartial]];
-        break;
-      }
-      case 98: {
+      case 26: {
         BTimestampBuilder* subBuilder = [BTimestamp builder];
         if (self.hasCreationDate) {
           [subBuilder mergeFrom:self.creationDate];
@@ -2582,30 +3103,86 @@ static BUserProfile* defaultBUserProfileInstance = nil;
         [self setCreationDate:[subBuilder buildPartial]];
         break;
       }
-      case 122: {
+      case 34: {
+        BTimestampBuilder* subBuilder = [BTimestamp builder];
+        if (self.hasLastSeen) {
+          [subBuilder mergeFrom:self.lastSeen];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setLastSeen:[subBuilder buildPartial]];
+        break;
+      }
+      case 42: {
+        [self setName:[input readString]];
+        break;
+      }
+      case 48: {
+        BGender value = (BGender)[input readEnum];
+        if (BGenderIsValidValue(value)) {
+          [self setGender:value];
+        } else {
+          [unknownFields mergeVarintField:6 value:value];
+        }
+        break;
+      }
+      case 58: {
+        BTimestampBuilder* subBuilder = [BTimestamp builder];
+        if (self.hasBirthday) {
+          [subBuilder mergeFrom:self.birthday];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setBirthday:[subBuilder buildPartial]];
+        break;
+      }
+      case 66: {
+        BImageDataBuilder* subBuilder = [BImageData builder];
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self addImages:[subBuilder buildPartial]];
+        break;
+      }
+      case 74: {
+        BSocialIdentityBuilder* subBuilder = [BSocialIdentity builder];
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self addSocialIdentities:[subBuilder buildPartial]];
+        break;
+      }
+      case 82: {
         BContactInfoBuilder* subBuilder = [BContactInfo builder];
         [input readMessage:subBuilder extensionRegistry:extensionRegistry];
         [self addContactInfo:[subBuilder buildPartial]];
         break;
       }
-      case 130: {
+      case 90: {
+        BEmploymentBuilder* subBuilder = [BEmployment builder];
+        if (self.hasCurrentEmployment) {
+          [subBuilder mergeFrom:self.currentEmployment];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setCurrentEmployment:[subBuilder buildPartial]];
+        break;
+      }
+      case 98: {
         BEmploymentBuilder* subBuilder = [BEmployment builder];
         [input readMessage:subBuilder extensionRegistry:extensionRegistry];
         [self addEmployment:[subBuilder buildPartial]];
         break;
       }
-      case 138: {
+      case 106: {
         BEducationBuilder* subBuilder = [BEducation builder];
         [input readMessage:subBuilder extensionRegistry:extensionRegistry];
         [self addEducation:[subBuilder buildPartial]];
         break;
       }
-      case 146: {
+      case 114: {
         [self addExpertiseTags:[input readString]];
         break;
       }
-      case 154: {
+      case 122: {
         [self addInterestTags:[input readString]];
+        break;
+      }
+      case 130: {
+        [self setBackgroundSummary:[input readString]];
         break;
       }
     }
@@ -2627,34 +3204,20 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   resultUserProfile.userID = @"";
   return self;
 }
-- (BOOL) hasLastSeen {
-  return resultUserProfile.hasLastSeen;
+- (BOOL) hasUserStatus {
+  return resultUserProfile.hasUserStatus;
 }
-- (BTimestamp*) lastSeen {
-  return resultUserProfile.lastSeen;
+- (BUserStatus) userStatus {
+  return resultUserProfile.userStatus;
 }
-- (BUserProfileBuilder*) setLastSeen:(BTimestamp*) value {
-  resultUserProfile.hasLastSeen = YES;
-  resultUserProfile.lastSeen = value;
+- (BUserProfileBuilder*) setUserStatus:(BUserStatus) value {
+  resultUserProfile.hasUserStatus = YES;
+  resultUserProfile.userStatus = value;
   return self;
 }
-- (BUserProfileBuilder*) setLastSeenBuilder:(BTimestampBuilder*) builderForValue {
-  return [self setLastSeen:[builderForValue build]];
-}
-- (BUserProfileBuilder*) mergeLastSeen:(BTimestamp*) value {
-  if (resultUserProfile.hasLastSeen &&
-      resultUserProfile.lastSeen != [BTimestamp defaultInstance]) {
-    resultUserProfile.lastSeen =
-      [[[BTimestamp builderWithPrototype:resultUserProfile.lastSeen] mergeFrom:value] buildPartial];
-  } else {
-    resultUserProfile.lastSeen = value;
-  }
-  resultUserProfile.hasLastSeen = YES;
-  return self;
-}
-- (BUserProfileBuilder*) clearLastSeen {
-  resultUserProfile.hasLastSeen = NO;
-  resultUserProfile.lastSeen = [BTimestamp defaultInstance];
+- (BUserProfileBuilder*) clearUserStatus {
+  resultUserProfile.hasUserStatus = NO;
+  resultUserProfile.userStatus = BUserStatusUSUnknown;
   return self;
 }
 - (BOOL) hasCreationDate {
@@ -2687,20 +3250,34 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   resultUserProfile.creationDate = [BTimestamp defaultInstance];
   return self;
 }
-- (BOOL) hasUserStatus {
-  return resultUserProfile.hasUserStatus;
+- (BOOL) hasLastSeen {
+  return resultUserProfile.hasLastSeen;
 }
-- (BUserStatus) userStatus {
-  return resultUserProfile.userStatus;
+- (BTimestamp*) lastSeen {
+  return resultUserProfile.lastSeen;
 }
-- (BUserProfileBuilder*) setUserStatus:(BUserStatus) value {
-  resultUserProfile.hasUserStatus = YES;
-  resultUserProfile.userStatus = value;
+- (BUserProfileBuilder*) setLastSeen:(BTimestamp*) value {
+  resultUserProfile.hasLastSeen = YES;
+  resultUserProfile.lastSeen = value;
   return self;
 }
-- (BUserProfileBuilder*) clearUserStatus {
-  resultUserProfile.hasUserStatus = NO;
-  resultUserProfile.userStatus = BUserStatusUSUnknown;
+- (BUserProfileBuilder*) setLastSeenBuilder:(BTimestampBuilder*) builderForValue {
+  return [self setLastSeen:[builderForValue build]];
+}
+- (BUserProfileBuilder*) mergeLastSeen:(BTimestamp*) value {
+  if (resultUserProfile.hasLastSeen &&
+      resultUserProfile.lastSeen != [BTimestamp defaultInstance]) {
+    resultUserProfile.lastSeen =
+      [[[BTimestamp builderWithPrototype:resultUserProfile.lastSeen] mergeFrom:value] buildPartial];
+  } else {
+    resultUserProfile.lastSeen = value;
+  }
+  resultUserProfile.hasLastSeen = YES;
+  return self;
+}
+- (BUserProfileBuilder*) clearLastSeen {
+  resultUserProfile.hasLastSeen = NO;
+  resultUserProfile.lastSeen = [BTimestamp defaultInstance];
   return self;
 }
 - (BOOL) hasName {
@@ -2765,25 +3342,25 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   resultUserProfile.birthday = [BTimestamp defaultInstance];
   return self;
 }
-- (NSMutableArray *)imageURL {
-  return resultUserProfile.imageURLArray;
+- (NSMutableArray *)images {
+  return resultUserProfile.imagesArray;
 }
-- (NSString*)imageURLAtIndex:(NSUInteger)index {
-  return [resultUserProfile imageURLAtIndex:index];
+- (BImageData*)imagesAtIndex:(NSUInteger)index {
+  return [resultUserProfile imagesAtIndex:index];
 }
-- (BUserProfileBuilder *)addImageURL:(NSString*)value {
-  if (resultUserProfile.imageURLArray == nil) {
-    resultUserProfile.imageURLArray = [[NSMutableArray alloc]init];
+- (BUserProfileBuilder *)addImages:(BImageData*)value {
+  if (resultUserProfile.imagesArray == nil) {
+    resultUserProfile.imagesArray = [[NSMutableArray alloc]init];
   }
-  [resultUserProfile.imageURLArray addObject:value];
+  [resultUserProfile.imagesArray addObject:value];
   return self;
 }
-- (BUserProfileBuilder *)setImageURLArray:(NSArray *)array {
-  resultUserProfile.imageURLArray = [[NSMutableArray alloc] initWithArray:array];
+- (BUserProfileBuilder *)setImagesArray:(NSArray *)array {
+  resultUserProfile.imagesArray = [[NSMutableArray alloc]initWithArray:array];
   return self;
 }
-- (BUserProfileBuilder *)clearImageURL {
-  resultUserProfile.imageURLArray = nil;
+- (BUserProfileBuilder *)clearImages {
+  resultUserProfile.imagesArray = nil;
   return self;
 }
 - (NSMutableArray *)socialIdentities {
@@ -2826,6 +3403,36 @@ static BUserProfile* defaultBUserProfileInstance = nil;
 }
 - (BUserProfileBuilder *)clearContactInfo {
   resultUserProfile.contactInfoArray = nil;
+  return self;
+}
+- (BOOL) hasCurrentEmployment {
+  return resultUserProfile.hasCurrentEmployment;
+}
+- (BEmployment*) currentEmployment {
+  return resultUserProfile.currentEmployment;
+}
+- (BUserProfileBuilder*) setCurrentEmployment:(BEmployment*) value {
+  resultUserProfile.hasCurrentEmployment = YES;
+  resultUserProfile.currentEmployment = value;
+  return self;
+}
+- (BUserProfileBuilder*) setCurrentEmploymentBuilder:(BEmploymentBuilder*) builderForValue {
+  return [self setCurrentEmployment:[builderForValue build]];
+}
+- (BUserProfileBuilder*) mergeCurrentEmployment:(BEmployment*) value {
+  if (resultUserProfile.hasCurrentEmployment &&
+      resultUserProfile.currentEmployment != [BEmployment defaultInstance]) {
+    resultUserProfile.currentEmployment =
+      [[[BEmployment builderWithPrototype:resultUserProfile.currentEmployment] mergeFrom:value] buildPartial];
+  } else {
+    resultUserProfile.currentEmployment = value;
+  }
+  resultUserProfile.hasCurrentEmployment = YES;
+  return self;
+}
+- (BUserProfileBuilder*) clearCurrentEmployment {
+  resultUserProfile.hasCurrentEmployment = NO;
+  resultUserProfile.currentEmployment = [BEmployment defaultInstance];
   return self;
 }
 - (NSMutableArray *)employment {
@@ -2912,362 +3519,20 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   resultUserProfile.interestTagsArray = nil;
   return self;
 }
-@end
-
-@interface BImageData ()
-@property BImageContent imageContent;
-@property (strong) NSData* imageBytes;
-@property (strong) NSString* contentType;
-@property (strong) NSString* imageURL;
-@end
-
-@implementation BImageData
-
-- (BOOL) hasImageContent {
-  return !!hasImageContent_;
+- (BOOL) hasBackgroundSummary {
+  return resultUserProfile.hasBackgroundSummary;
 }
-- (void) setHasImageContent:(BOOL) _value_ {
-  hasImageContent_ = !!_value_;
+- (NSString*) backgroundSummary {
+  return resultUserProfile.backgroundSummary;
 }
-@synthesize imageContent;
-- (BOOL) hasImageBytes {
-  return !!hasImageBytes_;
-}
-- (void) setHasImageBytes:(BOOL) _value_ {
-  hasImageBytes_ = !!_value_;
-}
-@synthesize imageBytes;
-- (BOOL) hasContentType {
-  return !!hasContentType_;
-}
-- (void) setHasContentType:(BOOL) _value_ {
-  hasContentType_ = !!_value_;
-}
-@synthesize contentType;
-- (BOOL) hasImageURL {
-  return !!hasImageURL_;
-}
-- (void) setHasImageURL:(BOOL) _value_ {
-  hasImageURL_ = !!_value_;
-}
-@synthesize imageURL;
-- (instancetype) init {
-  if ((self = [super init])) {
-    self.imageContent = BImageContentICUnknown;
-    self.imageBytes = [NSData data];
-    self.contentType = @"";
-    self.imageURL = @"";
-  }
+- (BUserProfileBuilder*) setBackgroundSummary:(NSString*) value {
+  resultUserProfile.hasBackgroundSummary = YES;
+  resultUserProfile.backgroundSummary = value;
   return self;
 }
-static BImageData* defaultBImageDataInstance = nil;
-+ (void) initialize {
-  if (self == [BImageData class]) {
-    defaultBImageDataInstance = [[BImageData alloc] init];
-  }
-}
-+ (instancetype) defaultInstance {
-  return defaultBImageDataInstance;
-}
-- (instancetype) defaultInstance {
-  return defaultBImageDataInstance;
-}
-- (BOOL) isInitialized {
-  return YES;
-}
-- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
-  if (self.hasImageContent) {
-    [output writeEnum:1 value:self.imageContent];
-  }
-  if (self.hasImageBytes) {
-    [output writeData:2 value:self.imageBytes];
-  }
-  if (self.hasContentType) {
-    [output writeString:3 value:self.contentType];
-  }
-  if (self.hasImageURL) {
-    [output writeString:4 value:self.imageURL];
-  }
-  [self.unknownFields writeToCodedOutputStream:output];
-}
-- (SInt32) serializedSize {
-  __block SInt32 size_ = memoizedSerializedSize;
-  if (size_ != -1) {
-    return size_;
-  }
-
-  size_ = 0;
-  if (self.hasImageContent) {
-    size_ += computeEnumSize(1, self.imageContent);
-  }
-  if (self.hasImageBytes) {
-    size_ += computeDataSize(2, self.imageBytes);
-  }
-  if (self.hasContentType) {
-    size_ += computeStringSize(3, self.contentType);
-  }
-  if (self.hasImageURL) {
-    size_ += computeStringSize(4, self.imageURL);
-  }
-  size_ += self.unknownFields.serializedSize;
-  memoizedSerializedSize = size_;
-  return size_;
-}
-+ (BImageData*) parseFromData:(NSData*) data {
-  return (BImageData*)[[[BImageData builder] mergeFromData:data] build];
-}
-+ (BImageData*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
-  return (BImageData*)[[[BImageData builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
-}
-+ (BImageData*) parseFromInputStream:(NSInputStream*) input {
-  return (BImageData*)[[[BImageData builder] mergeFromInputStream:input] build];
-}
-+ (BImageData*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
-  return (BImageData*)[[[BImageData builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
-}
-+ (BImageData*) parseFromCodedInputStream:(PBCodedInputStream*) input {
-  return (BImageData*)[[[BImageData builder] mergeFromCodedInputStream:input] build];
-}
-+ (BImageData*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
-  return (BImageData*)[[[BImageData builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
-}
-+ (BImageDataBuilder*) builder {
-  return [[BImageDataBuilder alloc] init];
-}
-+ (BImageDataBuilder*) builderWithPrototype:(BImageData*) prototype {
-  return [[BImageData builder] mergeFrom:prototype];
-}
-- (BImageDataBuilder*) builder {
-  return [BImageData builder];
-}
-- (BImageDataBuilder*) toBuilder {
-  return [BImageData builderWithPrototype:self];
-}
-- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
-  if (self.hasImageContent) {
-    [output appendFormat:@"%@%@: %@\n", indent, @"imageContent", NSStringFromBImageContent(self.imageContent)];
-  }
-  if (self.hasImageBytes) {
-    [output appendFormat:@"%@%@: %@\n", indent, @"imageBytes", self.imageBytes];
-  }
-  if (self.hasContentType) {
-    [output appendFormat:@"%@%@: %@\n", indent, @"contentType", self.contentType];
-  }
-  if (self.hasImageURL) {
-    [output appendFormat:@"%@%@: %@\n", indent, @"imageURL", self.imageURL];
-  }
-  [self.unknownFields writeDescriptionTo:output withIndent:indent];
-}
-- (void) storeInDictionary:(NSMutableDictionary *)dictionary {
-  if (self.hasImageContent) {
-    [dictionary setObject: @(self.imageContent) forKey: @"imageContent"];
-  }
-  if (self.hasImageBytes) {
-    [dictionary setObject: self.imageBytes forKey: @"imageBytes"];
-  }
-  if (self.hasContentType) {
-    [dictionary setObject: self.contentType forKey: @"contentType"];
-  }
-  if (self.hasImageURL) {
-    [dictionary setObject: self.imageURL forKey: @"imageURL"];
-  }
-  [self.unknownFields storeInDictionary:dictionary];
-}
-- (BOOL) isEqual:(id)other {
-  if (other == self) {
-    return YES;
-  }
-  if (![other isKindOfClass:[BImageData class]]) {
-    return NO;
-  }
-  BImageData *otherMessage = other;
-  return
-      self.hasImageContent == otherMessage.hasImageContent &&
-      (!self.hasImageContent || self.imageContent == otherMessage.imageContent) &&
-      self.hasImageBytes == otherMessage.hasImageBytes &&
-      (!self.hasImageBytes || [self.imageBytes isEqual:otherMessage.imageBytes]) &&
-      self.hasContentType == otherMessage.hasContentType &&
-      (!self.hasContentType || [self.contentType isEqual:otherMessage.contentType]) &&
-      self.hasImageURL == otherMessage.hasImageURL &&
-      (!self.hasImageURL || [self.imageURL isEqual:otherMessage.imageURL]) &&
-      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
-}
-- (NSUInteger) hash {
-  __block NSUInteger hashCode = 7;
-  if (self.hasImageContent) {
-    hashCode = hashCode * 31 + self.imageContent;
-  }
-  if (self.hasImageBytes) {
-    hashCode = hashCode * 31 + [self.imageBytes hash];
-  }
-  if (self.hasContentType) {
-    hashCode = hashCode * 31 + [self.contentType hash];
-  }
-  if (self.hasImageURL) {
-    hashCode = hashCode * 31 + [self.imageURL hash];
-  }
-  hashCode = hashCode * 31 + [self.unknownFields hash];
-  return hashCode;
-}
-@end
-
-@interface BImageDataBuilder()
-@property (strong) BImageData* resultImageData;
-@end
-
-@implementation BImageDataBuilder
-@synthesize resultImageData;
-- (instancetype) init {
-  if ((self = [super init])) {
-    self.resultImageData = [[BImageData alloc] init];
-  }
-  return self;
-}
-- (PBGeneratedMessage*) internalGetResult {
-  return resultImageData;
-}
-- (BImageDataBuilder*) clear {
-  self.resultImageData = [[BImageData alloc] init];
-  return self;
-}
-- (BImageDataBuilder*) clone {
-  return [BImageData builderWithPrototype:resultImageData];
-}
-- (BImageData*) defaultInstance {
-  return [BImageData defaultInstance];
-}
-- (BImageData*) build {
-  [self checkInitialized];
-  return [self buildPartial];
-}
-- (BImageData*) buildPartial {
-  BImageData* returnMe = resultImageData;
-  self.resultImageData = nil;
-  return returnMe;
-}
-- (BImageDataBuilder*) mergeFrom:(BImageData*) other {
-  if (other == [BImageData defaultInstance]) {
-    return self;
-  }
-  if (other.hasImageContent) {
-    [self setImageContent:other.imageContent];
-  }
-  if (other.hasImageBytes) {
-    [self setImageBytes:other.imageBytes];
-  }
-  if (other.hasContentType) {
-    [self setContentType:other.contentType];
-  }
-  if (other.hasImageURL) {
-    [self setImageURL:other.imageURL];
-  }
-  [self mergeUnknownFields:other.unknownFields];
-  return self;
-}
-- (BImageDataBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
-  return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
-}
-- (BImageDataBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
-  PBUnknownFieldSetBuilder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
-  while (YES) {
-    SInt32 tag = [input readTag];
-    switch (tag) {
-      case 0:
-        [self setUnknownFields:[unknownFields build]];
-        return self;
-      default: {
-        if (![self parseUnknownField:input unknownFields:unknownFields extensionRegistry:extensionRegistry tag:tag]) {
-          [self setUnknownFields:[unknownFields build]];
-          return self;
-        }
-        break;
-      }
-      case 8: {
-        BImageContent value = (BImageContent)[input readEnum];
-        if (BImageContentIsValidValue(value)) {
-          [self setImageContent:value];
-        } else {
-          [unknownFields mergeVarintField:1 value:value];
-        }
-        break;
-      }
-      case 18: {
-        [self setImageBytes:[input readData]];
-        break;
-      }
-      case 26: {
-        [self setContentType:[input readString]];
-        break;
-      }
-      case 34: {
-        [self setImageURL:[input readString]];
-        break;
-      }
-    }
-  }
-}
-- (BOOL) hasImageContent {
-  return resultImageData.hasImageContent;
-}
-- (BImageContent) imageContent {
-  return resultImageData.imageContent;
-}
-- (BImageDataBuilder*) setImageContent:(BImageContent) value {
-  resultImageData.hasImageContent = YES;
-  resultImageData.imageContent = value;
-  return self;
-}
-- (BImageDataBuilder*) clearImageContent {
-  resultImageData.hasImageContent = NO;
-  resultImageData.imageContent = BImageContentICUnknown;
-  return self;
-}
-- (BOOL) hasImageBytes {
-  return resultImageData.hasImageBytes;
-}
-- (NSData*) imageBytes {
-  return resultImageData.imageBytes;
-}
-- (BImageDataBuilder*) setImageBytes:(NSData*) value {
-  resultImageData.hasImageBytes = YES;
-  resultImageData.imageBytes = value;
-  return self;
-}
-- (BImageDataBuilder*) clearImageBytes {
-  resultImageData.hasImageBytes = NO;
-  resultImageData.imageBytes = [NSData data];
-  return self;
-}
-- (BOOL) hasContentType {
-  return resultImageData.hasContentType;
-}
-- (NSString*) contentType {
-  return resultImageData.contentType;
-}
-- (BImageDataBuilder*) setContentType:(NSString*) value {
-  resultImageData.hasContentType = YES;
-  resultImageData.contentType = value;
-  return self;
-}
-- (BImageDataBuilder*) clearContentType {
-  resultImageData.hasContentType = NO;
-  resultImageData.contentType = @"";
-  return self;
-}
-- (BOOL) hasImageURL {
-  return resultImageData.hasImageURL;
-}
-- (NSString*) imageURL {
-  return resultImageData.imageURL;
-}
-- (BImageDataBuilder*) setImageURL:(NSString*) value {
-  resultImageData.hasImageURL = YES;
-  resultImageData.imageURL = value;
-  return self;
-}
-- (BImageDataBuilder*) clearImageURL {
-  resultImageData.hasImageURL = NO;
-  resultImageData.imageURL = @"";
+- (BUserProfileBuilder*) clearBackgroundSummary {
+  resultUserProfile.hasBackgroundSummary = NO;
+  resultUserProfile.backgroundSummary = @"";
   return self;
 }
 @end
@@ -3304,6 +3569,14 @@ static BImageUpload* defaultBImageUploadInstance = nil;
   return [imageDataArray objectAtIndex:index];
 }
 - (BOOL) isInitialized {
+  __block BOOL isInitimageData = YES;
+   [self.imageData enumerateObjectsUsingBlock:^(BImageData *element, NSUInteger idx, BOOL *stop) {
+    if (!element.isInitialized) {
+      isInitimageData = NO;
+      *stop = YES;
+    }
+  }];
+  if (!isInitimageData) return isInitimageData;
   return YES;
 }
 - (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {

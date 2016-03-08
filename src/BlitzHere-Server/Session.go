@@ -329,13 +329,13 @@ func UpdateSession(ipAddress string,
 
     //  Check for a new user --
 
-    var invite *BlitzMessage.AcceptConnectionRequest = nil
+    var invite *BlitzMessage.AcceptInviteRequest = nil
     if request.Profile.UserStatus == nil || *request.Profile.UserStatus < BlitzMessage.UserStatus_USActive {
         //  Check to see if we have an invite saved --
         Log.Debugf("Checking new user for invite...")
         invite = InviteRequestForDevice(request.DeviceInfo)
         if invite != nil {
-            profile := ProfileForUserID(*invite.ConnectionID)
+            profile := ProfileForUserID(*invite.FriendID)
             if profile == nil {
                 invite = nil
             } else {
@@ -457,7 +457,7 @@ func UpdateSession(ipAddress string,
         UserID:             &userID,
         SessionToken:       &session.SessionToken,
         UserProfile:        profile,
-        ConnectionRequest:  invite,
+        InviteRequest:      invite,
         ResetAllAppData:    BoolPtrFromBool(false),
         AppOptions:         session.AppOptions,
     }

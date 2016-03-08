@@ -3,31 +3,29 @@
 #import <ProtocolBuffers/ProtocolBuffers.h>
 
 #import "Types.pb.h"
+#import "Feed.pb.h"
 #import "Device.pb.h"
-#import "Connections.pb.h"
-#import "Notifications.pb.h"
+#import "Search.pb.h"
+#import "Friends.pb.h"
+#import "UserEvents.pb.h"
+#import "UserMessages.pb.h"
 #import "UserProfiles.pb.h"
-#import "UserTracking.pb.h"
 // @@protoc_insertion_point(imports)
 
-@class BAcceptConnectionRequest;
-@class BAcceptConnectionRequestBuilder;
-@class BAcceptConnectionResponse;
-@class BAcceptConnectionResponseBuilder;
+@class BAcceptInviteRequest;
+@class BAcceptInviteRequestBuilder;
+@class BAcceptInviteResponse;
+@class BAcceptInviteResponseBuilder;
 @class BAppOptions;
 @class BAppOptionsBuilder;
+@class BAutocompleteRequest;
+@class BAutocompleteRequestBuilder;
+@class BAutocompleteResponse;
+@class BAutocompleteResponseBuilder;
 @class BBlitzHereAppOptions;
 @class BBlitzHereAppOptionsBuilder;
-@class BClientRequest;
-@class BClientRequestBuilder;
 @class BConfirmationRequest;
 @class BConfirmationRequestBuilder;
-@class BConnection;
-@class BConnectionBuilder;
-@class BConnectionRequest;
-@class BConnectionRequestBuilder;
-@class BConnectionUpdate;
-@class BConnectionUpdateBuilder;
 @class BContactInfo;
 @class BContactInfoBuilder;
 @class BCoordinate;
@@ -44,6 +42,30 @@
 @class BEducationBuilder;
 @class BEmployment;
 @class BEmploymentBuilder;
+@class BFeedPost;
+@class BFeedPostBuilder;
+@class BFeedPostFetchRequest;
+@class BFeedPostFetchRequestBuilder;
+@class BFeedPostFetchResponse;
+@class BFeedPostFetchResponseBuilder;
+@class BFeedPostUpdateRequest;
+@class BFeedPostUpdateRequestBuilder;
+@class BFeedPostUpdateResponse;
+@class BFeedPostUpdateResponseBuilder;
+@class BFeedPostVote;
+@class BFeedPostVoteBuilder;
+@class BFeedReply;
+@class BFeedReplyBuilder;
+@class BFeedReplyTag;
+@class BFeedReplyTagBuilder;
+@class BFollowRequest;
+@class BFollowRequestBuilder;
+@class BFriend;
+@class BFriendBuilder;
+@class BFriendRequest;
+@class BFriendRequestBuilder;
+@class BFriendUpdate;
+@class BFriendUpdateBuilder;
 @class BGlobals;
 @class BGlobalsBuilder;
 @class BImageData;
@@ -54,16 +76,14 @@
 @class BKeyValueBuilder;
 @class BLocation;
 @class BLocationBuilder;
-@class BNotification;
-@class BNotificationBuilder;
-@class BNotificationUpdate;
-@class BNotificationUpdateBuilder;
 @class BProfilesFromContactInfo;
 @class BProfilesFromContactInfoBuilder;
 @class BRequestType;
 @class BRequestTypeBuilder;
 @class BResponseType;
 @class BResponseTypeBuilder;
+@class BServerRequest;
+@class BServerRequestBuilder;
 @class BServerResponse;
 @class BServerResponseBuilder;
 @class BSessionRequest;
@@ -78,18 +98,22 @@
 @class BTimespanBuilder;
 @class BTimestamp;
 @class BTimestampBuilder;
+@class BUserEvent;
+@class BUserEventBatch;
+@class BUserEventBatchBuilder;
+@class BUserEventBatchResponse;
+@class BUserEventBatchResponseBuilder;
+@class BUserEventBuilder;
+@class BUserMessage;
+@class BUserMessageBuilder;
+@class BUserMessageUpdate;
+@class BUserMessageUpdateBuilder;
 @class BUserProfile;
 @class BUserProfileBuilder;
 @class BUserProfileQuery;
 @class BUserProfileQueryBuilder;
 @class BUserProfileUpdate;
 @class BUserProfileUpdateBuilder;
-@class BUserTrackingBatch;
-@class BUserTrackingBatchBuilder;
-@class BUserTrackingEvent;
-@class BUserTrackingEventBuilder;
-@class BUserTrackingResponse;
-@class BUserTrackingResponseBuilder;
 @class BVoid;
 @class BVoidBuilder;
 @class ObjectiveCFileOptions;
@@ -393,10 +417,10 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 #define SessionResponse_userID @"userID"
 #define SessionResponse_sessionToken @"sessionToken"
 #define SessionResponse_serverURL @"serverURL"
-#define SessionResponse_userNotifications @"userNotifications"
+#define SessionResponse_userMessages @"userMessages"
 #define SessionResponse_userProfile @"userProfile"
 #define SessionResponse_resetAllAppData @"resetAllAppData"
-#define SessionResponse_connectionRequest @"connectionRequest"
+#define SessionResponse_inviteRequest @"inviteRequest"
 #define SessionResponse_appOptions @"appOptions"
 @interface BSessionResponse : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
@@ -405,33 +429,33 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
   BOOL hasSessionToken_:1;
   BOOL hasServerURL_:1;
   BOOL hasUserProfile_:1;
-  BOOL hasConnectionRequest_:1;
+  BOOL hasInviteRequest_:1;
   BOOL hasAppOptions_:1;
   BOOL resetAllAppData_:1;
   NSString* userID;
   NSString* sessionToken;
   NSString* serverURL;
   BUserProfile* userProfile;
-  BAcceptConnectionRequest* connectionRequest;
+  BAcceptInviteRequest* inviteRequest;
   BAppOptions* appOptions;
-  NSMutableArray * userNotificationsArray;
+  NSMutableArray * userMessagesArray;
 }
 - (BOOL) hasUserID;
 - (BOOL) hasSessionToken;
 - (BOOL) hasServerURL;
 - (BOOL) hasUserProfile;
 - (BOOL) hasResetAllAppData;
-- (BOOL) hasConnectionRequest;
+- (BOOL) hasInviteRequest;
 - (BOOL) hasAppOptions;
 @property (readonly, strong) NSString* userID;
 @property (readonly, strong) NSString* sessionToken;
 @property (readonly, strong) NSString* serverURL;
-@property (readonly, strong) NSArray * userNotifications;
+@property (readonly, strong) NSArray * userMessages;
 @property (readonly, strong) BUserProfile* userProfile;
 - (BOOL) resetAllAppData;
-@property (readonly, strong) BAcceptConnectionRequest* connectionRequest;
+@property (readonly, strong) BAcceptInviteRequest* inviteRequest;
 @property (readonly, strong) BAppOptions* appOptions;
-- (BNotification*)userNotificationsAtIndex:(NSUInteger)index;
+- (BUserMessage*)userMessagesAtIndex:(NSUInteger)index;
 
 + (instancetype) defaultInstance;
 - (instancetype) defaultInstance;
@@ -483,11 +507,11 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BSessionResponseBuilder*) setServerURL:(NSString*) value;
 - (BSessionResponseBuilder*) clearServerURL;
 
-- (NSMutableArray *)userNotifications;
-- (BNotification*)userNotificationsAtIndex:(NSUInteger)index;
-- (BSessionResponseBuilder *)addUserNotifications:(BNotification*)value;
-- (BSessionResponseBuilder *)setUserNotificationsArray:(NSArray *)array;
-- (BSessionResponseBuilder *)clearUserNotifications;
+- (NSMutableArray *)userMessages;
+- (BUserMessage*)userMessagesAtIndex:(NSUInteger)index;
+- (BSessionResponseBuilder *)addUserMessages:(BUserMessage*)value;
+- (BSessionResponseBuilder *)setUserMessagesArray:(NSArray *)array;
+- (BSessionResponseBuilder *)clearUserMessages;
 
 - (BOOL) hasUserProfile;
 - (BUserProfile*) userProfile;
@@ -501,12 +525,12 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BSessionResponseBuilder*) setResetAllAppData:(BOOL) value;
 - (BSessionResponseBuilder*) clearResetAllAppData;
 
-- (BOOL) hasConnectionRequest;
-- (BAcceptConnectionRequest*) connectionRequest;
-- (BSessionResponseBuilder*) setConnectionRequest:(BAcceptConnectionRequest*) value;
-- (BSessionResponseBuilder*) setConnectionRequestBuilder:(BAcceptConnectionRequestBuilder*) builderForValue;
-- (BSessionResponseBuilder*) mergeConnectionRequest:(BAcceptConnectionRequest*) value;
-- (BSessionResponseBuilder*) clearConnectionRequest;
+- (BOOL) hasInviteRequest;
+- (BAcceptInviteRequest*) inviteRequest;
+- (BSessionResponseBuilder*) setInviteRequest:(BAcceptInviteRequest*) value;
+- (BSessionResponseBuilder*) setInviteRequestBuilder:(BAcceptInviteRequestBuilder*) builderForValue;
+- (BSessionResponseBuilder*) mergeInviteRequest:(BAcceptInviteRequest*) value;
+- (BSessionResponseBuilder*) clearInviteRequest;
 
 - (BOOL) hasAppOptions;
 - (BAppOptions*) appOptions;
@@ -517,58 +541,68 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 @end
 
 #define RequestType_sessionRequest @"sessionRequest"
-#define RequestType_userTrackingBatch @"userTrackingBatch"
+#define RequestType_userEventBatch @"userEventBatch"
 #define RequestType_userProfileUpdate @"userProfileUpdate"
 #define RequestType_userProfileQuery @"userProfileQuery"
 #define RequestType_confirmationRequest @"confirmationRequest"
-#define RequestType_notificationSendRequest @"notificationSendRequest"
-#define RequestType_notificationFetchRequest @"notificationFetchRequest"
+#define RequestType_messageSendRequest @"messageSendRequest"
+#define RequestType_messageFetchRequest @"messageFetchRequest"
 #define RequestType_debugMessage @"debugMessage"
 #define RequestType_imageUpload @"imageUpload"
 #define RequestType_acceptInviteRequest @"acceptInviteRequest"
+#define RequestType_fetchFeedRequest @"fetchFeedRequest"
+#define RequestType_autocompleteRequest @"autocompleteRequest"
 @interface BRequestType : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
   BOOL hasSessionRequest_:1;
-  BOOL hasUserTrackingBatch_:1;
+  BOOL hasUserEventBatch_:1;
   BOOL hasUserProfileUpdate_:1;
   BOOL hasUserProfileQuery_:1;
   BOOL hasConfirmationRequest_:1;
-  BOOL hasNotificationSendRequest_:1;
-  BOOL hasNotificationFetchRequest_:1;
+  BOOL hasMessageSendRequest_:1;
+  BOOL hasMessageFetchRequest_:1;
   BOOL hasDebugMessage_:1;
   BOOL hasImageUpload_:1;
   BOOL hasAcceptInviteRequest_:1;
+  BOOL hasFetchFeedRequest_:1;
+  BOOL hasAutocompleteRequest_:1;
   BSessionRequest* sessionRequest;
-  BUserTrackingBatch* userTrackingBatch;
+  BUserEventBatch* userEventBatch;
   BUserProfileUpdate* userProfileUpdate;
   BUserProfileQuery* userProfileQuery;
   BConfirmationRequest* confirmationRequest;
-  BNotificationUpdate* notificationSendRequest;
-  BNotificationUpdate* notificationFetchRequest;
+  BUserMessageUpdate* messageSendRequest;
+  BUserMessageUpdate* messageFetchRequest;
   BDebugMessage* debugMessage;
   BImageUpload* imageUpload;
-  BAcceptConnectionRequest* acceptInviteRequest;
+  BAcceptInviteRequest* acceptInviteRequest;
+  BFeedPostFetchRequest* fetchFeedRequest;
+  BAutocompleteRequest* autocompleteRequest;
 }
 - (BOOL) hasSessionRequest;
-- (BOOL) hasUserTrackingBatch;
+- (BOOL) hasUserEventBatch;
 - (BOOL) hasUserProfileUpdate;
 - (BOOL) hasUserProfileQuery;
 - (BOOL) hasConfirmationRequest;
-- (BOOL) hasNotificationSendRequest;
-- (BOOL) hasNotificationFetchRequest;
+- (BOOL) hasMessageSendRequest;
+- (BOOL) hasMessageFetchRequest;
 - (BOOL) hasDebugMessage;
 - (BOOL) hasImageUpload;
 - (BOOL) hasAcceptInviteRequest;
+- (BOOL) hasFetchFeedRequest;
+- (BOOL) hasAutocompleteRequest;
 @property (readonly, strong) BSessionRequest* sessionRequest;
-@property (readonly, strong) BUserTrackingBatch* userTrackingBatch;
+@property (readonly, strong) BUserEventBatch* userEventBatch;
 @property (readonly, strong) BUserProfileUpdate* userProfileUpdate;
 @property (readonly, strong) BUserProfileQuery* userProfileQuery;
 @property (readonly, strong) BConfirmationRequest* confirmationRequest;
-@property (readonly, strong) BNotificationUpdate* notificationSendRequest;
-@property (readonly, strong) BNotificationUpdate* notificationFetchRequest;
+@property (readonly, strong) BUserMessageUpdate* messageSendRequest;
+@property (readonly, strong) BUserMessageUpdate* messageFetchRequest;
 @property (readonly, strong) BDebugMessage* debugMessage;
 @property (readonly, strong) BImageUpload* imageUpload;
-@property (readonly, strong) BAcceptConnectionRequest* acceptInviteRequest;
+@property (readonly, strong) BAcceptInviteRequest* acceptInviteRequest;
+@property (readonly, strong) BFeedPostFetchRequest* fetchFeedRequest;
+@property (readonly, strong) BAutocompleteRequest* autocompleteRequest;
 
 + (instancetype) defaultInstance;
 - (instancetype) defaultInstance;
@@ -612,12 +646,12 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BRequestTypeBuilder*) mergeSessionRequest:(BSessionRequest*) value;
 - (BRequestTypeBuilder*) clearSessionRequest;
 
-- (BOOL) hasUserTrackingBatch;
-- (BUserTrackingBatch*) userTrackingBatch;
-- (BRequestTypeBuilder*) setUserTrackingBatch:(BUserTrackingBatch*) value;
-- (BRequestTypeBuilder*) setUserTrackingBatchBuilder:(BUserTrackingBatchBuilder*) builderForValue;
-- (BRequestTypeBuilder*) mergeUserTrackingBatch:(BUserTrackingBatch*) value;
-- (BRequestTypeBuilder*) clearUserTrackingBatch;
+- (BOOL) hasUserEventBatch;
+- (BUserEventBatch*) userEventBatch;
+- (BRequestTypeBuilder*) setUserEventBatch:(BUserEventBatch*) value;
+- (BRequestTypeBuilder*) setUserEventBatchBuilder:(BUserEventBatchBuilder*) builderForValue;
+- (BRequestTypeBuilder*) mergeUserEventBatch:(BUserEventBatch*) value;
+- (BRequestTypeBuilder*) clearUserEventBatch;
 
 - (BOOL) hasUserProfileUpdate;
 - (BUserProfileUpdate*) userProfileUpdate;
@@ -640,19 +674,19 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BRequestTypeBuilder*) mergeConfirmationRequest:(BConfirmationRequest*) value;
 - (BRequestTypeBuilder*) clearConfirmationRequest;
 
-- (BOOL) hasNotificationSendRequest;
-- (BNotificationUpdate*) notificationSendRequest;
-- (BRequestTypeBuilder*) setNotificationSendRequest:(BNotificationUpdate*) value;
-- (BRequestTypeBuilder*) setNotificationSendRequestBuilder:(BNotificationUpdateBuilder*) builderForValue;
-- (BRequestTypeBuilder*) mergeNotificationSendRequest:(BNotificationUpdate*) value;
-- (BRequestTypeBuilder*) clearNotificationSendRequest;
+- (BOOL) hasMessageSendRequest;
+- (BUserMessageUpdate*) messageSendRequest;
+- (BRequestTypeBuilder*) setMessageSendRequest:(BUserMessageUpdate*) value;
+- (BRequestTypeBuilder*) setMessageSendRequestBuilder:(BUserMessageUpdateBuilder*) builderForValue;
+- (BRequestTypeBuilder*) mergeMessageSendRequest:(BUserMessageUpdate*) value;
+- (BRequestTypeBuilder*) clearMessageSendRequest;
 
-- (BOOL) hasNotificationFetchRequest;
-- (BNotificationUpdate*) notificationFetchRequest;
-- (BRequestTypeBuilder*) setNotificationFetchRequest:(BNotificationUpdate*) value;
-- (BRequestTypeBuilder*) setNotificationFetchRequestBuilder:(BNotificationUpdateBuilder*) builderForValue;
-- (BRequestTypeBuilder*) mergeNotificationFetchRequest:(BNotificationUpdate*) value;
-- (BRequestTypeBuilder*) clearNotificationFetchRequest;
+- (BOOL) hasMessageFetchRequest;
+- (BUserMessageUpdate*) messageFetchRequest;
+- (BRequestTypeBuilder*) setMessageFetchRequest:(BUserMessageUpdate*) value;
+- (BRequestTypeBuilder*) setMessageFetchRequestBuilder:(BUserMessageUpdateBuilder*) builderForValue;
+- (BRequestTypeBuilder*) mergeMessageFetchRequest:(BUserMessageUpdate*) value;
+- (BRequestTypeBuilder*) clearMessageFetchRequest;
 
 - (BOOL) hasDebugMessage;
 - (BDebugMessage*) debugMessage;
@@ -669,123 +703,147 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BRequestTypeBuilder*) clearImageUpload;
 
 - (BOOL) hasAcceptInviteRequest;
-- (BAcceptConnectionRequest*) acceptInviteRequest;
-- (BRequestTypeBuilder*) setAcceptInviteRequest:(BAcceptConnectionRequest*) value;
-- (BRequestTypeBuilder*) setAcceptInviteRequestBuilder:(BAcceptConnectionRequestBuilder*) builderForValue;
-- (BRequestTypeBuilder*) mergeAcceptInviteRequest:(BAcceptConnectionRequest*) value;
+- (BAcceptInviteRequest*) acceptInviteRequest;
+- (BRequestTypeBuilder*) setAcceptInviteRequest:(BAcceptInviteRequest*) value;
+- (BRequestTypeBuilder*) setAcceptInviteRequestBuilder:(BAcceptInviteRequestBuilder*) builderForValue;
+- (BRequestTypeBuilder*) mergeAcceptInviteRequest:(BAcceptInviteRequest*) value;
 - (BRequestTypeBuilder*) clearAcceptInviteRequest;
+
+- (BOOL) hasFetchFeedRequest;
+- (BFeedPostFetchRequest*) fetchFeedRequest;
+- (BRequestTypeBuilder*) setFetchFeedRequest:(BFeedPostFetchRequest*) value;
+- (BRequestTypeBuilder*) setFetchFeedRequestBuilder:(BFeedPostFetchRequestBuilder*) builderForValue;
+- (BRequestTypeBuilder*) mergeFetchFeedRequest:(BFeedPostFetchRequest*) value;
+- (BRequestTypeBuilder*) clearFetchFeedRequest;
+
+- (BOOL) hasAutocompleteRequest;
+- (BAutocompleteRequest*) autocompleteRequest;
+- (BRequestTypeBuilder*) setAutocompleteRequest:(BAutocompleteRequest*) value;
+- (BRequestTypeBuilder*) setAutocompleteRequestBuilder:(BAutocompleteRequestBuilder*) builderForValue;
+- (BRequestTypeBuilder*) mergeAutocompleteRequest:(BAutocompleteRequest*) value;
+- (BRequestTypeBuilder*) clearAutocompleteRequest;
 @end
 
-#define ClientRequest_sessionToken @"sessionToken"
-#define ClientRequest_request @"request"
-@interface BClientRequest : PBGeneratedMessage<GeneratedMessageProtocol> {
+#define ServerRequest_sessionToken @"sessionToken"
+#define ServerRequest_requestType @"requestType"
+@interface BServerRequest : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
   BOOL hasSessionToken_:1;
-  BOOL hasRequest_:1;
+  BOOL hasRequestType_:1;
   NSString* sessionToken;
-  BRequestType* request;
+  BRequestType* requestType;
 }
 - (BOOL) hasSessionToken;
-- (BOOL) hasRequest;
+- (BOOL) hasRequestType;
 @property (readonly, strong) NSString* sessionToken;
-@property (readonly, strong) BRequestType* request;
+@property (readonly, strong) BRequestType* requestType;
 
 + (instancetype) defaultInstance;
 - (instancetype) defaultInstance;
 
 - (BOOL) isInitialized;
 - (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
-- (BClientRequestBuilder*) builder;
-+ (BClientRequestBuilder*) builder;
-+ (BClientRequestBuilder*) builderWithPrototype:(BClientRequest*) prototype;
-- (BClientRequestBuilder*) toBuilder;
+- (BServerRequestBuilder*) builder;
++ (BServerRequestBuilder*) builder;
++ (BServerRequestBuilder*) builderWithPrototype:(BServerRequest*) prototype;
+- (BServerRequestBuilder*) toBuilder;
 
-+ (BClientRequest*) parseFromData:(NSData*) data;
-+ (BClientRequest*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
-+ (BClientRequest*) parseFromInputStream:(NSInputStream*) input;
-+ (BClientRequest*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
-+ (BClientRequest*) parseFromCodedInputStream:(PBCodedInputStream*) input;
-+ (BClientRequest*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (BServerRequest*) parseFromData:(NSData*) data;
++ (BServerRequest*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (BServerRequest*) parseFromInputStream:(NSInputStream*) input;
++ (BServerRequest*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (BServerRequest*) parseFromCodedInputStream:(PBCodedInputStream*) input;
++ (BServerRequest*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
 @end
 
-@interface BClientRequestBuilder : PBGeneratedMessageBuilder {
+@interface BServerRequestBuilder : PBGeneratedMessageBuilder {
 @private
-  BClientRequest* resultClientRequest;
+  BServerRequest* resultServerRequest;
 }
 
-- (BClientRequest*) defaultInstance;
+- (BServerRequest*) defaultInstance;
 
-- (BClientRequestBuilder*) clear;
-- (BClientRequestBuilder*) clone;
+- (BServerRequestBuilder*) clear;
+- (BServerRequestBuilder*) clone;
 
-- (BClientRequest*) build;
-- (BClientRequest*) buildPartial;
+- (BServerRequest*) build;
+- (BServerRequest*) buildPartial;
 
-- (BClientRequestBuilder*) mergeFrom:(BClientRequest*) other;
-- (BClientRequestBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
-- (BClientRequestBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+- (BServerRequestBuilder*) mergeFrom:(BServerRequest*) other;
+- (BServerRequestBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
+- (BServerRequestBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
 
 - (BOOL) hasSessionToken;
 - (NSString*) sessionToken;
-- (BClientRequestBuilder*) setSessionToken:(NSString*) value;
-- (BClientRequestBuilder*) clearSessionToken;
+- (BServerRequestBuilder*) setSessionToken:(NSString*) value;
+- (BServerRequestBuilder*) clearSessionToken;
 
-- (BOOL) hasRequest;
-- (BRequestType*) request;
-- (BClientRequestBuilder*) setRequest:(BRequestType*) value;
-- (BClientRequestBuilder*) setRequestBuilder:(BRequestTypeBuilder*) builderForValue;
-- (BClientRequestBuilder*) mergeRequest:(BRequestType*) value;
-- (BClientRequestBuilder*) clearRequest;
+- (BOOL) hasRequestType;
+- (BRequestType*) requestType;
+- (BServerRequestBuilder*) setRequestType:(BRequestType*) value;
+- (BServerRequestBuilder*) setRequestTypeBuilder:(BRequestTypeBuilder*) builderForValue;
+- (BServerRequestBuilder*) mergeRequestType:(BRequestType*) value;
+- (BServerRequestBuilder*) clearRequestType;
 @end
 
 #define ResponseType_sessionResponse @"sessionResponse"
-#define ResponseType_userTrackingResponse @"userTrackingResponse"
+#define ResponseType_userEventResponse @"userEventResponse"
 #define ResponseType_profileUpdate @"profileUpdate"
 #define ResponseType_profileQuery @"profileQuery"
 #define ResponseType_confirmationRequest @"confirmationRequest"
-#define ResponseType_notificationUpdate @"notificationUpdate"
+#define ResponseType_messageUpdate @"messageUpdate"
 #define ResponseType_debugMessage @"debugMessage"
 #define ResponseType_imageUploadReply @"imageUploadReply"
-#define ResponseType_acceptConnectionResponse @"acceptConnectionResponse"
+#define ResponseType_acceptInviteResponse @"acceptInviteResponse"
+#define ResponseType_fetchFeedResponse @"fetchFeedResponse"
+#define ResponseType_autocompleteResponse @"autocompleteResponse"
 @interface BResponseType : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
   BOOL hasSessionResponse_:1;
-  BOOL hasUserTrackingResponse_:1;
+  BOOL hasUserEventResponse_:1;
   BOOL hasProfileUpdate_:1;
   BOOL hasProfileQuery_:1;
   BOOL hasConfirmationRequest_:1;
-  BOOL hasNotificationUpdate_:1;
+  BOOL hasMessageUpdate_:1;
   BOOL hasDebugMessage_:1;
   BOOL hasImageUploadReply_:1;
-  BOOL hasAcceptConnectionResponse_:1;
+  BOOL hasAcceptInviteResponse_:1;
+  BOOL hasFetchFeedResponse_:1;
+  BOOL hasAutocompleteResponse_:1;
   BSessionResponse* sessionResponse;
-  BUserTrackingResponse* userTrackingResponse;
+  BUserEventBatchResponse* userEventResponse;
   BUserProfileUpdate* profileUpdate;
   BUserProfileQuery* profileQuery;
   BConfirmationRequest* confirmationRequest;
-  BNotificationUpdate* notificationUpdate;
+  BUserMessageUpdate* messageUpdate;
   BDebugMessage* debugMessage;
   BImageUpload* imageUploadReply;
-  BAcceptConnectionResponse* acceptConnectionResponse;
+  BAcceptInviteResponse* acceptInviteResponse;
+  BFeedPostFetchResponse* fetchFeedResponse;
+  BAutocompleteResponse* autocompleteResponse;
 }
 - (BOOL) hasSessionResponse;
-- (BOOL) hasUserTrackingResponse;
+- (BOOL) hasUserEventResponse;
 - (BOOL) hasProfileUpdate;
 - (BOOL) hasProfileQuery;
 - (BOOL) hasConfirmationRequest;
-- (BOOL) hasNotificationUpdate;
+- (BOOL) hasMessageUpdate;
 - (BOOL) hasDebugMessage;
 - (BOOL) hasImageUploadReply;
-- (BOOL) hasAcceptConnectionResponse;
+- (BOOL) hasAcceptInviteResponse;
+- (BOOL) hasFetchFeedResponse;
+- (BOOL) hasAutocompleteResponse;
 @property (readonly, strong) BSessionResponse* sessionResponse;
-@property (readonly, strong) BUserTrackingResponse* userTrackingResponse;
+@property (readonly, strong) BUserEventBatchResponse* userEventResponse;
 @property (readonly, strong) BUserProfileUpdate* profileUpdate;
 @property (readonly, strong) BUserProfileQuery* profileQuery;
 @property (readonly, strong) BConfirmationRequest* confirmationRequest;
-@property (readonly, strong) BNotificationUpdate* notificationUpdate;
+@property (readonly, strong) BUserMessageUpdate* messageUpdate;
 @property (readonly, strong) BDebugMessage* debugMessage;
 @property (readonly, strong) BImageUpload* imageUploadReply;
-@property (readonly, strong) BAcceptConnectionResponse* acceptConnectionResponse;
+@property (readonly, strong) BAcceptInviteResponse* acceptInviteResponse;
+@property (readonly, strong) BFeedPostFetchResponse* fetchFeedResponse;
+@property (readonly, strong) BAutocompleteResponse* autocompleteResponse;
 
 + (instancetype) defaultInstance;
 - (instancetype) defaultInstance;
@@ -829,12 +887,12 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BResponseTypeBuilder*) mergeSessionResponse:(BSessionResponse*) value;
 - (BResponseTypeBuilder*) clearSessionResponse;
 
-- (BOOL) hasUserTrackingResponse;
-- (BUserTrackingResponse*) userTrackingResponse;
-- (BResponseTypeBuilder*) setUserTrackingResponse:(BUserTrackingResponse*) value;
-- (BResponseTypeBuilder*) setUserTrackingResponseBuilder:(BUserTrackingResponseBuilder*) builderForValue;
-- (BResponseTypeBuilder*) mergeUserTrackingResponse:(BUserTrackingResponse*) value;
-- (BResponseTypeBuilder*) clearUserTrackingResponse;
+- (BOOL) hasUserEventResponse;
+- (BUserEventBatchResponse*) userEventResponse;
+- (BResponseTypeBuilder*) setUserEventResponse:(BUserEventBatchResponse*) value;
+- (BResponseTypeBuilder*) setUserEventResponseBuilder:(BUserEventBatchResponseBuilder*) builderForValue;
+- (BResponseTypeBuilder*) mergeUserEventResponse:(BUserEventBatchResponse*) value;
+- (BResponseTypeBuilder*) clearUserEventResponse;
 
 - (BOOL) hasProfileUpdate;
 - (BUserProfileUpdate*) profileUpdate;
@@ -857,12 +915,12 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BResponseTypeBuilder*) mergeConfirmationRequest:(BConfirmationRequest*) value;
 - (BResponseTypeBuilder*) clearConfirmationRequest;
 
-- (BOOL) hasNotificationUpdate;
-- (BNotificationUpdate*) notificationUpdate;
-- (BResponseTypeBuilder*) setNotificationUpdate:(BNotificationUpdate*) value;
-- (BResponseTypeBuilder*) setNotificationUpdateBuilder:(BNotificationUpdateBuilder*) builderForValue;
-- (BResponseTypeBuilder*) mergeNotificationUpdate:(BNotificationUpdate*) value;
-- (BResponseTypeBuilder*) clearNotificationUpdate;
+- (BOOL) hasMessageUpdate;
+- (BUserMessageUpdate*) messageUpdate;
+- (BResponseTypeBuilder*) setMessageUpdate:(BUserMessageUpdate*) value;
+- (BResponseTypeBuilder*) setMessageUpdateBuilder:(BUserMessageUpdateBuilder*) builderForValue;
+- (BResponseTypeBuilder*) mergeMessageUpdate:(BUserMessageUpdate*) value;
+- (BResponseTypeBuilder*) clearMessageUpdate;
 
 - (BOOL) hasDebugMessage;
 - (BDebugMessage*) debugMessage;
@@ -878,32 +936,46 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BResponseTypeBuilder*) mergeImageUploadReply:(BImageUpload*) value;
 - (BResponseTypeBuilder*) clearImageUploadReply;
 
-- (BOOL) hasAcceptConnectionResponse;
-- (BAcceptConnectionResponse*) acceptConnectionResponse;
-- (BResponseTypeBuilder*) setAcceptConnectionResponse:(BAcceptConnectionResponse*) value;
-- (BResponseTypeBuilder*) setAcceptConnectionResponseBuilder:(BAcceptConnectionResponseBuilder*) builderForValue;
-- (BResponseTypeBuilder*) mergeAcceptConnectionResponse:(BAcceptConnectionResponse*) value;
-- (BResponseTypeBuilder*) clearAcceptConnectionResponse;
+- (BOOL) hasAcceptInviteResponse;
+- (BAcceptInviteResponse*) acceptInviteResponse;
+- (BResponseTypeBuilder*) setAcceptInviteResponse:(BAcceptInviteResponse*) value;
+- (BResponseTypeBuilder*) setAcceptInviteResponseBuilder:(BAcceptInviteResponseBuilder*) builderForValue;
+- (BResponseTypeBuilder*) mergeAcceptInviteResponse:(BAcceptInviteResponse*) value;
+- (BResponseTypeBuilder*) clearAcceptInviteResponse;
+
+- (BOOL) hasFetchFeedResponse;
+- (BFeedPostFetchResponse*) fetchFeedResponse;
+- (BResponseTypeBuilder*) setFetchFeedResponse:(BFeedPostFetchResponse*) value;
+- (BResponseTypeBuilder*) setFetchFeedResponseBuilder:(BFeedPostFetchResponseBuilder*) builderForValue;
+- (BResponseTypeBuilder*) mergeFetchFeedResponse:(BFeedPostFetchResponse*) value;
+- (BResponseTypeBuilder*) clearFetchFeedResponse;
+
+- (BOOL) hasAutocompleteResponse;
+- (BAutocompleteResponse*) autocompleteResponse;
+- (BResponseTypeBuilder*) setAutocompleteResponse:(BAutocompleteResponse*) value;
+- (BResponseTypeBuilder*) setAutocompleteResponseBuilder:(BAutocompleteResponseBuilder*) builderForValue;
+- (BResponseTypeBuilder*) mergeAutocompleteResponse:(BAutocompleteResponse*) value;
+- (BResponseTypeBuilder*) clearAutocompleteResponse;
 @end
 
 #define ServerResponse_responseCode @"responseCode"
 #define ServerResponse_responseMessage @"responseMessage"
-#define ServerResponse_response @"response"
+#define ServerResponse_responseType @"responseType"
 @interface BServerResponse : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
   BOOL hasResponseMessage_:1;
-  BOOL hasResponse_:1;
+  BOOL hasResponseType_:1;
   BOOL hasResponseCode_:1;
   NSString* responseMessage;
-  BResponseType* response;
+  BResponseType* responseType;
   BResponseCode responseCode;
 }
 - (BOOL) hasResponseCode;
 - (BOOL) hasResponseMessage;
-- (BOOL) hasResponse;
+- (BOOL) hasResponseType;
 @property (readonly) BResponseCode responseCode;
 @property (readonly, strong) NSString* responseMessage;
-@property (readonly, strong) BResponseType* response;
+@property (readonly, strong) BResponseType* responseType;
 
 + (instancetype) defaultInstance;
 - (instancetype) defaultInstance;
@@ -950,12 +1022,12 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BServerResponseBuilder*) setResponseMessage:(NSString*) value;
 - (BServerResponseBuilder*) clearResponseMessage;
 
-- (BOOL) hasResponse;
-- (BResponseType*) response;
-- (BServerResponseBuilder*) setResponse:(BResponseType*) value;
-- (BServerResponseBuilder*) setResponseBuilder:(BResponseTypeBuilder*) builderForValue;
-- (BServerResponseBuilder*) mergeResponse:(BResponseType*) value;
-- (BServerResponseBuilder*) clearResponse;
+- (BOOL) hasResponseType;
+- (BResponseType*) responseType;
+- (BServerResponseBuilder*) setResponseType:(BResponseType*) value;
+- (BServerResponseBuilder*) setResponseTypeBuilder:(BResponseTypeBuilder*) builderForValue;
+- (BServerResponseBuilder*) mergeResponseType:(BResponseType*) value;
+- (BServerResponseBuilder*) clearResponseType;
 @end
 
 

@@ -337,31 +337,36 @@ NSString *NSStringFromBImageContent(BImageContent value);
 @end
 
 #define Employment_jobTitle @"jobTitle"
-#define Employment_company @"company"
+#define Employment_companyName @"companyName"
 #define Employment_location @"location"
+#define Employment_industry @"industry"
 #define Employment_timespan @"timespan"
 #define Employment_summary @"summary"
 @interface BEmployment : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
   BOOL hasJobTitle_:1;
-  BOOL hasCompany_:1;
+  BOOL hasCompanyName_:1;
   BOOL hasLocation_:1;
+  BOOL hasIndustry_:1;
   BOOL hasSummary_:1;
   BOOL hasTimespan_:1;
   NSString* jobTitle;
-  NSString* company;
+  NSString* companyName;
   NSString* location;
+  NSString* industry;
   NSString* summary;
   BTimespan* timespan;
 }
 - (BOOL) hasJobTitle;
-- (BOOL) hasCompany;
+- (BOOL) hasCompanyName;
 - (BOOL) hasLocation;
+- (BOOL) hasIndustry;
 - (BOOL) hasTimespan;
 - (BOOL) hasSummary;
 @property (readonly, strong) NSString* jobTitle;
-@property (readonly, strong) NSString* company;
+@property (readonly, strong) NSString* companyName;
 @property (readonly, strong) NSString* location;
+@property (readonly, strong) NSString* industry;
 @property (readonly, strong) BTimespan* timespan;
 @property (readonly, strong) NSString* summary;
 
@@ -405,15 +410,20 @@ NSString *NSStringFromBImageContent(BImageContent value);
 - (BEmploymentBuilder*) setJobTitle:(NSString*) value;
 - (BEmploymentBuilder*) clearJobTitle;
 
-- (BOOL) hasCompany;
-- (NSString*) company;
-- (BEmploymentBuilder*) setCompany:(NSString*) value;
-- (BEmploymentBuilder*) clearCompany;
+- (BOOL) hasCompanyName;
+- (NSString*) companyName;
+- (BEmploymentBuilder*) setCompanyName:(NSString*) value;
+- (BEmploymentBuilder*) clearCompanyName;
 
 - (BOOL) hasLocation;
 - (NSString*) location;
 - (BEmploymentBuilder*) setLocation:(NSString*) value;
 - (BEmploymentBuilder*) clearLocation;
+
+- (BOOL) hasIndustry;
+- (NSString*) industry;
+- (BEmploymentBuilder*) setIndustry:(NSString*) value;
+- (BEmploymentBuilder*) clearIndustry;
 
 - (BOOL) hasTimespan;
 - (BTimespan*) timespan;
@@ -510,204 +520,21 @@ NSString *NSStringFromBImageContent(BImageContent value);
 - (BEducationBuilder*) clearTimespan;
 @end
 
-#define UserProfile_userID @"userID"
-#define UserProfile_lastSeen @"lastSeen"
-#define UserProfile_creationDate @"creationDate"
-#define UserProfile_userStatus @"userStatus"
-#define UserProfile_name @"name"
-#define UserProfile_gender @"gender"
-#define UserProfile_birthday @"birthday"
-#define UserProfile_imageURL @"imageURL"
-#define UserProfile_socialIdentities @"socialIdentities"
-#define UserProfile_contactInfo @"contactInfo"
-#define UserProfile_employment @"employment"
-#define UserProfile_education @"education"
-#define UserProfile_expertiseTags @"expertiseTags"
-#define UserProfile_interestTags @"interestTags"
-@interface BUserProfile : PBGeneratedMessage<GeneratedMessageProtocol> {
-@private
-  BOOL hasUserID_:1;
-  BOOL hasName_:1;
-  BOOL hasLastSeen_:1;
-  BOOL hasCreationDate_:1;
-  BOOL hasBirthday_:1;
-  BOOL hasUserStatus_:1;
-  BOOL hasGender_:1;
-  NSString* userID;
-  NSString* name;
-  BTimestamp* lastSeen;
-  BTimestamp* creationDate;
-  BTimestamp* birthday;
-  BUserStatus userStatus;
-  BGender gender;
-  NSMutableArray * imageURLArray;
-  NSMutableArray * expertiseTagsArray;
-  NSMutableArray * interestTagsArray;
-  NSMutableArray * socialIdentitiesArray;
-  NSMutableArray * contactInfoArray;
-  NSMutableArray * employmentArray;
-  NSMutableArray * educationArray;
-}
-- (BOOL) hasUserID;
-- (BOOL) hasLastSeen;
-- (BOOL) hasCreationDate;
-- (BOOL) hasUserStatus;
-- (BOOL) hasName;
-- (BOOL) hasGender;
-- (BOOL) hasBirthday;
-@property (readonly, strong) NSString* userID;
-@property (readonly, strong) BTimestamp* lastSeen;
-@property (readonly, strong) BTimestamp* creationDate;
-@property (readonly) BUserStatus userStatus;
-@property (readonly, strong) NSString* name;
-@property (readonly) BGender gender;
-@property (readonly, strong) BTimestamp* birthday;
-@property (readonly, strong) NSArray * imageURL;
-@property (readonly, strong) NSArray * socialIdentities;
-@property (readonly, strong) NSArray * contactInfo;
-@property (readonly, strong) NSArray * employment;
-@property (readonly, strong) NSArray * education;
-@property (readonly, strong) NSArray * expertiseTags;
-@property (readonly, strong) NSArray * interestTags;
-- (NSString*)imageURLAtIndex:(NSUInteger)index;
-- (BSocialIdentity*)socialIdentitiesAtIndex:(NSUInteger)index;
-- (BContactInfo*)contactInfoAtIndex:(NSUInteger)index;
-- (BEmployment*)employmentAtIndex:(NSUInteger)index;
-- (BEducation*)educationAtIndex:(NSUInteger)index;
-- (NSString*)expertiseTagsAtIndex:(NSUInteger)index;
-- (NSString*)interestTagsAtIndex:(NSUInteger)index;
-
-+ (instancetype) defaultInstance;
-- (instancetype) defaultInstance;
-
-- (BOOL) isInitialized;
-- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
-- (BUserProfileBuilder*) builder;
-+ (BUserProfileBuilder*) builder;
-+ (BUserProfileBuilder*) builderWithPrototype:(BUserProfile*) prototype;
-- (BUserProfileBuilder*) toBuilder;
-
-+ (BUserProfile*) parseFromData:(NSData*) data;
-+ (BUserProfile*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
-+ (BUserProfile*) parseFromInputStream:(NSInputStream*) input;
-+ (BUserProfile*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
-+ (BUserProfile*) parseFromCodedInputStream:(PBCodedInputStream*) input;
-+ (BUserProfile*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
-@end
-
-@interface BUserProfileBuilder : PBGeneratedMessageBuilder {
-@private
-  BUserProfile* resultUserProfile;
-}
-
-- (BUserProfile*) defaultInstance;
-
-- (BUserProfileBuilder*) clear;
-- (BUserProfileBuilder*) clone;
-
-- (BUserProfile*) build;
-- (BUserProfile*) buildPartial;
-
-- (BUserProfileBuilder*) mergeFrom:(BUserProfile*) other;
-- (BUserProfileBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
-- (BUserProfileBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
-
-- (BOOL) hasUserID;
-- (NSString*) userID;
-- (BUserProfileBuilder*) setUserID:(NSString*) value;
-- (BUserProfileBuilder*) clearUserID;
-
-- (BOOL) hasLastSeen;
-- (BTimestamp*) lastSeen;
-- (BUserProfileBuilder*) setLastSeen:(BTimestamp*) value;
-- (BUserProfileBuilder*) setLastSeenBuilder:(BTimestampBuilder*) builderForValue;
-- (BUserProfileBuilder*) mergeLastSeen:(BTimestamp*) value;
-- (BUserProfileBuilder*) clearLastSeen;
-
-- (BOOL) hasCreationDate;
-- (BTimestamp*) creationDate;
-- (BUserProfileBuilder*) setCreationDate:(BTimestamp*) value;
-- (BUserProfileBuilder*) setCreationDateBuilder:(BTimestampBuilder*) builderForValue;
-- (BUserProfileBuilder*) mergeCreationDate:(BTimestamp*) value;
-- (BUserProfileBuilder*) clearCreationDate;
-
-- (BOOL) hasUserStatus;
-- (BUserStatus) userStatus;
-- (BUserProfileBuilder*) setUserStatus:(BUserStatus) value;
-- (BUserProfileBuilder*) clearUserStatus;
-
-- (BOOL) hasName;
-- (NSString*) name;
-- (BUserProfileBuilder*) setName:(NSString*) value;
-- (BUserProfileBuilder*) clearName;
-
-- (BOOL) hasGender;
-- (BGender) gender;
-- (BUserProfileBuilder*) setGender:(BGender) value;
-- (BUserProfileBuilder*) clearGender;
-
-- (BOOL) hasBirthday;
-- (BTimestamp*) birthday;
-- (BUserProfileBuilder*) setBirthday:(BTimestamp*) value;
-- (BUserProfileBuilder*) setBirthdayBuilder:(BTimestampBuilder*) builderForValue;
-- (BUserProfileBuilder*) mergeBirthday:(BTimestamp*) value;
-- (BUserProfileBuilder*) clearBirthday;
-
-- (NSMutableArray *)imageURL;
-- (NSString*)imageURLAtIndex:(NSUInteger)index;
-- (BUserProfileBuilder *)addImageURL:(NSString*)value;
-- (BUserProfileBuilder *)setImageURLArray:(NSArray *)array;
-- (BUserProfileBuilder *)clearImageURL;
-
-- (NSMutableArray *)socialIdentities;
-- (BSocialIdentity*)socialIdentitiesAtIndex:(NSUInteger)index;
-- (BUserProfileBuilder *)addSocialIdentities:(BSocialIdentity*)value;
-- (BUserProfileBuilder *)setSocialIdentitiesArray:(NSArray *)array;
-- (BUserProfileBuilder *)clearSocialIdentities;
-
-- (NSMutableArray *)contactInfo;
-- (BContactInfo*)contactInfoAtIndex:(NSUInteger)index;
-- (BUserProfileBuilder *)addContactInfo:(BContactInfo*)value;
-- (BUserProfileBuilder *)setContactInfoArray:(NSArray *)array;
-- (BUserProfileBuilder *)clearContactInfo;
-
-- (NSMutableArray *)employment;
-- (BEmployment*)employmentAtIndex:(NSUInteger)index;
-- (BUserProfileBuilder *)addEmployment:(BEmployment*)value;
-- (BUserProfileBuilder *)setEmploymentArray:(NSArray *)array;
-- (BUserProfileBuilder *)clearEmployment;
-
-- (NSMutableArray *)education;
-- (BEducation*)educationAtIndex:(NSUInteger)index;
-- (BUserProfileBuilder *)addEducation:(BEducation*)value;
-- (BUserProfileBuilder *)setEducationArray:(NSArray *)array;
-- (BUserProfileBuilder *)clearEducation;
-
-- (NSMutableArray *)expertiseTags;
-- (NSString*)expertiseTagsAtIndex:(NSUInteger)index;
-- (BUserProfileBuilder *)addExpertiseTags:(NSString*)value;
-- (BUserProfileBuilder *)setExpertiseTagsArray:(NSArray *)array;
-- (BUserProfileBuilder *)clearExpertiseTags;
-
-- (NSMutableArray *)interestTags;
-- (NSString*)interestTagsAtIndex:(NSUInteger)index;
-- (BUserProfileBuilder *)addInterestTags:(NSString*)value;
-- (BUserProfileBuilder *)setInterestTagsArray:(NSArray *)array;
-- (BUserProfileBuilder *)clearInterestTags;
-@end
-
 #define ImageData_imageContent @"imageContent"
 #define ImageData_imageBytes @"imageBytes"
 #define ImageData_contentType @"contentType"
 #define ImageData_imageURL @"imageURL"
+#define ImageData_dateAdded @"dateAdded"
 @interface BImageData : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
   BOOL hasContentType_:1;
   BOOL hasImageURL_:1;
+  BOOL hasDateAdded_:1;
   BOOL hasImageBytes_:1;
   BOOL hasImageContent_:1;
   NSString* contentType;
   NSString* imageURL;
+  BTimestamp* dateAdded;
   NSData* imageBytes;
   BImageContent imageContent;
 }
@@ -715,10 +542,12 @@ NSString *NSStringFromBImageContent(BImageContent value);
 - (BOOL) hasImageBytes;
 - (BOOL) hasContentType;
 - (BOOL) hasImageURL;
+- (BOOL) hasDateAdded;
 @property (readonly) BImageContent imageContent;
 @property (readonly, strong) NSData* imageBytes;
 @property (readonly, strong) NSString* contentType;
 @property (readonly, strong) NSString* imageURL;
+@property (readonly, strong) BTimestamp* dateAdded;
 
 + (instancetype) defaultInstance;
 - (instancetype) defaultInstance;
@@ -774,6 +603,221 @@ NSString *NSStringFromBImageContent(BImageContent value);
 - (NSString*) imageURL;
 - (BImageDataBuilder*) setImageURL:(NSString*) value;
 - (BImageDataBuilder*) clearImageURL;
+
+- (BOOL) hasDateAdded;
+- (BTimestamp*) dateAdded;
+- (BImageDataBuilder*) setDateAdded:(BTimestamp*) value;
+- (BImageDataBuilder*) setDateAddedBuilder:(BTimestampBuilder*) builderForValue;
+- (BImageDataBuilder*) mergeDateAdded:(BTimestamp*) value;
+- (BImageDataBuilder*) clearDateAdded;
+@end
+
+#define UserProfile_userID @"userID"
+#define UserProfile_userStatus @"userStatus"
+#define UserProfile_creationDate @"creationDate"
+#define UserProfile_lastSeen @"lastSeen"
+#define UserProfile_name @"name"
+#define UserProfile_gender @"gender"
+#define UserProfile_birthday @"birthday"
+#define UserProfile_images @"images"
+#define UserProfile_socialIdentities @"socialIdentities"
+#define UserProfile_contactInfo @"contactInfo"
+#define UserProfile_currentEmployment @"currentEmployment"
+#define UserProfile_employment @"employment"
+#define UserProfile_education @"education"
+#define UserProfile_expertiseTags @"expertiseTags"
+#define UserProfile_interestTags @"interestTags"
+#define UserProfile_backgroundSummary @"backgroundSummary"
+@interface BUserProfile : PBGeneratedMessage<GeneratedMessageProtocol> {
+@private
+  BOOL hasUserID_:1;
+  BOOL hasName_:1;
+  BOOL hasBackgroundSummary_:1;
+  BOOL hasCreationDate_:1;
+  BOOL hasLastSeen_:1;
+  BOOL hasBirthday_:1;
+  BOOL hasCurrentEmployment_:1;
+  BOOL hasUserStatus_:1;
+  BOOL hasGender_:1;
+  NSString* userID;
+  NSString* name;
+  NSString* backgroundSummary;
+  BTimestamp* creationDate;
+  BTimestamp* lastSeen;
+  BTimestamp* birthday;
+  BEmployment* currentEmployment;
+  BUserStatus userStatus;
+  BGender gender;
+  NSMutableArray * expertiseTagsArray;
+  NSMutableArray * interestTagsArray;
+  NSMutableArray * imagesArray;
+  NSMutableArray * socialIdentitiesArray;
+  NSMutableArray * contactInfoArray;
+  NSMutableArray * employmentArray;
+  NSMutableArray * educationArray;
+}
+- (BOOL) hasUserID;
+- (BOOL) hasUserStatus;
+- (BOOL) hasCreationDate;
+- (BOOL) hasLastSeen;
+- (BOOL) hasName;
+- (BOOL) hasGender;
+- (BOOL) hasBirthday;
+- (BOOL) hasCurrentEmployment;
+- (BOOL) hasBackgroundSummary;
+@property (readonly, strong) NSString* userID;
+@property (readonly) BUserStatus userStatus;
+@property (readonly, strong) BTimestamp* creationDate;
+@property (readonly, strong) BTimestamp* lastSeen;
+@property (readonly, strong) NSString* name;
+@property (readonly) BGender gender;
+@property (readonly, strong) BTimestamp* birthday;
+@property (readonly, strong) NSArray * images;
+@property (readonly, strong) NSArray * socialIdentities;
+@property (readonly, strong) NSArray * contactInfo;
+@property (readonly, strong) BEmployment* currentEmployment;
+@property (readonly, strong) NSArray * employment;
+@property (readonly, strong) NSArray * education;
+@property (readonly, strong) NSArray * expertiseTags;
+@property (readonly, strong) NSArray * interestTags;
+@property (readonly, strong) NSString* backgroundSummary;
+- (BImageData*)imagesAtIndex:(NSUInteger)index;
+- (BSocialIdentity*)socialIdentitiesAtIndex:(NSUInteger)index;
+- (BContactInfo*)contactInfoAtIndex:(NSUInteger)index;
+- (BEmployment*)employmentAtIndex:(NSUInteger)index;
+- (BEducation*)educationAtIndex:(NSUInteger)index;
+- (NSString*)expertiseTagsAtIndex:(NSUInteger)index;
+- (NSString*)interestTagsAtIndex:(NSUInteger)index;
+
++ (instancetype) defaultInstance;
+- (instancetype) defaultInstance;
+
+- (BOOL) isInitialized;
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
+- (BUserProfileBuilder*) builder;
++ (BUserProfileBuilder*) builder;
++ (BUserProfileBuilder*) builderWithPrototype:(BUserProfile*) prototype;
+- (BUserProfileBuilder*) toBuilder;
+
++ (BUserProfile*) parseFromData:(NSData*) data;
++ (BUserProfile*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (BUserProfile*) parseFromInputStream:(NSInputStream*) input;
++ (BUserProfile*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (BUserProfile*) parseFromCodedInputStream:(PBCodedInputStream*) input;
++ (BUserProfile*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+@end
+
+@interface BUserProfileBuilder : PBGeneratedMessageBuilder {
+@private
+  BUserProfile* resultUserProfile;
+}
+
+- (BUserProfile*) defaultInstance;
+
+- (BUserProfileBuilder*) clear;
+- (BUserProfileBuilder*) clone;
+
+- (BUserProfile*) build;
+- (BUserProfile*) buildPartial;
+
+- (BUserProfileBuilder*) mergeFrom:(BUserProfile*) other;
+- (BUserProfileBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
+- (BUserProfileBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+
+- (BOOL) hasUserID;
+- (NSString*) userID;
+- (BUserProfileBuilder*) setUserID:(NSString*) value;
+- (BUserProfileBuilder*) clearUserID;
+
+- (BOOL) hasUserStatus;
+- (BUserStatus) userStatus;
+- (BUserProfileBuilder*) setUserStatus:(BUserStatus) value;
+- (BUserProfileBuilder*) clearUserStatus;
+
+- (BOOL) hasCreationDate;
+- (BTimestamp*) creationDate;
+- (BUserProfileBuilder*) setCreationDate:(BTimestamp*) value;
+- (BUserProfileBuilder*) setCreationDateBuilder:(BTimestampBuilder*) builderForValue;
+- (BUserProfileBuilder*) mergeCreationDate:(BTimestamp*) value;
+- (BUserProfileBuilder*) clearCreationDate;
+
+- (BOOL) hasLastSeen;
+- (BTimestamp*) lastSeen;
+- (BUserProfileBuilder*) setLastSeen:(BTimestamp*) value;
+- (BUserProfileBuilder*) setLastSeenBuilder:(BTimestampBuilder*) builderForValue;
+- (BUserProfileBuilder*) mergeLastSeen:(BTimestamp*) value;
+- (BUserProfileBuilder*) clearLastSeen;
+
+- (BOOL) hasName;
+- (NSString*) name;
+- (BUserProfileBuilder*) setName:(NSString*) value;
+- (BUserProfileBuilder*) clearName;
+
+- (BOOL) hasGender;
+- (BGender) gender;
+- (BUserProfileBuilder*) setGender:(BGender) value;
+- (BUserProfileBuilder*) clearGender;
+
+- (BOOL) hasBirthday;
+- (BTimestamp*) birthday;
+- (BUserProfileBuilder*) setBirthday:(BTimestamp*) value;
+- (BUserProfileBuilder*) setBirthdayBuilder:(BTimestampBuilder*) builderForValue;
+- (BUserProfileBuilder*) mergeBirthday:(BTimestamp*) value;
+- (BUserProfileBuilder*) clearBirthday;
+
+- (NSMutableArray *)images;
+- (BImageData*)imagesAtIndex:(NSUInteger)index;
+- (BUserProfileBuilder *)addImages:(BImageData*)value;
+- (BUserProfileBuilder *)setImagesArray:(NSArray *)array;
+- (BUserProfileBuilder *)clearImages;
+
+- (NSMutableArray *)socialIdentities;
+- (BSocialIdentity*)socialIdentitiesAtIndex:(NSUInteger)index;
+- (BUserProfileBuilder *)addSocialIdentities:(BSocialIdentity*)value;
+- (BUserProfileBuilder *)setSocialIdentitiesArray:(NSArray *)array;
+- (BUserProfileBuilder *)clearSocialIdentities;
+
+- (NSMutableArray *)contactInfo;
+- (BContactInfo*)contactInfoAtIndex:(NSUInteger)index;
+- (BUserProfileBuilder *)addContactInfo:(BContactInfo*)value;
+- (BUserProfileBuilder *)setContactInfoArray:(NSArray *)array;
+- (BUserProfileBuilder *)clearContactInfo;
+
+- (BOOL) hasCurrentEmployment;
+- (BEmployment*) currentEmployment;
+- (BUserProfileBuilder*) setCurrentEmployment:(BEmployment*) value;
+- (BUserProfileBuilder*) setCurrentEmploymentBuilder:(BEmploymentBuilder*) builderForValue;
+- (BUserProfileBuilder*) mergeCurrentEmployment:(BEmployment*) value;
+- (BUserProfileBuilder*) clearCurrentEmployment;
+
+- (NSMutableArray *)employment;
+- (BEmployment*)employmentAtIndex:(NSUInteger)index;
+- (BUserProfileBuilder *)addEmployment:(BEmployment*)value;
+- (BUserProfileBuilder *)setEmploymentArray:(NSArray *)array;
+- (BUserProfileBuilder *)clearEmployment;
+
+- (NSMutableArray *)education;
+- (BEducation*)educationAtIndex:(NSUInteger)index;
+- (BUserProfileBuilder *)addEducation:(BEducation*)value;
+- (BUserProfileBuilder *)setEducationArray:(NSArray *)array;
+- (BUserProfileBuilder *)clearEducation;
+
+- (NSMutableArray *)expertiseTags;
+- (NSString*)expertiseTagsAtIndex:(NSUInteger)index;
+- (BUserProfileBuilder *)addExpertiseTags:(NSString*)value;
+- (BUserProfileBuilder *)setExpertiseTagsArray:(NSArray *)array;
+- (BUserProfileBuilder *)clearExpertiseTags;
+
+- (NSMutableArray *)interestTags;
+- (NSString*)interestTagsAtIndex:(NSUInteger)index;
+- (BUserProfileBuilder *)addInterestTags:(NSString*)value;
+- (BUserProfileBuilder *)setInterestTagsArray:(NSArray *)array;
+- (BUserProfileBuilder *)clearInterestTags;
+
+- (BOOL) hasBackgroundSummary;
+- (NSString*) backgroundSummary;
+- (BUserProfileBuilder*) setBackgroundSummary:(NSString*) value;
+- (BUserProfileBuilder*) clearBackgroundSummary;
 @end
 
 #define ImageUpload_imageData @"imageData"

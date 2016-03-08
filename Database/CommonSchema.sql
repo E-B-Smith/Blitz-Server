@@ -210,36 +210,36 @@ function StringFromUserStatus(userStatus UserStatus) returns text as
     returns null on null input;
 
 
-create domain ConnectionStatus as smallint;
+create domain FriendStatus as smallint;
 
-create function StringFromConnectionStatus(connectionStatus ConnectionStatus) returns text as
+create function StringFromFriendStatus(friendStatus FriendStatus) returns text as
     $$
     declare
         statusString text[] := array
-          [ 'ConnectionStatusUnknown',
-            'ConnectionStatusInviter',
-            'ConnectionStatusInvitee',
-            'ConnectionStatusIgnored',
-            'ConnectionStatusAccepted',
-            'ConnectionStatusCircleDeprecated' ];
+          [ 'FriendStatusUnknown',
+            'FriendStatusInviter',
+            'FriendStatusInvitee',
+            'FriendStatusIgnored',
+            'FriendStatusAccepted',
+            'FriendStatusCircleDeprecated' ];
     begin
-    if connectionStatus is null then return null; end if;
-    return statusString[connectionStatus+1];
+    if friendStatus is null then return null; end if;
+    return statusString[friendStatus+1];
     end;
     $$
     language plpgsql immutable
     returns null on null input;
 
 
-create table ConnectionTable
+create table FriendTable
     (
      userID             UserID not null
-    ,connectionID       UserID not null
-    ,connectionStatus   ConnectionStatus not null check (connectionStatus > 0)
+    ,friendID           UserID not null
+    ,friendStatus       FriendStatus not null check (friendStatus > 0)
     ,isInCircle         boolean not null default false
     );
-create unique index ConnectionUniqueIndex on ConnectionTable(userID, connectionID);
-create index ConnectionIndex on ConnectionTable(connectionID);
+create unique index FriendUniqueIndex on FriendTable(userID, friendID);
+create index FriendIndex on FriendTable(friendID);
 
 
 create table UserIdentityTable
@@ -296,17 +296,17 @@ create table ServerStatTable
     );
 
 
-create domain NotificationType as smallint;
+create domain MessageType as smallint;
 
 
-create function StringFromNotificationType(notificationType NotificationType) returns text as
+create function StringFromUserMessageType(messageType MessageType) returns text as
     $$
     declare
 
     statusString text[] := array
-        [ 'NotificationTypeUnknown',
-          'NotificationTypeSystem'
-          'NotificationTypeNotification'];
+        [ 'MessageTypeUnknown',
+          'MessageTypeSystem'
+          'MessageTypeNotification'];
 
     begin
     if messageType is null then return null; end if;
@@ -317,7 +317,7 @@ create function StringFromNotificationType(notificationType NotificationType) re
     returns null on null input;
 
 
-create table NotificationTable
+create table UserMessageTable
     (
      messageID          UUID            not null
     ,senderID           UserID          not null
@@ -325,13 +325,13 @@ create table NotificationTable
     ,creationDate       timestamptz     not null
     ,notificationDate   timestamptz
     ,readDate           timestamptz
-    ,notificationType   NotificationType not null
+    ,messageType        MessageType     not null
     ,messageText        text
     ,actionIcon         text
     ,actionURL          text
     );
-create unique index NotificationUniqueIndex on NotificationTable(messageID, senderID, recipientID);
-create index NotificationDeliveryIndex on NotificationTable(recipientID, creationDate);
+create unique index UserMessageUniqueIndex on UserMessageTable(messageID, senderID, recipientID);
+create index UserMessageDeliveryIndex on UserMessageTable(recipientID, creationDate);
 
 
 create domain ImageContent as smallint;
@@ -363,6 +363,7 @@ create table ImageTable
     ,contentType        text
     ,crc32              int8
     ,imageData          bytea
+    ,dateAdded          timestamptz
     );
 
 

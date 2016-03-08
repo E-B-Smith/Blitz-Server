@@ -25,19 +25,19 @@ import (
 /*
 
 select distinct on (1)
-    NotificationTable.recipientID,
-    NotificationTable.messageText,
+    UserMessageTable.recipientID,
+    UserMessageTable.messageText,
     DeviceTable.appID,
     DeviceTable.notificationToken,
     DeviceTable.appIsReleaseVersion
-      from NotificationTable
-      join DeviceTable on DeviceTable.userID = NotificationTable.recipientID
-        where NotificationTable.notificationDate is null
+      from UserMessageTable
+      join DeviceTable on DeviceTable.userID = UserMessageTable.recipientID
+        where UserMessageTable.notificationDate is null
           and DeviceTable.notificationToken is not null
           and DeviceTable.appID is not null
-        order by NotificationTable.recipientID, NotificationTable.creationDate
+        order by UserMessageTable.recipientID, UserMessageTable.creationDate
 
-    and NotificationTable.senderID <> NotificationTable.recipientID
+    and UserMessageTable.senderID <> UserMessageTable.recipientID
 
 */
 
@@ -59,18 +59,18 @@ func notifyTask() {
 
     rows, error := config.DB.Query(
 `       select distinct on (1)
-            NotificationTable.recipientID,
-            NotificationTable.messageText,
-            NotificationTable.actionURL,
+            UserMessageTable.recipientID,
+            UserMessageTable.messageText,
+            UserMessageTable.actionURL,
             DeviceTable.appID,
             DeviceTable.notificationToken,
             DeviceTable.appIsReleaseVersion
-              from NotificationTable
-              join DeviceTable on DeviceTable.userID = NotificationTable.recipientID
-                where NotificationTable.notificationDate is null
+              from UserMessageTable
+              join DeviceTable on DeviceTable.userID = UserMessageTable.recipientID
+                where UserMessageTable.notificationDate is null
                   and DeviceTable.notificationToken is not null
                   and DeviceTable.appID is not null
-                order by NotificationTable.recipientID, NotificationTable.creationDate;`)
+                order by UserMessageTable.recipientID, UserMessageTable.creationDate;`)
     if error != nil {
         Log.LogError(error)
         return
@@ -124,7 +124,7 @@ func notifyTask() {
         //  Mark the recipient as having been sent a message --
 
         _, error = config.DB.Exec(
-            `update NotificationTable set notificationDate = $1
+            `update UserMessageTable set notificationDate = $1
                 where notificationDate is null and recipientID = $2;`,
             time.Now(), recipientID)
         if error != nil { Log.LogError(error) }

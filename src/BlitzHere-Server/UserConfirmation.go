@@ -186,10 +186,10 @@ func UserConfirmation(session *Session, confirmation *BlitzMessage.ConfirmationR
 
     if confirmation.InviterUserID != nil {
         message := fmt.Sprintf("%s accepted your connection.", *profile.Name)
-        SendNotificationMessage(BlitzMessage.Default_Globals_SystemUserID,
+        SendUserMessage(BlitzMessage.Default_Globals_SystemUserID,
                 []string{ *confirmation.InviterUserID },
                 message,
-                BlitzMessage.NotificationType_NTNotification,
+                BlitzMessage.MessageType_MTNotification,
                 "AppIcon", "")
     }
 
@@ -214,7 +214,7 @@ func CompareTime(a, b time.Time) int {
 }
 
 
-func AcceptInviteRequest(session *Session, invite *BlitzMessage.AcceptConnectionRequest,
+func AcceptInviteRequest(session *Session, invite *BlitzMessage.AcceptInviteRequest,
         ) *BlitzMessage.ServerResponse {
     //
     //  AcceptInvite
@@ -279,28 +279,28 @@ func AcceptInviteRequest(session *Session, invite *BlitzMessage.AcceptConnection
 /*
     eDebug -- Fix up.
 
-    connections := ConnectionsForUserID(resultProfileID)
-    for _, connection := range connections {
-        profile := ProfileForUserID(*connection.ConnectionID)
+    friends := FriendsForUserID(resultProfileID)
+    for _, friend := range friends {
+        profile := ProfileForUserID(*friend.FriendID)
         if profile != nil {
             profiles = append(profiles, profile)
         }
     }
 */
-    var connections = []*BlitzMessage.Connection {}
+    var friends = []*BlitzMessage.Friend {}
 
-    inviteResponse := BlitzMessage.AcceptConnectionResponse {
-        UserID:         &resultProfileID,
-        ConnectionID:   invite.ConnectionID,
-        Message:        invite.Message,
-        Connections:    connections,
-        Profiles:       profiles,
+    inviteResponse := BlitzMessage.AcceptInviteResponse {
+        UserID:     &resultProfileID,
+        FriendID:   invite.FriendID,
+        Message:    invite.Message,
+        Friends:    friends,
+        Profiles:   profiles,
     }
 
     code := BlitzMessage.ResponseCode_RCSuccess
     response := &BlitzMessage.ServerResponse {
         ResponseCode:   &code,
-        Response:       &BlitzMessage.ResponseType { AcceptConnectionResponse: &inviteResponse},
+        Response:       &BlitzMessage.ResponseType { AcceptInviteResponse: &inviteResponse},
     }
     return response
 }

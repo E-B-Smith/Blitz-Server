@@ -1,0 +1,53 @@
+syntax = "proto2";
+package BlitzMessage;
+
+option java_package = "com.blitzhere.BlitzMessage";
+option java_generic_services = true;
+
+import "objectivec-descriptor.proto";
+option (google.protobuf.objectivec_file_options).package = "";
+option (google.protobuf.objectivec_file_options).class_prefix = "B";
+option (google.protobuf.objectivec_file_options).relax_camel_case = true;
+
+
+import "Types.proto";
+//----------------------------------------------------------------------------------------
+//
+//                                                                           User Messages
+//
+//----------------------------------------------------------------------------------------
+
+
+enum UserMessageType {
+  MTUnknown      = 0;
+  MTSystem       = 1;
+  MTNotification = 2;
+}
+
+
+enum UserMessageStatus {
+  MSNew     = 0;
+  MSHidden  = 1;
+  MSRead    = 2;
+}
+
+
+message UserMessage {
+  optional string           messageID     = 1;
+  optional string           senderID      = 2;
+  repeated string           recipients    = 3;
+  optional Timestamp        creationDate  = 4;
+  optional Timestamp        notificationDate = 5;
+  optional Timestamp        readDate      = 6;
+  optional UserMessageType  messageType   = 7;
+  optional string           messageText   = 8;
+  optional UserMessageStatus messageStatus= 9;
+  optional string           actionIcon    = 10;
+  optional string           actionURL     = 11;
+}
+
+
+message UserMessageUpdate {
+  optional Timespan      timespan = 1;  //  Timespan for request
+  repeated UserMessage   messages = 2;
+}

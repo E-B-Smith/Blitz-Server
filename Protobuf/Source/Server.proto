@@ -11,11 +11,13 @@ option (google.protobuf.objectivec_file_options).relax_camel_case = true;
 
 
 import "Types.proto";
+import "Feed.proto";
 import "Device.proto";
-import "Connections.proto";
-import "Notifications.proto";
+import "Search.proto";
+import "Friends.proto";
+import "UserEvents.proto";
+import "UserMessages.proto";
 import "UserProfiles.proto";
-import "UserTracking.proto";
 //----------------------------------------------------------------------------------------
 //
 //                                                                                  Server
@@ -55,10 +57,10 @@ message SessionResponse {
   optional string             userID          = 1;
   optional string             sessionToken    = 2;
   optional string             serverURL       = 3;
-  repeated Notification       userNotifications = 4;   //  New messages for the user.
+  repeated UserMessage        userMessages    = 4;   //  New messages for the user.
   optional UserProfile        userProfile     = 5;     //  The updated profile for the user.
   optional bool               resetAllAppData = 6;     //  The client should clear all data.
-  optional AcceptConnectionRequest connectionRequest = 7;
+  optional AcceptInviteRequest inviteRequest  = 7;
   optional AppOptions         appOptions      = 8;
 }
 
@@ -70,21 +72,23 @@ message SessionResponse {
 
 message RequestType {
   optional SessionRequest           sessionRequest    = 1;
-  optional UserTrackingBatch        userTrackingBatch = 2;
+  optional UserEventBatch           userEventBatch    = 2;
   optional UserProfileUpdate        userProfileUpdate = 3;
   optional UserProfileQuery         userProfileQuery  = 4;
   optional ConfirmationRequest      confirmationRequest = 5;
-  optional NotificationUpdate       notificationSendRequest  = 6;
-  optional NotificationUpdate       notificationFetchRequest = 7;
+  optional UserMessageUpdate        messageSendRequest  = 6;
+  optional UserMessageUpdate        messageFetchRequest = 7;
   optional DebugMessage             debugMessage        = 8;
   optional ImageUpload              imageUpload         = 9;
-  optional AcceptConnectionRequest  acceptInviteRequest = 10;
+  optional AcceptInviteRequest      acceptInviteRequest = 10;
+  optional FeedPostFetchRequest     fetchFeedRequest    = 11;
+  optional AutocompleteRequest      autocompleteRequest = 12;
 }
 
 
-message ClientRequest {
+message ServerRequest {
   optional string       sessionToken  = 1;
-  optional RequestType  request       = 2;
+  optional RequestType  requestType   = 2;
 }
 
 
@@ -101,20 +105,22 @@ enum ResponseCode {
 
 message ResponseType {
   optional SessionResponse        sessionResponse     = 1;
-  optional UserTrackingResponse   userTrackingResponse= 2;
+  optional UserEventBatchResponse userEventResponse   = 2;
   optional UserProfileUpdate      profileUpdate       = 3;
   optional UserProfileQuery       profileQuery        = 4;
   optional ConfirmationRequest    confirmationRequest = 5;
-  optional NotificationUpdate     notificationUpdate  = 6;
+  optional UserMessageUpdate      messageUpdate       = 6;
   optional DebugMessage           debugMessage        = 7;
   optional ImageUpload            imageUploadReply    = 8;
-  optional AcceptConnectionResponse acceptConnectionResponse = 9;
+  optional AcceptInviteResponse   acceptInviteResponse = 9;
+  optional FeedPostFetchResponse  fetchFeedResponse    = 10;
+  optional AutocompleteResponse   autocompleteResponse = 11;
 }
 
 
 message ServerResponse {
   optional ResponseCode   responseCode    = 1;
   optional string         responseMessage = 2;
-  optional ResponseType   response        = 3;
+  optional ResponseType   responseType    = 3;
 }
 

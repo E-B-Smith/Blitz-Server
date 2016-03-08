@@ -1,0 +1,66 @@
+syntax = "proto2";
+package BlitzMessage;
+
+option java_package = "com.blitzhere.BlitzMessage";
+option java_generic_services = true;
+
+import "objectivec-descriptor.proto";
+option (google.protobuf.objectivec_file_options).package = "";
+option (google.protobuf.objectivec_file_options).class_prefix = "B";
+option (google.protobuf.objectivec_file_options).relax_camel_case = true;
+
+
+import "UserProfiles.proto";
+//----------------------------------------------------------------------------------------
+//
+//                                                                                 Friends
+//
+//----------------------------------------------------------------------------------------
+
+
+enum FriendStatus {
+  FSUnknown     = 0;
+  FSInviter     = 1;
+  FSInvitee     = 2;
+  FSIgnored     = 3;
+  FSAccepted    = 4;
+}
+
+
+message Friend {
+  required string           friendID = 1;
+  required FriendStatus     friendStatus = 2;
+  optional bool             isInCircle   = 3;
+  optional string           inviteLink   = 4;
+}
+
+
+message FriendUpdate {
+  repeated Friend Friends = 1;
+}
+
+
+message FriendRequest {
+  optional UserProfile friendProfile  = 1;
+  optional bool        isInCircle     = 2;
+}
+
+
+message AcceptInviteRequest {
+  optional string       userID      = 1;
+  optional string       friendID    = 2;
+  optional string       message     = 3;
+  optional ContactInfo  contactInfo = 4;
+  repeated UserProfile  profiles    = 5;
+  optional string       confirmationCode = 6;
+}
+
+
+message AcceptInviteResponse {
+  optional string       userID    = 1;
+  optional string       friendID  = 2;
+  optional string       message   = 3;
+  repeated Friend       friends   = 4;
+  repeated UserProfile  profiles  = 5;
+}
+

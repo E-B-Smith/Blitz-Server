@@ -18,10 +18,10 @@ cd Source
 protoc  google/protobuf/descriptor.proto \
     --java_out=../Build/java
 
-protoc  objectivec-descriptor.proto \
-    --objc_out=../Build/obj-c
-mv ../Build/obj-c/ObjectivecDescriptor.pb.h  ../Build/obj-c/Descriptor.pb.h
-mv ../Build/obj-c/ObjectivecDescriptor.pb.m  ../Build/obj-c/Descriptor.pb.m
+# protoc  objectivec-descriptor.proto \
+#     --objc_out=../Build/obj-c
+# mv ../Build/obj-c/ObjectivecDescriptor.pb.h  ../Build/obj-c/Descriptor.pb.h
+# mv ../Build/obj-c/ObjectivecDescriptor.pb.m  ../Build/obj-c/Descriptor.pb.m
 
 shopt -s extglob
 protoc !(objectivec-descriptor).proto \

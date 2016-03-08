@@ -35,7 +35,7 @@ drop user if exists ${database};
 
 
 create user ${database}
-   with createdb login password '${database}';
+   with createdb login password '${databaselower}';
 
 create database ${database}
    with encoding 'UTF8' owner ${database};

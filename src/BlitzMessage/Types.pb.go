@@ -22,7 +22,7 @@ type Globals struct {
 func (m *Globals) Reset()                    { *m = Globals{} }
 func (m *Globals) String() string            { return proto.CompactTextString(m) }
 func (*Globals) ProtoMessage()               {}
-func (*Globals) Descriptor() ([]byte, []int) { return fileDescriptor6, []int{0} }
+func (*Globals) Descriptor() ([]byte, []int) { return fileDescriptor5, []int{0} }
 
 const Default_Globals_SystemUserID string = "E4227250-C8E5-4DA9-8177-F084020910B8"
 
@@ -42,7 +42,7 @@ type Coordinate struct {
 func (m *Coordinate) Reset()                    { *m = Coordinate{} }
 func (m *Coordinate) String() string            { return proto.CompactTextString(m) }
 func (*Coordinate) ProtoMessage()               {}
-func (*Coordinate) Descriptor() ([]byte, []int) { return fileDescriptor6, []int{1} }
+func (*Coordinate) Descriptor() ([]byte, []int) { return fileDescriptor5, []int{1} }
 
 const Default_Coordinate_Latitude float64 = -360
 const Default_Coordinate_Longitude float64 = -360
@@ -70,7 +70,7 @@ type Size struct {
 func (m *Size) Reset()                    { *m = Size{} }
 func (m *Size) String() string            { return proto.CompactTextString(m) }
 func (*Size) ProtoMessage()               {}
-func (*Size) Descriptor() ([]byte, []int) { return fileDescriptor6, []int{2} }
+func (*Size) Descriptor() ([]byte, []int) { return fileDescriptor5, []int{2} }
 
 const Default_Size_Width float64 = 0
 const Default_Size_Height float64 = 0
@@ -98,7 +98,7 @@ type CoordinateRegion struct {
 func (m *CoordinateRegion) Reset()                    { *m = CoordinateRegion{} }
 func (m *CoordinateRegion) String() string            { return proto.CompactTextString(m) }
 func (*CoordinateRegion) ProtoMessage()               {}
-func (*CoordinateRegion) Descriptor() ([]byte, []int) { return fileDescriptor6, []int{3} }
+func (*CoordinateRegion) Descriptor() ([]byte, []int) { return fileDescriptor5, []int{3} }
 
 func (m *CoordinateRegion) GetCenter() *Coordinate {
 	if m != nil {
@@ -122,7 +122,7 @@ type CoordinatePolygon struct {
 func (m *CoordinatePolygon) Reset()                    { *m = CoordinatePolygon{} }
 func (m *CoordinatePolygon) String() string            { return proto.CompactTextString(m) }
 func (*CoordinatePolygon) ProtoMessage()               {}
-func (*CoordinatePolygon) Descriptor() ([]byte, []int) { return fileDescriptor6, []int{4} }
+func (*CoordinatePolygon) Descriptor() ([]byte, []int) { return fileDescriptor5, []int{4} }
 
 func (m *CoordinatePolygon) GetPoints() []*Coordinate {
 	if m != nil {
@@ -143,7 +143,7 @@ type Location struct {
 func (m *Location) Reset()                    { *m = Location{} }
 func (m *Location) String() string            { return proto.CompactTextString(m) }
 func (*Location) ProtoMessage()               {}
-func (*Location) Descriptor() ([]byte, []int) { return fileDescriptor6, []int{5} }
+func (*Location) Descriptor() ([]byte, []int) { return fileDescriptor5, []int{5} }
 
 func (m *Location) GetCoordinate() *Coordinate {
 	if m != nil {
@@ -188,7 +188,7 @@ type Timestamp struct {
 func (m *Timestamp) Reset()                    { *m = Timestamp{} }
 func (m *Timestamp) String() string            { return proto.CompactTextString(m) }
 func (*Timestamp) ProtoMessage()               {}
-func (*Timestamp) Descriptor() ([]byte, []int) { return fileDescriptor6, []int{6} }
+func (*Timestamp) Descriptor() ([]byte, []int) { return fileDescriptor5, []int{6} }
 
 func (m *Timestamp) GetEpoch() float64 {
 	if m != nil && m.Epoch != nil {
@@ -206,7 +206,7 @@ type Timespan struct {
 func (m *Timespan) Reset()                    { *m = Timespan{} }
 func (m *Timespan) String() string            { return proto.CompactTextString(m) }
 func (*Timespan) ProtoMessage()               {}
-func (*Timespan) Descriptor() ([]byte, []int) { return fileDescriptor6, []int{7} }
+func (*Timespan) Descriptor() ([]byte, []int) { return fileDescriptor5, []int{7} }
 
 func (m *Timespan) GetStartTimestamp() *Timestamp {
 	if m != nil {
@@ -230,7 +230,7 @@ type Void struct {
 func (m *Void) Reset()                    { *m = Void{} }
 func (m *Void) String() string            { return proto.CompactTextString(m) }
 func (*Void) ProtoMessage()               {}
-func (*Void) Descriptor() ([]byte, []int) { return fileDescriptor6, []int{8} }
+func (*Void) Descriptor() ([]byte, []int) { return fileDescriptor5, []int{8} }
 
 func (m *Void) GetDebugString() string {
 	if m != nil && m.DebugString != nil {
@@ -248,7 +248,7 @@ type KeyValue struct {
 func (m *KeyValue) Reset()                    { *m = KeyValue{} }
 func (m *KeyValue) String() string            { return proto.CompactTextString(m) }
 func (*KeyValue) ProtoMessage()               {}
-func (*KeyValue) Descriptor() ([]byte, []int) { return fileDescriptor6, []int{9} }
+func (*KeyValue) Descriptor() ([]byte, []int) { return fileDescriptor5, []int{9} }
 
 func (m *KeyValue) GetKey() string {
 	if m != nil && m.Key != nil {
@@ -277,7 +277,7 @@ func init() {
 	proto.RegisterType((*KeyValue)(nil), "BlitzMessage.KeyValue")
 }
 
-var fileDescriptor6 = []byte{
+var fileDescriptor5 = []byte{
 	// 486 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x09, 0x6e, 0x88, 0x02, 0xff, 0x84, 0x92, 0xdd, 0x6e, 0xd3, 0x40,
 	0x10, 0x85, 0xd9, 0xfc, 0x94, 0x64, 0xd2, 0x56, 0xc9, 0x22, 0x51, 0x2b, 0xbd, 0xa9, 0x2c, 0x84,

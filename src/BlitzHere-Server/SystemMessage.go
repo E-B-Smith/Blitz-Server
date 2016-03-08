@@ -101,7 +101,7 @@ func SystemMessageFormRequest(writer http.ResponseWriter, httpRequest *http.Requ
         var recipientID string
         rows.Scan(&recipientID)
         _, error := config.DB.Exec(
-            "insert into NotificationTable "+
+            "insert into UserMessageTable "+
             "(messageID        "+
             ",senderID         "+
             ",recipientID      "+
@@ -115,7 +115,7 @@ func SystemMessageFormRequest(writer http.ResponseWriter, httpRequest *http.Requ
             BlitzMessage.Default_Globals_SystemUserID,
             recipientID,
             messageDate,
-            BlitzMessage.NotificationType_NTSystem,
+            BlitzMessage.MessageType_MTSystem,
             messageText,
             actionIcon,
             actionURL,

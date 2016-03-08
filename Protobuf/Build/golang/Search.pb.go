@@ -49,7 +49,7 @@ func (x *SearchType) UnmarshalJSON(data []byte) error {
 	*x = SearchType(value)
 	return nil
 }
-func (SearchType) EnumDescriptor() ([]byte, []int) { return fileDescriptor4, []int{0} }
+func (SearchType) EnumDescriptor() ([]byte, []int) { return fileDescriptor3, []int{0} }
 
 type AutocompleteRequest struct {
 	Query            *string     `protobuf:"bytes,1,opt,name=query" json:"query,omitempty"`
@@ -60,7 +60,7 @@ type AutocompleteRequest struct {
 func (m *AutocompleteRequest) Reset()                    { *m = AutocompleteRequest{} }
 func (m *AutocompleteRequest) String() string            { return proto.CompactTextString(m) }
 func (*AutocompleteRequest) ProtoMessage()               {}
-func (*AutocompleteRequest) Descriptor() ([]byte, []int) { return fileDescriptor4, []int{0} }
+func (*AutocompleteRequest) Descriptor() ([]byte, []int) { return fileDescriptor3, []int{0} }
 
 const Default_AutocompleteRequest_Type SearchType = SearchType_STSearchAll
 
@@ -86,7 +86,7 @@ type AutocompleteResponse struct {
 func (m *AutocompleteResponse) Reset()                    { *m = AutocompleteResponse{} }
 func (m *AutocompleteResponse) String() string            { return proto.CompactTextString(m) }
 func (*AutocompleteResponse) ProtoMessage()               {}
-func (*AutocompleteResponse) Descriptor() ([]byte, []int) { return fileDescriptor4, []int{1} }
+func (*AutocompleteResponse) Descriptor() ([]byte, []int) { return fileDescriptor3, []int{1} }
 
 func (m *AutocompleteResponse) GetItems() []string {
 	if m != nil {
@@ -101,7 +101,7 @@ func init() {
 	proto.RegisterEnum("BlitzMessage.SearchType", SearchType_name, SearchType_value)
 }
 
-var fileDescriptor4 = []byte{
+var fileDescriptor3 = []byte{
 	// 241 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x09, 0x6e, 0x88, 0x02, 0xff, 0x54, 0xce, 0xc1, 0x4a, 0x03, 0x31,
 	0x10, 0x06, 0xe0, 0x66, 0xab, 0x68, 0xa7, 0xab, 0x2e, 0xd1, 0xc3, 0x52, 0x2f, 0x52, 0x10, 0x8a,
