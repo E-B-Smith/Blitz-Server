@@ -75,13 +75,11 @@ proto \
     Protobuf/Source/%.proto \
     ; \
         echo ">>> Building proto files."; \
-        ./Protobuf/make-proto $< ; \
+        ./Protobuf/make-proto $< $@ ; \
         if [[ $$? != 0 ]]; then echo $?; exit 1; fi;
 
 
-Protobuf/Happiness.pb.m : src/happiness/happiness.pb.go
-
-
+# Protobuf/Happiness.pb.m : src/happiness/happiness.pb.go
 #        echo "$$PATH"; \
 
 
@@ -127,6 +125,7 @@ test: \
 
 
 deploy: \
+    FORCE \
     linux \
     ; \
         echo ">>> Deploying to $$userhost." ; \
@@ -140,6 +139,7 @@ deploy: \
         \
         rsync -aP --force  --progress \
             --exclude '.*' \
+            --exclude '*.Darwin*' \
             Database/  \
             $$userhost:"$$installpath"/database; \
         if [[ $$? != 0 ]]; then exit 1; fi; \

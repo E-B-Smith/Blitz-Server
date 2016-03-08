@@ -31,7 +31,7 @@ USAGE
 baseurl="https://shimmering.blue/version"
 username="blitzhere"
 host="shimmering.blue"
-versionfile="/home/blitzhere/www/version"
+versionfile="/home/shimmering/www/blue.shimmering/version"
 packagename=""
 url=""
 
