@@ -37,11 +37,19 @@ gobuild= \
 
 compile: FORCE \
     updateversion \
-    %.pb.go \
+    src/BlitzMessage/Connections.pb.go \
+    src/BlitzMessage/Notifications.pb.go \
+    src/BlitzMessage/Types.pb.go \
+    src/BlitzMessage/Device.pb.go \
+    src/BlitzMessage/Search.pb.go \
+    src/BlitzMessage/UserProfiles.pb.go \
+    src/BlitzMessage/Feed.pb.go \
+    src/BlitzMessage/Server.pb.go \
+    src/BlitzMessage/UserTracking.pb.go \
     src/ApplePushService/ResourceData.go \
     ; \
         echo ">>> Build version $(buildVersion) $(buildDate)."; \
-        $(call gobuild, src/Server, BeingHappy-Server) \
+        $(call gobuild, src/BlitzHere-Server) \
         $(call gobuild, src/Signup-Server) \
         $(call gobuild, src/Status-Server)
 
@@ -71,8 +79,24 @@ FORCE:
 
 
 proto \
-%.pb.go : \
-    Protobuf/Source/%.proto \
+src/BlitzMessage/Connections.pb.go \
+src/BlitzMessage/Notifications.pb.go \
+src/BlitzMessage/Types.pb.go \
+src/BlitzMessage/Device.pb.go \
+src/BlitzMessage/Search.pb.go \
+src/BlitzMessage/UserProfiles.pb.go \
+src/BlitzMessage/Feed.pb.go \
+src/BlitzMessage/Server.pb.go \
+src/BlitzMessage/UserTracking.pb.go : \
+    Protobuf/Source/Connections.proto \
+    Protobuf/Source/Notifications.proto \
+    Protobuf/Source/Types.proto \
+    Protobuf/Source/Device.proto \
+    Protobuf/Source/Search.proto \
+    Protobuf/Source/UserProfiles.proto \
+    Protobuf/Source/Feed.proto \
+    Protobuf/Source/Server.proto \
+    Protobuf/Source/UserTracking.proto \
     ; \
         echo ">>> Building proto files."; \
         ./Protobuf/make-proto $< $@ ; \
