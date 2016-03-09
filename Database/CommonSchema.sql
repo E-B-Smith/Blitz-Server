@@ -64,7 +64,6 @@ create table UserTable
     ,name               text
     ,gender             Gender
     ,birthday           timestamptz
-    ,imageURL           text[]
     );
 
 
@@ -358,13 +357,14 @@ create function StringFromImageContent(imageContent ImageContent) returns text a
 
 create table ImageTable
     (
-     userID             UserID      unique not null primary key
+     userID             UserID          not null
+    ,dateAdded          timestamptz     not null
     ,imageContent       ImageContent
     ,contentType        text
     ,crc32              int8
     ,imageData          bytea
-    ,dateAdded          timestamptz
     );
+create unique index ImageTableUniqueIndex on ImageTable(UserID, crc32);
 
 
 create function StringFromTimeInterval(timestamp1 timestamptz, timestamp2 timestamptz) returns text as

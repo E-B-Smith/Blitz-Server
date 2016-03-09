@@ -257,6 +257,9 @@ func DispatchServiceRequests(writer http.ResponseWriter, httpRequest *http.Reque
     case *BlitzMessage.ConfirmationRequest:
         response = UserConfirmation(session, requestMessageType)
 
+    case *BlitzMessage.ImageUpload:
+        response = UploadImage(session, requestMessageType)
+
     default:
         error = fmt.Errorf("Unrecognized request '%+v'", request)
         response = ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)

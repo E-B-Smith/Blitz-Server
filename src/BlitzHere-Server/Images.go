@@ -8,6 +8,7 @@ package main
 
 import (
     "fmt"
+    "time"
     "errors"
     "net/http"
     "hash/crc32"
@@ -45,6 +46,9 @@ func UploadImage(session *Session, imageUpload *BlitzMessage.ImageUpload,
     }
 
     crc := crc32.ChecksumIEEE(imageData.ImageBytes)
+    if imageData.DateAdded == nil {
+        imageData.DateAdded = BlitzMessage.TimestampFromTime(time.Now())
+    }
 
     var error error
     var result sql.Result
@@ -54,26 +58,29 @@ func UploadImage(session *Session, imageUpload *BlitzMessage.ImageUpload,
            imageContent,
            contentType,
            crc32,
-           imageData) values ($1, $2, $3, $4, $5);`,
+           imageData,
+           dateAdded) values ($1, $2, $3, $4, $5, $6);`,
              session.UserID,
              imageData.ImageContent,
              imageData.ContentType,
              crc,
-             imageData.ImageBytes)
+             imageData.ImageBytes,
+             imageData.DateAdded)
     if error != nil || pgsql.RowsUpdated(result) != 1 {
         //Log.LogError(error)
         result, error = config.DB.Exec(
             `update ImageTable set (
                imageContent,
                contentType,
-               crc32,
-               imageData) = ($1, $2, $3, $4)
-               where userID = $5;`,
+               imageData,
+               dateAdded) = ($1, $2, $3, $4)
+               where userID = $5 and crc32 = $6;`,
                  imageData.ImageContent,
                  imageData.ContentType,
-                 crc,
                  imageData.ImageBytes,
-                 session.UserID)
+                 imageData.DateAdded,
+                 session.UserID,
+                 crc)
     }
     if error != nil {
         return ServerResponseForError(BlitzMessage.ResponseCode_RCServerError, error)
@@ -85,29 +92,15 @@ func UploadImage(session *Session, imageUpload *BlitzMessage.ImageUpload,
         session.UserID,
         crc,
     )
-
-    result, error = config.DB.Exec(
-        "update UserTable set imageURL = array[ $1 ] where userid = $2;",
-            imageURL, session.UserID)
+    imageData.ImageURL = &imageURL;
     Log.Debugf("ImageURL: %s Result: %+v Error: %v.", imageURL, result, error)
     if error != nil {
         return ServerResponseForError(BlitzMessage.ResponseCode_RCServerError, error)
     }
-    var rowsUpdated int64 = 0
-    if result != nil { rowsUpdated, _ = result.RowsAffected() }
-    if rowsUpdated != 1 {
-        Log.Errorf("Didn't update image URL in UserTable.")
-        return ServerResponseForError(BlitzMessage.ResponseCode_RCServerError, errors.New("UserTable error"))
-    }
-    Log.Debugf("Updated user '%s' image to '%s'.", session.UserID, imageURL)
 
-    replyImageData := BlitzMessage.ImageData {
-        ImageContent: imageData.ImageContent,
-        ContentType:  imageData.ContentType,
-        ImageURL:     &imageURL,
-    }
+    imageData.ImageBytes = nil
     replyImageUpload := BlitzMessage.ImageUpload {
-        ImageData:  []*BlitzMessage.ImageData{ &replyImageData },
+        ImageData:  []*BlitzMessage.ImageData{ imageData },
     }
     code := BlitzMessage.ResponseCode_RCSuccess
     response := &BlitzMessage.ServerResponse {
