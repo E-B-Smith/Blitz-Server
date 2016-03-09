@@ -341,11 +341,6 @@ static BSessionRequest* defaultBSessionRequestInstance = nil;
   return defaultBSessionRequestInstance;
 }
 - (BOOL) isInitialized {
-  if (self.hasDeviceInfo) {
-    if (!self.deviceInfo.isInitialized) {
-      return NO;
-    }
-  }
   if (self.hasProfile) {
     if (!self.profile.isInitialized) {
       return NO;

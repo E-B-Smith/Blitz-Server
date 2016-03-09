@@ -291,7 +291,7 @@ create table ServerStatTable
     ,bytesIn            int
     ,bytesOut           int
     ,statusCode         int
-    ,responseCode       int
+    ,responseCode       text
     ,responseMessage    text
     );
 

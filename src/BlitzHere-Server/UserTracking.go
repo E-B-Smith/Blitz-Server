@@ -19,7 +19,7 @@ import (
 //----------------------------------------------------------------------------------------
 
 
-func UpdateUserTrackingEvent(userID string, event *BlitzMessage.UserTrackingEvent) error {
+func UpdateUserTrackingEvent(userID string, event *BlitzMessage.UserEvent) error {
     //Log.LogFunctionName()
     defer func() {
         if error := recover(); error != nil { Log.LogStackWithError(error) }
@@ -71,11 +71,11 @@ func UpdateUserTrackingEvent(userID string, event *BlitzMessage.UserTrackingEven
 
 
 //----------------------------------------------------------------------------------------
-//                                                                 UpdateUserTrackingBatch
+//                                                                          UserEventBatch
 //----------------------------------------------------------------------------------------
 
 
-func UpdateUserTrackingBatch(session *Session, userEvents *BlitzMessage.UserTrackingBatch,
+func UpdateUserTrackingBatch(session *Session, userEvents *BlitzMessage.UserEventBatch,
     ) *BlitzMessage.ServerResponse {
 
     //  * Update each user event in the update request.
@@ -111,14 +111,14 @@ func UpdateUserTrackingBatch(session *Session, userEvents *BlitzMessage.UserTrac
         if (message == "") { message = "No events to update" }
     }
 
-    userTrackingResponse := &BlitzMessage.UserTrackingResponse {
+    userTrackingResponse := &BlitzMessage.UserEventBatchResponse {
         LatestEventUpdate: lastTimestamp,
     }
 
     response := &BlitzMessage.ServerResponse {
         ResponseCode:       &code,
         ResponseMessage:    &message,
-        Response:           &BlitzMessage.ResponseType { UserTrackingResponse: userTrackingResponse},
+        ResponseType:       &BlitzMessage.ResponseType { UserEventResponse: userTrackingResponse},
     }
     return response
 }

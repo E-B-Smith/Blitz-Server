@@ -472,12 +472,12 @@ func UpdateSession(ipAddress string,
            sessionResponse.ResetAllAppData = BoolPtrFromBool(true)
         }
     }
-    Log.Debugf("ResetAllAppData: %+v", sessionResponse.ResetAllAppData)
+    Log.Debugf("ResetAllAppData: %+v", *sessionResponse.ResetAllAppData)
 
     code := BlitzMessage.ResponseCode_RCSuccess
     response := &BlitzMessage.ServerResponse {
         ResponseCode:   &code,
-        Response:       &BlitzMessage.ResponseType { SessionResponse: sessionResponse },
+        ResponseType:   &BlitzMessage.ResponseType { SessionResponse: sessionResponse },
     }
     return response
 }

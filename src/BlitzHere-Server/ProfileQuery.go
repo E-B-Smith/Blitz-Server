@@ -126,8 +126,8 @@ func ProfileForUserID(userID string) *BlitzMessage.UserProfile {
     profile.Name        = proto.String(name.String)
     profile.Gender      = BlitzMessage.Gender(gender.Int64).Enum()
     profile.Birthday    = BlitzMessage.TimestampFromTime(birthday.Time)
-    profile.ImageURL    = pgsql.StringArrayFromNullString(imageURLs)
-    Log.Debugf("Profile has %d images: %v.", len(profile.ImageURL), profile.ImageURL)
+    //profile.ImageURL    = pgsql.StringArrayFromNullString(imageURLs)
+    //Log.Debugf("Profile has %d images: %v.", len(profile.ImageURL), profile.ImageURL)
     profile.SocialIdentities = SocialIdentitiesWithUserID(userID)
     profile.CreationDate   = BlitzMessage.TimestampFromTime(creationDate.Time)
     AddContactInfoToProfile(profile)
@@ -154,7 +154,7 @@ func QueryProfiles(session *Session, profileQuery *BlitzMessage.UserProfileQuery
     response := &BlitzMessage.ServerResponse {
         ResponseCode:       &code,
         ResponseMessage:    &message,
-        Response:           &BlitzMessage.ResponseType { ProfileUpdate: &profileUpdate },
+        ResponseType:       &BlitzMessage.ResponseType { ProfileUpdate: &profileUpdate },
     }
     return response
 }

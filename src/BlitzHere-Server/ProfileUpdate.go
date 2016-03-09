@@ -9,11 +9,9 @@ package main
 import (
     "time"
     "errors"
-    "strings"
     "database/sql"
     "github.com/lib/pq"
     "violent.blue/GoKit/Log"
-    "violent.blue/GoKit/pgsql"
     "BlitzMessage"
 )
 
@@ -66,7 +64,7 @@ func UpdateProfile(profile *BlitzMessage.UserProfile) error {
         return error
     }
 
-    var images []string
+/*  var images []string
     for _, s := range profile.ImageURL {
         s = strings.TrimSpace(s)
         if len(s) > 0 { images = append(images, s); }
@@ -84,7 +82,7 @@ func UpdateProfile(profile *BlitzMessage.UserProfile) error {
             return error
         }
     }
-
+*/
     for i := range profile.SocialIdentities {
         UpdateSocialIdentityForUserID(userID, profile.SocialIdentities[i])
     }

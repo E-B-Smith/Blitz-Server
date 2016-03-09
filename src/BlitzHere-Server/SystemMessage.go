@@ -115,7 +115,7 @@ func SystemMessageFormRequest(writer http.ResponseWriter, httpRequest *http.Requ
             BlitzMessage.Default_Globals_SystemUserID,
             recipientID,
             messageDate,
-            BlitzMessage.MessageType_MTSystem,
+            BlitzMessage.UserMessageType_MTSystem,
             messageText,
             actionIcon,
             actionURL,

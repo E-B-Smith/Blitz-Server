@@ -131,7 +131,6 @@ func DispatchServiceRequests(writer http.ResponseWriter, httpRequest *http.Reque
         }
         elapsed :=  time.Since(startTimestamp).Seconds()
         //Log.Debugf("Exit dispatch Nowhere.  Message timestamp: %v Response Writer: %v\nHeader: %v", startTimestamp, writer, writer.Header())
-        Log.Debugf("Exit dispatch Nowhere.  Elapsed: %5.3f Timestamp: %v.", elapsed, startTimestamp)
         outlength, _ := strconv.Atoi(writer.Header().Get("Content-Length"))
         outstatus, _ := strconv.Atoi(writer.Header().Get("Status-Code"))
         var (code string; message string)
@@ -150,6 +149,9 @@ func DispatchServiceRequests(writer http.ResponseWriter, httpRequest *http.Reque
             message)
         if error != nil {
             Log.Errorf("Error writing ServerStatTable: %v.", error)
+        Log.Debugf("=============================================="+
+            " Exit dispatch.  Status: %d Code: %s Elapsed: %5.3f Timestamp: %v.",
+            outstatus, code, elapsed, startTimestamp)
         }
     } ()
 
@@ -167,28 +169,28 @@ func DispatchServiceRequests(writer http.ResponseWriter, httpRequest *http.Reque
     bodyPrefix  := string(body[:Util.Min(16, len(body))])
     bodyPrefix   = strings.TrimSpace(bodyPrefix)
 
-    clientRequest := BlitzMessage.ClientRequest{}
+    serverRequest := BlitzMessage.ServerRequest {}
     if contentType == "application/json" || strings.HasPrefix(bodyPrefix, "{") {
         Log.Debugf("JSON:\n%s\n.", string(body))
-        error = json.Unmarshal(body, &clientRequest)
+        error = json.Unmarshal(body, &serverRequest)
         messageFormat = MFJSON
     } else {
-        error = proto.Unmarshal(body, &clientRequest)
+        error = proto.Unmarshal(body, &serverRequest)
         messageFormat = MFProtobuf
     }
-    if error != nil || clientRequest.Request == nil {
+    if error != nil || serverRequest.RequestType == nil {
         Log.Errorf("Proto decode error: %v.", error)
         response = ServerResponseForError(BlitzMessage.ResponseCode_RCInputCorrupt, error)
         WriteResponse(writer, response, messageFormat)
         return
     }
-    Log.Debugf("Decoded request: %+v.", clientRequest)
+    Log.Debugf("Decoded request: %+v.", serverRequest)
 
     //  Find the message type to log it --
 
-    requestValue := reflect.ValueOf(*clientRequest.Request)
+    requestValue := reflect.ValueOf(*serverRequest.RequestType)
     if ! requestValue.IsValid() {
-        Log.Errorf("Invalid request %+v.", clientRequest.Request)
+        Log.Errorf("Invalid request %+v.", serverRequest.RequestType)
         response = ServerResponseForError(BlitzMessage.ResponseCode_RCInputCorrupt, error)
         WriteResponse(writer, response, messageFormat)
         return
@@ -215,8 +217,8 @@ func DispatchServiceRequests(writer http.ResponseWriter, httpRequest *http.Reque
 
     //  Update the session if requested --
 
-    sessionToken := clientRequest.GetSessionToken()
-    sessionRequest := clientRequest.Request.GetSessionRequest()
+    sessionToken := serverRequest.GetSessionToken()
+    sessionRequest := serverRequest.RequestType.GetSessionRequest()
     if  sessionRequest != nil {
         ipAddress := Util.IPAddressFromHTTPRequest(httpRequest)
         response = UpdateSession(ipAddress, sessionToken, sessionRequest)
@@ -249,13 +251,20 @@ func DispatchServiceRequests(writer http.ResponseWriter, httpRequest *http.Reque
     case *BlitzMessage.UserProfileQuery:
         response = QueryProfiles(session, requestMessageType)
 
-    // case *BlitzMessage.UserTrackingBatch:
-    //     respose = UpdateUserTrackingEvents(writer, userID, eventRequest)
+    case *BlitzMessage.UserEventBatch:
+        response = UpdateUserTrackingBatch(session, requestMessageType)
+
+    case *BlitzMessage.ConfirmationRequest:
+        response = UserConfirmation(session, requestMessageType)
 
     default:
         error = fmt.Errorf("Unrecognized request '%+v'", request)
         response = ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
     }
+
+
+    //  Done --
+
 
     WriteResponse(writer, response, messageFormat)
 }

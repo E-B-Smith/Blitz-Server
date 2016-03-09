@@ -237,8 +237,8 @@ func ProfilesFromContactInfoRequest(
 
     code := BlitzMessage.ResponseCode_RCSuccess
     response := &BlitzMessage.ServerResponse {
-        ResponseCode:       &code,
-        Response:           &BlitzMessage.ResponseType { ProfileUpdate: &profileUpdate },
+        ResponseCode:   &code,
+        ResponseType:   &BlitzMessage.ResponseType { ProfileUpdate: &profileUpdate },
     }
     return response
 }

@@ -10,9 +10,10 @@ import (
     "fmt"
     "time"
     "bytes"
-    "strings"
     "errors"
     "net/url"
+    "strconv"
+    "strings"
     "html/template"
     "violent.blue/GoKit/Log"
     "violent.blue/GoKit/Util"
@@ -53,8 +54,19 @@ func UserIsConfirming(session *Session, confirmation *BlitzMessage.ConfirmationR
         error = errors.New("Error: Didn't verify contact detail with profile.");
     }
 
-    if *confirmation.ConfirmationCode != session.Secret {
-        error = fmt.Errorf("Confirmation secret wrong. %s != %s.", *confirmation.ConfirmationCode, session.Secret)
+    code := "XXXX"
+    if  confirmation.ConfirmationCode != nil &&
+        len(*confirmation.ConfirmationCode) > 0 {
+        i, _ := strconv.ParseInt(*confirmation.ConfirmationCode, 10, 64)
+        code = strconv.FormatInt(i, 16)
+        if len(code) <= 2 { code = "XXXX" }
+    }
+    Log.Debugf("Code '%s' Secret '%s'.", code, session.Secret)
+
+    if ! strings.HasPrefix(session.Secret, code) {
+        Log.Errorf("Confirmation secret wrong. %s != %s.", *confirmation.ConfirmationCode, session.Secret)
+        error = fmt.Errorf("The confirmation code does not match.")
+        verified = false
     }
 
     if ! verified {
@@ -77,7 +89,7 @@ func UserIsConfirming(session *Session, confirmation *BlitzMessage.ConfirmationR
     response := &BlitzMessage.ServerResponse {
         ResponseCode:       &responseCode,
         ResponseMessage:    &responseMessage,
-        Response:           &BlitzMessage.ResponseType { ConfirmationRequest: &confirmed },
+        ResponseType:       &BlitzMessage.ResponseType { ConfirmationRequest: &confirmed },
     }
     return response
 }
@@ -97,12 +109,14 @@ func UserConfirmation(session *Session, confirmation *BlitzMessage.ConfirmationR
     if profile == nil {
         return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, errors.New("A profile is required."))
     }
+/*
     if profile.Name != nil {
         profile.Name = StringPtrFromString(strings.TrimSpace(*profile.Name))
     }
     if profile.Name == nil || len(*profile.Name) <= 0 {
         return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, errors.New("A name is required."))
     }
+*/
     contact := confirmation.ContactInfo
     if contact == nil {
         return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, errors.New("Contact info is required."))
@@ -113,13 +127,15 @@ func UserConfirmation(session *Session, confirmation *BlitzMessage.ConfirmationR
 
     //  See if we're confirming a confirmation request --
 
-    if confirmation.ConfirmationCode != nil {
+    if  confirmation.ConfirmationCode != nil &&
+        len(*confirmation.ConfirmationCode) > 0 {
         return UserIsConfirming(session, confirmation)
     }
 
     var userStatus BlitzMessage.UserStatus = BlitzMessage.UserStatus_USConfirming
     profile.UserStatus = &userStatus
-    confirmCode := session.Secret
+    i, _ := strconv.ParseInt(session.Secret[0:4], 16, 32)
+    confirmCode := fmt.Sprintf("%05d", i)
     message := config.Localizef("kConfirmConfirmingContact", "Confirming contact info...")
     message  = url.QueryEscape(message)
     link := config.Localizef("kConfirmAppURL", "%s/?action=confirm&message=%s&code=%s&contact=%s",
@@ -130,14 +146,21 @@ func UserConfirmation(session *Session, confirmation *BlitzMessage.ConfirmationR
         return ServerResponseForError(BlitzMessage.ResponseCode_RCServerError, error)
     }
 
+    name := "Stranger"
+    if profile.Name != nil && len(*profile.Name) > 0 {
+        name = *profile.Name
+    }
+
     var templateMap = struct {
         UserName        string
         AppName         string
         AppDeepLink     template.HTML
+        AuthCode        string
     } {
-        *profile.Name,
+        name,
         config.AppName,
         template.HTML(link),
+        confirmCode,
     }
 
     var confirmationMessage bytes.Buffer
@@ -175,6 +198,7 @@ func UserConfirmation(session *Session, confirmation *BlitzMessage.ConfirmationR
             return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, fmt.Errorf("Unknown confirmation type %d.", contact.ContactType))
     }
 
+    profile.ContactInfo = append(profile.ContactInfo, contact)
     UpdateProfile(profile)
 
     code := BlitzMessage.ResponseCode_RCSuccess
@@ -189,7 +213,7 @@ func UserConfirmation(session *Session, confirmation *BlitzMessage.ConfirmationR
         SendUserMessage(BlitzMessage.Default_Globals_SystemUserID,
                 []string{ *confirmation.InviterUserID },
                 message,
-                BlitzMessage.MessageType_MTNotification,
+                BlitzMessage.UserMessageType_MTNotification,
                 "AppIcon", "")
     }
 
@@ -300,7 +324,7 @@ func AcceptInviteRequest(session *Session, invite *BlitzMessage.AcceptInviteRequ
     code := BlitzMessage.ResponseCode_RCSuccess
     response := &BlitzMessage.ServerResponse {
         ResponseCode:   &code,
-        Response:       &BlitzMessage.ResponseType { AcceptInviteResponse: &inviteResponse},
+        ResponseType:   &BlitzMessage.ResponseType { AcceptInviteResponse: &inviteResponse},
     }
     return response
 }

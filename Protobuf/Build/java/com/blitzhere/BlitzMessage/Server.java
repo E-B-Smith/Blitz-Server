@@ -930,12 +930,6 @@ public final class Server {
       if (isInitialized == 1) return true;
       if (isInitialized == 0) return false;
 
-      if (hasDeviceInfo()) {
-        if (!getDeviceInfo().isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-      }
       if (hasProfile()) {
         if (!getProfile().isInitialized()) {
           memoizedIsInitialized = 0;
@@ -1230,12 +1224,6 @@ public final class Server {
       }
 
       public final boolean isInitialized() {
-        if (hasDeviceInfo()) {
-          if (!getDeviceInfo().isInitialized()) {
-            
-            return false;
-          }
-        }
         if (hasProfile()) {
           if (!getProfile().isInitialized()) {
             

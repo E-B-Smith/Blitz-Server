@@ -62,10 +62,9 @@ NSString *NSStringFromBPlatformType(BPlatformType value) {
 @property (strong) NSString* appID;
 @property (strong) NSString* appVersion;
 @property (strong) NSString* notificationToken;
-@property (strong) BTimestamp* lastContentRefreshDeprecated;
+@property BOOL appIsReleaseVersion;
 @property (strong) NSMutableArray * userTagsArray;
 @property (strong) NSString* deviceUDID;
-@property BOOL appIsReleaseVersion;
 @property Float32 colorDepth;
 @property (strong) NSString* iPAddress;
 @property (strong) NSString* systemBuildVersion;
@@ -165,22 +164,6 @@ NSString *NSStringFromBPlatformType(BPlatformType value) {
   hasNotificationToken_ = !!_value_;
 }
 @synthesize notificationToken;
-- (BOOL) hasLastContentRefreshDeprecated {
-  return !!hasLastContentRefreshDeprecated_;
-}
-- (void) setHasLastContentRefreshDeprecated:(BOOL) _value_ {
-  hasLastContentRefreshDeprecated_ = !!_value_;
-}
-@synthesize lastContentRefreshDeprecated;
-@synthesize userTagsArray;
-@dynamic userTags;
-- (BOOL) hasDeviceUDID {
-  return !!hasDeviceUDID_;
-}
-- (void) setHasDeviceUDID:(BOOL) _value_ {
-  hasDeviceUDID_ = !!_value_;
-}
-@synthesize deviceUDID;
 - (BOOL) hasAppIsReleaseVersion {
   return !!hasAppIsReleaseVersion_;
 }
@@ -193,6 +176,15 @@ NSString *NSStringFromBPlatformType(BPlatformType value) {
 - (void) setAppIsReleaseVersion:(BOOL) _value_ {
   appIsReleaseVersion_ = !!_value_;
 }
+@synthesize userTagsArray;
+@dynamic userTags;
+- (BOOL) hasDeviceUDID {
+  return !!hasDeviceUDID_;
+}
+- (void) setHasDeviceUDID:(BOOL) _value_ {
+  hasDeviceUDID_ = !!_value_;
+}
+@synthesize deviceUDID;
 - (BOOL) hasColorDepth {
   return !!hasColorDepth_;
 }
@@ -236,9 +228,8 @@ NSString *NSStringFromBPlatformType(BPlatformType value) {
     self.appID = @"";
     self.appVersion = @"";
     self.notificationToken = @"";
-    self.lastContentRefreshDeprecated = [BTimestamp defaultInstance];
-    self.deviceUDID = @"";
     self.appIsReleaseVersion = NO;
+    self.deviceUDID = @"";
     self.colorDepth = 0;
     self.iPAddress = @"";
     self.systemBuildVersion = @"";
@@ -265,11 +256,6 @@ static BDeviceInfo* defaultBDeviceInfoInstance = nil;
   return [userTagsArray objectAtIndex:index];
 }
 - (BOOL) isInitialized {
-  if (self.hasLastContentRefreshDeprecated) {
-    if (!self.lastContentRefreshDeprecated.isInitialized) {
-      return NO;
-    }
-  }
   return YES;
 }
 - (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
@@ -312,8 +298,8 @@ static BDeviceInfo* defaultBDeviceInfoInstance = nil;
   if (self.hasNotificationToken) {
     [output writeString:13 value:self.notificationToken];
   }
-  if (self.hasLastContentRefreshDeprecated) {
-    [output writeMessage:14 value:self.lastContentRefreshDeprecated];
+  if (self.hasAppIsReleaseVersion) {
+    [output writeBool:14 value:self.appIsReleaseVersion];
   }
   [self.userTagsArray enumerateObjectsUsingBlock:^(NSString *element, NSUInteger idx, BOOL *stop) {
     [output writeString:15 value:element];
@@ -321,20 +307,17 @@ static BDeviceInfo* defaultBDeviceInfoInstance = nil;
   if (self.hasDeviceUDID) {
     [output writeString:16 value:self.deviceUDID];
   }
-  if (self.hasAppIsReleaseVersion) {
-    [output writeBool:17 value:self.appIsReleaseVersion];
-  }
   if (self.hasColorDepth) {
-    [output writeFloat:18 value:self.colorDepth];
+    [output writeFloat:17 value:self.colorDepth];
   }
   if (self.hasIPAddress) {
-    [output writeString:19 value:self.iPAddress];
+    [output writeString:18 value:self.iPAddress];
   }
   if (self.hasSystemBuildVersion) {
-    [output writeString:20 value:self.systemBuildVersion];
+    [output writeString:19 value:self.systemBuildVersion];
   }
   if (self.hasLocalIPAddress) {
-    [output writeString:21 value:self.localIPAddress];
+    [output writeString:20 value:self.localIPAddress];
   }
   [self.unknownFields writeToCodedOutputStream:output];
 }
@@ -384,8 +367,8 @@ static BDeviceInfo* defaultBDeviceInfoInstance = nil;
   if (self.hasNotificationToken) {
     size_ += computeStringSize(13, self.notificationToken);
   }
-  if (self.hasLastContentRefreshDeprecated) {
-    size_ += computeMessageSize(14, self.lastContentRefreshDeprecated);
+  if (self.hasAppIsReleaseVersion) {
+    size_ += computeBoolSize(14, self.appIsReleaseVersion);
   }
   {
     __block SInt32 dataSize = 0;
@@ -399,20 +382,17 @@ static BDeviceInfo* defaultBDeviceInfoInstance = nil;
   if (self.hasDeviceUDID) {
     size_ += computeStringSize(16, self.deviceUDID);
   }
-  if (self.hasAppIsReleaseVersion) {
-    size_ += computeBoolSize(17, self.appIsReleaseVersion);
-  }
   if (self.hasColorDepth) {
-    size_ += computeFloatSize(18, self.colorDepth);
+    size_ += computeFloatSize(17, self.colorDepth);
   }
   if (self.hasIPAddress) {
-    size_ += computeStringSize(19, self.iPAddress);
+    size_ += computeStringSize(18, self.iPAddress);
   }
   if (self.hasSystemBuildVersion) {
-    size_ += computeStringSize(20, self.systemBuildVersion);
+    size_ += computeStringSize(19, self.systemBuildVersion);
   }
   if (self.hasLocalIPAddress) {
-    size_ += computeStringSize(21, self.localIPAddress);
+    size_ += computeStringSize(20, self.localIPAddress);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -491,20 +471,14 @@ static BDeviceInfo* defaultBDeviceInfoInstance = nil;
   if (self.hasNotificationToken) {
     [output appendFormat:@"%@%@: %@\n", indent, @"notificationToken", self.notificationToken];
   }
-  if (self.hasLastContentRefreshDeprecated) {
-    [output appendFormat:@"%@%@ {\n", indent, @"lastContentRefreshDeprecated"];
-    [self.lastContentRefreshDeprecated writeDescriptionTo:output
-                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
-    [output appendFormat:@"%@}\n", indent];
+  if (self.hasAppIsReleaseVersion) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"appIsReleaseVersion", [NSNumber numberWithBool:self.appIsReleaseVersion]];
   }
   [self.userTagsArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
     [output appendFormat:@"%@%@: %@\n", indent, @"userTags", obj];
   }];
   if (self.hasDeviceUDID) {
     [output appendFormat:@"%@%@: %@\n", indent, @"deviceUDID", self.deviceUDID];
-  }
-  if (self.hasAppIsReleaseVersion) {
-    [output appendFormat:@"%@%@: %@\n", indent, @"appIsReleaseVersion", [NSNumber numberWithBool:self.appIsReleaseVersion]];
   }
   if (self.hasColorDepth) {
     [output appendFormat:@"%@%@: %@\n", indent, @"colorDepth", [NSNumber numberWithFloat:self.colorDepth]];
@@ -562,17 +536,12 @@ static BDeviceInfo* defaultBDeviceInfoInstance = nil;
   if (self.hasNotificationToken) {
     [dictionary setObject: self.notificationToken forKey: @"notificationToken"];
   }
-  if (self.hasLastContentRefreshDeprecated) {
-   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
-   [self.lastContentRefreshDeprecated storeInDictionary:messageDictionary];
-   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"lastContentRefreshDeprecated"];
+  if (self.hasAppIsReleaseVersion) {
+    [dictionary setObject: [NSNumber numberWithBool:self.appIsReleaseVersion] forKey: @"appIsReleaseVersion"];
   }
   [dictionary setObject:self.userTags forKey: @"userTags"];
   if (self.hasDeviceUDID) {
     [dictionary setObject: self.deviceUDID forKey: @"deviceUDID"];
-  }
-  if (self.hasAppIsReleaseVersion) {
-    [dictionary setObject: [NSNumber numberWithBool:self.appIsReleaseVersion] forKey: @"appIsReleaseVersion"];
   }
   if (self.hasColorDepth) {
     [dictionary setObject: [NSNumber numberWithFloat:self.colorDepth] forKey: @"colorDepth"];
@@ -623,13 +592,11 @@ static BDeviceInfo* defaultBDeviceInfoInstance = nil;
       (!self.hasAppVersion || [self.appVersion isEqual:otherMessage.appVersion]) &&
       self.hasNotificationToken == otherMessage.hasNotificationToken &&
       (!self.hasNotificationToken || [self.notificationToken isEqual:otherMessage.notificationToken]) &&
-      self.hasLastContentRefreshDeprecated == otherMessage.hasLastContentRefreshDeprecated &&
-      (!self.hasLastContentRefreshDeprecated || [self.lastContentRefreshDeprecated isEqual:otherMessage.lastContentRefreshDeprecated]) &&
+      self.hasAppIsReleaseVersion == otherMessage.hasAppIsReleaseVersion &&
+      (!self.hasAppIsReleaseVersion || self.appIsReleaseVersion == otherMessage.appIsReleaseVersion) &&
       [self.userTagsArray isEqualToArray:otherMessage.userTagsArray] &&
       self.hasDeviceUDID == otherMessage.hasDeviceUDID &&
       (!self.hasDeviceUDID || [self.deviceUDID isEqual:otherMessage.deviceUDID]) &&
-      self.hasAppIsReleaseVersion == otherMessage.hasAppIsReleaseVersion &&
-      (!self.hasAppIsReleaseVersion || self.appIsReleaseVersion == otherMessage.appIsReleaseVersion) &&
       self.hasColorDepth == otherMessage.hasColorDepth &&
       (!self.hasColorDepth || self.colorDepth == otherMessage.colorDepth) &&
       self.hasIPAddress == otherMessage.hasIPAddress &&
@@ -681,17 +648,14 @@ static BDeviceInfo* defaultBDeviceInfoInstance = nil;
   if (self.hasNotificationToken) {
     hashCode = hashCode * 31 + [self.notificationToken hash];
   }
-  if (self.hasLastContentRefreshDeprecated) {
-    hashCode = hashCode * 31 + [self.lastContentRefreshDeprecated hash];
+  if (self.hasAppIsReleaseVersion) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithBool:self.appIsReleaseVersion] hash];
   }
   [self.userTagsArray enumerateObjectsUsingBlock:^(NSString *element, NSUInteger idx, BOOL *stop) {
     hashCode = hashCode * 31 + [element hash];
   }];
   if (self.hasDeviceUDID) {
     hashCode = hashCode * 31 + [self.deviceUDID hash];
-  }
-  if (self.hasAppIsReleaseVersion) {
-    hashCode = hashCode * 31 + [[NSNumber numberWithBool:self.appIsReleaseVersion] hash];
   }
   if (self.hasColorDepth) {
     hashCode = hashCode * 31 + [[NSNumber numberWithFloat:self.colorDepth] hash];
@@ -787,8 +751,8 @@ static BDeviceInfo* defaultBDeviceInfoInstance = nil;
   if (other.hasNotificationToken) {
     [self setNotificationToken:other.notificationToken];
   }
-  if (other.hasLastContentRefreshDeprecated) {
-    [self mergeLastContentRefreshDeprecated:other.lastContentRefreshDeprecated];
+  if (other.hasAppIsReleaseVersion) {
+    [self setAppIsReleaseVersion:other.appIsReleaseVersion];
   }
   if (other.userTagsArray.count > 0) {
     if (resultDeviceInfo.userTagsArray == nil) {
@@ -799,9 +763,6 @@ static BDeviceInfo* defaultBDeviceInfoInstance = nil;
   }
   if (other.hasDeviceUDID) {
     [self setDeviceUDID:other.deviceUDID];
-  }
-  if (other.hasAppIsReleaseVersion) {
-    [self setAppIsReleaseVersion:other.appIsReleaseVersion];
   }
   if (other.hasColorDepth) {
     [self setColorDepth:other.colorDepth];
@@ -898,13 +859,8 @@ static BDeviceInfo* defaultBDeviceInfoInstance = nil;
         [self setNotificationToken:[input readString]];
         break;
       }
-      case 114: {
-        BTimestampBuilder* subBuilder = [BTimestamp builder];
-        if (self.hasLastContentRefreshDeprecated) {
-          [subBuilder mergeFrom:self.lastContentRefreshDeprecated];
-        }
-        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
-        [self setLastContentRefreshDeprecated:[subBuilder buildPartial]];
+      case 112: {
+        [self setAppIsReleaseVersion:[input readBool]];
         break;
       }
       case 122: {
@@ -915,23 +871,19 @@ static BDeviceInfo* defaultBDeviceInfoInstance = nil;
         [self setDeviceUDID:[input readString]];
         break;
       }
-      case 136: {
-        [self setAppIsReleaseVersion:[input readBool]];
-        break;
-      }
-      case 149: {
+      case 141: {
         [self setColorDepth:[input readFloat]];
         break;
       }
-      case 154: {
+      case 146: {
         [self setIPAddress:[input readString]];
         break;
       }
-      case 162: {
+      case 154: {
         [self setSystemBuildVersion:[input readString]];
         break;
       }
-      case 170: {
+      case 162: {
         [self setLocalIPAddress:[input readString]];
         break;
       }
@@ -1160,34 +1112,20 @@ static BDeviceInfo* defaultBDeviceInfoInstance = nil;
   resultDeviceInfo.notificationToken = @"";
   return self;
 }
-- (BOOL) hasLastContentRefreshDeprecated {
-  return resultDeviceInfo.hasLastContentRefreshDeprecated;
+- (BOOL) hasAppIsReleaseVersion {
+  return resultDeviceInfo.hasAppIsReleaseVersion;
 }
-- (BTimestamp*) lastContentRefreshDeprecated {
-  return resultDeviceInfo.lastContentRefreshDeprecated;
+- (BOOL) appIsReleaseVersion {
+  return resultDeviceInfo.appIsReleaseVersion;
 }
-- (BDeviceInfoBuilder*) setLastContentRefreshDeprecated:(BTimestamp*) value {
-  resultDeviceInfo.hasLastContentRefreshDeprecated = YES;
-  resultDeviceInfo.lastContentRefreshDeprecated = value;
+- (BDeviceInfoBuilder*) setAppIsReleaseVersion:(BOOL) value {
+  resultDeviceInfo.hasAppIsReleaseVersion = YES;
+  resultDeviceInfo.appIsReleaseVersion = value;
   return self;
 }
-- (BDeviceInfoBuilder*) setLastContentRefreshDeprecatedBuilder:(BTimestampBuilder*) builderForValue {
-  return [self setLastContentRefreshDeprecated:[builderForValue build]];
-}
-- (BDeviceInfoBuilder*) mergeLastContentRefreshDeprecated:(BTimestamp*) value {
-  if (resultDeviceInfo.hasLastContentRefreshDeprecated &&
-      resultDeviceInfo.lastContentRefreshDeprecated != [BTimestamp defaultInstance]) {
-    resultDeviceInfo.lastContentRefreshDeprecated =
-      [[[BTimestamp builderWithPrototype:resultDeviceInfo.lastContentRefreshDeprecated] mergeFrom:value] buildPartial];
-  } else {
-    resultDeviceInfo.lastContentRefreshDeprecated = value;
-  }
-  resultDeviceInfo.hasLastContentRefreshDeprecated = YES;
-  return self;
-}
-- (BDeviceInfoBuilder*) clearLastContentRefreshDeprecated {
-  resultDeviceInfo.hasLastContentRefreshDeprecated = NO;
-  resultDeviceInfo.lastContentRefreshDeprecated = [BTimestamp defaultInstance];
+- (BDeviceInfoBuilder*) clearAppIsReleaseVersion {
+  resultDeviceInfo.hasAppIsReleaseVersion = NO;
+  resultDeviceInfo.appIsReleaseVersion = NO;
   return self;
 }
 - (NSMutableArray *)userTags {
@@ -1225,22 +1163,6 @@ static BDeviceInfo* defaultBDeviceInfoInstance = nil;
 - (BDeviceInfoBuilder*) clearDeviceUDID {
   resultDeviceInfo.hasDeviceUDID = NO;
   resultDeviceInfo.deviceUDID = @"";
-  return self;
-}
-- (BOOL) hasAppIsReleaseVersion {
-  return resultDeviceInfo.hasAppIsReleaseVersion;
-}
-- (BOOL) appIsReleaseVersion {
-  return resultDeviceInfo.appIsReleaseVersion;
-}
-- (BDeviceInfoBuilder*) setAppIsReleaseVersion:(BOOL) value {
-  resultDeviceInfo.hasAppIsReleaseVersion = YES;
-  resultDeviceInfo.appIsReleaseVersion = value;
-  return self;
-}
-- (BDeviceInfoBuilder*) clearAppIsReleaseVersion {
-  resultDeviceInfo.hasAppIsReleaseVersion = NO;
-  resultDeviceInfo.appIsReleaseVersion = NO;
   return self;
 }
 - (BOOL) hasColorDepth {

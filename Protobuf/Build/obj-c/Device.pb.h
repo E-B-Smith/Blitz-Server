@@ -105,10 +105,9 @@ NSString *NSStringFromBPlatformType(BPlatformType value);
 #define DeviceInfo_appID @"appID"
 #define DeviceInfo_appVersion @"appVersion"
 #define DeviceInfo_notificationToken @"notificationToken"
-#define DeviceInfo_lastContentRefresh_Deprecated @"lastContentRefreshDeprecated"
+#define DeviceInfo_appIsReleaseVersion @"appIsReleaseVersion"
 #define DeviceInfo_userTags @"userTags"
 #define DeviceInfo_deviceUDID @"deviceUDID"
-#define DeviceInfo_appIsReleaseVersion @"appIsReleaseVersion"
 #define DeviceInfo_colorDepth @"colorDepth"
 #define DeviceInfo_IPAddress @"iPAddress"
 #define DeviceInfo_systemBuildVersion @"systemBuildVersion"
@@ -133,7 +132,6 @@ NSString *NSStringFromBPlatformType(BPlatformType value);
   BOOL hasSystemBuildVersion_:1;
   BOOL hasLocalIPAddress_:1;
   BOOL hasScreenSize_:1;
-  BOOL hasLastContentRefreshDeprecated_:1;
   BOOL hasPlatformType_:1;
   BOOL appIsReleaseVersion_:1;
   Float32 screenScale;
@@ -153,7 +151,6 @@ NSString *NSStringFromBPlatformType(BPlatformType value);
   NSString* systemBuildVersion;
   NSString* localIPAddress;
   BSize* screenSize;
-  BTimestamp* lastContentRefreshDeprecated;
   BPlatformType platformType;
   NSMutableArray * userTagsArray;
 }
@@ -170,9 +167,8 @@ NSString *NSStringFromBPlatformType(BPlatformType value);
 - (BOOL) hasAppID;
 - (BOOL) hasAppVersion;
 - (BOOL) hasNotificationToken;
-- (BOOL) hasLastContentRefreshDeprecated;
-- (BOOL) hasDeviceUDID;
 - (BOOL) hasAppIsReleaseVersion;
+- (BOOL) hasDeviceUDID;
 - (BOOL) hasColorDepth;
 - (BOOL) hasIPAddress;
 - (BOOL) hasSystemBuildVersion;
@@ -190,10 +186,9 @@ NSString *NSStringFromBPlatformType(BPlatformType value);
 @property (readonly, strong) NSString* appID;
 @property (readonly, strong) NSString* appVersion;
 @property (readonly, strong) NSString* notificationToken;
-@property (readonly, strong) BTimestamp* lastContentRefreshDeprecated;
+- (BOOL) appIsReleaseVersion;
 @property (readonly, strong) NSArray * userTags;
 @property (readonly, strong) NSString* deviceUDID;
-- (BOOL) appIsReleaseVersion;
 @property (readonly) Float32 colorDepth;
 @property (readonly, strong) NSString* iPAddress;
 @property (readonly, strong) NSString* systemBuildVersion;
@@ -302,12 +297,10 @@ NSString *NSStringFromBPlatformType(BPlatformType value);
 - (BDeviceInfoBuilder*) setNotificationToken:(NSString*) value;
 - (BDeviceInfoBuilder*) clearNotificationToken;
 
-- (BOOL) hasLastContentRefreshDeprecated;
-- (BTimestamp*) lastContentRefreshDeprecated;
-- (BDeviceInfoBuilder*) setLastContentRefreshDeprecated:(BTimestamp*) value;
-- (BDeviceInfoBuilder*) setLastContentRefreshDeprecatedBuilder:(BTimestampBuilder*) builderForValue;
-- (BDeviceInfoBuilder*) mergeLastContentRefreshDeprecated:(BTimestamp*) value;
-- (BDeviceInfoBuilder*) clearLastContentRefreshDeprecated;
+- (BOOL) hasAppIsReleaseVersion;
+- (BOOL) appIsReleaseVersion;
+- (BDeviceInfoBuilder*) setAppIsReleaseVersion:(BOOL) value;
+- (BDeviceInfoBuilder*) clearAppIsReleaseVersion;
 
 - (NSMutableArray *)userTags;
 - (NSString*)userTagsAtIndex:(NSUInteger)index;
@@ -319,11 +312,6 @@ NSString *NSStringFromBPlatformType(BPlatformType value);
 - (NSString*) deviceUDID;
 - (BDeviceInfoBuilder*) setDeviceUDID:(NSString*) value;
 - (BDeviceInfoBuilder*) clearDeviceUDID;
-
-- (BOOL) hasAppIsReleaseVersion;
-- (BOOL) appIsReleaseVersion;
-- (BDeviceInfoBuilder*) setAppIsReleaseVersion:(BOOL) value;
-- (BDeviceInfoBuilder*) clearAppIsReleaseVersion;
 
 - (BOOL) hasColorDepth;
 - (Float32) colorDepth;

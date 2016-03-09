@@ -112,7 +112,7 @@ func UploadImage(session *Session, imageUpload *BlitzMessage.ImageUpload,
     code := BlitzMessage.ResponseCode_RCSuccess
     response := &BlitzMessage.ServerResponse {
         ResponseCode: &code,
-        Response:     &BlitzMessage.ResponseType { ImageUploadReply:  &replyImageUpload },
+        ResponseType: &BlitzMessage.ResponseType { ImageUploadReply:  &replyImageUpload },
     }
     return response
 }

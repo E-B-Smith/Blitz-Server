@@ -296,17 +296,13 @@ public final class Device {
         getNotificationTokenBytes();
 
     /**
-     * <code>optional .BlitzMessage.Timestamp lastContentRefresh_Deprecated = 14;</code>
+     * <code>optional bool appIsReleaseVersion = 14;</code>
      */
-    boolean hasLastContentRefreshDeprecated();
+    boolean hasAppIsReleaseVersion();
     /**
-     * <code>optional .BlitzMessage.Timestamp lastContentRefresh_Deprecated = 14;</code>
+     * <code>optional bool appIsReleaseVersion = 14;</code>
      */
-    com.blitzhere.BlitzMessage.Types.Timestamp getLastContentRefreshDeprecated();
-    /**
-     * <code>optional .BlitzMessage.Timestamp lastContentRefresh_Deprecated = 14;</code>
-     */
-    com.blitzhere.BlitzMessage.Types.TimestampOrBuilder getLastContentRefreshDeprecatedOrBuilder();
+    boolean getAppIsReleaseVersion();
 
     /**
      * <code>repeated string userTags = 15;</code>
@@ -342,61 +338,52 @@ public final class Device {
         getDeviceUDIDBytes();
 
     /**
-     * <code>optional bool appIsReleaseVersion = 17;</code>
-     */
-    boolean hasAppIsReleaseVersion();
-    /**
-     * <code>optional bool appIsReleaseVersion = 17;</code>
-     */
-    boolean getAppIsReleaseVersion();
-
-    /**
-     * <code>optional float colorDepth = 18;</code>
+     * <code>optional float colorDepth = 17;</code>
      */
     boolean hasColorDepth();
     /**
-     * <code>optional float colorDepth = 18;</code>
+     * <code>optional float colorDepth = 17;</code>
      */
     float getColorDepth();
 
     /**
-     * <code>optional string IPAddress = 19;</code>
+     * <code>optional string IPAddress = 18;</code>
      */
     boolean hasIPAddress();
     /**
-     * <code>optional string IPAddress = 19;</code>
+     * <code>optional string IPAddress = 18;</code>
      */
     java.lang.String getIPAddress();
     /**
-     * <code>optional string IPAddress = 19;</code>
+     * <code>optional string IPAddress = 18;</code>
      */
     com.google.protobuf.ByteString
         getIPAddressBytes();
 
     /**
-     * <code>optional string systemBuildVersion = 20;</code>
+     * <code>optional string systemBuildVersion = 19;</code>
      */
     boolean hasSystemBuildVersion();
     /**
-     * <code>optional string systemBuildVersion = 20;</code>
+     * <code>optional string systemBuildVersion = 19;</code>
      */
     java.lang.String getSystemBuildVersion();
     /**
-     * <code>optional string systemBuildVersion = 20;</code>
+     * <code>optional string systemBuildVersion = 19;</code>
      */
     com.google.protobuf.ByteString
         getSystemBuildVersionBytes();
 
     /**
-     * <code>optional string localIPAddress = 21;</code>
+     * <code>optional string localIPAddress = 20;</code>
      */
     boolean hasLocalIPAddress();
     /**
-     * <code>optional string localIPAddress = 21;</code>
+     * <code>optional string localIPAddress = 20;</code>
      */
     java.lang.String getLocalIPAddress();
     /**
-     * <code>optional string localIPAddress = 21;</code>
+     * <code>optional string localIPAddress = 20;</code>
      */
     com.google.protobuf.ByteString
         getLocalIPAddressBytes();
@@ -542,17 +529,9 @@ public final class Device {
               notificationToken_ = bs;
               break;
             }
-            case 114: {
-              com.blitzhere.BlitzMessage.Types.Timestamp.Builder subBuilder = null;
-              if (((bitField0_ & 0x00002000) == 0x00002000)) {
-                subBuilder = lastContentRefreshDeprecated_.toBuilder();
-              }
-              lastContentRefreshDeprecated_ = input.readMessage(com.blitzhere.BlitzMessage.Types.Timestamp.PARSER, extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(lastContentRefreshDeprecated_);
-                lastContentRefreshDeprecated_ = subBuilder.buildPartial();
-              }
+            case 112: {
               bitField0_ |= 0x00002000;
+              appIsReleaseVersion_ = input.readBool();
               break;
             }
             case 122: {
@@ -570,31 +549,26 @@ public final class Device {
               deviceUDID_ = bs;
               break;
             }
-            case 136: {
+            case 141: {
               bitField0_ |= 0x00008000;
-              appIsReleaseVersion_ = input.readBool();
+              colorDepth_ = input.readFloat();
               break;
             }
-            case 149: {
+            case 146: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00010000;
-              colorDepth_ = input.readFloat();
+              iPAddress_ = bs;
               break;
             }
             case 154: {
               com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00020000;
-              iPAddress_ = bs;
+              systemBuildVersion_ = bs;
               break;
             }
             case 162: {
               com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00040000;
-              systemBuildVersion_ = bs;
-              break;
-            }
-            case 170: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00080000;
               localIPAddress_ = bs;
               break;
             }
@@ -1124,25 +1098,19 @@ public final class Device {
       }
     }
 
-    public static final int LASTCONTENTREFRESH_DEPRECATED_FIELD_NUMBER = 14;
-    private com.blitzhere.BlitzMessage.Types.Timestamp lastContentRefreshDeprecated_;
+    public static final int APPISRELEASEVERSION_FIELD_NUMBER = 14;
+    private boolean appIsReleaseVersion_;
     /**
-     * <code>optional .BlitzMessage.Timestamp lastContentRefresh_Deprecated = 14;</code>
+     * <code>optional bool appIsReleaseVersion = 14;</code>
      */
-    public boolean hasLastContentRefreshDeprecated() {
+    public boolean hasAppIsReleaseVersion() {
       return ((bitField0_ & 0x00002000) == 0x00002000);
     }
     /**
-     * <code>optional .BlitzMessage.Timestamp lastContentRefresh_Deprecated = 14;</code>
+     * <code>optional bool appIsReleaseVersion = 14;</code>
      */
-    public com.blitzhere.BlitzMessage.Types.Timestamp getLastContentRefreshDeprecated() {
-      return lastContentRefreshDeprecated_;
-    }
-    /**
-     * <code>optional .BlitzMessage.Timestamp lastContentRefresh_Deprecated = 14;</code>
-     */
-    public com.blitzhere.BlitzMessage.Types.TimestampOrBuilder getLastContentRefreshDeprecatedOrBuilder() {
-      return lastContentRefreshDeprecated_;
+    public boolean getAppIsReleaseVersion() {
+      return appIsReleaseVersion_;
     }
 
     public static final int USERTAGS_FIELD_NUMBER = 15;
@@ -1216,46 +1184,31 @@ public final class Device {
       }
     }
 
-    public static final int APPISRELEASEVERSION_FIELD_NUMBER = 17;
-    private boolean appIsReleaseVersion_;
+    public static final int COLORDEPTH_FIELD_NUMBER = 17;
+    private float colorDepth_;
     /**
-     * <code>optional bool appIsReleaseVersion = 17;</code>
+     * <code>optional float colorDepth = 17;</code>
      */
-    public boolean hasAppIsReleaseVersion() {
+    public boolean hasColorDepth() {
       return ((bitField0_ & 0x00008000) == 0x00008000);
     }
     /**
-     * <code>optional bool appIsReleaseVersion = 17;</code>
-     */
-    public boolean getAppIsReleaseVersion() {
-      return appIsReleaseVersion_;
-    }
-
-    public static final int COLORDEPTH_FIELD_NUMBER = 18;
-    private float colorDepth_;
-    /**
-     * <code>optional float colorDepth = 18;</code>
-     */
-    public boolean hasColorDepth() {
-      return ((bitField0_ & 0x00010000) == 0x00010000);
-    }
-    /**
-     * <code>optional float colorDepth = 18;</code>
+     * <code>optional float colorDepth = 17;</code>
      */
     public float getColorDepth() {
       return colorDepth_;
     }
 
-    public static final int IPADDRESS_FIELD_NUMBER = 19;
+    public static final int IPADDRESS_FIELD_NUMBER = 18;
     private java.lang.Object iPAddress_;
     /**
-     * <code>optional string IPAddress = 19;</code>
+     * <code>optional string IPAddress = 18;</code>
      */
     public boolean hasIPAddress() {
-      return ((bitField0_ & 0x00020000) == 0x00020000);
+      return ((bitField0_ & 0x00010000) == 0x00010000);
     }
     /**
-     * <code>optional string IPAddress = 19;</code>
+     * <code>optional string IPAddress = 18;</code>
      */
     public java.lang.String getIPAddress() {
       java.lang.Object ref = iPAddress_;
@@ -1272,7 +1225,7 @@ public final class Device {
       }
     }
     /**
-     * <code>optional string IPAddress = 19;</code>
+     * <code>optional string IPAddress = 18;</code>
      */
     public com.google.protobuf.ByteString
         getIPAddressBytes() {
@@ -1288,16 +1241,16 @@ public final class Device {
       }
     }
 
-    public static final int SYSTEMBUILDVERSION_FIELD_NUMBER = 20;
+    public static final int SYSTEMBUILDVERSION_FIELD_NUMBER = 19;
     private java.lang.Object systemBuildVersion_;
     /**
-     * <code>optional string systemBuildVersion = 20;</code>
+     * <code>optional string systemBuildVersion = 19;</code>
      */
     public boolean hasSystemBuildVersion() {
-      return ((bitField0_ & 0x00040000) == 0x00040000);
+      return ((bitField0_ & 0x00020000) == 0x00020000);
     }
     /**
-     * <code>optional string systemBuildVersion = 20;</code>
+     * <code>optional string systemBuildVersion = 19;</code>
      */
     public java.lang.String getSystemBuildVersion() {
       java.lang.Object ref = systemBuildVersion_;
@@ -1314,7 +1267,7 @@ public final class Device {
       }
     }
     /**
-     * <code>optional string systemBuildVersion = 20;</code>
+     * <code>optional string systemBuildVersion = 19;</code>
      */
     public com.google.protobuf.ByteString
         getSystemBuildVersionBytes() {
@@ -1330,16 +1283,16 @@ public final class Device {
       }
     }
 
-    public static final int LOCALIPADDRESS_FIELD_NUMBER = 21;
+    public static final int LOCALIPADDRESS_FIELD_NUMBER = 20;
     private java.lang.Object localIPAddress_;
     /**
-     * <code>optional string localIPAddress = 21;</code>
+     * <code>optional string localIPAddress = 20;</code>
      */
     public boolean hasLocalIPAddress() {
-      return ((bitField0_ & 0x00080000) == 0x00080000);
+      return ((bitField0_ & 0x00040000) == 0x00040000);
     }
     /**
-     * <code>optional string localIPAddress = 21;</code>
+     * <code>optional string localIPAddress = 20;</code>
      */
     public java.lang.String getLocalIPAddress() {
       java.lang.Object ref = localIPAddress_;
@@ -1356,7 +1309,7 @@ public final class Device {
       }
     }
     /**
-     * <code>optional string localIPAddress = 21;</code>
+     * <code>optional string localIPAddress = 20;</code>
      */
     public com.google.protobuf.ByteString
         getLocalIPAddressBytes() {
@@ -1386,10 +1339,9 @@ public final class Device {
       appID_ = "";
       appVersion_ = "";
       notificationToken_ = "";
-      lastContentRefreshDeprecated_ = com.blitzhere.BlitzMessage.Types.Timestamp.getDefaultInstance();
+      appIsReleaseVersion_ = false;
       userTags_ = com.google.protobuf.LazyStringArrayList.EMPTY;
       deviceUDID_ = "";
-      appIsReleaseVersion_ = false;
       colorDepth_ = 0F;
       iPAddress_ = "";
       systemBuildVersion_ = "";
@@ -1401,12 +1353,6 @@ public final class Device {
       if (isInitialized == 1) return true;
       if (isInitialized == 0) return false;
 
-      if (hasLastContentRefreshDeprecated()) {
-        if (!getLastContentRefreshDeprecated().isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-      }
       memoizedIsInitialized = 1;
       return true;
     }
@@ -1454,7 +1400,7 @@ public final class Device {
         output.writeBytes(13, getNotificationTokenBytes());
       }
       if (((bitField0_ & 0x00002000) == 0x00002000)) {
-        output.writeMessage(14, lastContentRefreshDeprecated_);
+        output.writeBool(14, appIsReleaseVersion_);
       }
       for (int i = 0; i < userTags_.size(); i++) {
         output.writeBytes(15, userTags_.getByteString(i));
@@ -1463,19 +1409,16 @@ public final class Device {
         output.writeBytes(16, getDeviceUDIDBytes());
       }
       if (((bitField0_ & 0x00008000) == 0x00008000)) {
-        output.writeBool(17, appIsReleaseVersion_);
+        output.writeFloat(17, colorDepth_);
       }
       if (((bitField0_ & 0x00010000) == 0x00010000)) {
-        output.writeFloat(18, colorDepth_);
+        output.writeBytes(18, getIPAddressBytes());
       }
       if (((bitField0_ & 0x00020000) == 0x00020000)) {
-        output.writeBytes(19, getIPAddressBytes());
+        output.writeBytes(19, getSystemBuildVersionBytes());
       }
       if (((bitField0_ & 0x00040000) == 0x00040000)) {
-        output.writeBytes(20, getSystemBuildVersionBytes());
-      }
-      if (((bitField0_ & 0x00080000) == 0x00080000)) {
-        output.writeBytes(21, getLocalIPAddressBytes());
+        output.writeBytes(20, getLocalIPAddressBytes());
       }
       getUnknownFields().writeTo(output);
     }
@@ -1540,7 +1483,7 @@ public final class Device {
       }
       if (((bitField0_ & 0x00002000) == 0x00002000)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(14, lastContentRefreshDeprecated_);
+          .computeBoolSize(14, appIsReleaseVersion_);
       }
       {
         int dataSize = 0;
@@ -1557,23 +1500,19 @@ public final class Device {
       }
       if (((bitField0_ & 0x00008000) == 0x00008000)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBoolSize(17, appIsReleaseVersion_);
+          .computeFloatSize(17, colorDepth_);
       }
       if (((bitField0_ & 0x00010000) == 0x00010000)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeFloatSize(18, colorDepth_);
+          .computeBytesSize(18, getIPAddressBytes());
       }
       if (((bitField0_ & 0x00020000) == 0x00020000)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(19, getIPAddressBytes());
+          .computeBytesSize(19, getSystemBuildVersionBytes());
       }
       if (((bitField0_ & 0x00040000) == 0x00040000)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(20, getSystemBuildVersionBytes());
-      }
-      if (((bitField0_ & 0x00080000) == 0x00080000)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(21, getLocalIPAddressBytes());
+          .computeBytesSize(20, getLocalIPAddressBytes());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -1685,7 +1624,6 @@ public final class Device {
       private void maybeForceBuilderInitialization() {
         if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
           getScreenSizeFieldBuilder();
-          getLastContentRefreshDeprecatedFieldBuilder();
         }
       }
       private static Builder create() {
@@ -1724,26 +1662,20 @@ public final class Device {
         bitField0_ = (bitField0_ & ~0x00000800);
         notificationToken_ = "";
         bitField0_ = (bitField0_ & ~0x00001000);
-        if (lastContentRefreshDeprecatedBuilder_ == null) {
-          lastContentRefreshDeprecated_ = com.blitzhere.BlitzMessage.Types.Timestamp.getDefaultInstance();
-        } else {
-          lastContentRefreshDeprecatedBuilder_.clear();
-        }
+        appIsReleaseVersion_ = false;
         bitField0_ = (bitField0_ & ~0x00002000);
         userTags_ = com.google.protobuf.LazyStringArrayList.EMPTY;
         bitField0_ = (bitField0_ & ~0x00004000);
         deviceUDID_ = "";
         bitField0_ = (bitField0_ & ~0x00008000);
-        appIsReleaseVersion_ = false;
-        bitField0_ = (bitField0_ & ~0x00010000);
         colorDepth_ = 0F;
-        bitField0_ = (bitField0_ & ~0x00020000);
+        bitField0_ = (bitField0_ & ~0x00010000);
         iPAddress_ = "";
-        bitField0_ = (bitField0_ & ~0x00040000);
+        bitField0_ = (bitField0_ & ~0x00020000);
         systemBuildVersion_ = "";
-        bitField0_ = (bitField0_ & ~0x00080000);
+        bitField0_ = (bitField0_ & ~0x00040000);
         localIPAddress_ = "";
-        bitField0_ = (bitField0_ & ~0x00100000);
+        bitField0_ = (bitField0_ & ~0x00080000);
         return this;
       }
 
@@ -1831,11 +1763,7 @@ public final class Device {
         if (((from_bitField0_ & 0x00002000) == 0x00002000)) {
           to_bitField0_ |= 0x00002000;
         }
-        if (lastContentRefreshDeprecatedBuilder_ == null) {
-          result.lastContentRefreshDeprecated_ = lastContentRefreshDeprecated_;
-        } else {
-          result.lastContentRefreshDeprecated_ = lastContentRefreshDeprecatedBuilder_.build();
-        }
+        result.appIsReleaseVersion_ = appIsReleaseVersion_;
         if (((bitField0_ & 0x00004000) == 0x00004000)) {
           userTags_ = userTags_.getUnmodifiableView();
           bitField0_ = (bitField0_ & ~0x00004000);
@@ -1848,21 +1776,17 @@ public final class Device {
         if (((from_bitField0_ & 0x00010000) == 0x00010000)) {
           to_bitField0_ |= 0x00008000;
         }
-        result.appIsReleaseVersion_ = appIsReleaseVersion_;
+        result.colorDepth_ = colorDepth_;
         if (((from_bitField0_ & 0x00020000) == 0x00020000)) {
           to_bitField0_ |= 0x00010000;
         }
-        result.colorDepth_ = colorDepth_;
+        result.iPAddress_ = iPAddress_;
         if (((from_bitField0_ & 0x00040000) == 0x00040000)) {
           to_bitField0_ |= 0x00020000;
         }
-        result.iPAddress_ = iPAddress_;
+        result.systemBuildVersion_ = systemBuildVersion_;
         if (((from_bitField0_ & 0x00080000) == 0x00080000)) {
           to_bitField0_ |= 0x00040000;
-        }
-        result.systemBuildVersion_ = systemBuildVersion_;
-        if (((from_bitField0_ & 0x00100000) == 0x00100000)) {
-          to_bitField0_ |= 0x00080000;
         }
         result.localIPAddress_ = localIPAddress_;
         result.bitField0_ = to_bitField0_;
@@ -1940,8 +1864,8 @@ public final class Device {
           notificationToken_ = other.notificationToken_;
           onChanged();
         }
-        if (other.hasLastContentRefreshDeprecated()) {
-          mergeLastContentRefreshDeprecated(other.getLastContentRefreshDeprecated());
+        if (other.hasAppIsReleaseVersion()) {
+          setAppIsReleaseVersion(other.getAppIsReleaseVersion());
         }
         if (!other.userTags_.isEmpty()) {
           if (userTags_.isEmpty()) {
@@ -1958,24 +1882,21 @@ public final class Device {
           deviceUDID_ = other.deviceUDID_;
           onChanged();
         }
-        if (other.hasAppIsReleaseVersion()) {
-          setAppIsReleaseVersion(other.getAppIsReleaseVersion());
-        }
         if (other.hasColorDepth()) {
           setColorDepth(other.getColorDepth());
         }
         if (other.hasIPAddress()) {
-          bitField0_ |= 0x00040000;
+          bitField0_ |= 0x00020000;
           iPAddress_ = other.iPAddress_;
           onChanged();
         }
         if (other.hasSystemBuildVersion()) {
-          bitField0_ |= 0x00080000;
+          bitField0_ |= 0x00040000;
           systemBuildVersion_ = other.systemBuildVersion_;
           onChanged();
         }
         if (other.hasLocalIPAddress()) {
-          bitField0_ |= 0x00100000;
+          bitField0_ |= 0x00080000;
           localIPAddress_ = other.localIPAddress_;
           onChanged();
         }
@@ -1984,12 +1905,6 @@ public final class Device {
       }
 
       public final boolean isInitialized() {
-        if (hasLastContentRefreshDeprecated()) {
-          if (!getLastContentRefreshDeprecated().isInitialized()) {
-            
-            return false;
-          }
-        }
         return true;
       }
 
@@ -2979,120 +2894,36 @@ public final class Device {
         return this;
       }
 
-      private com.blitzhere.BlitzMessage.Types.Timestamp lastContentRefreshDeprecated_ = com.blitzhere.BlitzMessage.Types.Timestamp.getDefaultInstance();
-      private com.google.protobuf.SingleFieldBuilder<
-          com.blitzhere.BlitzMessage.Types.Timestamp, com.blitzhere.BlitzMessage.Types.Timestamp.Builder, com.blitzhere.BlitzMessage.Types.TimestampOrBuilder> lastContentRefreshDeprecatedBuilder_;
+      private boolean appIsReleaseVersion_ ;
       /**
-       * <code>optional .BlitzMessage.Timestamp lastContentRefresh_Deprecated = 14;</code>
+       * <code>optional bool appIsReleaseVersion = 14;</code>
        */
-      public boolean hasLastContentRefreshDeprecated() {
+      public boolean hasAppIsReleaseVersion() {
         return ((bitField0_ & 0x00002000) == 0x00002000);
       }
       /**
-       * <code>optional .BlitzMessage.Timestamp lastContentRefresh_Deprecated = 14;</code>
+       * <code>optional bool appIsReleaseVersion = 14;</code>
        */
-      public com.blitzhere.BlitzMessage.Types.Timestamp getLastContentRefreshDeprecated() {
-        if (lastContentRefreshDeprecatedBuilder_ == null) {
-          return lastContentRefreshDeprecated_;
-        } else {
-          return lastContentRefreshDeprecatedBuilder_.getMessage();
-        }
+      public boolean getAppIsReleaseVersion() {
+        return appIsReleaseVersion_;
       }
       /**
-       * <code>optional .BlitzMessage.Timestamp lastContentRefresh_Deprecated = 14;</code>
+       * <code>optional bool appIsReleaseVersion = 14;</code>
        */
-      public Builder setLastContentRefreshDeprecated(com.blitzhere.BlitzMessage.Types.Timestamp value) {
-        if (lastContentRefreshDeprecatedBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          lastContentRefreshDeprecated_ = value;
-          onChanged();
-        } else {
-          lastContentRefreshDeprecatedBuilder_.setMessage(value);
-        }
+      public Builder setAppIsReleaseVersion(boolean value) {
         bitField0_ |= 0x00002000;
-        return this;
-      }
-      /**
-       * <code>optional .BlitzMessage.Timestamp lastContentRefresh_Deprecated = 14;</code>
-       */
-      public Builder setLastContentRefreshDeprecated(
-          com.blitzhere.BlitzMessage.Types.Timestamp.Builder builderForValue) {
-        if (lastContentRefreshDeprecatedBuilder_ == null) {
-          lastContentRefreshDeprecated_ = builderForValue.build();
-          onChanged();
-        } else {
-          lastContentRefreshDeprecatedBuilder_.setMessage(builderForValue.build());
-        }
-        bitField0_ |= 0x00002000;
-        return this;
-      }
-      /**
-       * <code>optional .BlitzMessage.Timestamp lastContentRefresh_Deprecated = 14;</code>
-       */
-      public Builder mergeLastContentRefreshDeprecated(com.blitzhere.BlitzMessage.Types.Timestamp value) {
-        if (lastContentRefreshDeprecatedBuilder_ == null) {
-          if (((bitField0_ & 0x00002000) == 0x00002000) &&
-              lastContentRefreshDeprecated_ != com.blitzhere.BlitzMessage.Types.Timestamp.getDefaultInstance()) {
-            lastContentRefreshDeprecated_ =
-              com.blitzhere.BlitzMessage.Types.Timestamp.newBuilder(lastContentRefreshDeprecated_).mergeFrom(value).buildPartial();
-          } else {
-            lastContentRefreshDeprecated_ = value;
-          }
-          onChanged();
-        } else {
-          lastContentRefreshDeprecatedBuilder_.mergeFrom(value);
-        }
-        bitField0_ |= 0x00002000;
-        return this;
-      }
-      /**
-       * <code>optional .BlitzMessage.Timestamp lastContentRefresh_Deprecated = 14;</code>
-       */
-      public Builder clearLastContentRefreshDeprecated() {
-        if (lastContentRefreshDeprecatedBuilder_ == null) {
-          lastContentRefreshDeprecated_ = com.blitzhere.BlitzMessage.Types.Timestamp.getDefaultInstance();
-          onChanged();
-        } else {
-          lastContentRefreshDeprecatedBuilder_.clear();
-        }
-        bitField0_ = (bitField0_ & ~0x00002000);
-        return this;
-      }
-      /**
-       * <code>optional .BlitzMessage.Timestamp lastContentRefresh_Deprecated = 14;</code>
-       */
-      public com.blitzhere.BlitzMessage.Types.Timestamp.Builder getLastContentRefreshDeprecatedBuilder() {
-        bitField0_ |= 0x00002000;
+        appIsReleaseVersion_ = value;
         onChanged();
-        return getLastContentRefreshDeprecatedFieldBuilder().getBuilder();
+        return this;
       }
       /**
-       * <code>optional .BlitzMessage.Timestamp lastContentRefresh_Deprecated = 14;</code>
+       * <code>optional bool appIsReleaseVersion = 14;</code>
        */
-      public com.blitzhere.BlitzMessage.Types.TimestampOrBuilder getLastContentRefreshDeprecatedOrBuilder() {
-        if (lastContentRefreshDeprecatedBuilder_ != null) {
-          return lastContentRefreshDeprecatedBuilder_.getMessageOrBuilder();
-        } else {
-          return lastContentRefreshDeprecated_;
-        }
-      }
-      /**
-       * <code>optional .BlitzMessage.Timestamp lastContentRefresh_Deprecated = 14;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilder<
-          com.blitzhere.BlitzMessage.Types.Timestamp, com.blitzhere.BlitzMessage.Types.Timestamp.Builder, com.blitzhere.BlitzMessage.Types.TimestampOrBuilder> 
-          getLastContentRefreshDeprecatedFieldBuilder() {
-        if (lastContentRefreshDeprecatedBuilder_ == null) {
-          lastContentRefreshDeprecatedBuilder_ = new com.google.protobuf.SingleFieldBuilder<
-              com.blitzhere.BlitzMessage.Types.Timestamp, com.blitzhere.BlitzMessage.Types.Timestamp.Builder, com.blitzhere.BlitzMessage.Types.TimestampOrBuilder>(
-                  getLastContentRefreshDeprecated(),
-                  getParentForChildren(),
-                  isClean());
-          lastContentRefreshDeprecated_ = null;
-        }
-        return lastContentRefreshDeprecatedBuilder_;
+      public Builder clearAppIsReleaseVersion() {
+        bitField0_ = (bitField0_ & ~0x00002000);
+        appIsReleaseVersion_ = false;
+        onChanged();
+        return this;
       }
 
       private com.google.protobuf.LazyStringList userTags_ = com.google.protobuf.LazyStringArrayList.EMPTY;
@@ -3264,65 +3095,33 @@ public final class Device {
         return this;
       }
 
-      private boolean appIsReleaseVersion_ ;
+      private float colorDepth_ ;
       /**
-       * <code>optional bool appIsReleaseVersion = 17;</code>
+       * <code>optional float colorDepth = 17;</code>
        */
-      public boolean hasAppIsReleaseVersion() {
+      public boolean hasColorDepth() {
         return ((bitField0_ & 0x00010000) == 0x00010000);
       }
       /**
-       * <code>optional bool appIsReleaseVersion = 17;</code>
-       */
-      public boolean getAppIsReleaseVersion() {
-        return appIsReleaseVersion_;
-      }
-      /**
-       * <code>optional bool appIsReleaseVersion = 17;</code>
-       */
-      public Builder setAppIsReleaseVersion(boolean value) {
-        bitField0_ |= 0x00010000;
-        appIsReleaseVersion_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional bool appIsReleaseVersion = 17;</code>
-       */
-      public Builder clearAppIsReleaseVersion() {
-        bitField0_ = (bitField0_ & ~0x00010000);
-        appIsReleaseVersion_ = false;
-        onChanged();
-        return this;
-      }
-
-      private float colorDepth_ ;
-      /**
-       * <code>optional float colorDepth = 18;</code>
-       */
-      public boolean hasColorDepth() {
-        return ((bitField0_ & 0x00020000) == 0x00020000);
-      }
-      /**
-       * <code>optional float colorDepth = 18;</code>
+       * <code>optional float colorDepth = 17;</code>
        */
       public float getColorDepth() {
         return colorDepth_;
       }
       /**
-       * <code>optional float colorDepth = 18;</code>
+       * <code>optional float colorDepth = 17;</code>
        */
       public Builder setColorDepth(float value) {
-        bitField0_ |= 0x00020000;
+        bitField0_ |= 0x00010000;
         colorDepth_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional float colorDepth = 18;</code>
+       * <code>optional float colorDepth = 17;</code>
        */
       public Builder clearColorDepth() {
-        bitField0_ = (bitField0_ & ~0x00020000);
+        bitField0_ = (bitField0_ & ~0x00010000);
         colorDepth_ = 0F;
         onChanged();
         return this;
@@ -3330,13 +3129,13 @@ public final class Device {
 
       private java.lang.Object iPAddress_ = "";
       /**
-       * <code>optional string IPAddress = 19;</code>
+       * <code>optional string IPAddress = 18;</code>
        */
       public boolean hasIPAddress() {
-        return ((bitField0_ & 0x00040000) == 0x00040000);
+        return ((bitField0_ & 0x00020000) == 0x00020000);
       }
       /**
-       * <code>optional string IPAddress = 19;</code>
+       * <code>optional string IPAddress = 18;</code>
        */
       public java.lang.String getIPAddress() {
         java.lang.Object ref = iPAddress_;
@@ -3353,7 +3152,7 @@ public final class Device {
         }
       }
       /**
-       * <code>optional string IPAddress = 19;</code>
+       * <code>optional string IPAddress = 18;</code>
        */
       public com.google.protobuf.ByteString
           getIPAddressBytes() {
@@ -3369,36 +3168,36 @@ public final class Device {
         }
       }
       /**
-       * <code>optional string IPAddress = 19;</code>
+       * <code>optional string IPAddress = 18;</code>
        */
       public Builder setIPAddress(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00040000;
+  bitField0_ |= 0x00020000;
         iPAddress_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional string IPAddress = 19;</code>
+       * <code>optional string IPAddress = 18;</code>
        */
       public Builder clearIPAddress() {
-        bitField0_ = (bitField0_ & ~0x00040000);
+        bitField0_ = (bitField0_ & ~0x00020000);
         iPAddress_ = getDefaultInstance().getIPAddress();
         onChanged();
         return this;
       }
       /**
-       * <code>optional string IPAddress = 19;</code>
+       * <code>optional string IPAddress = 18;</code>
        */
       public Builder setIPAddressBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00040000;
+  bitField0_ |= 0x00020000;
         iPAddress_ = value;
         onChanged();
         return this;
@@ -3406,13 +3205,13 @@ public final class Device {
 
       private java.lang.Object systemBuildVersion_ = "";
       /**
-       * <code>optional string systemBuildVersion = 20;</code>
+       * <code>optional string systemBuildVersion = 19;</code>
        */
       public boolean hasSystemBuildVersion() {
-        return ((bitField0_ & 0x00080000) == 0x00080000);
+        return ((bitField0_ & 0x00040000) == 0x00040000);
       }
       /**
-       * <code>optional string systemBuildVersion = 20;</code>
+       * <code>optional string systemBuildVersion = 19;</code>
        */
       public java.lang.String getSystemBuildVersion() {
         java.lang.Object ref = systemBuildVersion_;
@@ -3429,7 +3228,7 @@ public final class Device {
         }
       }
       /**
-       * <code>optional string systemBuildVersion = 20;</code>
+       * <code>optional string systemBuildVersion = 19;</code>
        */
       public com.google.protobuf.ByteString
           getSystemBuildVersionBytes() {
@@ -3445,36 +3244,36 @@ public final class Device {
         }
       }
       /**
-       * <code>optional string systemBuildVersion = 20;</code>
+       * <code>optional string systemBuildVersion = 19;</code>
        */
       public Builder setSystemBuildVersion(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00080000;
+  bitField0_ |= 0x00040000;
         systemBuildVersion_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional string systemBuildVersion = 20;</code>
+       * <code>optional string systemBuildVersion = 19;</code>
        */
       public Builder clearSystemBuildVersion() {
-        bitField0_ = (bitField0_ & ~0x00080000);
+        bitField0_ = (bitField0_ & ~0x00040000);
         systemBuildVersion_ = getDefaultInstance().getSystemBuildVersion();
         onChanged();
         return this;
       }
       /**
-       * <code>optional string systemBuildVersion = 20;</code>
+       * <code>optional string systemBuildVersion = 19;</code>
        */
       public Builder setSystemBuildVersionBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00080000;
+  bitField0_ |= 0x00040000;
         systemBuildVersion_ = value;
         onChanged();
         return this;
@@ -3482,13 +3281,13 @@ public final class Device {
 
       private java.lang.Object localIPAddress_ = "";
       /**
-       * <code>optional string localIPAddress = 21;</code>
+       * <code>optional string localIPAddress = 20;</code>
        */
       public boolean hasLocalIPAddress() {
-        return ((bitField0_ & 0x00100000) == 0x00100000);
+        return ((bitField0_ & 0x00080000) == 0x00080000);
       }
       /**
-       * <code>optional string localIPAddress = 21;</code>
+       * <code>optional string localIPAddress = 20;</code>
        */
       public java.lang.String getLocalIPAddress() {
         java.lang.Object ref = localIPAddress_;
@@ -3505,7 +3304,7 @@ public final class Device {
         }
       }
       /**
-       * <code>optional string localIPAddress = 21;</code>
+       * <code>optional string localIPAddress = 20;</code>
        */
       public com.google.protobuf.ByteString
           getLocalIPAddressBytes() {
@@ -3521,36 +3320,36 @@ public final class Device {
         }
       }
       /**
-       * <code>optional string localIPAddress = 21;</code>
+       * <code>optional string localIPAddress = 20;</code>
        */
       public Builder setLocalIPAddress(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00100000;
+  bitField0_ |= 0x00080000;
         localIPAddress_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional string localIPAddress = 21;</code>
+       * <code>optional string localIPAddress = 20;</code>
        */
       public Builder clearLocalIPAddress() {
-        bitField0_ = (bitField0_ & ~0x00100000);
+        bitField0_ = (bitField0_ & ~0x00080000);
         localIPAddress_ = getDefaultInstance().getLocalIPAddress();
         onChanged();
         return this;
       }
       /**
-       * <code>optional string localIPAddress = 21;</code>
+       * <code>optional string localIPAddress = 20;</code>
        */
       public Builder setLocalIPAddressBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00100000;
+  bitField0_ |= 0x00080000;
         localIPAddress_ = value;
         onChanged();
         return this;
@@ -3582,7 +3381,7 @@ public final class Device {
   static {
     java.lang.String[] descriptorData = {
       "\n\014Device.proto\022\014BlitzMessage\032\033objectivec" +
-      "-descriptor.proto\032\013Types.proto\"\255\004\n\nDevic" +
+      "-descriptor.proto\032\013Types.proto\"\355\003\n\nDevic" +
       "eInfo\022\021\n\tvendorUID\030\001 \001(\t\022\026\n\016advertisingU" +
       "ID\030\002 \001(\t\0220\n\014platformType\030\003 \001(\0162\032.BlitzMe" +
       "ssage.PlatformType\022\021\n\tmodelName\030\004 \001(\t\022\025\n" +
@@ -3591,15 +3390,14 @@ public final class Device {
       "(\t\022&\n\nscreenSize\030\t \001(\0132\022.BlitzMessage.Si" +
       "ze\022\026\n\013screenScale\030\n \001(\002:\0011\022\r\n\005appID\030\013 \001(" +
       "\t\022\022\n\nappVersion\030\014 \001(\t\022\031\n\021notificationTok",
-      "en\030\r \001(\t\022>\n\035lastContentRefresh_Deprecate" +
-      "d\030\016 \001(\0132\027.BlitzMessage.Timestamp\022\020\n\010user" +
-      "Tags\030\017 \003(\t\022\022\n\ndeviceUDID\030\020 \001(\t\022\033\n\023appIsR" +
-      "eleaseVersion\030\021 \001(\010\022\022\n\ncolorDepth\030\022 \001(\002\022" +
-      "\021\n\tIPAddress\030\023 \001(\t\022\032\n\022systemBuildVersion" +
-      "\030\024 \001(\t\022\026\n\016localIPAddress\030\025 \001(\t*B\n\014Platfo" +
-      "rmType\022\r\n\tPTUnknown\020\000\022\t\n\005PTiOS\020\001\022\r\n\tPTAn" +
-      "droid\020\002\022\t\n\005PTWeb\020\003B/\n\032com.blitzhere.Blit" +
-      "zMessage\210\001\001\322>\002\n\000\322>\003\022\001B\322>\002\030\001"
+      "en\030\r \001(\t\022\033\n\023appIsReleaseVersion\030\016 \001(\010\022\020\n" +
+      "\010userTags\030\017 \003(\t\022\022\n\ndeviceUDID\030\020 \001(\t\022\022\n\nc" +
+      "olorDepth\030\021 \001(\002\022\021\n\tIPAddress\030\022 \001(\t\022\032\n\022sy" +
+      "stemBuildVersion\030\023 \001(\t\022\026\n\016localIPAddress" +
+      "\030\024 \001(\t*B\n\014PlatformType\022\r\n\tPTUnknown\020\000\022\t\n" +
+      "\005PTiOS\020\001\022\r\n\tPTAndroid\020\002\022\t\n\005PTWeb\020\003B/\n\032co" +
+      "m.blitzhere.BlitzMessage\210\001\001\322>\002\n\000\322>\003\022\001B\322>" +
+      "\002\030\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -3620,7 +3418,7 @@ public final class Device {
     internal_static_BlitzMessage_DeviceInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_BlitzMessage_DeviceInfo_descriptor,
-        new java.lang.String[] { "VendorUID", "AdvertisingUID", "PlatformType", "ModelName", "SystemVersion", "Language", "Timezone", "PhoneCountryCode", "ScreenSize", "ScreenScale", "AppID", "AppVersion", "NotificationToken", "LastContentRefreshDeprecated", "UserTags", "DeviceUDID", "AppIsReleaseVersion", "ColorDepth", "IPAddress", "SystemBuildVersion", "LocalIPAddress", });
+        new java.lang.String[] { "VendorUID", "AdvertisingUID", "PlatformType", "ModelName", "SystemVersion", "Language", "Timezone", "PhoneCountryCode", "ScreenSize", "ScreenScale", "AppID", "AppVersion", "NotificationToken", "AppIsReleaseVersion", "UserTags", "DeviceUDID", "ColorDepth", "IPAddress", "SystemBuildVersion", "LocalIPAddress", });
     com.google.protobuf.ExtensionRegistry registry =
         com.google.protobuf.ExtensionRegistry.newInstance();
     registry.add(google.protobuf.ObjectivecDescriptor.objectivecFileOptions);

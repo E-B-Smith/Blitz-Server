@@ -101,7 +101,7 @@ func UserMessageFetchRequest(session *Session, fetch *BlitzMessage.UserMessageUp
             warnings++
             continue
         }
-        mt := BlitzMessage.MessageType(messageType);
+        mt := BlitzMessage.UserMessageType(messageType);
         message := BlitzMessage.UserMessage {
             MessageID:   &messageID,
             SenderID:    &senderID,
@@ -136,7 +136,7 @@ func UserMessageFetchRequest(session *Session, fetch *BlitzMessage.UserMessageUp
     code := BlitzMessage.ResponseCode_RCSuccess
     response := &BlitzMessage.ServerResponse {
         ResponseCode:   &code,
-        Response:       &BlitzMessage.ResponseType { MessageUpdate: &messageUpdate },
+        ResponseType:   &BlitzMessage.ResponseType { MessageUpdate: &messageUpdate },
     }
     return response
 }
@@ -149,7 +149,7 @@ func UserMessageFetchRequest(session *Session, fetch *BlitzMessage.UserMessageUp
 
 
 func SendUserMessage(sender string, recipients []string, message string,
-                 messageType BlitzMessage.MessageType, actionIcon string, actionURL string) {
+                 messageType BlitzMessage.UserMessageType, actionIcon string, actionURL string) {
     Log.LogFunctionName()
 
     for _, recipient := range recipients {
@@ -238,7 +238,7 @@ func UserMessageSendRequest(session *Session,
     code := BlitzMessage.ResponseCode_RCSuccess
     response := &BlitzMessage.ServerResponse {
         ResponseCode:   &code,
-        Response:       &BlitzMessage.ResponseType { MessageUpdate: messageResponse },
+        ResponseType:   &BlitzMessage.ResponseType { MessageUpdate: messageResponse },
     }
 
     return response
