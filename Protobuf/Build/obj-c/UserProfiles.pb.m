@@ -1901,6 +1901,7 @@ static BEducation* defaultBEducationInstance = nil;
 @property (strong) NSString* contentType;
 @property (strong) NSString* imageURL;
 @property (strong) BTimestamp* dateAdded;
+@property UInt32 cRC32;
 @end
 
 @implementation BImageData
@@ -1940,6 +1941,13 @@ static BEducation* defaultBEducationInstance = nil;
   hasDateAdded_ = !!_value_;
 }
 @synthesize dateAdded;
+- (BOOL) hasCRC32 {
+  return !!hasCRC32_;
+}
+- (void) setHasCRC32:(BOOL) _value_ {
+  hasCRC32_ = !!_value_;
+}
+@synthesize cRC32;
 - (instancetype) init {
   if ((self = [super init])) {
     self.imageContent = BImageContentICUnknown;
@@ -1947,6 +1955,7 @@ static BEducation* defaultBEducationInstance = nil;
     self.contentType = @"";
     self.imageURL = @"";
     self.dateAdded = [BTimestamp defaultInstance];
+    self.cRC32 = 0;
   }
   return self;
 }
@@ -1986,6 +1995,9 @@ static BImageData* defaultBImageDataInstance = nil;
   if (self.hasDateAdded) {
     [output writeMessage:5 value:self.dateAdded];
   }
+  if (self.hasCRC32) {
+    [output writeUInt32:6 value:self.cRC32];
+  }
   [self.unknownFields writeToCodedOutputStream:output];
 }
 - (SInt32) serializedSize {
@@ -2009,6 +2021,9 @@ static BImageData* defaultBImageDataInstance = nil;
   }
   if (self.hasDateAdded) {
     size_ += computeMessageSize(5, self.dateAdded);
+  }
+  if (self.hasCRC32) {
+    size_ += computeUInt32Size(6, self.cRC32);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -2063,6 +2078,9 @@ static BImageData* defaultBImageDataInstance = nil;
                          withIndent:[NSString stringWithFormat:@"%@  ", indent]];
     [output appendFormat:@"%@}\n", indent];
   }
+  if (self.hasCRC32) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"cRC32", [NSNumber numberWithInteger:self.cRC32]];
+  }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (void) storeInDictionary:(NSMutableDictionary *)dictionary {
@@ -2082,6 +2100,9 @@ static BImageData* defaultBImageDataInstance = nil;
    NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
    [self.dateAdded storeInDictionary:messageDictionary];
    [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"dateAdded"];
+  }
+  if (self.hasCRC32) {
+    [dictionary setObject: [NSNumber numberWithInteger:self.cRC32] forKey: @"cRC32"];
   }
   [self.unknownFields storeInDictionary:dictionary];
 }
@@ -2104,6 +2125,8 @@ static BImageData* defaultBImageDataInstance = nil;
       (!self.hasImageURL || [self.imageURL isEqual:otherMessage.imageURL]) &&
       self.hasDateAdded == otherMessage.hasDateAdded &&
       (!self.hasDateAdded || [self.dateAdded isEqual:otherMessage.dateAdded]) &&
+      self.hasCRC32 == otherMessage.hasCRC32 &&
+      (!self.hasCRC32 || self.cRC32 == otherMessage.cRC32) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
@@ -2122,6 +2145,9 @@ static BImageData* defaultBImageDataInstance = nil;
   }
   if (self.hasDateAdded) {
     hashCode = hashCode * 31 + [self.dateAdded hash];
+  }
+  if (self.hasCRC32) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithInteger:self.cRC32] hash];
   }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
@@ -2181,6 +2207,9 @@ static BImageData* defaultBImageDataInstance = nil;
   if (other.hasDateAdded) {
     [self mergeDateAdded:other.dateAdded];
   }
+  if (other.hasCRC32) {
+    [self setCRC32:other.cRC32];
+  }
   [self mergeUnknownFields:other.unknownFields];
   return self;
 }
@@ -2230,6 +2259,10 @@ static BImageData* defaultBImageDataInstance = nil;
         }
         [input readMessage:subBuilder extensionRegistry:extensionRegistry];
         [self setDateAdded:[subBuilder buildPartial]];
+        break;
+      }
+      case 48: {
+        [self setCRC32:[input readUInt32]];
         break;
       }
     }
@@ -2327,6 +2360,22 @@ static BImageData* defaultBImageDataInstance = nil;
 - (BImageDataBuilder*) clearDateAdded {
   resultImageData.hasDateAdded = NO;
   resultImageData.dateAdded = [BTimestamp defaultInstance];
+  return self;
+}
+- (BOOL) hasCRC32 {
+  return resultImageData.hasCRC32;
+}
+- (UInt32) cRC32 {
+  return resultImageData.cRC32;
+}
+- (BImageDataBuilder*) setCRC32:(UInt32) value {
+  resultImageData.hasCRC32 = YES;
+  resultImageData.cRC32 = value;
+  return self;
+}
+- (BImageDataBuilder*) clearCRC32 {
+  resultImageData.hasCRC32 = NO;
+  resultImageData.cRC32 = 0;
   return self;
 }
 @end

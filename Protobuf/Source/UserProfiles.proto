@@ -95,6 +95,7 @@ message ImageData {
   optional string         contentType   = 3;
   optional string         imageURL      = 4;
   optional Timestamp      dateAdded     = 5;
+  optional uint32         CRC32         = 6;
 }
 
 

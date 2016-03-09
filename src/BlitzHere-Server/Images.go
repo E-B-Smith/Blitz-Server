@@ -26,6 +26,16 @@ import (
 //----------------------------------------------------------------------------------------
 
 
+func ImageURLForImageData(userID string, imageData *BlitzMessage.ImageData) string {
+    return fmt.Sprintf("%s%s/image?uid=%s&h=%x",
+        config.ServerURL,
+        config.ServicePrefix,
+        userID,
+        imageData.CRC32,
+    )
+}
+
+
 func UploadImage(session *Session, imageUpload *BlitzMessage.ImageUpload,
         ) *BlitzMessage.ServerResponse {
     Log.LogFunctionName()
@@ -46,6 +56,7 @@ func UploadImage(session *Session, imageUpload *BlitzMessage.ImageUpload,
     }
 
     crc := crc32.ChecksumIEEE(imageData.ImageBytes)
+    imageData.CRC32 = &crc
     if imageData.DateAdded == nil {
         imageData.DateAdded = BlitzMessage.TimestampFromTime(time.Now())
     }
@@ -63,7 +74,7 @@ func UploadImage(session *Session, imageUpload *BlitzMessage.ImageUpload,
              session.UserID,
              imageData.ImageContent,
              imageData.ContentType,
-             crc,
+             imageData.CRC32,
              imageData.ImageBytes,
              imageData.DateAdded)
     if error != nil || pgsql.RowsUpdated(result) != 1 {
@@ -80,20 +91,14 @@ func UploadImage(session *Session, imageUpload *BlitzMessage.ImageUpload,
                  imageData.ImageBytes,
                  imageData.DateAdded,
                  session.UserID,
-                 crc)
+                 imageData.CRC32)
     }
     if error != nil {
         return ServerResponseForError(BlitzMessage.ResponseCode_RCServerError, error)
     }
 
-    imageURL := fmt.Sprintf("%s%s/image?uid=%s&h=%x",
-        config.ServerURL,
-        config.ServicePrefix,
-        session.UserID,
-        crc,
-    )
-    imageData.ImageURL = &imageURL;
-    Log.Debugf("ImageURL: %s Result: %+v Error: %v.", imageURL, result, error)
+    imageData.ImageURL = StringPtrFromString(ImageURLForImageData(session.UserID, imageData))
+    Log.Debugf("ImageURL: %s Result: %+v Error: %v.", imageData.ImageURL, result, error)
     if error != nil {
         return ServerResponseForError(BlitzMessage.ResponseCode_RCServerError, error)
     }

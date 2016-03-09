@@ -73,6 +73,11 @@ func Float64PtrFromNullFloat(value sql.NullFloat64) *float64 {
 }
 
 
+func StringPtr(s string) *string {
+    return &s
+}
+
+
 func StringFromStringPtr(value *string) string {
     if value == nil {
         return ""

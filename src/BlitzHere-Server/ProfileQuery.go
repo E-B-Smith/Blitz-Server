@@ -73,6 +73,49 @@ func AddContactInfoToProfile(profile *BlitzMessage.UserProfile) {
 }
 
 
+func ImagesForUserID(userID string) []*BlitzMessage.ImageData {
+    Log.LogFunctionName()
+
+    rows, error := config.DB.Query(
+        `select dateAdded, imageContent, contentType, crc32
+            from ImageTable
+            where userID = $1
+            order by dateAdded desc;`, userID)
+
+    if error != nil {
+        Log.LogError(error)
+        return nil
+    }
+    defer rows.Close()
+
+    imageArray := make([]*BlitzMessage.ImageData, 0, 5)
+    for rows.Next() {
+        var (
+            dateAdded       pq.NullTime
+            imageContent    sql.NullInt64
+            contentType     sql.NullString
+            crc32           sql.NullInt64
+        )
+        error = rows.Scan(&dateAdded, &imageContent, &contentType, &crc32)
+        if error != nil {
+            Log.LogError(error)
+            continue
+        }
+        content := BlitzMessage.ImageContent(*Int32PtrFromNullInt64(imageContent))
+        imageData := BlitzMessage.ImageData {
+            DateAdded:      BlitzMessage.TimestampPtrFromNullTime(dateAdded),
+            ImageContent:   &content,
+            ContentType:    StringPtrFromNullString(contentType),
+        }
+        imageData.ImageURL = StringPtr(ImageURLForImageData(userID, &imageData))
+        imageArray = append(imageArray, &imageData)
+    }
+
+    Log.Debugf("Profile has %d images: %v.", len(imageArray))
+    return imageArray
+}
+
+
 
 //----------------------------------------------------------------------------------------
 //                                                                        ProfileForUserID
@@ -126,8 +169,7 @@ func ProfileForUserID(userID string) *BlitzMessage.UserProfile {
     profile.Name        = proto.String(name.String)
     profile.Gender      = BlitzMessage.Gender(gender.Int64).Enum()
     profile.Birthday    = BlitzMessage.TimestampFromTime(birthday.Time)
-    //profile.ImageURL    = pgsql.StringArrayFromNullString(imageURLs)
-    //Log.Debugf("Profile has %d images: %v.", len(profile.ImageURL), profile.ImageURL)
+    profile.Images      = ImagesForUserID(userID)
     profile.SocialIdentities = SocialIdentitiesWithUserID(userID)
     profile.CreationDate   = BlitzMessage.TimestampFromTime(creationDate.Time)
     AddContactInfoToProfile(profile)
