@@ -525,20 +525,20 @@ NSString *NSStringFromBImageContent(BImageContent value);
 #define ImageData_contentType @"contentType"
 #define ImageData_imageURL @"imageURL"
 #define ImageData_dateAdded @"dateAdded"
-#define ImageData_CRC32 @"cRC32"
+#define ImageData_crc32 @"crc32"
 @interface BImageData : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
   BOOL hasContentType_:1;
   BOOL hasImageURL_:1;
   BOOL hasDateAdded_:1;
   BOOL hasImageBytes_:1;
-  BOOL hasCRC32_:1;
+  BOOL hasCrc32_:1;
   BOOL hasImageContent_:1;
   NSString* contentType;
   NSString* imageURL;
   BTimestamp* dateAdded;
   NSData* imageBytes;
-  UInt32 cRC32;
+  UInt32 crc32;
   BImageContent imageContent;
 }
 - (BOOL) hasImageContent;
@@ -546,13 +546,13 @@ NSString *NSStringFromBImageContent(BImageContent value);
 - (BOOL) hasContentType;
 - (BOOL) hasImageURL;
 - (BOOL) hasDateAdded;
-- (BOOL) hasCRC32;
+- (BOOL) hasCrc32;
 @property (readonly) BImageContent imageContent;
 @property (readonly, strong) NSData* imageBytes;
 @property (readonly, strong) NSString* contentType;
 @property (readonly, strong) NSString* imageURL;
 @property (readonly, strong) BTimestamp* dateAdded;
-@property (readonly) UInt32 cRC32;
+@property (readonly) UInt32 crc32;
 
 + (instancetype) defaultInstance;
 - (instancetype) defaultInstance;
@@ -616,10 +616,10 @@ NSString *NSStringFromBImageContent(BImageContent value);
 - (BImageDataBuilder*) mergeDateAdded:(BTimestamp*) value;
 - (BImageDataBuilder*) clearDateAdded;
 
-- (BOOL) hasCRC32;
-- (UInt32) cRC32;
-- (BImageDataBuilder*) setCRC32:(UInt32) value;
-- (BImageDataBuilder*) clearCRC32;
+- (BOOL) hasCrc32;
+- (UInt32) crc32;
+- (BImageDataBuilder*) setCrc32:(UInt32) value;
+- (BImageDataBuilder*) clearCrc32;
 @end
 
 #define UserProfile_userID @"userID"

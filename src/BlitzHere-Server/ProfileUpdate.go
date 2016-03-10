@@ -9,16 +9,111 @@ package main
 import (
     "time"
     "errors"
+    "strings"
     "database/sql"
     "github.com/lib/pq"
     "violent.blue/GoKit/Log"
+    "violent.blue/GoKit/pgsql"
     "BlitzMessage"
 )
+
+
+func StringsAreEmptyWithClean(strs ...*string) bool {
+    result := true
+
+    for _, s := range strs {
+        if s == nil { continue }
+        *s = strings.TrimSpace(*s)
+        if len(*s) > 0 {
+            result = false
+        }
+    }
+
+    return result
+}
+
+
+func UpdateEmployment(userID *string, isCurrentPosition bool, employment *BlitzMessage.Employment) {
+    Log.LogFunctionName()
+
+    if employment == nil || userID == nil { return }
+
+    if StringsAreEmptyWithClean(
+        employment.JobTitle,
+        employment.CompanyName,
+        employment.Location,
+        employment.Industry,
+        employment.Summary) {
+        return
+    }
+
+    _, error := config.DB.Exec(
+        `insert into EmploymentTable (
+             userID
+            ,isCurrentPosition
+            ,jobTitle
+            ,companyName
+            ,location
+            ,industry
+            ,startDate
+            ,stopDate
+            ,summary) values ($1, $2, $3, $4, $5, $6, $7, $8, $9);`,
+        userID,
+        isCurrentPosition,
+        employment.JobTitle,
+        employment.CompanyName,
+        employment.Location,
+        employment.Industry,
+        BlitzMessage.NullTimeFromTimespanStart(employment.Timespan),
+        BlitzMessage.NullTimeFromTimespanStop(employment.Timespan),
+        employment.Summary)
+    if error != nil {
+        Log.LogError(error)
+    }
+}
+
+
+func UpdateEducation(userID *string, education *BlitzMessage.Education) {
+    Log.LogFunctionName()
+
+    if education == nil || userID == nil { return }
+
+    if StringsAreEmptyWithClean(
+        education.SchoolName,
+        education.Degree,
+        education.Emphasis) {
+        return
+    }
+
+    _, error := config.DB.Exec(
+        `insert into EducationTable (
+             userID
+            ,schoolName
+            ,degree
+            ,emphasis
+            ,startDate
+            ,stopDate) values ($1, $2, $3, $4, $5, $6);`,
+        userID,
+        education.SchoolName,
+        education.Degree,
+        education.Emphasis,
+        BlitzMessage.NullTimeFromTimespanStart(education.Timespan),
+        BlitzMessage.NullTimeFromTimespanStop(education.Timespan))
+    if error != nil {
+        Log.LogError(error)
+    }
+}
 
 
 //----------------------------------------------------------------------------------------
 //                                                                           UpdateProfile
 //----------------------------------------------------------------------------------------
+
+
+func UpdateProfileStatusForUserID(userID string, status BlitzMessage.UserStatus) {
+    _, error := config.DB.Exec("update UserTable set userStatus = $2 where userID = $1;", userID, status)
+    if error != nil { Log.LogError(error) }
+}
 
 
 func UpdateProfile(profile *BlitzMessage.UserProfile) error {
@@ -40,7 +135,9 @@ func UpdateProfile(profile *BlitzMessage.UserProfile) error {
 
     Log.Debugf("Updating profile %s.", userID)
 
-    _, error = config.DB.Exec("insert into usertable (userid) values ($1);", userID)
+    _, error = config.DB.Exec(
+        `insert into usertable (userid, creationDate)
+            values ($1, current_timestamp);`, userID)
     if error != nil {
         //Log.Debugf("Error inserting user '%s': %v.", userID, error)
     }
@@ -49,50 +146,55 @@ func UpdateProfile(profile *BlitzMessage.UserProfile) error {
         profile.CreationDate = BlitzMessage.TimestampFromTime(time.Now())
     }
 
-    _, error = config.DB.Exec("update usertable set" +
-        " (name, gender, birthday, userStatus, creationDate) =" +
-        " ($1, $2, $3, $4, $5)" +
-        " where userID = $6;",
+    _, error = config.DB.Exec(
+        `update usertable set (
+             userStatus
+            ,name
+            ,gender
+            ,birthday
+            ,backgroundSummary
+            ,interestTags) = ($1, $2, $3, $4, $5, $6)
+                where userID = $7;`,
+        profile.UserStatus,
         profile.Name,
         profile.Gender,
         BlitzMessage.NullTimeFromTimestamp(profile.Birthday),
-        profile.UserStatus,
-        BlitzMessage.NullTimeFromTimestamp(profile.CreationDate),
-        &userID)
+        profile.BackgroundSummary,
+        pgsql.NullStringFromStringArray(profile.InterestTags),
+        profile.UserID)
     if error != nil {
         Log.Errorf("Error updating profile %s: %+v", *profile.UserID, error)
         return error
     }
 
-/*  var images []string
-    for _, s := range profile.ImageURL {
-        s = strings.TrimSpace(s)
-        if len(s) > 0 { images = append(images, s); }
-    }
-    profile.ImageURL = images
-    Log.Debugf("Profile in has %d images.", len(profile.ImageURL));
-
-    if len(profile.ImageURL) > 0 {
-        _, error = config.DB.Exec("update usertable set" +
-            " (imageURL) = ($1) where userID = $2;",
-            pgsql.NullStringFromStringArray(profile.ImageURL),
-            &userID)
-        if error != nil {
-            Log.Errorf("Error updating profile %s: %+v", *profile.UserID, error)
-            return error
-        }
-    }
-*/
     for i := range profile.SocialIdentities {
         UpdateSocialIdentityForUserID(userID, profile.SocialIdentities[i])
     }
 
-    // for i := range profile.Scores {
-    //     UpdateScoreForUserID(userID, profile.Scores[i])
-    // }
-
     UpdateContactInfoFromProfile(profile)
     UpdateUserIdentitesFromProfile(profile)
+
+    config.DB.Exec(`delete from EmploymentTable where userID = $1;`, profile.UserID)
+    UpdateEmployment(profile.UserID, true, profile.CurrentEmployment)
+    for _, employment := range profile.Employment {
+        UpdateEmployment(profile.UserID, false, employment)
+    }
+
+    config.DB.Exec(`delete from EducationTable where userID = $1;`, profile.UserID)
+    for _, education := range profile.Education {
+        UpdateEducation(profile.UserID, education)
+    }
+
+    config.DB.Exec(`delete from UserExpertiseTagTable where userID = $1;`, profile.UserID)
+    for _, tag := range profile.ExpertiseTags {
+        text := strings.TrimSpace(tag)
+        if len(text) > 0 {
+            _, error = config.DB.Exec(
+                `insert into UserExpertiseTagTable (userID, expertiseTag) values ($1, $2);`,
+                profile.UserID, text)
+            if error != nil { Log.LogError(error) }
+        }
+    }
 
     return error
 }

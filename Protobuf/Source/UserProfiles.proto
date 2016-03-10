@@ -95,7 +95,7 @@ message ImageData {
   optional string         contentType   = 3;
   optional string         imageURL      = 4;
   optional Timestamp      dateAdded     = 5;
-  optional uint32         CRC32         = 6;
+  optional uint32         crc32         = 6;
 }
 
 
@@ -104,6 +104,8 @@ message UserProfile {
   optional UserStatus   userStatus    = 2;
   optional Timestamp    creationDate  = 3;
   optional Timestamp    lastSeen      = 4;
+
+  //  User fields --
 
   optional string       name          = 5;
   optional Gender       gender        = 6;

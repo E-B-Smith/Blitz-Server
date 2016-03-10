@@ -36,5 +36,5 @@ message AutocompleteRequest {
 
 
 message AutocompleteResponse {
-  repeated string items = 1;
+  repeated string  items = 1;
 }

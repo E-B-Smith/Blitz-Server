@@ -149,10 +149,10 @@ func DispatchServiceRequests(writer http.ResponseWriter, httpRequest *http.Reque
             message)
         if error != nil {
             Log.Errorf("Error writing ServerStatTable: %v.", error)
-        Log.Debugf("=============================================="+
-            " Exit dispatch.  Status: %d Code: %s Elapsed: %5.3f Timestamp: %v.",
-            outstatus, code, elapsed, startTimestamp)
         }
+        Log.Debugf("=============================================="+
+            " Exit dispatch %s.  Status: %d Code: %s Elapsed: %5.3f Timestamp: %v.",
+            requestTypeName, outstatus, code, elapsed, startTimestamp)
     } ()
 
     config.MessageCount++
@@ -184,7 +184,11 @@ func DispatchServiceRequests(writer http.ResponseWriter, httpRequest *http.Reque
         WriteResponse(writer, response, messageFormat)
         return
     }
-    Log.Debugf("Decoded request: %+v.", serverRequest)
+    if httpRequest.ContentLength > 10000 {
+        Log.Debugf("Request too long. Not showing decoded message.")
+    } else {
+        Log.Debugf("Decoded request: %+v.", serverRequest)
+    }
 
     //  Find the message type to log it --
 
@@ -213,7 +217,7 @@ func DispatchServiceRequests(writer http.ResponseWriter, httpRequest *http.Reque
 
     requestType = reflect.ValueOf(request).Elem().Type()
     if requestType != nil { requestTypeName = requestType.Name() }
-    Log.Debugf("Request type '%s':\n'%+v'\n.", requestTypeName, request)
+    Log.Debugf("Request type '%s'.", requestTypeName)
 
     //  Update the session if requested --
 

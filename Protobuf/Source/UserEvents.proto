@@ -19,10 +19,10 @@ import "Types.proto";
 
 
 message UserEvent {
-  required Timestamp timestamp = 1;
-  optional Location location = 2;
-  required string event = 3;
-  repeated string eventData = 4;
+  required Timestamp    timestamp   = 1;
+  optional Location     location    = 2;
+  required string       event       = 3;
+  repeated string       eventData   = 4;
 }
 
 

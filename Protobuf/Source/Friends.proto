@@ -28,7 +28,7 @@ enum FriendStatus {
 
 
 message Friend {
-  required string           friendID = 1;
+  required string           friendID     = 1;
   required FriendStatus     friendStatus = 2;
   optional bool             isInCircle   = 3;
   optional string           inviteLink   = 4;

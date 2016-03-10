@@ -5070,13 +5070,13 @@ public final class UserProfiles {
     com.blitzhere.BlitzMessage.Types.TimestampOrBuilder getDateAddedOrBuilder();
 
     /**
-     * <code>optional uint32 CRC32 = 6;</code>
+     * <code>optional uint32 crc32 = 6;</code>
      */
-    boolean hasCRC32();
+    boolean hasCrc32();
     /**
-     * <code>optional uint32 CRC32 = 6;</code>
+     * <code>optional uint32 crc32 = 6;</code>
      */
-    int getCRC32();
+    int getCrc32();
   }
   /**
    * Protobuf type {@code BlitzMessage.ImageData}
@@ -5173,7 +5173,7 @@ public final class UserProfiles {
             }
             case 48: {
               bitField0_ |= 0x00000020;
-              cRC32_ = input.readUInt32();
+              crc32_ = input.readUInt32();
               break;
             }
           }
@@ -5352,18 +5352,18 @@ public final class UserProfiles {
     }
 
     public static final int CRC32_FIELD_NUMBER = 6;
-    private int cRC32_;
+    private int crc32_;
     /**
-     * <code>optional uint32 CRC32 = 6;</code>
+     * <code>optional uint32 crc32 = 6;</code>
      */
-    public boolean hasCRC32() {
+    public boolean hasCrc32() {
       return ((bitField0_ & 0x00000020) == 0x00000020);
     }
     /**
-     * <code>optional uint32 CRC32 = 6;</code>
+     * <code>optional uint32 crc32 = 6;</code>
      */
-    public int getCRC32() {
-      return cRC32_;
+    public int getCrc32() {
+      return crc32_;
     }
 
     private void initFields() {
@@ -5372,7 +5372,7 @@ public final class UserProfiles {
       contentType_ = "";
       imageURL_ = "";
       dateAdded_ = com.blitzhere.BlitzMessage.Types.Timestamp.getDefaultInstance();
-      cRC32_ = 0;
+      crc32_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -5409,7 +5409,7 @@ public final class UserProfiles {
         output.writeMessage(5, dateAdded_);
       }
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
-        output.writeUInt32(6, cRC32_);
+        output.writeUInt32(6, crc32_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -5442,7 +5442,7 @@ public final class UserProfiles {
       }
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeUInt32Size(6, cRC32_);
+          .computeUInt32Size(6, crc32_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -5576,7 +5576,7 @@ public final class UserProfiles {
           dateAddedBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000010);
-        cRC32_ = 0;
+        crc32_ = 0;
         bitField0_ = (bitField0_ & ~0x00000020);
         return this;
       }
@@ -5633,7 +5633,7 @@ public final class UserProfiles {
         if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
           to_bitField0_ |= 0x00000020;
         }
-        result.cRC32_ = cRC32_;
+        result.crc32_ = crc32_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -5669,8 +5669,8 @@ public final class UserProfiles {
         if (other.hasDateAdded()) {
           mergeDateAdded(other.getDateAdded());
         }
-        if (other.hasCRC32()) {
-          setCRC32(other.getCRC32());
+        if (other.hasCrc32()) {
+          setCrc32(other.getCrc32());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -6043,34 +6043,34 @@ public final class UserProfiles {
         return dateAddedBuilder_;
       }
 
-      private int cRC32_ ;
+      private int crc32_ ;
       /**
-       * <code>optional uint32 CRC32 = 6;</code>
+       * <code>optional uint32 crc32 = 6;</code>
        */
-      public boolean hasCRC32() {
+      public boolean hasCrc32() {
         return ((bitField0_ & 0x00000020) == 0x00000020);
       }
       /**
-       * <code>optional uint32 CRC32 = 6;</code>
+       * <code>optional uint32 crc32 = 6;</code>
        */
-      public int getCRC32() {
-        return cRC32_;
+      public int getCrc32() {
+        return crc32_;
       }
       /**
-       * <code>optional uint32 CRC32 = 6;</code>
+       * <code>optional uint32 crc32 = 6;</code>
        */
-      public Builder setCRC32(int value) {
+      public Builder setCrc32(int value) {
         bitField0_ |= 0x00000020;
-        cRC32_ = value;
+        crc32_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional uint32 CRC32 = 6;</code>
+       * <code>optional uint32 crc32 = 6;</code>
        */
-      public Builder clearCRC32() {
+      public Builder clearCrc32() {
         bitField0_ = (bitField0_ & ~0x00000020);
-        cRC32_ = 0;
+        crc32_ = 0;
         onChanged();
         return this;
       }
@@ -13762,7 +13762,7 @@ public final class UserProfiles {
       "ssage.ImageContent\022\022\n\nimageBytes\030\002 \001(\014\022\023" +
       "\n\013contentType\030\003 \001(\t\022\020\n\010imageURL\030\004 \001(\t\022*\n" +
       "\tdateAdded\030\005 \001(\0132\027.BlitzMessage.Timestam",
-      "p\022\r\n\005CRC32\030\006 \001(\r\"\354\004\n\013UserProfile\022\016\n\006user" +
+      "p\022\r\n\005crc32\030\006 \001(\r\"\354\004\n\013UserProfile\022\016\n\006user" +
       "ID\030\001 \001(\t\022,\n\nuserStatus\030\002 \001(\0162\030.BlitzMess" +
       "age.UserStatus\022-\n\014creationDate\030\003 \001(\0132\027.B" +
       "litzMessage.Timestamp\022)\n\010lastSeen\030\004 \001(\0132" +
@@ -13842,7 +13842,7 @@ public final class UserProfiles {
     internal_static_BlitzMessage_ImageData_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_BlitzMessage_ImageData_descriptor,
-        new java.lang.String[] { "ImageContent", "ImageBytes", "ContentType", "ImageURL", "DateAdded", "CRC32", });
+        new java.lang.String[] { "ImageContent", "ImageBytes", "ContentType", "ImageURL", "DateAdded", "Crc32", });
     internal_static_BlitzMessage_UserProfile_descriptor =
       getDescriptor().getMessageTypes().get(5);
     internal_static_BlitzMessage_UserProfile_fieldAccessorTable = new

@@ -31,7 +31,7 @@ func ImageURLForImageData(userID string, imageData *BlitzMessage.ImageData) stri
         config.ServerURL,
         config.ServicePrefix,
         userID,
-        imageData.CRC32,
+        imageData.Crc32,
     )
 }
 
@@ -56,7 +56,7 @@ func UploadImage(session *Session, imageUpload *BlitzMessage.ImageUpload,
     }
 
     crc := crc32.ChecksumIEEE(imageData.ImageBytes)
-    imageData.CRC32 = &crc
+    imageData.Crc32 = &crc
     if imageData.DateAdded == nil {
         imageData.DateAdded = BlitzMessage.TimestampFromTime(time.Now())
     }
@@ -74,9 +74,9 @@ func UploadImage(session *Session, imageUpload *BlitzMessage.ImageUpload,
              session.UserID,
              imageData.ImageContent,
              imageData.ContentType,
-             imageData.CRC32,
+             imageData.Crc32,
              imageData.ImageBytes,
-             imageData.DateAdded)
+             BlitzMessage.TimeFromTimestamp(imageData.DateAdded))
     if error != nil || pgsql.RowsUpdated(result) != 1 {
         //Log.LogError(error)
         result, error = config.DB.Exec(
@@ -89,16 +89,16 @@ func UploadImage(session *Session, imageUpload *BlitzMessage.ImageUpload,
                  imageData.ImageContent,
                  imageData.ContentType,
                  imageData.ImageBytes,
-                 imageData.DateAdded,
+                 BlitzMessage.TimeFromTimestamp(imageData.DateAdded),
                  session.UserID,
-                 imageData.CRC32)
+                 imageData.Crc32)
     }
     if error != nil {
         return ServerResponseForError(BlitzMessage.ResponseCode_RCServerError, error)
     }
 
     imageData.ImageURL = StringPtrFromString(ImageURLForImageData(session.UserID, imageData))
-    Log.Debugf("ImageURL: %s Result: %+v Error: %v.", imageData.ImageURL, result, error)
+    Log.Debugf("ImageURL: %s Updated: %d Error: %v.", *imageData.ImageURL, pgsql.RowsUpdated(result), error)
     if error != nil {
         return ServerResponseForError(BlitzMessage.ResponseCode_RCServerError, error)
     }

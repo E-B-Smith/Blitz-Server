@@ -61,10 +61,50 @@ create table UserTable
     ,userStatus         UserStatus
     ,creationDate       timestamptz
     ,lastSeen           timestamptz
+
     ,name               text
     ,gender             Gender
     ,birthday           timestamptz
+
+    ,backgroundSummary  text
+    ,interestTags       text[]
     );
+
+
+create table EmploymentTable
+    (
+     userID             UserID  not null
+    ,isCurrentPosition  boolean
+    ,jobTitle           text
+    ,companyName        text
+    ,location           text
+    ,industry           text
+    ,startDate          timestamptz
+    ,stopDate           timestamptz
+    ,summary            text
+    );
+create index EmploymentTableIndex on EmploymentTable(userID);
+
+
+create table EducationTable
+    (
+     userID             UserID not null
+    ,schoolName         text
+    ,degree             text
+    ,emphasis           text
+    ,startDate          timestamptz
+    ,stopDate           timestamptz
+    );
+create index EducationTableIndex on EducationTable(userID);
+
+
+create table UserExpertiseTagTable
+    (
+     userID             UserID not null
+    ,expertiseTag       text   not null
+    );
+create unique index UserExpertiseTagTableIndex
+    on UserExpertiseTagTable(userID, expertiseTag);
 
 
 create table SessionTable
@@ -361,7 +401,7 @@ create table ImageTable
     ,dateAdded          timestamptz     not null
     ,imageContent       ImageContent
     ,contentType        text
-    ,crc32              int
+    ,crc32              int             not null
     ,imageData          bytea
     );
 create unique index ImageTableUniqueIndex on ImageTable(UserID, crc32);

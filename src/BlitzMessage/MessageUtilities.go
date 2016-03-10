@@ -71,6 +71,33 @@ func TimestampFromTime(t time.Time) *Timestamp {
 }
 
 
+func NullTimeFromTimespanStart(timespan *Timespan) pq.NullTime {
+    if timespan == nil { return pq.NullTime{} }
+    return NullTimeFromTimestamp(timespan.StartTimestamp)
+}
+
+
+func NullTimeFromTimespanStop(timespan *Timespan) pq.NullTime {
+    if timespan == nil { return pq.NullTime{} }
+    return NullTimeFromTimestamp(timespan.StopTimestamp)
+}
+
+
+func TimespanFromNullTimes(startDate, stopDate pq.NullTime) *Timespan {
+    if !startDate.Valid && !stopDate.Valid { return nil }
+
+    var t Timespan
+    if startDate.Valid {
+        t.StartTimestamp = TimestampPtrFromNullTime(startDate)
+    }
+    if stopDate.Valid {
+        t.StopTimestamp = TimestampPtrFromNullTime(stopDate)
+    }
+
+    return &t
+}
+
+
 func ValidateUserID(userID *string) (string, error) {
     //  Format and Validate the userid --
 

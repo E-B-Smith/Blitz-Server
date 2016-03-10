@@ -32,18 +32,18 @@ message Globals {
 
 
 message Coordinate {
-  optional double latitude = 1 [default = -360.0];
+  optional double latitude  = 1 [default = -360.0];
   optional double longitude = 2 [default = -360.0];
 }
 
 message Size {
-  optional double width = 1 [default = 0.0];
-  optional double height = 2 [default = 0.0];
+  optional double width   = 1 [default = 0.0];
+  optional double height  = 2 [default = 0.0];
 }
 
 message CoordinateRegion {
-  optional Coordinate center = 1;
-  optional Size size = 2; //  In degrees
+  optional Coordinate center  = 1;
+  optional Size       size    = 2; //  In degrees
 }
 
 message CoordinatePolygon {
@@ -52,10 +52,10 @@ message CoordinatePolygon {
 
 message Location {
   optional Coordinate coordinate = 1;
-  optional double altitude = 2;
-  optional double speed = 3;
-  optional double course = 4;
-  optional string placename = 5;
+  optional double altitude       = 2;
+  optional double speed          = 3;
+  optional double course         = 4;
+  optional string placename      = 5;
 }
 
 message Timestamp {
@@ -64,7 +64,7 @@ message Timestamp {
 
 message Timespan {
   optional Timestamp startTimestamp = 1;
-  optional Timestamp stopTimestamp = 2;
+  optional Timestamp stopTimestamp  = 2;
 }
 
 message Void {
@@ -72,7 +72,7 @@ message Void {
 }
 
 message KeyValue {
-  optional string key = 1;
+  optional string key   = 1;
   repeated string value = 2;
 }
 

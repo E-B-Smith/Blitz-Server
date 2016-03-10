@@ -369,8 +369,8 @@ func UpdateSession(ipAddress string,
     }
 
     Log.Debugf("Insert user.")
-    _, error = config.DB.Exec("insert into usertable (userid, userstatus) "+
-      "  values ($1, $2);", userID, BlitzMessage.UserStatus_USActive)
+    _, error = config.DB.Exec("insert into usertable (userid, userstatus, creationDate) "+
+      "  values ($1, $2, current_timestamp);", userID, BlitzMessage.UserStatus_USActive)
     Log.Debugf("Result: %v.", error)
 
     var status BlitzMessage.UserStatus = BlitzMessage.UserStatus_USUnknown
@@ -450,7 +450,6 @@ func UpdateSession(ipAddress string,
     session.Device = *request.DeviceInfo
     //session.AppOptions = AppOptionsForSession(session)
 
-    //UpdateProfile(profile)
     profile = ProfileForUserID(userID)
 
     sessionResponse := &BlitzMessage.SessionResponse {

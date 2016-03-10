@@ -32,7 +32,8 @@ func UserIsConfirming(session *Session, confirmation *BlitzMessage.ConfirmationR
     Log.LogFunctionName()
 
     var verified bool = false
-    var userStatus BlitzMessage.UserStatus = BlitzMessage.UserStatus_USConfirmed
+    var userStatus BlitzMessage.UserStatus = BlitzMessage.UserStatus_USConfirming
+
     profile := confirmation.Profile;
     Log.Debugf("Confirmation contact: %+v.", confirmation.ContactInfo.Contact)
     Log.Debugf("Confirming profile:\n%+v.", profile)
@@ -58,7 +59,7 @@ func UserIsConfirming(session *Session, confirmation *BlitzMessage.ConfirmationR
     if  confirmation.ConfirmationCode != nil &&
         len(*confirmation.ConfirmationCode) > 0 {
         i, _ := strconv.ParseInt(*confirmation.ConfirmationCode, 10, 64)
-        code = strconv.FormatInt(i, 16)
+        code = fmt.Sprintf("%04x", i)
         if len(code) <= 2 { code = "XXXX" }
     }
     Log.Debugf("Code '%s' Secret '%s'.", code, session.Secret)
@@ -70,7 +71,7 @@ func UserIsConfirming(session *Session, confirmation *BlitzMessage.ConfirmationR
     }
 
     if ! verified {
-        userStatus = BlitzMessage.UserStatus_USActive
+        userStatus = BlitzMessage.UserStatus_USConfirming
         profile.UserStatus = &userStatus
         Log.LogError(error)
         //error = errors.New("Sorry, the confirmation has expired."))
@@ -78,8 +79,7 @@ func UserIsConfirming(session *Session, confirmation *BlitzMessage.ConfirmationR
     }
 
     session.Secret = Util.NewUUIDString()
-    profile.UserStatus = &userStatus
-    UpdateProfile(profile)
+    UpdateProfileStatusForUserID(*profile.UserID, BlitzMessage.UserStatus_USConfirmed)
 
     confirmed := BlitzMessage.ConfirmationRequest {
         Profile: profile,
@@ -132,8 +132,6 @@ func UserConfirmation(session *Session, confirmation *BlitzMessage.ConfirmationR
         return UserIsConfirming(session, confirmation)
     }
 
-    var userStatus BlitzMessage.UserStatus = BlitzMessage.UserStatus_USConfirming
-    profile.UserStatus = &userStatus
     i, _ := strconv.ParseInt(session.Secret[0:4], 16, 32)
     confirmCode := fmt.Sprintf("%05d", i)
     message := config.Localizef("kConfirmConfirmingContact", "Confirming contact info...")
@@ -198,8 +196,8 @@ func UserConfirmation(session *Session, confirmation *BlitzMessage.ConfirmationR
             return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, fmt.Errorf("Unknown confirmation type %d.", contact.ContactType))
     }
 
-    profile.ContactInfo = append(profile.ContactInfo, contact)
-    UpdateProfile(profile)
+    AddContactInfoToUserID(*profile.UserID, contact)
+    UpdateProfileStatusForUserID(*profile.UserID, BlitzMessage.UserStatus_USConfirming)
 
     code := BlitzMessage.ResponseCode_RCSuccess
     response := &BlitzMessage.ServerResponse {
