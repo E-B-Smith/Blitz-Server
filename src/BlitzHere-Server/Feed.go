@@ -71,6 +71,10 @@ func WriteFeedPost(feedPost *BlitzMessage.FeedPost) error {
 }
 
 
+//----------------------------------------------------------------------------------------
+//                                                                       FeedPostForPostID
+//----------------------------------------------------------------------------------------
+
 
 func FeedPostForPostID(postID string) (*BlitzMessage.FeedPost, error) {
     Log.LogFunctionName()
@@ -142,9 +146,14 @@ func FeedPostForPostID(postID string) (*BlitzMessage.FeedPost, error) {
 }
 
 
+//----------------------------------------------------------------------------------------
+//                                                                          UpdateFeedPost
+//----------------------------------------------------------------------------------------
+
 
 func UpdateFeedPost(session *Session, feedPostUpdate *BlitzMessage.FeedPostUpdateRequest,
-        ) *BlitzMessage.ServerResponse {
+    ) *BlitzMessage.ServerResponse {
+    Log.LogFunctionName()
 
     if feedPostUpdate.FeedPost.UserID == nil ||
         session.UserID != *feedPostUpdate.FeedPost.UserID {
@@ -177,6 +186,19 @@ func UpdateFeedPost(session *Session, feedPostUpdate *BlitzMessage.FeedPostUpdat
 
     return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid,
             fmt.Errorf("Unknown verb '%d'", feedPostUpdate.UpdateVerb))
+}
+
+
+//----------------------------------------------------------------------------------------
+//                                                                          FetchFeedPosts
+//----------------------------------------------------------------------------------------
+
+
+func FetchFeedPosts(session *Session, *BlitzMessage.FeedPostFetchRequest,
+    ) *BlitzMessage.ServerResponse {
+    Log.LogFunctionName()
+
+
 }
 
 

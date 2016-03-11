@@ -276,6 +276,9 @@ func DispatchServiceRequests(writer http.ResponseWriter, httpRequest *http.Reque
     case *BlitzMessage.FeedPostUpdateRequest:
         response = UpdateFeedPost(session, requestMessageType)
 
+    case *BlitzMessage.FeedPostFetchRequest:
+        response = FetchFeedPosts(session, requestMessageType)
+
     default:
         error = fmt.Errorf("Unrecognized request '%+v'", request)
         response = ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)

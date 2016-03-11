@@ -67,16 +67,6 @@ message FeedPost {
 }
 
 
-message FeedPostFetchRequest {
-  optional Timespan  timespan = 1;
-}
-
-
-message FeedPostFetchResponse {
-  repeated FeedPost  feedPosts = 1;    //  Feed posts in 'top' order.
-}
-
-
 enum UpdateVerb {
   UVCreate    = 1;
   UVUpdate    = 2;
@@ -93,6 +83,18 @@ message FeedPostUpdateRequest {
 message FeedPostUpdateResponse {
   optional FeedPost  feedPost = 1;
 }
+
+
+message FeedPostFetchRequest {
+  optional Timespan  timespan = 1;
+}
+
+
+message FeedPostFetchResponse {
+  repeated FeedPost  feedPosts = 1;    //  Feed posts in 'top' order.
+}
+
+
 
 
 enum EntityType {
