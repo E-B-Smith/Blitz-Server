@@ -42,6 +42,8 @@
 @class BEducationBuilder;
 @class BEmployment;
 @class BEmploymentBuilder;
+@class BEntityVoteRequest;
+@class BEntityVoteRequestBuilder;
 @class BFeedPost;
 @class BFeedPostBuilder;
 @class BFeedPostFetchRequest;
@@ -54,12 +56,6 @@
 @class BFeedPostUpdateResponseBuilder;
 @class BFeedPostVote;
 @class BFeedPostVoteBuilder;
-@class BFeedReply;
-@class BFeedReplyBuilder;
-@class BFeedReplyTag;
-@class BFeedReplyTagBuilder;
-@class BFollowRequest;
-@class BFollowRequestBuilder;
 @class BFriend;
 @class BFriendBuilder;
 @class BFriendRequest;

@@ -112,6 +112,11 @@ func BoolPtrFromBool(val bool) *bool {
 }
 
 
+func BoolPtrFromNullBool(val sql.NullBool) *bool {
+    return &val.Bool
+}
+
+
 func StringFromPtr(s *string) string {
     if s == nil { return ""; }
     return *s

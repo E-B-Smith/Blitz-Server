@@ -10,6 +10,7 @@ import (
     "fmt"
     "time"
     "errors"
+    "strconv"
     "net/http"
     "hash/crc32"
     "database/sql"
@@ -27,11 +28,12 @@ import (
 
 
 func ImageURLForImageData(userID string, imageData *BlitzMessage.ImageData) string {
+    if imageData.Crc32 == nil { return "" }
     return fmt.Sprintf("%s%s/image?uid=%s&h=%x",
         config.ServerURL,
         config.ServicePrefix,
         userID,
-        imageData.Crc32,
+        *imageData.Crc32,
     )
 }
 
@@ -55,7 +57,8 @@ func UploadImage(session *Session, imageUpload *BlitzMessage.ImageUpload,
         imageData.ContentType = &kDefaultType
     }
 
-    crc := crc32.ChecksumIEEE(imageData.ImageBytes)
+    var crc int64
+    crc = int64(crc32.ChecksumIEEE(imageData.ImageBytes))
     imageData.Crc32 = &crc
     if imageData.DateAdded == nil {
         imageData.DateAdded = BlitzMessage.TimestampFromTime(time.Now())
@@ -133,15 +136,25 @@ func GetImage(writer http.ResponseWriter, httpRequest *http.Request) {
     }
     var error error
     uid := httpRequest.URL.Query().Get("uid")
+    crc := httpRequest.URL.Query().Get("h")
+
     uid, error = BlitzMessage.ValidateUserID(&uid)
     if error != nil {
         http.Error(writer, "Not Found", 404)
         return
     }
 
-    Log.Debugf("Getting image for '%s'...", uid)
+    var crc32 int64
+    crc32, error = strconv.ParseInt(crc, 16, 64)
+    if error != nil {
+        http.Error(writer, "Not Found", 404)
+        return
+    }
+
+    Log.Debugf("Getting image for '%s' '%d'...", uid, crc32)
     rows, error := config.DB.Query(
-        "select contentType, imageData from ImageTable where userID = $1;", uid)
+        "select contentType, imageData from ImageTable where userID = $1 and crc32 = $2;",
+            uid, crc32)
     defer pgsql.CloseRows(rows)
     if error != nil {
         Log.LogError(error)

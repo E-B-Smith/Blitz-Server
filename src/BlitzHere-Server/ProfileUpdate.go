@@ -1,4 +1,4 @@
-//  HappinessServer  -  Track the Happiness user data.
+//  BlitzHere-Server  -  Track the Happiness user data.
 //
 //  E.B.Smith  -  November, 2014
 
@@ -146,6 +146,12 @@ func UpdateProfile(profile *BlitzMessage.UserProfile) error {
         profile.CreationDate = BlitzMessage.TimestampFromTime(time.Now())
     }
 
+    //  eDebug -- Remove this:
+    if profile.UserStatus != nil &&
+       *profile.UserStatus == BlitzMessage.UserStatus_USConfirming {
+        panic("User status confirming saved.")
+    }
+
     _, error = config.DB.Exec(
         `update usertable set (
              userStatus
@@ -185,16 +191,7 @@ func UpdateProfile(profile *BlitzMessage.UserProfile) error {
         UpdateEducation(profile.UserID, education)
     }
 
-    config.DB.Exec(`delete from UserExpertiseTagTable where userID = $1;`, profile.UserID)
-    for _, tag := range profile.ExpertiseTags {
-        text := strings.TrimSpace(tag)
-        if len(text) > 0 {
-            _, error = config.DB.Exec(
-                `insert into UserExpertiseTagTable (userID, expertiseTag) values ($1, $2);`,
-                profile.UserID, text)
-            if error != nil { Log.LogError(error) }
-        }
-    }
+    SetEntityTags(*profile.UserID, *profile.UserID, BlitzMessage.EntityType_ETUser, profile.ExpertiseTags)
 
     return error
 }

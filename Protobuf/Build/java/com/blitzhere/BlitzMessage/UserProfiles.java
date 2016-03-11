@@ -5070,13 +5070,13 @@ public final class UserProfiles {
     com.blitzhere.BlitzMessage.Types.TimestampOrBuilder getDateAddedOrBuilder();
 
     /**
-     * <code>optional uint32 crc32 = 6;</code>
+     * <code>optional int64 crc32 = 6;</code>
      */
     boolean hasCrc32();
     /**
-     * <code>optional uint32 crc32 = 6;</code>
+     * <code>optional int64 crc32 = 6;</code>
      */
-    int getCrc32();
+    long getCrc32();
   }
   /**
    * Protobuf type {@code BlitzMessage.ImageData}
@@ -5173,7 +5173,7 @@ public final class UserProfiles {
             }
             case 48: {
               bitField0_ |= 0x00000020;
-              crc32_ = input.readUInt32();
+              crc32_ = input.readInt64();
               break;
             }
           }
@@ -5352,17 +5352,17 @@ public final class UserProfiles {
     }
 
     public static final int CRC32_FIELD_NUMBER = 6;
-    private int crc32_;
+    private long crc32_;
     /**
-     * <code>optional uint32 crc32 = 6;</code>
+     * <code>optional int64 crc32 = 6;</code>
      */
     public boolean hasCrc32() {
       return ((bitField0_ & 0x00000020) == 0x00000020);
     }
     /**
-     * <code>optional uint32 crc32 = 6;</code>
+     * <code>optional int64 crc32 = 6;</code>
      */
-    public int getCrc32() {
+    public long getCrc32() {
       return crc32_;
     }
 
@@ -5372,7 +5372,7 @@ public final class UserProfiles {
       contentType_ = "";
       imageURL_ = "";
       dateAdded_ = com.blitzhere.BlitzMessage.Types.Timestamp.getDefaultInstance();
-      crc32_ = 0;
+      crc32_ = 0L;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -5409,7 +5409,7 @@ public final class UserProfiles {
         output.writeMessage(5, dateAdded_);
       }
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
-        output.writeUInt32(6, crc32_);
+        output.writeInt64(6, crc32_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -5442,7 +5442,7 @@ public final class UserProfiles {
       }
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeUInt32Size(6, crc32_);
+          .computeInt64Size(6, crc32_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -5576,7 +5576,7 @@ public final class UserProfiles {
           dateAddedBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000010);
-        crc32_ = 0;
+        crc32_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000020);
         return this;
       }
@@ -6043,34 +6043,34 @@ public final class UserProfiles {
         return dateAddedBuilder_;
       }
 
-      private int crc32_ ;
+      private long crc32_ ;
       /**
-       * <code>optional uint32 crc32 = 6;</code>
+       * <code>optional int64 crc32 = 6;</code>
        */
       public boolean hasCrc32() {
         return ((bitField0_ & 0x00000020) == 0x00000020);
       }
       /**
-       * <code>optional uint32 crc32 = 6;</code>
+       * <code>optional int64 crc32 = 6;</code>
        */
-      public int getCrc32() {
+      public long getCrc32() {
         return crc32_;
       }
       /**
-       * <code>optional uint32 crc32 = 6;</code>
+       * <code>optional int64 crc32 = 6;</code>
        */
-      public Builder setCrc32(int value) {
+      public Builder setCrc32(long value) {
         bitField0_ |= 0x00000020;
         crc32_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional uint32 crc32 = 6;</code>
+       * <code>optional int64 crc32 = 6;</code>
        */
       public Builder clearCrc32() {
         bitField0_ = (bitField0_ & ~0x00000020);
-        crc32_ = 0;
+        crc32_ = 0L;
         onChanged();
         return this;
       }
@@ -11973,17 +11973,17 @@ public final class UserProfiles {
     com.blitzhere.BlitzMessage.UserProfiles.ContactInfoOrBuilder getContactInfoOrBuilder();
 
     /**
-     * <code>optional .BlitzMessage.UserProfile profile = 2;</code>
+     * <code>optional .BlitzMessage.UserProfile userProfile = 2;</code>
      */
-    boolean hasProfile();
+    boolean hasUserProfile();
     /**
-     * <code>optional .BlitzMessage.UserProfile profile = 2;</code>
+     * <code>optional .BlitzMessage.UserProfile userProfile = 2;</code>
      */
-    com.blitzhere.BlitzMessage.UserProfiles.UserProfile getProfile();
+    com.blitzhere.BlitzMessage.UserProfiles.UserProfile getUserProfile();
     /**
-     * <code>optional .BlitzMessage.UserProfile profile = 2;</code>
+     * <code>optional .BlitzMessage.UserProfile userProfile = 2;</code>
      */
-    com.blitzhere.BlitzMessage.UserProfiles.UserProfileOrBuilder getProfileOrBuilder();
+    com.blitzhere.BlitzMessage.UserProfiles.UserProfileOrBuilder getUserProfileOrBuilder();
 
     /**
      * <code>optional string confirmationCode = 3;</code>
@@ -12081,12 +12081,12 @@ public final class UserProfiles {
             case 18: {
               com.blitzhere.BlitzMessage.UserProfiles.UserProfile.Builder subBuilder = null;
               if (((bitField0_ & 0x00000002) == 0x00000002)) {
-                subBuilder = profile_.toBuilder();
+                subBuilder = userProfile_.toBuilder();
               }
-              profile_ = input.readMessage(com.blitzhere.BlitzMessage.UserProfiles.UserProfile.PARSER, extensionRegistry);
+              userProfile_ = input.readMessage(com.blitzhere.BlitzMessage.UserProfiles.UserProfile.PARSER, extensionRegistry);
               if (subBuilder != null) {
-                subBuilder.mergeFrom(profile_);
-                profile_ = subBuilder.buildPartial();
+                subBuilder.mergeFrom(userProfile_);
+                userProfile_ = subBuilder.buildPartial();
               }
               bitField0_ |= 0x00000002;
               break;
@@ -12164,25 +12164,25 @@ public final class UserProfiles {
       return contactInfo_;
     }
 
-    public static final int PROFILE_FIELD_NUMBER = 2;
-    private com.blitzhere.BlitzMessage.UserProfiles.UserProfile profile_;
+    public static final int USERPROFILE_FIELD_NUMBER = 2;
+    private com.blitzhere.BlitzMessage.UserProfiles.UserProfile userProfile_;
     /**
-     * <code>optional .BlitzMessage.UserProfile profile = 2;</code>
+     * <code>optional .BlitzMessage.UserProfile userProfile = 2;</code>
      */
-    public boolean hasProfile() {
+    public boolean hasUserProfile() {
       return ((bitField0_ & 0x00000002) == 0x00000002);
     }
     /**
-     * <code>optional .BlitzMessage.UserProfile profile = 2;</code>
+     * <code>optional .BlitzMessage.UserProfile userProfile = 2;</code>
      */
-    public com.blitzhere.BlitzMessage.UserProfiles.UserProfile getProfile() {
-      return profile_;
+    public com.blitzhere.BlitzMessage.UserProfiles.UserProfile getUserProfile() {
+      return userProfile_;
     }
     /**
-     * <code>optional .BlitzMessage.UserProfile profile = 2;</code>
+     * <code>optional .BlitzMessage.UserProfile userProfile = 2;</code>
      */
-    public com.blitzhere.BlitzMessage.UserProfiles.UserProfileOrBuilder getProfileOrBuilder() {
-      return profile_;
+    public com.blitzhere.BlitzMessage.UserProfiles.UserProfileOrBuilder getUserProfileOrBuilder() {
+      return userProfile_;
     }
 
     public static final int CONFIRMATIONCODE_FIELD_NUMBER = 3;
@@ -12271,7 +12271,7 @@ public final class UserProfiles {
 
     private void initFields() {
       contactInfo_ = com.blitzhere.BlitzMessage.UserProfiles.ContactInfo.getDefaultInstance();
-      profile_ = com.blitzhere.BlitzMessage.UserProfiles.UserProfile.getDefaultInstance();
+      userProfile_ = com.blitzhere.BlitzMessage.UserProfiles.UserProfile.getDefaultInstance();
       confirmationCode_ = "";
       inviterUserID_ = "";
     }
@@ -12287,8 +12287,8 @@ public final class UserProfiles {
           return false;
         }
       }
-      if (hasProfile()) {
-        if (!getProfile().isInitialized()) {
+      if (hasUserProfile()) {
+        if (!getUserProfile().isInitialized()) {
           memoizedIsInitialized = 0;
           return false;
         }
@@ -12304,7 +12304,7 @@ public final class UserProfiles {
         output.writeMessage(1, contactInfo_);
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeMessage(2, profile_);
+        output.writeMessage(2, userProfile_);
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         output.writeBytes(3, getConfirmationCodeBytes());
@@ -12327,7 +12327,7 @@ public final class UserProfiles {
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(2, profile_);
+          .computeMessageSize(2, userProfile_);
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
@@ -12447,7 +12447,7 @@ public final class UserProfiles {
       private void maybeForceBuilderInitialization() {
         if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
           getContactInfoFieldBuilder();
-          getProfileFieldBuilder();
+          getUserProfileFieldBuilder();
         }
       }
       private static Builder create() {
@@ -12462,10 +12462,10 @@ public final class UserProfiles {
           contactInfoBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000001);
-        if (profileBuilder_ == null) {
-          profile_ = com.blitzhere.BlitzMessage.UserProfiles.UserProfile.getDefaultInstance();
+        if (userProfileBuilder_ == null) {
+          userProfile_ = com.blitzhere.BlitzMessage.UserProfiles.UserProfile.getDefaultInstance();
         } else {
-          profileBuilder_.clear();
+          userProfileBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000002);
         confirmationCode_ = "";
@@ -12511,10 +12511,10 @@ public final class UserProfiles {
         if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
           to_bitField0_ |= 0x00000002;
         }
-        if (profileBuilder_ == null) {
-          result.profile_ = profile_;
+        if (userProfileBuilder_ == null) {
+          result.userProfile_ = userProfile_;
         } else {
-          result.profile_ = profileBuilder_.build();
+          result.userProfile_ = userProfileBuilder_.build();
         }
         if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
           to_bitField0_ |= 0x00000004;
@@ -12543,8 +12543,8 @@ public final class UserProfiles {
         if (other.hasContactInfo()) {
           mergeContactInfo(other.getContactInfo());
         }
-        if (other.hasProfile()) {
-          mergeProfile(other.getProfile());
+        if (other.hasUserProfile()) {
+          mergeUserProfile(other.getUserProfile());
         }
         if (other.hasConfirmationCode()) {
           bitField0_ |= 0x00000004;
@@ -12567,8 +12567,8 @@ public final class UserProfiles {
             return false;
           }
         }
-        if (hasProfile()) {
-          if (!getProfile().isInitialized()) {
+        if (hasUserProfile()) {
+          if (!getUserProfile().isInitialized()) {
             
             return false;
           }
@@ -12711,120 +12711,120 @@ public final class UserProfiles {
         return contactInfoBuilder_;
       }
 
-      private com.blitzhere.BlitzMessage.UserProfiles.UserProfile profile_ = com.blitzhere.BlitzMessage.UserProfiles.UserProfile.getDefaultInstance();
+      private com.blitzhere.BlitzMessage.UserProfiles.UserProfile userProfile_ = com.blitzhere.BlitzMessage.UserProfiles.UserProfile.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
-          com.blitzhere.BlitzMessage.UserProfiles.UserProfile, com.blitzhere.BlitzMessage.UserProfiles.UserProfile.Builder, com.blitzhere.BlitzMessage.UserProfiles.UserProfileOrBuilder> profileBuilder_;
+          com.blitzhere.BlitzMessage.UserProfiles.UserProfile, com.blitzhere.BlitzMessage.UserProfiles.UserProfile.Builder, com.blitzhere.BlitzMessage.UserProfiles.UserProfileOrBuilder> userProfileBuilder_;
       /**
-       * <code>optional .BlitzMessage.UserProfile profile = 2;</code>
+       * <code>optional .BlitzMessage.UserProfile userProfile = 2;</code>
        */
-      public boolean hasProfile() {
+      public boolean hasUserProfile() {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
       /**
-       * <code>optional .BlitzMessage.UserProfile profile = 2;</code>
+       * <code>optional .BlitzMessage.UserProfile userProfile = 2;</code>
        */
-      public com.blitzhere.BlitzMessage.UserProfiles.UserProfile getProfile() {
-        if (profileBuilder_ == null) {
-          return profile_;
+      public com.blitzhere.BlitzMessage.UserProfiles.UserProfile getUserProfile() {
+        if (userProfileBuilder_ == null) {
+          return userProfile_;
         } else {
-          return profileBuilder_.getMessage();
+          return userProfileBuilder_.getMessage();
         }
       }
       /**
-       * <code>optional .BlitzMessage.UserProfile profile = 2;</code>
+       * <code>optional .BlitzMessage.UserProfile userProfile = 2;</code>
        */
-      public Builder setProfile(com.blitzhere.BlitzMessage.UserProfiles.UserProfile value) {
-        if (profileBuilder_ == null) {
+      public Builder setUserProfile(com.blitzhere.BlitzMessage.UserProfiles.UserProfile value) {
+        if (userProfileBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          profile_ = value;
+          userProfile_ = value;
           onChanged();
         } else {
-          profileBuilder_.setMessage(value);
+          userProfileBuilder_.setMessage(value);
         }
         bitField0_ |= 0x00000002;
         return this;
       }
       /**
-       * <code>optional .BlitzMessage.UserProfile profile = 2;</code>
+       * <code>optional .BlitzMessage.UserProfile userProfile = 2;</code>
        */
-      public Builder setProfile(
+      public Builder setUserProfile(
           com.blitzhere.BlitzMessage.UserProfiles.UserProfile.Builder builderForValue) {
-        if (profileBuilder_ == null) {
-          profile_ = builderForValue.build();
+        if (userProfileBuilder_ == null) {
+          userProfile_ = builderForValue.build();
           onChanged();
         } else {
-          profileBuilder_.setMessage(builderForValue.build());
+          userProfileBuilder_.setMessage(builderForValue.build());
         }
         bitField0_ |= 0x00000002;
         return this;
       }
       /**
-       * <code>optional .BlitzMessage.UserProfile profile = 2;</code>
+       * <code>optional .BlitzMessage.UserProfile userProfile = 2;</code>
        */
-      public Builder mergeProfile(com.blitzhere.BlitzMessage.UserProfiles.UserProfile value) {
-        if (profileBuilder_ == null) {
+      public Builder mergeUserProfile(com.blitzhere.BlitzMessage.UserProfiles.UserProfile value) {
+        if (userProfileBuilder_ == null) {
           if (((bitField0_ & 0x00000002) == 0x00000002) &&
-              profile_ != com.blitzhere.BlitzMessage.UserProfiles.UserProfile.getDefaultInstance()) {
-            profile_ =
-              com.blitzhere.BlitzMessage.UserProfiles.UserProfile.newBuilder(profile_).mergeFrom(value).buildPartial();
+              userProfile_ != com.blitzhere.BlitzMessage.UserProfiles.UserProfile.getDefaultInstance()) {
+            userProfile_ =
+              com.blitzhere.BlitzMessage.UserProfiles.UserProfile.newBuilder(userProfile_).mergeFrom(value).buildPartial();
           } else {
-            profile_ = value;
+            userProfile_ = value;
           }
           onChanged();
         } else {
-          profileBuilder_.mergeFrom(value);
+          userProfileBuilder_.mergeFrom(value);
         }
         bitField0_ |= 0x00000002;
         return this;
       }
       /**
-       * <code>optional .BlitzMessage.UserProfile profile = 2;</code>
+       * <code>optional .BlitzMessage.UserProfile userProfile = 2;</code>
        */
-      public Builder clearProfile() {
-        if (profileBuilder_ == null) {
-          profile_ = com.blitzhere.BlitzMessage.UserProfiles.UserProfile.getDefaultInstance();
+      public Builder clearUserProfile() {
+        if (userProfileBuilder_ == null) {
+          userProfile_ = com.blitzhere.BlitzMessage.UserProfiles.UserProfile.getDefaultInstance();
           onChanged();
         } else {
-          profileBuilder_.clear();
+          userProfileBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
       /**
-       * <code>optional .BlitzMessage.UserProfile profile = 2;</code>
+       * <code>optional .BlitzMessage.UserProfile userProfile = 2;</code>
        */
-      public com.blitzhere.BlitzMessage.UserProfiles.UserProfile.Builder getProfileBuilder() {
+      public com.blitzhere.BlitzMessage.UserProfiles.UserProfile.Builder getUserProfileBuilder() {
         bitField0_ |= 0x00000002;
         onChanged();
-        return getProfileFieldBuilder().getBuilder();
+        return getUserProfileFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .BlitzMessage.UserProfile profile = 2;</code>
+       * <code>optional .BlitzMessage.UserProfile userProfile = 2;</code>
        */
-      public com.blitzhere.BlitzMessage.UserProfiles.UserProfileOrBuilder getProfileOrBuilder() {
-        if (profileBuilder_ != null) {
-          return profileBuilder_.getMessageOrBuilder();
+      public com.blitzhere.BlitzMessage.UserProfiles.UserProfileOrBuilder getUserProfileOrBuilder() {
+        if (userProfileBuilder_ != null) {
+          return userProfileBuilder_.getMessageOrBuilder();
         } else {
-          return profile_;
+          return userProfile_;
         }
       }
       /**
-       * <code>optional .BlitzMessage.UserProfile profile = 2;</code>
+       * <code>optional .BlitzMessage.UserProfile userProfile = 2;</code>
        */
       private com.google.protobuf.SingleFieldBuilder<
           com.blitzhere.BlitzMessage.UserProfiles.UserProfile, com.blitzhere.BlitzMessage.UserProfiles.UserProfile.Builder, com.blitzhere.BlitzMessage.UserProfiles.UserProfileOrBuilder> 
-          getProfileFieldBuilder() {
-        if (profileBuilder_ == null) {
-          profileBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+          getUserProfileFieldBuilder() {
+        if (userProfileBuilder_ == null) {
+          userProfileBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.blitzhere.BlitzMessage.UserProfiles.UserProfile, com.blitzhere.BlitzMessage.UserProfiles.UserProfile.Builder, com.blitzhere.BlitzMessage.UserProfiles.UserProfileOrBuilder>(
-                  getProfile(),
+                  getUserProfile(),
                   getParentForChildren(),
                   isClean());
-          profile_ = null;
+          userProfile_ = null;
         }
-        return profileBuilder_;
+        return userProfileBuilder_;
       }
 
       private java.lang.Object confirmationCode_ = "";
@@ -13762,7 +13762,7 @@ public final class UserProfiles {
       "ssage.ImageContent\022\022\n\nimageBytes\030\002 \001(\014\022\023" +
       "\n\013contentType\030\003 \001(\t\022\020\n\010imageURL\030\004 \001(\t\022*\n" +
       "\tdateAdded\030\005 \001(\0132\027.BlitzMessage.Timestam",
-      "p\022\r\n\005crc32\030\006 \001(\r\"\354\004\n\013UserProfile\022\016\n\006user" +
+      "p\022\r\n\005crc32\030\006 \001(\003\"\354\004\n\013UserProfile\022\016\n\006user" +
       "ID\030\001 \001(\t\022,\n\nuserStatus\030\002 \001(\0162\030.BlitzMess" +
       "age.UserStatus\022-\n\014creationDate\030\003 \001(\0132\027.B" +
       "litzMessage.Timestamp\022)\n\010lastSeen\030\004 \001(\0132" +
@@ -13782,22 +13782,22 @@ public final class UserProfiles {
       "zMessage.ImageData\"@\n\021UserProfileUpdate\022" +
       "+\n\010profiles\030\001 \003(\0132\031.BlitzMessage.UserPro" +
       "file\"#\n\020UserProfileQuery\022\017\n\007userIDs\030\001 \003(",
-      "\t\"\242\001\n\023ConfirmationRequest\022.\n\013contactInfo" +
-      "\030\001 \001(\0132\031.BlitzMessage.ContactInfo\022*\n\007pro" +
-      "file\030\002 \001(\0132\031.BlitzMessage.UserProfile\022\030\n" +
-      "\020confirmationCode\030\003 \001(\t\022\025\n\rinviterUserID" +
-      "\030\004 \001(\t\"F\n\027ProfilesFromContactInfo\022+\n\010pro" +
-      "files\030\001 \003(\0132\031.BlitzMessage.UserProfile*Z" +
-      "\n\013ContactType\022\r\n\tCTUnknown\020\000\022\016\n\nCTPhoneS" +
-      "MS\020\001\022\013\n\007CTEmail\020\002\022\n\n\006CTChat\020\003\022\023\n\017CTSocia" +
-      "lService\020\004*j\n\nUserStatus\022\r\n\tUSUnknown\020\000\022" +
-      "\r\n\tUSBlocked\020\001\022\r\n\tUSInvited\020\002\022\014\n\010USActiv",
-      "e\020\003\022\020\n\014USConfirming\020\004\022\017\n\013USConfirmed\020\005*:" +
-      "\n\006Gender\022\014\n\010GUnknown\020\000\022\013\n\007GFemale\020\001\022\t\n\005G" +
-      "Male\020\002\022\n\n\006GOther\020\003*F\n\014ImageContent\022\r\n\tIC" +
-      "Unknown\020\000\022\021\n\rICUserProfile\020\001\022\024\n\020ICUserBa" +
-      "ckground\020\002B/\n\032com.blitzhere.BlitzMessage" +
-      "\210\001\001\322>\002\n\000\322>\003\022\001B\322>\002\030\001"
+      "\t\"\246\001\n\023ConfirmationRequest\022.\n\013contactInfo" +
+      "\030\001 \001(\0132\031.BlitzMessage.ContactInfo\022.\n\013use" +
+      "rProfile\030\002 \001(\0132\031.BlitzMessage.UserProfil" +
+      "e\022\030\n\020confirmationCode\030\003 \001(\t\022\025\n\rinviterUs" +
+      "erID\030\004 \001(\t\"F\n\027ProfilesFromContactInfo\022+\n" +
+      "\010profiles\030\001 \003(\0132\031.BlitzMessage.UserProfi" +
+      "le*Z\n\013ContactType\022\r\n\tCTUnknown\020\000\022\016\n\nCTPh" +
+      "oneSMS\020\001\022\013\n\007CTEmail\020\002\022\n\n\006CTChat\020\003\022\023\n\017CTS" +
+      "ocialService\020\004*j\n\nUserStatus\022\r\n\tUSUnknow" +
+      "n\020\000\022\r\n\tUSBlocked\020\001\022\r\n\tUSInvited\020\002\022\014\n\010USA",
+      "ctive\020\003\022\020\n\014USConfirming\020\004\022\017\n\013USConfirmed" +
+      "\020\005*:\n\006Gender\022\014\n\010GUnknown\020\000\022\013\n\007GFemale\020\001\022" +
+      "\t\n\005GMale\020\002\022\n\n\006GOther\020\003*F\n\014ImageContent\022\r" +
+      "\n\tICUnknown\020\000\022\021\n\rICUserProfile\020\001\022\024\n\020ICUs" +
+      "erBackground\020\002B/\n\032com.blitzhere.BlitzMes" +
+      "sage\210\001\001\322>\002\n\000\322>\003\022\001B\322>\002\030\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -13872,7 +13872,7 @@ public final class UserProfiles {
     internal_static_BlitzMessage_ConfirmationRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_BlitzMessage_ConfirmationRequest_descriptor,
-        new java.lang.String[] { "ContactInfo", "Profile", "ConfirmationCode", "InviterUserID", });
+        new java.lang.String[] { "ContactInfo", "UserProfile", "ConfirmationCode", "InviterUserID", });
     internal_static_BlitzMessage_ProfilesFromContactInfo_descriptor =
       getDescriptor().getMessageTypes().get(10);
     internal_static_BlitzMessage_ProfilesFromContactInfo_fieldAccessorTable = new

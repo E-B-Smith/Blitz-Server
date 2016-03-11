@@ -57,9 +57,9 @@ message SessionResponse {
   optional string             userID          = 1;
   optional string             sessionToken    = 2;
   optional string             serverURL       = 3;
-  repeated UserMessage        userMessages    = 4;   //  New messages for the user.
-  optional UserProfile        userProfile     = 5;     //  The updated profile for the user.
-  optional bool               resetAllAppData = 6;     //  The client should clear all data.
+  repeated UserMessage        userMessages    = 4;    //  New messages for the user.
+  optional UserProfile        userProfile     = 5;    //  The updated profile for the user.
+  optional bool               resetAllAppData = 6;    //  The client should clear all data.
   optional AcceptInviteRequest inviteRequest  = 7;
   optional AppOptions         appOptions      = 8;
 }

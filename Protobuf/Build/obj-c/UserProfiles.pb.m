@@ -1901,7 +1901,7 @@ static BEducation* defaultBEducationInstance = nil;
 @property (strong) NSString* contentType;
 @property (strong) NSString* imageURL;
 @property (strong) BTimestamp* dateAdded;
-@property UInt32 crc32;
+@property SInt64 crc32;
 @end
 
 @implementation BImageData
@@ -1955,7 +1955,7 @@ static BEducation* defaultBEducationInstance = nil;
     self.contentType = @"";
     self.imageURL = @"";
     self.dateAdded = [BTimestamp defaultInstance];
-    self.crc32 = 0;
+    self.crc32 = 0L;
   }
   return self;
 }
@@ -1996,7 +1996,7 @@ static BImageData* defaultBImageDataInstance = nil;
     [output writeMessage:5 value:self.dateAdded];
   }
   if (self.hasCrc32) {
-    [output writeUInt32:6 value:self.crc32];
+    [output writeInt64:6 value:self.crc32];
   }
   [self.unknownFields writeToCodedOutputStream:output];
 }
@@ -2023,7 +2023,7 @@ static BImageData* defaultBImageDataInstance = nil;
     size_ += computeMessageSize(5, self.dateAdded);
   }
   if (self.hasCrc32) {
-    size_ += computeUInt32Size(6, self.crc32);
+    size_ += computeInt64Size(6, self.crc32);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -2079,7 +2079,7 @@ static BImageData* defaultBImageDataInstance = nil;
     [output appendFormat:@"%@}\n", indent];
   }
   if (self.hasCrc32) {
-    [output appendFormat:@"%@%@: %@\n", indent, @"crc32", [NSNumber numberWithInteger:self.crc32]];
+    [output appendFormat:@"%@%@: %@\n", indent, @"crc32", [NSNumber numberWithLongLong:self.crc32]];
   }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
@@ -2102,7 +2102,7 @@ static BImageData* defaultBImageDataInstance = nil;
    [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"dateAdded"];
   }
   if (self.hasCrc32) {
-    [dictionary setObject: [NSNumber numberWithInteger:self.crc32] forKey: @"crc32"];
+    [dictionary setObject: [NSNumber numberWithLongLong:self.crc32] forKey: @"crc32"];
   }
   [self.unknownFields storeInDictionary:dictionary];
 }
@@ -2147,7 +2147,7 @@ static BImageData* defaultBImageDataInstance = nil;
     hashCode = hashCode * 31 + [self.dateAdded hash];
   }
   if (self.hasCrc32) {
-    hashCode = hashCode * 31 + [[NSNumber numberWithInteger:self.crc32] hash];
+    hashCode = hashCode * 31 + [[NSNumber numberWithLongLong:self.crc32] hash];
   }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
@@ -2262,7 +2262,7 @@ static BImageData* defaultBImageDataInstance = nil;
         break;
       }
       case 48: {
-        [self setCrc32:[input readUInt32]];
+        [self setCrc32:[input readInt64]];
         break;
       }
     }
@@ -2365,17 +2365,17 @@ static BImageData* defaultBImageDataInstance = nil;
 - (BOOL) hasCrc32 {
   return resultImageData.hasCrc32;
 }
-- (UInt32) crc32 {
+- (SInt64) crc32 {
   return resultImageData.crc32;
 }
-- (BImageDataBuilder*) setCrc32:(UInt32) value {
+- (BImageDataBuilder*) setCrc32:(SInt64) value {
   resultImageData.hasCrc32 = YES;
   resultImageData.crc32 = value;
   return self;
 }
 - (BImageDataBuilder*) clearCrc32 {
   resultImageData.hasCrc32 = NO;
-  resultImageData.crc32 = 0;
+  resultImageData.crc32 = 0L;
   return self;
 }
 @end
@@ -4264,7 +4264,7 @@ static BUserProfileQuery* defaultBUserProfileQueryInstance = nil;
 
 @interface BConfirmationRequest ()
 @property (strong) BContactInfo* contactInfo;
-@property (strong) BUserProfile* profile;
+@property (strong) BUserProfile* userProfile;
 @property (strong) NSString* confirmationCode;
 @property (strong) NSString* inviterUserID;
 @end
@@ -4278,13 +4278,13 @@ static BUserProfileQuery* defaultBUserProfileQueryInstance = nil;
   hasContactInfo_ = !!_value_;
 }
 @synthesize contactInfo;
-- (BOOL) hasProfile {
-  return !!hasProfile_;
+- (BOOL) hasUserProfile {
+  return !!hasUserProfile_;
 }
-- (void) setHasProfile:(BOOL) _value_ {
-  hasProfile_ = !!_value_;
+- (void) setHasUserProfile:(BOOL) _value_ {
+  hasUserProfile_ = !!_value_;
 }
-@synthesize profile;
+@synthesize userProfile;
 - (BOOL) hasConfirmationCode {
   return !!hasConfirmationCode_;
 }
@@ -4302,7 +4302,7 @@ static BUserProfileQuery* defaultBUserProfileQueryInstance = nil;
 - (instancetype) init {
   if ((self = [super init])) {
     self.contactInfo = [BContactInfo defaultInstance];
-    self.profile = [BUserProfile defaultInstance];
+    self.userProfile = [BUserProfile defaultInstance];
     self.confirmationCode = @"";
     self.inviterUserID = @"";
   }
@@ -4326,8 +4326,8 @@ static BConfirmationRequest* defaultBConfirmationRequestInstance = nil;
       return NO;
     }
   }
-  if (self.hasProfile) {
-    if (!self.profile.isInitialized) {
+  if (self.hasUserProfile) {
+    if (!self.userProfile.isInitialized) {
       return NO;
     }
   }
@@ -4337,8 +4337,8 @@ static BConfirmationRequest* defaultBConfirmationRequestInstance = nil;
   if (self.hasContactInfo) {
     [output writeMessage:1 value:self.contactInfo];
   }
-  if (self.hasProfile) {
-    [output writeMessage:2 value:self.profile];
+  if (self.hasUserProfile) {
+    [output writeMessage:2 value:self.userProfile];
   }
   if (self.hasConfirmationCode) {
     [output writeString:3 value:self.confirmationCode];
@@ -4358,8 +4358,8 @@ static BConfirmationRequest* defaultBConfirmationRequestInstance = nil;
   if (self.hasContactInfo) {
     size_ += computeMessageSize(1, self.contactInfo);
   }
-  if (self.hasProfile) {
-    size_ += computeMessageSize(2, self.profile);
+  if (self.hasUserProfile) {
+    size_ += computeMessageSize(2, self.userProfile);
   }
   if (self.hasConfirmationCode) {
     size_ += computeStringSize(3, self.confirmationCode);
@@ -4408,9 +4408,9 @@ static BConfirmationRequest* defaultBConfirmationRequestInstance = nil;
                          withIndent:[NSString stringWithFormat:@"%@  ", indent]];
     [output appendFormat:@"%@}\n", indent];
   }
-  if (self.hasProfile) {
-    [output appendFormat:@"%@%@ {\n", indent, @"profile"];
-    [self.profile writeDescriptionTo:output
+  if (self.hasUserProfile) {
+    [output appendFormat:@"%@%@ {\n", indent, @"userProfile"];
+    [self.userProfile writeDescriptionTo:output
                          withIndent:[NSString stringWithFormat:@"%@  ", indent]];
     [output appendFormat:@"%@}\n", indent];
   }
@@ -4428,10 +4428,10 @@ static BConfirmationRequest* defaultBConfirmationRequestInstance = nil;
    [self.contactInfo storeInDictionary:messageDictionary];
    [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"contactInfo"];
   }
-  if (self.hasProfile) {
+  if (self.hasUserProfile) {
    NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
-   [self.profile storeInDictionary:messageDictionary];
-   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"profile"];
+   [self.userProfile storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"userProfile"];
   }
   if (self.hasConfirmationCode) {
     [dictionary setObject: self.confirmationCode forKey: @"confirmationCode"];
@@ -4452,8 +4452,8 @@ static BConfirmationRequest* defaultBConfirmationRequestInstance = nil;
   return
       self.hasContactInfo == otherMessage.hasContactInfo &&
       (!self.hasContactInfo || [self.contactInfo isEqual:otherMessage.contactInfo]) &&
-      self.hasProfile == otherMessage.hasProfile &&
-      (!self.hasProfile || [self.profile isEqual:otherMessage.profile]) &&
+      self.hasUserProfile == otherMessage.hasUserProfile &&
+      (!self.hasUserProfile || [self.userProfile isEqual:otherMessage.userProfile]) &&
       self.hasConfirmationCode == otherMessage.hasConfirmationCode &&
       (!self.hasConfirmationCode || [self.confirmationCode isEqual:otherMessage.confirmationCode]) &&
       self.hasInviterUserID == otherMessage.hasInviterUserID &&
@@ -4465,8 +4465,8 @@ static BConfirmationRequest* defaultBConfirmationRequestInstance = nil;
   if (self.hasContactInfo) {
     hashCode = hashCode * 31 + [self.contactInfo hash];
   }
-  if (self.hasProfile) {
-    hashCode = hashCode * 31 + [self.profile hash];
+  if (self.hasUserProfile) {
+    hashCode = hashCode * 31 + [self.userProfile hash];
   }
   if (self.hasConfirmationCode) {
     hashCode = hashCode * 31 + [self.confirmationCode hash];
@@ -4520,8 +4520,8 @@ static BConfirmationRequest* defaultBConfirmationRequestInstance = nil;
   if (other.hasContactInfo) {
     [self mergeContactInfo:other.contactInfo];
   }
-  if (other.hasProfile) {
-    [self mergeProfile:other.profile];
+  if (other.hasUserProfile) {
+    [self mergeUserProfile:other.userProfile];
   }
   if (other.hasConfirmationCode) {
     [self setConfirmationCode:other.confirmationCode];
@@ -4561,11 +4561,11 @@ static BConfirmationRequest* defaultBConfirmationRequestInstance = nil;
       }
       case 18: {
         BUserProfileBuilder* subBuilder = [BUserProfile builder];
-        if (self.hasProfile) {
-          [subBuilder mergeFrom:self.profile];
+        if (self.hasUserProfile) {
+          [subBuilder mergeFrom:self.userProfile];
         }
         [input readMessage:subBuilder extensionRegistry:extensionRegistry];
-        [self setProfile:[subBuilder buildPartial]];
+        [self setUserProfile:[subBuilder buildPartial]];
         break;
       }
       case 26: {
@@ -4609,34 +4609,34 @@ static BConfirmationRequest* defaultBConfirmationRequestInstance = nil;
   resultConfirmationRequest.contactInfo = [BContactInfo defaultInstance];
   return self;
 }
-- (BOOL) hasProfile {
-  return resultConfirmationRequest.hasProfile;
+- (BOOL) hasUserProfile {
+  return resultConfirmationRequest.hasUserProfile;
 }
-- (BUserProfile*) profile {
-  return resultConfirmationRequest.profile;
+- (BUserProfile*) userProfile {
+  return resultConfirmationRequest.userProfile;
 }
-- (BConfirmationRequestBuilder*) setProfile:(BUserProfile*) value {
-  resultConfirmationRequest.hasProfile = YES;
-  resultConfirmationRequest.profile = value;
+- (BConfirmationRequestBuilder*) setUserProfile:(BUserProfile*) value {
+  resultConfirmationRequest.hasUserProfile = YES;
+  resultConfirmationRequest.userProfile = value;
   return self;
 }
-- (BConfirmationRequestBuilder*) setProfileBuilder:(BUserProfileBuilder*) builderForValue {
-  return [self setProfile:[builderForValue build]];
+- (BConfirmationRequestBuilder*) setUserProfileBuilder:(BUserProfileBuilder*) builderForValue {
+  return [self setUserProfile:[builderForValue build]];
 }
-- (BConfirmationRequestBuilder*) mergeProfile:(BUserProfile*) value {
-  if (resultConfirmationRequest.hasProfile &&
-      resultConfirmationRequest.profile != [BUserProfile defaultInstance]) {
-    resultConfirmationRequest.profile =
-      [[[BUserProfile builderWithPrototype:resultConfirmationRequest.profile] mergeFrom:value] buildPartial];
+- (BConfirmationRequestBuilder*) mergeUserProfile:(BUserProfile*) value {
+  if (resultConfirmationRequest.hasUserProfile &&
+      resultConfirmationRequest.userProfile != [BUserProfile defaultInstance]) {
+    resultConfirmationRequest.userProfile =
+      [[[BUserProfile builderWithPrototype:resultConfirmationRequest.userProfile] mergeFrom:value] buildPartial];
   } else {
-    resultConfirmationRequest.profile = value;
+    resultConfirmationRequest.userProfile = value;
   }
-  resultConfirmationRequest.hasProfile = YES;
+  resultConfirmationRequest.hasUserProfile = YES;
   return self;
 }
-- (BConfirmationRequestBuilder*) clearProfile {
-  resultConfirmationRequest.hasProfile = NO;
-  resultConfirmationRequest.profile = [BUserProfile defaultInstance];
+- (BConfirmationRequestBuilder*) clearUserProfile {
+  resultConfirmationRequest.hasUserProfile = NO;
+  resultConfirmationRequest.userProfile = [BUserProfile defaultInstance];
   return self;
 }
 - (BOOL) hasConfirmationCode {

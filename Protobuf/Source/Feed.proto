@@ -21,7 +21,9 @@ import "Types.proto";
 enum FeedPostType {
   FPUnknown             = 0;
   FPOpenEndedQuestion   = 1;
-  FPSurveyQuestion      = 2;
+  FPOpenEndedReply      = 2;
+  FPSurveyQuestion      = 3;
+  FPSurveyAnswer        = 4;
 }
 
 
@@ -32,43 +34,36 @@ enum FeedPostScope {
 }
 
 
-message FeedReplyTag {
+enum FeedPostStatus {
+  FPSUnknown = 0;
+  FPSActive  = 1;
+  FPSDeleted = 2;
+}
+
+
+message FeedPostVote {
   optional string         tagName      = 1;
   optional int32          voteCount    = 2;
   optional bool           userHasVoted = 3;
 }
 
 
-message FeedReply {
-  optional string         replyId       = 1;
-  optional string         postId        = 2;
-  optional Timestamp      timestamp     = 3;
-  optional string         userId        = 4;
-  optional int32          voteCount     = 5;
-  optional bool           userHasVoted  = 6;
-  repeated FeedReplyTag   replyTags     = 7;
-  optional string         headlineText  = 8;
-  optional string         bodyText      = 9;
-  repeated string         topics        = 10;
-}
-
-
 message FeedPost {
-  optional string         postId          = 1;
-  optional string         userId          = 2;
-  optional string         userVanityId    = 3;
-  optional bool           anonymousPost   = 4 [default = false];
-  optional Timestamp      timestamp       = 5;
-  optional Timespan       timespanActive  = 6;
-  optional string         headlineText    = 7;
-  optional string         bodyText        = 8;
-  repeated string         topics          = 9;
-  optional FeedPostScope  postScope       = 10;
-  optional FeedPostType   postType        = 11;
-  repeated FeedReply      replies         = 12;   //  Top replies or choices.
-  optional bool           mayAddReply     = 13;
-  optional bool           mayChooseMulitpleReplies = 14;
-  optional bool           userHasFollowedPost = 15;
+  optional string         postID          = 1;
+  optional string         parentID        = 2;
+  optional FeedPostType   postType        = 3;
+  optional FeedPostScope  postScope       = 4;
+  optional string         userID          = 5;
+  optional bool           anonymousPost   = 6  [default = false];
+  optional Timestamp      timestamp       = 7;
+  optional Timespan       timespanActive  = 8;
+  optional string         headlineText    = 9;
+  optional string         bodyText        = 10;
+  repeated string         topicTags       = 11;
+  repeated FeedPostVote   votes           = 12;
+  repeated FeedPost       replies         = 13;   //  Top replies or survey choices.
+  optional bool           mayAddReply     = 14;
+  optional bool           mayChooseMulitpleReplies = 15;
 }
 
 
@@ -100,23 +95,17 @@ message FeedPostUpdateResponse {
 }
 
 
-message FeedPostVote {
-  optional string     postId      = 1;
-  optional string     replyId     = 2;
-  repeated FeedReplyTag replyTags = 3;
-}
-
-
 enum EntityType {
-  ETUnknown   = 0;
-  ETUser      = 1;
-  ETFeedPost  = 2;
+  ETUnknown     = 0;
+  ETUser        = 1;
+  ETFeedPost    = 2;
 }
 
 
-message FollowRequest {
-  optional UpdateVerb   updateVerb = 1;
+message EntityVoteRequest {
+  optional string       entityID   = 1;
   optional EntityType   entityType = 2;
-  optional string       entityId   = 3;
+  repeated string       voteTags   = 3;
 }
+
 

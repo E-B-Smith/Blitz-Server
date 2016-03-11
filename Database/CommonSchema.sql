@@ -98,15 +98,6 @@ create table EducationTable
 create index EducationTableIndex on EducationTable(userID);
 
 
-create table UserExpertiseTagTable
-    (
-     userID             UserID not null
-    ,expertiseTag       text   not null
-    );
-create unique index UserExpertiseTagTableIndex
-    on UserExpertiseTagTable(userID, expertiseTag);
-
-
 create table SessionTable
     (
      userID             UserID
@@ -121,9 +112,9 @@ create table SessionTable
 
 create table SocialTable
     (
-     userID             UserID not null
-    ,service            text not null
-    ,socialID           text not null
+     userID             UserID  not null
+    ,service            text    not null
+    ,socialID           text    not null
     ,userName           text
     ,displayName        text
     ,URI                text
@@ -401,10 +392,67 @@ create table ImageTable
     ,dateAdded          timestamptz     not null
     ,imageContent       ImageContent
     ,contentType        text
-    ,crc32              int             not null
+    ,crc32              bigint             not null
     ,imageData          bytea
     );
 create unique index ImageTableUniqueIndex on ImageTable(UserID, crc32);
+
+
+
+------------------------------------------------------------------------------------------
+--
+--                                                                              Feed Posts
+--
+------------------------------------------------------------------------------------------
+
+
+create domain FeedPostType   as smallint;
+create domain FeedPostScope  as smallint;
+create domain FeedPostStatus as smallint;
+
+
+create table FeedPostTable
+    (
+     postID                     UUID            unique not null primary key
+    ,parentID                   UUID
+    ,postType                   FeedPostType
+    ,postScope                  FeedPostScope
+    ,postStatus                 FeedPostStatus
+    ,userID                     UserID
+    ,anonymousPost              boolean
+    ,timestamp                  timestamptz
+    ,timeActiveStart            timestamptz     not null
+    ,timeActiveStop             timestamptz     not null
+    ,headlineText               text
+    ,bodyText                   text
+    ,mayAddReply                bool
+    ,mayChooseMulitpleReplies   bool
+    );
+create index FeedPostDateIndex on FeedPostTable(timeActiveStart desc);
+create index FeedReplyTable    on FeedPostTable(parentID);
+
+
+create domain EntityType as smallint;
+
+
+create table EntityTagTable
+    (
+     entityID           UUID        not null
+    ,entityType         EntityType  not null
+    ,userID             UserID      not null
+    ,entityTag          text        not null
+    );
+create unique index EntityTagTableIndex
+    on  EntityTagTable(entityID, entityType, userID, entityTag);
+
+
+
+------------------------------------------------------------------------------------------
+--
+--                                                                        Helper Functions
+--
+------------------------------------------------------------------------------------------
+
 
 
 create function StringFromTimeInterval(timestamp1 timestamptz, timestamp2 timestamptz) returns text as
@@ -460,7 +508,6 @@ create or replace function EraseUserID(eraseID UserID) returns text as
     delete from ImageTable where userID = eraseID;
     delete from MessageTable where senderID = eraseID;
     delete from MessageTable where recipientID = eraseID;
-    delete from ScoreTable where userID = eraseID;
     delete from SocialTable where userID = eraseID;
     delete from UserContactTable where userID = eraseID;
     delete from UserEventTable where userID = eraseID;
@@ -511,18 +558,6 @@ create or replace function MergeUserIDIntoUserID(oldID UserID, newID UserID) ret
                   and socialtable.service = merge.service
                   and socialtable.socialid = merge.socialid)
                   is null;
-
-    --  ScoreTable
-
-    with recursive merge as (
-        select userid, timestamp from scoretable where userid = oldID
-    )
-    update scoretable set (userid) = (newID)
-        from merge where scoretable.userid = merge.userid
-                     and scoretable.timestamp = merge.timestamp
-        and (select 1 from scoretable
-            where scoretable.userid = newID
-              and scoretable.timestamp = merge.timestamp) is null;
 
     --  UserDeviceTable
 
@@ -713,7 +748,9 @@ create unique index HTTPDeepLinkIndex on HTTPDeepLinkTable(deviceSignature, crea
 
 
 ------------------------------------------------------------------------------------------
+--
 --                                                                        Pretty Functions
+--
 ------------------------------------------------------------------------------------------
 
 

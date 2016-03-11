@@ -528,17 +528,17 @@ NSString *NSStringFromBImageContent(BImageContent value);
 #define ImageData_crc32 @"crc32"
 @interface BImageData : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
+  BOOL hasCrc32_:1;
   BOOL hasContentType_:1;
   BOOL hasImageURL_:1;
   BOOL hasDateAdded_:1;
   BOOL hasImageBytes_:1;
-  BOOL hasCrc32_:1;
   BOOL hasImageContent_:1;
+  SInt64 crc32;
   NSString* contentType;
   NSString* imageURL;
   BTimestamp* dateAdded;
   NSData* imageBytes;
-  UInt32 crc32;
   BImageContent imageContent;
 }
 - (BOOL) hasImageContent;
@@ -552,7 +552,7 @@ NSString *NSStringFromBImageContent(BImageContent value);
 @property (readonly, strong) NSString* contentType;
 @property (readonly, strong) NSString* imageURL;
 @property (readonly, strong) BTimestamp* dateAdded;
-@property (readonly) UInt32 crc32;
+@property (readonly) SInt64 crc32;
 
 + (instancetype) defaultInstance;
 - (instancetype) defaultInstance;
@@ -617,8 +617,8 @@ NSString *NSStringFromBImageContent(BImageContent value);
 - (BImageDataBuilder*) clearDateAdded;
 
 - (BOOL) hasCrc32;
-- (UInt32) crc32;
-- (BImageDataBuilder*) setCrc32:(UInt32) value;
+- (SInt64) crc32;
+- (BImageDataBuilder*) setCrc32:(SInt64) value;
 - (BImageDataBuilder*) clearCrc32;
 @end
 
@@ -981,7 +981,7 @@ NSString *NSStringFromBImageContent(BImageContent value);
 @end
 
 #define ConfirmationRequest_contactInfo @"contactInfo"
-#define ConfirmationRequest_profile @"profile"
+#define ConfirmationRequest_userProfile @"userProfile"
 #define ConfirmationRequest_confirmationCode @"confirmationCode"
 #define ConfirmationRequest_inviterUserID @"inviterUserID"
 @interface BConfirmationRequest : PBGeneratedMessage<GeneratedMessageProtocol> {
@@ -989,18 +989,18 @@ NSString *NSStringFromBImageContent(BImageContent value);
   BOOL hasConfirmationCode_:1;
   BOOL hasInviterUserID_:1;
   BOOL hasContactInfo_:1;
-  BOOL hasProfile_:1;
+  BOOL hasUserProfile_:1;
   NSString* confirmationCode;
   NSString* inviterUserID;
   BContactInfo* contactInfo;
-  BUserProfile* profile;
+  BUserProfile* userProfile;
 }
 - (BOOL) hasContactInfo;
-- (BOOL) hasProfile;
+- (BOOL) hasUserProfile;
 - (BOOL) hasConfirmationCode;
 - (BOOL) hasInviterUserID;
 @property (readonly, strong) BContactInfo* contactInfo;
-@property (readonly, strong) BUserProfile* profile;
+@property (readonly, strong) BUserProfile* userProfile;
 @property (readonly, strong) NSString* confirmationCode;
 @property (readonly, strong) NSString* inviterUserID;
 
@@ -1046,12 +1046,12 @@ NSString *NSStringFromBImageContent(BImageContent value);
 - (BConfirmationRequestBuilder*) mergeContactInfo:(BContactInfo*) value;
 - (BConfirmationRequestBuilder*) clearContactInfo;
 
-- (BOOL) hasProfile;
-- (BUserProfile*) profile;
-- (BConfirmationRequestBuilder*) setProfile:(BUserProfile*) value;
-- (BConfirmationRequestBuilder*) setProfileBuilder:(BUserProfileBuilder*) builderForValue;
-- (BConfirmationRequestBuilder*) mergeProfile:(BUserProfile*) value;
-- (BConfirmationRequestBuilder*) clearProfile;
+- (BOOL) hasUserProfile;
+- (BUserProfile*) userProfile;
+- (BConfirmationRequestBuilder*) setUserProfile:(BUserProfile*) value;
+- (BConfirmationRequestBuilder*) setUserProfileBuilder:(BUserProfileBuilder*) builderForValue;
+- (BConfirmationRequestBuilder*) mergeUserProfile:(BUserProfile*) value;
+- (BConfirmationRequestBuilder*) clearUserProfile;
 
 - (BOOL) hasConfirmationCode;
 - (NSString*) confirmationCode;

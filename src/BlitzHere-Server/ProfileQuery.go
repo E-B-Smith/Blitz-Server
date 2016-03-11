@@ -1,4 +1,4 @@
-//  HappinessServer  -  Track the Happiness user data.
+//  BlitzHere-Server  -  Track the Happiness user data.
 //
 //  E.B.Smith  -  November, 2014
 
@@ -7,7 +7,6 @@ package main
 
 
 import (
-    "strings"
     "database/sql"
     "github.com/lib/pq"
     "github.com/golang/protobuf/proto"
@@ -101,7 +100,7 @@ func ImagesForUserID(userID string) []*BlitzMessage.ImageData {
             dateAdded       pq.NullTime
             imageContent    sql.NullInt64
             contentType     sql.NullString
-            crc32           uint32
+            crc32           int64
         )
         error = rows.Scan(&dateAdded, &imageContent, &contentType, &crc32)
         if error != nil {
@@ -232,31 +231,6 @@ func EducationForUserID(userID string) []*BlitzMessage.Education {
 }
 
 
-func ExpertiseTagsForUserID(userID string) []string {
-    Log.LogFunctionName()
-
-    rows, error := config.DB.Query(
-        `select expertiseTag from UserExpertiseTagTable where userID = $1;`, userID)
-    if error != nil {
-        Log.LogError(error)
-        return nil
-    }
-    defer rows.Close()
-
-    tags := make([]string, 0, 10)
-    for rows.Next() {
-        var tag string
-        error = rows.Scan(&tag)
-        if error == nil {
-            s := strings.TrimSpace(tag)
-            if len(s) > 0 { tags = append(tags, s) }
-        }
-    }
-
-    return tags
-}
-
-
 //----------------------------------------------------------------------------------------
 //                                                                        ProfileForUserID
 //----------------------------------------------------------------------------------------
@@ -330,7 +304,7 @@ func ProfileForUserID(userID string) *BlitzMessage.UserProfile {
     profile.Images        = ImagesForUserID(userID)
     profile.SocialIdentities = SocialIdentitiesWithUserID(userID)
     profile.ContactInfo   = ContactInfoForUserID(userID)
-    profile.ExpertiseTags = ExpertiseTagsForUserID(userID)
+    profile.ExpertiseTags = GetEntityTags(userID, userID, BlitzMessage.EntityType_ETUser)
     profile.Education     = EducationForUserID(userID)
 
     return profile

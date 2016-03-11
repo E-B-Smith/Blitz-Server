@@ -18,15 +18,13 @@ It is generated from these files:
 
 It has these top-level messages:
 	DeviceInfo
-	FeedReplyTag
-	FeedReply
+	FeedPostVote
 	FeedPost
 	FeedPostFetchRequest
 	FeedPostFetchResponse
 	FeedPostUpdateRequest
 	FeedPostUpdateResponse
-	FeedPostVote
-	FollowRequest
+	EntityVoteRequest
 	Friend
 	FriendUpdate
 	FriendRequest

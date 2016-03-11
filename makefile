@@ -6,6 +6,7 @@ makepath    := $(shell pwd)
 buildDate   := $(shell date | sed s.[[:space:]].-.g)
 buildVersion = 0
 buildLinux   = 0
+buildDarwin  = 0
 rm          := rm -Rf
 .SILENT:
 

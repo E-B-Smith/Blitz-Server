@@ -95,7 +95,7 @@ message ImageData {
   optional string         contentType   = 3;
   optional string         imageURL      = 4;
   optional Timestamp      dateAdded     = 5;
-  optional uint32         crc32         = 6;
+  optional int64          crc32         = 6;
 }
 
 
@@ -142,7 +142,7 @@ message UserProfileQuery {
 
 message ConfirmationRequest {
     optional ContactInfo  contactInfo     = 1;
-    optional UserProfile  profile         = 2;
+    optional UserProfile  userProfile     = 2;
     optional string       confirmationCode= 3;
     optional string       inviterUserID   = 4;
 }

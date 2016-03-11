@@ -26,7 +26,9 @@ BOOL BFeedPostTypeIsValidValue(BFeedPostType value) {
   switch (value) {
     case BFeedPostTypeFPUnknown:
     case BFeedPostTypeFPOpenEndedQuestion:
+    case BFeedPostTypeFPOpenEndedReply:
     case BFeedPostTypeFPSurveyQuestion:
+    case BFeedPostTypeFPSurveyAnswer:
       return YES;
     default:
       return NO;
@@ -38,8 +40,12 @@ NSString *NSStringFromBFeedPostType(BFeedPostType value) {
       return @"BFeedPostTypeFPUnknown";
     case BFeedPostTypeFPOpenEndedQuestion:
       return @"BFeedPostTypeFPOpenEndedQuestion";
+    case BFeedPostTypeFPOpenEndedReply:
+      return @"BFeedPostTypeFPOpenEndedReply";
     case BFeedPostTypeFPSurveyQuestion:
       return @"BFeedPostTypeFPSurveyQuestion";
+    case BFeedPostTypeFPSurveyAnswer:
+      return @"BFeedPostTypeFPSurveyAnswer";
     default:
       return nil;
   }
@@ -63,6 +69,29 @@ NSString *NSStringFromBFeedPostScope(BFeedPostScope value) {
       return @"BFeedPostScopeFPScopeLocalNetwork";
     case BFeedPostScopeFPScopeGlobalNetwork:
       return @"BFeedPostScopeFPScopeGlobalNetwork";
+    default:
+      return nil;
+  }
+}
+
+BOOL BFeedPostStatusIsValidValue(BFeedPostStatus value) {
+  switch (value) {
+    case BFeedPostStatusFPSUnknown:
+    case BFeedPostStatusFPSActive:
+    case BFeedPostStatusFPSDeleted:
+      return YES;
+    default:
+      return NO;
+  }
+}
+NSString *NSStringFromBFeedPostStatus(BFeedPostStatus value) {
+  switch (value) {
+    case BFeedPostStatusFPSUnknown:
+      return @"BFeedPostStatusFPSUnknown";
+    case BFeedPostStatusFPSActive:
+      return @"BFeedPostStatusFPSActive";
+    case BFeedPostStatusFPSDeleted:
+      return @"BFeedPostStatusFPSDeleted";
     default:
       return nil;
   }
@@ -114,13 +143,13 @@ NSString *NSStringFromBEntityType(BEntityType value) {
   }
 }
 
-@interface BFeedReplyTag ()
+@interface BFeedPostVote ()
 @property (strong) NSString* tagName;
 @property SInt32 voteCount;
 @property BOOL userHasVoted;
 @end
 
-@implementation BFeedReplyTag
+@implementation BFeedPostVote
 
 - (BOOL) hasTagName {
   return !!hasTagName_;
@@ -156,17 +185,17 @@ NSString *NSStringFromBEntityType(BEntityType value) {
   }
   return self;
 }
-static BFeedReplyTag* defaultBFeedReplyTagInstance = nil;
+static BFeedPostVote* defaultBFeedPostVoteInstance = nil;
 + (void) initialize {
-  if (self == [BFeedReplyTag class]) {
-    defaultBFeedReplyTagInstance = [[BFeedReplyTag alloc] init];
+  if (self == [BFeedPostVote class]) {
+    defaultBFeedPostVoteInstance = [[BFeedPostVote alloc] init];
   }
 }
 + (instancetype) defaultInstance {
-  return defaultBFeedReplyTagInstance;
+  return defaultBFeedPostVoteInstance;
 }
 - (instancetype) defaultInstance {
-  return defaultBFeedReplyTagInstance;
+  return defaultBFeedPostVoteInstance;
 }
 - (BOOL) isInitialized {
   return YES;
@@ -203,35 +232,35 @@ static BFeedReplyTag* defaultBFeedReplyTagInstance = nil;
   memoizedSerializedSize = size_;
   return size_;
 }
-+ (BFeedReplyTag*) parseFromData:(NSData*) data {
-  return (BFeedReplyTag*)[[[BFeedReplyTag builder] mergeFromData:data] build];
++ (BFeedPostVote*) parseFromData:(NSData*) data {
+  return (BFeedPostVote*)[[[BFeedPostVote builder] mergeFromData:data] build];
 }
-+ (BFeedReplyTag*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
-  return (BFeedReplyTag*)[[[BFeedReplyTag builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
++ (BFeedPostVote*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BFeedPostVote*)[[[BFeedPostVote builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
 }
-+ (BFeedReplyTag*) parseFromInputStream:(NSInputStream*) input {
-  return (BFeedReplyTag*)[[[BFeedReplyTag builder] mergeFromInputStream:input] build];
++ (BFeedPostVote*) parseFromInputStream:(NSInputStream*) input {
+  return (BFeedPostVote*)[[[BFeedPostVote builder] mergeFromInputStream:input] build];
 }
-+ (BFeedReplyTag*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
-  return (BFeedReplyTag*)[[[BFeedReplyTag builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
++ (BFeedPostVote*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BFeedPostVote*)[[[BFeedPostVote builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
 }
-+ (BFeedReplyTag*) parseFromCodedInputStream:(PBCodedInputStream*) input {
-  return (BFeedReplyTag*)[[[BFeedReplyTag builder] mergeFromCodedInputStream:input] build];
++ (BFeedPostVote*) parseFromCodedInputStream:(PBCodedInputStream*) input {
+  return (BFeedPostVote*)[[[BFeedPostVote builder] mergeFromCodedInputStream:input] build];
 }
-+ (BFeedReplyTag*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
-  return (BFeedReplyTag*)[[[BFeedReplyTag builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
++ (BFeedPostVote*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BFeedPostVote*)[[[BFeedPostVote builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
 }
-+ (BFeedReplyTagBuilder*) builder {
-  return [[BFeedReplyTagBuilder alloc] init];
++ (BFeedPostVoteBuilder*) builder {
+  return [[BFeedPostVoteBuilder alloc] init];
 }
-+ (BFeedReplyTagBuilder*) builderWithPrototype:(BFeedReplyTag*) prototype {
-  return [[BFeedReplyTag builder] mergeFrom:prototype];
++ (BFeedPostVoteBuilder*) builderWithPrototype:(BFeedPostVote*) prototype {
+  return [[BFeedPostVote builder] mergeFrom:prototype];
 }
-- (BFeedReplyTagBuilder*) builder {
-  return [BFeedReplyTag builder];
+- (BFeedPostVoteBuilder*) builder {
+  return [BFeedPostVote builder];
 }
-- (BFeedReplyTagBuilder*) toBuilder {
-  return [BFeedReplyTag builderWithPrototype:self];
+- (BFeedPostVoteBuilder*) toBuilder {
+  return [BFeedPostVote builderWithPrototype:self];
 }
 - (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
   if (self.hasTagName) {
@@ -261,10 +290,10 @@ static BFeedReplyTag* defaultBFeedReplyTagInstance = nil;
   if (other == self) {
     return YES;
   }
-  if (![other isKindOfClass:[BFeedReplyTag class]]) {
+  if (![other isKindOfClass:[BFeedPostVote class]]) {
     return NO;
   }
-  BFeedReplyTag *otherMessage = other;
+  BFeedPostVote *otherMessage = other;
   return
       self.hasTagName == otherMessage.hasTagName &&
       (!self.hasTagName || [self.tagName isEqual:otherMessage.tagName]) &&
@@ -290,42 +319,42 @@ static BFeedReplyTag* defaultBFeedReplyTagInstance = nil;
 }
 @end
 
-@interface BFeedReplyTagBuilder()
-@property (strong) BFeedReplyTag* resultFeedReplyTag;
+@interface BFeedPostVoteBuilder()
+@property (strong) BFeedPostVote* resultFeedPostVote;
 @end
 
-@implementation BFeedReplyTagBuilder
-@synthesize resultFeedReplyTag;
+@implementation BFeedPostVoteBuilder
+@synthesize resultFeedPostVote;
 - (instancetype) init {
   if ((self = [super init])) {
-    self.resultFeedReplyTag = [[BFeedReplyTag alloc] init];
+    self.resultFeedPostVote = [[BFeedPostVote alloc] init];
   }
   return self;
 }
 - (PBGeneratedMessage*) internalGetResult {
-  return resultFeedReplyTag;
+  return resultFeedPostVote;
 }
-- (BFeedReplyTagBuilder*) clear {
-  self.resultFeedReplyTag = [[BFeedReplyTag alloc] init];
+- (BFeedPostVoteBuilder*) clear {
+  self.resultFeedPostVote = [[BFeedPostVote alloc] init];
   return self;
 }
-- (BFeedReplyTagBuilder*) clone {
-  return [BFeedReplyTag builderWithPrototype:resultFeedReplyTag];
+- (BFeedPostVoteBuilder*) clone {
+  return [BFeedPostVote builderWithPrototype:resultFeedPostVote];
 }
-- (BFeedReplyTag*) defaultInstance {
-  return [BFeedReplyTag defaultInstance];
+- (BFeedPostVote*) defaultInstance {
+  return [BFeedPostVote defaultInstance];
 }
-- (BFeedReplyTag*) build {
+- (BFeedPostVote*) build {
   [self checkInitialized];
   return [self buildPartial];
 }
-- (BFeedReplyTag*) buildPartial {
-  BFeedReplyTag* returnMe = resultFeedReplyTag;
-  self.resultFeedReplyTag = nil;
+- (BFeedPostVote*) buildPartial {
+  BFeedPostVote* returnMe = resultFeedPostVote;
+  self.resultFeedPostVote = nil;
   return returnMe;
 }
-- (BFeedReplyTagBuilder*) mergeFrom:(BFeedReplyTag*) other {
-  if (other == [BFeedReplyTag defaultInstance]) {
+- (BFeedPostVoteBuilder*) mergeFrom:(BFeedPostVote*) other {
+  if (other == [BFeedPostVote defaultInstance]) {
     return self;
   }
   if (other.hasTagName) {
@@ -340,10 +369,10 @@ static BFeedReplyTag* defaultBFeedReplyTagInstance = nil;
   [self mergeUnknownFields:other.unknownFields];
   return self;
 }
-- (BFeedReplyTagBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
+- (BFeedPostVoteBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
   return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
 }
-- (BFeedReplyTagBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+- (BFeedPostVoteBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
   PBUnknownFieldSetBuilder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
   while (YES) {
     SInt32 tag = [input readTag];
@@ -374,804 +403,110 @@ static BFeedReplyTag* defaultBFeedReplyTagInstance = nil;
   }
 }
 - (BOOL) hasTagName {
-  return resultFeedReplyTag.hasTagName;
+  return resultFeedPostVote.hasTagName;
 }
 - (NSString*) tagName {
-  return resultFeedReplyTag.tagName;
+  return resultFeedPostVote.tagName;
 }
-- (BFeedReplyTagBuilder*) setTagName:(NSString*) value {
-  resultFeedReplyTag.hasTagName = YES;
-  resultFeedReplyTag.tagName = value;
+- (BFeedPostVoteBuilder*) setTagName:(NSString*) value {
+  resultFeedPostVote.hasTagName = YES;
+  resultFeedPostVote.tagName = value;
   return self;
 }
-- (BFeedReplyTagBuilder*) clearTagName {
-  resultFeedReplyTag.hasTagName = NO;
-  resultFeedReplyTag.tagName = @"";
+- (BFeedPostVoteBuilder*) clearTagName {
+  resultFeedPostVote.hasTagName = NO;
+  resultFeedPostVote.tagName = @"";
   return self;
 }
 - (BOOL) hasVoteCount {
-  return resultFeedReplyTag.hasVoteCount;
+  return resultFeedPostVote.hasVoteCount;
 }
 - (SInt32) voteCount {
-  return resultFeedReplyTag.voteCount;
+  return resultFeedPostVote.voteCount;
 }
-- (BFeedReplyTagBuilder*) setVoteCount:(SInt32) value {
-  resultFeedReplyTag.hasVoteCount = YES;
-  resultFeedReplyTag.voteCount = value;
+- (BFeedPostVoteBuilder*) setVoteCount:(SInt32) value {
+  resultFeedPostVote.hasVoteCount = YES;
+  resultFeedPostVote.voteCount = value;
   return self;
 }
-- (BFeedReplyTagBuilder*) clearVoteCount {
-  resultFeedReplyTag.hasVoteCount = NO;
-  resultFeedReplyTag.voteCount = 0;
-  return self;
-}
-- (BOOL) hasUserHasVoted {
-  return resultFeedReplyTag.hasUserHasVoted;
-}
-- (BOOL) userHasVoted {
-  return resultFeedReplyTag.userHasVoted;
-}
-- (BFeedReplyTagBuilder*) setUserHasVoted:(BOOL) value {
-  resultFeedReplyTag.hasUserHasVoted = YES;
-  resultFeedReplyTag.userHasVoted = value;
-  return self;
-}
-- (BFeedReplyTagBuilder*) clearUserHasVoted {
-  resultFeedReplyTag.hasUserHasVoted = NO;
-  resultFeedReplyTag.userHasVoted = NO;
-  return self;
-}
-@end
-
-@interface BFeedReply ()
-@property (strong) NSString* replyId;
-@property (strong) NSString* postId;
-@property (strong) BTimestamp* timestamp;
-@property (strong) NSString* userId;
-@property SInt32 voteCount;
-@property BOOL userHasVoted;
-@property (strong) NSMutableArray * replyTagsArray;
-@property (strong) NSString* headlineText;
-@property (strong) NSString* bodyText;
-@property (strong) NSMutableArray * topicsArray;
-@end
-
-@implementation BFeedReply
-
-- (BOOL) hasReplyId {
-  return !!hasReplyId_;
-}
-- (void) setHasReplyId:(BOOL) _value_ {
-  hasReplyId_ = !!_value_;
-}
-@synthesize replyId;
-- (BOOL) hasPostId {
-  return !!hasPostId_;
-}
-- (void) setHasPostId:(BOOL) _value_ {
-  hasPostId_ = !!_value_;
-}
-@synthesize postId;
-- (BOOL) hasTimestamp {
-  return !!hasTimestamp_;
-}
-- (void) setHasTimestamp:(BOOL) _value_ {
-  hasTimestamp_ = !!_value_;
-}
-@synthesize timestamp;
-- (BOOL) hasUserId {
-  return !!hasUserId_;
-}
-- (void) setHasUserId:(BOOL) _value_ {
-  hasUserId_ = !!_value_;
-}
-@synthesize userId;
-- (BOOL) hasVoteCount {
-  return !!hasVoteCount_;
-}
-- (void) setHasVoteCount:(BOOL) _value_ {
-  hasVoteCount_ = !!_value_;
-}
-@synthesize voteCount;
-- (BOOL) hasUserHasVoted {
-  return !!hasUserHasVoted_;
-}
-- (void) setHasUserHasVoted:(BOOL) _value_ {
-  hasUserHasVoted_ = !!_value_;
-}
-- (BOOL) userHasVoted {
-  return !!userHasVoted_;
-}
-- (void) setUserHasVoted:(BOOL) _value_ {
-  userHasVoted_ = !!_value_;
-}
-@synthesize replyTagsArray;
-@dynamic replyTags;
-- (BOOL) hasHeadlineText {
-  return !!hasHeadlineText_;
-}
-- (void) setHasHeadlineText:(BOOL) _value_ {
-  hasHeadlineText_ = !!_value_;
-}
-@synthesize headlineText;
-- (BOOL) hasBodyText {
-  return !!hasBodyText_;
-}
-- (void) setHasBodyText:(BOOL) _value_ {
-  hasBodyText_ = !!_value_;
-}
-@synthesize bodyText;
-@synthesize topicsArray;
-@dynamic topics;
-- (instancetype) init {
-  if ((self = [super init])) {
-    self.replyId = @"";
-    self.postId = @"";
-    self.timestamp = [BTimestamp defaultInstance];
-    self.userId = @"";
-    self.voteCount = 0;
-    self.userHasVoted = NO;
-    self.headlineText = @"";
-    self.bodyText = @"";
-  }
-  return self;
-}
-static BFeedReply* defaultBFeedReplyInstance = nil;
-+ (void) initialize {
-  if (self == [BFeedReply class]) {
-    defaultBFeedReplyInstance = [[BFeedReply alloc] init];
-  }
-}
-+ (instancetype) defaultInstance {
-  return defaultBFeedReplyInstance;
-}
-- (instancetype) defaultInstance {
-  return defaultBFeedReplyInstance;
-}
-- (NSArray *)replyTags {
-  return replyTagsArray;
-}
-- (BFeedReplyTag*)replyTagsAtIndex:(NSUInteger)index {
-  return [replyTagsArray objectAtIndex:index];
-}
-- (NSArray *)topics {
-  return topicsArray;
-}
-- (NSString*)topicsAtIndex:(NSUInteger)index {
-  return [topicsArray objectAtIndex:index];
-}
-- (BOOL) isInitialized {
-  if (self.hasTimestamp) {
-    if (!self.timestamp.isInitialized) {
-      return NO;
-    }
-  }
-  return YES;
-}
-- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
-  if (self.hasReplyId) {
-    [output writeString:1 value:self.replyId];
-  }
-  if (self.hasPostId) {
-    [output writeString:2 value:self.postId];
-  }
-  if (self.hasTimestamp) {
-    [output writeMessage:3 value:self.timestamp];
-  }
-  if (self.hasUserId) {
-    [output writeString:4 value:self.userId];
-  }
-  if (self.hasVoteCount) {
-    [output writeInt32:5 value:self.voteCount];
-  }
-  if (self.hasUserHasVoted) {
-    [output writeBool:6 value:self.userHasVoted];
-  }
-  [self.replyTagsArray enumerateObjectsUsingBlock:^(BFeedReplyTag *element, NSUInteger idx, BOOL *stop) {
-    [output writeMessage:7 value:element];
-  }];
-  if (self.hasHeadlineText) {
-    [output writeString:8 value:self.headlineText];
-  }
-  if (self.hasBodyText) {
-    [output writeString:9 value:self.bodyText];
-  }
-  [self.topicsArray enumerateObjectsUsingBlock:^(NSString *element, NSUInteger idx, BOOL *stop) {
-    [output writeString:10 value:element];
-  }];
-  [self.unknownFields writeToCodedOutputStream:output];
-}
-- (SInt32) serializedSize {
-  __block SInt32 size_ = memoizedSerializedSize;
-  if (size_ != -1) {
-    return size_;
-  }
-
-  size_ = 0;
-  if (self.hasReplyId) {
-    size_ += computeStringSize(1, self.replyId);
-  }
-  if (self.hasPostId) {
-    size_ += computeStringSize(2, self.postId);
-  }
-  if (self.hasTimestamp) {
-    size_ += computeMessageSize(3, self.timestamp);
-  }
-  if (self.hasUserId) {
-    size_ += computeStringSize(4, self.userId);
-  }
-  if (self.hasVoteCount) {
-    size_ += computeInt32Size(5, self.voteCount);
-  }
-  if (self.hasUserHasVoted) {
-    size_ += computeBoolSize(6, self.userHasVoted);
-  }
-  [self.replyTagsArray enumerateObjectsUsingBlock:^(BFeedReplyTag *element, NSUInteger idx, BOOL *stop) {
-    size_ += computeMessageSize(7, element);
-  }];
-  if (self.hasHeadlineText) {
-    size_ += computeStringSize(8, self.headlineText);
-  }
-  if (self.hasBodyText) {
-    size_ += computeStringSize(9, self.bodyText);
-  }
-  {
-    __block SInt32 dataSize = 0;
-    const NSUInteger count = self.topicsArray.count;
-    [self.topicsArray enumerateObjectsUsingBlock:^(NSString *element, NSUInteger idx, BOOL *stop) {
-      dataSize += computeStringSizeNoTag(element);
-    }];
-    size_ += dataSize;
-    size_ += (SInt32)(1 * count);
-  }
-  size_ += self.unknownFields.serializedSize;
-  memoizedSerializedSize = size_;
-  return size_;
-}
-+ (BFeedReply*) parseFromData:(NSData*) data {
-  return (BFeedReply*)[[[BFeedReply builder] mergeFromData:data] build];
-}
-+ (BFeedReply*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
-  return (BFeedReply*)[[[BFeedReply builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
-}
-+ (BFeedReply*) parseFromInputStream:(NSInputStream*) input {
-  return (BFeedReply*)[[[BFeedReply builder] mergeFromInputStream:input] build];
-}
-+ (BFeedReply*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
-  return (BFeedReply*)[[[BFeedReply builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
-}
-+ (BFeedReply*) parseFromCodedInputStream:(PBCodedInputStream*) input {
-  return (BFeedReply*)[[[BFeedReply builder] mergeFromCodedInputStream:input] build];
-}
-+ (BFeedReply*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
-  return (BFeedReply*)[[[BFeedReply builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
-}
-+ (BFeedReplyBuilder*) builder {
-  return [[BFeedReplyBuilder alloc] init];
-}
-+ (BFeedReplyBuilder*) builderWithPrototype:(BFeedReply*) prototype {
-  return [[BFeedReply builder] mergeFrom:prototype];
-}
-- (BFeedReplyBuilder*) builder {
-  return [BFeedReply builder];
-}
-- (BFeedReplyBuilder*) toBuilder {
-  return [BFeedReply builderWithPrototype:self];
-}
-- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
-  if (self.hasReplyId) {
-    [output appendFormat:@"%@%@: %@\n", indent, @"replyId", self.replyId];
-  }
-  if (self.hasPostId) {
-    [output appendFormat:@"%@%@: %@\n", indent, @"postId", self.postId];
-  }
-  if (self.hasTimestamp) {
-    [output appendFormat:@"%@%@ {\n", indent, @"timestamp"];
-    [self.timestamp writeDescriptionTo:output
-                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
-    [output appendFormat:@"%@}\n", indent];
-  }
-  if (self.hasUserId) {
-    [output appendFormat:@"%@%@: %@\n", indent, @"userId", self.userId];
-  }
-  if (self.hasVoteCount) {
-    [output appendFormat:@"%@%@: %@\n", indent, @"voteCount", [NSNumber numberWithInteger:self.voteCount]];
-  }
-  if (self.hasUserHasVoted) {
-    [output appendFormat:@"%@%@: %@\n", indent, @"userHasVoted", [NSNumber numberWithBool:self.userHasVoted]];
-  }
-  [self.replyTagsArray enumerateObjectsUsingBlock:^(BFeedReplyTag *element, NSUInteger idx, BOOL *stop) {
-    [output appendFormat:@"%@%@ {\n", indent, @"replyTags"];
-    [element writeDescriptionTo:output
-                     withIndent:[NSString stringWithFormat:@"%@  ", indent]];
-    [output appendFormat:@"%@}\n", indent];
-  }];
-  if (self.hasHeadlineText) {
-    [output appendFormat:@"%@%@: %@\n", indent, @"headlineText", self.headlineText];
-  }
-  if (self.hasBodyText) {
-    [output appendFormat:@"%@%@: %@\n", indent, @"bodyText", self.bodyText];
-  }
-  [self.topicsArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-    [output appendFormat:@"%@%@: %@\n", indent, @"topics", obj];
-  }];
-  [self.unknownFields writeDescriptionTo:output withIndent:indent];
-}
-- (void) storeInDictionary:(NSMutableDictionary *)dictionary {
-  if (self.hasReplyId) {
-    [dictionary setObject: self.replyId forKey: @"replyId"];
-  }
-  if (self.hasPostId) {
-    [dictionary setObject: self.postId forKey: @"postId"];
-  }
-  if (self.hasTimestamp) {
-   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
-   [self.timestamp storeInDictionary:messageDictionary];
-   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"timestamp"];
-  }
-  if (self.hasUserId) {
-    [dictionary setObject: self.userId forKey: @"userId"];
-  }
-  if (self.hasVoteCount) {
-    [dictionary setObject: [NSNumber numberWithInteger:self.voteCount] forKey: @"voteCount"];
-  }
-  if (self.hasUserHasVoted) {
-    [dictionary setObject: [NSNumber numberWithBool:self.userHasVoted] forKey: @"userHasVoted"];
-  }
-  for (BFeedReplyTag* element in self.replyTagsArray) {
-    NSMutableDictionary *elementDictionary = [NSMutableDictionary dictionary];
-    [element storeInDictionary:elementDictionary];
-    [dictionary setObject:[NSDictionary dictionaryWithDictionary:elementDictionary] forKey:@"replyTags"];
-  }
-  if (self.hasHeadlineText) {
-    [dictionary setObject: self.headlineText forKey: @"headlineText"];
-  }
-  if (self.hasBodyText) {
-    [dictionary setObject: self.bodyText forKey: @"bodyText"];
-  }
-  [dictionary setObject:self.topics forKey: @"topics"];
-  [self.unknownFields storeInDictionary:dictionary];
-}
-- (BOOL) isEqual:(id)other {
-  if (other == self) {
-    return YES;
-  }
-  if (![other isKindOfClass:[BFeedReply class]]) {
-    return NO;
-  }
-  BFeedReply *otherMessage = other;
-  return
-      self.hasReplyId == otherMessage.hasReplyId &&
-      (!self.hasReplyId || [self.replyId isEqual:otherMessage.replyId]) &&
-      self.hasPostId == otherMessage.hasPostId &&
-      (!self.hasPostId || [self.postId isEqual:otherMessage.postId]) &&
-      self.hasTimestamp == otherMessage.hasTimestamp &&
-      (!self.hasTimestamp || [self.timestamp isEqual:otherMessage.timestamp]) &&
-      self.hasUserId == otherMessage.hasUserId &&
-      (!self.hasUserId || [self.userId isEqual:otherMessage.userId]) &&
-      self.hasVoteCount == otherMessage.hasVoteCount &&
-      (!self.hasVoteCount || self.voteCount == otherMessage.voteCount) &&
-      self.hasUserHasVoted == otherMessage.hasUserHasVoted &&
-      (!self.hasUserHasVoted || self.userHasVoted == otherMessage.userHasVoted) &&
-      [self.replyTagsArray isEqualToArray:otherMessage.replyTagsArray] &&
-      self.hasHeadlineText == otherMessage.hasHeadlineText &&
-      (!self.hasHeadlineText || [self.headlineText isEqual:otherMessage.headlineText]) &&
-      self.hasBodyText == otherMessage.hasBodyText &&
-      (!self.hasBodyText || [self.bodyText isEqual:otherMessage.bodyText]) &&
-      [self.topicsArray isEqualToArray:otherMessage.topicsArray] &&
-      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
-}
-- (NSUInteger) hash {
-  __block NSUInteger hashCode = 7;
-  if (self.hasReplyId) {
-    hashCode = hashCode * 31 + [self.replyId hash];
-  }
-  if (self.hasPostId) {
-    hashCode = hashCode * 31 + [self.postId hash];
-  }
-  if (self.hasTimestamp) {
-    hashCode = hashCode * 31 + [self.timestamp hash];
-  }
-  if (self.hasUserId) {
-    hashCode = hashCode * 31 + [self.userId hash];
-  }
-  if (self.hasVoteCount) {
-    hashCode = hashCode * 31 + [[NSNumber numberWithInteger:self.voteCount] hash];
-  }
-  if (self.hasUserHasVoted) {
-    hashCode = hashCode * 31 + [[NSNumber numberWithBool:self.userHasVoted] hash];
-  }
-  [self.replyTagsArray enumerateObjectsUsingBlock:^(BFeedReplyTag *element, NSUInteger idx, BOOL *stop) {
-    hashCode = hashCode * 31 + [element hash];
-  }];
-  if (self.hasHeadlineText) {
-    hashCode = hashCode * 31 + [self.headlineText hash];
-  }
-  if (self.hasBodyText) {
-    hashCode = hashCode * 31 + [self.bodyText hash];
-  }
-  [self.topicsArray enumerateObjectsUsingBlock:^(NSString *element, NSUInteger idx, BOOL *stop) {
-    hashCode = hashCode * 31 + [element hash];
-  }];
-  hashCode = hashCode * 31 + [self.unknownFields hash];
-  return hashCode;
-}
-@end
-
-@interface BFeedReplyBuilder()
-@property (strong) BFeedReply* resultFeedReply;
-@end
-
-@implementation BFeedReplyBuilder
-@synthesize resultFeedReply;
-- (instancetype) init {
-  if ((self = [super init])) {
-    self.resultFeedReply = [[BFeedReply alloc] init];
-  }
-  return self;
-}
-- (PBGeneratedMessage*) internalGetResult {
-  return resultFeedReply;
-}
-- (BFeedReplyBuilder*) clear {
-  self.resultFeedReply = [[BFeedReply alloc] init];
-  return self;
-}
-- (BFeedReplyBuilder*) clone {
-  return [BFeedReply builderWithPrototype:resultFeedReply];
-}
-- (BFeedReply*) defaultInstance {
-  return [BFeedReply defaultInstance];
-}
-- (BFeedReply*) build {
-  [self checkInitialized];
-  return [self buildPartial];
-}
-- (BFeedReply*) buildPartial {
-  BFeedReply* returnMe = resultFeedReply;
-  self.resultFeedReply = nil;
-  return returnMe;
-}
-- (BFeedReplyBuilder*) mergeFrom:(BFeedReply*) other {
-  if (other == [BFeedReply defaultInstance]) {
-    return self;
-  }
-  if (other.hasReplyId) {
-    [self setReplyId:other.replyId];
-  }
-  if (other.hasPostId) {
-    [self setPostId:other.postId];
-  }
-  if (other.hasTimestamp) {
-    [self mergeTimestamp:other.timestamp];
-  }
-  if (other.hasUserId) {
-    [self setUserId:other.userId];
-  }
-  if (other.hasVoteCount) {
-    [self setVoteCount:other.voteCount];
-  }
-  if (other.hasUserHasVoted) {
-    [self setUserHasVoted:other.userHasVoted];
-  }
-  if (other.replyTagsArray.count > 0) {
-    if (resultFeedReply.replyTagsArray == nil) {
-      resultFeedReply.replyTagsArray = [[NSMutableArray alloc] initWithArray:other.replyTagsArray];
-    } else {
-      [resultFeedReply.replyTagsArray addObjectsFromArray:other.replyTagsArray];
-    }
-  }
-  if (other.hasHeadlineText) {
-    [self setHeadlineText:other.headlineText];
-  }
-  if (other.hasBodyText) {
-    [self setBodyText:other.bodyText];
-  }
-  if (other.topicsArray.count > 0) {
-    if (resultFeedReply.topicsArray == nil) {
-      resultFeedReply.topicsArray = [[NSMutableArray alloc] initWithArray:other.topicsArray];
-    } else {
-      [resultFeedReply.topicsArray addObjectsFromArray:other.topicsArray];
-    }
-  }
-  [self mergeUnknownFields:other.unknownFields];
-  return self;
-}
-- (BFeedReplyBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
-  return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
-}
-- (BFeedReplyBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
-  PBUnknownFieldSetBuilder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
-  while (YES) {
-    SInt32 tag = [input readTag];
-    switch (tag) {
-      case 0:
-        [self setUnknownFields:[unknownFields build]];
-        return self;
-      default: {
-        if (![self parseUnknownField:input unknownFields:unknownFields extensionRegistry:extensionRegistry tag:tag]) {
-          [self setUnknownFields:[unknownFields build]];
-          return self;
-        }
-        break;
-      }
-      case 10: {
-        [self setReplyId:[input readString]];
-        break;
-      }
-      case 18: {
-        [self setPostId:[input readString]];
-        break;
-      }
-      case 26: {
-        BTimestampBuilder* subBuilder = [BTimestamp builder];
-        if (self.hasTimestamp) {
-          [subBuilder mergeFrom:self.timestamp];
-        }
-        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
-        [self setTimestamp:[subBuilder buildPartial]];
-        break;
-      }
-      case 34: {
-        [self setUserId:[input readString]];
-        break;
-      }
-      case 40: {
-        [self setVoteCount:[input readInt32]];
-        break;
-      }
-      case 48: {
-        [self setUserHasVoted:[input readBool]];
-        break;
-      }
-      case 58: {
-        BFeedReplyTagBuilder* subBuilder = [BFeedReplyTag builder];
-        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
-        [self addReplyTags:[subBuilder buildPartial]];
-        break;
-      }
-      case 66: {
-        [self setHeadlineText:[input readString]];
-        break;
-      }
-      case 74: {
-        [self setBodyText:[input readString]];
-        break;
-      }
-      case 82: {
-        [self addTopics:[input readString]];
-        break;
-      }
-    }
-  }
-}
-- (BOOL) hasReplyId {
-  return resultFeedReply.hasReplyId;
-}
-- (NSString*) replyId {
-  return resultFeedReply.replyId;
-}
-- (BFeedReplyBuilder*) setReplyId:(NSString*) value {
-  resultFeedReply.hasReplyId = YES;
-  resultFeedReply.replyId = value;
-  return self;
-}
-- (BFeedReplyBuilder*) clearReplyId {
-  resultFeedReply.hasReplyId = NO;
-  resultFeedReply.replyId = @"";
-  return self;
-}
-- (BOOL) hasPostId {
-  return resultFeedReply.hasPostId;
-}
-- (NSString*) postId {
-  return resultFeedReply.postId;
-}
-- (BFeedReplyBuilder*) setPostId:(NSString*) value {
-  resultFeedReply.hasPostId = YES;
-  resultFeedReply.postId = value;
-  return self;
-}
-- (BFeedReplyBuilder*) clearPostId {
-  resultFeedReply.hasPostId = NO;
-  resultFeedReply.postId = @"";
-  return self;
-}
-- (BOOL) hasTimestamp {
-  return resultFeedReply.hasTimestamp;
-}
-- (BTimestamp*) timestamp {
-  return resultFeedReply.timestamp;
-}
-- (BFeedReplyBuilder*) setTimestamp:(BTimestamp*) value {
-  resultFeedReply.hasTimestamp = YES;
-  resultFeedReply.timestamp = value;
-  return self;
-}
-- (BFeedReplyBuilder*) setTimestampBuilder:(BTimestampBuilder*) builderForValue {
-  return [self setTimestamp:[builderForValue build]];
-}
-- (BFeedReplyBuilder*) mergeTimestamp:(BTimestamp*) value {
-  if (resultFeedReply.hasTimestamp &&
-      resultFeedReply.timestamp != [BTimestamp defaultInstance]) {
-    resultFeedReply.timestamp =
-      [[[BTimestamp builderWithPrototype:resultFeedReply.timestamp] mergeFrom:value] buildPartial];
-  } else {
-    resultFeedReply.timestamp = value;
-  }
-  resultFeedReply.hasTimestamp = YES;
-  return self;
-}
-- (BFeedReplyBuilder*) clearTimestamp {
-  resultFeedReply.hasTimestamp = NO;
-  resultFeedReply.timestamp = [BTimestamp defaultInstance];
-  return self;
-}
-- (BOOL) hasUserId {
-  return resultFeedReply.hasUserId;
-}
-- (NSString*) userId {
-  return resultFeedReply.userId;
-}
-- (BFeedReplyBuilder*) setUserId:(NSString*) value {
-  resultFeedReply.hasUserId = YES;
-  resultFeedReply.userId = value;
-  return self;
-}
-- (BFeedReplyBuilder*) clearUserId {
-  resultFeedReply.hasUserId = NO;
-  resultFeedReply.userId = @"";
-  return self;
-}
-- (BOOL) hasVoteCount {
-  return resultFeedReply.hasVoteCount;
-}
-- (SInt32) voteCount {
-  return resultFeedReply.voteCount;
-}
-- (BFeedReplyBuilder*) setVoteCount:(SInt32) value {
-  resultFeedReply.hasVoteCount = YES;
-  resultFeedReply.voteCount = value;
-  return self;
-}
-- (BFeedReplyBuilder*) clearVoteCount {
-  resultFeedReply.hasVoteCount = NO;
-  resultFeedReply.voteCount = 0;
+- (BFeedPostVoteBuilder*) clearVoteCount {
+  resultFeedPostVote.hasVoteCount = NO;
+  resultFeedPostVote.voteCount = 0;
   return self;
 }
 - (BOOL) hasUserHasVoted {
-  return resultFeedReply.hasUserHasVoted;
+  return resultFeedPostVote.hasUserHasVoted;
 }
 - (BOOL) userHasVoted {
-  return resultFeedReply.userHasVoted;
+  return resultFeedPostVote.userHasVoted;
 }
-- (BFeedReplyBuilder*) setUserHasVoted:(BOOL) value {
-  resultFeedReply.hasUserHasVoted = YES;
-  resultFeedReply.userHasVoted = value;
+- (BFeedPostVoteBuilder*) setUserHasVoted:(BOOL) value {
+  resultFeedPostVote.hasUserHasVoted = YES;
+  resultFeedPostVote.userHasVoted = value;
   return self;
 }
-- (BFeedReplyBuilder*) clearUserHasVoted {
-  resultFeedReply.hasUserHasVoted = NO;
-  resultFeedReply.userHasVoted = NO;
-  return self;
-}
-- (NSMutableArray *)replyTags {
-  return resultFeedReply.replyTagsArray;
-}
-- (BFeedReplyTag*)replyTagsAtIndex:(NSUInteger)index {
-  return [resultFeedReply replyTagsAtIndex:index];
-}
-- (BFeedReplyBuilder *)addReplyTags:(BFeedReplyTag*)value {
-  if (resultFeedReply.replyTagsArray == nil) {
-    resultFeedReply.replyTagsArray = [[NSMutableArray alloc]init];
-  }
-  [resultFeedReply.replyTagsArray addObject:value];
-  return self;
-}
-- (BFeedReplyBuilder *)setReplyTagsArray:(NSArray *)array {
-  resultFeedReply.replyTagsArray = [[NSMutableArray alloc]initWithArray:array];
-  return self;
-}
-- (BFeedReplyBuilder *)clearReplyTags {
-  resultFeedReply.replyTagsArray = nil;
-  return self;
-}
-- (BOOL) hasHeadlineText {
-  return resultFeedReply.hasHeadlineText;
-}
-- (NSString*) headlineText {
-  return resultFeedReply.headlineText;
-}
-- (BFeedReplyBuilder*) setHeadlineText:(NSString*) value {
-  resultFeedReply.hasHeadlineText = YES;
-  resultFeedReply.headlineText = value;
-  return self;
-}
-- (BFeedReplyBuilder*) clearHeadlineText {
-  resultFeedReply.hasHeadlineText = NO;
-  resultFeedReply.headlineText = @"";
-  return self;
-}
-- (BOOL) hasBodyText {
-  return resultFeedReply.hasBodyText;
-}
-- (NSString*) bodyText {
-  return resultFeedReply.bodyText;
-}
-- (BFeedReplyBuilder*) setBodyText:(NSString*) value {
-  resultFeedReply.hasBodyText = YES;
-  resultFeedReply.bodyText = value;
-  return self;
-}
-- (BFeedReplyBuilder*) clearBodyText {
-  resultFeedReply.hasBodyText = NO;
-  resultFeedReply.bodyText = @"";
-  return self;
-}
-- (NSMutableArray *)topics {
-  return resultFeedReply.topicsArray;
-}
-- (NSString*)topicsAtIndex:(NSUInteger)index {
-  return [resultFeedReply topicsAtIndex:index];
-}
-- (BFeedReplyBuilder *)addTopics:(NSString*)value {
-  if (resultFeedReply.topicsArray == nil) {
-    resultFeedReply.topicsArray = [[NSMutableArray alloc]init];
-  }
-  [resultFeedReply.topicsArray addObject:value];
-  return self;
-}
-- (BFeedReplyBuilder *)setTopicsArray:(NSArray *)array {
-  resultFeedReply.topicsArray = [[NSMutableArray alloc] initWithArray:array];
-  return self;
-}
-- (BFeedReplyBuilder *)clearTopics {
-  resultFeedReply.topicsArray = nil;
+- (BFeedPostVoteBuilder*) clearUserHasVoted {
+  resultFeedPostVote.hasUserHasVoted = NO;
+  resultFeedPostVote.userHasVoted = NO;
   return self;
 }
 @end
 
 @interface BFeedPost ()
-@property (strong) NSString* postId;
-@property (strong) NSString* userId;
-@property (strong) NSString* userVanityId;
+@property (strong) NSString* postID;
+@property (strong) NSString* parentID;
+@property BFeedPostType postType;
+@property BFeedPostScope postScope;
+@property (strong) NSString* userID;
 @property BOOL anonymousPost;
 @property (strong) BTimestamp* timestamp;
 @property (strong) BTimespan* timespanActive;
 @property (strong) NSString* headlineText;
 @property (strong) NSString* bodyText;
-@property (strong) NSMutableArray * topicsArray;
-@property BFeedPostScope postScope;
-@property BFeedPostType postType;
+@property (strong) NSMutableArray * topicTagsArray;
+@property (strong) NSMutableArray * votesArray;
 @property (strong) NSMutableArray * repliesArray;
 @property BOOL mayAddReply;
 @property BOOL mayChooseMulitpleReplies;
-@property BOOL userHasFollowedPost;
 @end
 
 @implementation BFeedPost
 
-- (BOOL) hasPostId {
-  return !!hasPostId_;
+- (BOOL) hasPostID {
+  return !!hasPostID_;
 }
-- (void) setHasPostId:(BOOL) _value_ {
-  hasPostId_ = !!_value_;
+- (void) setHasPostID:(BOOL) _value_ {
+  hasPostID_ = !!_value_;
 }
-@synthesize postId;
-- (BOOL) hasUserId {
-  return !!hasUserId_;
+@synthesize postID;
+- (BOOL) hasParentID {
+  return !!hasParentID_;
 }
-- (void) setHasUserId:(BOOL) _value_ {
-  hasUserId_ = !!_value_;
+- (void) setHasParentID:(BOOL) _value_ {
+  hasParentID_ = !!_value_;
 }
-@synthesize userId;
-- (BOOL) hasUserVanityId {
-  return !!hasUserVanityId_;
+@synthesize parentID;
+- (BOOL) hasPostType {
+  return !!hasPostType_;
 }
-- (void) setHasUserVanityId:(BOOL) _value_ {
-  hasUserVanityId_ = !!_value_;
+- (void) setHasPostType:(BOOL) _value_ {
+  hasPostType_ = !!_value_;
 }
-@synthesize userVanityId;
+@synthesize postType;
+- (BOOL) hasPostScope {
+  return !!hasPostScope_;
+}
+- (void) setHasPostScope:(BOOL) _value_ {
+  hasPostScope_ = !!_value_;
+}
+@synthesize postScope;
+- (BOOL) hasUserID {
+  return !!hasUserID_;
+}
+- (void) setHasUserID:(BOOL) _value_ {
+  hasUserID_ = !!_value_;
+}
+@synthesize userID;
 - (BOOL) hasAnonymousPost {
   return !!hasAnonymousPost_;
 }
@@ -1212,22 +547,10 @@ static BFeedReply* defaultBFeedReplyInstance = nil;
   hasBodyText_ = !!_value_;
 }
 @synthesize bodyText;
-@synthesize topicsArray;
-@dynamic topics;
-- (BOOL) hasPostScope {
-  return !!hasPostScope_;
-}
-- (void) setHasPostScope:(BOOL) _value_ {
-  hasPostScope_ = !!_value_;
-}
-@synthesize postScope;
-- (BOOL) hasPostType {
-  return !!hasPostType_;
-}
-- (void) setHasPostType:(BOOL) _value_ {
-  hasPostType_ = !!_value_;
-}
-@synthesize postType;
+@synthesize topicTagsArray;
+@dynamic topicTags;
+@synthesize votesArray;
+@dynamic votes;
 @synthesize repliesArray;
 @dynamic replies;
 - (BOOL) hasMayAddReply {
@@ -1254,33 +577,20 @@ static BFeedReply* defaultBFeedReplyInstance = nil;
 - (void) setMayChooseMulitpleReplies:(BOOL) _value_ {
   mayChooseMulitpleReplies_ = !!_value_;
 }
-- (BOOL) hasUserHasFollowedPost {
-  return !!hasUserHasFollowedPost_;
-}
-- (void) setHasUserHasFollowedPost:(BOOL) _value_ {
-  hasUserHasFollowedPost_ = !!_value_;
-}
-- (BOOL) userHasFollowedPost {
-  return !!userHasFollowedPost_;
-}
-- (void) setUserHasFollowedPost:(BOOL) _value_ {
-  userHasFollowedPost_ = !!_value_;
-}
 - (instancetype) init {
   if ((self = [super init])) {
-    self.postId = @"";
-    self.userId = @"";
-    self.userVanityId = @"";
+    self.postID = @"";
+    self.parentID = @"";
+    self.postType = BFeedPostTypeFPUnknown;
+    self.postScope = BFeedPostScopeFPScopeUnknown;
+    self.userID = @"";
     self.anonymousPost = NO;
     self.timestamp = [BTimestamp defaultInstance];
     self.timespanActive = [BTimespan defaultInstance];
     self.headlineText = @"";
     self.bodyText = @"";
-    self.postScope = BFeedPostScopeFPScopeUnknown;
-    self.postType = BFeedPostTypeFPUnknown;
     self.mayAddReply = NO;
     self.mayChooseMulitpleReplies = NO;
-    self.userHasFollowedPost = NO;
   }
   return self;
 }
@@ -1296,16 +606,22 @@ static BFeedPost* defaultBFeedPostInstance = nil;
 - (instancetype) defaultInstance {
   return defaultBFeedPostInstance;
 }
-- (NSArray *)topics {
-  return topicsArray;
+- (NSArray *)topicTags {
+  return topicTagsArray;
 }
-- (NSString*)topicsAtIndex:(NSUInteger)index {
-  return [topicsArray objectAtIndex:index];
+- (NSString*)topicTagsAtIndex:(NSUInteger)index {
+  return [topicTagsArray objectAtIndex:index];
+}
+- (NSArray *)votes {
+  return votesArray;
+}
+- (BFeedPostVote*)votesAtIndex:(NSUInteger)index {
+  return [votesArray objectAtIndex:index];
 }
 - (NSArray *)replies {
   return repliesArray;
 }
-- (BFeedReply*)repliesAtIndex:(NSUInteger)index {
+- (BFeedPost*)repliesAtIndex:(NSUInteger)index {
   return [repliesArray objectAtIndex:index];
 }
 - (BOOL) isInitialized {
@@ -1320,7 +636,7 @@ static BFeedPost* defaultBFeedPostInstance = nil;
     }
   }
   __block BOOL isInitreplies = YES;
-   [self.replies enumerateObjectsUsingBlock:^(BFeedReply *element, NSUInteger idx, BOOL *stop) {
+   [self.replies enumerateObjectsUsingBlock:^(BFeedPost *element, NSUInteger idx, BOOL *stop) {
     if (!element.isInitialized) {
       isInitreplies = NO;
       *stop = YES;
@@ -1330,50 +646,50 @@ static BFeedPost* defaultBFeedPostInstance = nil;
   return YES;
 }
 - (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
-  if (self.hasPostId) {
-    [output writeString:1 value:self.postId];
+  if (self.hasPostID) {
+    [output writeString:1 value:self.postID];
   }
-  if (self.hasUserId) {
-    [output writeString:2 value:self.userId];
-  }
-  if (self.hasUserVanityId) {
-    [output writeString:3 value:self.userVanityId];
-  }
-  if (self.hasAnonymousPost) {
-    [output writeBool:4 value:self.anonymousPost];
-  }
-  if (self.hasTimestamp) {
-    [output writeMessage:5 value:self.timestamp];
-  }
-  if (self.hasTimespanActive) {
-    [output writeMessage:6 value:self.timespanActive];
-  }
-  if (self.hasHeadlineText) {
-    [output writeString:7 value:self.headlineText];
-  }
-  if (self.hasBodyText) {
-    [output writeString:8 value:self.bodyText];
-  }
-  [self.topicsArray enumerateObjectsUsingBlock:^(NSString *element, NSUInteger idx, BOOL *stop) {
-    [output writeString:9 value:element];
-  }];
-  if (self.hasPostScope) {
-    [output writeEnum:10 value:self.postScope];
+  if (self.hasParentID) {
+    [output writeString:2 value:self.parentID];
   }
   if (self.hasPostType) {
-    [output writeEnum:11 value:self.postType];
+    [output writeEnum:3 value:self.postType];
   }
-  [self.repliesArray enumerateObjectsUsingBlock:^(BFeedReply *element, NSUInteger idx, BOOL *stop) {
+  if (self.hasPostScope) {
+    [output writeEnum:4 value:self.postScope];
+  }
+  if (self.hasUserID) {
+    [output writeString:5 value:self.userID];
+  }
+  if (self.hasAnonymousPost) {
+    [output writeBool:6 value:self.anonymousPost];
+  }
+  if (self.hasTimestamp) {
+    [output writeMessage:7 value:self.timestamp];
+  }
+  if (self.hasTimespanActive) {
+    [output writeMessage:8 value:self.timespanActive];
+  }
+  if (self.hasHeadlineText) {
+    [output writeString:9 value:self.headlineText];
+  }
+  if (self.hasBodyText) {
+    [output writeString:10 value:self.bodyText];
+  }
+  [self.topicTagsArray enumerateObjectsUsingBlock:^(NSString *element, NSUInteger idx, BOOL *stop) {
+    [output writeString:11 value:element];
+  }];
+  [self.votesArray enumerateObjectsUsingBlock:^(BFeedPostVote *element, NSUInteger idx, BOOL *stop) {
     [output writeMessage:12 value:element];
   }];
+  [self.repliesArray enumerateObjectsUsingBlock:^(BFeedPost *element, NSUInteger idx, BOOL *stop) {
+    [output writeMessage:13 value:element];
+  }];
   if (self.hasMayAddReply) {
-    [output writeBool:13 value:self.mayAddReply];
+    [output writeBool:14 value:self.mayAddReply];
   }
   if (self.hasMayChooseMulitpleReplies) {
-    [output writeBool:14 value:self.mayChooseMulitpleReplies];
-  }
-  if (self.hasUserHasFollowedPost) {
-    [output writeBool:15 value:self.userHasFollowedPost];
+    [output writeBool:15 value:self.mayChooseMulitpleReplies];
   }
   [self.unknownFields writeToCodedOutputStream:output];
 }
@@ -1384,56 +700,56 @@ static BFeedPost* defaultBFeedPostInstance = nil;
   }
 
   size_ = 0;
-  if (self.hasPostId) {
-    size_ += computeStringSize(1, self.postId);
+  if (self.hasPostID) {
+    size_ += computeStringSize(1, self.postID);
   }
-  if (self.hasUserId) {
-    size_ += computeStringSize(2, self.userId);
+  if (self.hasParentID) {
+    size_ += computeStringSize(2, self.parentID);
   }
-  if (self.hasUserVanityId) {
-    size_ += computeStringSize(3, self.userVanityId);
+  if (self.hasPostType) {
+    size_ += computeEnumSize(3, self.postType);
+  }
+  if (self.hasPostScope) {
+    size_ += computeEnumSize(4, self.postScope);
+  }
+  if (self.hasUserID) {
+    size_ += computeStringSize(5, self.userID);
   }
   if (self.hasAnonymousPost) {
-    size_ += computeBoolSize(4, self.anonymousPost);
+    size_ += computeBoolSize(6, self.anonymousPost);
   }
   if (self.hasTimestamp) {
-    size_ += computeMessageSize(5, self.timestamp);
+    size_ += computeMessageSize(7, self.timestamp);
   }
   if (self.hasTimespanActive) {
-    size_ += computeMessageSize(6, self.timespanActive);
+    size_ += computeMessageSize(8, self.timespanActive);
   }
   if (self.hasHeadlineText) {
-    size_ += computeStringSize(7, self.headlineText);
+    size_ += computeStringSize(9, self.headlineText);
   }
   if (self.hasBodyText) {
-    size_ += computeStringSize(8, self.bodyText);
+    size_ += computeStringSize(10, self.bodyText);
   }
   {
     __block SInt32 dataSize = 0;
-    const NSUInteger count = self.topicsArray.count;
-    [self.topicsArray enumerateObjectsUsingBlock:^(NSString *element, NSUInteger idx, BOOL *stop) {
+    const NSUInteger count = self.topicTagsArray.count;
+    [self.topicTagsArray enumerateObjectsUsingBlock:^(NSString *element, NSUInteger idx, BOOL *stop) {
       dataSize += computeStringSizeNoTag(element);
     }];
     size_ += dataSize;
     size_ += (SInt32)(1 * count);
   }
-  if (self.hasPostScope) {
-    size_ += computeEnumSize(10, self.postScope);
-  }
-  if (self.hasPostType) {
-    size_ += computeEnumSize(11, self.postType);
-  }
-  [self.repliesArray enumerateObjectsUsingBlock:^(BFeedReply *element, NSUInteger idx, BOOL *stop) {
+  [self.votesArray enumerateObjectsUsingBlock:^(BFeedPostVote *element, NSUInteger idx, BOOL *stop) {
     size_ += computeMessageSize(12, element);
   }];
+  [self.repliesArray enumerateObjectsUsingBlock:^(BFeedPost *element, NSUInteger idx, BOOL *stop) {
+    size_ += computeMessageSize(13, element);
+  }];
   if (self.hasMayAddReply) {
-    size_ += computeBoolSize(13, self.mayAddReply);
+    size_ += computeBoolSize(14, self.mayAddReply);
   }
   if (self.hasMayChooseMulitpleReplies) {
-    size_ += computeBoolSize(14, self.mayChooseMulitpleReplies);
-  }
-  if (self.hasUserHasFollowedPost) {
-    size_ += computeBoolSize(15, self.userHasFollowedPost);
+    size_ += computeBoolSize(15, self.mayChooseMulitpleReplies);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -1470,14 +786,20 @@ static BFeedPost* defaultBFeedPostInstance = nil;
   return [BFeedPost builderWithPrototype:self];
 }
 - (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
-  if (self.hasPostId) {
-    [output appendFormat:@"%@%@: %@\n", indent, @"postId", self.postId];
+  if (self.hasPostID) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"postID", self.postID];
   }
-  if (self.hasUserId) {
-    [output appendFormat:@"%@%@: %@\n", indent, @"userId", self.userId];
+  if (self.hasParentID) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"parentID", self.parentID];
   }
-  if (self.hasUserVanityId) {
-    [output appendFormat:@"%@%@: %@\n", indent, @"userVanityId", self.userVanityId];
+  if (self.hasPostType) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"postType", NSStringFromBFeedPostType(self.postType)];
+  }
+  if (self.hasPostScope) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"postScope", NSStringFromBFeedPostScope(self.postScope)];
+  }
+  if (self.hasUserID) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"userID", self.userID];
   }
   if (self.hasAnonymousPost) {
     [output appendFormat:@"%@%@: %@\n", indent, @"anonymousPost", [NSNumber numberWithBool:self.anonymousPost]];
@@ -1500,16 +822,16 @@ static BFeedPost* defaultBFeedPostInstance = nil;
   if (self.hasBodyText) {
     [output appendFormat:@"%@%@: %@\n", indent, @"bodyText", self.bodyText];
   }
-  [self.topicsArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-    [output appendFormat:@"%@%@: %@\n", indent, @"topics", obj];
+  [self.topicTagsArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"topicTags", obj];
   }];
-  if (self.hasPostScope) {
-    [output appendFormat:@"%@%@: %@\n", indent, @"postScope", NSStringFromBFeedPostScope(self.postScope)];
-  }
-  if (self.hasPostType) {
-    [output appendFormat:@"%@%@: %@\n", indent, @"postType", NSStringFromBFeedPostType(self.postType)];
-  }
-  [self.repliesArray enumerateObjectsUsingBlock:^(BFeedReply *element, NSUInteger idx, BOOL *stop) {
+  [self.votesArray enumerateObjectsUsingBlock:^(BFeedPostVote *element, NSUInteger idx, BOOL *stop) {
+    [output appendFormat:@"%@%@ {\n", indent, @"votes"];
+    [element writeDescriptionTo:output
+                     withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }];
+  [self.repliesArray enumerateObjectsUsingBlock:^(BFeedPost *element, NSUInteger idx, BOOL *stop) {
     [output appendFormat:@"%@%@ {\n", indent, @"replies"];
     [element writeDescriptionTo:output
                      withIndent:[NSString stringWithFormat:@"%@  ", indent]];
@@ -1521,20 +843,23 @@ static BFeedPost* defaultBFeedPostInstance = nil;
   if (self.hasMayChooseMulitpleReplies) {
     [output appendFormat:@"%@%@: %@\n", indent, @"mayChooseMulitpleReplies", [NSNumber numberWithBool:self.mayChooseMulitpleReplies]];
   }
-  if (self.hasUserHasFollowedPost) {
-    [output appendFormat:@"%@%@: %@\n", indent, @"userHasFollowedPost", [NSNumber numberWithBool:self.userHasFollowedPost]];
-  }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (void) storeInDictionary:(NSMutableDictionary *)dictionary {
-  if (self.hasPostId) {
-    [dictionary setObject: self.postId forKey: @"postId"];
+  if (self.hasPostID) {
+    [dictionary setObject: self.postID forKey: @"postID"];
   }
-  if (self.hasUserId) {
-    [dictionary setObject: self.userId forKey: @"userId"];
+  if (self.hasParentID) {
+    [dictionary setObject: self.parentID forKey: @"parentID"];
   }
-  if (self.hasUserVanityId) {
-    [dictionary setObject: self.userVanityId forKey: @"userVanityId"];
+  if (self.hasPostType) {
+    [dictionary setObject: @(self.postType) forKey: @"postType"];
+  }
+  if (self.hasPostScope) {
+    [dictionary setObject: @(self.postScope) forKey: @"postScope"];
+  }
+  if (self.hasUserID) {
+    [dictionary setObject: self.userID forKey: @"userID"];
   }
   if (self.hasAnonymousPost) {
     [dictionary setObject: [NSNumber numberWithBool:self.anonymousPost] forKey: @"anonymousPost"];
@@ -1555,14 +880,13 @@ static BFeedPost* defaultBFeedPostInstance = nil;
   if (self.hasBodyText) {
     [dictionary setObject: self.bodyText forKey: @"bodyText"];
   }
-  [dictionary setObject:self.topics forKey: @"topics"];
-  if (self.hasPostScope) {
-    [dictionary setObject: @(self.postScope) forKey: @"postScope"];
+  [dictionary setObject:self.topicTags forKey: @"topicTags"];
+  for (BFeedPostVote* element in self.votesArray) {
+    NSMutableDictionary *elementDictionary = [NSMutableDictionary dictionary];
+    [element storeInDictionary:elementDictionary];
+    [dictionary setObject:[NSDictionary dictionaryWithDictionary:elementDictionary] forKey:@"votes"];
   }
-  if (self.hasPostType) {
-    [dictionary setObject: @(self.postType) forKey: @"postType"];
-  }
-  for (BFeedReply* element in self.repliesArray) {
+  for (BFeedPost* element in self.repliesArray) {
     NSMutableDictionary *elementDictionary = [NSMutableDictionary dictionary];
     [element storeInDictionary:elementDictionary];
     [dictionary setObject:[NSDictionary dictionaryWithDictionary:elementDictionary] forKey:@"replies"];
@@ -1572,9 +896,6 @@ static BFeedPost* defaultBFeedPostInstance = nil;
   }
   if (self.hasMayChooseMulitpleReplies) {
     [dictionary setObject: [NSNumber numberWithBool:self.mayChooseMulitpleReplies] forKey: @"mayChooseMulitpleReplies"];
-  }
-  if (self.hasUserHasFollowedPost) {
-    [dictionary setObject: [NSNumber numberWithBool:self.userHasFollowedPost] forKey: @"userHasFollowedPost"];
   }
   [self.unknownFields storeInDictionary:dictionary];
 }
@@ -1587,12 +908,16 @@ static BFeedPost* defaultBFeedPostInstance = nil;
   }
   BFeedPost *otherMessage = other;
   return
-      self.hasPostId == otherMessage.hasPostId &&
-      (!self.hasPostId || [self.postId isEqual:otherMessage.postId]) &&
-      self.hasUserId == otherMessage.hasUserId &&
-      (!self.hasUserId || [self.userId isEqual:otherMessage.userId]) &&
-      self.hasUserVanityId == otherMessage.hasUserVanityId &&
-      (!self.hasUserVanityId || [self.userVanityId isEqual:otherMessage.userVanityId]) &&
+      self.hasPostID == otherMessage.hasPostID &&
+      (!self.hasPostID || [self.postID isEqual:otherMessage.postID]) &&
+      self.hasParentID == otherMessage.hasParentID &&
+      (!self.hasParentID || [self.parentID isEqual:otherMessage.parentID]) &&
+      self.hasPostType == otherMessage.hasPostType &&
+      (!self.hasPostType || self.postType == otherMessage.postType) &&
+      self.hasPostScope == otherMessage.hasPostScope &&
+      (!self.hasPostScope || self.postScope == otherMessage.postScope) &&
+      self.hasUserID == otherMessage.hasUserID &&
+      (!self.hasUserID || [self.userID isEqual:otherMessage.userID]) &&
       self.hasAnonymousPost == otherMessage.hasAnonymousPost &&
       (!self.hasAnonymousPost || self.anonymousPost == otherMessage.anonymousPost) &&
       self.hasTimestamp == otherMessage.hasTimestamp &&
@@ -1603,30 +928,31 @@ static BFeedPost* defaultBFeedPostInstance = nil;
       (!self.hasHeadlineText || [self.headlineText isEqual:otherMessage.headlineText]) &&
       self.hasBodyText == otherMessage.hasBodyText &&
       (!self.hasBodyText || [self.bodyText isEqual:otherMessage.bodyText]) &&
-      [self.topicsArray isEqualToArray:otherMessage.topicsArray] &&
-      self.hasPostScope == otherMessage.hasPostScope &&
-      (!self.hasPostScope || self.postScope == otherMessage.postScope) &&
-      self.hasPostType == otherMessage.hasPostType &&
-      (!self.hasPostType || self.postType == otherMessage.postType) &&
+      [self.topicTagsArray isEqualToArray:otherMessage.topicTagsArray] &&
+      [self.votesArray isEqualToArray:otherMessage.votesArray] &&
       [self.repliesArray isEqualToArray:otherMessage.repliesArray] &&
       self.hasMayAddReply == otherMessage.hasMayAddReply &&
       (!self.hasMayAddReply || self.mayAddReply == otherMessage.mayAddReply) &&
       self.hasMayChooseMulitpleReplies == otherMessage.hasMayChooseMulitpleReplies &&
       (!self.hasMayChooseMulitpleReplies || self.mayChooseMulitpleReplies == otherMessage.mayChooseMulitpleReplies) &&
-      self.hasUserHasFollowedPost == otherMessage.hasUserHasFollowedPost &&
-      (!self.hasUserHasFollowedPost || self.userHasFollowedPost == otherMessage.userHasFollowedPost) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
   __block NSUInteger hashCode = 7;
-  if (self.hasPostId) {
-    hashCode = hashCode * 31 + [self.postId hash];
+  if (self.hasPostID) {
+    hashCode = hashCode * 31 + [self.postID hash];
   }
-  if (self.hasUserId) {
-    hashCode = hashCode * 31 + [self.userId hash];
+  if (self.hasParentID) {
+    hashCode = hashCode * 31 + [self.parentID hash];
   }
-  if (self.hasUserVanityId) {
-    hashCode = hashCode * 31 + [self.userVanityId hash];
+  if (self.hasPostType) {
+    hashCode = hashCode * 31 + self.postType;
+  }
+  if (self.hasPostScope) {
+    hashCode = hashCode * 31 + self.postScope;
+  }
+  if (self.hasUserID) {
+    hashCode = hashCode * 31 + [self.userID hash];
   }
   if (self.hasAnonymousPost) {
     hashCode = hashCode * 31 + [[NSNumber numberWithBool:self.anonymousPost] hash];
@@ -1643,16 +969,13 @@ static BFeedPost* defaultBFeedPostInstance = nil;
   if (self.hasBodyText) {
     hashCode = hashCode * 31 + [self.bodyText hash];
   }
-  [self.topicsArray enumerateObjectsUsingBlock:^(NSString *element, NSUInteger idx, BOOL *stop) {
+  [self.topicTagsArray enumerateObjectsUsingBlock:^(NSString *element, NSUInteger idx, BOOL *stop) {
     hashCode = hashCode * 31 + [element hash];
   }];
-  if (self.hasPostScope) {
-    hashCode = hashCode * 31 + self.postScope;
-  }
-  if (self.hasPostType) {
-    hashCode = hashCode * 31 + self.postType;
-  }
-  [self.repliesArray enumerateObjectsUsingBlock:^(BFeedReply *element, NSUInteger idx, BOOL *stop) {
+  [self.votesArray enumerateObjectsUsingBlock:^(BFeedPostVote *element, NSUInteger idx, BOOL *stop) {
+    hashCode = hashCode * 31 + [element hash];
+  }];
+  [self.repliesArray enumerateObjectsUsingBlock:^(BFeedPost *element, NSUInteger idx, BOOL *stop) {
     hashCode = hashCode * 31 + [element hash];
   }];
   if (self.hasMayAddReply) {
@@ -1660,9 +983,6 @@ static BFeedPost* defaultBFeedPostInstance = nil;
   }
   if (self.hasMayChooseMulitpleReplies) {
     hashCode = hashCode * 31 + [[NSNumber numberWithBool:self.mayChooseMulitpleReplies] hash];
-  }
-  if (self.hasUserHasFollowedPost) {
-    hashCode = hashCode * 31 + [[NSNumber numberWithBool:self.userHasFollowedPost] hash];
   }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
@@ -1707,14 +1027,20 @@ static BFeedPost* defaultBFeedPostInstance = nil;
   if (other == [BFeedPost defaultInstance]) {
     return self;
   }
-  if (other.hasPostId) {
-    [self setPostId:other.postId];
+  if (other.hasPostID) {
+    [self setPostID:other.postID];
   }
-  if (other.hasUserId) {
-    [self setUserId:other.userId];
+  if (other.hasParentID) {
+    [self setParentID:other.parentID];
   }
-  if (other.hasUserVanityId) {
-    [self setUserVanityId:other.userVanityId];
+  if (other.hasPostType) {
+    [self setPostType:other.postType];
+  }
+  if (other.hasPostScope) {
+    [self setPostScope:other.postScope];
+  }
+  if (other.hasUserID) {
+    [self setUserID:other.userID];
   }
   if (other.hasAnonymousPost) {
     [self setAnonymousPost:other.anonymousPost];
@@ -1731,18 +1057,19 @@ static BFeedPost* defaultBFeedPostInstance = nil;
   if (other.hasBodyText) {
     [self setBodyText:other.bodyText];
   }
-  if (other.topicsArray.count > 0) {
-    if (resultFeedPost.topicsArray == nil) {
-      resultFeedPost.topicsArray = [[NSMutableArray alloc] initWithArray:other.topicsArray];
+  if (other.topicTagsArray.count > 0) {
+    if (resultFeedPost.topicTagsArray == nil) {
+      resultFeedPost.topicTagsArray = [[NSMutableArray alloc] initWithArray:other.topicTagsArray];
     } else {
-      [resultFeedPost.topicsArray addObjectsFromArray:other.topicsArray];
+      [resultFeedPost.topicTagsArray addObjectsFromArray:other.topicTagsArray];
     }
   }
-  if (other.hasPostScope) {
-    [self setPostScope:other.postScope];
-  }
-  if (other.hasPostType) {
-    [self setPostType:other.postType];
+  if (other.votesArray.count > 0) {
+    if (resultFeedPost.votesArray == nil) {
+      resultFeedPost.votesArray = [[NSMutableArray alloc] initWithArray:other.votesArray];
+    } else {
+      [resultFeedPost.votesArray addObjectsFromArray:other.votesArray];
+    }
   }
   if (other.repliesArray.count > 0) {
     if (resultFeedPost.repliesArray == nil) {
@@ -1756,9 +1083,6 @@ static BFeedPost* defaultBFeedPostInstance = nil;
   }
   if (other.hasMayChooseMulitpleReplies) {
     [self setMayChooseMulitpleReplies:other.mayChooseMulitpleReplies];
-  }
-  if (other.hasUserHasFollowedPost) {
-    [self setUserHasFollowedPost:other.userHasFollowedPost];
   }
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -1782,22 +1106,40 @@ static BFeedPost* defaultBFeedPostInstance = nil;
         break;
       }
       case 10: {
-        [self setPostId:[input readString]];
+        [self setPostID:[input readString]];
         break;
       }
       case 18: {
-        [self setUserId:[input readString]];
+        [self setParentID:[input readString]];
         break;
       }
-      case 26: {
-        [self setUserVanityId:[input readString]];
+      case 24: {
+        BFeedPostType value = (BFeedPostType)[input readEnum];
+        if (BFeedPostTypeIsValidValue(value)) {
+          [self setPostType:value];
+        } else {
+          [unknownFields mergeVarintField:3 value:value];
+        }
         break;
       }
       case 32: {
-        [self setAnonymousPost:[input readBool]];
+        BFeedPostScope value = (BFeedPostScope)[input readEnum];
+        if (BFeedPostScopeIsValidValue(value)) {
+          [self setPostScope:value];
+        } else {
+          [unknownFields mergeVarintField:4 value:value];
+        }
         break;
       }
       case 42: {
+        [self setUserID:[input readString]];
+        break;
+      }
+      case 48: {
+        [self setAnonymousPost:[input readBool]];
+        break;
+      }
+      case 58: {
         BTimestampBuilder* subBuilder = [BTimestamp builder];
         if (self.hasTimestamp) {
           [subBuilder mergeFrom:self.timestamp];
@@ -1806,7 +1148,7 @@ static BFeedPost* defaultBFeedPostInstance = nil;
         [self setTimestamp:[subBuilder buildPartial]];
         break;
       }
-      case 50: {
+      case 66: {
         BTimespanBuilder* subBuilder = [BTimespan builder];
         if (self.hasTimespanActive) {
           [subBuilder mergeFrom:self.timespanActive];
@@ -1815,103 +1157,119 @@ static BFeedPost* defaultBFeedPostInstance = nil;
         [self setTimespanActive:[subBuilder buildPartial]];
         break;
       }
-      case 58: {
+      case 74: {
         [self setHeadlineText:[input readString]];
         break;
       }
-      case 66: {
+      case 82: {
         [self setBodyText:[input readString]];
         break;
       }
-      case 74: {
-        [self addTopics:[input readString]];
-        break;
-      }
-      case 80: {
-        BFeedPostScope value = (BFeedPostScope)[input readEnum];
-        if (BFeedPostScopeIsValidValue(value)) {
-          [self setPostScope:value];
-        } else {
-          [unknownFields mergeVarintField:10 value:value];
-        }
-        break;
-      }
-      case 88: {
-        BFeedPostType value = (BFeedPostType)[input readEnum];
-        if (BFeedPostTypeIsValidValue(value)) {
-          [self setPostType:value];
-        } else {
-          [unknownFields mergeVarintField:11 value:value];
-        }
+      case 90: {
+        [self addTopicTags:[input readString]];
         break;
       }
       case 98: {
-        BFeedReplyBuilder* subBuilder = [BFeedReply builder];
+        BFeedPostVoteBuilder* subBuilder = [BFeedPostVote builder];
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self addVotes:[subBuilder buildPartial]];
+        break;
+      }
+      case 106: {
+        BFeedPostBuilder* subBuilder = [BFeedPost builder];
         [input readMessage:subBuilder extensionRegistry:extensionRegistry];
         [self addReplies:[subBuilder buildPartial]];
         break;
       }
-      case 104: {
+      case 112: {
         [self setMayAddReply:[input readBool]];
         break;
       }
-      case 112: {
-        [self setMayChooseMulitpleReplies:[input readBool]];
-        break;
-      }
       case 120: {
-        [self setUserHasFollowedPost:[input readBool]];
+        [self setMayChooseMulitpleReplies:[input readBool]];
         break;
       }
     }
   }
 }
-- (BOOL) hasPostId {
-  return resultFeedPost.hasPostId;
+- (BOOL) hasPostID {
+  return resultFeedPost.hasPostID;
 }
-- (NSString*) postId {
-  return resultFeedPost.postId;
+- (NSString*) postID {
+  return resultFeedPost.postID;
 }
-- (BFeedPostBuilder*) setPostId:(NSString*) value {
-  resultFeedPost.hasPostId = YES;
-  resultFeedPost.postId = value;
+- (BFeedPostBuilder*) setPostID:(NSString*) value {
+  resultFeedPost.hasPostID = YES;
+  resultFeedPost.postID = value;
   return self;
 }
-- (BFeedPostBuilder*) clearPostId {
-  resultFeedPost.hasPostId = NO;
-  resultFeedPost.postId = @"";
+- (BFeedPostBuilder*) clearPostID {
+  resultFeedPost.hasPostID = NO;
+  resultFeedPost.postID = @"";
   return self;
 }
-- (BOOL) hasUserId {
-  return resultFeedPost.hasUserId;
+- (BOOL) hasParentID {
+  return resultFeedPost.hasParentID;
 }
-- (NSString*) userId {
-  return resultFeedPost.userId;
+- (NSString*) parentID {
+  return resultFeedPost.parentID;
 }
-- (BFeedPostBuilder*) setUserId:(NSString*) value {
-  resultFeedPost.hasUserId = YES;
-  resultFeedPost.userId = value;
+- (BFeedPostBuilder*) setParentID:(NSString*) value {
+  resultFeedPost.hasParentID = YES;
+  resultFeedPost.parentID = value;
   return self;
 }
-- (BFeedPostBuilder*) clearUserId {
-  resultFeedPost.hasUserId = NO;
-  resultFeedPost.userId = @"";
+- (BFeedPostBuilder*) clearParentID {
+  resultFeedPost.hasParentID = NO;
+  resultFeedPost.parentID = @"";
   return self;
 }
-- (BOOL) hasUserVanityId {
-  return resultFeedPost.hasUserVanityId;
+- (BOOL) hasPostType {
+  return resultFeedPost.hasPostType;
 }
-- (NSString*) userVanityId {
-  return resultFeedPost.userVanityId;
+- (BFeedPostType) postType {
+  return resultFeedPost.postType;
 }
-- (BFeedPostBuilder*) setUserVanityId:(NSString*) value {
-  resultFeedPost.hasUserVanityId = YES;
-  resultFeedPost.userVanityId = value;
+- (BFeedPostBuilder*) setPostType:(BFeedPostType) value {
+  resultFeedPost.hasPostType = YES;
+  resultFeedPost.postType = value;
   return self;
 }
-- (BFeedPostBuilder*) clearUserVanityId {
-  resultFeedPost.hasUserVanityId = NO;
-  resultFeedPost.userVanityId = @"";
+- (BFeedPostBuilder*) clearPostType {
+  resultFeedPost.hasPostType = NO;
+  resultFeedPost.postType = BFeedPostTypeFPUnknown;
+  return self;
+}
+- (BOOL) hasPostScope {
+  return resultFeedPost.hasPostScope;
+}
+- (BFeedPostScope) postScope {
+  return resultFeedPost.postScope;
+}
+- (BFeedPostBuilder*) setPostScope:(BFeedPostScope) value {
+  resultFeedPost.hasPostScope = YES;
+  resultFeedPost.postScope = value;
+  return self;
+}
+- (BFeedPostBuilder*) clearPostScope {
+  resultFeedPost.hasPostScope = NO;
+  resultFeedPost.postScope = BFeedPostScopeFPScopeUnknown;
+  return self;
+}
+- (BOOL) hasUserID {
+  return resultFeedPost.hasUserID;
+}
+- (NSString*) userID {
+  return resultFeedPost.userID;
+}
+- (BFeedPostBuilder*) setUserID:(NSString*) value {
+  resultFeedPost.hasUserID = YES;
+  resultFeedPost.userID = value;
+  return self;
+}
+- (BFeedPostBuilder*) clearUserID {
+  resultFeedPost.hasUserID = NO;
+  resultFeedPost.userID = @"";
   return self;
 }
 - (BOOL) hasAnonymousPost {
@@ -2022,66 +1380,55 @@ static BFeedPost* defaultBFeedPostInstance = nil;
   resultFeedPost.bodyText = @"";
   return self;
 }
-- (NSMutableArray *)topics {
-  return resultFeedPost.topicsArray;
+- (NSMutableArray *)topicTags {
+  return resultFeedPost.topicTagsArray;
 }
-- (NSString*)topicsAtIndex:(NSUInteger)index {
-  return [resultFeedPost topicsAtIndex:index];
+- (NSString*)topicTagsAtIndex:(NSUInteger)index {
+  return [resultFeedPost topicTagsAtIndex:index];
 }
-- (BFeedPostBuilder *)addTopics:(NSString*)value {
-  if (resultFeedPost.topicsArray == nil) {
-    resultFeedPost.topicsArray = [[NSMutableArray alloc]init];
+- (BFeedPostBuilder *)addTopicTags:(NSString*)value {
+  if (resultFeedPost.topicTagsArray == nil) {
+    resultFeedPost.topicTagsArray = [[NSMutableArray alloc]init];
   }
-  [resultFeedPost.topicsArray addObject:value];
+  [resultFeedPost.topicTagsArray addObject:value];
   return self;
 }
-- (BFeedPostBuilder *)setTopicsArray:(NSArray *)array {
-  resultFeedPost.topicsArray = [[NSMutableArray alloc] initWithArray:array];
+- (BFeedPostBuilder *)setTopicTagsArray:(NSArray *)array {
+  resultFeedPost.topicTagsArray = [[NSMutableArray alloc] initWithArray:array];
   return self;
 }
-- (BFeedPostBuilder *)clearTopics {
-  resultFeedPost.topicsArray = nil;
+- (BFeedPostBuilder *)clearTopicTags {
+  resultFeedPost.topicTagsArray = nil;
   return self;
 }
-- (BOOL) hasPostScope {
-  return resultFeedPost.hasPostScope;
+- (NSMutableArray *)votes {
+  return resultFeedPost.votesArray;
 }
-- (BFeedPostScope) postScope {
-  return resultFeedPost.postScope;
+- (BFeedPostVote*)votesAtIndex:(NSUInteger)index {
+  return [resultFeedPost votesAtIndex:index];
 }
-- (BFeedPostBuilder*) setPostScope:(BFeedPostScope) value {
-  resultFeedPost.hasPostScope = YES;
-  resultFeedPost.postScope = value;
+- (BFeedPostBuilder *)addVotes:(BFeedPostVote*)value {
+  if (resultFeedPost.votesArray == nil) {
+    resultFeedPost.votesArray = [[NSMutableArray alloc]init];
+  }
+  [resultFeedPost.votesArray addObject:value];
   return self;
 }
-- (BFeedPostBuilder*) clearPostScope {
-  resultFeedPost.hasPostScope = NO;
-  resultFeedPost.postScope = BFeedPostScopeFPScopeUnknown;
+- (BFeedPostBuilder *)setVotesArray:(NSArray *)array {
+  resultFeedPost.votesArray = [[NSMutableArray alloc]initWithArray:array];
   return self;
 }
-- (BOOL) hasPostType {
-  return resultFeedPost.hasPostType;
-}
-- (BFeedPostType) postType {
-  return resultFeedPost.postType;
-}
-- (BFeedPostBuilder*) setPostType:(BFeedPostType) value {
-  resultFeedPost.hasPostType = YES;
-  resultFeedPost.postType = value;
-  return self;
-}
-- (BFeedPostBuilder*) clearPostType {
-  resultFeedPost.hasPostType = NO;
-  resultFeedPost.postType = BFeedPostTypeFPUnknown;
+- (BFeedPostBuilder *)clearVotes {
+  resultFeedPost.votesArray = nil;
   return self;
 }
 - (NSMutableArray *)replies {
   return resultFeedPost.repliesArray;
 }
-- (BFeedReply*)repliesAtIndex:(NSUInteger)index {
+- (BFeedPost*)repliesAtIndex:(NSUInteger)index {
   return [resultFeedPost repliesAtIndex:index];
 }
-- (BFeedPostBuilder *)addReplies:(BFeedReply*)value {
+- (BFeedPostBuilder *)addReplies:(BFeedPost*)value {
   if (resultFeedPost.repliesArray == nil) {
     resultFeedPost.repliesArray = [[NSMutableArray alloc]init];
   }
@@ -2126,22 +1473,6 @@ static BFeedPost* defaultBFeedPostInstance = nil;
 - (BFeedPostBuilder*) clearMayChooseMulitpleReplies {
   resultFeedPost.hasMayChooseMulitpleReplies = NO;
   resultFeedPost.mayChooseMulitpleReplies = NO;
-  return self;
-}
-- (BOOL) hasUserHasFollowedPost {
-  return resultFeedPost.hasUserHasFollowedPost;
-}
-- (BOOL) userHasFollowedPost {
-  return resultFeedPost.userHasFollowedPost;
-}
-- (BFeedPostBuilder*) setUserHasFollowedPost:(BOOL) value {
-  resultFeedPost.hasUserHasFollowedPost = YES;
-  resultFeedPost.userHasFollowedPost = value;
-  return self;
-}
-- (BFeedPostBuilder*) clearUserHasFollowedPost {
-  resultFeedPost.hasUserHasFollowedPost = NO;
-  resultFeedPost.userHasFollowedPost = NO;
   return self;
 }
 @end
@@ -3134,67 +2465,67 @@ static BFeedPostUpdateResponse* defaultBFeedPostUpdateResponseInstance = nil;
 }
 @end
 
-@interface BFeedPostVote ()
-@property (strong) NSString* postId;
-@property (strong) NSString* replyId;
-@property (strong) NSMutableArray * replyTagsArray;
+@interface BEntityVoteRequest ()
+@property (strong) NSString* entityID;
+@property BEntityType entityType;
+@property (strong) NSMutableArray * voteTagsArray;
 @end
 
-@implementation BFeedPostVote
+@implementation BEntityVoteRequest
 
-- (BOOL) hasPostId {
-  return !!hasPostId_;
+- (BOOL) hasEntityID {
+  return !!hasEntityID_;
 }
-- (void) setHasPostId:(BOOL) _value_ {
-  hasPostId_ = !!_value_;
+- (void) setHasEntityID:(BOOL) _value_ {
+  hasEntityID_ = !!_value_;
 }
-@synthesize postId;
-- (BOOL) hasReplyId {
-  return !!hasReplyId_;
+@synthesize entityID;
+- (BOOL) hasEntityType {
+  return !!hasEntityType_;
 }
-- (void) setHasReplyId:(BOOL) _value_ {
-  hasReplyId_ = !!_value_;
+- (void) setHasEntityType:(BOOL) _value_ {
+  hasEntityType_ = !!_value_;
 }
-@synthesize replyId;
-@synthesize replyTagsArray;
-@dynamic replyTags;
+@synthesize entityType;
+@synthesize voteTagsArray;
+@dynamic voteTags;
 - (instancetype) init {
   if ((self = [super init])) {
-    self.postId = @"";
-    self.replyId = @"";
+    self.entityID = @"";
+    self.entityType = BEntityTypeETUnknown;
   }
   return self;
 }
-static BFeedPostVote* defaultBFeedPostVoteInstance = nil;
+static BEntityVoteRequest* defaultBEntityVoteRequestInstance = nil;
 + (void) initialize {
-  if (self == [BFeedPostVote class]) {
-    defaultBFeedPostVoteInstance = [[BFeedPostVote alloc] init];
+  if (self == [BEntityVoteRequest class]) {
+    defaultBEntityVoteRequestInstance = [[BEntityVoteRequest alloc] init];
   }
 }
 + (instancetype) defaultInstance {
-  return defaultBFeedPostVoteInstance;
+  return defaultBEntityVoteRequestInstance;
 }
 - (instancetype) defaultInstance {
-  return defaultBFeedPostVoteInstance;
+  return defaultBEntityVoteRequestInstance;
 }
-- (NSArray *)replyTags {
-  return replyTagsArray;
+- (NSArray *)voteTags {
+  return voteTagsArray;
 }
-- (BFeedReplyTag*)replyTagsAtIndex:(NSUInteger)index {
-  return [replyTagsArray objectAtIndex:index];
+- (NSString*)voteTagsAtIndex:(NSUInteger)index {
+  return [voteTagsArray objectAtIndex:index];
 }
 - (BOOL) isInitialized {
   return YES;
 }
 - (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
-  if (self.hasPostId) {
-    [output writeString:1 value:self.postId];
+  if (self.hasEntityID) {
+    [output writeString:1 value:self.entityID];
   }
-  if (self.hasReplyId) {
-    [output writeString:2 value:self.replyId];
+  if (self.hasEntityType) {
+    [output writeEnum:2 value:self.entityType];
   }
-  [self.replyTagsArray enumerateObjectsUsingBlock:^(BFeedReplyTag *element, NSUInteger idx, BOOL *stop) {
-    [output writeMessage:3 value:element];
+  [self.voteTagsArray enumerateObjectsUsingBlock:^(NSString *element, NSUInteger idx, BOOL *stop) {
+    [output writeString:3 value:element];
   }];
   [self.unknownFields writeToCodedOutputStream:output];
 }
@@ -3205,103 +2536,102 @@ static BFeedPostVote* defaultBFeedPostVoteInstance = nil;
   }
 
   size_ = 0;
-  if (self.hasPostId) {
-    size_ += computeStringSize(1, self.postId);
+  if (self.hasEntityID) {
+    size_ += computeStringSize(1, self.entityID);
   }
-  if (self.hasReplyId) {
-    size_ += computeStringSize(2, self.replyId);
+  if (self.hasEntityType) {
+    size_ += computeEnumSize(2, self.entityType);
   }
-  [self.replyTagsArray enumerateObjectsUsingBlock:^(BFeedReplyTag *element, NSUInteger idx, BOOL *stop) {
-    size_ += computeMessageSize(3, element);
-  }];
+  {
+    __block SInt32 dataSize = 0;
+    const NSUInteger count = self.voteTagsArray.count;
+    [self.voteTagsArray enumerateObjectsUsingBlock:^(NSString *element, NSUInteger idx, BOOL *stop) {
+      dataSize += computeStringSizeNoTag(element);
+    }];
+    size_ += dataSize;
+    size_ += (SInt32)(1 * count);
+  }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
   return size_;
 }
-+ (BFeedPostVote*) parseFromData:(NSData*) data {
-  return (BFeedPostVote*)[[[BFeedPostVote builder] mergeFromData:data] build];
++ (BEntityVoteRequest*) parseFromData:(NSData*) data {
+  return (BEntityVoteRequest*)[[[BEntityVoteRequest builder] mergeFromData:data] build];
 }
-+ (BFeedPostVote*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
-  return (BFeedPostVote*)[[[BFeedPostVote builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
++ (BEntityVoteRequest*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BEntityVoteRequest*)[[[BEntityVoteRequest builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
 }
-+ (BFeedPostVote*) parseFromInputStream:(NSInputStream*) input {
-  return (BFeedPostVote*)[[[BFeedPostVote builder] mergeFromInputStream:input] build];
++ (BEntityVoteRequest*) parseFromInputStream:(NSInputStream*) input {
+  return (BEntityVoteRequest*)[[[BEntityVoteRequest builder] mergeFromInputStream:input] build];
 }
-+ (BFeedPostVote*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
-  return (BFeedPostVote*)[[[BFeedPostVote builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
++ (BEntityVoteRequest*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BEntityVoteRequest*)[[[BEntityVoteRequest builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
 }
-+ (BFeedPostVote*) parseFromCodedInputStream:(PBCodedInputStream*) input {
-  return (BFeedPostVote*)[[[BFeedPostVote builder] mergeFromCodedInputStream:input] build];
++ (BEntityVoteRequest*) parseFromCodedInputStream:(PBCodedInputStream*) input {
+  return (BEntityVoteRequest*)[[[BEntityVoteRequest builder] mergeFromCodedInputStream:input] build];
 }
-+ (BFeedPostVote*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
-  return (BFeedPostVote*)[[[BFeedPostVote builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
++ (BEntityVoteRequest*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BEntityVoteRequest*)[[[BEntityVoteRequest builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
 }
-+ (BFeedPostVoteBuilder*) builder {
-  return [[BFeedPostVoteBuilder alloc] init];
++ (BEntityVoteRequestBuilder*) builder {
+  return [[BEntityVoteRequestBuilder alloc] init];
 }
-+ (BFeedPostVoteBuilder*) builderWithPrototype:(BFeedPostVote*) prototype {
-  return [[BFeedPostVote builder] mergeFrom:prototype];
++ (BEntityVoteRequestBuilder*) builderWithPrototype:(BEntityVoteRequest*) prototype {
+  return [[BEntityVoteRequest builder] mergeFrom:prototype];
 }
-- (BFeedPostVoteBuilder*) builder {
-  return [BFeedPostVote builder];
+- (BEntityVoteRequestBuilder*) builder {
+  return [BEntityVoteRequest builder];
 }
-- (BFeedPostVoteBuilder*) toBuilder {
-  return [BFeedPostVote builderWithPrototype:self];
+- (BEntityVoteRequestBuilder*) toBuilder {
+  return [BEntityVoteRequest builderWithPrototype:self];
 }
 - (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
-  if (self.hasPostId) {
-    [output appendFormat:@"%@%@: %@\n", indent, @"postId", self.postId];
+  if (self.hasEntityID) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"entityID", self.entityID];
   }
-  if (self.hasReplyId) {
-    [output appendFormat:@"%@%@: %@\n", indent, @"replyId", self.replyId];
+  if (self.hasEntityType) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"entityType", NSStringFromBEntityType(self.entityType)];
   }
-  [self.replyTagsArray enumerateObjectsUsingBlock:^(BFeedReplyTag *element, NSUInteger idx, BOOL *stop) {
-    [output appendFormat:@"%@%@ {\n", indent, @"replyTags"];
-    [element writeDescriptionTo:output
-                     withIndent:[NSString stringWithFormat:@"%@  ", indent]];
-    [output appendFormat:@"%@}\n", indent];
+  [self.voteTagsArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"voteTags", obj];
   }];
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (void) storeInDictionary:(NSMutableDictionary *)dictionary {
-  if (self.hasPostId) {
-    [dictionary setObject: self.postId forKey: @"postId"];
+  if (self.hasEntityID) {
+    [dictionary setObject: self.entityID forKey: @"entityID"];
   }
-  if (self.hasReplyId) {
-    [dictionary setObject: self.replyId forKey: @"replyId"];
+  if (self.hasEntityType) {
+    [dictionary setObject: @(self.entityType) forKey: @"entityType"];
   }
-  for (BFeedReplyTag* element in self.replyTagsArray) {
-    NSMutableDictionary *elementDictionary = [NSMutableDictionary dictionary];
-    [element storeInDictionary:elementDictionary];
-    [dictionary setObject:[NSDictionary dictionaryWithDictionary:elementDictionary] forKey:@"replyTags"];
-  }
+  [dictionary setObject:self.voteTags forKey: @"voteTags"];
   [self.unknownFields storeInDictionary:dictionary];
 }
 - (BOOL) isEqual:(id)other {
   if (other == self) {
     return YES;
   }
-  if (![other isKindOfClass:[BFeedPostVote class]]) {
+  if (![other isKindOfClass:[BEntityVoteRequest class]]) {
     return NO;
   }
-  BFeedPostVote *otherMessage = other;
+  BEntityVoteRequest *otherMessage = other;
   return
-      self.hasPostId == otherMessage.hasPostId &&
-      (!self.hasPostId || [self.postId isEqual:otherMessage.postId]) &&
-      self.hasReplyId == otherMessage.hasReplyId &&
-      (!self.hasReplyId || [self.replyId isEqual:otherMessage.replyId]) &&
-      [self.replyTagsArray isEqualToArray:otherMessage.replyTagsArray] &&
+      self.hasEntityID == otherMessage.hasEntityID &&
+      (!self.hasEntityID || [self.entityID isEqual:otherMessage.entityID]) &&
+      self.hasEntityType == otherMessage.hasEntityType &&
+      (!self.hasEntityType || self.entityType == otherMessage.entityType) &&
+      [self.voteTagsArray isEqualToArray:otherMessage.voteTagsArray] &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
   __block NSUInteger hashCode = 7;
-  if (self.hasPostId) {
-    hashCode = hashCode * 31 + [self.postId hash];
+  if (self.hasEntityID) {
+    hashCode = hashCode * 31 + [self.entityID hash];
   }
-  if (self.hasReplyId) {
-    hashCode = hashCode * 31 + [self.replyId hash];
+  if (self.hasEntityType) {
+    hashCode = hashCode * 31 + self.entityType;
   }
-  [self.replyTagsArray enumerateObjectsUsingBlock:^(BFeedReplyTag *element, NSUInteger idx, BOOL *stop) {
+  [self.voteTagsArray enumerateObjectsUsingBlock:^(NSString *element, NSUInteger idx, BOOL *stop) {
     hashCode = hashCode * 31 + [element hash];
   }];
   hashCode = hashCode * 31 + [self.unknownFields hash];
@@ -3309,64 +2639,64 @@ static BFeedPostVote* defaultBFeedPostVoteInstance = nil;
 }
 @end
 
-@interface BFeedPostVoteBuilder()
-@property (strong) BFeedPostVote* resultFeedPostVote;
+@interface BEntityVoteRequestBuilder()
+@property (strong) BEntityVoteRequest* resultEntityVoteRequest;
 @end
 
-@implementation BFeedPostVoteBuilder
-@synthesize resultFeedPostVote;
+@implementation BEntityVoteRequestBuilder
+@synthesize resultEntityVoteRequest;
 - (instancetype) init {
   if ((self = [super init])) {
-    self.resultFeedPostVote = [[BFeedPostVote alloc] init];
+    self.resultEntityVoteRequest = [[BEntityVoteRequest alloc] init];
   }
   return self;
 }
 - (PBGeneratedMessage*) internalGetResult {
-  return resultFeedPostVote;
+  return resultEntityVoteRequest;
 }
-- (BFeedPostVoteBuilder*) clear {
-  self.resultFeedPostVote = [[BFeedPostVote alloc] init];
+- (BEntityVoteRequestBuilder*) clear {
+  self.resultEntityVoteRequest = [[BEntityVoteRequest alloc] init];
   return self;
 }
-- (BFeedPostVoteBuilder*) clone {
-  return [BFeedPostVote builderWithPrototype:resultFeedPostVote];
+- (BEntityVoteRequestBuilder*) clone {
+  return [BEntityVoteRequest builderWithPrototype:resultEntityVoteRequest];
 }
-- (BFeedPostVote*) defaultInstance {
-  return [BFeedPostVote defaultInstance];
+- (BEntityVoteRequest*) defaultInstance {
+  return [BEntityVoteRequest defaultInstance];
 }
-- (BFeedPostVote*) build {
+- (BEntityVoteRequest*) build {
   [self checkInitialized];
   return [self buildPartial];
 }
-- (BFeedPostVote*) buildPartial {
-  BFeedPostVote* returnMe = resultFeedPostVote;
-  self.resultFeedPostVote = nil;
+- (BEntityVoteRequest*) buildPartial {
+  BEntityVoteRequest* returnMe = resultEntityVoteRequest;
+  self.resultEntityVoteRequest = nil;
   return returnMe;
 }
-- (BFeedPostVoteBuilder*) mergeFrom:(BFeedPostVote*) other {
-  if (other == [BFeedPostVote defaultInstance]) {
+- (BEntityVoteRequestBuilder*) mergeFrom:(BEntityVoteRequest*) other {
+  if (other == [BEntityVoteRequest defaultInstance]) {
     return self;
   }
-  if (other.hasPostId) {
-    [self setPostId:other.postId];
+  if (other.hasEntityID) {
+    [self setEntityID:other.entityID];
   }
-  if (other.hasReplyId) {
-    [self setReplyId:other.replyId];
+  if (other.hasEntityType) {
+    [self setEntityType:other.entityType];
   }
-  if (other.replyTagsArray.count > 0) {
-    if (resultFeedPostVote.replyTagsArray == nil) {
-      resultFeedPostVote.replyTagsArray = [[NSMutableArray alloc] initWithArray:other.replyTagsArray];
+  if (other.voteTagsArray.count > 0) {
+    if (resultEntityVoteRequest.voteTagsArray == nil) {
+      resultEntityVoteRequest.voteTagsArray = [[NSMutableArray alloc] initWithArray:other.voteTagsArray];
     } else {
-      [resultFeedPostVote.replyTagsArray addObjectsFromArray:other.replyTagsArray];
+      [resultEntityVoteRequest.voteTagsArray addObjectsFromArray:other.voteTagsArray];
     }
   }
   [self mergeUnknownFields:other.unknownFields];
   return self;
 }
-- (BFeedPostVoteBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
+- (BEntityVoteRequestBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
   return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
 }
-- (BFeedPostVoteBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+- (BEntityVoteRequestBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
   PBUnknownFieldSetBuilder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
   while (YES) {
     SInt32 tag = [input readTag];
@@ -3382,323 +2712,7 @@ static BFeedPostVote* defaultBFeedPostVoteInstance = nil;
         break;
       }
       case 10: {
-        [self setPostId:[input readString]];
-        break;
-      }
-      case 18: {
-        [self setReplyId:[input readString]];
-        break;
-      }
-      case 26: {
-        BFeedReplyTagBuilder* subBuilder = [BFeedReplyTag builder];
-        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
-        [self addReplyTags:[subBuilder buildPartial]];
-        break;
-      }
-    }
-  }
-}
-- (BOOL) hasPostId {
-  return resultFeedPostVote.hasPostId;
-}
-- (NSString*) postId {
-  return resultFeedPostVote.postId;
-}
-- (BFeedPostVoteBuilder*) setPostId:(NSString*) value {
-  resultFeedPostVote.hasPostId = YES;
-  resultFeedPostVote.postId = value;
-  return self;
-}
-- (BFeedPostVoteBuilder*) clearPostId {
-  resultFeedPostVote.hasPostId = NO;
-  resultFeedPostVote.postId = @"";
-  return self;
-}
-- (BOOL) hasReplyId {
-  return resultFeedPostVote.hasReplyId;
-}
-- (NSString*) replyId {
-  return resultFeedPostVote.replyId;
-}
-- (BFeedPostVoteBuilder*) setReplyId:(NSString*) value {
-  resultFeedPostVote.hasReplyId = YES;
-  resultFeedPostVote.replyId = value;
-  return self;
-}
-- (BFeedPostVoteBuilder*) clearReplyId {
-  resultFeedPostVote.hasReplyId = NO;
-  resultFeedPostVote.replyId = @"";
-  return self;
-}
-- (NSMutableArray *)replyTags {
-  return resultFeedPostVote.replyTagsArray;
-}
-- (BFeedReplyTag*)replyTagsAtIndex:(NSUInteger)index {
-  return [resultFeedPostVote replyTagsAtIndex:index];
-}
-- (BFeedPostVoteBuilder *)addReplyTags:(BFeedReplyTag*)value {
-  if (resultFeedPostVote.replyTagsArray == nil) {
-    resultFeedPostVote.replyTagsArray = [[NSMutableArray alloc]init];
-  }
-  [resultFeedPostVote.replyTagsArray addObject:value];
-  return self;
-}
-- (BFeedPostVoteBuilder *)setReplyTagsArray:(NSArray *)array {
-  resultFeedPostVote.replyTagsArray = [[NSMutableArray alloc]initWithArray:array];
-  return self;
-}
-- (BFeedPostVoteBuilder *)clearReplyTags {
-  resultFeedPostVote.replyTagsArray = nil;
-  return self;
-}
-@end
-
-@interface BFollowRequest ()
-@property BUpdateVerb updateVerb;
-@property BEntityType entityType;
-@property (strong) NSString* entityId;
-@end
-
-@implementation BFollowRequest
-
-- (BOOL) hasUpdateVerb {
-  return !!hasUpdateVerb_;
-}
-- (void) setHasUpdateVerb:(BOOL) _value_ {
-  hasUpdateVerb_ = !!_value_;
-}
-@synthesize updateVerb;
-- (BOOL) hasEntityType {
-  return !!hasEntityType_;
-}
-- (void) setHasEntityType:(BOOL) _value_ {
-  hasEntityType_ = !!_value_;
-}
-@synthesize entityType;
-- (BOOL) hasEntityId {
-  return !!hasEntityId_;
-}
-- (void) setHasEntityId:(BOOL) _value_ {
-  hasEntityId_ = !!_value_;
-}
-@synthesize entityId;
-- (instancetype) init {
-  if ((self = [super init])) {
-    self.updateVerb = BUpdateVerbUVCreate;
-    self.entityType = BEntityTypeETUnknown;
-    self.entityId = @"";
-  }
-  return self;
-}
-static BFollowRequest* defaultBFollowRequestInstance = nil;
-+ (void) initialize {
-  if (self == [BFollowRequest class]) {
-    defaultBFollowRequestInstance = [[BFollowRequest alloc] init];
-  }
-}
-+ (instancetype) defaultInstance {
-  return defaultBFollowRequestInstance;
-}
-- (instancetype) defaultInstance {
-  return defaultBFollowRequestInstance;
-}
-- (BOOL) isInitialized {
-  return YES;
-}
-- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
-  if (self.hasUpdateVerb) {
-    [output writeEnum:1 value:self.updateVerb];
-  }
-  if (self.hasEntityType) {
-    [output writeEnum:2 value:self.entityType];
-  }
-  if (self.hasEntityId) {
-    [output writeString:3 value:self.entityId];
-  }
-  [self.unknownFields writeToCodedOutputStream:output];
-}
-- (SInt32) serializedSize {
-  __block SInt32 size_ = memoizedSerializedSize;
-  if (size_ != -1) {
-    return size_;
-  }
-
-  size_ = 0;
-  if (self.hasUpdateVerb) {
-    size_ += computeEnumSize(1, self.updateVerb);
-  }
-  if (self.hasEntityType) {
-    size_ += computeEnumSize(2, self.entityType);
-  }
-  if (self.hasEntityId) {
-    size_ += computeStringSize(3, self.entityId);
-  }
-  size_ += self.unknownFields.serializedSize;
-  memoizedSerializedSize = size_;
-  return size_;
-}
-+ (BFollowRequest*) parseFromData:(NSData*) data {
-  return (BFollowRequest*)[[[BFollowRequest builder] mergeFromData:data] build];
-}
-+ (BFollowRequest*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
-  return (BFollowRequest*)[[[BFollowRequest builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
-}
-+ (BFollowRequest*) parseFromInputStream:(NSInputStream*) input {
-  return (BFollowRequest*)[[[BFollowRequest builder] mergeFromInputStream:input] build];
-}
-+ (BFollowRequest*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
-  return (BFollowRequest*)[[[BFollowRequest builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
-}
-+ (BFollowRequest*) parseFromCodedInputStream:(PBCodedInputStream*) input {
-  return (BFollowRequest*)[[[BFollowRequest builder] mergeFromCodedInputStream:input] build];
-}
-+ (BFollowRequest*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
-  return (BFollowRequest*)[[[BFollowRequest builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
-}
-+ (BFollowRequestBuilder*) builder {
-  return [[BFollowRequestBuilder alloc] init];
-}
-+ (BFollowRequestBuilder*) builderWithPrototype:(BFollowRequest*) prototype {
-  return [[BFollowRequest builder] mergeFrom:prototype];
-}
-- (BFollowRequestBuilder*) builder {
-  return [BFollowRequest builder];
-}
-- (BFollowRequestBuilder*) toBuilder {
-  return [BFollowRequest builderWithPrototype:self];
-}
-- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
-  if (self.hasUpdateVerb) {
-    [output appendFormat:@"%@%@: %@\n", indent, @"updateVerb", NSStringFromBUpdateVerb(self.updateVerb)];
-  }
-  if (self.hasEntityType) {
-    [output appendFormat:@"%@%@: %@\n", indent, @"entityType", NSStringFromBEntityType(self.entityType)];
-  }
-  if (self.hasEntityId) {
-    [output appendFormat:@"%@%@: %@\n", indent, @"entityId", self.entityId];
-  }
-  [self.unknownFields writeDescriptionTo:output withIndent:indent];
-}
-- (void) storeInDictionary:(NSMutableDictionary *)dictionary {
-  if (self.hasUpdateVerb) {
-    [dictionary setObject: @(self.updateVerb) forKey: @"updateVerb"];
-  }
-  if (self.hasEntityType) {
-    [dictionary setObject: @(self.entityType) forKey: @"entityType"];
-  }
-  if (self.hasEntityId) {
-    [dictionary setObject: self.entityId forKey: @"entityId"];
-  }
-  [self.unknownFields storeInDictionary:dictionary];
-}
-- (BOOL) isEqual:(id)other {
-  if (other == self) {
-    return YES;
-  }
-  if (![other isKindOfClass:[BFollowRequest class]]) {
-    return NO;
-  }
-  BFollowRequest *otherMessage = other;
-  return
-      self.hasUpdateVerb == otherMessage.hasUpdateVerb &&
-      (!self.hasUpdateVerb || self.updateVerb == otherMessage.updateVerb) &&
-      self.hasEntityType == otherMessage.hasEntityType &&
-      (!self.hasEntityType || self.entityType == otherMessage.entityType) &&
-      self.hasEntityId == otherMessage.hasEntityId &&
-      (!self.hasEntityId || [self.entityId isEqual:otherMessage.entityId]) &&
-      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
-}
-- (NSUInteger) hash {
-  __block NSUInteger hashCode = 7;
-  if (self.hasUpdateVerb) {
-    hashCode = hashCode * 31 + self.updateVerb;
-  }
-  if (self.hasEntityType) {
-    hashCode = hashCode * 31 + self.entityType;
-  }
-  if (self.hasEntityId) {
-    hashCode = hashCode * 31 + [self.entityId hash];
-  }
-  hashCode = hashCode * 31 + [self.unknownFields hash];
-  return hashCode;
-}
-@end
-
-@interface BFollowRequestBuilder()
-@property (strong) BFollowRequest* resultFollowRequest;
-@end
-
-@implementation BFollowRequestBuilder
-@synthesize resultFollowRequest;
-- (instancetype) init {
-  if ((self = [super init])) {
-    self.resultFollowRequest = [[BFollowRequest alloc] init];
-  }
-  return self;
-}
-- (PBGeneratedMessage*) internalGetResult {
-  return resultFollowRequest;
-}
-- (BFollowRequestBuilder*) clear {
-  self.resultFollowRequest = [[BFollowRequest alloc] init];
-  return self;
-}
-- (BFollowRequestBuilder*) clone {
-  return [BFollowRequest builderWithPrototype:resultFollowRequest];
-}
-- (BFollowRequest*) defaultInstance {
-  return [BFollowRequest defaultInstance];
-}
-- (BFollowRequest*) build {
-  [self checkInitialized];
-  return [self buildPartial];
-}
-- (BFollowRequest*) buildPartial {
-  BFollowRequest* returnMe = resultFollowRequest;
-  self.resultFollowRequest = nil;
-  return returnMe;
-}
-- (BFollowRequestBuilder*) mergeFrom:(BFollowRequest*) other {
-  if (other == [BFollowRequest defaultInstance]) {
-    return self;
-  }
-  if (other.hasUpdateVerb) {
-    [self setUpdateVerb:other.updateVerb];
-  }
-  if (other.hasEntityType) {
-    [self setEntityType:other.entityType];
-  }
-  if (other.hasEntityId) {
-    [self setEntityId:other.entityId];
-  }
-  [self mergeUnknownFields:other.unknownFields];
-  return self;
-}
-- (BFollowRequestBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
-  return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
-}
-- (BFollowRequestBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
-  PBUnknownFieldSetBuilder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
-  while (YES) {
-    SInt32 tag = [input readTag];
-    switch (tag) {
-      case 0:
-        [self setUnknownFields:[unknownFields build]];
-        return self;
-      default: {
-        if (![self parseUnknownField:input unknownFields:unknownFields extensionRegistry:extensionRegistry tag:tag]) {
-          [self setUnknownFields:[unknownFields build]];
-          return self;
-        }
-        break;
-      }
-      case 8: {
-        BUpdateVerb value = (BUpdateVerb)[input readEnum];
-        if (BUpdateVerbIsValidValue(value)) {
-          [self setUpdateVerb:value];
-        } else {
-          [unknownFields mergeVarintField:1 value:value];
-        }
+        [self setEntityID:[input readString]];
         break;
       }
       case 16: {
@@ -3711,58 +2725,63 @@ static BFollowRequest* defaultBFollowRequestInstance = nil;
         break;
       }
       case 26: {
-        [self setEntityId:[input readString]];
+        [self addVoteTags:[input readString]];
         break;
       }
     }
   }
 }
-- (BOOL) hasUpdateVerb {
-  return resultFollowRequest.hasUpdateVerb;
+- (BOOL) hasEntityID {
+  return resultEntityVoteRequest.hasEntityID;
 }
-- (BUpdateVerb) updateVerb {
-  return resultFollowRequest.updateVerb;
+- (NSString*) entityID {
+  return resultEntityVoteRequest.entityID;
 }
-- (BFollowRequestBuilder*) setUpdateVerb:(BUpdateVerb) value {
-  resultFollowRequest.hasUpdateVerb = YES;
-  resultFollowRequest.updateVerb = value;
+- (BEntityVoteRequestBuilder*) setEntityID:(NSString*) value {
+  resultEntityVoteRequest.hasEntityID = YES;
+  resultEntityVoteRequest.entityID = value;
   return self;
 }
-- (BFollowRequestBuilder*) clearUpdateVerb {
-  resultFollowRequest.hasUpdateVerb = NO;
-  resultFollowRequest.updateVerb = BUpdateVerbUVCreate;
+- (BEntityVoteRequestBuilder*) clearEntityID {
+  resultEntityVoteRequest.hasEntityID = NO;
+  resultEntityVoteRequest.entityID = @"";
   return self;
 }
 - (BOOL) hasEntityType {
-  return resultFollowRequest.hasEntityType;
+  return resultEntityVoteRequest.hasEntityType;
 }
 - (BEntityType) entityType {
-  return resultFollowRequest.entityType;
+  return resultEntityVoteRequest.entityType;
 }
-- (BFollowRequestBuilder*) setEntityType:(BEntityType) value {
-  resultFollowRequest.hasEntityType = YES;
-  resultFollowRequest.entityType = value;
+- (BEntityVoteRequestBuilder*) setEntityType:(BEntityType) value {
+  resultEntityVoteRequest.hasEntityType = YES;
+  resultEntityVoteRequest.entityType = value;
   return self;
 }
-- (BFollowRequestBuilder*) clearEntityType {
-  resultFollowRequest.hasEntityType = NO;
-  resultFollowRequest.entityType = BEntityTypeETUnknown;
+- (BEntityVoteRequestBuilder*) clearEntityType {
+  resultEntityVoteRequest.hasEntityType = NO;
+  resultEntityVoteRequest.entityType = BEntityTypeETUnknown;
   return self;
 }
-- (BOOL) hasEntityId {
-  return resultFollowRequest.hasEntityId;
+- (NSMutableArray *)voteTags {
+  return resultEntityVoteRequest.voteTagsArray;
 }
-- (NSString*) entityId {
-  return resultFollowRequest.entityId;
+- (NSString*)voteTagsAtIndex:(NSUInteger)index {
+  return [resultEntityVoteRequest voteTagsAtIndex:index];
 }
-- (BFollowRequestBuilder*) setEntityId:(NSString*) value {
-  resultFollowRequest.hasEntityId = YES;
-  resultFollowRequest.entityId = value;
+- (BEntityVoteRequestBuilder *)addVoteTags:(NSString*)value {
+  if (resultEntityVoteRequest.voteTagsArray == nil) {
+    resultEntityVoteRequest.voteTagsArray = [[NSMutableArray alloc]init];
+  }
+  [resultEntityVoteRequest.voteTagsArray addObject:value];
   return self;
 }
-- (BFollowRequestBuilder*) clearEntityId {
-  resultFollowRequest.hasEntityId = NO;
-  resultFollowRequest.entityId = @"";
+- (BEntityVoteRequestBuilder *)setVoteTagsArray:(NSArray *)array {
+  resultEntityVoteRequest.voteTagsArray = [[NSMutableArray alloc] initWithArray:array];
+  return self;
+}
+- (BEntityVoteRequestBuilder *)clearVoteTags {
+  resultEntityVoteRequest.voteTagsArray = nil;
   return self;
 }
 @end

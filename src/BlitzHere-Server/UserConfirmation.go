@@ -32,9 +32,8 @@ func UserIsConfirming(session *Session, confirmation *BlitzMessage.ConfirmationR
     Log.LogFunctionName()
 
     var verified bool = false
-    var userStatus BlitzMessage.UserStatus = BlitzMessage.UserStatus_USConfirming
 
-    profile := confirmation.Profile;
+    profile := confirmation.UserProfile;
     Log.Debugf("Confirmation contact: %+v.", confirmation.ContactInfo.Contact)
     Log.Debugf("Confirming profile:\n%+v.", profile)
 
@@ -53,36 +52,37 @@ func UserIsConfirming(session *Session, confirmation *BlitzMessage.ConfirmationR
 
     if ! verified {
         error = errors.New("Error: Didn't verify contact detail with profile.");
-    }
+    } else {
 
-    code := "XXXX"
-    if  confirmation.ConfirmationCode != nil &&
-        len(*confirmation.ConfirmationCode) > 0 {
-        i, _ := strconv.ParseInt(*confirmation.ConfirmationCode, 10, 64)
-        code = fmt.Sprintf("%04x", i)
-        if len(code) <= 2 { code = "XXXX" }
-    }
-    Log.Debugf("Code '%s' Secret '%s'.", code, session.Secret)
+        code := "XXXX"
+        if  confirmation.ConfirmationCode != nil &&
+            len(*confirmation.ConfirmationCode) > 0 {
+            i, _ := strconv.ParseInt(*confirmation.ConfirmationCode, 10, 64)
+            code = fmt.Sprintf("%04x", i)
+            if len(code) <= 2 { code = "XXXX" }
+        }
+        Log.Debugf("Code '%s' Secret '%s'.", code, session.Secret)
 
-    if ! strings.HasPrefix(session.Secret, code) {
-        Log.Errorf("Confirmation secret wrong. %s != %s.", *confirmation.ConfirmationCode, session.Secret)
-        error = fmt.Errorf("The confirmation code does not match.")
-        verified = false
+        if ! strings.HasPrefix(session.Secret, code) {
+            Log.Errorf("Confirmation secret wrong. %s != %s.", *confirmation.ConfirmationCode, session.Secret)
+            error = fmt.Errorf("The confirmation code does not match.")
+            verified = false
+        }
+
     }
 
     if ! verified {
-        userStatus = BlitzMessage.UserStatus_USConfirming
-        profile.UserStatus = &userStatus
         Log.LogError(error)
-        //error = errors.New("Sorry, the confirmation has expired."))
+        UpdateProfileStatusForUserID(*profile.UserID, BlitzMessage.UserStatus_USConfirming)
         return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
     }
 
     session.Secret = Util.NewUUIDString()
     UpdateProfileStatusForUserID(*profile.UserID, BlitzMessage.UserStatus_USConfirmed)
+    profile = ProfileForUserID(*profile.UserID)
 
     confirmed := BlitzMessage.ConfirmationRequest {
-        Profile: profile,
+        UserProfile: profile,
     }
     responseCode    := BlitzMessage.ResponseCode_RCSuccess
     responseMessage := config.Localizef("kConfirmConfirmedWelcome", "Confirmed. Welcome to BlitzHere.")
@@ -105,7 +105,7 @@ func UserConfirmation(session *Session, confirmation *BlitzMessage.ConfirmationR
     Log.LogFunctionName()
 
     var error error
-    profile := confirmation.Profile;
+    profile := confirmation.UserProfile;
     if profile == nil {
         return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, errors.New("A profile is required."))
     }
