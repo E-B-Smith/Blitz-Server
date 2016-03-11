@@ -54,7 +54,7 @@ message FeedPost {
   optional FeedPostType   postType        = 3;
   optional FeedPostScope  postScope       = 4;
   optional string         userID          = 5;
-  optional bool           anonymousPost   = 6  [default = false];
+  optional bool           anonymousPost   = 6   [default = false];
   optional Timestamp      timestamp       = 7;
   optional Timespan       timespanActive  = 8;
   optional string         headlineText    = 9;

@@ -53,6 +53,15 @@ func ServerResponseForError(code BlitzMessage.ResponseCode, error error) *BlitzM
 }
 
 
+func ServerResponseForCode(code BlitzMessage.ResponseCode, message *string) *BlitzMessage.ServerResponse {
+    response := &BlitzMessage.ServerResponse{
+        ResponseCode:       &code,
+        ResponseMessage:    message,
+    }
+    return response
+}
+
+
 //----------------------------------------------------------------------------------------
 //                                                                           MessageFormat
 //----------------------------------------------------------------------------------------
@@ -263,6 +272,9 @@ func DispatchServiceRequests(writer http.ResponseWriter, httpRequest *http.Reque
 
     case *BlitzMessage.ImageUpload:
         response = UploadImage(session, requestMessageType)
+
+    case *BlitzMessage.FeedPostUpdateRequest:
+        response = UpdateFeedPost(session, requestMessageType)
 
     default:
         error = fmt.Errorf("Unrecognized request '%+v'", request)

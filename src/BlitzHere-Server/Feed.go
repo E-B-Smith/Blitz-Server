@@ -7,6 +7,8 @@ package main
 
 
 import (
+    "fmt"
+    "errors"
     "database/sql"
     "github.com/lib/pq"
     "violent.blue/GoKit/Log"
@@ -139,6 +141,43 @@ func FeedPostForPostID(postID string) (*BlitzMessage.FeedPost, error) {
     return &feedPost, nil
 }
 
+
+
+func UpdateFeedPost(session *Session, feedPostUpdate *BlitzMessage.FeedPostUpdateRequest,
+        ) *BlitzMessage.ServerResponse {
+
+    if feedPostUpdate.FeedPost.UserID == nil ||
+        session.UserID != *feedPostUpdate.FeedPost.UserID {
+        return ServerResponseForError(BlitzMessage.ResponseCode_RCNotAuthorized, errors.New("Not authorized"))
+    }
+
+    if feedPostUpdate.UpdateVerb == nil {
+        return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, nil)
+    }
+
+    if *feedPostUpdate.UpdateVerb == BlitzMessage.UpdateVerb_UVCreate ||
+       *feedPostUpdate.UpdateVerb == BlitzMessage.UpdateVerb_UVUpdate {
+        error := WriteFeedPost(feedPostUpdate.FeedPost)
+        if error != nil {
+            return ServerResponseForError(BlitzMessage.ResponseCode_RCServerError, error)
+        }
+        return ServerResponseForCode(BlitzMessage.ResponseCode_RCSuccess, nil)
+    }
+
+    if *feedPostUpdate.UpdateVerb == BlitzMessage.UpdateVerb_UVDelete {
+        result, error := config.DB.Exec(
+            `update FeedPostTable set postStatus = $1 where postID = $2;`,
+                BlitzMessage.FeedPostStatus_FPSDeleted, feedPostUpdate.FeedPost.PostID)
+        error = pgsql.RowUpdateError(result, error)
+        if error != nil {
+            return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
+        }
+        return ServerResponseForCode(BlitzMessage.ResponseCode_RCSuccess, nil)
+    }
+
+    return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid,
+            fmt.Errorf("Unknown verb '%d'", feedPostUpdate.UpdateVerb))
+}
 
 
 
