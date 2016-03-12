@@ -99,7 +99,7 @@ src/BlitzMessage/UserEvents.pb.go : \
     Protobuf/Source/Server.proto \
     Protobuf/Source/UserEvents.proto \
     ; \
-        ./Protobuf/make-proto $< $@ ; \
+        ./Protobuf/make-proto ; \
         if [[ $$? != 0 ]]; then echo $?; exit 1; fi;
 
 #        echo ">>> Building proto files."; \
