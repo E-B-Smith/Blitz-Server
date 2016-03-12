@@ -20,10 +20,10 @@ It has these top-level messages:
 	DeviceInfo
 	FeedPostVote
 	FeedPost
-	FeedPostFetchRequest
-	FeedPostFetchResponse
 	FeedPostUpdateRequest
 	FeedPostUpdateResponse
+	FeedPostFetchRequest
+	FeedPostFetchResponse
 	EntityVoteRequest
 	Friend
 	FriendUpdate

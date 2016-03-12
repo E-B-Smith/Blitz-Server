@@ -421,15 +421,15 @@ create table FeedPostTable
     ,userID                     UserID
     ,anonymousPost              boolean
     ,timestamp                  timestamptz
-    ,timeActiveStart            timestamptz     not null
-    ,timeActiveStop             timestamptz     not null
+    ,timeActiveStart            timestamptz
+    ,timeActiveStop             timestamptz
     ,headlineText               text
     ,bodyText                   text
     ,mayAddReply                bool
     ,mayChooseMulitpleReplies   bool
     );
-create index FeedPostDateIndex on FeedPostTable(timeActiveStart desc);
-create index FeedReplyTable    on FeedPostTable(parentID);
+create index FeedPostTimestampIndex on FeedPostTable(timestamp desc);
+create index FeedReplyTable         on FeedPostTable(parentID);
 
 
 create domain EntityType as smallint;

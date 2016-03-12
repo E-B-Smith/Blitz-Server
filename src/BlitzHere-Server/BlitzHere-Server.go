@@ -302,11 +302,6 @@ func DispatchServiceRequests(writer http.ResponseWriter, httpRequest *http.Reque
         FriendRequest(writer, session, friendRequest)
         return
     }
-    profileConfirmation := clientRequest.GetConfirmationRequest()
-    if profileConfirmation != nil {
-        UserConfirmation(writer, session, profileConfirmation)
-        return
-    }
     messageSendRequest := clientRequest.GetMessageSendRequest()
     if messageSendRequest != nil {
         SendMessages(writer, userID, messageSendRequest)

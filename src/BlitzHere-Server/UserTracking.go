@@ -118,7 +118,7 @@ func UpdateUserTrackingBatch(session *Session, userEvents *BlitzMessage.UserEven
     response := &BlitzMessage.ServerResponse {
         ResponseCode:       &code,
         ResponseMessage:    &message,
-        ResponseType:       &BlitzMessage.ResponseType { UserEventResponse: userTrackingResponse},
+        ResponseType:       &BlitzMessage.ResponseType { UserEventBatchResponse: userTrackingResponse},
     }
     return response
 }

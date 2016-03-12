@@ -136,7 +136,7 @@ func UserMessageFetchRequest(session *Session, fetch *BlitzMessage.UserMessageUp
     code := BlitzMessage.ResponseCode_RCSuccess
     response := &BlitzMessage.ServerResponse {
         ResponseCode:   &code,
-        ResponseType:   &BlitzMessage.ResponseType { MessageUpdate: &messageUpdate },
+        ResponseType:   &BlitzMessage.ResponseType { UserMessageUpdate: &messageUpdate },
     }
     return response
 }
@@ -238,7 +238,7 @@ func UserMessageSendRequest(session *Session,
     code := BlitzMessage.ResponseCode_RCSuccess
     response := &BlitzMessage.ServerResponse {
         ResponseCode:   &code,
-        ResponseType:   &BlitzMessage.ResponseType { MessageUpdate: messageResponse },
+        ResponseType:   &BlitzMessage.ResponseType { UserMessageUpdate: messageResponse },
     }
 
     return response

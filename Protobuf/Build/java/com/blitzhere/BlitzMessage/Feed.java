@@ -4054,6 +4054,1133 @@ public final class Feed {
     // @@protoc_insertion_point(class_scope:BlitzMessage.FeedPost)
   }
 
+  public interface FeedPostUpdateRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:BlitzMessage.FeedPostUpdateRequest)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional .BlitzMessage.UpdateVerb updateVerb = 1;</code>
+     */
+    boolean hasUpdateVerb();
+    /**
+     * <code>optional .BlitzMessage.UpdateVerb updateVerb = 1;</code>
+     */
+    com.blitzhere.BlitzMessage.Feed.UpdateVerb getUpdateVerb();
+
+    /**
+     * <code>optional .BlitzMessage.FeedPost feedPost = 2;</code>
+     */
+    boolean hasFeedPost();
+    /**
+     * <code>optional .BlitzMessage.FeedPost feedPost = 2;</code>
+     */
+    com.blitzhere.BlitzMessage.Feed.FeedPost getFeedPost();
+    /**
+     * <code>optional .BlitzMessage.FeedPost feedPost = 2;</code>
+     */
+    com.blitzhere.BlitzMessage.Feed.FeedPostOrBuilder getFeedPostOrBuilder();
+  }
+  /**
+   * Protobuf type {@code BlitzMessage.FeedPostUpdateRequest}
+   */
+  public static final class FeedPostUpdateRequest extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:BlitzMessage.FeedPostUpdateRequest)
+      FeedPostUpdateRequestOrBuilder {
+    // Use FeedPostUpdateRequest.newBuilder() to construct.
+    private FeedPostUpdateRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private FeedPostUpdateRequest(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final FeedPostUpdateRequest defaultInstance;
+    public static FeedPostUpdateRequest getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public FeedPostUpdateRequest getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private FeedPostUpdateRequest(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              int rawValue = input.readEnum();
+              com.blitzhere.BlitzMessage.Feed.UpdateVerb value = com.blitzhere.BlitzMessage.Feed.UpdateVerb.valueOf(rawValue);
+              if (value == null) {
+                unknownFields.mergeVarintField(1, rawValue);
+              } else {
+                bitField0_ |= 0x00000001;
+                updateVerb_ = value;
+              }
+              break;
+            }
+            case 18: {
+              com.blitzhere.BlitzMessage.Feed.FeedPost.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000002) == 0x00000002)) {
+                subBuilder = feedPost_.toBuilder();
+              }
+              feedPost_ = input.readMessage(com.blitzhere.BlitzMessage.Feed.FeedPost.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(feedPost_);
+                feedPost_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000002;
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.blitzhere.BlitzMessage.Feed.internal_static_BlitzMessage_FeedPostUpdateRequest_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.blitzhere.BlitzMessage.Feed.internal_static_BlitzMessage_FeedPostUpdateRequest_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.blitzhere.BlitzMessage.Feed.FeedPostUpdateRequest.class, com.blitzhere.BlitzMessage.Feed.FeedPostUpdateRequest.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<FeedPostUpdateRequest> PARSER =
+        new com.google.protobuf.AbstractParser<FeedPostUpdateRequest>() {
+      public FeedPostUpdateRequest parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new FeedPostUpdateRequest(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<FeedPostUpdateRequest> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int UPDATEVERB_FIELD_NUMBER = 1;
+    private com.blitzhere.BlitzMessage.Feed.UpdateVerb updateVerb_;
+    /**
+     * <code>optional .BlitzMessage.UpdateVerb updateVerb = 1;</code>
+     */
+    public boolean hasUpdateVerb() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional .BlitzMessage.UpdateVerb updateVerb = 1;</code>
+     */
+    public com.blitzhere.BlitzMessage.Feed.UpdateVerb getUpdateVerb() {
+      return updateVerb_;
+    }
+
+    public static final int FEEDPOST_FIELD_NUMBER = 2;
+    private com.blitzhere.BlitzMessage.Feed.FeedPost feedPost_;
+    /**
+     * <code>optional .BlitzMessage.FeedPost feedPost = 2;</code>
+     */
+    public boolean hasFeedPost() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional .BlitzMessage.FeedPost feedPost = 2;</code>
+     */
+    public com.blitzhere.BlitzMessage.Feed.FeedPost getFeedPost() {
+      return feedPost_;
+    }
+    /**
+     * <code>optional .BlitzMessage.FeedPost feedPost = 2;</code>
+     */
+    public com.blitzhere.BlitzMessage.Feed.FeedPostOrBuilder getFeedPostOrBuilder() {
+      return feedPost_;
+    }
+
+    private void initFields() {
+      updateVerb_ = com.blitzhere.BlitzMessage.Feed.UpdateVerb.UVCreate;
+      feedPost_ = com.blitzhere.BlitzMessage.Feed.FeedPost.getDefaultInstance();
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (hasFeedPost()) {
+        if (!getFeedPost().isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeEnum(1, updateVerb_.getNumber());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeMessage(2, feedPost_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(1, updateVerb_.getNumber());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(2, feedPost_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.blitzhere.BlitzMessage.Feed.FeedPostUpdateRequest parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.blitzhere.BlitzMessage.Feed.FeedPostUpdateRequest parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.blitzhere.BlitzMessage.Feed.FeedPostUpdateRequest parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.blitzhere.BlitzMessage.Feed.FeedPostUpdateRequest parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.blitzhere.BlitzMessage.Feed.FeedPostUpdateRequest parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.blitzhere.BlitzMessage.Feed.FeedPostUpdateRequest parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.blitzhere.BlitzMessage.Feed.FeedPostUpdateRequest parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.blitzhere.BlitzMessage.Feed.FeedPostUpdateRequest parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.blitzhere.BlitzMessage.Feed.FeedPostUpdateRequest parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.blitzhere.BlitzMessage.Feed.FeedPostUpdateRequest parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.blitzhere.BlitzMessage.Feed.FeedPostUpdateRequest prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code BlitzMessage.FeedPostUpdateRequest}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:BlitzMessage.FeedPostUpdateRequest)
+        com.blitzhere.BlitzMessage.Feed.FeedPostUpdateRequestOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.blitzhere.BlitzMessage.Feed.internal_static_BlitzMessage_FeedPostUpdateRequest_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.blitzhere.BlitzMessage.Feed.internal_static_BlitzMessage_FeedPostUpdateRequest_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.blitzhere.BlitzMessage.Feed.FeedPostUpdateRequest.class, com.blitzhere.BlitzMessage.Feed.FeedPostUpdateRequest.Builder.class);
+      }
+
+      // Construct using com.blitzhere.BlitzMessage.Feed.FeedPostUpdateRequest.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getFeedPostFieldBuilder();
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        updateVerb_ = com.blitzhere.BlitzMessage.Feed.UpdateVerb.UVCreate;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        if (feedPostBuilder_ == null) {
+          feedPost_ = com.blitzhere.BlitzMessage.Feed.FeedPost.getDefaultInstance();
+        } else {
+          feedPostBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.blitzhere.BlitzMessage.Feed.internal_static_BlitzMessage_FeedPostUpdateRequest_descriptor;
+      }
+
+      public com.blitzhere.BlitzMessage.Feed.FeedPostUpdateRequest getDefaultInstanceForType() {
+        return com.blitzhere.BlitzMessage.Feed.FeedPostUpdateRequest.getDefaultInstance();
+      }
+
+      public com.blitzhere.BlitzMessage.Feed.FeedPostUpdateRequest build() {
+        com.blitzhere.BlitzMessage.Feed.FeedPostUpdateRequest result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.blitzhere.BlitzMessage.Feed.FeedPostUpdateRequest buildPartial() {
+        com.blitzhere.BlitzMessage.Feed.FeedPostUpdateRequest result = new com.blitzhere.BlitzMessage.Feed.FeedPostUpdateRequest(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.updateVerb_ = updateVerb_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        if (feedPostBuilder_ == null) {
+          result.feedPost_ = feedPost_;
+        } else {
+          result.feedPost_ = feedPostBuilder_.build();
+        }
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.blitzhere.BlitzMessage.Feed.FeedPostUpdateRequest) {
+          return mergeFrom((com.blitzhere.BlitzMessage.Feed.FeedPostUpdateRequest)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.blitzhere.BlitzMessage.Feed.FeedPostUpdateRequest other) {
+        if (other == com.blitzhere.BlitzMessage.Feed.FeedPostUpdateRequest.getDefaultInstance()) return this;
+        if (other.hasUpdateVerb()) {
+          setUpdateVerb(other.getUpdateVerb());
+        }
+        if (other.hasFeedPost()) {
+          mergeFeedPost(other.getFeedPost());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (hasFeedPost()) {
+          if (!getFeedPost().isInitialized()) {
+            
+            return false;
+          }
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.blitzhere.BlitzMessage.Feed.FeedPostUpdateRequest parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.blitzhere.BlitzMessage.Feed.FeedPostUpdateRequest) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private com.blitzhere.BlitzMessage.Feed.UpdateVerb updateVerb_ = com.blitzhere.BlitzMessage.Feed.UpdateVerb.UVCreate;
+      /**
+       * <code>optional .BlitzMessage.UpdateVerb updateVerb = 1;</code>
+       */
+      public boolean hasUpdateVerb() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional .BlitzMessage.UpdateVerb updateVerb = 1;</code>
+       */
+      public com.blitzhere.BlitzMessage.Feed.UpdateVerb getUpdateVerb() {
+        return updateVerb_;
+      }
+      /**
+       * <code>optional .BlitzMessage.UpdateVerb updateVerb = 1;</code>
+       */
+      public Builder setUpdateVerb(com.blitzhere.BlitzMessage.Feed.UpdateVerb value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000001;
+        updateVerb_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional .BlitzMessage.UpdateVerb updateVerb = 1;</code>
+       */
+      public Builder clearUpdateVerb() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        updateVerb_ = com.blitzhere.BlitzMessage.Feed.UpdateVerb.UVCreate;
+        onChanged();
+        return this;
+      }
+
+      private com.blitzhere.BlitzMessage.Feed.FeedPost feedPost_ = com.blitzhere.BlitzMessage.Feed.FeedPost.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          com.blitzhere.BlitzMessage.Feed.FeedPost, com.blitzhere.BlitzMessage.Feed.FeedPost.Builder, com.blitzhere.BlitzMessage.Feed.FeedPostOrBuilder> feedPostBuilder_;
+      /**
+       * <code>optional .BlitzMessage.FeedPost feedPost = 2;</code>
+       */
+      public boolean hasFeedPost() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional .BlitzMessage.FeedPost feedPost = 2;</code>
+       */
+      public com.blitzhere.BlitzMessage.Feed.FeedPost getFeedPost() {
+        if (feedPostBuilder_ == null) {
+          return feedPost_;
+        } else {
+          return feedPostBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .BlitzMessage.FeedPost feedPost = 2;</code>
+       */
+      public Builder setFeedPost(com.blitzhere.BlitzMessage.Feed.FeedPost value) {
+        if (feedPostBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          feedPost_ = value;
+          onChanged();
+        } else {
+          feedPostBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000002;
+        return this;
+      }
+      /**
+       * <code>optional .BlitzMessage.FeedPost feedPost = 2;</code>
+       */
+      public Builder setFeedPost(
+          com.blitzhere.BlitzMessage.Feed.FeedPost.Builder builderForValue) {
+        if (feedPostBuilder_ == null) {
+          feedPost_ = builderForValue.build();
+          onChanged();
+        } else {
+          feedPostBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000002;
+        return this;
+      }
+      /**
+       * <code>optional .BlitzMessage.FeedPost feedPost = 2;</code>
+       */
+      public Builder mergeFeedPost(com.blitzhere.BlitzMessage.Feed.FeedPost value) {
+        if (feedPostBuilder_ == null) {
+          if (((bitField0_ & 0x00000002) == 0x00000002) &&
+              feedPost_ != com.blitzhere.BlitzMessage.Feed.FeedPost.getDefaultInstance()) {
+            feedPost_ =
+              com.blitzhere.BlitzMessage.Feed.FeedPost.newBuilder(feedPost_).mergeFrom(value).buildPartial();
+          } else {
+            feedPost_ = value;
+          }
+          onChanged();
+        } else {
+          feedPostBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000002;
+        return this;
+      }
+      /**
+       * <code>optional .BlitzMessage.FeedPost feedPost = 2;</code>
+       */
+      public Builder clearFeedPost() {
+        if (feedPostBuilder_ == null) {
+          feedPost_ = com.blitzhere.BlitzMessage.Feed.FeedPost.getDefaultInstance();
+          onChanged();
+        } else {
+          feedPostBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+      /**
+       * <code>optional .BlitzMessage.FeedPost feedPost = 2;</code>
+       */
+      public com.blitzhere.BlitzMessage.Feed.FeedPost.Builder getFeedPostBuilder() {
+        bitField0_ |= 0x00000002;
+        onChanged();
+        return getFeedPostFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .BlitzMessage.FeedPost feedPost = 2;</code>
+       */
+      public com.blitzhere.BlitzMessage.Feed.FeedPostOrBuilder getFeedPostOrBuilder() {
+        if (feedPostBuilder_ != null) {
+          return feedPostBuilder_.getMessageOrBuilder();
+        } else {
+          return feedPost_;
+        }
+      }
+      /**
+       * <code>optional .BlitzMessage.FeedPost feedPost = 2;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          com.blitzhere.BlitzMessage.Feed.FeedPost, com.blitzhere.BlitzMessage.Feed.FeedPost.Builder, com.blitzhere.BlitzMessage.Feed.FeedPostOrBuilder> 
+          getFeedPostFieldBuilder() {
+        if (feedPostBuilder_ == null) {
+          feedPostBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.blitzhere.BlitzMessage.Feed.FeedPost, com.blitzhere.BlitzMessage.Feed.FeedPost.Builder, com.blitzhere.BlitzMessage.Feed.FeedPostOrBuilder>(
+                  getFeedPost(),
+                  getParentForChildren(),
+                  isClean());
+          feedPost_ = null;
+        }
+        return feedPostBuilder_;
+      }
+
+      // @@protoc_insertion_point(builder_scope:BlitzMessage.FeedPostUpdateRequest)
+    }
+
+    static {
+      defaultInstance = new FeedPostUpdateRequest(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:BlitzMessage.FeedPostUpdateRequest)
+  }
+
+  public interface FeedPostUpdateResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:BlitzMessage.FeedPostUpdateResponse)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional .BlitzMessage.FeedPost feedPost = 1;</code>
+     */
+    boolean hasFeedPost();
+    /**
+     * <code>optional .BlitzMessage.FeedPost feedPost = 1;</code>
+     */
+    com.blitzhere.BlitzMessage.Feed.FeedPost getFeedPost();
+    /**
+     * <code>optional .BlitzMessage.FeedPost feedPost = 1;</code>
+     */
+    com.blitzhere.BlitzMessage.Feed.FeedPostOrBuilder getFeedPostOrBuilder();
+  }
+  /**
+   * Protobuf type {@code BlitzMessage.FeedPostUpdateResponse}
+   */
+  public static final class FeedPostUpdateResponse extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:BlitzMessage.FeedPostUpdateResponse)
+      FeedPostUpdateResponseOrBuilder {
+    // Use FeedPostUpdateResponse.newBuilder() to construct.
+    private FeedPostUpdateResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private FeedPostUpdateResponse(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final FeedPostUpdateResponse defaultInstance;
+    public static FeedPostUpdateResponse getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public FeedPostUpdateResponse getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private FeedPostUpdateResponse(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              com.blitzhere.BlitzMessage.Feed.FeedPost.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000001) == 0x00000001)) {
+                subBuilder = feedPost_.toBuilder();
+              }
+              feedPost_ = input.readMessage(com.blitzhere.BlitzMessage.Feed.FeedPost.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(feedPost_);
+                feedPost_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000001;
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.blitzhere.BlitzMessage.Feed.internal_static_BlitzMessage_FeedPostUpdateResponse_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.blitzhere.BlitzMessage.Feed.internal_static_BlitzMessage_FeedPostUpdateResponse_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.blitzhere.BlitzMessage.Feed.FeedPostUpdateResponse.class, com.blitzhere.BlitzMessage.Feed.FeedPostUpdateResponse.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<FeedPostUpdateResponse> PARSER =
+        new com.google.protobuf.AbstractParser<FeedPostUpdateResponse>() {
+      public FeedPostUpdateResponse parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new FeedPostUpdateResponse(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<FeedPostUpdateResponse> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int FEEDPOST_FIELD_NUMBER = 1;
+    private com.blitzhere.BlitzMessage.Feed.FeedPost feedPost_;
+    /**
+     * <code>optional .BlitzMessage.FeedPost feedPost = 1;</code>
+     */
+    public boolean hasFeedPost() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional .BlitzMessage.FeedPost feedPost = 1;</code>
+     */
+    public com.blitzhere.BlitzMessage.Feed.FeedPost getFeedPost() {
+      return feedPost_;
+    }
+    /**
+     * <code>optional .BlitzMessage.FeedPost feedPost = 1;</code>
+     */
+    public com.blitzhere.BlitzMessage.Feed.FeedPostOrBuilder getFeedPostOrBuilder() {
+      return feedPost_;
+    }
+
+    private void initFields() {
+      feedPost_ = com.blitzhere.BlitzMessage.Feed.FeedPost.getDefaultInstance();
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (hasFeedPost()) {
+        if (!getFeedPost().isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeMessage(1, feedPost_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(1, feedPost_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.blitzhere.BlitzMessage.Feed.FeedPostUpdateResponse parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.blitzhere.BlitzMessage.Feed.FeedPostUpdateResponse parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.blitzhere.BlitzMessage.Feed.FeedPostUpdateResponse parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.blitzhere.BlitzMessage.Feed.FeedPostUpdateResponse parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.blitzhere.BlitzMessage.Feed.FeedPostUpdateResponse parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.blitzhere.BlitzMessage.Feed.FeedPostUpdateResponse parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.blitzhere.BlitzMessage.Feed.FeedPostUpdateResponse parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.blitzhere.BlitzMessage.Feed.FeedPostUpdateResponse parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.blitzhere.BlitzMessage.Feed.FeedPostUpdateResponse parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.blitzhere.BlitzMessage.Feed.FeedPostUpdateResponse parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.blitzhere.BlitzMessage.Feed.FeedPostUpdateResponse prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code BlitzMessage.FeedPostUpdateResponse}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:BlitzMessage.FeedPostUpdateResponse)
+        com.blitzhere.BlitzMessage.Feed.FeedPostUpdateResponseOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.blitzhere.BlitzMessage.Feed.internal_static_BlitzMessage_FeedPostUpdateResponse_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.blitzhere.BlitzMessage.Feed.internal_static_BlitzMessage_FeedPostUpdateResponse_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.blitzhere.BlitzMessage.Feed.FeedPostUpdateResponse.class, com.blitzhere.BlitzMessage.Feed.FeedPostUpdateResponse.Builder.class);
+      }
+
+      // Construct using com.blitzhere.BlitzMessage.Feed.FeedPostUpdateResponse.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getFeedPostFieldBuilder();
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        if (feedPostBuilder_ == null) {
+          feedPost_ = com.blitzhere.BlitzMessage.Feed.FeedPost.getDefaultInstance();
+        } else {
+          feedPostBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.blitzhere.BlitzMessage.Feed.internal_static_BlitzMessage_FeedPostUpdateResponse_descriptor;
+      }
+
+      public com.blitzhere.BlitzMessage.Feed.FeedPostUpdateResponse getDefaultInstanceForType() {
+        return com.blitzhere.BlitzMessage.Feed.FeedPostUpdateResponse.getDefaultInstance();
+      }
+
+      public com.blitzhere.BlitzMessage.Feed.FeedPostUpdateResponse build() {
+        com.blitzhere.BlitzMessage.Feed.FeedPostUpdateResponse result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.blitzhere.BlitzMessage.Feed.FeedPostUpdateResponse buildPartial() {
+        com.blitzhere.BlitzMessage.Feed.FeedPostUpdateResponse result = new com.blitzhere.BlitzMessage.Feed.FeedPostUpdateResponse(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        if (feedPostBuilder_ == null) {
+          result.feedPost_ = feedPost_;
+        } else {
+          result.feedPost_ = feedPostBuilder_.build();
+        }
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.blitzhere.BlitzMessage.Feed.FeedPostUpdateResponse) {
+          return mergeFrom((com.blitzhere.BlitzMessage.Feed.FeedPostUpdateResponse)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.blitzhere.BlitzMessage.Feed.FeedPostUpdateResponse other) {
+        if (other == com.blitzhere.BlitzMessage.Feed.FeedPostUpdateResponse.getDefaultInstance()) return this;
+        if (other.hasFeedPost()) {
+          mergeFeedPost(other.getFeedPost());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (hasFeedPost()) {
+          if (!getFeedPost().isInitialized()) {
+            
+            return false;
+          }
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.blitzhere.BlitzMessage.Feed.FeedPostUpdateResponse parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.blitzhere.BlitzMessage.Feed.FeedPostUpdateResponse) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private com.blitzhere.BlitzMessage.Feed.FeedPost feedPost_ = com.blitzhere.BlitzMessage.Feed.FeedPost.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          com.blitzhere.BlitzMessage.Feed.FeedPost, com.blitzhere.BlitzMessage.Feed.FeedPost.Builder, com.blitzhere.BlitzMessage.Feed.FeedPostOrBuilder> feedPostBuilder_;
+      /**
+       * <code>optional .BlitzMessage.FeedPost feedPost = 1;</code>
+       */
+      public boolean hasFeedPost() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional .BlitzMessage.FeedPost feedPost = 1;</code>
+       */
+      public com.blitzhere.BlitzMessage.Feed.FeedPost getFeedPost() {
+        if (feedPostBuilder_ == null) {
+          return feedPost_;
+        } else {
+          return feedPostBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .BlitzMessage.FeedPost feedPost = 1;</code>
+       */
+      public Builder setFeedPost(com.blitzhere.BlitzMessage.Feed.FeedPost value) {
+        if (feedPostBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          feedPost_ = value;
+          onChanged();
+        } else {
+          feedPostBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      /**
+       * <code>optional .BlitzMessage.FeedPost feedPost = 1;</code>
+       */
+      public Builder setFeedPost(
+          com.blitzhere.BlitzMessage.Feed.FeedPost.Builder builderForValue) {
+        if (feedPostBuilder_ == null) {
+          feedPost_ = builderForValue.build();
+          onChanged();
+        } else {
+          feedPostBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      /**
+       * <code>optional .BlitzMessage.FeedPost feedPost = 1;</code>
+       */
+      public Builder mergeFeedPost(com.blitzhere.BlitzMessage.Feed.FeedPost value) {
+        if (feedPostBuilder_ == null) {
+          if (((bitField0_ & 0x00000001) == 0x00000001) &&
+              feedPost_ != com.blitzhere.BlitzMessage.Feed.FeedPost.getDefaultInstance()) {
+            feedPost_ =
+              com.blitzhere.BlitzMessage.Feed.FeedPost.newBuilder(feedPost_).mergeFrom(value).buildPartial();
+          } else {
+            feedPost_ = value;
+          }
+          onChanged();
+        } else {
+          feedPostBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      /**
+       * <code>optional .BlitzMessage.FeedPost feedPost = 1;</code>
+       */
+      public Builder clearFeedPost() {
+        if (feedPostBuilder_ == null) {
+          feedPost_ = com.blitzhere.BlitzMessage.Feed.FeedPost.getDefaultInstance();
+          onChanged();
+        } else {
+          feedPostBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+      /**
+       * <code>optional .BlitzMessage.FeedPost feedPost = 1;</code>
+       */
+      public com.blitzhere.BlitzMessage.Feed.FeedPost.Builder getFeedPostBuilder() {
+        bitField0_ |= 0x00000001;
+        onChanged();
+        return getFeedPostFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .BlitzMessage.FeedPost feedPost = 1;</code>
+       */
+      public com.blitzhere.BlitzMessage.Feed.FeedPostOrBuilder getFeedPostOrBuilder() {
+        if (feedPostBuilder_ != null) {
+          return feedPostBuilder_.getMessageOrBuilder();
+        } else {
+          return feedPost_;
+        }
+      }
+      /**
+       * <code>optional .BlitzMessage.FeedPost feedPost = 1;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          com.blitzhere.BlitzMessage.Feed.FeedPost, com.blitzhere.BlitzMessage.Feed.FeedPost.Builder, com.blitzhere.BlitzMessage.Feed.FeedPostOrBuilder> 
+          getFeedPostFieldBuilder() {
+        if (feedPostBuilder_ == null) {
+          feedPostBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.blitzhere.BlitzMessage.Feed.FeedPost, com.blitzhere.BlitzMessage.Feed.FeedPost.Builder, com.blitzhere.BlitzMessage.Feed.FeedPostOrBuilder>(
+                  getFeedPost(),
+                  getParentForChildren(),
+                  isClean());
+          feedPost_ = null;
+        }
+        return feedPostBuilder_;
+      }
+
+      // @@protoc_insertion_point(builder_scope:BlitzMessage.FeedPostUpdateResponse)
+    }
+
+    static {
+      defaultInstance = new FeedPostUpdateResponse(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:BlitzMessage.FeedPostUpdateResponse)
+  }
+
   public interface FeedPostFetchRequestOrBuilder extends
       // @@protoc_insertion_point(interface_extends:BlitzMessage.FeedPostFetchRequest)
       com.google.protobuf.MessageOrBuilder {
@@ -5374,1133 +6501,6 @@ public final class Feed {
     // @@protoc_insertion_point(class_scope:BlitzMessage.FeedPostFetchResponse)
   }
 
-  public interface FeedPostUpdateRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:BlitzMessage.FeedPostUpdateRequest)
-      com.google.protobuf.MessageOrBuilder {
-
-    /**
-     * <code>optional .BlitzMessage.UpdateVerb updateVerb = 1;</code>
-     */
-    boolean hasUpdateVerb();
-    /**
-     * <code>optional .BlitzMessage.UpdateVerb updateVerb = 1;</code>
-     */
-    com.blitzhere.BlitzMessage.Feed.UpdateVerb getUpdateVerb();
-
-    /**
-     * <code>optional .BlitzMessage.FeedPost feedPost = 2;</code>
-     */
-    boolean hasFeedPost();
-    /**
-     * <code>optional .BlitzMessage.FeedPost feedPost = 2;</code>
-     */
-    com.blitzhere.BlitzMessage.Feed.FeedPost getFeedPost();
-    /**
-     * <code>optional .BlitzMessage.FeedPost feedPost = 2;</code>
-     */
-    com.blitzhere.BlitzMessage.Feed.FeedPostOrBuilder getFeedPostOrBuilder();
-  }
-  /**
-   * Protobuf type {@code BlitzMessage.FeedPostUpdateRequest}
-   */
-  public static final class FeedPostUpdateRequest extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:BlitzMessage.FeedPostUpdateRequest)
-      FeedPostUpdateRequestOrBuilder {
-    // Use FeedPostUpdateRequest.newBuilder() to construct.
-    private FeedPostUpdateRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
-      super(builder);
-      this.unknownFields = builder.getUnknownFields();
-    }
-    private FeedPostUpdateRequest(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
-
-    private static final FeedPostUpdateRequest defaultInstance;
-    public static FeedPostUpdateRequest getDefaultInstance() {
-      return defaultInstance;
-    }
-
-    public FeedPostUpdateRequest getDefaultInstanceForType() {
-      return defaultInstance;
-    }
-
-    private final com.google.protobuf.UnknownFieldSet unknownFields;
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-        getUnknownFields() {
-      return this.unknownFields;
-    }
-    private FeedPostUpdateRequest(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      initFields();
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            default: {
-              if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-            case 8: {
-              int rawValue = input.readEnum();
-              com.blitzhere.BlitzMessage.Feed.UpdateVerb value = com.blitzhere.BlitzMessage.Feed.UpdateVerb.valueOf(rawValue);
-              if (value == null) {
-                unknownFields.mergeVarintField(1, rawValue);
-              } else {
-                bitField0_ |= 0x00000001;
-                updateVerb_ = value;
-              }
-              break;
-            }
-            case 18: {
-              com.blitzhere.BlitzMessage.Feed.FeedPost.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000002) == 0x00000002)) {
-                subBuilder = feedPost_.toBuilder();
-              }
-              feedPost_ = input.readMessage(com.blitzhere.BlitzMessage.Feed.FeedPost.PARSER, extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(feedPost_);
-                feedPost_ = subBuilder.buildPartial();
-              }
-              bitField0_ |= 0x00000002;
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e.getMessage()).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return com.blitzhere.BlitzMessage.Feed.internal_static_BlitzMessage_FeedPostUpdateRequest_descriptor;
-    }
-
-    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return com.blitzhere.BlitzMessage.Feed.internal_static_BlitzMessage_FeedPostUpdateRequest_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              com.blitzhere.BlitzMessage.Feed.FeedPostUpdateRequest.class, com.blitzhere.BlitzMessage.Feed.FeedPostUpdateRequest.Builder.class);
-    }
-
-    public static com.google.protobuf.Parser<FeedPostUpdateRequest> PARSER =
-        new com.google.protobuf.AbstractParser<FeedPostUpdateRequest>() {
-      public FeedPostUpdateRequest parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new FeedPostUpdateRequest(input, extensionRegistry);
-      }
-    };
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<FeedPostUpdateRequest> getParserForType() {
-      return PARSER;
-    }
-
-    private int bitField0_;
-    public static final int UPDATEVERB_FIELD_NUMBER = 1;
-    private com.blitzhere.BlitzMessage.Feed.UpdateVerb updateVerb_;
-    /**
-     * <code>optional .BlitzMessage.UpdateVerb updateVerb = 1;</code>
-     */
-    public boolean hasUpdateVerb() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
-    }
-    /**
-     * <code>optional .BlitzMessage.UpdateVerb updateVerb = 1;</code>
-     */
-    public com.blitzhere.BlitzMessage.Feed.UpdateVerb getUpdateVerb() {
-      return updateVerb_;
-    }
-
-    public static final int FEEDPOST_FIELD_NUMBER = 2;
-    private com.blitzhere.BlitzMessage.Feed.FeedPost feedPost_;
-    /**
-     * <code>optional .BlitzMessage.FeedPost feedPost = 2;</code>
-     */
-    public boolean hasFeedPost() {
-      return ((bitField0_ & 0x00000002) == 0x00000002);
-    }
-    /**
-     * <code>optional .BlitzMessage.FeedPost feedPost = 2;</code>
-     */
-    public com.blitzhere.BlitzMessage.Feed.FeedPost getFeedPost() {
-      return feedPost_;
-    }
-    /**
-     * <code>optional .BlitzMessage.FeedPost feedPost = 2;</code>
-     */
-    public com.blitzhere.BlitzMessage.Feed.FeedPostOrBuilder getFeedPostOrBuilder() {
-      return feedPost_;
-    }
-
-    private void initFields() {
-      updateVerb_ = com.blitzhere.BlitzMessage.Feed.UpdateVerb.UVCreate;
-      feedPost_ = com.blitzhere.BlitzMessage.Feed.FeedPost.getDefaultInstance();
-    }
-    private byte memoizedIsInitialized = -1;
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
-
-      if (hasFeedPost()) {
-        if (!getFeedPost().isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-      }
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      getSerializedSize();
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeEnum(1, updateVerb_.getNumber());
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeMessage(2, feedPost_);
-      }
-      getUnknownFields().writeTo(output);
-    }
-
-    private int memoizedSerializedSize = -1;
-    public int getSerializedSize() {
-      int size = memoizedSerializedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeEnumSize(1, updateVerb_.getNumber());
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(2, feedPost_);
-      }
-      size += getUnknownFields().getSerializedSize();
-      memoizedSerializedSize = size;
-      return size;
-    }
-
-    private static final long serialVersionUID = 0L;
-    @java.lang.Override
-    protected java.lang.Object writeReplace()
-        throws java.io.ObjectStreamException {
-      return super.writeReplace();
-    }
-
-    public static com.blitzhere.BlitzMessage.Feed.FeedPostUpdateRequest parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.blitzhere.BlitzMessage.Feed.FeedPostUpdateRequest parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.blitzhere.BlitzMessage.Feed.FeedPostUpdateRequest parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.blitzhere.BlitzMessage.Feed.FeedPostUpdateRequest parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.blitzhere.BlitzMessage.Feed.FeedPostUpdateRequest parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static com.blitzhere.BlitzMessage.Feed.FeedPostUpdateRequest parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-    public static com.blitzhere.BlitzMessage.Feed.FeedPostUpdateRequest parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input);
-    }
-    public static com.blitzhere.BlitzMessage.Feed.FeedPostUpdateRequest parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input, extensionRegistry);
-    }
-    public static com.blitzhere.BlitzMessage.Feed.FeedPostUpdateRequest parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static com.blitzhere.BlitzMessage.Feed.FeedPostUpdateRequest parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-
-    public static Builder newBuilder() { return Builder.create(); }
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.blitzhere.BlitzMessage.Feed.FeedPostUpdateRequest prototype) {
-      return newBuilder().mergeFrom(prototype);
-    }
-    public Builder toBuilder() { return newBuilder(this); }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    /**
-     * Protobuf type {@code BlitzMessage.FeedPostUpdateRequest}
-     */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:BlitzMessage.FeedPostUpdateRequest)
-        com.blitzhere.BlitzMessage.Feed.FeedPostUpdateRequestOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return com.blitzhere.BlitzMessage.Feed.internal_static_BlitzMessage_FeedPostUpdateRequest_descriptor;
-      }
-
-      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return com.blitzhere.BlitzMessage.Feed.internal_static_BlitzMessage_FeedPostUpdateRequest_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                com.blitzhere.BlitzMessage.Feed.FeedPostUpdateRequest.class, com.blitzhere.BlitzMessage.Feed.FeedPostUpdateRequest.Builder.class);
-      }
-
-      // Construct using com.blitzhere.BlitzMessage.Feed.FeedPostUpdateRequest.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-          getFeedPostFieldBuilder();
-        }
-      }
-      private static Builder create() {
-        return new Builder();
-      }
-
-      public Builder clear() {
-        super.clear();
-        updateVerb_ = com.blitzhere.BlitzMessage.Feed.UpdateVerb.UVCreate;
-        bitField0_ = (bitField0_ & ~0x00000001);
-        if (feedPostBuilder_ == null) {
-          feedPost_ = com.blitzhere.BlitzMessage.Feed.FeedPost.getDefaultInstance();
-        } else {
-          feedPostBuilder_.clear();
-        }
-        bitField0_ = (bitField0_ & ~0x00000002);
-        return this;
-      }
-
-      public Builder clone() {
-        return create().mergeFrom(buildPartial());
-      }
-
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return com.blitzhere.BlitzMessage.Feed.internal_static_BlitzMessage_FeedPostUpdateRequest_descriptor;
-      }
-
-      public com.blitzhere.BlitzMessage.Feed.FeedPostUpdateRequest getDefaultInstanceForType() {
-        return com.blitzhere.BlitzMessage.Feed.FeedPostUpdateRequest.getDefaultInstance();
-      }
-
-      public com.blitzhere.BlitzMessage.Feed.FeedPostUpdateRequest build() {
-        com.blitzhere.BlitzMessage.Feed.FeedPostUpdateRequest result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      public com.blitzhere.BlitzMessage.Feed.FeedPostUpdateRequest buildPartial() {
-        com.blitzhere.BlitzMessage.Feed.FeedPostUpdateRequest result = new com.blitzhere.BlitzMessage.Feed.FeedPostUpdateRequest(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.updateVerb_ = updateVerb_;
-        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
-          to_bitField0_ |= 0x00000002;
-        }
-        if (feedPostBuilder_ == null) {
-          result.feedPost_ = feedPost_;
-        } else {
-          result.feedPost_ = feedPostBuilder_.build();
-        }
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
-      }
-
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.blitzhere.BlitzMessage.Feed.FeedPostUpdateRequest) {
-          return mergeFrom((com.blitzhere.BlitzMessage.Feed.FeedPostUpdateRequest)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(com.blitzhere.BlitzMessage.Feed.FeedPostUpdateRequest other) {
-        if (other == com.blitzhere.BlitzMessage.Feed.FeedPostUpdateRequest.getDefaultInstance()) return this;
-        if (other.hasUpdateVerb()) {
-          setUpdateVerb(other.getUpdateVerb());
-        }
-        if (other.hasFeedPost()) {
-          mergeFeedPost(other.getFeedPost());
-        }
-        this.mergeUnknownFields(other.getUnknownFields());
-        return this;
-      }
-
-      public final boolean isInitialized() {
-        if (hasFeedPost()) {
-          if (!getFeedPost().isInitialized()) {
-            
-            return false;
-          }
-        }
-        return true;
-      }
-
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        com.blitzhere.BlitzMessage.Feed.FeedPostUpdateRequest parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.blitzhere.BlitzMessage.Feed.FeedPostUpdateRequest) e.getUnfinishedMessage();
-          throw e;
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-      private int bitField0_;
-
-      private com.blitzhere.BlitzMessage.Feed.UpdateVerb updateVerb_ = com.blitzhere.BlitzMessage.Feed.UpdateVerb.UVCreate;
-      /**
-       * <code>optional .BlitzMessage.UpdateVerb updateVerb = 1;</code>
-       */
-      public boolean hasUpdateVerb() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
-      }
-      /**
-       * <code>optional .BlitzMessage.UpdateVerb updateVerb = 1;</code>
-       */
-      public com.blitzhere.BlitzMessage.Feed.UpdateVerb getUpdateVerb() {
-        return updateVerb_;
-      }
-      /**
-       * <code>optional .BlitzMessage.UpdateVerb updateVerb = 1;</code>
-       */
-      public Builder setUpdateVerb(com.blitzhere.BlitzMessage.Feed.UpdateVerb value) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        bitField0_ |= 0x00000001;
-        updateVerb_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional .BlitzMessage.UpdateVerb updateVerb = 1;</code>
-       */
-      public Builder clearUpdateVerb() {
-        bitField0_ = (bitField0_ & ~0x00000001);
-        updateVerb_ = com.blitzhere.BlitzMessage.Feed.UpdateVerb.UVCreate;
-        onChanged();
-        return this;
-      }
-
-      private com.blitzhere.BlitzMessage.Feed.FeedPost feedPost_ = com.blitzhere.BlitzMessage.Feed.FeedPost.getDefaultInstance();
-      private com.google.protobuf.SingleFieldBuilder<
-          com.blitzhere.BlitzMessage.Feed.FeedPost, com.blitzhere.BlitzMessage.Feed.FeedPost.Builder, com.blitzhere.BlitzMessage.Feed.FeedPostOrBuilder> feedPostBuilder_;
-      /**
-       * <code>optional .BlitzMessage.FeedPost feedPost = 2;</code>
-       */
-      public boolean hasFeedPost() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
-      }
-      /**
-       * <code>optional .BlitzMessage.FeedPost feedPost = 2;</code>
-       */
-      public com.blitzhere.BlitzMessage.Feed.FeedPost getFeedPost() {
-        if (feedPostBuilder_ == null) {
-          return feedPost_;
-        } else {
-          return feedPostBuilder_.getMessage();
-        }
-      }
-      /**
-       * <code>optional .BlitzMessage.FeedPost feedPost = 2;</code>
-       */
-      public Builder setFeedPost(com.blitzhere.BlitzMessage.Feed.FeedPost value) {
-        if (feedPostBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          feedPost_ = value;
-          onChanged();
-        } else {
-          feedPostBuilder_.setMessage(value);
-        }
-        bitField0_ |= 0x00000002;
-        return this;
-      }
-      /**
-       * <code>optional .BlitzMessage.FeedPost feedPost = 2;</code>
-       */
-      public Builder setFeedPost(
-          com.blitzhere.BlitzMessage.Feed.FeedPost.Builder builderForValue) {
-        if (feedPostBuilder_ == null) {
-          feedPost_ = builderForValue.build();
-          onChanged();
-        } else {
-          feedPostBuilder_.setMessage(builderForValue.build());
-        }
-        bitField0_ |= 0x00000002;
-        return this;
-      }
-      /**
-       * <code>optional .BlitzMessage.FeedPost feedPost = 2;</code>
-       */
-      public Builder mergeFeedPost(com.blitzhere.BlitzMessage.Feed.FeedPost value) {
-        if (feedPostBuilder_ == null) {
-          if (((bitField0_ & 0x00000002) == 0x00000002) &&
-              feedPost_ != com.blitzhere.BlitzMessage.Feed.FeedPost.getDefaultInstance()) {
-            feedPost_ =
-              com.blitzhere.BlitzMessage.Feed.FeedPost.newBuilder(feedPost_).mergeFrom(value).buildPartial();
-          } else {
-            feedPost_ = value;
-          }
-          onChanged();
-        } else {
-          feedPostBuilder_.mergeFrom(value);
-        }
-        bitField0_ |= 0x00000002;
-        return this;
-      }
-      /**
-       * <code>optional .BlitzMessage.FeedPost feedPost = 2;</code>
-       */
-      public Builder clearFeedPost() {
-        if (feedPostBuilder_ == null) {
-          feedPost_ = com.blitzhere.BlitzMessage.Feed.FeedPost.getDefaultInstance();
-          onChanged();
-        } else {
-          feedPostBuilder_.clear();
-        }
-        bitField0_ = (bitField0_ & ~0x00000002);
-        return this;
-      }
-      /**
-       * <code>optional .BlitzMessage.FeedPost feedPost = 2;</code>
-       */
-      public com.blitzhere.BlitzMessage.Feed.FeedPost.Builder getFeedPostBuilder() {
-        bitField0_ |= 0x00000002;
-        onChanged();
-        return getFeedPostFieldBuilder().getBuilder();
-      }
-      /**
-       * <code>optional .BlitzMessage.FeedPost feedPost = 2;</code>
-       */
-      public com.blitzhere.BlitzMessage.Feed.FeedPostOrBuilder getFeedPostOrBuilder() {
-        if (feedPostBuilder_ != null) {
-          return feedPostBuilder_.getMessageOrBuilder();
-        } else {
-          return feedPost_;
-        }
-      }
-      /**
-       * <code>optional .BlitzMessage.FeedPost feedPost = 2;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilder<
-          com.blitzhere.BlitzMessage.Feed.FeedPost, com.blitzhere.BlitzMessage.Feed.FeedPost.Builder, com.blitzhere.BlitzMessage.Feed.FeedPostOrBuilder> 
-          getFeedPostFieldBuilder() {
-        if (feedPostBuilder_ == null) {
-          feedPostBuilder_ = new com.google.protobuf.SingleFieldBuilder<
-              com.blitzhere.BlitzMessage.Feed.FeedPost, com.blitzhere.BlitzMessage.Feed.FeedPost.Builder, com.blitzhere.BlitzMessage.Feed.FeedPostOrBuilder>(
-                  getFeedPost(),
-                  getParentForChildren(),
-                  isClean());
-          feedPost_ = null;
-        }
-        return feedPostBuilder_;
-      }
-
-      // @@protoc_insertion_point(builder_scope:BlitzMessage.FeedPostUpdateRequest)
-    }
-
-    static {
-      defaultInstance = new FeedPostUpdateRequest(true);
-      defaultInstance.initFields();
-    }
-
-    // @@protoc_insertion_point(class_scope:BlitzMessage.FeedPostUpdateRequest)
-  }
-
-  public interface FeedPostUpdateResponseOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:BlitzMessage.FeedPostUpdateResponse)
-      com.google.protobuf.MessageOrBuilder {
-
-    /**
-     * <code>optional .BlitzMessage.FeedPost feedPost = 1;</code>
-     */
-    boolean hasFeedPost();
-    /**
-     * <code>optional .BlitzMessage.FeedPost feedPost = 1;</code>
-     */
-    com.blitzhere.BlitzMessage.Feed.FeedPost getFeedPost();
-    /**
-     * <code>optional .BlitzMessage.FeedPost feedPost = 1;</code>
-     */
-    com.blitzhere.BlitzMessage.Feed.FeedPostOrBuilder getFeedPostOrBuilder();
-  }
-  /**
-   * Protobuf type {@code BlitzMessage.FeedPostUpdateResponse}
-   */
-  public static final class FeedPostUpdateResponse extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:BlitzMessage.FeedPostUpdateResponse)
-      FeedPostUpdateResponseOrBuilder {
-    // Use FeedPostUpdateResponse.newBuilder() to construct.
-    private FeedPostUpdateResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
-      super(builder);
-      this.unknownFields = builder.getUnknownFields();
-    }
-    private FeedPostUpdateResponse(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
-
-    private static final FeedPostUpdateResponse defaultInstance;
-    public static FeedPostUpdateResponse getDefaultInstance() {
-      return defaultInstance;
-    }
-
-    public FeedPostUpdateResponse getDefaultInstanceForType() {
-      return defaultInstance;
-    }
-
-    private final com.google.protobuf.UnknownFieldSet unknownFields;
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-        getUnknownFields() {
-      return this.unknownFields;
-    }
-    private FeedPostUpdateResponse(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      initFields();
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            default: {
-              if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-            case 10: {
-              com.blitzhere.BlitzMessage.Feed.FeedPost.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000001) == 0x00000001)) {
-                subBuilder = feedPost_.toBuilder();
-              }
-              feedPost_ = input.readMessage(com.blitzhere.BlitzMessage.Feed.FeedPost.PARSER, extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(feedPost_);
-                feedPost_ = subBuilder.buildPartial();
-              }
-              bitField0_ |= 0x00000001;
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e.getMessage()).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return com.blitzhere.BlitzMessage.Feed.internal_static_BlitzMessage_FeedPostUpdateResponse_descriptor;
-    }
-
-    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return com.blitzhere.BlitzMessage.Feed.internal_static_BlitzMessage_FeedPostUpdateResponse_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              com.blitzhere.BlitzMessage.Feed.FeedPostUpdateResponse.class, com.blitzhere.BlitzMessage.Feed.FeedPostUpdateResponse.Builder.class);
-    }
-
-    public static com.google.protobuf.Parser<FeedPostUpdateResponse> PARSER =
-        new com.google.protobuf.AbstractParser<FeedPostUpdateResponse>() {
-      public FeedPostUpdateResponse parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new FeedPostUpdateResponse(input, extensionRegistry);
-      }
-    };
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<FeedPostUpdateResponse> getParserForType() {
-      return PARSER;
-    }
-
-    private int bitField0_;
-    public static final int FEEDPOST_FIELD_NUMBER = 1;
-    private com.blitzhere.BlitzMessage.Feed.FeedPost feedPost_;
-    /**
-     * <code>optional .BlitzMessage.FeedPost feedPost = 1;</code>
-     */
-    public boolean hasFeedPost() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
-    }
-    /**
-     * <code>optional .BlitzMessage.FeedPost feedPost = 1;</code>
-     */
-    public com.blitzhere.BlitzMessage.Feed.FeedPost getFeedPost() {
-      return feedPost_;
-    }
-    /**
-     * <code>optional .BlitzMessage.FeedPost feedPost = 1;</code>
-     */
-    public com.blitzhere.BlitzMessage.Feed.FeedPostOrBuilder getFeedPostOrBuilder() {
-      return feedPost_;
-    }
-
-    private void initFields() {
-      feedPost_ = com.blitzhere.BlitzMessage.Feed.FeedPost.getDefaultInstance();
-    }
-    private byte memoizedIsInitialized = -1;
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
-
-      if (hasFeedPost()) {
-        if (!getFeedPost().isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-      }
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      getSerializedSize();
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeMessage(1, feedPost_);
-      }
-      getUnknownFields().writeTo(output);
-    }
-
-    private int memoizedSerializedSize = -1;
-    public int getSerializedSize() {
-      int size = memoizedSerializedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(1, feedPost_);
-      }
-      size += getUnknownFields().getSerializedSize();
-      memoizedSerializedSize = size;
-      return size;
-    }
-
-    private static final long serialVersionUID = 0L;
-    @java.lang.Override
-    protected java.lang.Object writeReplace()
-        throws java.io.ObjectStreamException {
-      return super.writeReplace();
-    }
-
-    public static com.blitzhere.BlitzMessage.Feed.FeedPostUpdateResponse parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.blitzhere.BlitzMessage.Feed.FeedPostUpdateResponse parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.blitzhere.BlitzMessage.Feed.FeedPostUpdateResponse parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.blitzhere.BlitzMessage.Feed.FeedPostUpdateResponse parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.blitzhere.BlitzMessage.Feed.FeedPostUpdateResponse parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static com.blitzhere.BlitzMessage.Feed.FeedPostUpdateResponse parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-    public static com.blitzhere.BlitzMessage.Feed.FeedPostUpdateResponse parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input);
-    }
-    public static com.blitzhere.BlitzMessage.Feed.FeedPostUpdateResponse parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input, extensionRegistry);
-    }
-    public static com.blitzhere.BlitzMessage.Feed.FeedPostUpdateResponse parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static com.blitzhere.BlitzMessage.Feed.FeedPostUpdateResponse parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-
-    public static Builder newBuilder() { return Builder.create(); }
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.blitzhere.BlitzMessage.Feed.FeedPostUpdateResponse prototype) {
-      return newBuilder().mergeFrom(prototype);
-    }
-    public Builder toBuilder() { return newBuilder(this); }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    /**
-     * Protobuf type {@code BlitzMessage.FeedPostUpdateResponse}
-     */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:BlitzMessage.FeedPostUpdateResponse)
-        com.blitzhere.BlitzMessage.Feed.FeedPostUpdateResponseOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return com.blitzhere.BlitzMessage.Feed.internal_static_BlitzMessage_FeedPostUpdateResponse_descriptor;
-      }
-
-      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return com.blitzhere.BlitzMessage.Feed.internal_static_BlitzMessage_FeedPostUpdateResponse_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                com.blitzhere.BlitzMessage.Feed.FeedPostUpdateResponse.class, com.blitzhere.BlitzMessage.Feed.FeedPostUpdateResponse.Builder.class);
-      }
-
-      // Construct using com.blitzhere.BlitzMessage.Feed.FeedPostUpdateResponse.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-          getFeedPostFieldBuilder();
-        }
-      }
-      private static Builder create() {
-        return new Builder();
-      }
-
-      public Builder clear() {
-        super.clear();
-        if (feedPostBuilder_ == null) {
-          feedPost_ = com.blitzhere.BlitzMessage.Feed.FeedPost.getDefaultInstance();
-        } else {
-          feedPostBuilder_.clear();
-        }
-        bitField0_ = (bitField0_ & ~0x00000001);
-        return this;
-      }
-
-      public Builder clone() {
-        return create().mergeFrom(buildPartial());
-      }
-
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return com.blitzhere.BlitzMessage.Feed.internal_static_BlitzMessage_FeedPostUpdateResponse_descriptor;
-      }
-
-      public com.blitzhere.BlitzMessage.Feed.FeedPostUpdateResponse getDefaultInstanceForType() {
-        return com.blitzhere.BlitzMessage.Feed.FeedPostUpdateResponse.getDefaultInstance();
-      }
-
-      public com.blitzhere.BlitzMessage.Feed.FeedPostUpdateResponse build() {
-        com.blitzhere.BlitzMessage.Feed.FeedPostUpdateResponse result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      public com.blitzhere.BlitzMessage.Feed.FeedPostUpdateResponse buildPartial() {
-        com.blitzhere.BlitzMessage.Feed.FeedPostUpdateResponse result = new com.blitzhere.BlitzMessage.Feed.FeedPostUpdateResponse(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        if (feedPostBuilder_ == null) {
-          result.feedPost_ = feedPost_;
-        } else {
-          result.feedPost_ = feedPostBuilder_.build();
-        }
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
-      }
-
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.blitzhere.BlitzMessage.Feed.FeedPostUpdateResponse) {
-          return mergeFrom((com.blitzhere.BlitzMessage.Feed.FeedPostUpdateResponse)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(com.blitzhere.BlitzMessage.Feed.FeedPostUpdateResponse other) {
-        if (other == com.blitzhere.BlitzMessage.Feed.FeedPostUpdateResponse.getDefaultInstance()) return this;
-        if (other.hasFeedPost()) {
-          mergeFeedPost(other.getFeedPost());
-        }
-        this.mergeUnknownFields(other.getUnknownFields());
-        return this;
-      }
-
-      public final boolean isInitialized() {
-        if (hasFeedPost()) {
-          if (!getFeedPost().isInitialized()) {
-            
-            return false;
-          }
-        }
-        return true;
-      }
-
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        com.blitzhere.BlitzMessage.Feed.FeedPostUpdateResponse parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.blitzhere.BlitzMessage.Feed.FeedPostUpdateResponse) e.getUnfinishedMessage();
-          throw e;
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-      private int bitField0_;
-
-      private com.blitzhere.BlitzMessage.Feed.FeedPost feedPost_ = com.blitzhere.BlitzMessage.Feed.FeedPost.getDefaultInstance();
-      private com.google.protobuf.SingleFieldBuilder<
-          com.blitzhere.BlitzMessage.Feed.FeedPost, com.blitzhere.BlitzMessage.Feed.FeedPost.Builder, com.blitzhere.BlitzMessage.Feed.FeedPostOrBuilder> feedPostBuilder_;
-      /**
-       * <code>optional .BlitzMessage.FeedPost feedPost = 1;</code>
-       */
-      public boolean hasFeedPost() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
-      }
-      /**
-       * <code>optional .BlitzMessage.FeedPost feedPost = 1;</code>
-       */
-      public com.blitzhere.BlitzMessage.Feed.FeedPost getFeedPost() {
-        if (feedPostBuilder_ == null) {
-          return feedPost_;
-        } else {
-          return feedPostBuilder_.getMessage();
-        }
-      }
-      /**
-       * <code>optional .BlitzMessage.FeedPost feedPost = 1;</code>
-       */
-      public Builder setFeedPost(com.blitzhere.BlitzMessage.Feed.FeedPost value) {
-        if (feedPostBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          feedPost_ = value;
-          onChanged();
-        } else {
-          feedPostBuilder_.setMessage(value);
-        }
-        bitField0_ |= 0x00000001;
-        return this;
-      }
-      /**
-       * <code>optional .BlitzMessage.FeedPost feedPost = 1;</code>
-       */
-      public Builder setFeedPost(
-          com.blitzhere.BlitzMessage.Feed.FeedPost.Builder builderForValue) {
-        if (feedPostBuilder_ == null) {
-          feedPost_ = builderForValue.build();
-          onChanged();
-        } else {
-          feedPostBuilder_.setMessage(builderForValue.build());
-        }
-        bitField0_ |= 0x00000001;
-        return this;
-      }
-      /**
-       * <code>optional .BlitzMessage.FeedPost feedPost = 1;</code>
-       */
-      public Builder mergeFeedPost(com.blitzhere.BlitzMessage.Feed.FeedPost value) {
-        if (feedPostBuilder_ == null) {
-          if (((bitField0_ & 0x00000001) == 0x00000001) &&
-              feedPost_ != com.blitzhere.BlitzMessage.Feed.FeedPost.getDefaultInstance()) {
-            feedPost_ =
-              com.blitzhere.BlitzMessage.Feed.FeedPost.newBuilder(feedPost_).mergeFrom(value).buildPartial();
-          } else {
-            feedPost_ = value;
-          }
-          onChanged();
-        } else {
-          feedPostBuilder_.mergeFrom(value);
-        }
-        bitField0_ |= 0x00000001;
-        return this;
-      }
-      /**
-       * <code>optional .BlitzMessage.FeedPost feedPost = 1;</code>
-       */
-      public Builder clearFeedPost() {
-        if (feedPostBuilder_ == null) {
-          feedPost_ = com.blitzhere.BlitzMessage.Feed.FeedPost.getDefaultInstance();
-          onChanged();
-        } else {
-          feedPostBuilder_.clear();
-        }
-        bitField0_ = (bitField0_ & ~0x00000001);
-        return this;
-      }
-      /**
-       * <code>optional .BlitzMessage.FeedPost feedPost = 1;</code>
-       */
-      public com.blitzhere.BlitzMessage.Feed.FeedPost.Builder getFeedPostBuilder() {
-        bitField0_ |= 0x00000001;
-        onChanged();
-        return getFeedPostFieldBuilder().getBuilder();
-      }
-      /**
-       * <code>optional .BlitzMessage.FeedPost feedPost = 1;</code>
-       */
-      public com.blitzhere.BlitzMessage.Feed.FeedPostOrBuilder getFeedPostOrBuilder() {
-        if (feedPostBuilder_ != null) {
-          return feedPostBuilder_.getMessageOrBuilder();
-        } else {
-          return feedPost_;
-        }
-      }
-      /**
-       * <code>optional .BlitzMessage.FeedPost feedPost = 1;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilder<
-          com.blitzhere.BlitzMessage.Feed.FeedPost, com.blitzhere.BlitzMessage.Feed.FeedPost.Builder, com.blitzhere.BlitzMessage.Feed.FeedPostOrBuilder> 
-          getFeedPostFieldBuilder() {
-        if (feedPostBuilder_ == null) {
-          feedPostBuilder_ = new com.google.protobuf.SingleFieldBuilder<
-              com.blitzhere.BlitzMessage.Feed.FeedPost, com.blitzhere.BlitzMessage.Feed.FeedPost.Builder, com.blitzhere.BlitzMessage.Feed.FeedPostOrBuilder>(
-                  getFeedPost(),
-                  getParentForChildren(),
-                  isClean());
-          feedPost_ = null;
-        }
-        return feedPostBuilder_;
-      }
-
-      // @@protoc_insertion_point(builder_scope:BlitzMessage.FeedPostUpdateResponse)
-    }
-
-    static {
-      defaultInstance = new FeedPostUpdateResponse(true);
-      defaultInstance.initFields();
-    }
-
-    // @@protoc_insertion_point(class_scope:BlitzMessage.FeedPostUpdateResponse)
-  }
-
   public interface EntityVoteRequestOrBuilder extends
       // @@protoc_insertion_point(interface_extends:BlitzMessage.EntityVoteRequest)
       com.google.protobuf.MessageOrBuilder {
@@ -7258,16 +7258,6 @@ public final class Feed {
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_BlitzMessage_FeedPost_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_BlitzMessage_FeedPostFetchRequest_descriptor;
-  private static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_BlitzMessage_FeedPostFetchRequest_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_BlitzMessage_FeedPostFetchResponse_descriptor;
-  private static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_BlitzMessage_FeedPostFetchResponse_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_BlitzMessage_FeedPostUpdateRequest_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
@@ -7277,6 +7267,16 @@ public final class Feed {
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_BlitzMessage_FeedPostUpdateResponse_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_BlitzMessage_FeedPostFetchRequest_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_BlitzMessage_FeedPostFetchRequest_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_BlitzMessage_FeedPostFetchResponse_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_BlitzMessage_FeedPostFetchResponse_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_BlitzMessage_EntityVoteRequest_descriptor;
   private static
@@ -7306,14 +7306,14 @@ public final class Feed {
       "\022)\n\005votes\030\014 \003(\0132\032.BlitzMessage.FeedPostV" +
       "ote\022\'\n\007replies\030\r \003(\0132\026.BlitzMessage.Feed" +
       "Post\022\023\n\013mayAddReply\030\016 \001(\010\022 \n\030mayChooseMu" +
-      "litpleReplies\030\017 \001(\010\"@\n\024FeedPostFetchRequ" +
-      "est\022(\n\010timespan\030\001 \001(\0132\026.BlitzMessage.Tim" +
-      "espan\"B\n\025FeedPostFetchResponse\022)\n\tfeedPo" +
-      "sts\030\001 \003(\0132\026.BlitzMessage.FeedPost\"o\n\025Fee" +
-      "dPostUpdateRequest\022,\n\nupdateVerb\030\001 \001(\0162\030",
-      ".BlitzMessage.UpdateVerb\022(\n\010feedPost\030\002 \001" +
-      "(\0132\026.BlitzMessage.FeedPost\"B\n\026FeedPostUp" +
-      "dateResponse\022(\n\010feedPost\030\001 \001(\0132\026.BlitzMe" +
+      "litpleReplies\030\017 \001(\010\"o\n\025FeedPostUpdateReq" +
+      "uest\022,\n\nupdateVerb\030\001 \001(\0162\030.BlitzMessage." +
+      "UpdateVerb\022(\n\010feedPost\030\002 \001(\0132\026.BlitzMess" +
+      "age.FeedPost\"B\n\026FeedPostUpdateResponse\022(" +
+      "\n\010feedPost\030\001 \001(\0132\026.BlitzMessage.FeedPost",
+      "\"@\n\024FeedPostFetchRequest\022(\n\010timespan\030\001 \001" +
+      "(\0132\026.BlitzMessage.Timespan\"B\n\025FeedPostFe" +
+      "tchResponse\022)\n\tfeedPosts\030\001 \003(\0132\026.BlitzMe" +
       "ssage.FeedPost\"e\n\021EntityVoteRequest\022\020\n\010e" +
       "ntityID\030\001 \001(\t\022,\n\nentityType\030\002 \001(\0162\030.Blit" +
       "zMessage.EntityType\022\020\n\010voteTags\030\003 \003(\t*v\n" +
@@ -7355,30 +7355,30 @@ public final class Feed {
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_BlitzMessage_FeedPost_descriptor,
         new java.lang.String[] { "PostID", "ParentID", "PostType", "PostScope", "UserID", "AnonymousPost", "Timestamp", "TimespanActive", "HeadlineText", "BodyText", "TopicTags", "Votes", "Replies", "MayAddReply", "MayChooseMulitpleReplies", });
-    internal_static_BlitzMessage_FeedPostFetchRequest_descriptor =
-      getDescriptor().getMessageTypes().get(2);
-    internal_static_BlitzMessage_FeedPostFetchRequest_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_BlitzMessage_FeedPostFetchRequest_descriptor,
-        new java.lang.String[] { "Timespan", });
-    internal_static_BlitzMessage_FeedPostFetchResponse_descriptor =
-      getDescriptor().getMessageTypes().get(3);
-    internal_static_BlitzMessage_FeedPostFetchResponse_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_BlitzMessage_FeedPostFetchResponse_descriptor,
-        new java.lang.String[] { "FeedPosts", });
     internal_static_BlitzMessage_FeedPostUpdateRequest_descriptor =
-      getDescriptor().getMessageTypes().get(4);
+      getDescriptor().getMessageTypes().get(2);
     internal_static_BlitzMessage_FeedPostUpdateRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_BlitzMessage_FeedPostUpdateRequest_descriptor,
         new java.lang.String[] { "UpdateVerb", "FeedPost", });
     internal_static_BlitzMessage_FeedPostUpdateResponse_descriptor =
-      getDescriptor().getMessageTypes().get(5);
+      getDescriptor().getMessageTypes().get(3);
     internal_static_BlitzMessage_FeedPostUpdateResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_BlitzMessage_FeedPostUpdateResponse_descriptor,
         new java.lang.String[] { "FeedPost", });
+    internal_static_BlitzMessage_FeedPostFetchRequest_descriptor =
+      getDescriptor().getMessageTypes().get(4);
+    internal_static_BlitzMessage_FeedPostFetchRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_BlitzMessage_FeedPostFetchRequest_descriptor,
+        new java.lang.String[] { "Timespan", });
+    internal_static_BlitzMessage_FeedPostFetchResponse_descriptor =
+      getDescriptor().getMessageTypes().get(5);
+    internal_static_BlitzMessage_FeedPostFetchResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_BlitzMessage_FeedPostFetchResponse_descriptor,
+        new java.lang.String[] { "FeedPosts", });
     internal_static_BlitzMessage_EntityVoteRequest_descriptor =
       getDescriptor().getMessageTypes().get(6);
     internal_static_BlitzMessage_EntityVoteRequest_fieldAccessorTable = new

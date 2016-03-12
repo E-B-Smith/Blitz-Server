@@ -1477,470 +1477,6 @@ static BFeedPost* defaultBFeedPostInstance = nil;
 }
 @end
 
-@interface BFeedPostFetchRequest ()
-@property (strong) BTimespan* timespan;
-@end
-
-@implementation BFeedPostFetchRequest
-
-- (BOOL) hasTimespan {
-  return !!hasTimespan_;
-}
-- (void) setHasTimespan:(BOOL) _value_ {
-  hasTimespan_ = !!_value_;
-}
-@synthesize timespan;
-- (instancetype) init {
-  if ((self = [super init])) {
-    self.timespan = [BTimespan defaultInstance];
-  }
-  return self;
-}
-static BFeedPostFetchRequest* defaultBFeedPostFetchRequestInstance = nil;
-+ (void) initialize {
-  if (self == [BFeedPostFetchRequest class]) {
-    defaultBFeedPostFetchRequestInstance = [[BFeedPostFetchRequest alloc] init];
-  }
-}
-+ (instancetype) defaultInstance {
-  return defaultBFeedPostFetchRequestInstance;
-}
-- (instancetype) defaultInstance {
-  return defaultBFeedPostFetchRequestInstance;
-}
-- (BOOL) isInitialized {
-  if (self.hasTimespan) {
-    if (!self.timespan.isInitialized) {
-      return NO;
-    }
-  }
-  return YES;
-}
-- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
-  if (self.hasTimespan) {
-    [output writeMessage:1 value:self.timespan];
-  }
-  [self.unknownFields writeToCodedOutputStream:output];
-}
-- (SInt32) serializedSize {
-  __block SInt32 size_ = memoizedSerializedSize;
-  if (size_ != -1) {
-    return size_;
-  }
-
-  size_ = 0;
-  if (self.hasTimespan) {
-    size_ += computeMessageSize(1, self.timespan);
-  }
-  size_ += self.unknownFields.serializedSize;
-  memoizedSerializedSize = size_;
-  return size_;
-}
-+ (BFeedPostFetchRequest*) parseFromData:(NSData*) data {
-  return (BFeedPostFetchRequest*)[[[BFeedPostFetchRequest builder] mergeFromData:data] build];
-}
-+ (BFeedPostFetchRequest*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
-  return (BFeedPostFetchRequest*)[[[BFeedPostFetchRequest builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
-}
-+ (BFeedPostFetchRequest*) parseFromInputStream:(NSInputStream*) input {
-  return (BFeedPostFetchRequest*)[[[BFeedPostFetchRequest builder] mergeFromInputStream:input] build];
-}
-+ (BFeedPostFetchRequest*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
-  return (BFeedPostFetchRequest*)[[[BFeedPostFetchRequest builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
-}
-+ (BFeedPostFetchRequest*) parseFromCodedInputStream:(PBCodedInputStream*) input {
-  return (BFeedPostFetchRequest*)[[[BFeedPostFetchRequest builder] mergeFromCodedInputStream:input] build];
-}
-+ (BFeedPostFetchRequest*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
-  return (BFeedPostFetchRequest*)[[[BFeedPostFetchRequest builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
-}
-+ (BFeedPostFetchRequestBuilder*) builder {
-  return [[BFeedPostFetchRequestBuilder alloc] init];
-}
-+ (BFeedPostFetchRequestBuilder*) builderWithPrototype:(BFeedPostFetchRequest*) prototype {
-  return [[BFeedPostFetchRequest builder] mergeFrom:prototype];
-}
-- (BFeedPostFetchRequestBuilder*) builder {
-  return [BFeedPostFetchRequest builder];
-}
-- (BFeedPostFetchRequestBuilder*) toBuilder {
-  return [BFeedPostFetchRequest builderWithPrototype:self];
-}
-- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
-  if (self.hasTimespan) {
-    [output appendFormat:@"%@%@ {\n", indent, @"timespan"];
-    [self.timespan writeDescriptionTo:output
-                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
-    [output appendFormat:@"%@}\n", indent];
-  }
-  [self.unknownFields writeDescriptionTo:output withIndent:indent];
-}
-- (void) storeInDictionary:(NSMutableDictionary *)dictionary {
-  if (self.hasTimespan) {
-   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
-   [self.timespan storeInDictionary:messageDictionary];
-   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"timespan"];
-  }
-  [self.unknownFields storeInDictionary:dictionary];
-}
-- (BOOL) isEqual:(id)other {
-  if (other == self) {
-    return YES;
-  }
-  if (![other isKindOfClass:[BFeedPostFetchRequest class]]) {
-    return NO;
-  }
-  BFeedPostFetchRequest *otherMessage = other;
-  return
-      self.hasTimespan == otherMessage.hasTimespan &&
-      (!self.hasTimespan || [self.timespan isEqual:otherMessage.timespan]) &&
-      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
-}
-- (NSUInteger) hash {
-  __block NSUInteger hashCode = 7;
-  if (self.hasTimespan) {
-    hashCode = hashCode * 31 + [self.timespan hash];
-  }
-  hashCode = hashCode * 31 + [self.unknownFields hash];
-  return hashCode;
-}
-@end
-
-@interface BFeedPostFetchRequestBuilder()
-@property (strong) BFeedPostFetchRequest* resultFeedPostFetchRequest;
-@end
-
-@implementation BFeedPostFetchRequestBuilder
-@synthesize resultFeedPostFetchRequest;
-- (instancetype) init {
-  if ((self = [super init])) {
-    self.resultFeedPostFetchRequest = [[BFeedPostFetchRequest alloc] init];
-  }
-  return self;
-}
-- (PBGeneratedMessage*) internalGetResult {
-  return resultFeedPostFetchRequest;
-}
-- (BFeedPostFetchRequestBuilder*) clear {
-  self.resultFeedPostFetchRequest = [[BFeedPostFetchRequest alloc] init];
-  return self;
-}
-- (BFeedPostFetchRequestBuilder*) clone {
-  return [BFeedPostFetchRequest builderWithPrototype:resultFeedPostFetchRequest];
-}
-- (BFeedPostFetchRequest*) defaultInstance {
-  return [BFeedPostFetchRequest defaultInstance];
-}
-- (BFeedPostFetchRequest*) build {
-  [self checkInitialized];
-  return [self buildPartial];
-}
-- (BFeedPostFetchRequest*) buildPartial {
-  BFeedPostFetchRequest* returnMe = resultFeedPostFetchRequest;
-  self.resultFeedPostFetchRequest = nil;
-  return returnMe;
-}
-- (BFeedPostFetchRequestBuilder*) mergeFrom:(BFeedPostFetchRequest*) other {
-  if (other == [BFeedPostFetchRequest defaultInstance]) {
-    return self;
-  }
-  if (other.hasTimespan) {
-    [self mergeTimespan:other.timespan];
-  }
-  [self mergeUnknownFields:other.unknownFields];
-  return self;
-}
-- (BFeedPostFetchRequestBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
-  return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
-}
-- (BFeedPostFetchRequestBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
-  PBUnknownFieldSetBuilder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
-  while (YES) {
-    SInt32 tag = [input readTag];
-    switch (tag) {
-      case 0:
-        [self setUnknownFields:[unknownFields build]];
-        return self;
-      default: {
-        if (![self parseUnknownField:input unknownFields:unknownFields extensionRegistry:extensionRegistry tag:tag]) {
-          [self setUnknownFields:[unknownFields build]];
-          return self;
-        }
-        break;
-      }
-      case 10: {
-        BTimespanBuilder* subBuilder = [BTimespan builder];
-        if (self.hasTimespan) {
-          [subBuilder mergeFrom:self.timespan];
-        }
-        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
-        [self setTimespan:[subBuilder buildPartial]];
-        break;
-      }
-    }
-  }
-}
-- (BOOL) hasTimespan {
-  return resultFeedPostFetchRequest.hasTimespan;
-}
-- (BTimespan*) timespan {
-  return resultFeedPostFetchRequest.timespan;
-}
-- (BFeedPostFetchRequestBuilder*) setTimespan:(BTimespan*) value {
-  resultFeedPostFetchRequest.hasTimespan = YES;
-  resultFeedPostFetchRequest.timespan = value;
-  return self;
-}
-- (BFeedPostFetchRequestBuilder*) setTimespanBuilder:(BTimespanBuilder*) builderForValue {
-  return [self setTimespan:[builderForValue build]];
-}
-- (BFeedPostFetchRequestBuilder*) mergeTimespan:(BTimespan*) value {
-  if (resultFeedPostFetchRequest.hasTimespan &&
-      resultFeedPostFetchRequest.timespan != [BTimespan defaultInstance]) {
-    resultFeedPostFetchRequest.timespan =
-      [[[BTimespan builderWithPrototype:resultFeedPostFetchRequest.timespan] mergeFrom:value] buildPartial];
-  } else {
-    resultFeedPostFetchRequest.timespan = value;
-  }
-  resultFeedPostFetchRequest.hasTimespan = YES;
-  return self;
-}
-- (BFeedPostFetchRequestBuilder*) clearTimespan {
-  resultFeedPostFetchRequest.hasTimespan = NO;
-  resultFeedPostFetchRequest.timespan = [BTimespan defaultInstance];
-  return self;
-}
-@end
-
-@interface BFeedPostFetchResponse ()
-@property (strong) NSMutableArray * feedPostsArray;
-@end
-
-@implementation BFeedPostFetchResponse
-
-@synthesize feedPostsArray;
-@dynamic feedPosts;
-- (instancetype) init {
-  if ((self = [super init])) {
-  }
-  return self;
-}
-static BFeedPostFetchResponse* defaultBFeedPostFetchResponseInstance = nil;
-+ (void) initialize {
-  if (self == [BFeedPostFetchResponse class]) {
-    defaultBFeedPostFetchResponseInstance = [[BFeedPostFetchResponse alloc] init];
-  }
-}
-+ (instancetype) defaultInstance {
-  return defaultBFeedPostFetchResponseInstance;
-}
-- (instancetype) defaultInstance {
-  return defaultBFeedPostFetchResponseInstance;
-}
-- (NSArray *)feedPosts {
-  return feedPostsArray;
-}
-- (BFeedPost*)feedPostsAtIndex:(NSUInteger)index {
-  return [feedPostsArray objectAtIndex:index];
-}
-- (BOOL) isInitialized {
-  __block BOOL isInitfeedPosts = YES;
-   [self.feedPosts enumerateObjectsUsingBlock:^(BFeedPost *element, NSUInteger idx, BOOL *stop) {
-    if (!element.isInitialized) {
-      isInitfeedPosts = NO;
-      *stop = YES;
-    }
-  }];
-  if (!isInitfeedPosts) return isInitfeedPosts;
-  return YES;
-}
-- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
-  [self.feedPostsArray enumerateObjectsUsingBlock:^(BFeedPost *element, NSUInteger idx, BOOL *stop) {
-    [output writeMessage:1 value:element];
-  }];
-  [self.unknownFields writeToCodedOutputStream:output];
-}
-- (SInt32) serializedSize {
-  __block SInt32 size_ = memoizedSerializedSize;
-  if (size_ != -1) {
-    return size_;
-  }
-
-  size_ = 0;
-  [self.feedPostsArray enumerateObjectsUsingBlock:^(BFeedPost *element, NSUInteger idx, BOOL *stop) {
-    size_ += computeMessageSize(1, element);
-  }];
-  size_ += self.unknownFields.serializedSize;
-  memoizedSerializedSize = size_;
-  return size_;
-}
-+ (BFeedPostFetchResponse*) parseFromData:(NSData*) data {
-  return (BFeedPostFetchResponse*)[[[BFeedPostFetchResponse builder] mergeFromData:data] build];
-}
-+ (BFeedPostFetchResponse*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
-  return (BFeedPostFetchResponse*)[[[BFeedPostFetchResponse builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
-}
-+ (BFeedPostFetchResponse*) parseFromInputStream:(NSInputStream*) input {
-  return (BFeedPostFetchResponse*)[[[BFeedPostFetchResponse builder] mergeFromInputStream:input] build];
-}
-+ (BFeedPostFetchResponse*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
-  return (BFeedPostFetchResponse*)[[[BFeedPostFetchResponse builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
-}
-+ (BFeedPostFetchResponse*) parseFromCodedInputStream:(PBCodedInputStream*) input {
-  return (BFeedPostFetchResponse*)[[[BFeedPostFetchResponse builder] mergeFromCodedInputStream:input] build];
-}
-+ (BFeedPostFetchResponse*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
-  return (BFeedPostFetchResponse*)[[[BFeedPostFetchResponse builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
-}
-+ (BFeedPostFetchResponseBuilder*) builder {
-  return [[BFeedPostFetchResponseBuilder alloc] init];
-}
-+ (BFeedPostFetchResponseBuilder*) builderWithPrototype:(BFeedPostFetchResponse*) prototype {
-  return [[BFeedPostFetchResponse builder] mergeFrom:prototype];
-}
-- (BFeedPostFetchResponseBuilder*) builder {
-  return [BFeedPostFetchResponse builder];
-}
-- (BFeedPostFetchResponseBuilder*) toBuilder {
-  return [BFeedPostFetchResponse builderWithPrototype:self];
-}
-- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
-  [self.feedPostsArray enumerateObjectsUsingBlock:^(BFeedPost *element, NSUInteger idx, BOOL *stop) {
-    [output appendFormat:@"%@%@ {\n", indent, @"feedPosts"];
-    [element writeDescriptionTo:output
-                     withIndent:[NSString stringWithFormat:@"%@  ", indent]];
-    [output appendFormat:@"%@}\n", indent];
-  }];
-  [self.unknownFields writeDescriptionTo:output withIndent:indent];
-}
-- (void) storeInDictionary:(NSMutableDictionary *)dictionary {
-  for (BFeedPost* element in self.feedPostsArray) {
-    NSMutableDictionary *elementDictionary = [NSMutableDictionary dictionary];
-    [element storeInDictionary:elementDictionary];
-    [dictionary setObject:[NSDictionary dictionaryWithDictionary:elementDictionary] forKey:@"feedPosts"];
-  }
-  [self.unknownFields storeInDictionary:dictionary];
-}
-- (BOOL) isEqual:(id)other {
-  if (other == self) {
-    return YES;
-  }
-  if (![other isKindOfClass:[BFeedPostFetchResponse class]]) {
-    return NO;
-  }
-  BFeedPostFetchResponse *otherMessage = other;
-  return
-      [self.feedPostsArray isEqualToArray:otherMessage.feedPostsArray] &&
-      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
-}
-- (NSUInteger) hash {
-  __block NSUInteger hashCode = 7;
-  [self.feedPostsArray enumerateObjectsUsingBlock:^(BFeedPost *element, NSUInteger idx, BOOL *stop) {
-    hashCode = hashCode * 31 + [element hash];
-  }];
-  hashCode = hashCode * 31 + [self.unknownFields hash];
-  return hashCode;
-}
-@end
-
-@interface BFeedPostFetchResponseBuilder()
-@property (strong) BFeedPostFetchResponse* resultFeedPostFetchResponse;
-@end
-
-@implementation BFeedPostFetchResponseBuilder
-@synthesize resultFeedPostFetchResponse;
-- (instancetype) init {
-  if ((self = [super init])) {
-    self.resultFeedPostFetchResponse = [[BFeedPostFetchResponse alloc] init];
-  }
-  return self;
-}
-- (PBGeneratedMessage*) internalGetResult {
-  return resultFeedPostFetchResponse;
-}
-- (BFeedPostFetchResponseBuilder*) clear {
-  self.resultFeedPostFetchResponse = [[BFeedPostFetchResponse alloc] init];
-  return self;
-}
-- (BFeedPostFetchResponseBuilder*) clone {
-  return [BFeedPostFetchResponse builderWithPrototype:resultFeedPostFetchResponse];
-}
-- (BFeedPostFetchResponse*) defaultInstance {
-  return [BFeedPostFetchResponse defaultInstance];
-}
-- (BFeedPostFetchResponse*) build {
-  [self checkInitialized];
-  return [self buildPartial];
-}
-- (BFeedPostFetchResponse*) buildPartial {
-  BFeedPostFetchResponse* returnMe = resultFeedPostFetchResponse;
-  self.resultFeedPostFetchResponse = nil;
-  return returnMe;
-}
-- (BFeedPostFetchResponseBuilder*) mergeFrom:(BFeedPostFetchResponse*) other {
-  if (other == [BFeedPostFetchResponse defaultInstance]) {
-    return self;
-  }
-  if (other.feedPostsArray.count > 0) {
-    if (resultFeedPostFetchResponse.feedPostsArray == nil) {
-      resultFeedPostFetchResponse.feedPostsArray = [[NSMutableArray alloc] initWithArray:other.feedPostsArray];
-    } else {
-      [resultFeedPostFetchResponse.feedPostsArray addObjectsFromArray:other.feedPostsArray];
-    }
-  }
-  [self mergeUnknownFields:other.unknownFields];
-  return self;
-}
-- (BFeedPostFetchResponseBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
-  return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
-}
-- (BFeedPostFetchResponseBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
-  PBUnknownFieldSetBuilder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
-  while (YES) {
-    SInt32 tag = [input readTag];
-    switch (tag) {
-      case 0:
-        [self setUnknownFields:[unknownFields build]];
-        return self;
-      default: {
-        if (![self parseUnknownField:input unknownFields:unknownFields extensionRegistry:extensionRegistry tag:tag]) {
-          [self setUnknownFields:[unknownFields build]];
-          return self;
-        }
-        break;
-      }
-      case 10: {
-        BFeedPostBuilder* subBuilder = [BFeedPost builder];
-        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
-        [self addFeedPosts:[subBuilder buildPartial]];
-        break;
-      }
-    }
-  }
-}
-- (NSMutableArray *)feedPosts {
-  return resultFeedPostFetchResponse.feedPostsArray;
-}
-- (BFeedPost*)feedPostsAtIndex:(NSUInteger)index {
-  return [resultFeedPostFetchResponse feedPostsAtIndex:index];
-}
-- (BFeedPostFetchResponseBuilder *)addFeedPosts:(BFeedPost*)value {
-  if (resultFeedPostFetchResponse.feedPostsArray == nil) {
-    resultFeedPostFetchResponse.feedPostsArray = [[NSMutableArray alloc]init];
-  }
-  [resultFeedPostFetchResponse.feedPostsArray addObject:value];
-  return self;
-}
-- (BFeedPostFetchResponseBuilder *)setFeedPostsArray:(NSArray *)array {
-  resultFeedPostFetchResponse.feedPostsArray = [[NSMutableArray alloc]initWithArray:array];
-  return self;
-}
-- (BFeedPostFetchResponseBuilder *)clearFeedPosts {
-  resultFeedPostFetchResponse.feedPostsArray = nil;
-  return self;
-}
-@end
-
 @interface BFeedPostUpdateRequest ()
 @property BUpdateVerb updateVerb;
 @property (strong) BFeedPost* feedPost;
@@ -2461,6 +1997,470 @@ static BFeedPostUpdateResponse* defaultBFeedPostUpdateResponseInstance = nil;
 - (BFeedPostUpdateResponseBuilder*) clearFeedPost {
   resultFeedPostUpdateResponse.hasFeedPost = NO;
   resultFeedPostUpdateResponse.feedPost = [BFeedPost defaultInstance];
+  return self;
+}
+@end
+
+@interface BFeedPostFetchRequest ()
+@property (strong) BTimespan* timespan;
+@end
+
+@implementation BFeedPostFetchRequest
+
+- (BOOL) hasTimespan {
+  return !!hasTimespan_;
+}
+- (void) setHasTimespan:(BOOL) _value_ {
+  hasTimespan_ = !!_value_;
+}
+@synthesize timespan;
+- (instancetype) init {
+  if ((self = [super init])) {
+    self.timespan = [BTimespan defaultInstance];
+  }
+  return self;
+}
+static BFeedPostFetchRequest* defaultBFeedPostFetchRequestInstance = nil;
++ (void) initialize {
+  if (self == [BFeedPostFetchRequest class]) {
+    defaultBFeedPostFetchRequestInstance = [[BFeedPostFetchRequest alloc] init];
+  }
+}
++ (instancetype) defaultInstance {
+  return defaultBFeedPostFetchRequestInstance;
+}
+- (instancetype) defaultInstance {
+  return defaultBFeedPostFetchRequestInstance;
+}
+- (BOOL) isInitialized {
+  if (self.hasTimespan) {
+    if (!self.timespan.isInitialized) {
+      return NO;
+    }
+  }
+  return YES;
+}
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
+  if (self.hasTimespan) {
+    [output writeMessage:1 value:self.timespan];
+  }
+  [self.unknownFields writeToCodedOutputStream:output];
+}
+- (SInt32) serializedSize {
+  __block SInt32 size_ = memoizedSerializedSize;
+  if (size_ != -1) {
+    return size_;
+  }
+
+  size_ = 0;
+  if (self.hasTimespan) {
+    size_ += computeMessageSize(1, self.timespan);
+  }
+  size_ += self.unknownFields.serializedSize;
+  memoizedSerializedSize = size_;
+  return size_;
+}
++ (BFeedPostFetchRequest*) parseFromData:(NSData*) data {
+  return (BFeedPostFetchRequest*)[[[BFeedPostFetchRequest builder] mergeFromData:data] build];
+}
++ (BFeedPostFetchRequest*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BFeedPostFetchRequest*)[[[BFeedPostFetchRequest builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
+}
++ (BFeedPostFetchRequest*) parseFromInputStream:(NSInputStream*) input {
+  return (BFeedPostFetchRequest*)[[[BFeedPostFetchRequest builder] mergeFromInputStream:input] build];
+}
++ (BFeedPostFetchRequest*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BFeedPostFetchRequest*)[[[BFeedPostFetchRequest builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (BFeedPostFetchRequest*) parseFromCodedInputStream:(PBCodedInputStream*) input {
+  return (BFeedPostFetchRequest*)[[[BFeedPostFetchRequest builder] mergeFromCodedInputStream:input] build];
+}
++ (BFeedPostFetchRequest*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BFeedPostFetchRequest*)[[[BFeedPostFetchRequest builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (BFeedPostFetchRequestBuilder*) builder {
+  return [[BFeedPostFetchRequestBuilder alloc] init];
+}
++ (BFeedPostFetchRequestBuilder*) builderWithPrototype:(BFeedPostFetchRequest*) prototype {
+  return [[BFeedPostFetchRequest builder] mergeFrom:prototype];
+}
+- (BFeedPostFetchRequestBuilder*) builder {
+  return [BFeedPostFetchRequest builder];
+}
+- (BFeedPostFetchRequestBuilder*) toBuilder {
+  return [BFeedPostFetchRequest builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  if (self.hasTimespan) {
+    [output appendFormat:@"%@%@ {\n", indent, @"timespan"];
+    [self.timespan writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (void) storeInDictionary:(NSMutableDictionary *)dictionary {
+  if (self.hasTimespan) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.timespan storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"timespan"];
+  }
+  [self.unknownFields storeInDictionary:dictionary];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[BFeedPostFetchRequest class]]) {
+    return NO;
+  }
+  BFeedPostFetchRequest *otherMessage = other;
+  return
+      self.hasTimespan == otherMessage.hasTimespan &&
+      (!self.hasTimespan || [self.timespan isEqual:otherMessage.timespan]) &&
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  __block NSUInteger hashCode = 7;
+  if (self.hasTimespan) {
+    hashCode = hashCode * 31 + [self.timespan hash];
+  }
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
+}
+@end
+
+@interface BFeedPostFetchRequestBuilder()
+@property (strong) BFeedPostFetchRequest* resultFeedPostFetchRequest;
+@end
+
+@implementation BFeedPostFetchRequestBuilder
+@synthesize resultFeedPostFetchRequest;
+- (instancetype) init {
+  if ((self = [super init])) {
+    self.resultFeedPostFetchRequest = [[BFeedPostFetchRequest alloc] init];
+  }
+  return self;
+}
+- (PBGeneratedMessage*) internalGetResult {
+  return resultFeedPostFetchRequest;
+}
+- (BFeedPostFetchRequestBuilder*) clear {
+  self.resultFeedPostFetchRequest = [[BFeedPostFetchRequest alloc] init];
+  return self;
+}
+- (BFeedPostFetchRequestBuilder*) clone {
+  return [BFeedPostFetchRequest builderWithPrototype:resultFeedPostFetchRequest];
+}
+- (BFeedPostFetchRequest*) defaultInstance {
+  return [BFeedPostFetchRequest defaultInstance];
+}
+- (BFeedPostFetchRequest*) build {
+  [self checkInitialized];
+  return [self buildPartial];
+}
+- (BFeedPostFetchRequest*) buildPartial {
+  BFeedPostFetchRequest* returnMe = resultFeedPostFetchRequest;
+  self.resultFeedPostFetchRequest = nil;
+  return returnMe;
+}
+- (BFeedPostFetchRequestBuilder*) mergeFrom:(BFeedPostFetchRequest*) other {
+  if (other == [BFeedPostFetchRequest defaultInstance]) {
+    return self;
+  }
+  if (other.hasTimespan) {
+    [self mergeTimespan:other.timespan];
+  }
+  [self mergeUnknownFields:other.unknownFields];
+  return self;
+}
+- (BFeedPostFetchRequestBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
+  return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
+}
+- (BFeedPostFetchRequestBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  PBUnknownFieldSetBuilder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
+  while (YES) {
+    SInt32 tag = [input readTag];
+    switch (tag) {
+      case 0:
+        [self setUnknownFields:[unknownFields build]];
+        return self;
+      default: {
+        if (![self parseUnknownField:input unknownFields:unknownFields extensionRegistry:extensionRegistry tag:tag]) {
+          [self setUnknownFields:[unknownFields build]];
+          return self;
+        }
+        break;
+      }
+      case 10: {
+        BTimespanBuilder* subBuilder = [BTimespan builder];
+        if (self.hasTimespan) {
+          [subBuilder mergeFrom:self.timespan];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setTimespan:[subBuilder buildPartial]];
+        break;
+      }
+    }
+  }
+}
+- (BOOL) hasTimespan {
+  return resultFeedPostFetchRequest.hasTimespan;
+}
+- (BTimespan*) timespan {
+  return resultFeedPostFetchRequest.timespan;
+}
+- (BFeedPostFetchRequestBuilder*) setTimespan:(BTimespan*) value {
+  resultFeedPostFetchRequest.hasTimespan = YES;
+  resultFeedPostFetchRequest.timespan = value;
+  return self;
+}
+- (BFeedPostFetchRequestBuilder*) setTimespanBuilder:(BTimespanBuilder*) builderForValue {
+  return [self setTimespan:[builderForValue build]];
+}
+- (BFeedPostFetchRequestBuilder*) mergeTimespan:(BTimespan*) value {
+  if (resultFeedPostFetchRequest.hasTimespan &&
+      resultFeedPostFetchRequest.timespan != [BTimespan defaultInstance]) {
+    resultFeedPostFetchRequest.timespan =
+      [[[BTimespan builderWithPrototype:resultFeedPostFetchRequest.timespan] mergeFrom:value] buildPartial];
+  } else {
+    resultFeedPostFetchRequest.timespan = value;
+  }
+  resultFeedPostFetchRequest.hasTimespan = YES;
+  return self;
+}
+- (BFeedPostFetchRequestBuilder*) clearTimespan {
+  resultFeedPostFetchRequest.hasTimespan = NO;
+  resultFeedPostFetchRequest.timespan = [BTimespan defaultInstance];
+  return self;
+}
+@end
+
+@interface BFeedPostFetchResponse ()
+@property (strong) NSMutableArray * feedPostsArray;
+@end
+
+@implementation BFeedPostFetchResponse
+
+@synthesize feedPostsArray;
+@dynamic feedPosts;
+- (instancetype) init {
+  if ((self = [super init])) {
+  }
+  return self;
+}
+static BFeedPostFetchResponse* defaultBFeedPostFetchResponseInstance = nil;
++ (void) initialize {
+  if (self == [BFeedPostFetchResponse class]) {
+    defaultBFeedPostFetchResponseInstance = [[BFeedPostFetchResponse alloc] init];
+  }
+}
++ (instancetype) defaultInstance {
+  return defaultBFeedPostFetchResponseInstance;
+}
+- (instancetype) defaultInstance {
+  return defaultBFeedPostFetchResponseInstance;
+}
+- (NSArray *)feedPosts {
+  return feedPostsArray;
+}
+- (BFeedPost*)feedPostsAtIndex:(NSUInteger)index {
+  return [feedPostsArray objectAtIndex:index];
+}
+- (BOOL) isInitialized {
+  __block BOOL isInitfeedPosts = YES;
+   [self.feedPosts enumerateObjectsUsingBlock:^(BFeedPost *element, NSUInteger idx, BOOL *stop) {
+    if (!element.isInitialized) {
+      isInitfeedPosts = NO;
+      *stop = YES;
+    }
+  }];
+  if (!isInitfeedPosts) return isInitfeedPosts;
+  return YES;
+}
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
+  [self.feedPostsArray enumerateObjectsUsingBlock:^(BFeedPost *element, NSUInteger idx, BOOL *stop) {
+    [output writeMessage:1 value:element];
+  }];
+  [self.unknownFields writeToCodedOutputStream:output];
+}
+- (SInt32) serializedSize {
+  __block SInt32 size_ = memoizedSerializedSize;
+  if (size_ != -1) {
+    return size_;
+  }
+
+  size_ = 0;
+  [self.feedPostsArray enumerateObjectsUsingBlock:^(BFeedPost *element, NSUInteger idx, BOOL *stop) {
+    size_ += computeMessageSize(1, element);
+  }];
+  size_ += self.unknownFields.serializedSize;
+  memoizedSerializedSize = size_;
+  return size_;
+}
++ (BFeedPostFetchResponse*) parseFromData:(NSData*) data {
+  return (BFeedPostFetchResponse*)[[[BFeedPostFetchResponse builder] mergeFromData:data] build];
+}
++ (BFeedPostFetchResponse*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BFeedPostFetchResponse*)[[[BFeedPostFetchResponse builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
+}
++ (BFeedPostFetchResponse*) parseFromInputStream:(NSInputStream*) input {
+  return (BFeedPostFetchResponse*)[[[BFeedPostFetchResponse builder] mergeFromInputStream:input] build];
+}
++ (BFeedPostFetchResponse*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BFeedPostFetchResponse*)[[[BFeedPostFetchResponse builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (BFeedPostFetchResponse*) parseFromCodedInputStream:(PBCodedInputStream*) input {
+  return (BFeedPostFetchResponse*)[[[BFeedPostFetchResponse builder] mergeFromCodedInputStream:input] build];
+}
++ (BFeedPostFetchResponse*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BFeedPostFetchResponse*)[[[BFeedPostFetchResponse builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (BFeedPostFetchResponseBuilder*) builder {
+  return [[BFeedPostFetchResponseBuilder alloc] init];
+}
++ (BFeedPostFetchResponseBuilder*) builderWithPrototype:(BFeedPostFetchResponse*) prototype {
+  return [[BFeedPostFetchResponse builder] mergeFrom:prototype];
+}
+- (BFeedPostFetchResponseBuilder*) builder {
+  return [BFeedPostFetchResponse builder];
+}
+- (BFeedPostFetchResponseBuilder*) toBuilder {
+  return [BFeedPostFetchResponse builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  [self.feedPostsArray enumerateObjectsUsingBlock:^(BFeedPost *element, NSUInteger idx, BOOL *stop) {
+    [output appendFormat:@"%@%@ {\n", indent, @"feedPosts"];
+    [element writeDescriptionTo:output
+                     withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }];
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (void) storeInDictionary:(NSMutableDictionary *)dictionary {
+  for (BFeedPost* element in self.feedPostsArray) {
+    NSMutableDictionary *elementDictionary = [NSMutableDictionary dictionary];
+    [element storeInDictionary:elementDictionary];
+    [dictionary setObject:[NSDictionary dictionaryWithDictionary:elementDictionary] forKey:@"feedPosts"];
+  }
+  [self.unknownFields storeInDictionary:dictionary];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[BFeedPostFetchResponse class]]) {
+    return NO;
+  }
+  BFeedPostFetchResponse *otherMessage = other;
+  return
+      [self.feedPostsArray isEqualToArray:otherMessage.feedPostsArray] &&
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  __block NSUInteger hashCode = 7;
+  [self.feedPostsArray enumerateObjectsUsingBlock:^(BFeedPost *element, NSUInteger idx, BOOL *stop) {
+    hashCode = hashCode * 31 + [element hash];
+  }];
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
+}
+@end
+
+@interface BFeedPostFetchResponseBuilder()
+@property (strong) BFeedPostFetchResponse* resultFeedPostFetchResponse;
+@end
+
+@implementation BFeedPostFetchResponseBuilder
+@synthesize resultFeedPostFetchResponse;
+- (instancetype) init {
+  if ((self = [super init])) {
+    self.resultFeedPostFetchResponse = [[BFeedPostFetchResponse alloc] init];
+  }
+  return self;
+}
+- (PBGeneratedMessage*) internalGetResult {
+  return resultFeedPostFetchResponse;
+}
+- (BFeedPostFetchResponseBuilder*) clear {
+  self.resultFeedPostFetchResponse = [[BFeedPostFetchResponse alloc] init];
+  return self;
+}
+- (BFeedPostFetchResponseBuilder*) clone {
+  return [BFeedPostFetchResponse builderWithPrototype:resultFeedPostFetchResponse];
+}
+- (BFeedPostFetchResponse*) defaultInstance {
+  return [BFeedPostFetchResponse defaultInstance];
+}
+- (BFeedPostFetchResponse*) build {
+  [self checkInitialized];
+  return [self buildPartial];
+}
+- (BFeedPostFetchResponse*) buildPartial {
+  BFeedPostFetchResponse* returnMe = resultFeedPostFetchResponse;
+  self.resultFeedPostFetchResponse = nil;
+  return returnMe;
+}
+- (BFeedPostFetchResponseBuilder*) mergeFrom:(BFeedPostFetchResponse*) other {
+  if (other == [BFeedPostFetchResponse defaultInstance]) {
+    return self;
+  }
+  if (other.feedPostsArray.count > 0) {
+    if (resultFeedPostFetchResponse.feedPostsArray == nil) {
+      resultFeedPostFetchResponse.feedPostsArray = [[NSMutableArray alloc] initWithArray:other.feedPostsArray];
+    } else {
+      [resultFeedPostFetchResponse.feedPostsArray addObjectsFromArray:other.feedPostsArray];
+    }
+  }
+  [self mergeUnknownFields:other.unknownFields];
+  return self;
+}
+- (BFeedPostFetchResponseBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
+  return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
+}
+- (BFeedPostFetchResponseBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  PBUnknownFieldSetBuilder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
+  while (YES) {
+    SInt32 tag = [input readTag];
+    switch (tag) {
+      case 0:
+        [self setUnknownFields:[unknownFields build]];
+        return self;
+      default: {
+        if (![self parseUnknownField:input unknownFields:unknownFields extensionRegistry:extensionRegistry tag:tag]) {
+          [self setUnknownFields:[unknownFields build]];
+          return self;
+        }
+        break;
+      }
+      case 10: {
+        BFeedPostBuilder* subBuilder = [BFeedPost builder];
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self addFeedPosts:[subBuilder buildPartial]];
+        break;
+      }
+    }
+  }
+}
+- (NSMutableArray *)feedPosts {
+  return resultFeedPostFetchResponse.feedPostsArray;
+}
+- (BFeedPost*)feedPostsAtIndex:(NSUInteger)index {
+  return [resultFeedPostFetchResponse feedPostsAtIndex:index];
+}
+- (BFeedPostFetchResponseBuilder *)addFeedPosts:(BFeedPost*)value {
+  if (resultFeedPostFetchResponse.feedPostsArray == nil) {
+    resultFeedPostFetchResponse.feedPostsArray = [[NSMutableArray alloc]init];
+  }
+  [resultFeedPostFetchResponse.feedPostsArray addObject:value];
+  return self;
+}
+- (BFeedPostFetchResponseBuilder *)setFeedPostsArray:(NSArray *)array {
+  resultFeedPostFetchResponse.feedPostsArray = [[NSMutableArray alloc]initWithArray:array];
+  return self;
+}
+- (BFeedPostFetchResponseBuilder *)clearFeedPosts {
+  resultFeedPostFetchResponse.feedPostsArray = nil;
   return self;
 }
 @end

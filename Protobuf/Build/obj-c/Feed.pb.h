@@ -405,108 +405,6 @@ NSString *NSStringFromBEntityType(BEntityType value);
 - (BFeedPostBuilder*) clearMayChooseMulitpleReplies;
 @end
 
-#define FeedPostFetchRequest_timespan @"timespan"
-@interface BFeedPostFetchRequest : PBGeneratedMessage<GeneratedMessageProtocol> {
-@private
-  BOOL hasTimespan_:1;
-  BTimespan* timespan;
-}
-- (BOOL) hasTimespan;
-@property (readonly, strong) BTimespan* timespan;
-
-+ (instancetype) defaultInstance;
-- (instancetype) defaultInstance;
-
-- (BOOL) isInitialized;
-- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
-- (BFeedPostFetchRequestBuilder*) builder;
-+ (BFeedPostFetchRequestBuilder*) builder;
-+ (BFeedPostFetchRequestBuilder*) builderWithPrototype:(BFeedPostFetchRequest*) prototype;
-- (BFeedPostFetchRequestBuilder*) toBuilder;
-
-+ (BFeedPostFetchRequest*) parseFromData:(NSData*) data;
-+ (BFeedPostFetchRequest*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
-+ (BFeedPostFetchRequest*) parseFromInputStream:(NSInputStream*) input;
-+ (BFeedPostFetchRequest*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
-+ (BFeedPostFetchRequest*) parseFromCodedInputStream:(PBCodedInputStream*) input;
-+ (BFeedPostFetchRequest*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
-@end
-
-@interface BFeedPostFetchRequestBuilder : PBGeneratedMessageBuilder {
-@private
-  BFeedPostFetchRequest* resultFeedPostFetchRequest;
-}
-
-- (BFeedPostFetchRequest*) defaultInstance;
-
-- (BFeedPostFetchRequestBuilder*) clear;
-- (BFeedPostFetchRequestBuilder*) clone;
-
-- (BFeedPostFetchRequest*) build;
-- (BFeedPostFetchRequest*) buildPartial;
-
-- (BFeedPostFetchRequestBuilder*) mergeFrom:(BFeedPostFetchRequest*) other;
-- (BFeedPostFetchRequestBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
-- (BFeedPostFetchRequestBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
-
-- (BOOL) hasTimespan;
-- (BTimespan*) timespan;
-- (BFeedPostFetchRequestBuilder*) setTimespan:(BTimespan*) value;
-- (BFeedPostFetchRequestBuilder*) setTimespanBuilder:(BTimespanBuilder*) builderForValue;
-- (BFeedPostFetchRequestBuilder*) mergeTimespan:(BTimespan*) value;
-- (BFeedPostFetchRequestBuilder*) clearTimespan;
-@end
-
-#define FeedPostFetchResponse_feedPosts @"feedPosts"
-@interface BFeedPostFetchResponse : PBGeneratedMessage<GeneratedMessageProtocol> {
-@private
-  NSMutableArray * feedPostsArray;
-}
-@property (readonly, strong) NSArray * feedPosts;
-- (BFeedPost*)feedPostsAtIndex:(NSUInteger)index;
-
-+ (instancetype) defaultInstance;
-- (instancetype) defaultInstance;
-
-- (BOOL) isInitialized;
-- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
-- (BFeedPostFetchResponseBuilder*) builder;
-+ (BFeedPostFetchResponseBuilder*) builder;
-+ (BFeedPostFetchResponseBuilder*) builderWithPrototype:(BFeedPostFetchResponse*) prototype;
-- (BFeedPostFetchResponseBuilder*) toBuilder;
-
-+ (BFeedPostFetchResponse*) parseFromData:(NSData*) data;
-+ (BFeedPostFetchResponse*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
-+ (BFeedPostFetchResponse*) parseFromInputStream:(NSInputStream*) input;
-+ (BFeedPostFetchResponse*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
-+ (BFeedPostFetchResponse*) parseFromCodedInputStream:(PBCodedInputStream*) input;
-+ (BFeedPostFetchResponse*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
-@end
-
-@interface BFeedPostFetchResponseBuilder : PBGeneratedMessageBuilder {
-@private
-  BFeedPostFetchResponse* resultFeedPostFetchResponse;
-}
-
-- (BFeedPostFetchResponse*) defaultInstance;
-
-- (BFeedPostFetchResponseBuilder*) clear;
-- (BFeedPostFetchResponseBuilder*) clone;
-
-- (BFeedPostFetchResponse*) build;
-- (BFeedPostFetchResponse*) buildPartial;
-
-- (BFeedPostFetchResponseBuilder*) mergeFrom:(BFeedPostFetchResponse*) other;
-- (BFeedPostFetchResponseBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
-- (BFeedPostFetchResponseBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
-
-- (NSMutableArray *)feedPosts;
-- (BFeedPost*)feedPostsAtIndex:(NSUInteger)index;
-- (BFeedPostFetchResponseBuilder *)addFeedPosts:(BFeedPost*)value;
-- (BFeedPostFetchResponseBuilder *)setFeedPostsArray:(NSArray *)array;
-- (BFeedPostFetchResponseBuilder *)clearFeedPosts;
-@end
-
 #define FeedPostUpdateRequest_updateVerb @"updateVerb"
 #define FeedPostUpdateRequest_feedPost @"feedPost"
 @interface BFeedPostUpdateRequest : PBGeneratedMessage<GeneratedMessageProtocol> {
@@ -619,6 +517,108 @@ NSString *NSStringFromBEntityType(BEntityType value);
 - (BFeedPostUpdateResponseBuilder*) setFeedPostBuilder:(BFeedPostBuilder*) builderForValue;
 - (BFeedPostUpdateResponseBuilder*) mergeFeedPost:(BFeedPost*) value;
 - (BFeedPostUpdateResponseBuilder*) clearFeedPost;
+@end
+
+#define FeedPostFetchRequest_timespan @"timespan"
+@interface BFeedPostFetchRequest : PBGeneratedMessage<GeneratedMessageProtocol> {
+@private
+  BOOL hasTimespan_:1;
+  BTimespan* timespan;
+}
+- (BOOL) hasTimespan;
+@property (readonly, strong) BTimespan* timespan;
+
++ (instancetype) defaultInstance;
+- (instancetype) defaultInstance;
+
+- (BOOL) isInitialized;
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
+- (BFeedPostFetchRequestBuilder*) builder;
++ (BFeedPostFetchRequestBuilder*) builder;
++ (BFeedPostFetchRequestBuilder*) builderWithPrototype:(BFeedPostFetchRequest*) prototype;
+- (BFeedPostFetchRequestBuilder*) toBuilder;
+
++ (BFeedPostFetchRequest*) parseFromData:(NSData*) data;
++ (BFeedPostFetchRequest*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (BFeedPostFetchRequest*) parseFromInputStream:(NSInputStream*) input;
++ (BFeedPostFetchRequest*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (BFeedPostFetchRequest*) parseFromCodedInputStream:(PBCodedInputStream*) input;
++ (BFeedPostFetchRequest*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+@end
+
+@interface BFeedPostFetchRequestBuilder : PBGeneratedMessageBuilder {
+@private
+  BFeedPostFetchRequest* resultFeedPostFetchRequest;
+}
+
+- (BFeedPostFetchRequest*) defaultInstance;
+
+- (BFeedPostFetchRequestBuilder*) clear;
+- (BFeedPostFetchRequestBuilder*) clone;
+
+- (BFeedPostFetchRequest*) build;
+- (BFeedPostFetchRequest*) buildPartial;
+
+- (BFeedPostFetchRequestBuilder*) mergeFrom:(BFeedPostFetchRequest*) other;
+- (BFeedPostFetchRequestBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
+- (BFeedPostFetchRequestBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+
+- (BOOL) hasTimespan;
+- (BTimespan*) timespan;
+- (BFeedPostFetchRequestBuilder*) setTimespan:(BTimespan*) value;
+- (BFeedPostFetchRequestBuilder*) setTimespanBuilder:(BTimespanBuilder*) builderForValue;
+- (BFeedPostFetchRequestBuilder*) mergeTimespan:(BTimespan*) value;
+- (BFeedPostFetchRequestBuilder*) clearTimespan;
+@end
+
+#define FeedPostFetchResponse_feedPosts @"feedPosts"
+@interface BFeedPostFetchResponse : PBGeneratedMessage<GeneratedMessageProtocol> {
+@private
+  NSMutableArray * feedPostsArray;
+}
+@property (readonly, strong) NSArray * feedPosts;
+- (BFeedPost*)feedPostsAtIndex:(NSUInteger)index;
+
++ (instancetype) defaultInstance;
+- (instancetype) defaultInstance;
+
+- (BOOL) isInitialized;
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
+- (BFeedPostFetchResponseBuilder*) builder;
++ (BFeedPostFetchResponseBuilder*) builder;
++ (BFeedPostFetchResponseBuilder*) builderWithPrototype:(BFeedPostFetchResponse*) prototype;
+- (BFeedPostFetchResponseBuilder*) toBuilder;
+
++ (BFeedPostFetchResponse*) parseFromData:(NSData*) data;
++ (BFeedPostFetchResponse*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (BFeedPostFetchResponse*) parseFromInputStream:(NSInputStream*) input;
++ (BFeedPostFetchResponse*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (BFeedPostFetchResponse*) parseFromCodedInputStream:(PBCodedInputStream*) input;
++ (BFeedPostFetchResponse*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+@end
+
+@interface BFeedPostFetchResponseBuilder : PBGeneratedMessageBuilder {
+@private
+  BFeedPostFetchResponse* resultFeedPostFetchResponse;
+}
+
+- (BFeedPostFetchResponse*) defaultInstance;
+
+- (BFeedPostFetchResponseBuilder*) clear;
+- (BFeedPostFetchResponseBuilder*) clone;
+
+- (BFeedPostFetchResponse*) build;
+- (BFeedPostFetchResponse*) buildPartial;
+
+- (BFeedPostFetchResponseBuilder*) mergeFrom:(BFeedPostFetchResponse*) other;
+- (BFeedPostFetchResponseBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
+- (BFeedPostFetchResponseBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+
+- (NSMutableArray *)feedPosts;
+- (BFeedPost*)feedPostsAtIndex:(NSUInteger)index;
+- (BFeedPostFetchResponseBuilder *)addFeedPosts:(BFeedPost*)value;
+- (BFeedPostFetchResponseBuilder *)setFeedPostsArray:(NSArray *)array;
+- (BFeedPostFetchResponseBuilder *)clearFeedPosts;
 @end
 
 #define EntityVoteRequest_entityID @"entityID"

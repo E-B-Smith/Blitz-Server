@@ -81,8 +81,9 @@ message RequestType {
   optional DebugMessage             debugMessage        = 8;
   optional ImageUpload              imageUpload         = 9;
   optional AcceptInviteRequest      acceptInviteRequest = 10;
-  optional FeedPostFetchRequest     fetchFeedRequest    = 11;
-  optional AutocompleteRequest      autocompleteRequest = 12;
+  optional FeedPostFetchRequest     feedPostFetchRequest  = 11;
+  optional FeedPostUpdateRequest    feedPostUpdateRequest = 12;
+  optional AutocompleteRequest      autocompleteRequest   = 13;
 }
 
 
@@ -104,17 +105,18 @@ enum ResponseCode {
 
 
 message ResponseType {
-  optional SessionResponse        sessionResponse     = 1;
-  optional UserEventBatchResponse userEventResponse   = 2;
-  optional UserProfileUpdate      profileUpdate       = 3;
-  optional UserProfileQuery       profileQuery        = 4;
-  optional ConfirmationRequest    confirmationRequest = 5;
-  optional UserMessageUpdate      messageUpdate       = 6;
-  optional DebugMessage           debugMessage        = 7;
-  optional ImageUpload            imageUploadReply    = 8;
-  optional AcceptInviteResponse   acceptInviteResponse = 9;
-  optional FeedPostFetchResponse  fetchFeedResponse    = 10;
-  optional AutocompleteResponse   autocompleteResponse = 11;
+  optional SessionResponse        sessionResponse         = 1;
+  optional UserEventBatchResponse userEventBatchResponse  = 2;
+  optional UserProfileUpdate      userProfileUpdate       = 3;
+  optional UserProfileQuery       userProfileQuery        = 4;
+  optional ConfirmationRequest    confirmationRequest     = 5;
+  optional UserMessageUpdate      userMessageUpdate       = 6;
+  optional DebugMessage           debugMessage            = 7;
+  optional ImageUpload            imageUploadReply        = 8;
+  optional AcceptInviteResponse   acceptInviteResponse    = 9;
+  optional FeedPostFetchResponse  feedPostFetchResponse   = 10;
+  optional FeedPostUpdateResponse feedPostUpdateResponse  = 11;
+  optional AutocompleteResponse   autocompleteResponse    = 12;
 }
 
 

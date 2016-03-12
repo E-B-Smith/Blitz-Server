@@ -324,12 +324,9 @@ func QueryProfiles(session *Session, profileQuery *BlitzMessage.UserProfileQuery
     }
 
     code := BlitzMessage.ResponseCode_RCSuccess
-    var message string
-
     response := &BlitzMessage.ServerResponse {
         ResponseCode:       &code,
-        ResponseMessage:    &message,
-        ResponseType:       &BlitzMessage.ResponseType { ProfileUpdate: &profileUpdate },
+        ResponseType:       &BlitzMessage.ResponseType { UserProfileUpdate: &profileUpdate },
     }
     return response
 }

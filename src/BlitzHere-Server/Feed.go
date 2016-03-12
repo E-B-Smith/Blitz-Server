@@ -75,12 +75,8 @@ func WriteFeedPost(feedPost *BlitzMessage.FeedPost) error {
 //                                                                       FeedPostForPostID
 //----------------------------------------------------------------------------------------
 
-
-func FeedPostForPostID(postID string) (*BlitzMessage.FeedPost, error) {
-    Log.LogFunctionName()
-
-    row := config.DB.QueryRow(
-        `select
+var kScanFeedRowString =
+`           postID,
             parentID,
             postType,
             postScope,
@@ -93,8 +89,19 @@ func FeedPostForPostID(postID string) (*BlitzMessage.FeedPost, error) {
             bodyText,
             mayAddReply,
             mayChooseMulitpleReplies
-                where postID = $1`, postID)
+`
+
+
+type RowScanner interface {
+    Scan(dest ...interface{}) error
+}
+
+
+func ScanFeedPostRow(row RowScanner) (*BlitzMessage.FeedPost, error) {
+    Log.LogFunctionName()
+
     var (
+        postID          sql.NullString
         parentID        sql.NullString
         postType        sql.NullInt64
         postScope       sql.NullInt64
@@ -109,6 +116,7 @@ func FeedPostForPostID(postID string) (*BlitzMessage.FeedPost, error) {
         mayChooseMulitpleReplies    sql.NullBool
     )
     error := row.Scan(
+        &postID,
         &parentID,
         &postType,
         &postScope,
@@ -127,6 +135,7 @@ func FeedPostForPostID(postID string) (*BlitzMessage.FeedPost, error) {
     }
 
     feedPost := BlitzMessage.FeedPost {
+        PostID:             StringPtrFromNullString(postID),
         ParentID:           StringPtrFromNullString(parentID),
         PostType:           BlitzMessage.FeedPostType(postType.Int64).Enum(),
         PostScope:          BlitzMessage.FeedPostScope(postScope.Int64).Enum(),
@@ -143,6 +152,17 @@ func FeedPostForPostID(postID string) (*BlitzMessage.FeedPost, error) {
     feedPost.TopicTags = GetEntityTags(*feedPost.PostID, *feedPost.PostID, BlitzMessage.EntityType_ETFeedPost)
 
     return &feedPost, nil
+}
+
+
+func FeedPostForPostID(postID string) (*BlitzMessage.FeedPost, error) {
+    Log.LogFunctionName()
+
+    row := config.DB.QueryRow(
+        `select ` + kScanFeedRowString +
+        `   where postID = $1`, postID)
+
+    return ScanFeedPostRow(row)
 }
 
 
@@ -194,12 +214,42 @@ func UpdateFeedPost(session *Session, feedPostUpdate *BlitzMessage.FeedPostUpdat
 //----------------------------------------------------------------------------------------
 
 
-func FetchFeedPosts(session *Session, *BlitzMessage.FeedPostFetchRequest,
+func FetchFeedPosts(session *Session, fetchRequest *BlitzMessage.FeedPostFetchRequest,
     ) *BlitzMessage.ServerResponse {
     Log.LogFunctionName()
 
+    rows, error := config.DB.Query(
+        `select ` + kScanFeedRowString +
+        `   from FeedPostTable
+            where postStatus = $1
+              and timeActiveStart <= current_timestamp
+              and timeActiveStop   > current_timestamp
+            order by timestamp desc;`, BlitzMessage.FeedPostStatus_FPSActive)
 
+    if error != nil {
+        Log.LogError(error)
+        return ServerResponseForError(BlitzMessage.ResponseCode_RCServerError, error)
+    }
+
+    feedPosts := make([]*BlitzMessage.FeedPost, 0, 10)
+    for rows.Next() {
+        feedPost, error := ScanFeedPostRow(rows)
+        if error != nil {
+            Log.LogError(error)
+        } else {
+            feedPosts = append(feedPosts, feedPost)
+        }
+    }
+
+    feedResponse := BlitzMessage.FeedPostFetchResponse {
+        FeedPosts:      feedPosts,
+    }
+    code := BlitzMessage.ResponseCode_RCSuccess
+    response := &BlitzMessage.ServerResponse {
+        ResponseCode:       &code,
+        ResponseType:       &BlitzMessage.ResponseType { FeedPostFetchResponse: &feedResponse },
+    }
+
+    return response
 }
-
-
 
