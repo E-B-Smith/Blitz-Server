@@ -25,7 +25,7 @@ type UserEvent struct {
 func (m *UserEvent) Reset()                    { *m = UserEvent{} }
 func (m *UserEvent) String() string            { return proto.CompactTextString(m) }
 func (*UserEvent) ProtoMessage()               {}
-func (*UserEvent) Descriptor() ([]byte, []int) { return fileDescriptor6, []int{0} }
+func (*UserEvent) Descriptor() ([]byte, []int) { return fileDescriptor7, []int{0} }
 
 func (m *UserEvent) GetTimestamp() *Timestamp {
 	if m != nil {
@@ -63,7 +63,7 @@ type UserEventBatch struct {
 func (m *UserEventBatch) Reset()                    { *m = UserEventBatch{} }
 func (m *UserEventBatch) String() string            { return proto.CompactTextString(m) }
 func (*UserEventBatch) ProtoMessage()               {}
-func (*UserEventBatch) Descriptor() ([]byte, []int) { return fileDescriptor6, []int{1} }
+func (*UserEventBatch) Descriptor() ([]byte, []int) { return fileDescriptor7, []int{1} }
 
 func (m *UserEventBatch) GetUserEvents() []*UserEvent {
 	if m != nil {
@@ -80,7 +80,7 @@ type UserEventBatchResponse struct {
 func (m *UserEventBatchResponse) Reset()                    { *m = UserEventBatchResponse{} }
 func (m *UserEventBatchResponse) String() string            { return proto.CompactTextString(m) }
 func (*UserEventBatchResponse) ProtoMessage()               {}
-func (*UserEventBatchResponse) Descriptor() ([]byte, []int) { return fileDescriptor6, []int{2} }
+func (*UserEventBatchResponse) Descriptor() ([]byte, []int) { return fileDescriptor7, []int{2} }
 
 func (m *UserEventBatchResponse) GetLatestEventUpdate() *Timestamp {
 	if m != nil {
@@ -95,7 +95,7 @@ func init() {
 	proto.RegisterType((*UserEventBatchResponse)(nil), "BlitzMessage.UserEventBatchResponse")
 }
 
-var fileDescriptor6 = []byte{
+var fileDescriptor7 = []byte{
 	// 265 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x09, 0x6e, 0x88, 0x02, 0xff, 0x7c, 0x8f, 0x41, 0x4b, 0xc3, 0x40,
 	0x10, 0x85, 0xdd, 0x44, 0xc1, 0x4c, 0x55, 0xec, 0x1e, 0xea, 0x12, 0x2f, 0x21, 0xa7, 0xa0, 0x18,

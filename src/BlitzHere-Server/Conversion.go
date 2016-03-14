@@ -30,6 +30,9 @@ func Int32PtrFromNullInt64(v sql.NullInt64) *int32 {
 }
 
 
+func Int32Ptr(i int32) *int32 {
+    return &i
+}
 func Int32PtrFromInt32(i int32) *int32 {
     return &i
 }
@@ -106,6 +109,10 @@ func StringPtrFromString(s string) *string {
     return &s
 }
 
+
+func BoolPtr(val bool) *bool {
+    return &val;
+}
 
 func BoolPtrFromBool(val bool) *bool {
     return &val;

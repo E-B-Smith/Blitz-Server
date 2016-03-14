@@ -11,6 +11,7 @@ option (google.protobuf.objectivec_file_options).relax_camel_case = true;
 
 
 import "Types.proto";
+import "EntityTags.proto";
 //----------------------------------------------------------------------------------------
 //
 //                                                                               Feed Post
@@ -41,13 +42,6 @@ enum FeedPostStatus {
 }
 
 
-message FeedPostVote {
-  optional string         tagName      = 1;
-  optional int32          voteCount    = 2;
-  optional bool           userHasVoted = 3;
-}
-
-
 message FeedPost {
   optional string         postID          = 1;
   optional string         parentID        = 2;
@@ -59,8 +53,7 @@ message FeedPost {
   optional Timespan       timespanActive  = 8;
   optional string         headlineText    = 9;
   optional string         bodyText        = 10;
-  repeated string         topicTags       = 11;
-  repeated FeedPostVote   votes           = 12;
+  repeated EntityTag      postTags        = 12;
   repeated FeedPost       replies         = 13;   //  Top replies or survey choices.
   optional bool           mayAddReply     = 14;
   optional bool           mayChooseMulitpleReplies = 15;
@@ -93,21 +86,4 @@ message FeedPostFetchRequest {
 message FeedPostFetchResponse {
   repeated FeedPost  feedPosts = 1;    //  Feed posts in 'top' order.
 }
-
-
-
-
-enum EntityType {
-  ETUnknown     = 0;
-  ETUser        = 1;
-  ETFeedPost    = 2;
-}
-
-
-message EntityVoteRequest {
-  optional string       entityID   = 1;
-  optional EntityType   entityType = 2;
-  repeated string       voteTags   = 3;
-}
-
 

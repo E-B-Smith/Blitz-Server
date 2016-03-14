@@ -65,7 +65,7 @@ func WriteFeedPost(feedPost *BlitzMessage.FeedPost) error {
         return error
     }
 
-    SetEntityTags(*feedPost.PostID, *feedPost.PostID, BlitzMessage.EntityType_ETFeedPost, feedPost.TopicTags)
+    SetEntityTags(*feedPost.UserID, feedPost.PostTags)
 
     return error
 }
@@ -149,7 +149,7 @@ func ScanFeedPostRow(row RowScanner) (*BlitzMessage.FeedPost, error) {
         MayChooseMulitpleReplies:   BoolPtrFromNullBool(mayChooseMulitpleReplies),
     }
 
-    feedPost.TopicTags = GetEntityTags(*feedPost.PostID, *feedPost.PostID, BlitzMessage.EntityType_ETFeedPost)
+    feedPost.PostTags = GetEntityTags(*feedPost.UserID, *feedPost.PostID, BlitzMessage.EntityType_ETFeedPost)
 
     return &feedPost, nil
 }

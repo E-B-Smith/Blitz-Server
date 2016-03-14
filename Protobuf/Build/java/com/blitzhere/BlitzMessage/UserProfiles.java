@@ -6309,23 +6309,28 @@ public final class UserProfiles {
         int index);
 
     /**
-     * <code>repeated string expertiseTags = 14;</code>
+     * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
      */
-    com.google.protobuf.ProtocolStringList
+    java.util.List<com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag> 
         getExpertiseTagsList();
     /**
-     * <code>repeated string expertiseTags = 14;</code>
+     * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
+     */
+    com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag getExpertiseTags(int index);
+    /**
+     * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
      */
     int getExpertiseTagsCount();
     /**
-     * <code>repeated string expertiseTags = 14;</code>
+     * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
      */
-    java.lang.String getExpertiseTags(int index);
+    java.util.List<? extends com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTagOrBuilder> 
+        getExpertiseTagsOrBuilderList();
     /**
-     * <code>repeated string expertiseTags = 14;</code>
+     * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
      */
-    com.google.protobuf.ByteString
-        getExpertiseTagsBytes(int index);
+    com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTagOrBuilder getExpertiseTagsOrBuilder(
+        int index);
 
     /**
      * <code>repeated string interestTags = 15;</code>
@@ -6539,12 +6544,11 @@ public final class UserProfiles {
               break;
             }
             case 114: {
-              com.google.protobuf.ByteString bs = input.readBytes();
               if (!((mutable_bitField0_ & 0x00002000) == 0x00002000)) {
-                expertiseTags_ = new com.google.protobuf.LazyStringArrayList();
+                expertiseTags_ = new java.util.ArrayList<com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag>();
                 mutable_bitField0_ |= 0x00002000;
               }
-              expertiseTags_.add(bs);
+              expertiseTags_.add(input.readMessage(com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag.PARSER, extensionRegistry));
               break;
             }
             case 122: {
@@ -6586,7 +6590,7 @@ public final class UserProfiles {
           education_ = java.util.Collections.unmodifiableList(education_);
         }
         if (((mutable_bitField0_ & 0x00002000) == 0x00002000)) {
-          expertiseTags_ = expertiseTags_.getUnmodifiableView();
+          expertiseTags_ = java.util.Collections.unmodifiableList(expertiseTags_);
         }
         if (((mutable_bitField0_ & 0x00004000) == 0x00004000)) {
           interestTags_ = interestTags_.getUnmodifiableView();
@@ -6997,32 +7001,38 @@ public final class UserProfiles {
     }
 
     public static final int EXPERTISETAGS_FIELD_NUMBER = 14;
-    private com.google.protobuf.LazyStringList expertiseTags_;
+    private java.util.List<com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag> expertiseTags_;
     /**
-     * <code>repeated string expertiseTags = 14;</code>
+     * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
      */
-    public com.google.protobuf.ProtocolStringList
-        getExpertiseTagsList() {
+    public java.util.List<com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag> getExpertiseTagsList() {
       return expertiseTags_;
     }
     /**
-     * <code>repeated string expertiseTags = 14;</code>
+     * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
+     */
+    public java.util.List<? extends com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTagOrBuilder> 
+        getExpertiseTagsOrBuilderList() {
+      return expertiseTags_;
+    }
+    /**
+     * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
      */
     public int getExpertiseTagsCount() {
       return expertiseTags_.size();
     }
     /**
-     * <code>repeated string expertiseTags = 14;</code>
+     * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
      */
-    public java.lang.String getExpertiseTags(int index) {
+    public com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag getExpertiseTags(int index) {
       return expertiseTags_.get(index);
     }
     /**
-     * <code>repeated string expertiseTags = 14;</code>
+     * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
      */
-    public com.google.protobuf.ByteString
-        getExpertiseTagsBytes(int index) {
-      return expertiseTags_.getByteString(index);
+    public com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTagOrBuilder getExpertiseTagsOrBuilder(
+        int index) {
+      return expertiseTags_.get(index);
     }
 
     public static final int INTERESTTAGS_FIELD_NUMBER = 15;
@@ -7110,7 +7120,7 @@ public final class UserProfiles {
       currentEmployment_ = com.blitzhere.BlitzMessage.UserProfiles.Employment.getDefaultInstance();
       employment_ = java.util.Collections.emptyList();
       education_ = java.util.Collections.emptyList();
-      expertiseTags_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      expertiseTags_ = java.util.Collections.emptyList();
       interestTags_ = com.google.protobuf.LazyStringArrayList.EMPTY;
       backgroundSummary_ = "";
     }
@@ -7221,7 +7231,7 @@ public final class UserProfiles {
         output.writeMessage(13, education_.get(i));
       }
       for (int i = 0; i < expertiseTags_.size(); i++) {
-        output.writeBytes(14, expertiseTags_.getByteString(i));
+        output.writeMessage(14, expertiseTags_.get(i));
       }
       for (int i = 0; i < interestTags_.size(); i++) {
         output.writeBytes(15, interestTags_.getByteString(i));
@@ -7290,14 +7300,9 @@ public final class UserProfiles {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(13, education_.get(i));
       }
-      {
-        int dataSize = 0;
-        for (int i = 0; i < expertiseTags_.size(); i++) {
-          dataSize += com.google.protobuf.CodedOutputStream
-            .computeBytesSizeNoTag(expertiseTags_.getByteString(i));
-        }
-        size += dataSize;
-        size += 1 * getExpertiseTagsList().size();
+      for (int i = 0; i < expertiseTags_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(14, expertiseTags_.get(i));
       }
       {
         int dataSize = 0;
@@ -7430,6 +7435,7 @@ public final class UserProfiles {
           getCurrentEmploymentFieldBuilder();
           getEmploymentFieldBuilder();
           getEducationFieldBuilder();
+          getExpertiseTagsFieldBuilder();
         }
       }
       private static Builder create() {
@@ -7500,8 +7506,12 @@ public final class UserProfiles {
         } else {
           educationBuilder_.clear();
         }
-        expertiseTags_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-        bitField0_ = (bitField0_ & ~0x00002000);
+        if (expertiseTagsBuilder_ == null) {
+          expertiseTags_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00002000);
+        } else {
+          expertiseTagsBuilder_.clear();
+        }
         interestTags_ = com.google.protobuf.LazyStringArrayList.EMPTY;
         bitField0_ = (bitField0_ & ~0x00004000);
         backgroundSummary_ = "";
@@ -7627,11 +7637,15 @@ public final class UserProfiles {
         } else {
           result.education_ = educationBuilder_.build();
         }
-        if (((bitField0_ & 0x00002000) == 0x00002000)) {
-          expertiseTags_ = expertiseTags_.getUnmodifiableView();
-          bitField0_ = (bitField0_ & ~0x00002000);
+        if (expertiseTagsBuilder_ == null) {
+          if (((bitField0_ & 0x00002000) == 0x00002000)) {
+            expertiseTags_ = java.util.Collections.unmodifiableList(expertiseTags_);
+            bitField0_ = (bitField0_ & ~0x00002000);
+          }
+          result.expertiseTags_ = expertiseTags_;
+        } else {
+          result.expertiseTags_ = expertiseTagsBuilder_.build();
         }
-        result.expertiseTags_ = expertiseTags_;
         if (((bitField0_ & 0x00004000) == 0x00004000)) {
           interestTags_ = interestTags_.getUnmodifiableView();
           bitField0_ = (bitField0_ & ~0x00004000);
@@ -7815,15 +7829,31 @@ public final class UserProfiles {
             }
           }
         }
-        if (!other.expertiseTags_.isEmpty()) {
-          if (expertiseTags_.isEmpty()) {
-            expertiseTags_ = other.expertiseTags_;
-            bitField0_ = (bitField0_ & ~0x00002000);
-          } else {
-            ensureExpertiseTagsIsMutable();
-            expertiseTags_.addAll(other.expertiseTags_);
+        if (expertiseTagsBuilder_ == null) {
+          if (!other.expertiseTags_.isEmpty()) {
+            if (expertiseTags_.isEmpty()) {
+              expertiseTags_ = other.expertiseTags_;
+              bitField0_ = (bitField0_ & ~0x00002000);
+            } else {
+              ensureExpertiseTagsIsMutable();
+              expertiseTags_.addAll(other.expertiseTags_);
+            }
+            onChanged();
           }
-          onChanged();
+        } else {
+          if (!other.expertiseTags_.isEmpty()) {
+            if (expertiseTagsBuilder_.isEmpty()) {
+              expertiseTagsBuilder_.dispose();
+              expertiseTagsBuilder_ = null;
+              expertiseTags_ = other.expertiseTags_;
+              bitField0_ = (bitField0_ & ~0x00002000);
+              expertiseTagsBuilder_ = 
+                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                   getExpertiseTagsFieldBuilder() : null;
+            } else {
+              expertiseTagsBuilder_.addAllMessages(other.expertiseTags_);
+            }
+          }
         }
         if (!other.interestTags_.isEmpty()) {
           if (interestTags_.isEmpty()) {
@@ -9807,97 +9837,244 @@ public final class UserProfiles {
         return educationBuilder_;
       }
 
-      private com.google.protobuf.LazyStringList expertiseTags_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      private java.util.List<com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag> expertiseTags_ =
+        java.util.Collections.emptyList();
       private void ensureExpertiseTagsIsMutable() {
         if (!((bitField0_ & 0x00002000) == 0x00002000)) {
-          expertiseTags_ = new com.google.protobuf.LazyStringArrayList(expertiseTags_);
+          expertiseTags_ = new java.util.ArrayList<com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag>(expertiseTags_);
           bitField0_ |= 0x00002000;
          }
       }
+
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag, com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag.Builder, com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTagOrBuilder> expertiseTagsBuilder_;
+
       /**
-       * <code>repeated string expertiseTags = 14;</code>
+       * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
        */
-      public com.google.protobuf.ProtocolStringList
-          getExpertiseTagsList() {
-        return expertiseTags_.getUnmodifiableView();
+      public java.util.List<com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag> getExpertiseTagsList() {
+        if (expertiseTagsBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(expertiseTags_);
+        } else {
+          return expertiseTagsBuilder_.getMessageList();
+        }
       }
       /**
-       * <code>repeated string expertiseTags = 14;</code>
+       * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
        */
       public int getExpertiseTagsCount() {
-        return expertiseTags_.size();
+        if (expertiseTagsBuilder_ == null) {
+          return expertiseTags_.size();
+        } else {
+          return expertiseTagsBuilder_.getCount();
+        }
       }
       /**
-       * <code>repeated string expertiseTags = 14;</code>
+       * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
        */
-      public java.lang.String getExpertiseTags(int index) {
-        return expertiseTags_.get(index);
+      public com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag getExpertiseTags(int index) {
+        if (expertiseTagsBuilder_ == null) {
+          return expertiseTags_.get(index);
+        } else {
+          return expertiseTagsBuilder_.getMessage(index);
+        }
       }
       /**
-       * <code>repeated string expertiseTags = 14;</code>
-       */
-      public com.google.protobuf.ByteString
-          getExpertiseTagsBytes(int index) {
-        return expertiseTags_.getByteString(index);
-      }
-      /**
-       * <code>repeated string expertiseTags = 14;</code>
+       * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
        */
       public Builder setExpertiseTags(
-          int index, java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureExpertiseTagsIsMutable();
-        expertiseTags_.set(index, value);
-        onChanged();
+          int index, com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag value) {
+        if (expertiseTagsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureExpertiseTagsIsMutable();
+          expertiseTags_.set(index, value);
+          onChanged();
+        } else {
+          expertiseTagsBuilder_.setMessage(index, value);
+        }
         return this;
       }
       /**
-       * <code>repeated string expertiseTags = 14;</code>
+       * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
+       */
+      public Builder setExpertiseTags(
+          int index, com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag.Builder builderForValue) {
+        if (expertiseTagsBuilder_ == null) {
+          ensureExpertiseTagsIsMutable();
+          expertiseTags_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          expertiseTagsBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
+       */
+      public Builder addExpertiseTags(com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag value) {
+        if (expertiseTagsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureExpertiseTagsIsMutable();
+          expertiseTags_.add(value);
+          onChanged();
+        } else {
+          expertiseTagsBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
        */
       public Builder addExpertiseTags(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureExpertiseTagsIsMutable();
-        expertiseTags_.add(value);
-        onChanged();
+          int index, com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag value) {
+        if (expertiseTagsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureExpertiseTagsIsMutable();
+          expertiseTags_.add(index, value);
+          onChanged();
+        } else {
+          expertiseTagsBuilder_.addMessage(index, value);
+        }
         return this;
       }
       /**
-       * <code>repeated string expertiseTags = 14;</code>
+       * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
+       */
+      public Builder addExpertiseTags(
+          com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag.Builder builderForValue) {
+        if (expertiseTagsBuilder_ == null) {
+          ensureExpertiseTagsIsMutable();
+          expertiseTags_.add(builderForValue.build());
+          onChanged();
+        } else {
+          expertiseTagsBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
+       */
+      public Builder addExpertiseTags(
+          int index, com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag.Builder builderForValue) {
+        if (expertiseTagsBuilder_ == null) {
+          ensureExpertiseTagsIsMutable();
+          expertiseTags_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          expertiseTagsBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
        */
       public Builder addAllExpertiseTags(
-          java.lang.Iterable<java.lang.String> values) {
-        ensureExpertiseTagsIsMutable();
-        com.google.protobuf.AbstractMessageLite.Builder.addAll(
-            values, expertiseTags_);
-        onChanged();
+          java.lang.Iterable<? extends com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag> values) {
+        if (expertiseTagsBuilder_ == null) {
+          ensureExpertiseTagsIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, expertiseTags_);
+          onChanged();
+        } else {
+          expertiseTagsBuilder_.addAllMessages(values);
+        }
         return this;
       }
       /**
-       * <code>repeated string expertiseTags = 14;</code>
+       * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
        */
       public Builder clearExpertiseTags() {
-        expertiseTags_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-        bitField0_ = (bitField0_ & ~0x00002000);
-        onChanged();
+        if (expertiseTagsBuilder_ == null) {
+          expertiseTags_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00002000);
+          onChanged();
+        } else {
+          expertiseTagsBuilder_.clear();
+        }
         return this;
       }
       /**
-       * <code>repeated string expertiseTags = 14;</code>
+       * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
        */
-      public Builder addExpertiseTagsBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureExpertiseTagsIsMutable();
-        expertiseTags_.add(value);
-        onChanged();
+      public Builder removeExpertiseTags(int index) {
+        if (expertiseTagsBuilder_ == null) {
+          ensureExpertiseTagsIsMutable();
+          expertiseTags_.remove(index);
+          onChanged();
+        } else {
+          expertiseTagsBuilder_.remove(index);
+        }
         return this;
+      }
+      /**
+       * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
+       */
+      public com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag.Builder getExpertiseTagsBuilder(
+          int index) {
+        return getExpertiseTagsFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
+       */
+      public com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTagOrBuilder getExpertiseTagsOrBuilder(
+          int index) {
+        if (expertiseTagsBuilder_ == null) {
+          return expertiseTags_.get(index);  } else {
+          return expertiseTagsBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
+       */
+      public java.util.List<? extends com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTagOrBuilder> 
+           getExpertiseTagsOrBuilderList() {
+        if (expertiseTagsBuilder_ != null) {
+          return expertiseTagsBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(expertiseTags_);
+        }
+      }
+      /**
+       * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
+       */
+      public com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag.Builder addExpertiseTagsBuilder() {
+        return getExpertiseTagsFieldBuilder().addBuilder(
+            com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
+       */
+      public com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag.Builder addExpertiseTagsBuilder(
+          int index) {
+        return getExpertiseTagsFieldBuilder().addBuilder(
+            index, com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
+       */
+      public java.util.List<com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag.Builder> 
+           getExpertiseTagsBuilderList() {
+        return getExpertiseTagsFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag, com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag.Builder, com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTagOrBuilder> 
+          getExpertiseTagsFieldBuilder() {
+        if (expertiseTagsBuilder_ == null) {
+          expertiseTagsBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+              com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag, com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag.Builder, com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTagOrBuilder>(
+                  expertiseTags_,
+                  ((bitField0_ & 0x00002000) == 0x00002000),
+                  getParentForChildren(),
+                  isClean());
+          expertiseTags_ = null;
+        }
+        return expertiseTagsBuilder_;
       }
 
       private com.google.protobuf.LazyStringList interestTags_ = com.google.protobuf.LazyStringArrayList.EMPTY;
@@ -13743,61 +13920,62 @@ public final class UserProfiles {
   static {
     java.lang.String[] descriptorData = {
       "\n\022UserProfiles.proto\022\014BlitzMessage\032\033obje" +
-      "ctivec-descriptor.proto\032\013Types.proto\"\305\001\n" +
-      "\016SocialIdentity\022\025\n\rsocialService\030\001 \002(\t\022\020" +
-      "\n\010socialID\030\002 \001(\t\022\020\n\010userName\030\003 \001(\t\022\023\n\013di" +
-      "splayName\030\004 \001(\t\022\017\n\007userURI\030\005 \001(\t\022\021\n\tauth" +
-      "Token\030\006 \001(\t\022+\n\nauthExpire\030\007 \001(\0132\027.BlitzM" +
-      "essage.Timestamp\022\022\n\nauthSecret\030\010 \001(\t\"b\n\013" +
-      "ContactInfo\022.\n\013contactType\030\001 \002(\0162\031.Blitz" +
-      "Message.ContactType\022\017\n\007contact\030\002 \002(\t\022\022\n\n" +
-      "isVerified\030\003 \001(\010\"\222\001\n\nEmployment\022\020\n\010jobTi",
-      "tle\030\001 \001(\t\022\023\n\013companyName\030\002 \001(\t\022\020\n\010locati" +
-      "on\030\003 \001(\t\022\020\n\010industry\030\004 \001(\t\022(\n\010timespan\030\005" +
-      " \001(\0132\026.BlitzMessage.Timespan\022\017\n\007summary\030" +
-      "\006 \001(\t\"k\n\tEducation\022\022\n\nschoolName\030\001 \001(\t\022\016" +
-      "\n\006degree\030\002 \001(\t\022\020\n\010emphasis\030\003 \001(\t\022(\n\010time" +
-      "span\030\004 \001(\0132\026.BlitzMessage.Timespan\"\263\001\n\tI" +
-      "mageData\0220\n\014imageContent\030\001 \001(\0162\032.BlitzMe" +
-      "ssage.ImageContent\022\022\n\nimageBytes\030\002 \001(\014\022\023" +
-      "\n\013contentType\030\003 \001(\t\022\020\n\010imageURL\030\004 \001(\t\022*\n" +
-      "\tdateAdded\030\005 \001(\0132\027.BlitzMessage.Timestam",
-      "p\022\r\n\005crc32\030\006 \001(\003\"\354\004\n\013UserProfile\022\016\n\006user" +
-      "ID\030\001 \001(\t\022,\n\nuserStatus\030\002 \001(\0162\030.BlitzMess" +
-      "age.UserStatus\022-\n\014creationDate\030\003 \001(\0132\027.B" +
-      "litzMessage.Timestamp\022)\n\010lastSeen\030\004 \001(\0132" +
-      "\027.BlitzMessage.Timestamp\022\014\n\004name\030\005 \001(\t\022$" +
-      "\n\006gender\030\006 \001(\0162\024.BlitzMessage.Gender\022)\n\010" +
-      "birthday\030\007 \001(\0132\027.BlitzMessage.Timestamp\022" +
-      "\'\n\006images\030\010 \003(\0132\027.BlitzMessage.ImageData" +
-      "\0226\n\020socialIdentities\030\t \003(\0132\034.BlitzMessag" +
-      "e.SocialIdentity\022.\n\013contactInfo\030\n \003(\0132\031.",
-      "BlitzMessage.ContactInfo\0223\n\021currentEmplo" +
-      "yment\030\013 \001(\0132\030.BlitzMessage.Employment\022,\n" +
-      "\nemployment\030\014 \003(\0132\030.BlitzMessage.Employm" +
-      "ent\022*\n\teducation\030\r \003(\0132\027.BlitzMessage.Ed" +
-      "ucation\022\025\n\rexpertiseTags\030\016 \003(\t\022\024\n\014intere" +
-      "stTags\030\017 \003(\t\022\031\n\021backgroundSummary\030\020 \001(\t\"" +
-      "9\n\013ImageUpload\022*\n\timageData\030\001 \003(\0132\027.Blit" +
-      "zMessage.ImageData\"@\n\021UserProfileUpdate\022" +
-      "+\n\010profiles\030\001 \003(\0132\031.BlitzMessage.UserPro" +
-      "file\"#\n\020UserProfileQuery\022\017\n\007userIDs\030\001 \003(",
-      "\t\"\246\001\n\023ConfirmationRequest\022.\n\013contactInfo" +
-      "\030\001 \001(\0132\031.BlitzMessage.ContactInfo\022.\n\013use" +
-      "rProfile\030\002 \001(\0132\031.BlitzMessage.UserProfil" +
-      "e\022\030\n\020confirmationCode\030\003 \001(\t\022\025\n\rinviterUs" +
-      "erID\030\004 \001(\t\"F\n\027ProfilesFromContactInfo\022+\n" +
-      "\010profiles\030\001 \003(\0132\031.BlitzMessage.UserProfi" +
-      "le*Z\n\013ContactType\022\r\n\tCTUnknown\020\000\022\016\n\nCTPh" +
-      "oneSMS\020\001\022\013\n\007CTEmail\020\002\022\n\n\006CTChat\020\003\022\023\n\017CTS" +
-      "ocialService\020\004*j\n\nUserStatus\022\r\n\tUSUnknow" +
-      "n\020\000\022\r\n\tUSBlocked\020\001\022\r\n\tUSInvited\020\002\022\014\n\010USA",
-      "ctive\020\003\022\020\n\014USConfirming\020\004\022\017\n\013USConfirmed" +
-      "\020\005*:\n\006Gender\022\014\n\010GUnknown\020\000\022\013\n\007GFemale\020\001\022" +
-      "\t\n\005GMale\020\002\022\n\n\006GOther\020\003*F\n\014ImageContent\022\r" +
-      "\n\tICUnknown\020\000\022\021\n\rICUserProfile\020\001\022\024\n\020ICUs" +
-      "erBackground\020\002B/\n\032com.blitzhere.BlitzMes" +
-      "sage\210\001\001\322>\002\n\000\322>\003\022\001B\322>\002\030\001"
+      "ctivec-descriptor.proto\032\013Types.proto\032\020En" +
+      "tityTags.proto\"\305\001\n\016SocialIdentity\022\025\n\rsoc" +
+      "ialService\030\001 \002(\t\022\020\n\010socialID\030\002 \001(\t\022\020\n\010us" +
+      "erName\030\003 \001(\t\022\023\n\013displayName\030\004 \001(\t\022\017\n\007use" +
+      "rURI\030\005 \001(\t\022\021\n\tauthToken\030\006 \001(\t\022+\n\nauthExp" +
+      "ire\030\007 \001(\0132\027.BlitzMessage.Timestamp\022\022\n\nau" +
+      "thSecret\030\010 \001(\t\"b\n\013ContactInfo\022.\n\013contact" +
+      "Type\030\001 \002(\0162\031.BlitzMessage.ContactType\022\017\n" +
+      "\007contact\030\002 \002(\t\022\022\n\nisVerified\030\003 \001(\010\"\222\001\n\nE",
+      "mployment\022\020\n\010jobTitle\030\001 \001(\t\022\023\n\013companyNa" +
+      "me\030\002 \001(\t\022\020\n\010location\030\003 \001(\t\022\020\n\010industry\030\004" +
+      " \001(\t\022(\n\010timespan\030\005 \001(\0132\026.BlitzMessage.Ti" +
+      "mespan\022\017\n\007summary\030\006 \001(\t\"k\n\tEducation\022\022\n\n" +
+      "schoolName\030\001 \001(\t\022\016\n\006degree\030\002 \001(\t\022\020\n\010emph" +
+      "asis\030\003 \001(\t\022(\n\010timespan\030\004 \001(\0132\026.BlitzMess" +
+      "age.Timespan\"\263\001\n\tImageData\0220\n\014imageConte" +
+      "nt\030\001 \001(\0162\032.BlitzMessage.ImageContent\022\022\n\n" +
+      "imageBytes\030\002 \001(\014\022\023\n\013contentType\030\003 \001(\t\022\020\n" +
+      "\010imageURL\030\004 \001(\t\022*\n\tdateAdded\030\005 \001(\0132\027.Bli",
+      "tzMessage.Timestamp\022\r\n\005crc32\030\006 \001(\003\"\205\005\n\013U" +
+      "serProfile\022\016\n\006userID\030\001 \001(\t\022,\n\nuserStatus" +
+      "\030\002 \001(\0162\030.BlitzMessage.UserStatus\022-\n\014crea" +
+      "tionDate\030\003 \001(\0132\027.BlitzMessage.Timestamp\022" +
+      ")\n\010lastSeen\030\004 \001(\0132\027.BlitzMessage.Timesta" +
+      "mp\022\014\n\004name\030\005 \001(\t\022$\n\006gender\030\006 \001(\0162\024.Blitz" +
+      "Message.Gender\022)\n\010birthday\030\007 \001(\0132\027.Blitz" +
+      "Message.Timestamp\022\'\n\006images\030\010 \003(\0132\027.Blit" +
+      "zMessage.ImageData\0226\n\020socialIdentities\030\t" +
+      " \003(\0132\034.BlitzMessage.SocialIdentity\022.\n\013co",
+      "ntactInfo\030\n \003(\0132\031.BlitzMessage.ContactIn" +
+      "fo\0223\n\021currentEmployment\030\013 \001(\0132\030.BlitzMes" +
+      "sage.Employment\022,\n\nemployment\030\014 \003(\0132\030.Bl" +
+      "itzMessage.Employment\022*\n\teducation\030\r \003(\013" +
+      "2\027.BlitzMessage.Education\022.\n\rexpertiseTa" +
+      "gs\030\016 \003(\0132\027.BlitzMessage.EntityTag\022\024\n\014int" +
+      "erestTags\030\017 \003(\t\022\031\n\021backgroundSummary\030\020 \001" +
+      "(\t\"9\n\013ImageUpload\022*\n\timageData\030\001 \003(\0132\027.B" +
+      "litzMessage.ImageData\"@\n\021UserProfileUpda" +
+      "te\022+\n\010profiles\030\001 \003(\0132\031.BlitzMessage.User",
+      "Profile\"#\n\020UserProfileQuery\022\017\n\007userIDs\030\001" +
+      " \003(\t\"\246\001\n\023ConfirmationRequest\022.\n\013contactI" +
+      "nfo\030\001 \001(\0132\031.BlitzMessage.ContactInfo\022.\n\013" +
+      "userProfile\030\002 \001(\0132\031.BlitzMessage.UserPro" +
+      "file\022\030\n\020confirmationCode\030\003 \001(\t\022\025\n\rinvite" +
+      "rUserID\030\004 \001(\t\"F\n\027ProfilesFromContactInfo" +
+      "\022+\n\010profiles\030\001 \003(\0132\031.BlitzMessage.UserPr" +
+      "ofile*Z\n\013ContactType\022\r\n\tCTUnknown\020\000\022\016\n\nC" +
+      "TPhoneSMS\020\001\022\013\n\007CTEmail\020\002\022\n\n\006CTChat\020\003\022\023\n\017" +
+      "CTSocialService\020\004*j\n\nUserStatus\022\r\n\tUSUnk",
+      "nown\020\000\022\r\n\tUSBlocked\020\001\022\r\n\tUSInvited\020\002\022\014\n\010" +
+      "USActive\020\003\022\020\n\014USConfirming\020\004\022\017\n\013USConfir" +
+      "med\020\005*:\n\006Gender\022\014\n\010GUnknown\020\000\022\013\n\007GFemale" +
+      "\020\001\022\t\n\005GMale\020\002\022\n\n\006GOther\020\003*F\n\014ImageConten" +
+      "t\022\r\n\tICUnknown\020\000\022\021\n\rICUserProfile\020\001\022\024\n\020I" +
+      "CUserBackground\020\002B/\n\032com.blitzhere.Blitz" +
+      "Message\210\001\001\322>\002\n\000\322>\003\022\001B\322>\002\030\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -13812,6 +13990,7 @@ public final class UserProfiles {
         new com.google.protobuf.Descriptors.FileDescriptor[] {
           google.protobuf.ObjectivecDescriptor.getDescriptor(),
           com.blitzhere.BlitzMessage.Types.getDescriptor(),
+          com.blitzhere.BlitzMessage.EntityTagsOuterClass.getDescriptor(),
         }, assigner);
     internal_static_BlitzMessage_SocialIdentity_descriptor =
       getDescriptor().getMessageTypes().get(0);
@@ -13886,6 +14065,7 @@ public final class UserProfiles {
         .internalUpdateFileDescriptor(descriptor, registry);
     google.protobuf.ObjectivecDescriptor.getDescriptor();
     com.blitzhere.BlitzMessage.Types.getDescriptor();
+    com.blitzhere.BlitzMessage.EntityTagsOuterClass.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)

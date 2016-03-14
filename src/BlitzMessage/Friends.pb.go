@@ -55,7 +55,7 @@ func (x *FriendStatus) UnmarshalJSON(data []byte) error {
 	*x = FriendStatus(value)
 	return nil
 }
-func (FriendStatus) EnumDescriptor() ([]byte, []int) { return fileDescriptor2, []int{0} }
+func (FriendStatus) EnumDescriptor() ([]byte, []int) { return fileDescriptor3, []int{0} }
 
 type Friend struct {
 	FriendID         *string       `protobuf:"bytes,1,req,name=friendID" json:"friendID,omitempty"`
@@ -68,7 +68,7 @@ type Friend struct {
 func (m *Friend) Reset()                    { *m = Friend{} }
 func (m *Friend) String() string            { return proto.CompactTextString(m) }
 func (*Friend) ProtoMessage()               {}
-func (*Friend) Descriptor() ([]byte, []int) { return fileDescriptor2, []int{0} }
+func (*Friend) Descriptor() ([]byte, []int) { return fileDescriptor3, []int{0} }
 
 func (m *Friend) GetFriendID() string {
 	if m != nil && m.FriendID != nil {
@@ -106,7 +106,7 @@ type FriendUpdate struct {
 func (m *FriendUpdate) Reset()                    { *m = FriendUpdate{} }
 func (m *FriendUpdate) String() string            { return proto.CompactTextString(m) }
 func (*FriendUpdate) ProtoMessage()               {}
-func (*FriendUpdate) Descriptor() ([]byte, []int) { return fileDescriptor2, []int{1} }
+func (*FriendUpdate) Descriptor() ([]byte, []int) { return fileDescriptor3, []int{1} }
 
 func (m *FriendUpdate) GetFriends() []*Friend {
 	if m != nil {
@@ -124,7 +124,7 @@ type FriendRequest struct {
 func (m *FriendRequest) Reset()                    { *m = FriendRequest{} }
 func (m *FriendRequest) String() string            { return proto.CompactTextString(m) }
 func (*FriendRequest) ProtoMessage()               {}
-func (*FriendRequest) Descriptor() ([]byte, []int) { return fileDescriptor2, []int{2} }
+func (*FriendRequest) Descriptor() ([]byte, []int) { return fileDescriptor3, []int{2} }
 
 func (m *FriendRequest) GetFriendProfile() *UserProfile {
 	if m != nil {
@@ -153,7 +153,7 @@ type AcceptInviteRequest struct {
 func (m *AcceptInviteRequest) Reset()                    { *m = AcceptInviteRequest{} }
 func (m *AcceptInviteRequest) String() string            { return proto.CompactTextString(m) }
 func (*AcceptInviteRequest) ProtoMessage()               {}
-func (*AcceptInviteRequest) Descriptor() ([]byte, []int) { return fileDescriptor2, []int{3} }
+func (*AcceptInviteRequest) Descriptor() ([]byte, []int) { return fileDescriptor3, []int{3} }
 
 func (m *AcceptInviteRequest) GetUserID() string {
 	if m != nil && m.UserID != nil {
@@ -209,7 +209,7 @@ type AcceptInviteResponse struct {
 func (m *AcceptInviteResponse) Reset()                    { *m = AcceptInviteResponse{} }
 func (m *AcceptInviteResponse) String() string            { return proto.CompactTextString(m) }
 func (*AcceptInviteResponse) ProtoMessage()               {}
-func (*AcceptInviteResponse) Descriptor() ([]byte, []int) { return fileDescriptor2, []int{4} }
+func (*AcceptInviteResponse) Descriptor() ([]byte, []int) { return fileDescriptor3, []int{4} }
 
 func (m *AcceptInviteResponse) GetUserID() string {
 	if m != nil && m.UserID != nil {
@@ -255,7 +255,7 @@ func init() {
 	proto.RegisterEnum("BlitzMessage.FriendStatus", FriendStatus_name, FriendStatus_value)
 }
 
-var fileDescriptor2 = []byte{
+var fileDescriptor3 = []byte{
 	// 430 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x09, 0x6e, 0x88, 0x02, 0xff, 0x9c, 0x92, 0xcf, 0x6e, 0x13, 0x31,
 	0x10, 0xc6, 0xeb, 0x4d, 0x48, 0x93, 0x69, 0x52, 0x56, 0xa6, 0x07, 0xb3, 0x5c, 0xaa, 0x95, 0x90,

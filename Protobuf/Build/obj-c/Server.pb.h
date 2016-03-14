@@ -3,6 +3,7 @@
 #import <ProtocolBuffers/ProtocolBuffers.h>
 
 #import "Types.pb.h"
+#import "EntityTags.pb.h"
 #import "Feed.pb.h"
 #import "Device.pb.h"
 #import "Search.pb.h"
@@ -42,8 +43,10 @@
 @class BEducationBuilder;
 @class BEmployment;
 @class BEmploymentBuilder;
-@class BEntityVoteRequest;
-@class BEntityVoteRequestBuilder;
+@class BEntityTag;
+@class BEntityTagBuilder;
+@class BEntityTags;
+@class BEntityTagsBuilder;
 @class BFeedPost;
 @class BFeedPostBuilder;
 @class BFeedPostFetchRequest;
@@ -54,8 +57,6 @@
 @class BFeedPostUpdateRequestBuilder;
 @class BFeedPostUpdateResponse;
 @class BFeedPostUpdateResponseBuilder;
-@class BFeedPostVote;
-@class BFeedPostVoteBuilder;
 @class BFriend;
 @class BFriendBuilder;
 @class BFriendRequest;
@@ -549,6 +550,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 #define RequestType_feedPostFetchRequest @"feedPostFetchRequest"
 #define RequestType_feedPostUpdateRequest @"feedPostUpdateRequest"
 #define RequestType_autocompleteRequest @"autocompleteRequest"
+#define RequestType_updateEntityTags @"updateEntityTags"
 @interface BRequestType : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
   BOOL hasSessionRequest_:1;
@@ -564,6 +566,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
   BOOL hasFeedPostFetchRequest_:1;
   BOOL hasFeedPostUpdateRequest_:1;
   BOOL hasAutocompleteRequest_:1;
+  BOOL hasUpdateEntityTags_:1;
   BSessionRequest* sessionRequest;
   BUserEventBatch* userEventBatch;
   BUserProfileUpdate* userProfileUpdate;
@@ -577,6 +580,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
   BFeedPostFetchRequest* feedPostFetchRequest;
   BFeedPostUpdateRequest* feedPostUpdateRequest;
   BAutocompleteRequest* autocompleteRequest;
+  BEntityTags* updateEntityTags;
 }
 - (BOOL) hasSessionRequest;
 - (BOOL) hasUserEventBatch;
@@ -591,6 +595,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BOOL) hasFeedPostFetchRequest;
 - (BOOL) hasFeedPostUpdateRequest;
 - (BOOL) hasAutocompleteRequest;
+- (BOOL) hasUpdateEntityTags;
 @property (readonly, strong) BSessionRequest* sessionRequest;
 @property (readonly, strong) BUserEventBatch* userEventBatch;
 @property (readonly, strong) BUserProfileUpdate* userProfileUpdate;
@@ -604,6 +609,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 @property (readonly, strong) BFeedPostFetchRequest* feedPostFetchRequest;
 @property (readonly, strong) BFeedPostUpdateRequest* feedPostUpdateRequest;
 @property (readonly, strong) BAutocompleteRequest* autocompleteRequest;
+@property (readonly, strong) BEntityTags* updateEntityTags;
 
 + (instancetype) defaultInstance;
 - (instancetype) defaultInstance;
@@ -730,6 +736,13 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BRequestTypeBuilder*) setAutocompleteRequestBuilder:(BAutocompleteRequestBuilder*) builderForValue;
 - (BRequestTypeBuilder*) mergeAutocompleteRequest:(BAutocompleteRequest*) value;
 - (BRequestTypeBuilder*) clearAutocompleteRequest;
+
+- (BOOL) hasUpdateEntityTags;
+- (BEntityTags*) updateEntityTags;
+- (BRequestTypeBuilder*) setUpdateEntityTags:(BEntityTags*) value;
+- (BRequestTypeBuilder*) setUpdateEntityTagsBuilder:(BEntityTagsBuilder*) builderForValue;
+- (BRequestTypeBuilder*) mergeUpdateEntityTags:(BEntityTags*) value;
+- (BRequestTypeBuilder*) clearUpdateEntityTags;
 @end
 
 #define ServerRequest_sessionToken @"sessionToken"

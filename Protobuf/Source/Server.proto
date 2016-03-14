@@ -11,6 +11,7 @@ option (google.protobuf.objectivec_file_options).relax_camel_case = true;
 
 
 import "Types.proto";
+import "EntityTags.proto";
 import "Feed.proto";
 import "Device.proto";
 import "Search.proto";
@@ -84,6 +85,7 @@ message RequestType {
   optional FeedPostFetchRequest     feedPostFetchRequest  = 11;
   optional FeedPostUpdateRequest    feedPostUpdateRequest = 12;
   optional AutocompleteRequest      autocompleteRequest   = 13;
+  optional EntityTags               updateEntityTags      = 14;
 }
 
 

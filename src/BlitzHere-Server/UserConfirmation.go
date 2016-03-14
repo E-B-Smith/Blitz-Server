@@ -33,6 +33,12 @@ func UserIsConfirming(session *Session, confirmation *BlitzMessage.ConfirmationR
 
     var verified bool = false
 
+    if  confirmation.ContactInfo == nil ||
+        confirmation.ContactInfo.Contact == nil ||
+        confirmation.UserProfile == nil {
+        return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, nil)
+    }
+
     profile := confirmation.UserProfile;
     Log.Debugf("Confirmation contact: %+v.", confirmation.ContactInfo.Contact)
     Log.Debugf("Confirming profile:\n%+v.", profile)
@@ -50,9 +56,12 @@ func UserIsConfirming(session *Session, confirmation *BlitzMessage.ConfirmationR
 
     var error error = nil
 
-    if ! verified {
-        error = errors.New("Error: Didn't verify contact detail with profile.");
-    } else {
+    if config.TestingEnabled && strings.HasPrefix(*confirmation.ContactInfo.Contact, "555") {
+
+        error = nil
+        verified = true
+
+    } else if verified {
 
         code := "XXXX"
         if  confirmation.ConfirmationCode != nil &&
@@ -69,7 +78,12 @@ func UserIsConfirming(session *Session, confirmation *BlitzMessage.ConfirmationR
             verified = false
         }
 
+    } else {
+
+        error = errors.New("Error: Didn't verify contact detail with profile.");
+
     }
+
 
     if ! verified {
         Log.LogError(error)
@@ -187,9 +201,12 @@ func UserConfirmation(session *Session, confirmation *BlitzMessage.ConfirmationR
             if error != nil {
                 return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, errors.New("A valid phone number is required."))
             }
-            error = Util.SendSMS(phone, confirmationMessage.String())
-            if error != nil {
-                return ServerResponseForError(BlitzMessage.ResponseCode_RCServerError, error)
+            if config.TestingEnabled && strings.HasPrefix(phone, "555") {
+            } else {
+                error = Util.SendSMS(phone, confirmationMessage.String())
+                if error != nil {
+                    return ServerResponseForError(BlitzMessage.ResponseCode_RCServerError, error)
+                }
             }
 
         default:

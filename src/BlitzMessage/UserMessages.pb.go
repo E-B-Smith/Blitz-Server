@@ -49,7 +49,7 @@ func (x *UserMessageType) UnmarshalJSON(data []byte) error {
 	*x = UserMessageType(value)
 	return nil
 }
-func (UserMessageType) EnumDescriptor() ([]byte, []int) { return fileDescriptor7, []int{0} }
+func (UserMessageType) EnumDescriptor() ([]byte, []int) { return fileDescriptor8, []int{0} }
 
 type UserMessageStatus int32
 
@@ -86,7 +86,7 @@ func (x *UserMessageStatus) UnmarshalJSON(data []byte) error {
 	*x = UserMessageStatus(value)
 	return nil
 }
-func (UserMessageStatus) EnumDescriptor() ([]byte, []int) { return fileDescriptor7, []int{1} }
+func (UserMessageStatus) EnumDescriptor() ([]byte, []int) { return fileDescriptor8, []int{1} }
 
 type UserMessage struct {
 	MessageID        *string            `protobuf:"bytes,1,opt,name=messageID" json:"messageID,omitempty"`
@@ -106,7 +106,7 @@ type UserMessage struct {
 func (m *UserMessage) Reset()                    { *m = UserMessage{} }
 func (m *UserMessage) String() string            { return proto.CompactTextString(m) }
 func (*UserMessage) ProtoMessage()               {}
-func (*UserMessage) Descriptor() ([]byte, []int) { return fileDescriptor7, []int{0} }
+func (*UserMessage) Descriptor() ([]byte, []int) { return fileDescriptor8, []int{0} }
 
 func (m *UserMessage) GetMessageID() string {
 	if m != nil && m.MessageID != nil {
@@ -194,7 +194,7 @@ type UserMessageUpdate struct {
 func (m *UserMessageUpdate) Reset()                    { *m = UserMessageUpdate{} }
 func (m *UserMessageUpdate) String() string            { return proto.CompactTextString(m) }
 func (*UserMessageUpdate) ProtoMessage()               {}
-func (*UserMessageUpdate) Descriptor() ([]byte, []int) { return fileDescriptor7, []int{1} }
+func (*UserMessageUpdate) Descriptor() ([]byte, []int) { return fileDescriptor8, []int{1} }
 
 func (m *UserMessageUpdate) GetTimespan() *Timespan {
 	if m != nil {
@@ -217,7 +217,7 @@ func init() {
 	proto.RegisterEnum("BlitzMessage.UserMessageStatus", UserMessageStatus_name, UserMessageStatus_value)
 }
 
-var fileDescriptor7 = []byte{
+var fileDescriptor8 = []byte{
 	// 417 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x09, 0x6e, 0x88, 0x02, 0xff, 0x7c, 0x91, 0xcd, 0x6e, 0xd4, 0x30,
 	0x14, 0x85, 0x9b, 0x84, 0x96, 0xe4, 0x66, 0x5a, 0x52, 0x23, 0x81, 0x19, 0x84, 0xa8, 0xba, 0x2a,

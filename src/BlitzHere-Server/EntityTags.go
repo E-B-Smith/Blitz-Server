@@ -8,60 +8,98 @@ package main
 
 import (
     "strings"
+    "database/sql"
     "violent.blue/GoKit/Log"
+    "violent.blue/GoKit/pgsql"
     "BlitzMessage"
 )
 
 
-func SetEntityTags(userID, entityID string, entityType BlitzMessage.EntityType, tags []string) {
+func SetEntityTags(userID string, tags []*BlitzMessage.EntityTag) {
     Log.LogFunctionName()
 
-    config.DB.Exec(
-        `delete from EntityTagTable
-            where userID = $1
-              and entityID = $2
-              and entityType = $3;`,
-        userID, entityID, entityType)
-
     for _, tag := range tags {
-        cleanTag := strings.TrimSpace(tag)
-        if len(cleanTag) > 0 {
-            _, error := config.DB.Exec(
-                `insert into EntityTagTable (userID, entityID, entityType, entityTag)
+        var error error
+        var result sql.Result
+
+        cleanTag := strings.ToLower(strings.TrimSpace(*tag.EntityTag))
+        if len(cleanTag) <= 0 { continue }
+
+        if *tag.EntityIsTagged {
+
+            result, error = config.DB.Exec(
+                `insert into EntityTagTable
+                    (userID, entityID, entityType, entityTag)
                     values ($1, $2, $3, $4);`,
-                userID, entityID, entityType, cleanTag)
-            if error != nil { Log.LogError(error) }
+                userID, tag.EntityID, tag.EntityType, cleanTag)
+
+        } else {
+
+            result, error = config.DB.Exec(
+                `delete from EntityTagTable
+                    where userID = $1
+                      and entityID = $2
+                      and entityType = $3
+                      and entityTag  = $4;`,
+                userID, tag.EntityID, tag.EntityType, cleanTag)
+
         }
+
+        error = pgsql.RowUpdateError(result, error)
+        if error != nil { Log.LogError(error) }
     }
 }
 
 
-func GetEntityTags(userID, entityID string, entityType BlitzMessage.EntityType) []string {
+func GetEntityTags(userID, entityID string, entityType BlitzMessage.EntityType) []*BlitzMessage.EntityTag {
     Log.LogFunctionName()
 
-    tags := make([]string,0, 10)
+    tagArray := make([]*BlitzMessage.EntityTag, 0, 10)
 
     rows, error := config.DB.Query(
-        `select entityTag from EntityTagTable
+        `select entityTag,
+            (select count(*) from EntityTagTable where entityID = $2 and entityType = $3)
+            from EntityTagTable
             where userID = $1
               and entityID = $2
               and entityType = $3;`,
             userID, entityID, entityType)
     if error != nil {
         Log.LogError(error)
-        return tags
+        return tagArray
     }
     defer rows.Close()
 
     for rows.Next() {
-        var tag string
-        error = rows.Scan(&tag)
-        if error == nil {
-            s := strings.TrimSpace(tag)
-            if len(s) > 0 { tags = append(tags, s) }
+        var (
+            tag     string;
+            count   int64;
+        )
+        error = rows.Scan(&tag, &count)
+        if error != nil { continue }
+
+        cleanTag := strings.ToLower(strings.TrimSpace(tag))
+        if len(cleanTag) <= 0 { continue }
+
+        entityTag := BlitzMessage.EntityTag {
+            EntityID:       &entityID,
+            EntityType:     &entityType,
+            EntityTag:      &cleanTag,
+            EntityIsTagged: BoolPtr(true),
+            EntityTagCount: Int32Ptr(int32(count)),
         }
+
+        tagArray = append(tagArray, &entityTag)
     }
 
-    return tags
+    return tagArray
+}
+
+
+func UpdateEntityTags(session *Session, tagUpdate *BlitzMessage.EntityTags,
+    ) *BlitzMessage.ServerResponse {
+
+    SetEntityTags(session.UserID, tagUpdate.Tags)
+    return ServerResponseForCode(BlitzMessage.ResponseCode_RCSuccess, nil)
 }
 

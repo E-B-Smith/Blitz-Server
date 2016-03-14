@@ -3,6 +3,7 @@
 #import <ProtocolBuffers/ProtocolBuffers.h>
 
 #import "Types.pb.h"
+#import "EntityTags.pb.h"
 // @@protoc_insertion_point(imports)
 
 @class BCoordinate;
@@ -11,8 +12,10 @@
 @class BCoordinatePolygonBuilder;
 @class BCoordinateRegion;
 @class BCoordinateRegionBuilder;
-@class BEntityVoteRequest;
-@class BEntityVoteRequestBuilder;
+@class BEntityTag;
+@class BEntityTagBuilder;
+@class BEntityTags;
+@class BEntityTagsBuilder;
 @class BFeedPost;
 @class BFeedPostBuilder;
 @class BFeedPostFetchRequest;
@@ -23,8 +26,6 @@
 @class BFeedPostUpdateRequestBuilder;
 @class BFeedPostUpdateResponse;
 @class BFeedPostUpdateResponseBuilder;
-@class BFeedPostVote;
-@class BFeedPostVoteBuilder;
 @class BGlobals;
 @class BGlobalsBuilder;
 @class BKeyValue;
@@ -125,90 +126,11 @@ typedef NS_ENUM(SInt32, BUpdateVerb) {
 BOOL BUpdateVerbIsValidValue(BUpdateVerb value);
 NSString *NSStringFromBUpdateVerb(BUpdateVerb value);
 
-typedef NS_ENUM(SInt32, BEntityType) {
-  BEntityTypeETUnknown = 0,
-  BEntityTypeETUser = 1,
-  BEntityTypeETFeedPost = 2,
-};
-
-BOOL BEntityTypeIsValidValue(BEntityType value);
-NSString *NSStringFromBEntityType(BEntityType value);
-
 
 @interface BFeedRoot : NSObject {
 }
 + (PBExtensionRegistry*) extensionRegistry;
 + (void) registerAllExtensions:(PBMutableExtensionRegistry*) registry;
-@end
-
-#define FeedPostVote_tagName @"tagName"
-#define FeedPostVote_voteCount @"voteCount"
-#define FeedPostVote_userHasVoted @"userHasVoted"
-@interface BFeedPostVote : PBGeneratedMessage<GeneratedMessageProtocol> {
-@private
-  BOOL hasUserHasVoted_:1;
-  BOOL hasVoteCount_:1;
-  BOOL hasTagName_:1;
-  BOOL userHasVoted_:1;
-  SInt32 voteCount;
-  NSString* tagName;
-}
-- (BOOL) hasTagName;
-- (BOOL) hasVoteCount;
-- (BOOL) hasUserHasVoted;
-@property (readonly, strong) NSString* tagName;
-@property (readonly) SInt32 voteCount;
-- (BOOL) userHasVoted;
-
-+ (instancetype) defaultInstance;
-- (instancetype) defaultInstance;
-
-- (BOOL) isInitialized;
-- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
-- (BFeedPostVoteBuilder*) builder;
-+ (BFeedPostVoteBuilder*) builder;
-+ (BFeedPostVoteBuilder*) builderWithPrototype:(BFeedPostVote*) prototype;
-- (BFeedPostVoteBuilder*) toBuilder;
-
-+ (BFeedPostVote*) parseFromData:(NSData*) data;
-+ (BFeedPostVote*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
-+ (BFeedPostVote*) parseFromInputStream:(NSInputStream*) input;
-+ (BFeedPostVote*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
-+ (BFeedPostVote*) parseFromCodedInputStream:(PBCodedInputStream*) input;
-+ (BFeedPostVote*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
-@end
-
-@interface BFeedPostVoteBuilder : PBGeneratedMessageBuilder {
-@private
-  BFeedPostVote* resultFeedPostVote;
-}
-
-- (BFeedPostVote*) defaultInstance;
-
-- (BFeedPostVoteBuilder*) clear;
-- (BFeedPostVoteBuilder*) clone;
-
-- (BFeedPostVote*) build;
-- (BFeedPostVote*) buildPartial;
-
-- (BFeedPostVoteBuilder*) mergeFrom:(BFeedPostVote*) other;
-- (BFeedPostVoteBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
-- (BFeedPostVoteBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
-
-- (BOOL) hasTagName;
-- (NSString*) tagName;
-- (BFeedPostVoteBuilder*) setTagName:(NSString*) value;
-- (BFeedPostVoteBuilder*) clearTagName;
-
-- (BOOL) hasVoteCount;
-- (SInt32) voteCount;
-- (BFeedPostVoteBuilder*) setVoteCount:(SInt32) value;
-- (BFeedPostVoteBuilder*) clearVoteCount;
-
-- (BOOL) hasUserHasVoted;
-- (BOOL) userHasVoted;
-- (BFeedPostVoteBuilder*) setUserHasVoted:(BOOL) value;
-- (BFeedPostVoteBuilder*) clearUserHasVoted;
 @end
 
 #define FeedPost_postID @"postID"
@@ -221,8 +143,7 @@ NSString *NSStringFromBEntityType(BEntityType value);
 #define FeedPost_timespanActive @"timespanActive"
 #define FeedPost_headlineText @"headlineText"
 #define FeedPost_bodyText @"bodyText"
-#define FeedPost_topicTags @"topicTags"
-#define FeedPost_votes @"votes"
+#define FeedPost_postTags @"postTags"
 #define FeedPost_replies @"replies"
 #define FeedPost_mayAddReply @"mayAddReply"
 #define FeedPost_mayChooseMulitpleReplies @"mayChooseMulitpleReplies"
@@ -252,8 +173,7 @@ NSString *NSStringFromBEntityType(BEntityType value);
   BTimespan* timespanActive;
   BFeedPostType postType;
   BFeedPostScope postScope;
-  NSMutableArray * topicTagsArray;
-  NSMutableArray * votesArray;
+  NSMutableArray * postTagsArray;
   NSMutableArray * repliesArray;
 }
 - (BOOL) hasPostID;
@@ -278,13 +198,11 @@ NSString *NSStringFromBEntityType(BEntityType value);
 @property (readonly, strong) BTimespan* timespanActive;
 @property (readonly, strong) NSString* headlineText;
 @property (readonly, strong) NSString* bodyText;
-@property (readonly, strong) NSArray * topicTags;
-@property (readonly, strong) NSArray * votes;
+@property (readonly, strong) NSArray * postTags;
 @property (readonly, strong) NSArray * replies;
 - (BOOL) mayAddReply;
 - (BOOL) mayChooseMulitpleReplies;
-- (NSString*)topicTagsAtIndex:(NSUInteger)index;
-- (BFeedPostVote*)votesAtIndex:(NSUInteger)index;
+- (BEntityTag*)postTagsAtIndex:(NSUInteger)index;
 - (BFeedPost*)repliesAtIndex:(NSUInteger)index;
 
 + (instancetype) defaultInstance;
@@ -376,17 +294,11 @@ NSString *NSStringFromBEntityType(BEntityType value);
 - (BFeedPostBuilder*) setBodyText:(NSString*) value;
 - (BFeedPostBuilder*) clearBodyText;
 
-- (NSMutableArray *)topicTags;
-- (NSString*)topicTagsAtIndex:(NSUInteger)index;
-- (BFeedPostBuilder *)addTopicTags:(NSString*)value;
-- (BFeedPostBuilder *)setTopicTagsArray:(NSArray *)array;
-- (BFeedPostBuilder *)clearTopicTags;
-
-- (NSMutableArray *)votes;
-- (BFeedPostVote*)votesAtIndex:(NSUInteger)index;
-- (BFeedPostBuilder *)addVotes:(BFeedPostVote*)value;
-- (BFeedPostBuilder *)setVotesArray:(NSArray *)array;
-- (BFeedPostBuilder *)clearVotes;
+- (NSMutableArray *)postTags;
+- (BEntityTag*)postTagsAtIndex:(NSUInteger)index;
+- (BFeedPostBuilder *)addPostTags:(BEntityTag*)value;
+- (BFeedPostBuilder *)setPostTagsArray:(NSArray *)array;
+- (BFeedPostBuilder *)clearPostTags;
 
 - (NSMutableArray *)replies;
 - (BFeedPost*)repliesAtIndex:(NSUInteger)index;
@@ -619,76 +531,6 @@ NSString *NSStringFromBEntityType(BEntityType value);
 - (BFeedPostFetchResponseBuilder *)addFeedPosts:(BFeedPost*)value;
 - (BFeedPostFetchResponseBuilder *)setFeedPostsArray:(NSArray *)array;
 - (BFeedPostFetchResponseBuilder *)clearFeedPosts;
-@end
-
-#define EntityVoteRequest_entityID @"entityID"
-#define EntityVoteRequest_entityType @"entityType"
-#define EntityVoteRequest_voteTags @"voteTags"
-@interface BEntityVoteRequest : PBGeneratedMessage<GeneratedMessageProtocol> {
-@private
-  BOOL hasEntityID_:1;
-  BOOL hasEntityType_:1;
-  NSString* entityID;
-  BEntityType entityType;
-  NSMutableArray * voteTagsArray;
-}
-- (BOOL) hasEntityID;
-- (BOOL) hasEntityType;
-@property (readonly, strong) NSString* entityID;
-@property (readonly) BEntityType entityType;
-@property (readonly, strong) NSArray * voteTags;
-- (NSString*)voteTagsAtIndex:(NSUInteger)index;
-
-+ (instancetype) defaultInstance;
-- (instancetype) defaultInstance;
-
-- (BOOL) isInitialized;
-- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
-- (BEntityVoteRequestBuilder*) builder;
-+ (BEntityVoteRequestBuilder*) builder;
-+ (BEntityVoteRequestBuilder*) builderWithPrototype:(BEntityVoteRequest*) prototype;
-- (BEntityVoteRequestBuilder*) toBuilder;
-
-+ (BEntityVoteRequest*) parseFromData:(NSData*) data;
-+ (BEntityVoteRequest*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
-+ (BEntityVoteRequest*) parseFromInputStream:(NSInputStream*) input;
-+ (BEntityVoteRequest*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
-+ (BEntityVoteRequest*) parseFromCodedInputStream:(PBCodedInputStream*) input;
-+ (BEntityVoteRequest*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
-@end
-
-@interface BEntityVoteRequestBuilder : PBGeneratedMessageBuilder {
-@private
-  BEntityVoteRequest* resultEntityVoteRequest;
-}
-
-- (BEntityVoteRequest*) defaultInstance;
-
-- (BEntityVoteRequestBuilder*) clear;
-- (BEntityVoteRequestBuilder*) clone;
-
-- (BEntityVoteRequest*) build;
-- (BEntityVoteRequest*) buildPartial;
-
-- (BEntityVoteRequestBuilder*) mergeFrom:(BEntityVoteRequest*) other;
-- (BEntityVoteRequestBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
-- (BEntityVoteRequestBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
-
-- (BOOL) hasEntityID;
-- (NSString*) entityID;
-- (BEntityVoteRequestBuilder*) setEntityID:(NSString*) value;
-- (BEntityVoteRequestBuilder*) clearEntityID;
-
-- (BOOL) hasEntityType;
-- (BEntityType) entityType;
-- (BEntityVoteRequestBuilder*) setEntityType:(BEntityType) value;
-- (BEntityVoteRequestBuilder*) clearEntityType;
-
-- (NSMutableArray *)voteTags;
-- (NSString*)voteTagsAtIndex:(NSUInteger)index;
-- (BEntityVoteRequestBuilder *)addVoteTags:(NSString*)value;
-- (BEntityVoteRequestBuilder *)setVoteTagsArray:(NSArray *)array;
-- (BEntityVoteRequestBuilder *)clearVoteTags;
 @end
 
 

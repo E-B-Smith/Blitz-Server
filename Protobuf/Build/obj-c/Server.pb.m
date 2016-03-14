@@ -15,6 +15,7 @@ static PBExtensionRegistry* extensionRegistry = nil;
     [self registerAllExtensions:registry];
     [ObjectivecDescriptorRoot registerAllExtensions:registry];
     [BTypesRoot registerAllExtensions:registry];
+    [BEntityTagsRoot registerAllExtensions:registry];
     [BFeedRoot registerAllExtensions:registry];
     [BDeviceRoot registerAllExtensions:registry];
     [BSearchRoot registerAllExtensions:registry];
@@ -1801,6 +1802,7 @@ static BSessionResponse* defaultBSessionResponseInstance = nil;
 @property (strong) BFeedPostFetchRequest* feedPostFetchRequest;
 @property (strong) BFeedPostUpdateRequest* feedPostUpdateRequest;
 @property (strong) BAutocompleteRequest* autocompleteRequest;
+@property (strong) BEntityTags* updateEntityTags;
 @end
 
 @implementation BRequestType
@@ -1896,6 +1898,13 @@ static BSessionResponse* defaultBSessionResponseInstance = nil;
   hasAutocompleteRequest_ = !!_value_;
 }
 @synthesize autocompleteRequest;
+- (BOOL) hasUpdateEntityTags {
+  return !!hasUpdateEntityTags_;
+}
+- (void) setHasUpdateEntityTags:(BOOL) _value_ {
+  hasUpdateEntityTags_ = !!_value_;
+}
+@synthesize updateEntityTags;
 - (instancetype) init {
   if ((self = [super init])) {
     self.sessionRequest = [BSessionRequest defaultInstance];
@@ -1911,6 +1920,7 @@ static BSessionResponse* defaultBSessionResponseInstance = nil;
     self.feedPostFetchRequest = [BFeedPostFetchRequest defaultInstance];
     self.feedPostUpdateRequest = [BFeedPostUpdateRequest defaultInstance];
     self.autocompleteRequest = [BAutocompleteRequest defaultInstance];
+    self.updateEntityTags = [BEntityTags defaultInstance];
   }
   return self;
 }
@@ -2019,6 +2029,9 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   if (self.hasAutocompleteRequest) {
     [output writeMessage:13 value:self.autocompleteRequest];
   }
+  if (self.hasUpdateEntityTags) {
+    [output writeMessage:14 value:self.updateEntityTags];
+  }
   [self.unknownFields writeToCodedOutputStream:output];
 }
 - (SInt32) serializedSize {
@@ -2066,6 +2079,9 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   }
   if (self.hasAutocompleteRequest) {
     size_ += computeMessageSize(13, self.autocompleteRequest);
+  }
+  if (self.hasUpdateEntityTags) {
+    size_ += computeMessageSize(14, self.updateEntityTags);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -2180,6 +2196,12 @@ static BRequestType* defaultBRequestTypeInstance = nil;
                          withIndent:[NSString stringWithFormat:@"%@  ", indent]];
     [output appendFormat:@"%@}\n", indent];
   }
+  if (self.hasUpdateEntityTags) {
+    [output appendFormat:@"%@%@ {\n", indent, @"updateEntityTags"];
+    [self.updateEntityTags writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (void) storeInDictionary:(NSMutableDictionary *)dictionary {
@@ -2248,6 +2270,11 @@ static BRequestType* defaultBRequestTypeInstance = nil;
    [self.autocompleteRequest storeInDictionary:messageDictionary];
    [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"autocompleteRequest"];
   }
+  if (self.hasUpdateEntityTags) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.updateEntityTags storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"updateEntityTags"];
+  }
   [self.unknownFields storeInDictionary:dictionary];
 }
 - (BOOL) isEqual:(id)other {
@@ -2285,6 +2312,8 @@ static BRequestType* defaultBRequestTypeInstance = nil;
       (!self.hasFeedPostUpdateRequest || [self.feedPostUpdateRequest isEqual:otherMessage.feedPostUpdateRequest]) &&
       self.hasAutocompleteRequest == otherMessage.hasAutocompleteRequest &&
       (!self.hasAutocompleteRequest || [self.autocompleteRequest isEqual:otherMessage.autocompleteRequest]) &&
+      self.hasUpdateEntityTags == otherMessage.hasUpdateEntityTags &&
+      (!self.hasUpdateEntityTags || [self.updateEntityTags isEqual:otherMessage.updateEntityTags]) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
@@ -2327,6 +2356,9 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   }
   if (self.hasAutocompleteRequest) {
     hashCode = hashCode * 31 + [self.autocompleteRequest hash];
+  }
+  if (self.hasUpdateEntityTags) {
+    hashCode = hashCode * 31 + [self.updateEntityTags hash];
   }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
@@ -2409,6 +2441,9 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   }
   if (other.hasAutocompleteRequest) {
     [self mergeAutocompleteRequest:other.autocompleteRequest];
+  }
+  if (other.hasUpdateEntityTags) {
+    [self mergeUpdateEntityTags:other.updateEntityTags];
   }
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -2546,6 +2581,15 @@ static BRequestType* defaultBRequestTypeInstance = nil;
         }
         [input readMessage:subBuilder extensionRegistry:extensionRegistry];
         [self setAutocompleteRequest:[subBuilder buildPartial]];
+        break;
+      }
+      case 114: {
+        BEntityTagsBuilder* subBuilder = [BEntityTags builder];
+        if (self.hasUpdateEntityTags) {
+          [subBuilder mergeFrom:self.updateEntityTags];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setUpdateEntityTags:[subBuilder buildPartial]];
         break;
       }
     }
@@ -2939,6 +2983,36 @@ static BRequestType* defaultBRequestTypeInstance = nil;
 - (BRequestTypeBuilder*) clearAutocompleteRequest {
   resultRequestType.hasAutocompleteRequest = NO;
   resultRequestType.autocompleteRequest = [BAutocompleteRequest defaultInstance];
+  return self;
+}
+- (BOOL) hasUpdateEntityTags {
+  return resultRequestType.hasUpdateEntityTags;
+}
+- (BEntityTags*) updateEntityTags {
+  return resultRequestType.updateEntityTags;
+}
+- (BRequestTypeBuilder*) setUpdateEntityTags:(BEntityTags*) value {
+  resultRequestType.hasUpdateEntityTags = YES;
+  resultRequestType.updateEntityTags = value;
+  return self;
+}
+- (BRequestTypeBuilder*) setUpdateEntityTagsBuilder:(BEntityTagsBuilder*) builderForValue {
+  return [self setUpdateEntityTags:[builderForValue build]];
+}
+- (BRequestTypeBuilder*) mergeUpdateEntityTags:(BEntityTags*) value {
+  if (resultRequestType.hasUpdateEntityTags &&
+      resultRequestType.updateEntityTags != [BEntityTags defaultInstance]) {
+    resultRequestType.updateEntityTags =
+      [[[BEntityTags builderWithPrototype:resultRequestType.updateEntityTags] mergeFrom:value] buildPartial];
+  } else {
+    resultRequestType.updateEntityTags = value;
+  }
+  resultRequestType.hasUpdateEntityTags = YES;
+  return self;
+}
+- (BRequestTypeBuilder*) clearUpdateEntityTags {
+  resultRequestType.hasUpdateEntityTags = NO;
+  resultRequestType.updateEntityTags = [BEntityTags defaultInstance];
   return self;
 }
 @end

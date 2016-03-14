@@ -7,6 +7,7 @@ Package BlitzMessage is a generated protocol buffer package.
 
 It is generated from these files:
 	Device.proto
+	EntityTags.proto
 	Feed.proto
 	Friends.proto
 	Search.proto
@@ -18,13 +19,13 @@ It is generated from these files:
 
 It has these top-level messages:
 	DeviceInfo
-	FeedPostVote
+	EntityTag
+	EntityTags
 	FeedPost
 	FeedPostUpdateRequest
 	FeedPostUpdateResponse
 	FeedPostFetchRequest
 	FeedPostFetchResponse
-	EntityVoteRequest
 	Friend
 	FriendUpdate
 	FriendRequest

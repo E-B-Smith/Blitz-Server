@@ -3,6 +3,7 @@
 #import <ProtocolBuffers/ProtocolBuffers.h>
 
 #import "Types.pb.h"
+#import "EntityTags.pb.h"
 // @@protoc_insertion_point(imports)
 
 @class BConfirmationRequest;
@@ -19,6 +20,10 @@
 @class BEducationBuilder;
 @class BEmployment;
 @class BEmploymentBuilder;
+@class BEntityTag;
+@class BEntityTagBuilder;
+@class BEntityTags;
+@class BEntityTagsBuilder;
 @class BGlobals;
 @class BGlobalsBuilder;
 @class BImageData;
@@ -658,13 +663,13 @@ NSString *NSStringFromBImageContent(BImageContent value);
   BEmployment* currentEmployment;
   BUserStatus userStatus;
   BGender gender;
-  NSMutableArray * expertiseTagsArray;
   NSMutableArray * interestTagsArray;
   NSMutableArray * imagesArray;
   NSMutableArray * socialIdentitiesArray;
   NSMutableArray * contactInfoArray;
   NSMutableArray * employmentArray;
   NSMutableArray * educationArray;
+  NSMutableArray * expertiseTagsArray;
 }
 - (BOOL) hasUserID;
 - (BOOL) hasUserStatus;
@@ -696,7 +701,7 @@ NSString *NSStringFromBImageContent(BImageContent value);
 - (BContactInfo*)contactInfoAtIndex:(NSUInteger)index;
 - (BEmployment*)employmentAtIndex:(NSUInteger)index;
 - (BEducation*)educationAtIndex:(NSUInteger)index;
-- (NSString*)expertiseTagsAtIndex:(NSUInteger)index;
+- (BEntityTag*)expertiseTagsAtIndex:(NSUInteger)index;
 - (NSString*)interestTagsAtIndex:(NSUInteger)index;
 
 + (instancetype) defaultInstance;
@@ -813,8 +818,8 @@ NSString *NSStringFromBImageContent(BImageContent value);
 - (BUserProfileBuilder *)clearEducation;
 
 - (NSMutableArray *)expertiseTags;
-- (NSString*)expertiseTagsAtIndex:(NSUInteger)index;
-- (BUserProfileBuilder *)addExpertiseTags:(NSString*)value;
+- (BEntityTag*)expertiseTagsAtIndex:(NSUInteger)index;
+- (BUserProfileBuilder *)addExpertiseTags:(BEntityTag*)value;
 - (BUserProfileBuilder *)setExpertiseTagsArray:(NSArray *)array;
 - (BUserProfileBuilder *)clearExpertiseTags;
 

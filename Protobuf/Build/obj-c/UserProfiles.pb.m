@@ -15,6 +15,7 @@ static PBExtensionRegistry* extensionRegistry = nil;
     [self registerAllExtensions:registry];
     [ObjectivecDescriptorRoot registerAllExtensions:registry];
     [BTypesRoot registerAllExtensions:registry];
+    [BEntityTagsRoot registerAllExtensions:registry];
     extensionRegistry = registry;
   }
 }
@@ -2537,7 +2538,7 @@ static BUserProfile* defaultBUserProfileInstance = nil;
 - (NSArray *)expertiseTags {
   return expertiseTagsArray;
 }
-- (NSString*)expertiseTagsAtIndex:(NSUInteger)index {
+- (BEntityTag*)expertiseTagsAtIndex:(NSUInteger)index {
   return [expertiseTagsArray objectAtIndex:index];
 }
 - (NSArray *)interestTags {
@@ -2649,8 +2650,8 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   [self.educationArray enumerateObjectsUsingBlock:^(BEducation *element, NSUInteger idx, BOOL *stop) {
     [output writeMessage:13 value:element];
   }];
-  [self.expertiseTagsArray enumerateObjectsUsingBlock:^(NSString *element, NSUInteger idx, BOOL *stop) {
-    [output writeString:14 value:element];
+  [self.expertiseTagsArray enumerateObjectsUsingBlock:^(BEntityTag *element, NSUInteger idx, BOOL *stop) {
+    [output writeMessage:14 value:element];
   }];
   [self.interestTagsArray enumerateObjectsUsingBlock:^(NSString *element, NSUInteger idx, BOOL *stop) {
     [output writeString:15 value:element];
@@ -2706,15 +2707,9 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   [self.educationArray enumerateObjectsUsingBlock:^(BEducation *element, NSUInteger idx, BOOL *stop) {
     size_ += computeMessageSize(13, element);
   }];
-  {
-    __block SInt32 dataSize = 0;
-    const NSUInteger count = self.expertiseTagsArray.count;
-    [self.expertiseTagsArray enumerateObjectsUsingBlock:^(NSString *element, NSUInteger idx, BOOL *stop) {
-      dataSize += computeStringSizeNoTag(element);
-    }];
-    size_ += dataSize;
-    size_ += (SInt32)(1 * count);
-  }
+  [self.expertiseTagsArray enumerateObjectsUsingBlock:^(BEntityTag *element, NSUInteger idx, BOOL *stop) {
+    size_ += computeMessageSize(14, element);
+  }];
   {
     __block SInt32 dataSize = 0;
     const NSUInteger count = self.interestTagsArray.count;
@@ -2828,8 +2823,11 @@ static BUserProfile* defaultBUserProfileInstance = nil;
                      withIndent:[NSString stringWithFormat:@"%@  ", indent]];
     [output appendFormat:@"%@}\n", indent];
   }];
-  [self.expertiseTagsArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-    [output appendFormat:@"%@%@: %@\n", indent, @"expertiseTags", obj];
+  [self.expertiseTagsArray enumerateObjectsUsingBlock:^(BEntityTag *element, NSUInteger idx, BOOL *stop) {
+    [output appendFormat:@"%@%@ {\n", indent, @"expertiseTags"];
+    [element writeDescriptionTo:output
+                     withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
   }];
   [self.interestTagsArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
     [output appendFormat:@"%@%@: %@\n", indent, @"interestTags", obj];
@@ -2897,7 +2895,11 @@ static BUserProfile* defaultBUserProfileInstance = nil;
     [element storeInDictionary:elementDictionary];
     [dictionary setObject:[NSDictionary dictionaryWithDictionary:elementDictionary] forKey:@"education"];
   }
-  [dictionary setObject:self.expertiseTags forKey: @"expertiseTags"];
+  for (BEntityTag* element in self.expertiseTagsArray) {
+    NSMutableDictionary *elementDictionary = [NSMutableDictionary dictionary];
+    [element storeInDictionary:elementDictionary];
+    [dictionary setObject:[NSDictionary dictionaryWithDictionary:elementDictionary] forKey:@"expertiseTags"];
+  }
   [dictionary setObject:self.interestTags forKey: @"interestTags"];
   if (self.hasBackgroundSummary) {
     [dictionary setObject: self.backgroundSummary forKey: @"backgroundSummary"];
@@ -2981,7 +2983,7 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   [self.educationArray enumerateObjectsUsingBlock:^(BEducation *element, NSUInteger idx, BOOL *stop) {
     hashCode = hashCode * 31 + [element hash];
   }];
-  [self.expertiseTagsArray enumerateObjectsUsingBlock:^(NSString *element, NSUInteger idx, BOOL *stop) {
+  [self.expertiseTagsArray enumerateObjectsUsingBlock:^(BEntityTag *element, NSUInteger idx, BOOL *stop) {
     hashCode = hashCode * 31 + [element hash];
   }];
   [self.interestTagsArray enumerateObjectsUsingBlock:^(NSString *element, NSUInteger idx, BOOL *stop) {
@@ -3223,7 +3225,9 @@ static BUserProfile* defaultBUserProfileInstance = nil;
         break;
       }
       case 114: {
-        [self addExpertiseTags:[input readString]];
+        BEntityTagBuilder* subBuilder = [BEntityTag builder];
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self addExpertiseTags:[subBuilder buildPartial]];
         break;
       }
       case 122: {
@@ -3529,10 +3533,10 @@ static BUserProfile* defaultBUserProfileInstance = nil;
 - (NSMutableArray *)expertiseTags {
   return resultUserProfile.expertiseTagsArray;
 }
-- (NSString*)expertiseTagsAtIndex:(NSUInteger)index {
+- (BEntityTag*)expertiseTagsAtIndex:(NSUInteger)index {
   return [resultUserProfile expertiseTagsAtIndex:index];
 }
-- (BUserProfileBuilder *)addExpertiseTags:(NSString*)value {
+- (BUserProfileBuilder *)addExpertiseTags:(BEntityTag*)value {
   if (resultUserProfile.expertiseTagsArray == nil) {
     resultUserProfile.expertiseTagsArray = [[NSMutableArray alloc]init];
   }
@@ -3540,7 +3544,7 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   return self;
 }
 - (BUserProfileBuilder *)setExpertiseTagsArray:(NSArray *)array {
-  resultUserProfile.expertiseTagsArray = [[NSMutableArray alloc] initWithArray:array];
+  resultUserProfile.expertiseTagsArray = [[NSMutableArray alloc]initWithArray:array];
   return self;
 }
 - (BUserProfileBuilder *)clearExpertiseTags {

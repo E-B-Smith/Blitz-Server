@@ -45,6 +45,7 @@ compile: FORCE \
     src/BlitzMessage/Search.pb.go \
     src/BlitzMessage/UserProfiles.pb.go \
     src/BlitzMessage/Feed.pb.go \
+    src/BlitzMessage/EntityTags.pb.go \
     src/BlitzMessage/Server.pb.go \
     src/BlitzMessage/UserEvents.pb.go \
     src/ApplePushService/ResourceData.go \
@@ -87,6 +88,7 @@ src/BlitzMessage/Device.pb.go \
 src/BlitzMessage/Search.pb.go \
 src/BlitzMessage/UserProfiles.pb.go \
 src/BlitzMessage/Feed.pb.go \
+src/BlitzMessage/EntityTags.pb.go \
 src/BlitzMessage/Server.pb.go \
 src/BlitzMessage/UserEvents.pb.go : \
     Protobuf/Source/Friends.proto \
@@ -96,6 +98,7 @@ src/BlitzMessage/UserEvents.pb.go : \
     Protobuf/Source/Search.proto \
     Protobuf/Source/UserProfiles.proto \
     Protobuf/Source/Feed.proto \
+    Protobuf/Source/EntityTags.proto \
     Protobuf/Source/Server.proto \
     Protobuf/Source/UserEvents.proto \
     ; \
