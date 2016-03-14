@@ -55,7 +55,7 @@ func (x *ContactType) UnmarshalJSON(data []byte) error {
 	*x = ContactType(value)
 	return nil
 }
-func (ContactType) EnumDescriptor() ([]byte, []int) { return fileDescriptor9, []int{0} }
+func (ContactType) EnumDescriptor() ([]byte, []int) { return fileDescriptor10, []int{0} }
 
 type UserStatus int32
 
@@ -101,7 +101,7 @@ func (x *UserStatus) UnmarshalJSON(data []byte) error {
 	*x = UserStatus(value)
 	return nil
 }
-func (UserStatus) EnumDescriptor() ([]byte, []int) { return fileDescriptor9, []int{1} }
+func (UserStatus) EnumDescriptor() ([]byte, []int) { return fileDescriptor10, []int{1} }
 
 type Gender int32
 
@@ -141,7 +141,7 @@ func (x *Gender) UnmarshalJSON(data []byte) error {
 	*x = Gender(value)
 	return nil
 }
-func (Gender) EnumDescriptor() ([]byte, []int) { return fileDescriptor9, []int{2} }
+func (Gender) EnumDescriptor() ([]byte, []int) { return fileDescriptor10, []int{2} }
 
 type ImageContent int32
 
@@ -178,7 +178,7 @@ func (x *ImageContent) UnmarshalJSON(data []byte) error {
 	*x = ImageContent(value)
 	return nil
 }
-func (ImageContent) EnumDescriptor() ([]byte, []int) { return fileDescriptor9, []int{3} }
+func (ImageContent) EnumDescriptor() ([]byte, []int) { return fileDescriptor10, []int{3} }
 
 type SocialIdentity struct {
 	SocialService    *string    `protobuf:"bytes,1,req,name=socialService" json:"socialService,omitempty"`
@@ -195,7 +195,7 @@ type SocialIdentity struct {
 func (m *SocialIdentity) Reset()                    { *m = SocialIdentity{} }
 func (m *SocialIdentity) String() string            { return proto.CompactTextString(m) }
 func (*SocialIdentity) ProtoMessage()               {}
-func (*SocialIdentity) Descriptor() ([]byte, []int) { return fileDescriptor9, []int{0} }
+func (*SocialIdentity) Descriptor() ([]byte, []int) { return fileDescriptor10, []int{0} }
 
 func (m *SocialIdentity) GetSocialService() string {
 	if m != nil && m.SocialService != nil {
@@ -263,7 +263,7 @@ type ContactInfo struct {
 func (m *ContactInfo) Reset()                    { *m = ContactInfo{} }
 func (m *ContactInfo) String() string            { return proto.CompactTextString(m) }
 func (*ContactInfo) ProtoMessage()               {}
-func (*ContactInfo) Descriptor() ([]byte, []int) { return fileDescriptor9, []int{1} }
+func (*ContactInfo) Descriptor() ([]byte, []int) { return fileDescriptor10, []int{1} }
 
 func (m *ContactInfo) GetContactType() ContactType {
 	if m != nil && m.ContactType != nil {
@@ -299,7 +299,7 @@ type Employment struct {
 func (m *Employment) Reset()                    { *m = Employment{} }
 func (m *Employment) String() string            { return proto.CompactTextString(m) }
 func (*Employment) ProtoMessage()               {}
-func (*Employment) Descriptor() ([]byte, []int) { return fileDescriptor9, []int{2} }
+func (*Employment) Descriptor() ([]byte, []int) { return fileDescriptor10, []int{2} }
 
 func (m *Employment) GetJobTitle() string {
 	if m != nil && m.JobTitle != nil {
@@ -354,7 +354,7 @@ type Education struct {
 func (m *Education) Reset()                    { *m = Education{} }
 func (m *Education) String() string            { return proto.CompactTextString(m) }
 func (*Education) ProtoMessage()               {}
-func (*Education) Descriptor() ([]byte, []int) { return fileDescriptor9, []int{3} }
+func (*Education) Descriptor() ([]byte, []int) { return fileDescriptor10, []int{3} }
 
 func (m *Education) GetSchoolName() string {
 	if m != nil && m.SchoolName != nil {
@@ -397,7 +397,7 @@ type ImageData struct {
 func (m *ImageData) Reset()                    { *m = ImageData{} }
 func (m *ImageData) String() string            { return proto.CompactTextString(m) }
 func (*ImageData) ProtoMessage()               {}
-func (*ImageData) Descriptor() ([]byte, []int) { return fileDescriptor9, []int{4} }
+func (*ImageData) Descriptor() ([]byte, []int) { return fileDescriptor10, []int{4} }
 
 func (m *ImageData) GetImageContent() ImageContent {
 	if m != nil && m.ImageContent != nil {
@@ -464,7 +464,7 @@ type UserProfile struct {
 func (m *UserProfile) Reset()                    { *m = UserProfile{} }
 func (m *UserProfile) String() string            { return proto.CompactTextString(m) }
 func (*UserProfile) ProtoMessage()               {}
-func (*UserProfile) Descriptor() ([]byte, []int) { return fileDescriptor9, []int{5} }
+func (*UserProfile) Descriptor() ([]byte, []int) { return fileDescriptor10, []int{5} }
 
 func (m *UserProfile) GetUserID() string {
 	if m != nil && m.UserID != nil {
@@ -586,7 +586,7 @@ type ImageUpload struct {
 func (m *ImageUpload) Reset()                    { *m = ImageUpload{} }
 func (m *ImageUpload) String() string            { return proto.CompactTextString(m) }
 func (*ImageUpload) ProtoMessage()               {}
-func (*ImageUpload) Descriptor() ([]byte, []int) { return fileDescriptor9, []int{6} }
+func (*ImageUpload) Descriptor() ([]byte, []int) { return fileDescriptor10, []int{6} }
 
 func (m *ImageUpload) GetImageData() []*ImageData {
 	if m != nil {
@@ -603,7 +603,7 @@ type UserProfileUpdate struct {
 func (m *UserProfileUpdate) Reset()                    { *m = UserProfileUpdate{} }
 func (m *UserProfileUpdate) String() string            { return proto.CompactTextString(m) }
 func (*UserProfileUpdate) ProtoMessage()               {}
-func (*UserProfileUpdate) Descriptor() ([]byte, []int) { return fileDescriptor9, []int{7} }
+func (*UserProfileUpdate) Descriptor() ([]byte, []int) { return fileDescriptor10, []int{7} }
 
 func (m *UserProfileUpdate) GetProfiles() []*UserProfile {
 	if m != nil {
@@ -620,7 +620,7 @@ type UserProfileQuery struct {
 func (m *UserProfileQuery) Reset()                    { *m = UserProfileQuery{} }
 func (m *UserProfileQuery) String() string            { return proto.CompactTextString(m) }
 func (*UserProfileQuery) ProtoMessage()               {}
-func (*UserProfileQuery) Descriptor() ([]byte, []int) { return fileDescriptor9, []int{8} }
+func (*UserProfileQuery) Descriptor() ([]byte, []int) { return fileDescriptor10, []int{8} }
 
 func (m *UserProfileQuery) GetUserIDs() []string {
 	if m != nil {
@@ -640,7 +640,7 @@ type ConfirmationRequest struct {
 func (m *ConfirmationRequest) Reset()                    { *m = ConfirmationRequest{} }
 func (m *ConfirmationRequest) String() string            { return proto.CompactTextString(m) }
 func (*ConfirmationRequest) ProtoMessage()               {}
-func (*ConfirmationRequest) Descriptor() ([]byte, []int) { return fileDescriptor9, []int{9} }
+func (*ConfirmationRequest) Descriptor() ([]byte, []int) { return fileDescriptor10, []int{9} }
 
 func (m *ConfirmationRequest) GetContactInfo() *ContactInfo {
 	if m != nil {
@@ -678,7 +678,7 @@ type ProfilesFromContactInfo struct {
 func (m *ProfilesFromContactInfo) Reset()                    { *m = ProfilesFromContactInfo{} }
 func (m *ProfilesFromContactInfo) String() string            { return proto.CompactTextString(m) }
 func (*ProfilesFromContactInfo) ProtoMessage()               {}
-func (*ProfilesFromContactInfo) Descriptor() ([]byte, []int) { return fileDescriptor9, []int{10} }
+func (*ProfilesFromContactInfo) Descriptor() ([]byte, []int) { return fileDescriptor10, []int{10} }
 
 func (m *ProfilesFromContactInfo) GetProfiles() []*UserProfile {
 	if m != nil {
@@ -705,7 +705,7 @@ func init() {
 	proto.RegisterEnum("BlitzMessage.ImageContent", ImageContent_name, ImageContent_value)
 }
 
-var fileDescriptor9 = []byte{
+var fileDescriptor10 = []byte{
 	// 1056 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x09, 0x6e, 0x88, 0x02, 0xff, 0x94, 0x55, 0xdd, 0x72, 0xdb, 0x44,
 	0x14, 0xae, 0xe2, 0xd8, 0xb5, 0x8f, 0x6c, 0x47, 0x51, 0x03, 0x55, 0x02, 0x17, 0x1d, 0xc3, 0x0c,

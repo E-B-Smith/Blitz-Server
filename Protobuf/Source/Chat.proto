@@ -1,0 +1,52 @@
+syntax = "proto2";
+package BlitzMessage;
+
+option java_package = "com.blitzhere.BlitzMessage";
+option java_generic_services = true;
+
+import "objectivec-descriptor.proto";
+option (google.protobuf.objectivec_file_options).package = "";
+option (google.protobuf.objectivec_file_options).class_prefix = "B";
+option (google.protobuf.objectivec_file_options).relax_camel_case = true;
+
+
+import "Types.proto";
+//----------------------------------------------------------------------------------------
+//
+//                                                                             Simple Chat
+//
+//----------------------------------------------------------------------------------------
+
+
+message ChatMessage {
+  optional string     senderID    = 1;
+  optional string     roomID      = 2;
+  optional Timestamp  timestamp   = 3;
+  optional string     message     = 4;
+}
+
+
+message ChatUser {
+  optional string     userID      = 1;
+  optional string     nickname    = 2;
+}
+
+
+message ChatRoom {
+  optional string     roomID      = 1;
+  optional string     roomName    = 2;
+}
+
+
+message ChatEnterLeaveRoom {
+  optional ChatUser   user            = 1;
+  optional string     roomID          = 2;
+  optional bool       userIsEntering  = 3;
+}
+
+
+message ChatPresence {
+  optional ChatRoom   room        = 1;
+  repeated ChatUser   users       = 2;
+}
+

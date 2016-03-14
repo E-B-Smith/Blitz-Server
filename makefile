@@ -36,18 +36,20 @@ gobuild= \
     if [[ $$? != 0 ]]; then exit 1; fi;
 
 
-compile: FORCE \
+compile: \
+    FORCE \
     updateversion \
-    src/BlitzMessage/Friends.pb.go \
-    src/BlitzMessage/UserMessages.pb.go \
-    src/BlitzMessage/Types.pb.go \
+    src/BlitzMessage/Chat.pb.go \
     src/BlitzMessage/Device.pb.go \
-    src/BlitzMessage/Search.pb.go \
-    src/BlitzMessage/UserProfiles.pb.go \
-    src/BlitzMessage/Feed.pb.go \
     src/BlitzMessage/EntityTags.pb.go \
+    src/BlitzMessage/Feed.pb.go \
+    src/BlitzMessage/Friends.pb.go \
+    src/BlitzMessage/Search.pb.go \
     src/BlitzMessage/Server.pb.go \
+    src/BlitzMessage/Types.pb.go \
     src/BlitzMessage/UserEvents.pb.go \
+    src/BlitzMessage/UserMessages.pb.go \
+    src/BlitzMessage/UserProfiles.pb.go \
     src/ApplePushService/ResourceData.go \
     ; \
         echo ">>> Build version $(buildVersion) $(buildDate)."; \
@@ -81,32 +83,31 @@ FORCE:
 
 
 proto \
-src/BlitzMessage/Friends.pb.go \
-src/BlitzMessage/UserMessages.pb.go \
-src/BlitzMessage/Types.pb.go \
+src/BlitzMessage/Chat.pb.go \
 src/BlitzMessage/Device.pb.go \
-src/BlitzMessage/Search.pb.go \
-src/BlitzMessage/UserProfiles.pb.go \
-src/BlitzMessage/Feed.pb.go \
 src/BlitzMessage/EntityTags.pb.go \
+src/BlitzMessage/Feed.pb.go \
+src/BlitzMessage/Friends.pb.go \
+src/BlitzMessage/Search.pb.go \
 src/BlitzMessage/Server.pb.go \
-src/BlitzMessage/UserEvents.pb.go : \
-    Protobuf/Source/Friends.proto \
-    Protobuf/Source/UserMessages.proto \
-    Protobuf/Source/Types.proto \
+src/BlitzMessage/Types.pb.go \
+src/BlitzMessage/UserEvents.pb.go \
+src/BlitzMessage/UserMessages.pb.go \
+src/BlitzMessage/UserProfiles.pb.go : \
+    Protobuf/Source/Chat.proto \
     Protobuf/Source/Device.proto \
-    Protobuf/Source/Search.proto \
-    Protobuf/Source/UserProfiles.proto \
-    Protobuf/Source/Feed.proto \
     Protobuf/Source/EntityTags.proto \
+    Protobuf/Source/Feed.proto \
+    Protobuf/Source/Friends.proto \
+    Protobuf/Source/Search.proto \
     Protobuf/Source/Server.proto \
+    Protobuf/Source/Types.proto \
     Protobuf/Source/UserEvents.proto \
+    Protobuf/Source/UserMessages.proto \
+    Protobuf/Source/UserProfiles.proto \
     ; \
         ./Protobuf/make-proto ; \
         if [[ $$? != 0 ]]; then echo $?; exit 1; fi;
-
-#        echo ">>> Building proto files."; \
-
 
 
 # Clean --

@@ -2,73 +2,6 @@
 // source: Device.proto
 // DO NOT EDIT!
 
-/*
-Package BlitzMessage is a generated protocol buffer package.
-
-It is generated from these files:
-	Device.proto
-	EntityTags.proto
-	Feed.proto
-	Friends.proto
-	Search.proto
-	Server.proto
-	Types.proto
-	UserEvents.proto
-	UserMessages.proto
-	UserProfiles.proto
-
-It has these top-level messages:
-	DeviceInfo
-	EntityTag
-	EntityTags
-	FeedPost
-	FeedPostUpdateRequest
-	FeedPostUpdateResponse
-	FeedPostFetchRequest
-	FeedPostFetchResponse
-	Friend
-	FriendUpdate
-	FriendRequest
-	AcceptInviteRequest
-	AcceptInviteResponse
-	AutocompleteRequest
-	AutocompleteResponse
-	DebugMessage
-	SessionRequest
-	BlitzHereAppOptions
-	AppOptions
-	SessionResponse
-	RequestType
-	ServerRequest
-	ResponseType
-	ServerResponse
-	Globals
-	Coordinate
-	Size
-	CoordinateRegion
-	CoordinatePolygon
-	Location
-	Timestamp
-	Timespan
-	Void
-	KeyValue
-	UserEvent
-	UserEventBatch
-	UserEventBatchResponse
-	UserMessage
-	UserMessageUpdate
-	SocialIdentity
-	ContactInfo
-	Employment
-	Education
-	ImageData
-	UserProfile
-	ImageUpload
-	UserProfileUpdate
-	UserProfileQuery
-	ConfirmationRequest
-	ProfilesFromContactInfo
-*/
 package BlitzMessage
 
 import proto "github.com/golang/protobuf/proto"
@@ -80,10 +13,6 @@ import math "math"
 var _ = proto.Marshal
 var _ = fmt.Errorf
 var _ = math.Inf
-
-// This is a compile-time assertion to ensure that this generated file
-// is compatible with the proto package it is being compiled against.
-const _ = proto.ProtoPackageIsVersion1
 
 type PlatformType int32
 
@@ -123,7 +52,7 @@ func (x *PlatformType) UnmarshalJSON(data []byte) error {
 	*x = PlatformType(value)
 	return nil
 }
-func (PlatformType) EnumDescriptor() ([]byte, []int) { return fileDescriptor0, []int{0} }
+func (PlatformType) EnumDescriptor() ([]byte, []int) { return fileDescriptor1, []int{0} }
 
 type DeviceInfo struct {
 	VendorUID           *string       `protobuf:"bytes,1,opt,name=vendorUID" json:"vendorUID,omitempty"`
@@ -152,7 +81,7 @@ type DeviceInfo struct {
 func (m *DeviceInfo) Reset()                    { *m = DeviceInfo{} }
 func (m *DeviceInfo) String() string            { return proto.CompactTextString(m) }
 func (*DeviceInfo) ProtoMessage()               {}
-func (*DeviceInfo) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{0} }
+func (*DeviceInfo) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{0} }
 
 const Default_DeviceInfo_ScreenScale float32 = 1
 
@@ -301,7 +230,7 @@ func init() {
 	proto.RegisterEnum("BlitzMessage.PlatformType", PlatformType_name, PlatformType_value)
 }
 
-var fileDescriptor0 = []byte{
+var fileDescriptor1 = []byte{
 	// 461 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x09, 0x6e, 0x88, 0x02, 0xff, 0x54, 0x51, 0xc1, 0x72, 0xd3, 0x30,
 	0x10, 0xad, 0x13, 0x0a, 0xc9, 0xc6, 0x09, 0x8e, 0x0a, 0x8c, 0x70, 0x2f, 0x1d, 0x0e, 0x0c, 0xc3,

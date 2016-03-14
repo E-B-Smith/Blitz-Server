@@ -49,7 +49,7 @@ func (x *EntityType) UnmarshalJSON(data []byte) error {
 	*x = EntityType(value)
 	return nil
 }
-func (EntityType) EnumDescriptor() ([]byte, []int) { return fileDescriptor1, []int{0} }
+func (EntityType) EnumDescriptor() ([]byte, []int) { return fileDescriptor2, []int{0} }
 
 type EntityTag struct {
 	EntityID         *string     `protobuf:"bytes,1,opt,name=entityID" json:"entityID,omitempty"`
@@ -63,7 +63,7 @@ type EntityTag struct {
 func (m *EntityTag) Reset()                    { *m = EntityTag{} }
 func (m *EntityTag) String() string            { return proto.CompactTextString(m) }
 func (*EntityTag) ProtoMessage()               {}
-func (*EntityTag) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{0} }
+func (*EntityTag) Descriptor() ([]byte, []int) { return fileDescriptor2, []int{0} }
 
 func (m *EntityTag) GetEntityID() string {
 	if m != nil && m.EntityID != nil {
@@ -108,7 +108,7 @@ type EntityTags struct {
 func (m *EntityTags) Reset()                    { *m = EntityTags{} }
 func (m *EntityTags) String() string            { return proto.CompactTextString(m) }
 func (*EntityTags) ProtoMessage()               {}
-func (*EntityTags) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{1} }
+func (*EntityTags) Descriptor() ([]byte, []int) { return fileDescriptor2, []int{1} }
 
 func (m *EntityTags) GetTags() []*EntityTag {
 	if m != nil {
@@ -123,7 +123,7 @@ func init() {
 	proto.RegisterEnum("BlitzMessage.EntityType", EntityType_name, EntityType_value)
 }
 
-var fileDescriptor1 = []byte{
+var fileDescriptor2 = []byte{
 	// 272 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x09, 0x6e, 0x88, 0x02, 0xff, 0x6c, 0x8f, 0xcf, 0x4a, 0xc3, 0x40,
 	0x10, 0xc6, 0xbb, 0x4d, 0x2b, 0xcd, 0xa8, 0x61, 0xdd, 0x83, 0x2e, 0xf5, 0x22, 0x05, 0xa1, 0x88,
