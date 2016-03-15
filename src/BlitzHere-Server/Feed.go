@@ -218,14 +218,33 @@ func FetchFeedPosts(session *Session, fetchRequest *BlitzMessage.FeedPostFetchRe
     ) *BlitzMessage.ServerResponse {
     Log.LogFunctionName()
 
-    rows, error := config.DB.Query(
-        `select ` + kScanFeedRowString +
-        `   from FeedPostTable
-            where postStatus = $1
-              and parentID is null
-              and timeActiveStart <= current_timestamp
-              and timeActiveStop   > current_timestamp
-            order by timestamp desc;`, BlitzMessage.FeedPostStatus_FPSActive)
+    var ( rows sql.Rows; error error )
+
+    if fetchRequest.parentID == nil {
+
+        rows, error = config.DB.Query(
+            `select ` + kScanFeedRowString +
+            `   from FeedPostTable
+                where postStatus = $1
+                  and parentID is null
+                  and timeActiveStart <= current_timestamp
+                  and timeActiveStop   > current_timestamp
+                order by timestamp desc;`,
+            BlitzMessage.FeedPostStatus_FPSActive)
+
+    } else {
+
+        rows, error = config.DB.Query(
+            `select ` + kScanFeedRowString +
+            `   from FeedPostTable
+                where postStatus = $1
+                  and parentID = $2
+                  and timeActiveStart <= current_timestamp
+                  and timeActiveStop   > current_timestamp
+                order by timestamp desc;`,
+            BlitzMessage.FeedPostStatus_FPSActive,
+            fetchRequest.parentID)
+    }
 
     if error != nil {
         Log.LogError(error)

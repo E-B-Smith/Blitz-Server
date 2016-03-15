@@ -79,7 +79,9 @@ message FeedPostUpdateResponse {
 
 
 message FeedPostFetchRequest {
-  optional Timespan  timespan = 1;
+  optional Timespan       timespan  = 1;
+  optional FeedPostScope  feedScope = 2;
+  optional string         parentID  = 3;
 }
 
 

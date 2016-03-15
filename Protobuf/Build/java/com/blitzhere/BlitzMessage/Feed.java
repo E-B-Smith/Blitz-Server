@@ -4291,6 +4291,29 @@ public final class Feed {
      * <code>optional .BlitzMessage.Timespan timespan = 1;</code>
      */
     com.blitzhere.BlitzMessage.Types.TimespanOrBuilder getTimespanOrBuilder();
+
+    /**
+     * <code>optional .BlitzMessage.FeedPostScope feedScope = 2;</code>
+     */
+    boolean hasFeedScope();
+    /**
+     * <code>optional .BlitzMessage.FeedPostScope feedScope = 2;</code>
+     */
+    com.blitzhere.BlitzMessage.Feed.FeedPostScope getFeedScope();
+
+    /**
+     * <code>optional string parentID = 3;</code>
+     */
+    boolean hasParentID();
+    /**
+     * <code>optional string parentID = 3;</code>
+     */
+    java.lang.String getParentID();
+    /**
+     * <code>optional string parentID = 3;</code>
+     */
+    com.google.protobuf.ByteString
+        getParentIDBytes();
   }
   /**
    * Protobuf type {@code BlitzMessage.FeedPostFetchRequest}
@@ -4357,6 +4380,23 @@ public final class Feed {
               bitField0_ |= 0x00000001;
               break;
             }
+            case 16: {
+              int rawValue = input.readEnum();
+              com.blitzhere.BlitzMessage.Feed.FeedPostScope value = com.blitzhere.BlitzMessage.Feed.FeedPostScope.valueOf(rawValue);
+              if (value == null) {
+                unknownFields.mergeVarintField(2, rawValue);
+              } else {
+                bitField0_ |= 0x00000002;
+                feedScope_ = value;
+              }
+              break;
+            }
+            case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000004;
+              parentID_ = bs;
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -4418,8 +4458,67 @@ public final class Feed {
       return timespan_;
     }
 
+    public static final int FEEDSCOPE_FIELD_NUMBER = 2;
+    private com.blitzhere.BlitzMessage.Feed.FeedPostScope feedScope_;
+    /**
+     * <code>optional .BlitzMessage.FeedPostScope feedScope = 2;</code>
+     */
+    public boolean hasFeedScope() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional .BlitzMessage.FeedPostScope feedScope = 2;</code>
+     */
+    public com.blitzhere.BlitzMessage.Feed.FeedPostScope getFeedScope() {
+      return feedScope_;
+    }
+
+    public static final int PARENTID_FIELD_NUMBER = 3;
+    private java.lang.Object parentID_;
+    /**
+     * <code>optional string parentID = 3;</code>
+     */
+    public boolean hasParentID() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional string parentID = 3;</code>
+     */
+    public java.lang.String getParentID() {
+      java.lang.Object ref = parentID_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          parentID_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string parentID = 3;</code>
+     */
+    public com.google.protobuf.ByteString
+        getParentIDBytes() {
+      java.lang.Object ref = parentID_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        parentID_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private void initFields() {
       timespan_ = com.blitzhere.BlitzMessage.Types.Timespan.getDefaultInstance();
+      feedScope_ = com.blitzhere.BlitzMessage.Feed.FeedPostScope.FPScopeUnknown;
+      parentID_ = "";
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -4443,6 +4542,12 @@ public final class Feed {
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         output.writeMessage(1, timespan_);
       }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeEnum(2, feedScope_.getNumber());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeBytes(3, getParentIDBytes());
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -4455,6 +4560,14 @@ public final class Feed {
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(1, timespan_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(2, feedScope_.getNumber());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(3, getParentIDBytes());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -4580,6 +4693,10 @@ public final class Feed {
           timespanBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000001);
+        feedScope_ = com.blitzhere.BlitzMessage.Feed.FeedPostScope.FPScopeUnknown;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        parentID_ = "";
+        bitField0_ = (bitField0_ & ~0x00000004);
         return this;
       }
 
@@ -4616,6 +4733,14 @@ public final class Feed {
         } else {
           result.timespan_ = timespanBuilder_.build();
         }
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.feedScope_ = feedScope_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.parentID_ = parentID_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -4634,6 +4759,14 @@ public final class Feed {
         if (other == com.blitzhere.BlitzMessage.Feed.FeedPostFetchRequest.getDefaultInstance()) return this;
         if (other.hasTimespan()) {
           mergeTimespan(other.getTimespan());
+        }
+        if (other.hasFeedScope()) {
+          setFeedScope(other.getFeedScope());
+        }
+        if (other.hasParentID()) {
+          bitField0_ |= 0x00000004;
+          parentID_ = other.parentID_;
+          onChanged();
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -4782,6 +4915,117 @@ public final class Feed {
           timespan_ = null;
         }
         return timespanBuilder_;
+      }
+
+      private com.blitzhere.BlitzMessage.Feed.FeedPostScope feedScope_ = com.blitzhere.BlitzMessage.Feed.FeedPostScope.FPScopeUnknown;
+      /**
+       * <code>optional .BlitzMessage.FeedPostScope feedScope = 2;</code>
+       */
+      public boolean hasFeedScope() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional .BlitzMessage.FeedPostScope feedScope = 2;</code>
+       */
+      public com.blitzhere.BlitzMessage.Feed.FeedPostScope getFeedScope() {
+        return feedScope_;
+      }
+      /**
+       * <code>optional .BlitzMessage.FeedPostScope feedScope = 2;</code>
+       */
+      public Builder setFeedScope(com.blitzhere.BlitzMessage.Feed.FeedPostScope value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000002;
+        feedScope_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional .BlitzMessage.FeedPostScope feedScope = 2;</code>
+       */
+      public Builder clearFeedScope() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        feedScope_ = com.blitzhere.BlitzMessage.Feed.FeedPostScope.FPScopeUnknown;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object parentID_ = "";
+      /**
+       * <code>optional string parentID = 3;</code>
+       */
+      public boolean hasParentID() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional string parentID = 3;</code>
+       */
+      public java.lang.String getParentID() {
+        java.lang.Object ref = parentID_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            parentID_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string parentID = 3;</code>
+       */
+      public com.google.protobuf.ByteString
+          getParentIDBytes() {
+        java.lang.Object ref = parentID_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          parentID_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string parentID = 3;</code>
+       */
+      public Builder setParentID(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        parentID_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string parentID = 3;</code>
+       */
+      public Builder clearParentID() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        parentID_ = getDefaultInstance().getParentID();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string parentID = 3;</code>
+       */
+      public Builder setParentIDBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        parentID_ = value;
+        onChanged();
+        return this;
       }
 
       // @@protoc_insertion_point(builder_scope:BlitzMessage.FeedPostFetchRequest)
@@ -5647,19 +5891,21 @@ public final class Feed {
       "sage.UpdateVerb\022(\n\010feedPost\030\002 \001(\0132\026.Blit" +
       "zMessage.FeedPost\"B\n\026FeedPostUpdateRespo" +
       "nse\022(\n\010feedPost\030\001 \001(\0132\026.BlitzMessage.Fee" +
-      "dPost\"@\n\024FeedPostFetchRequest\022(\n\010timespa" +
-      "n\030\001 \001(\0132\026.BlitzMessage.Timespan\"B\n\025FeedP",
-      "ostFetchResponse\022)\n\tfeedPosts\030\001 \003(\0132\026.Bl" +
-      "itzMessage.FeedPost*v\n\014FeedPostType\022\r\n\tF" +
-      "PUnknown\020\000\022\027\n\023FPOpenEndedQuestion\020\001\022\024\n\020F" +
-      "POpenEndedReply\020\002\022\024\n\020FPSurveyQuestion\020\003\022" +
-      "\022\n\016FPSurveyAnswer\020\004*V\n\rFeedPostScope\022\022\n\016" +
-      "FPScopeUnknown\020\000\022\027\n\023FPScopeLocalNetwork\020" +
-      "\001\022\030\n\024FPScopeGlobalNetwork\020\002*?\n\016FeedPostS" +
-      "tatus\022\016\n\nFPSUnknown\020\000\022\r\n\tFPSActive\020\001\022\016\n\n" +
-      "FPSDeleted\020\002*6\n\nUpdateVerb\022\014\n\010UVCreate\020\001" +
-      "\022\014\n\010UVUpdate\020\002\022\014\n\010UVDelete\020\003B/\n\032com.blit",
-      "zhere.BlitzMessage\210\001\001\322>\002\n\000\322>\003\022\001B\322>\002\030\001"
+      "dPost\"\202\001\n\024FeedPostFetchRequest\022(\n\010timesp" +
+      "an\030\001 \001(\0132\026.BlitzMessage.Timespan\022.\n\tfeed",
+      "Scope\030\002 \001(\0162\033.BlitzMessage.FeedPostScope" +
+      "\022\020\n\010parentID\030\003 \001(\t\"B\n\025FeedPostFetchRespo" +
+      "nse\022)\n\tfeedPosts\030\001 \003(\0132\026.BlitzMessage.Fe" +
+      "edPost*v\n\014FeedPostType\022\r\n\tFPUnknown\020\000\022\027\n" +
+      "\023FPOpenEndedQuestion\020\001\022\024\n\020FPOpenEndedRep" +
+      "ly\020\002\022\024\n\020FPSurveyQuestion\020\003\022\022\n\016FPSurveyAn" +
+      "swer\020\004*V\n\rFeedPostScope\022\022\n\016FPScopeUnknow" +
+      "n\020\000\022\027\n\023FPScopeLocalNetwork\020\001\022\030\n\024FPScopeG" +
+      "lobalNetwork\020\002*?\n\016FeedPostStatus\022\016\n\nFPSU" +
+      "nknown\020\000\022\r\n\tFPSActive\020\001\022\016\n\nFPSDeleted\020\002*",
+      "6\n\nUpdateVerb\022\014\n\010UVCreate\020\001\022\014\n\010UVUpdate\020" +
+      "\002\022\014\n\010UVDelete\020\003B/\n\032com.blitzhere.BlitzMe" +
+      "ssage\210\001\001\322>\002\n\000\322>\003\022\001B\322>\002\030\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -5699,7 +5945,7 @@ public final class Feed {
     internal_static_BlitzMessage_FeedPostFetchRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_BlitzMessage_FeedPostFetchRequest_descriptor,
-        new java.lang.String[] { "Timespan", });
+        new java.lang.String[] { "Timespan", "FeedScope", "ParentID", });
     internal_static_BlitzMessage_FeedPostFetchResponse_descriptor =
       getDescriptor().getMessageTypes().get(4);
     internal_static_BlitzMessage_FeedPostFetchResponse_fieldAccessorTable = new

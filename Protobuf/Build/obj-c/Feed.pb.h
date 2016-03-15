@@ -432,13 +432,23 @@ NSString *NSStringFromBUpdateVerb(BUpdateVerb value);
 @end
 
 #define FeedPostFetchRequest_timespan @"timespan"
+#define FeedPostFetchRequest_feedScope @"feedScope"
+#define FeedPostFetchRequest_parentID @"parentID"
 @interface BFeedPostFetchRequest : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
+  BOOL hasParentID_:1;
   BOOL hasTimespan_:1;
+  BOOL hasFeedScope_:1;
+  NSString* parentID;
   BTimespan* timespan;
+  BFeedPostScope feedScope;
 }
 - (BOOL) hasTimespan;
+- (BOOL) hasFeedScope;
+- (BOOL) hasParentID;
 @property (readonly, strong) BTimespan* timespan;
+@property (readonly) BFeedPostScope feedScope;
+@property (readonly, strong) NSString* parentID;
 
 + (instancetype) defaultInstance;
 - (instancetype) defaultInstance;
@@ -481,6 +491,16 @@ NSString *NSStringFromBUpdateVerb(BUpdateVerb value);
 - (BFeedPostFetchRequestBuilder*) setTimespanBuilder:(BTimespanBuilder*) builderForValue;
 - (BFeedPostFetchRequestBuilder*) mergeTimespan:(BTimespan*) value;
 - (BFeedPostFetchRequestBuilder*) clearTimespan;
+
+- (BOOL) hasFeedScope;
+- (BFeedPostScope) feedScope;
+- (BFeedPostFetchRequestBuilder*) setFeedScope:(BFeedPostScope) value;
+- (BFeedPostFetchRequestBuilder*) clearFeedScope;
+
+- (BOOL) hasParentID;
+- (NSString*) parentID;
+- (BFeedPostFetchRequestBuilder*) setParentID:(NSString*) value;
+- (BFeedPostFetchRequestBuilder*) clearParentID;
 @end
 
 #define FeedPostFetchResponse_feedPosts @"feedPosts"

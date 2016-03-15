@@ -1611,6 +1611,8 @@ static BFeedPostUpdateResponse* defaultBFeedPostUpdateResponseInstance = nil;
 
 @interface BFeedPostFetchRequest ()
 @property (strong) BTimespan* timespan;
+@property BFeedPostScope feedScope;
+@property (strong) NSString* parentID;
 @end
 
 @implementation BFeedPostFetchRequest
@@ -1622,9 +1624,25 @@ static BFeedPostUpdateResponse* defaultBFeedPostUpdateResponseInstance = nil;
   hasTimespan_ = !!_value_;
 }
 @synthesize timespan;
+- (BOOL) hasFeedScope {
+  return !!hasFeedScope_;
+}
+- (void) setHasFeedScope:(BOOL) _value_ {
+  hasFeedScope_ = !!_value_;
+}
+@synthesize feedScope;
+- (BOOL) hasParentID {
+  return !!hasParentID_;
+}
+- (void) setHasParentID:(BOOL) _value_ {
+  hasParentID_ = !!_value_;
+}
+@synthesize parentID;
 - (instancetype) init {
   if ((self = [super init])) {
     self.timespan = [BTimespan defaultInstance];
+    self.feedScope = BFeedPostScopeFPScopeUnknown;
+    self.parentID = @"";
   }
   return self;
 }
@@ -1652,6 +1670,12 @@ static BFeedPostFetchRequest* defaultBFeedPostFetchRequestInstance = nil;
   if (self.hasTimespan) {
     [output writeMessage:1 value:self.timespan];
   }
+  if (self.hasFeedScope) {
+    [output writeEnum:2 value:self.feedScope];
+  }
+  if (self.hasParentID) {
+    [output writeString:3 value:self.parentID];
+  }
   [self.unknownFields writeToCodedOutputStream:output];
 }
 - (SInt32) serializedSize {
@@ -1663,6 +1687,12 @@ static BFeedPostFetchRequest* defaultBFeedPostFetchRequestInstance = nil;
   size_ = 0;
   if (self.hasTimespan) {
     size_ += computeMessageSize(1, self.timespan);
+  }
+  if (self.hasFeedScope) {
+    size_ += computeEnumSize(2, self.feedScope);
+  }
+  if (self.hasParentID) {
+    size_ += computeStringSize(3, self.parentID);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -1705,6 +1735,12 @@ static BFeedPostFetchRequest* defaultBFeedPostFetchRequestInstance = nil;
                          withIndent:[NSString stringWithFormat:@"%@  ", indent]];
     [output appendFormat:@"%@}\n", indent];
   }
+  if (self.hasFeedScope) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"feedScope", NSStringFromBFeedPostScope(self.feedScope)];
+  }
+  if (self.hasParentID) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"parentID", self.parentID];
+  }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (void) storeInDictionary:(NSMutableDictionary *)dictionary {
@@ -1712,6 +1748,12 @@ static BFeedPostFetchRequest* defaultBFeedPostFetchRequestInstance = nil;
    NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
    [self.timespan storeInDictionary:messageDictionary];
    [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"timespan"];
+  }
+  if (self.hasFeedScope) {
+    [dictionary setObject: @(self.feedScope) forKey: @"feedScope"];
+  }
+  if (self.hasParentID) {
+    [dictionary setObject: self.parentID forKey: @"parentID"];
   }
   [self.unknownFields storeInDictionary:dictionary];
 }
@@ -1726,12 +1768,22 @@ static BFeedPostFetchRequest* defaultBFeedPostFetchRequestInstance = nil;
   return
       self.hasTimespan == otherMessage.hasTimespan &&
       (!self.hasTimespan || [self.timespan isEqual:otherMessage.timespan]) &&
+      self.hasFeedScope == otherMessage.hasFeedScope &&
+      (!self.hasFeedScope || self.feedScope == otherMessage.feedScope) &&
+      self.hasParentID == otherMessage.hasParentID &&
+      (!self.hasParentID || [self.parentID isEqual:otherMessage.parentID]) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
   __block NSUInteger hashCode = 7;
   if (self.hasTimespan) {
     hashCode = hashCode * 31 + [self.timespan hash];
+  }
+  if (self.hasFeedScope) {
+    hashCode = hashCode * 31 + self.feedScope;
+  }
+  if (self.hasParentID) {
+    hashCode = hashCode * 31 + [self.parentID hash];
   }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
@@ -1779,6 +1831,12 @@ static BFeedPostFetchRequest* defaultBFeedPostFetchRequestInstance = nil;
   if (other.hasTimespan) {
     [self mergeTimespan:other.timespan];
   }
+  if (other.hasFeedScope) {
+    [self setFeedScope:other.feedScope];
+  }
+  if (other.hasParentID) {
+    [self setParentID:other.parentID];
+  }
   [self mergeUnknownFields:other.unknownFields];
   return self;
 }
@@ -1807,6 +1865,19 @@ static BFeedPostFetchRequest* defaultBFeedPostFetchRequestInstance = nil;
         }
         [input readMessage:subBuilder extensionRegistry:extensionRegistry];
         [self setTimespan:[subBuilder buildPartial]];
+        break;
+      }
+      case 16: {
+        BFeedPostScope value = (BFeedPostScope)[input readEnum];
+        if (BFeedPostScopeIsValidValue(value)) {
+          [self setFeedScope:value];
+        } else {
+          [unknownFields mergeVarintField:2 value:value];
+        }
+        break;
+      }
+      case 26: {
+        [self setParentID:[input readString]];
         break;
       }
     }
@@ -1840,6 +1911,38 @@ static BFeedPostFetchRequest* defaultBFeedPostFetchRequestInstance = nil;
 - (BFeedPostFetchRequestBuilder*) clearTimespan {
   resultFeedPostFetchRequest.hasTimespan = NO;
   resultFeedPostFetchRequest.timespan = [BTimespan defaultInstance];
+  return self;
+}
+- (BOOL) hasFeedScope {
+  return resultFeedPostFetchRequest.hasFeedScope;
+}
+- (BFeedPostScope) feedScope {
+  return resultFeedPostFetchRequest.feedScope;
+}
+- (BFeedPostFetchRequestBuilder*) setFeedScope:(BFeedPostScope) value {
+  resultFeedPostFetchRequest.hasFeedScope = YES;
+  resultFeedPostFetchRequest.feedScope = value;
+  return self;
+}
+- (BFeedPostFetchRequestBuilder*) clearFeedScope {
+  resultFeedPostFetchRequest.hasFeedScope = NO;
+  resultFeedPostFetchRequest.feedScope = BFeedPostScopeFPScopeUnknown;
+  return self;
+}
+- (BOOL) hasParentID {
+  return resultFeedPostFetchRequest.hasParentID;
+}
+- (NSString*) parentID {
+  return resultFeedPostFetchRequest.parentID;
+}
+- (BFeedPostFetchRequestBuilder*) setParentID:(NSString*) value {
+  resultFeedPostFetchRequest.hasParentID = YES;
+  resultFeedPostFetchRequest.parentID = value;
+  return self;
+}
+- (BFeedPostFetchRequestBuilder*) clearParentID {
+  resultFeedPostFetchRequest.hasParentID = NO;
+  resultFeedPostFetchRequest.parentID = @"";
   return self;
 }
 @end
