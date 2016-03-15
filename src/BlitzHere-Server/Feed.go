@@ -9,6 +9,7 @@ package main
 import (
     "fmt"
     "errors"
+    "strings"
     "database/sql"
     "github.com/lib/pq"
     "violent.blue/GoKit/Log"
@@ -220,7 +221,15 @@ func FetchFeedPosts(session *Session, fetchRequest *BlitzMessage.FeedPostFetchRe
 
     var ( rows *sql.Rows; error error )
 
-    if fetchRequest.ParentID == nil {
+    var parentID *string = nil
+    if fetchRequest.ParentID != nil {
+        p := strings.ToLower(strings.TrimSpace(*fetchRequest.ParentID))
+        if len(p) > 0 {
+            parentID = &p
+        }
+    }
+
+    if parentID == nil {
 
         rows, error = config.DB.Query(
             `select ` + kScanFeedRowString +
@@ -241,7 +250,8 @@ func FetchFeedPosts(session *Session, fetchRequest *BlitzMessage.FeedPostFetchRe
                   and parentID = $2
                 order by timestamp desc;`,
             BlitzMessage.FeedPostStatus_FPSActive,
-            fetchRequest.ParentID)
+            parentID)
+
     }
 
     if error != nil {
