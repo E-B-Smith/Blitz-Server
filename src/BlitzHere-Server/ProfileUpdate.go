@@ -33,7 +33,7 @@ func StringsAreEmptyWithClean(strs ...*string) bool {
 }
 
 
-func UpdateEmployment(userID *string, isCurrentPosition bool, employment *BlitzMessage.Employment) {
+func InsertEmployment(userID *string, isHeadLineItem bool, employment *BlitzMessage.Employment) {
     Log.LogFunctionName()
 
     if employment == nil || userID == nil { return }
@@ -50,7 +50,7 @@ func UpdateEmployment(userID *string, isCurrentPosition bool, employment *BlitzM
     _, error := config.DB.Exec(
         `insert into EmploymentTable (
              userID
-            ,isCurrentPosition
+            ,isHeadLineItem
             ,jobTitle
             ,companyName
             ,location
@@ -59,7 +59,7 @@ func UpdateEmployment(userID *string, isCurrentPosition bool, employment *BlitzM
             ,stopDate
             ,summary) values ($1, $2, $3, $4, $5, $6, $7, $8, $9);`,
         userID,
-        isCurrentPosition,
+        isHeadLineItem,
         employment.JobTitle,
         employment.CompanyName,
         employment.Location,
@@ -73,7 +73,7 @@ func UpdateEmployment(userID *string, isCurrentPosition bool, employment *BlitzM
 }
 
 
-func UpdateEducation(userID *string, education *BlitzMessage.Education) {
+func InsertEducation(userID *string, education *BlitzMessage.Education) {
     Log.LogFunctionName()
 
     if education == nil || userID == nil { return }
@@ -179,14 +179,14 @@ func UpdateProfile(profile *BlitzMessage.UserProfile) error {
     UpdateUserIdentitesFromProfile(profile)
 
     config.DB.Exec(`delete from EmploymentTable where userID = $1;`, profile.UserID)
-    UpdateEmployment(profile.UserID, true, profile.HeadlineEmployment)
+    InsertEmployment(profile.UserID, true, profile.HeadlineEmployment)
     for _, employment := range profile.Employment {
-        UpdateEmployment(profile.UserID, false, employment)
+        InsertEmployment(profile.UserID, false, employment)
     }
 
     config.DB.Exec(`delete from EducationTable where userID = $1;`, profile.UserID)
     for _, education := range profile.Education {
-        UpdateEducation(profile.UserID, education)
+        InsertEducation(profile.UserID, education)
     }
 
     SetEntityTags(*profile.UserID, profile.ExpertiseTags)

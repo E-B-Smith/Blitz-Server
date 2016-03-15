@@ -128,7 +128,7 @@ func EmploymentForUserID(userID string) []*BlitzMessage.Employment {
 
     rows, error := config.DB.Query(
         `select
-             isCurrentPosition
+             isHeadlineItem
             ,jobTitle
             ,companyName
             ,location
@@ -147,7 +147,7 @@ func EmploymentForUserID(userID string) []*BlitzMessage.Employment {
     employmentArray := make([]*BlitzMessage.Employment, 0, 5)
     for rows.Next() {
         var (
-            isCurrentPosition   bool
+            isHeadlineItem      bool
             jobTitle            sql.NullString
             companyName         sql.NullString
             location            sql.NullString
@@ -157,7 +157,7 @@ func EmploymentForUserID(userID string) []*BlitzMessage.Employment {
             summary             sql.NullString
         )
         error = rows.Scan(
-            &isCurrentPosition,
+            &isHeadlineItem,
             &jobTitle,
             &companyName,
             &location,
@@ -170,6 +170,7 @@ func EmploymentForUserID(userID string) []*BlitzMessage.Employment {
             Log.LogError(error)
         } else {
             employment := BlitzMessage.Employment {
+                IsHeadlineItem: BoolPtr(isHeadlineItem),
                 JobTitle:       StringPtrFromNullString(jobTitle),
                 CompanyName:    StringPtrFromNullString(companyName),
                 Location:       StringPtrFromNullString(location),
@@ -306,6 +307,17 @@ func ProfileForUserID(userID string) *BlitzMessage.UserProfile {
     profile.ContactInfo   = ContactInfoForUserID(userID)
     profile.ExpertiseTags = GetEntityTags(userID, userID, BlitzMessage.EntityType_ETUser)
     profile.Education     = EducationForUserID(userID)
+    profile.Employment    = EmploymentForUserID(userID)
+
+    //  Fix up th 'headloine' employment --
+
+    for index, emp := range profile.Employment {
+        if emp.IsHeadlineItem != nil && *emp.IsHeadlineItem {
+            profile.HeadlineEmployment = emp
+            profile.Employment = append(profile.Employment[:index], profile.Employment[index+1:]...)
+            break
+        }
+    }
 
     return profile
 }

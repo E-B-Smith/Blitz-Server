@@ -54,6 +54,7 @@ message Employment {
   optional string   industry = 4;
   optional Timespan timespan = 5;
   optional string   summary  = 6;
+  optional bool     isHeadlineItem = 7;
 }
 
 

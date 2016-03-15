@@ -1041,6 +1041,7 @@ static BContactInfo* defaultBContactInfoInstance = nil;
 @property (strong) NSString* industry;
 @property (strong) BTimespan* timespan;
 @property (strong) NSString* summary;
+@property BOOL isHeadlineItem;
 @end
 
 @implementation BEmployment
@@ -1087,6 +1088,18 @@ static BContactInfo* defaultBContactInfoInstance = nil;
   hasSummary_ = !!_value_;
 }
 @synthesize summary;
+- (BOOL) hasIsHeadlineItem {
+  return !!hasIsHeadlineItem_;
+}
+- (void) setHasIsHeadlineItem:(BOOL) _value_ {
+  hasIsHeadlineItem_ = !!_value_;
+}
+- (BOOL) isHeadlineItem {
+  return !!isHeadlineItem_;
+}
+- (void) setIsHeadlineItem:(BOOL) _value_ {
+  isHeadlineItem_ = !!_value_;
+}
 - (instancetype) init {
   if ((self = [super init])) {
     self.jobTitle = @"";
@@ -1095,6 +1108,7 @@ static BContactInfo* defaultBContactInfoInstance = nil;
     self.industry = @"";
     self.timespan = [BTimespan defaultInstance];
     self.summary = @"";
+    self.isHeadlineItem = NO;
   }
   return self;
 }
@@ -1137,6 +1151,9 @@ static BEmployment* defaultBEmploymentInstance = nil;
   if (self.hasSummary) {
     [output writeString:6 value:self.summary];
   }
+  if (self.hasIsHeadlineItem) {
+    [output writeBool:7 value:self.isHeadlineItem];
+  }
   [self.unknownFields writeToCodedOutputStream:output];
 }
 - (SInt32) serializedSize {
@@ -1163,6 +1180,9 @@ static BEmployment* defaultBEmploymentInstance = nil;
   }
   if (self.hasSummary) {
     size_ += computeStringSize(6, self.summary);
+  }
+  if (self.hasIsHeadlineItem) {
+    size_ += computeBoolSize(7, self.isHeadlineItem);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -1220,6 +1240,9 @@ static BEmployment* defaultBEmploymentInstance = nil;
   if (self.hasSummary) {
     [output appendFormat:@"%@%@: %@\n", indent, @"summary", self.summary];
   }
+  if (self.hasIsHeadlineItem) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"isHeadlineItem", [NSNumber numberWithBool:self.isHeadlineItem]];
+  }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (void) storeInDictionary:(NSMutableDictionary *)dictionary {
@@ -1242,6 +1265,9 @@ static BEmployment* defaultBEmploymentInstance = nil;
   }
   if (self.hasSummary) {
     [dictionary setObject: self.summary forKey: @"summary"];
+  }
+  if (self.hasIsHeadlineItem) {
+    [dictionary setObject: [NSNumber numberWithBool:self.isHeadlineItem] forKey: @"isHeadlineItem"];
   }
   [self.unknownFields storeInDictionary:dictionary];
 }
@@ -1266,6 +1292,8 @@ static BEmployment* defaultBEmploymentInstance = nil;
       (!self.hasTimespan || [self.timespan isEqual:otherMessage.timespan]) &&
       self.hasSummary == otherMessage.hasSummary &&
       (!self.hasSummary || [self.summary isEqual:otherMessage.summary]) &&
+      self.hasIsHeadlineItem == otherMessage.hasIsHeadlineItem &&
+      (!self.hasIsHeadlineItem || self.isHeadlineItem == otherMessage.isHeadlineItem) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
@@ -1287,6 +1315,9 @@ static BEmployment* defaultBEmploymentInstance = nil;
   }
   if (self.hasSummary) {
     hashCode = hashCode * 31 + [self.summary hash];
+  }
+  if (self.hasIsHeadlineItem) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithBool:self.isHeadlineItem] hash];
   }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
@@ -1349,6 +1380,9 @@ static BEmployment* defaultBEmploymentInstance = nil;
   if (other.hasSummary) {
     [self setSummary:other.summary];
   }
+  if (other.hasIsHeadlineItem) {
+    [self setIsHeadlineItem:other.isHeadlineItem];
+  }
   [self mergeUnknownFields:other.unknownFields];
   return self;
 }
@@ -1397,6 +1431,10 @@ static BEmployment* defaultBEmploymentInstance = nil;
       }
       case 50: {
         [self setSummary:[input readString]];
+        break;
+      }
+      case 56: {
+        [self setIsHeadlineItem:[input readBool]];
         break;
       }
     }
@@ -1510,6 +1548,22 @@ static BEmployment* defaultBEmploymentInstance = nil;
 - (BEmploymentBuilder*) clearSummary {
   resultEmployment.hasSummary = NO;
   resultEmployment.summary = @"";
+  return self;
+}
+- (BOOL) hasIsHeadlineItem {
+  return resultEmployment.hasIsHeadlineItem;
+}
+- (BOOL) isHeadlineItem {
+  return resultEmployment.isHeadlineItem;
+}
+- (BEmploymentBuilder*) setIsHeadlineItem:(BOOL) value {
+  resultEmployment.hasIsHeadlineItem = YES;
+  resultEmployment.isHeadlineItem = value;
+  return self;
+}
+- (BEmploymentBuilder*) clearIsHeadlineItem {
+  resultEmployment.hasIsHeadlineItem = NO;
+  resultEmployment.isHeadlineItem = NO;
   return self;
 }
 @end

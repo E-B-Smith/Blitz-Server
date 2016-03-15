@@ -347,14 +347,17 @@ NSString *NSStringFromBImageContent(BImageContent value);
 #define Employment_industry @"industry"
 #define Employment_timespan @"timespan"
 #define Employment_summary @"summary"
+#define Employment_isHeadlineItem @"isHeadlineItem"
 @interface BEmployment : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
+  BOOL hasIsHeadlineItem_:1;
   BOOL hasJobTitle_:1;
   BOOL hasCompanyName_:1;
   BOOL hasLocation_:1;
   BOOL hasIndustry_:1;
   BOOL hasSummary_:1;
   BOOL hasTimespan_:1;
+  BOOL isHeadlineItem_:1;
   NSString* jobTitle;
   NSString* companyName;
   NSString* location;
@@ -368,12 +371,14 @@ NSString *NSStringFromBImageContent(BImageContent value);
 - (BOOL) hasIndustry;
 - (BOOL) hasTimespan;
 - (BOOL) hasSummary;
+- (BOOL) hasIsHeadlineItem;
 @property (readonly, strong) NSString* jobTitle;
 @property (readonly, strong) NSString* companyName;
 @property (readonly, strong) NSString* location;
 @property (readonly, strong) NSString* industry;
 @property (readonly, strong) BTimespan* timespan;
 @property (readonly, strong) NSString* summary;
+- (BOOL) isHeadlineItem;
 
 + (instancetype) defaultInstance;
 - (instancetype) defaultInstance;
@@ -441,6 +446,11 @@ NSString *NSStringFromBImageContent(BImageContent value);
 - (NSString*) summary;
 - (BEmploymentBuilder*) setSummary:(NSString*) value;
 - (BEmploymentBuilder*) clearSummary;
+
+- (BOOL) hasIsHeadlineItem;
+- (BOOL) isHeadlineItem;
+- (BEmploymentBuilder*) setIsHeadlineItem:(BOOL) value;
+- (BEmploymentBuilder*) clearIsHeadlineItem;
 @end
 
 #define Education_schoolName @"schoolName"
