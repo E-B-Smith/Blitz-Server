@@ -96,7 +96,7 @@ func GetEntityTags(userID, entityID string, entityType BlitzMessage.EntityType) 
 }
 
 
-func UpdateEntityTags(session *Session, tagUpdate *BlitzMessage.EntityTags,
+func UpdateEntityTags(session *Session, tagUpdate *BlitzMessage.EntityTagList,
     ) *BlitzMessage.ServerResponse {
 
     SetEntityTags(session.UserID, tagUpdate.Tags)

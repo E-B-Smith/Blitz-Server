@@ -520,12 +520,12 @@ public final class Feed {
     /**
      * <code>repeated .BlitzMessage.EntityTag postTags = 12;</code>
      */
-    java.util.List<com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag> 
+    java.util.List<com.blitzhere.BlitzMessage.EntityTags.EntityTag> 
         getPostTagsList();
     /**
      * <code>repeated .BlitzMessage.EntityTag postTags = 12;</code>
      */
-    com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag getPostTags(int index);
+    com.blitzhere.BlitzMessage.EntityTags.EntityTag getPostTags(int index);
     /**
      * <code>repeated .BlitzMessage.EntityTag postTags = 12;</code>
      */
@@ -533,12 +533,12 @@ public final class Feed {
     /**
      * <code>repeated .BlitzMessage.EntityTag postTags = 12;</code>
      */
-    java.util.List<? extends com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTagOrBuilder> 
+    java.util.List<? extends com.blitzhere.BlitzMessage.EntityTags.EntityTagOrBuilder> 
         getPostTagsOrBuilderList();
     /**
      * <code>repeated .BlitzMessage.EntityTag postTags = 12;</code>
      */
-    com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTagOrBuilder getPostTagsOrBuilder(
+    com.blitzhere.BlitzMessage.EntityTags.EntityTagOrBuilder getPostTagsOrBuilder(
         int index);
 
     /**
@@ -740,10 +740,10 @@ public final class Feed {
             }
             case 98: {
               if (!((mutable_bitField0_ & 0x00000400) == 0x00000400)) {
-                postTags_ = new java.util.ArrayList<com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag>();
+                postTags_ = new java.util.ArrayList<com.blitzhere.BlitzMessage.EntityTags.EntityTag>();
                 mutable_bitField0_ |= 0x00000400;
               }
-              postTags_.add(input.readMessage(com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag.PARSER, extensionRegistry));
+              postTags_.add(input.readMessage(com.blitzhere.BlitzMessage.EntityTags.EntityTag.PARSER, extensionRegistry));
               break;
             }
             case 106: {
@@ -1108,17 +1108,17 @@ public final class Feed {
     }
 
     public static final int POSTTAGS_FIELD_NUMBER = 12;
-    private java.util.List<com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag> postTags_;
+    private java.util.List<com.blitzhere.BlitzMessage.EntityTags.EntityTag> postTags_;
     /**
      * <code>repeated .BlitzMessage.EntityTag postTags = 12;</code>
      */
-    public java.util.List<com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag> getPostTagsList() {
+    public java.util.List<com.blitzhere.BlitzMessage.EntityTags.EntityTag> getPostTagsList() {
       return postTags_;
     }
     /**
      * <code>repeated .BlitzMessage.EntityTag postTags = 12;</code>
      */
-    public java.util.List<? extends com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTagOrBuilder> 
+    public java.util.List<? extends com.blitzhere.BlitzMessage.EntityTags.EntityTagOrBuilder> 
         getPostTagsOrBuilderList() {
       return postTags_;
     }
@@ -1131,13 +1131,13 @@ public final class Feed {
     /**
      * <code>repeated .BlitzMessage.EntityTag postTags = 12;</code>
      */
-    public com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag getPostTags(int index) {
+    public com.blitzhere.BlitzMessage.EntityTags.EntityTag getPostTags(int index) {
       return postTags_.get(index);
     }
     /**
      * <code>repeated .BlitzMessage.EntityTag postTags = 12;</code>
      */
-    public com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTagOrBuilder getPostTagsOrBuilder(
+    public com.blitzhere.BlitzMessage.EntityTags.EntityTagOrBuilder getPostTagsOrBuilder(
         int index) {
       return postTags_.get(index);
     }
@@ -2521,22 +2521,22 @@ public final class Feed {
         return this;
       }
 
-      private java.util.List<com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag> postTags_ =
+      private java.util.List<com.blitzhere.BlitzMessage.EntityTags.EntityTag> postTags_ =
         java.util.Collections.emptyList();
       private void ensurePostTagsIsMutable() {
         if (!((bitField0_ & 0x00000400) == 0x00000400)) {
-          postTags_ = new java.util.ArrayList<com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag>(postTags_);
+          postTags_ = new java.util.ArrayList<com.blitzhere.BlitzMessage.EntityTags.EntityTag>(postTags_);
           bitField0_ |= 0x00000400;
          }
       }
 
       private com.google.protobuf.RepeatedFieldBuilder<
-          com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag, com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag.Builder, com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTagOrBuilder> postTagsBuilder_;
+          com.blitzhere.BlitzMessage.EntityTags.EntityTag, com.blitzhere.BlitzMessage.EntityTags.EntityTag.Builder, com.blitzhere.BlitzMessage.EntityTags.EntityTagOrBuilder> postTagsBuilder_;
 
       /**
        * <code>repeated .BlitzMessage.EntityTag postTags = 12;</code>
        */
-      public java.util.List<com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag> getPostTagsList() {
+      public java.util.List<com.blitzhere.BlitzMessage.EntityTags.EntityTag> getPostTagsList() {
         if (postTagsBuilder_ == null) {
           return java.util.Collections.unmodifiableList(postTags_);
         } else {
@@ -2556,7 +2556,7 @@ public final class Feed {
       /**
        * <code>repeated .BlitzMessage.EntityTag postTags = 12;</code>
        */
-      public com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag getPostTags(int index) {
+      public com.blitzhere.BlitzMessage.EntityTags.EntityTag getPostTags(int index) {
         if (postTagsBuilder_ == null) {
           return postTags_.get(index);
         } else {
@@ -2567,7 +2567,7 @@ public final class Feed {
        * <code>repeated .BlitzMessage.EntityTag postTags = 12;</code>
        */
       public Builder setPostTags(
-          int index, com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag value) {
+          int index, com.blitzhere.BlitzMessage.EntityTags.EntityTag value) {
         if (postTagsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -2584,7 +2584,7 @@ public final class Feed {
        * <code>repeated .BlitzMessage.EntityTag postTags = 12;</code>
        */
       public Builder setPostTags(
-          int index, com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag.Builder builderForValue) {
+          int index, com.blitzhere.BlitzMessage.EntityTags.EntityTag.Builder builderForValue) {
         if (postTagsBuilder_ == null) {
           ensurePostTagsIsMutable();
           postTags_.set(index, builderForValue.build());
@@ -2597,7 +2597,7 @@ public final class Feed {
       /**
        * <code>repeated .BlitzMessage.EntityTag postTags = 12;</code>
        */
-      public Builder addPostTags(com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag value) {
+      public Builder addPostTags(com.blitzhere.BlitzMessage.EntityTags.EntityTag value) {
         if (postTagsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -2614,7 +2614,7 @@ public final class Feed {
        * <code>repeated .BlitzMessage.EntityTag postTags = 12;</code>
        */
       public Builder addPostTags(
-          int index, com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag value) {
+          int index, com.blitzhere.BlitzMessage.EntityTags.EntityTag value) {
         if (postTagsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -2631,7 +2631,7 @@ public final class Feed {
        * <code>repeated .BlitzMessage.EntityTag postTags = 12;</code>
        */
       public Builder addPostTags(
-          com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag.Builder builderForValue) {
+          com.blitzhere.BlitzMessage.EntityTags.EntityTag.Builder builderForValue) {
         if (postTagsBuilder_ == null) {
           ensurePostTagsIsMutable();
           postTags_.add(builderForValue.build());
@@ -2645,7 +2645,7 @@ public final class Feed {
        * <code>repeated .BlitzMessage.EntityTag postTags = 12;</code>
        */
       public Builder addPostTags(
-          int index, com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag.Builder builderForValue) {
+          int index, com.blitzhere.BlitzMessage.EntityTags.EntityTag.Builder builderForValue) {
         if (postTagsBuilder_ == null) {
           ensurePostTagsIsMutable();
           postTags_.add(index, builderForValue.build());
@@ -2659,7 +2659,7 @@ public final class Feed {
        * <code>repeated .BlitzMessage.EntityTag postTags = 12;</code>
        */
       public Builder addAllPostTags(
-          java.lang.Iterable<? extends com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag> values) {
+          java.lang.Iterable<? extends com.blitzhere.BlitzMessage.EntityTags.EntityTag> values) {
         if (postTagsBuilder_ == null) {
           ensurePostTagsIsMutable();
           com.google.protobuf.AbstractMessageLite.Builder.addAll(
@@ -2699,14 +2699,14 @@ public final class Feed {
       /**
        * <code>repeated .BlitzMessage.EntityTag postTags = 12;</code>
        */
-      public com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag.Builder getPostTagsBuilder(
+      public com.blitzhere.BlitzMessage.EntityTags.EntityTag.Builder getPostTagsBuilder(
           int index) {
         return getPostTagsFieldBuilder().getBuilder(index);
       }
       /**
        * <code>repeated .BlitzMessage.EntityTag postTags = 12;</code>
        */
-      public com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTagOrBuilder getPostTagsOrBuilder(
+      public com.blitzhere.BlitzMessage.EntityTags.EntityTagOrBuilder getPostTagsOrBuilder(
           int index) {
         if (postTagsBuilder_ == null) {
           return postTags_.get(index);  } else {
@@ -2716,7 +2716,7 @@ public final class Feed {
       /**
        * <code>repeated .BlitzMessage.EntityTag postTags = 12;</code>
        */
-      public java.util.List<? extends com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTagOrBuilder> 
+      public java.util.List<? extends com.blitzhere.BlitzMessage.EntityTags.EntityTagOrBuilder> 
            getPostTagsOrBuilderList() {
         if (postTagsBuilder_ != null) {
           return postTagsBuilder_.getMessageOrBuilderList();
@@ -2727,31 +2727,31 @@ public final class Feed {
       /**
        * <code>repeated .BlitzMessage.EntityTag postTags = 12;</code>
        */
-      public com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag.Builder addPostTagsBuilder() {
+      public com.blitzhere.BlitzMessage.EntityTags.EntityTag.Builder addPostTagsBuilder() {
         return getPostTagsFieldBuilder().addBuilder(
-            com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag.getDefaultInstance());
+            com.blitzhere.BlitzMessage.EntityTags.EntityTag.getDefaultInstance());
       }
       /**
        * <code>repeated .BlitzMessage.EntityTag postTags = 12;</code>
        */
-      public com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag.Builder addPostTagsBuilder(
+      public com.blitzhere.BlitzMessage.EntityTags.EntityTag.Builder addPostTagsBuilder(
           int index) {
         return getPostTagsFieldBuilder().addBuilder(
-            index, com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag.getDefaultInstance());
+            index, com.blitzhere.BlitzMessage.EntityTags.EntityTag.getDefaultInstance());
       }
       /**
        * <code>repeated .BlitzMessage.EntityTag postTags = 12;</code>
        */
-      public java.util.List<com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag.Builder> 
+      public java.util.List<com.blitzhere.BlitzMessage.EntityTags.EntityTag.Builder> 
            getPostTagsBuilderList() {
         return getPostTagsFieldBuilder().getBuilderList();
       }
       private com.google.protobuf.RepeatedFieldBuilder<
-          com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag, com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag.Builder, com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTagOrBuilder> 
+          com.blitzhere.BlitzMessage.EntityTags.EntityTag, com.blitzhere.BlitzMessage.EntityTags.EntityTag.Builder, com.blitzhere.BlitzMessage.EntityTags.EntityTagOrBuilder> 
           getPostTagsFieldBuilder() {
         if (postTagsBuilder_ == null) {
           postTagsBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
-              com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag, com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag.Builder, com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTagOrBuilder>(
+              com.blitzhere.BlitzMessage.EntityTags.EntityTag, com.blitzhere.BlitzMessage.EntityTags.EntityTag.Builder, com.blitzhere.BlitzMessage.EntityTags.EntityTagOrBuilder>(
                   postTags_,
                   ((bitField0_ & 0x00000400) == 0x00000400),
                   getParentForChildren(),
@@ -5920,7 +5920,7 @@ public final class Feed {
         new com.google.protobuf.Descriptors.FileDescriptor[] {
           google.protobuf.ObjectivecDescriptor.getDescriptor(),
           com.blitzhere.BlitzMessage.Types.getDescriptor(),
-          com.blitzhere.BlitzMessage.EntityTagsOuterClass.getDescriptor(),
+          com.blitzhere.BlitzMessage.EntityTags.getDescriptor(),
         }, assigner);
     internal_static_BlitzMessage_FeedPost_descriptor =
       getDescriptor().getMessageTypes().get(0);
@@ -5959,7 +5959,7 @@ public final class Feed {
         .internalUpdateFileDescriptor(descriptor, registry);
     google.protobuf.ObjectivecDescriptor.getDescriptor();
     com.blitzhere.BlitzMessage.Types.getDescriptor();
-    com.blitzhere.BlitzMessage.EntityTagsOuterClass.getDescriptor();
+    com.blitzhere.BlitzMessage.EntityTags.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)

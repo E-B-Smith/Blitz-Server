@@ -6248,17 +6248,17 @@ public final class UserProfiles {
         int index);
 
     /**
-     * <code>optional .BlitzMessage.Employment currentEmployment = 11;</code>
+     * <code>optional .BlitzMessage.Employment headlineEmployment = 11;</code>
      */
-    boolean hasCurrentEmployment();
+    boolean hasHeadlineEmployment();
     /**
-     * <code>optional .BlitzMessage.Employment currentEmployment = 11;</code>
+     * <code>optional .BlitzMessage.Employment headlineEmployment = 11;</code>
      */
-    com.blitzhere.BlitzMessage.UserProfiles.Employment getCurrentEmployment();
+    com.blitzhere.BlitzMessage.UserProfiles.Employment getHeadlineEmployment();
     /**
-     * <code>optional .BlitzMessage.Employment currentEmployment = 11;</code>
+     * <code>optional .BlitzMessage.Employment headlineEmployment = 11;</code>
      */
-    com.blitzhere.BlitzMessage.UserProfiles.EmploymentOrBuilder getCurrentEmploymentOrBuilder();
+    com.blitzhere.BlitzMessage.UserProfiles.EmploymentOrBuilder getHeadlineEmploymentOrBuilder();
 
     /**
      * <code>repeated .BlitzMessage.Employment employment = 12;</code>
@@ -6311,12 +6311,12 @@ public final class UserProfiles {
     /**
      * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
      */
-    java.util.List<com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag> 
+    java.util.List<com.blitzhere.BlitzMessage.EntityTags.EntityTag> 
         getExpertiseTagsList();
     /**
      * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
      */
-    com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag getExpertiseTags(int index);
+    com.blitzhere.BlitzMessage.EntityTags.EntityTag getExpertiseTags(int index);
     /**
      * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
      */
@@ -6324,12 +6324,12 @@ public final class UserProfiles {
     /**
      * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
      */
-    java.util.List<? extends com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTagOrBuilder> 
+    java.util.List<? extends com.blitzhere.BlitzMessage.EntityTags.EntityTagOrBuilder> 
         getExpertiseTagsOrBuilderList();
     /**
      * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
      */
-    com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTagOrBuilder getExpertiseTagsOrBuilder(
+    com.blitzhere.BlitzMessage.EntityTags.EntityTagOrBuilder getExpertiseTagsOrBuilder(
         int index);
 
     /**
@@ -6517,12 +6517,12 @@ public final class UserProfiles {
             case 90: {
               com.blitzhere.BlitzMessage.UserProfiles.Employment.Builder subBuilder = null;
               if (((bitField0_ & 0x00000080) == 0x00000080)) {
-                subBuilder = currentEmployment_.toBuilder();
+                subBuilder = headlineEmployment_.toBuilder();
               }
-              currentEmployment_ = input.readMessage(com.blitzhere.BlitzMessage.UserProfiles.Employment.PARSER, extensionRegistry);
+              headlineEmployment_ = input.readMessage(com.blitzhere.BlitzMessage.UserProfiles.Employment.PARSER, extensionRegistry);
               if (subBuilder != null) {
-                subBuilder.mergeFrom(currentEmployment_);
-                currentEmployment_ = subBuilder.buildPartial();
+                subBuilder.mergeFrom(headlineEmployment_);
+                headlineEmployment_ = subBuilder.buildPartial();
               }
               bitField0_ |= 0x00000080;
               break;
@@ -6545,10 +6545,10 @@ public final class UserProfiles {
             }
             case 114: {
               if (!((mutable_bitField0_ & 0x00002000) == 0x00002000)) {
-                expertiseTags_ = new java.util.ArrayList<com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag>();
+                expertiseTags_ = new java.util.ArrayList<com.blitzhere.BlitzMessage.EntityTags.EntityTag>();
                 mutable_bitField0_ |= 0x00002000;
               }
-              expertiseTags_.add(input.readMessage(com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag.PARSER, extensionRegistry));
+              expertiseTags_.add(input.readMessage(com.blitzhere.BlitzMessage.EntityTags.EntityTag.PARSER, extensionRegistry));
               break;
             }
             case 122: {
@@ -6909,25 +6909,25 @@ public final class UserProfiles {
       return contactInfo_.get(index);
     }
 
-    public static final int CURRENTEMPLOYMENT_FIELD_NUMBER = 11;
-    private com.blitzhere.BlitzMessage.UserProfiles.Employment currentEmployment_;
+    public static final int HEADLINEEMPLOYMENT_FIELD_NUMBER = 11;
+    private com.blitzhere.BlitzMessage.UserProfiles.Employment headlineEmployment_;
     /**
-     * <code>optional .BlitzMessage.Employment currentEmployment = 11;</code>
+     * <code>optional .BlitzMessage.Employment headlineEmployment = 11;</code>
      */
-    public boolean hasCurrentEmployment() {
+    public boolean hasHeadlineEmployment() {
       return ((bitField0_ & 0x00000080) == 0x00000080);
     }
     /**
-     * <code>optional .BlitzMessage.Employment currentEmployment = 11;</code>
+     * <code>optional .BlitzMessage.Employment headlineEmployment = 11;</code>
      */
-    public com.blitzhere.BlitzMessage.UserProfiles.Employment getCurrentEmployment() {
-      return currentEmployment_;
+    public com.blitzhere.BlitzMessage.UserProfiles.Employment getHeadlineEmployment() {
+      return headlineEmployment_;
     }
     /**
-     * <code>optional .BlitzMessage.Employment currentEmployment = 11;</code>
+     * <code>optional .BlitzMessage.Employment headlineEmployment = 11;</code>
      */
-    public com.blitzhere.BlitzMessage.UserProfiles.EmploymentOrBuilder getCurrentEmploymentOrBuilder() {
-      return currentEmployment_;
+    public com.blitzhere.BlitzMessage.UserProfiles.EmploymentOrBuilder getHeadlineEmploymentOrBuilder() {
+      return headlineEmployment_;
     }
 
     public static final int EMPLOYMENT_FIELD_NUMBER = 12;
@@ -7001,17 +7001,17 @@ public final class UserProfiles {
     }
 
     public static final int EXPERTISETAGS_FIELD_NUMBER = 14;
-    private java.util.List<com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag> expertiseTags_;
+    private java.util.List<com.blitzhere.BlitzMessage.EntityTags.EntityTag> expertiseTags_;
     /**
      * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
      */
-    public java.util.List<com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag> getExpertiseTagsList() {
+    public java.util.List<com.blitzhere.BlitzMessage.EntityTags.EntityTag> getExpertiseTagsList() {
       return expertiseTags_;
     }
     /**
      * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
      */
-    public java.util.List<? extends com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTagOrBuilder> 
+    public java.util.List<? extends com.blitzhere.BlitzMessage.EntityTags.EntityTagOrBuilder> 
         getExpertiseTagsOrBuilderList() {
       return expertiseTags_;
     }
@@ -7024,13 +7024,13 @@ public final class UserProfiles {
     /**
      * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
      */
-    public com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag getExpertiseTags(int index) {
+    public com.blitzhere.BlitzMessage.EntityTags.EntityTag getExpertiseTags(int index) {
       return expertiseTags_.get(index);
     }
     /**
      * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
      */
-    public com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTagOrBuilder getExpertiseTagsOrBuilder(
+    public com.blitzhere.BlitzMessage.EntityTags.EntityTagOrBuilder getExpertiseTagsOrBuilder(
         int index) {
       return expertiseTags_.get(index);
     }
@@ -7117,7 +7117,7 @@ public final class UserProfiles {
       images_ = java.util.Collections.emptyList();
       socialIdentities_ = java.util.Collections.emptyList();
       contactInfo_ = java.util.Collections.emptyList();
-      currentEmployment_ = com.blitzhere.BlitzMessage.UserProfiles.Employment.getDefaultInstance();
+      headlineEmployment_ = com.blitzhere.BlitzMessage.UserProfiles.Employment.getDefaultInstance();
       employment_ = java.util.Collections.emptyList();
       education_ = java.util.Collections.emptyList();
       expertiseTags_ = java.util.Collections.emptyList();
@@ -7166,8 +7166,8 @@ public final class UserProfiles {
           return false;
         }
       }
-      if (hasCurrentEmployment()) {
-        if (!getCurrentEmployment().isInitialized()) {
+      if (hasHeadlineEmployment()) {
+        if (!getHeadlineEmployment().isInitialized()) {
           memoizedIsInitialized = 0;
           return false;
         }
@@ -7222,7 +7222,7 @@ public final class UserProfiles {
         output.writeMessage(10, contactInfo_.get(i));
       }
       if (((bitField0_ & 0x00000080) == 0x00000080)) {
-        output.writeMessage(11, currentEmployment_);
+        output.writeMessage(11, headlineEmployment_);
       }
       for (int i = 0; i < employment_.size(); i++) {
         output.writeMessage(12, employment_.get(i));
@@ -7290,7 +7290,7 @@ public final class UserProfiles {
       }
       if (((bitField0_ & 0x00000080) == 0x00000080)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(11, currentEmployment_);
+          .computeMessageSize(11, headlineEmployment_);
       }
       for (int i = 0; i < employment_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
@@ -7432,7 +7432,7 @@ public final class UserProfiles {
           getImagesFieldBuilder();
           getSocialIdentitiesFieldBuilder();
           getContactInfoFieldBuilder();
-          getCurrentEmploymentFieldBuilder();
+          getHeadlineEmploymentFieldBuilder();
           getEmploymentFieldBuilder();
           getEducationFieldBuilder();
           getExpertiseTagsFieldBuilder();
@@ -7488,10 +7488,10 @@ public final class UserProfiles {
         } else {
           contactInfoBuilder_.clear();
         }
-        if (currentEmploymentBuilder_ == null) {
-          currentEmployment_ = com.blitzhere.BlitzMessage.UserProfiles.Employment.getDefaultInstance();
+        if (headlineEmploymentBuilder_ == null) {
+          headlineEmployment_ = com.blitzhere.BlitzMessage.UserProfiles.Employment.getDefaultInstance();
         } else {
-          currentEmploymentBuilder_.clear();
+          headlineEmploymentBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000400);
         if (employmentBuilder_ == null) {
@@ -7614,10 +7614,10 @@ public final class UserProfiles {
         if (((from_bitField0_ & 0x00000400) == 0x00000400)) {
           to_bitField0_ |= 0x00000080;
         }
-        if (currentEmploymentBuilder_ == null) {
-          result.currentEmployment_ = currentEmployment_;
+        if (headlineEmploymentBuilder_ == null) {
+          result.headlineEmployment_ = headlineEmployment_;
         } else {
-          result.currentEmployment_ = currentEmploymentBuilder_.build();
+          result.headlineEmployment_ = headlineEmploymentBuilder_.build();
         }
         if (employmentBuilder_ == null) {
           if (((bitField0_ & 0x00000800) == 0x00000800)) {
@@ -7774,8 +7774,8 @@ public final class UserProfiles {
             }
           }
         }
-        if (other.hasCurrentEmployment()) {
-          mergeCurrentEmployment(other.getCurrentEmployment());
+        if (other.hasHeadlineEmployment()) {
+          mergeHeadlineEmployment(other.getHeadlineEmployment());
         }
         if (employmentBuilder_ == null) {
           if (!other.employment_.isEmpty()) {
@@ -7911,8 +7911,8 @@ public final class UserProfiles {
             return false;
           }
         }
-        if (hasCurrentEmployment()) {
-          if (!getCurrentEmployment().isInitialized()) {
+        if (hasHeadlineEmployment()) {
+          if (!getHeadlineEmployment().isInitialized()) {
             
             return false;
           }
@@ -9241,120 +9241,120 @@ public final class UserProfiles {
         return contactInfoBuilder_;
       }
 
-      private com.blitzhere.BlitzMessage.UserProfiles.Employment currentEmployment_ = com.blitzhere.BlitzMessage.UserProfiles.Employment.getDefaultInstance();
+      private com.blitzhere.BlitzMessage.UserProfiles.Employment headlineEmployment_ = com.blitzhere.BlitzMessage.UserProfiles.Employment.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
-          com.blitzhere.BlitzMessage.UserProfiles.Employment, com.blitzhere.BlitzMessage.UserProfiles.Employment.Builder, com.blitzhere.BlitzMessage.UserProfiles.EmploymentOrBuilder> currentEmploymentBuilder_;
+          com.blitzhere.BlitzMessage.UserProfiles.Employment, com.blitzhere.BlitzMessage.UserProfiles.Employment.Builder, com.blitzhere.BlitzMessage.UserProfiles.EmploymentOrBuilder> headlineEmploymentBuilder_;
       /**
-       * <code>optional .BlitzMessage.Employment currentEmployment = 11;</code>
+       * <code>optional .BlitzMessage.Employment headlineEmployment = 11;</code>
        */
-      public boolean hasCurrentEmployment() {
+      public boolean hasHeadlineEmployment() {
         return ((bitField0_ & 0x00000400) == 0x00000400);
       }
       /**
-       * <code>optional .BlitzMessage.Employment currentEmployment = 11;</code>
+       * <code>optional .BlitzMessage.Employment headlineEmployment = 11;</code>
        */
-      public com.blitzhere.BlitzMessage.UserProfiles.Employment getCurrentEmployment() {
-        if (currentEmploymentBuilder_ == null) {
-          return currentEmployment_;
+      public com.blitzhere.BlitzMessage.UserProfiles.Employment getHeadlineEmployment() {
+        if (headlineEmploymentBuilder_ == null) {
+          return headlineEmployment_;
         } else {
-          return currentEmploymentBuilder_.getMessage();
+          return headlineEmploymentBuilder_.getMessage();
         }
       }
       /**
-       * <code>optional .BlitzMessage.Employment currentEmployment = 11;</code>
+       * <code>optional .BlitzMessage.Employment headlineEmployment = 11;</code>
        */
-      public Builder setCurrentEmployment(com.blitzhere.BlitzMessage.UserProfiles.Employment value) {
-        if (currentEmploymentBuilder_ == null) {
+      public Builder setHeadlineEmployment(com.blitzhere.BlitzMessage.UserProfiles.Employment value) {
+        if (headlineEmploymentBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          currentEmployment_ = value;
+          headlineEmployment_ = value;
           onChanged();
         } else {
-          currentEmploymentBuilder_.setMessage(value);
+          headlineEmploymentBuilder_.setMessage(value);
         }
         bitField0_ |= 0x00000400;
         return this;
       }
       /**
-       * <code>optional .BlitzMessage.Employment currentEmployment = 11;</code>
+       * <code>optional .BlitzMessage.Employment headlineEmployment = 11;</code>
        */
-      public Builder setCurrentEmployment(
+      public Builder setHeadlineEmployment(
           com.blitzhere.BlitzMessage.UserProfiles.Employment.Builder builderForValue) {
-        if (currentEmploymentBuilder_ == null) {
-          currentEmployment_ = builderForValue.build();
+        if (headlineEmploymentBuilder_ == null) {
+          headlineEmployment_ = builderForValue.build();
           onChanged();
         } else {
-          currentEmploymentBuilder_.setMessage(builderForValue.build());
+          headlineEmploymentBuilder_.setMessage(builderForValue.build());
         }
         bitField0_ |= 0x00000400;
         return this;
       }
       /**
-       * <code>optional .BlitzMessage.Employment currentEmployment = 11;</code>
+       * <code>optional .BlitzMessage.Employment headlineEmployment = 11;</code>
        */
-      public Builder mergeCurrentEmployment(com.blitzhere.BlitzMessage.UserProfiles.Employment value) {
-        if (currentEmploymentBuilder_ == null) {
+      public Builder mergeHeadlineEmployment(com.blitzhere.BlitzMessage.UserProfiles.Employment value) {
+        if (headlineEmploymentBuilder_ == null) {
           if (((bitField0_ & 0x00000400) == 0x00000400) &&
-              currentEmployment_ != com.blitzhere.BlitzMessage.UserProfiles.Employment.getDefaultInstance()) {
-            currentEmployment_ =
-              com.blitzhere.BlitzMessage.UserProfiles.Employment.newBuilder(currentEmployment_).mergeFrom(value).buildPartial();
+              headlineEmployment_ != com.blitzhere.BlitzMessage.UserProfiles.Employment.getDefaultInstance()) {
+            headlineEmployment_ =
+              com.blitzhere.BlitzMessage.UserProfiles.Employment.newBuilder(headlineEmployment_).mergeFrom(value).buildPartial();
           } else {
-            currentEmployment_ = value;
+            headlineEmployment_ = value;
           }
           onChanged();
         } else {
-          currentEmploymentBuilder_.mergeFrom(value);
+          headlineEmploymentBuilder_.mergeFrom(value);
         }
         bitField0_ |= 0x00000400;
         return this;
       }
       /**
-       * <code>optional .BlitzMessage.Employment currentEmployment = 11;</code>
+       * <code>optional .BlitzMessage.Employment headlineEmployment = 11;</code>
        */
-      public Builder clearCurrentEmployment() {
-        if (currentEmploymentBuilder_ == null) {
-          currentEmployment_ = com.blitzhere.BlitzMessage.UserProfiles.Employment.getDefaultInstance();
+      public Builder clearHeadlineEmployment() {
+        if (headlineEmploymentBuilder_ == null) {
+          headlineEmployment_ = com.blitzhere.BlitzMessage.UserProfiles.Employment.getDefaultInstance();
           onChanged();
         } else {
-          currentEmploymentBuilder_.clear();
+          headlineEmploymentBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000400);
         return this;
       }
       /**
-       * <code>optional .BlitzMessage.Employment currentEmployment = 11;</code>
+       * <code>optional .BlitzMessage.Employment headlineEmployment = 11;</code>
        */
-      public com.blitzhere.BlitzMessage.UserProfiles.Employment.Builder getCurrentEmploymentBuilder() {
+      public com.blitzhere.BlitzMessage.UserProfiles.Employment.Builder getHeadlineEmploymentBuilder() {
         bitField0_ |= 0x00000400;
         onChanged();
-        return getCurrentEmploymentFieldBuilder().getBuilder();
+        return getHeadlineEmploymentFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .BlitzMessage.Employment currentEmployment = 11;</code>
+       * <code>optional .BlitzMessage.Employment headlineEmployment = 11;</code>
        */
-      public com.blitzhere.BlitzMessage.UserProfiles.EmploymentOrBuilder getCurrentEmploymentOrBuilder() {
-        if (currentEmploymentBuilder_ != null) {
-          return currentEmploymentBuilder_.getMessageOrBuilder();
+      public com.blitzhere.BlitzMessage.UserProfiles.EmploymentOrBuilder getHeadlineEmploymentOrBuilder() {
+        if (headlineEmploymentBuilder_ != null) {
+          return headlineEmploymentBuilder_.getMessageOrBuilder();
         } else {
-          return currentEmployment_;
+          return headlineEmployment_;
         }
       }
       /**
-       * <code>optional .BlitzMessage.Employment currentEmployment = 11;</code>
+       * <code>optional .BlitzMessage.Employment headlineEmployment = 11;</code>
        */
       private com.google.protobuf.SingleFieldBuilder<
           com.blitzhere.BlitzMessage.UserProfiles.Employment, com.blitzhere.BlitzMessage.UserProfiles.Employment.Builder, com.blitzhere.BlitzMessage.UserProfiles.EmploymentOrBuilder> 
-          getCurrentEmploymentFieldBuilder() {
-        if (currentEmploymentBuilder_ == null) {
-          currentEmploymentBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+          getHeadlineEmploymentFieldBuilder() {
+        if (headlineEmploymentBuilder_ == null) {
+          headlineEmploymentBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.blitzhere.BlitzMessage.UserProfiles.Employment, com.blitzhere.BlitzMessage.UserProfiles.Employment.Builder, com.blitzhere.BlitzMessage.UserProfiles.EmploymentOrBuilder>(
-                  getCurrentEmployment(),
+                  getHeadlineEmployment(),
                   getParentForChildren(),
                   isClean());
-          currentEmployment_ = null;
+          headlineEmployment_ = null;
         }
-        return currentEmploymentBuilder_;
+        return headlineEmploymentBuilder_;
       }
 
       private java.util.List<com.blitzhere.BlitzMessage.UserProfiles.Employment> employment_ =
@@ -9837,22 +9837,22 @@ public final class UserProfiles {
         return educationBuilder_;
       }
 
-      private java.util.List<com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag> expertiseTags_ =
+      private java.util.List<com.blitzhere.BlitzMessage.EntityTags.EntityTag> expertiseTags_ =
         java.util.Collections.emptyList();
       private void ensureExpertiseTagsIsMutable() {
         if (!((bitField0_ & 0x00002000) == 0x00002000)) {
-          expertiseTags_ = new java.util.ArrayList<com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag>(expertiseTags_);
+          expertiseTags_ = new java.util.ArrayList<com.blitzhere.BlitzMessage.EntityTags.EntityTag>(expertiseTags_);
           bitField0_ |= 0x00002000;
          }
       }
 
       private com.google.protobuf.RepeatedFieldBuilder<
-          com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag, com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag.Builder, com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTagOrBuilder> expertiseTagsBuilder_;
+          com.blitzhere.BlitzMessage.EntityTags.EntityTag, com.blitzhere.BlitzMessage.EntityTags.EntityTag.Builder, com.blitzhere.BlitzMessage.EntityTags.EntityTagOrBuilder> expertiseTagsBuilder_;
 
       /**
        * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
        */
-      public java.util.List<com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag> getExpertiseTagsList() {
+      public java.util.List<com.blitzhere.BlitzMessage.EntityTags.EntityTag> getExpertiseTagsList() {
         if (expertiseTagsBuilder_ == null) {
           return java.util.Collections.unmodifiableList(expertiseTags_);
         } else {
@@ -9872,7 +9872,7 @@ public final class UserProfiles {
       /**
        * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
        */
-      public com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag getExpertiseTags(int index) {
+      public com.blitzhere.BlitzMessage.EntityTags.EntityTag getExpertiseTags(int index) {
         if (expertiseTagsBuilder_ == null) {
           return expertiseTags_.get(index);
         } else {
@@ -9883,7 +9883,7 @@ public final class UserProfiles {
        * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
        */
       public Builder setExpertiseTags(
-          int index, com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag value) {
+          int index, com.blitzhere.BlitzMessage.EntityTags.EntityTag value) {
         if (expertiseTagsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -9900,7 +9900,7 @@ public final class UserProfiles {
        * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
        */
       public Builder setExpertiseTags(
-          int index, com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag.Builder builderForValue) {
+          int index, com.blitzhere.BlitzMessage.EntityTags.EntityTag.Builder builderForValue) {
         if (expertiseTagsBuilder_ == null) {
           ensureExpertiseTagsIsMutable();
           expertiseTags_.set(index, builderForValue.build());
@@ -9913,7 +9913,7 @@ public final class UserProfiles {
       /**
        * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
        */
-      public Builder addExpertiseTags(com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag value) {
+      public Builder addExpertiseTags(com.blitzhere.BlitzMessage.EntityTags.EntityTag value) {
         if (expertiseTagsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -9930,7 +9930,7 @@ public final class UserProfiles {
        * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
        */
       public Builder addExpertiseTags(
-          int index, com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag value) {
+          int index, com.blitzhere.BlitzMessage.EntityTags.EntityTag value) {
         if (expertiseTagsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -9947,7 +9947,7 @@ public final class UserProfiles {
        * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
        */
       public Builder addExpertiseTags(
-          com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag.Builder builderForValue) {
+          com.blitzhere.BlitzMessage.EntityTags.EntityTag.Builder builderForValue) {
         if (expertiseTagsBuilder_ == null) {
           ensureExpertiseTagsIsMutable();
           expertiseTags_.add(builderForValue.build());
@@ -9961,7 +9961,7 @@ public final class UserProfiles {
        * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
        */
       public Builder addExpertiseTags(
-          int index, com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag.Builder builderForValue) {
+          int index, com.blitzhere.BlitzMessage.EntityTags.EntityTag.Builder builderForValue) {
         if (expertiseTagsBuilder_ == null) {
           ensureExpertiseTagsIsMutable();
           expertiseTags_.add(index, builderForValue.build());
@@ -9975,7 +9975,7 @@ public final class UserProfiles {
        * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
        */
       public Builder addAllExpertiseTags(
-          java.lang.Iterable<? extends com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag> values) {
+          java.lang.Iterable<? extends com.blitzhere.BlitzMessage.EntityTags.EntityTag> values) {
         if (expertiseTagsBuilder_ == null) {
           ensureExpertiseTagsIsMutable();
           com.google.protobuf.AbstractMessageLite.Builder.addAll(
@@ -10015,14 +10015,14 @@ public final class UserProfiles {
       /**
        * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
        */
-      public com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag.Builder getExpertiseTagsBuilder(
+      public com.blitzhere.BlitzMessage.EntityTags.EntityTag.Builder getExpertiseTagsBuilder(
           int index) {
         return getExpertiseTagsFieldBuilder().getBuilder(index);
       }
       /**
        * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
        */
-      public com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTagOrBuilder getExpertiseTagsOrBuilder(
+      public com.blitzhere.BlitzMessage.EntityTags.EntityTagOrBuilder getExpertiseTagsOrBuilder(
           int index) {
         if (expertiseTagsBuilder_ == null) {
           return expertiseTags_.get(index);  } else {
@@ -10032,7 +10032,7 @@ public final class UserProfiles {
       /**
        * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
        */
-      public java.util.List<? extends com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTagOrBuilder> 
+      public java.util.List<? extends com.blitzhere.BlitzMessage.EntityTags.EntityTagOrBuilder> 
            getExpertiseTagsOrBuilderList() {
         if (expertiseTagsBuilder_ != null) {
           return expertiseTagsBuilder_.getMessageOrBuilderList();
@@ -10043,31 +10043,31 @@ public final class UserProfiles {
       /**
        * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
        */
-      public com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag.Builder addExpertiseTagsBuilder() {
+      public com.blitzhere.BlitzMessage.EntityTags.EntityTag.Builder addExpertiseTagsBuilder() {
         return getExpertiseTagsFieldBuilder().addBuilder(
-            com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag.getDefaultInstance());
+            com.blitzhere.BlitzMessage.EntityTags.EntityTag.getDefaultInstance());
       }
       /**
        * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
        */
-      public com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag.Builder addExpertiseTagsBuilder(
+      public com.blitzhere.BlitzMessage.EntityTags.EntityTag.Builder addExpertiseTagsBuilder(
           int index) {
         return getExpertiseTagsFieldBuilder().addBuilder(
-            index, com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag.getDefaultInstance());
+            index, com.blitzhere.BlitzMessage.EntityTags.EntityTag.getDefaultInstance());
       }
       /**
        * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
        */
-      public java.util.List<com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag.Builder> 
+      public java.util.List<com.blitzhere.BlitzMessage.EntityTags.EntityTag.Builder> 
            getExpertiseTagsBuilderList() {
         return getExpertiseTagsFieldBuilder().getBuilderList();
       }
       private com.google.protobuf.RepeatedFieldBuilder<
-          com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag, com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag.Builder, com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTagOrBuilder> 
+          com.blitzhere.BlitzMessage.EntityTags.EntityTag, com.blitzhere.BlitzMessage.EntityTags.EntityTag.Builder, com.blitzhere.BlitzMessage.EntityTags.EntityTagOrBuilder> 
           getExpertiseTagsFieldBuilder() {
         if (expertiseTagsBuilder_ == null) {
           expertiseTagsBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
-              com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag, com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTag.Builder, com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTagOrBuilder>(
+              com.blitzhere.BlitzMessage.EntityTags.EntityTag, com.blitzhere.BlitzMessage.EntityTags.EntityTag.Builder, com.blitzhere.BlitzMessage.EntityTags.EntityTagOrBuilder>(
                   expertiseTags_,
                   ((bitField0_ & 0x00002000) == 0x00002000),
                   getParentForChildren(),
@@ -13939,7 +13939,7 @@ public final class UserProfiles {
       "nt\030\001 \001(\0162\032.BlitzMessage.ImageContent\022\022\n\n" +
       "imageBytes\030\002 \001(\014\022\023\n\013contentType\030\003 \001(\t\022\020\n" +
       "\010imageURL\030\004 \001(\t\022*\n\tdateAdded\030\005 \001(\0132\027.Bli",
-      "tzMessage.Timestamp\022\r\n\005crc32\030\006 \001(\003\"\205\005\n\013U" +
+      "tzMessage.Timestamp\022\r\n\005crc32\030\006 \001(\003\"\206\005\n\013U" +
       "serProfile\022\016\n\006userID\030\001 \001(\t\022,\n\nuserStatus" +
       "\030\002 \001(\0162\030.BlitzMessage.UserStatus\022-\n\014crea" +
       "tionDate\030\003 \001(\0132\027.BlitzMessage.Timestamp\022" +
@@ -13950,32 +13950,32 @@ public final class UserProfiles {
       "zMessage.ImageData\0226\n\020socialIdentities\030\t" +
       " \003(\0132\034.BlitzMessage.SocialIdentity\022.\n\013co",
       "ntactInfo\030\n \003(\0132\031.BlitzMessage.ContactIn" +
-      "fo\0223\n\021currentEmployment\030\013 \001(\0132\030.BlitzMes" +
-      "sage.Employment\022,\n\nemployment\030\014 \003(\0132\030.Bl" +
-      "itzMessage.Employment\022*\n\teducation\030\r \003(\013" +
-      "2\027.BlitzMessage.Education\022.\n\rexpertiseTa" +
-      "gs\030\016 \003(\0132\027.BlitzMessage.EntityTag\022\024\n\014int" +
-      "erestTags\030\017 \003(\t\022\031\n\021backgroundSummary\030\020 \001" +
-      "(\t\"9\n\013ImageUpload\022*\n\timageData\030\001 \003(\0132\027.B" +
-      "litzMessage.ImageData\"@\n\021UserProfileUpda" +
-      "te\022+\n\010profiles\030\001 \003(\0132\031.BlitzMessage.User",
-      "Profile\"#\n\020UserProfileQuery\022\017\n\007userIDs\030\001" +
-      " \003(\t\"\246\001\n\023ConfirmationRequest\022.\n\013contactI" +
-      "nfo\030\001 \001(\0132\031.BlitzMessage.ContactInfo\022.\n\013" +
-      "userProfile\030\002 \001(\0132\031.BlitzMessage.UserPro" +
-      "file\022\030\n\020confirmationCode\030\003 \001(\t\022\025\n\rinvite" +
-      "rUserID\030\004 \001(\t\"F\n\027ProfilesFromContactInfo" +
-      "\022+\n\010profiles\030\001 \003(\0132\031.BlitzMessage.UserPr" +
-      "ofile*Z\n\013ContactType\022\r\n\tCTUnknown\020\000\022\016\n\nC" +
-      "TPhoneSMS\020\001\022\013\n\007CTEmail\020\002\022\n\n\006CTChat\020\003\022\023\n\017" +
-      "CTSocialService\020\004*j\n\nUserStatus\022\r\n\tUSUnk",
-      "nown\020\000\022\r\n\tUSBlocked\020\001\022\r\n\tUSInvited\020\002\022\014\n\010" +
-      "USActive\020\003\022\020\n\014USConfirming\020\004\022\017\n\013USConfir" +
-      "med\020\005*:\n\006Gender\022\014\n\010GUnknown\020\000\022\013\n\007GFemale" +
-      "\020\001\022\t\n\005GMale\020\002\022\n\n\006GOther\020\003*F\n\014ImageConten" +
-      "t\022\r\n\tICUnknown\020\000\022\021\n\rICUserProfile\020\001\022\024\n\020I" +
-      "CUserBackground\020\002B/\n\032com.blitzhere.Blitz" +
-      "Message\210\001\001\322>\002\n\000\322>\003\022\001B\322>\002\030\001"
+      "fo\0224\n\022headlineEmployment\030\013 \001(\0132\030.BlitzMe" +
+      "ssage.Employment\022,\n\nemployment\030\014 \003(\0132\030.B" +
+      "litzMessage.Employment\022*\n\teducation\030\r \003(" +
+      "\0132\027.BlitzMessage.Education\022.\n\rexpertiseT" +
+      "ags\030\016 \003(\0132\027.BlitzMessage.EntityTag\022\024\n\014in" +
+      "terestTags\030\017 \003(\t\022\031\n\021backgroundSummary\030\020 " +
+      "\001(\t\"9\n\013ImageUpload\022*\n\timageData\030\001 \003(\0132\027." +
+      "BlitzMessage.ImageData\"@\n\021UserProfileUpd" +
+      "ate\022+\n\010profiles\030\001 \003(\0132\031.BlitzMessage.Use",
+      "rProfile\"#\n\020UserProfileQuery\022\017\n\007userIDs\030" +
+      "\001 \003(\t\"\246\001\n\023ConfirmationRequest\022.\n\013contact" +
+      "Info\030\001 \001(\0132\031.BlitzMessage.ContactInfo\022.\n" +
+      "\013userProfile\030\002 \001(\0132\031.BlitzMessage.UserPr" +
+      "ofile\022\030\n\020confirmationCode\030\003 \001(\t\022\025\n\rinvit" +
+      "erUserID\030\004 \001(\t\"F\n\027ProfilesFromContactInf" +
+      "o\022+\n\010profiles\030\001 \003(\0132\031.BlitzMessage.UserP" +
+      "rofile*Z\n\013ContactType\022\r\n\tCTUnknown\020\000\022\016\n\n" +
+      "CTPhoneSMS\020\001\022\013\n\007CTEmail\020\002\022\n\n\006CTChat\020\003\022\023\n" +
+      "\017CTSocialService\020\004*j\n\nUserStatus\022\r\n\tUSUn",
+      "known\020\000\022\r\n\tUSBlocked\020\001\022\r\n\tUSInvited\020\002\022\014\n" +
+      "\010USActive\020\003\022\020\n\014USConfirming\020\004\022\017\n\013USConfi" +
+      "rmed\020\005*:\n\006Gender\022\014\n\010GUnknown\020\000\022\013\n\007GFemal" +
+      "e\020\001\022\t\n\005GMale\020\002\022\n\n\006GOther\020\003*F\n\014ImageConte" +
+      "nt\022\r\n\tICUnknown\020\000\022\021\n\rICUserProfile\020\001\022\024\n\020" +
+      "ICUserBackground\020\002B/\n\032com.blitzhere.Blit" +
+      "zMessage\210\001\001\322>\002\n\000\322>\003\022\001B\322>\002\030\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -13990,7 +13990,7 @@ public final class UserProfiles {
         new com.google.protobuf.Descriptors.FileDescriptor[] {
           google.protobuf.ObjectivecDescriptor.getDescriptor(),
           com.blitzhere.BlitzMessage.Types.getDescriptor(),
-          com.blitzhere.BlitzMessage.EntityTagsOuterClass.getDescriptor(),
+          com.blitzhere.BlitzMessage.EntityTags.getDescriptor(),
         }, assigner);
     internal_static_BlitzMessage_SocialIdentity_descriptor =
       getDescriptor().getMessageTypes().get(0);
@@ -14027,7 +14027,7 @@ public final class UserProfiles {
     internal_static_BlitzMessage_UserProfile_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_BlitzMessage_UserProfile_descriptor,
-        new java.lang.String[] { "UserID", "UserStatus", "CreationDate", "LastSeen", "Name", "Gender", "Birthday", "Images", "SocialIdentities", "ContactInfo", "CurrentEmployment", "Employment", "Education", "ExpertiseTags", "InterestTags", "BackgroundSummary", });
+        new java.lang.String[] { "UserID", "UserStatus", "CreationDate", "LastSeen", "Name", "Gender", "Birthday", "Images", "SocialIdentities", "ContactInfo", "HeadlineEmployment", "Employment", "Education", "ExpertiseTags", "InterestTags", "BackgroundSummary", });
     internal_static_BlitzMessage_ImageUpload_descriptor =
       getDescriptor().getMessageTypes().get(6);
     internal_static_BlitzMessage_ImageUpload_fieldAccessorTable = new
@@ -14065,7 +14065,7 @@ public final class UserProfiles {
         .internalUpdateFileDescriptor(descriptor, registry);
     google.protobuf.ObjectivecDescriptor.getDescriptor();
     com.blitzhere.BlitzMessage.Types.getDescriptor();
-    com.blitzhere.BlitzMessage.EntityTagsOuterClass.getDescriptor();
+    com.blitzhere.BlitzMessage.EntityTags.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)

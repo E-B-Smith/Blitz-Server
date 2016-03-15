@@ -45,8 +45,8 @@
 @class BEmploymentBuilder;
 @class BEntityTag;
 @class BEntityTagBuilder;
-@class BEntityTags;
-@class BEntityTagsBuilder;
+@class BEntityTagList;
+@class BEntityTagListBuilder;
 @class BFeedPost;
 @class BFeedPostBuilder;
 @class BFeedPostFetchRequest;
@@ -580,7 +580,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
   BFeedPostFetchRequest* feedPostFetchRequest;
   BFeedPostUpdateRequest* feedPostUpdateRequest;
   BAutocompleteRequest* autocompleteRequest;
-  BEntityTags* updateEntityTags;
+  BEntityTagList* updateEntityTags;
 }
 - (BOOL) hasSessionRequest;
 - (BOOL) hasUserEventBatch;
@@ -609,7 +609,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 @property (readonly, strong) BFeedPostFetchRequest* feedPostFetchRequest;
 @property (readonly, strong) BFeedPostUpdateRequest* feedPostUpdateRequest;
 @property (readonly, strong) BAutocompleteRequest* autocompleteRequest;
-@property (readonly, strong) BEntityTags* updateEntityTags;
+@property (readonly, strong) BEntityTagList* updateEntityTags;
 
 + (instancetype) defaultInstance;
 - (instancetype) defaultInstance;
@@ -738,10 +738,10 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BRequestTypeBuilder*) clearAutocompleteRequest;
 
 - (BOOL) hasUpdateEntityTags;
-- (BEntityTags*) updateEntityTags;
-- (BRequestTypeBuilder*) setUpdateEntityTags:(BEntityTags*) value;
-- (BRequestTypeBuilder*) setUpdateEntityTagsBuilder:(BEntityTagsBuilder*) builderForValue;
-- (BRequestTypeBuilder*) mergeUpdateEntityTags:(BEntityTags*) value;
+- (BEntityTagList*) updateEntityTags;
+- (BRequestTypeBuilder*) setUpdateEntityTags:(BEntityTagList*) value;
+- (BRequestTypeBuilder*) setUpdateEntityTagsBuilder:(BEntityTagListBuilder*) builderForValue;
+- (BRequestTypeBuilder*) mergeUpdateEntityTags:(BEntityTagList*) value;
 - (BRequestTypeBuilder*) clearUpdateEntityTags;
 @end
 

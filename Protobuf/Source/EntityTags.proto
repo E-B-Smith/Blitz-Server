@@ -33,6 +33,6 @@ message EntityTag {
 }
 
 
-message EntityTags {
+message EntityTagList {
   repeated EntityTag   tags = 1;
 }

@@ -22,8 +22,8 @@
 @class BEmploymentBuilder;
 @class BEntityTag;
 @class BEntityTagBuilder;
-@class BEntityTags;
-@class BEntityTagsBuilder;
+@class BEntityTagList;
+@class BEntityTagListBuilder;
 @class BGlobals;
 @class BGlobalsBuilder;
 @class BImageData;
@@ -637,7 +637,7 @@ NSString *NSStringFromBImageContent(BImageContent value);
 #define UserProfile_images @"images"
 #define UserProfile_socialIdentities @"socialIdentities"
 #define UserProfile_contactInfo @"contactInfo"
-#define UserProfile_currentEmployment @"currentEmployment"
+#define UserProfile_headlineEmployment @"headlineEmployment"
 #define UserProfile_employment @"employment"
 #define UserProfile_education @"education"
 #define UserProfile_expertiseTags @"expertiseTags"
@@ -651,7 +651,7 @@ NSString *NSStringFromBImageContent(BImageContent value);
   BOOL hasCreationDate_:1;
   BOOL hasLastSeen_:1;
   BOOL hasBirthday_:1;
-  BOOL hasCurrentEmployment_:1;
+  BOOL hasHeadlineEmployment_:1;
   BOOL hasUserStatus_:1;
   BOOL hasGender_:1;
   NSString* userID;
@@ -660,7 +660,7 @@ NSString *NSStringFromBImageContent(BImageContent value);
   BTimestamp* creationDate;
   BTimestamp* lastSeen;
   BTimestamp* birthday;
-  BEmployment* currentEmployment;
+  BEmployment* headlineEmployment;
   BUserStatus userStatus;
   BGender gender;
   NSMutableArray * interestTagsArray;
@@ -678,7 +678,7 @@ NSString *NSStringFromBImageContent(BImageContent value);
 - (BOOL) hasName;
 - (BOOL) hasGender;
 - (BOOL) hasBirthday;
-- (BOOL) hasCurrentEmployment;
+- (BOOL) hasHeadlineEmployment;
 - (BOOL) hasBackgroundSummary;
 @property (readonly, strong) NSString* userID;
 @property (readonly) BUserStatus userStatus;
@@ -690,7 +690,7 @@ NSString *NSStringFromBImageContent(BImageContent value);
 @property (readonly, strong) NSArray * images;
 @property (readonly, strong) NSArray * socialIdentities;
 @property (readonly, strong) NSArray * contactInfo;
-@property (readonly, strong) BEmployment* currentEmployment;
+@property (readonly, strong) BEmployment* headlineEmployment;
 @property (readonly, strong) NSArray * employment;
 @property (readonly, strong) NSArray * education;
 @property (readonly, strong) NSArray * expertiseTags;
@@ -798,12 +798,12 @@ NSString *NSStringFromBImageContent(BImageContent value);
 - (BUserProfileBuilder *)setContactInfoArray:(NSArray *)array;
 - (BUserProfileBuilder *)clearContactInfo;
 
-- (BOOL) hasCurrentEmployment;
-- (BEmployment*) currentEmployment;
-- (BUserProfileBuilder*) setCurrentEmployment:(BEmployment*) value;
-- (BUserProfileBuilder*) setCurrentEmploymentBuilder:(BEmploymentBuilder*) builderForValue;
-- (BUserProfileBuilder*) mergeCurrentEmployment:(BEmployment*) value;
-- (BUserProfileBuilder*) clearCurrentEmployment;
+- (BOOL) hasHeadlineEmployment;
+- (BEmployment*) headlineEmployment;
+- (BUserProfileBuilder*) setHeadlineEmployment:(BEmployment*) value;
+- (BUserProfileBuilder*) setHeadlineEmploymentBuilder:(BEmploymentBuilder*) builderForValue;
+- (BUserProfileBuilder*) mergeHeadlineEmployment:(BEmployment*) value;
+- (BUserProfileBuilder*) clearHeadlineEmployment;
 
 - (NSMutableArray *)employment;
 - (BEmployment*)employmentAtIndex:(NSUInteger)index;

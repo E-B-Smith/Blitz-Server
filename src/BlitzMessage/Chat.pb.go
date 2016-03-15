@@ -26,7 +26,7 @@ It has these top-level messages:
 	ChatPresence
 	DeviceInfo
 	EntityTag
-	EntityTags
+	EntityTagList
 	FeedPost
 	FeedPostUpdateRequest
 	FeedPostUpdateResponse

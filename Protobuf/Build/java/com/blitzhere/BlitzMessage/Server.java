@@ -4771,17 +4771,17 @@ public final class Server {
     com.blitzhere.BlitzMessage.Search.AutocompleteRequestOrBuilder getAutocompleteRequestOrBuilder();
 
     /**
-     * <code>optional .BlitzMessage.EntityTags updateEntityTags = 14;</code>
+     * <code>optional .BlitzMessage.EntityTagList updateEntityTags = 14;</code>
      */
     boolean hasUpdateEntityTags();
     /**
-     * <code>optional .BlitzMessage.EntityTags updateEntityTags = 14;</code>
+     * <code>optional .BlitzMessage.EntityTagList updateEntityTags = 14;</code>
      */
-    com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTags getUpdateEntityTags();
+    com.blitzhere.BlitzMessage.EntityTags.EntityTagList getUpdateEntityTags();
     /**
-     * <code>optional .BlitzMessage.EntityTags updateEntityTags = 14;</code>
+     * <code>optional .BlitzMessage.EntityTagList updateEntityTags = 14;</code>
      */
-    com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTagsOrBuilder getUpdateEntityTagsOrBuilder();
+    com.blitzhere.BlitzMessage.EntityTags.EntityTagListOrBuilder getUpdateEntityTagsOrBuilder();
   }
   /**
    * Protobuf type {@code BlitzMessage.RequestType}
@@ -5005,11 +5005,11 @@ public final class Server {
               break;
             }
             case 114: {
-              com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTags.Builder subBuilder = null;
+              com.blitzhere.BlitzMessage.EntityTags.EntityTagList.Builder subBuilder = null;
               if (((bitField0_ & 0x00002000) == 0x00002000)) {
                 subBuilder = updateEntityTags_.toBuilder();
               }
-              updateEntityTags_ = input.readMessage(com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTags.PARSER, extensionRegistry);
+              updateEntityTags_ = input.readMessage(com.blitzhere.BlitzMessage.EntityTags.EntityTagList.PARSER, extensionRegistry);
               if (subBuilder != null) {
                 subBuilder.mergeFrom(updateEntityTags_);
                 updateEntityTags_ = subBuilder.buildPartial();
@@ -5331,23 +5331,23 @@ public final class Server {
     }
 
     public static final int UPDATEENTITYTAGS_FIELD_NUMBER = 14;
-    private com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTags updateEntityTags_;
+    private com.blitzhere.BlitzMessage.EntityTags.EntityTagList updateEntityTags_;
     /**
-     * <code>optional .BlitzMessage.EntityTags updateEntityTags = 14;</code>
+     * <code>optional .BlitzMessage.EntityTagList updateEntityTags = 14;</code>
      */
     public boolean hasUpdateEntityTags() {
       return ((bitField0_ & 0x00002000) == 0x00002000);
     }
     /**
-     * <code>optional .BlitzMessage.EntityTags updateEntityTags = 14;</code>
+     * <code>optional .BlitzMessage.EntityTagList updateEntityTags = 14;</code>
      */
-    public com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTags getUpdateEntityTags() {
+    public com.blitzhere.BlitzMessage.EntityTags.EntityTagList getUpdateEntityTags() {
       return updateEntityTags_;
     }
     /**
-     * <code>optional .BlitzMessage.EntityTags updateEntityTags = 14;</code>
+     * <code>optional .BlitzMessage.EntityTagList updateEntityTags = 14;</code>
      */
-    public com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTagsOrBuilder getUpdateEntityTagsOrBuilder() {
+    public com.blitzhere.BlitzMessage.EntityTags.EntityTagListOrBuilder getUpdateEntityTagsOrBuilder() {
       return updateEntityTags_;
     }
 
@@ -5365,7 +5365,7 @@ public final class Server {
       feedPostFetchRequest_ = com.blitzhere.BlitzMessage.Feed.FeedPostFetchRequest.getDefaultInstance();
       feedPostUpdateRequest_ = com.blitzhere.BlitzMessage.Feed.FeedPostUpdateRequest.getDefaultInstance();
       autocompleteRequest_ = com.blitzhere.BlitzMessage.Search.AutocompleteRequest.getDefaultInstance();
-      updateEntityTags_ = com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTags.getDefaultInstance();
+      updateEntityTags_ = com.blitzhere.BlitzMessage.EntityTags.EntityTagList.getDefaultInstance();
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -5757,7 +5757,7 @@ public final class Server {
         }
         bitField0_ = (bitField0_ & ~0x00001000);
         if (updateEntityTagsBuilder_ == null) {
-          updateEntityTags_ = com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTags.getDefaultInstance();
+          updateEntityTags_ = com.blitzhere.BlitzMessage.EntityTags.EntityTagList.getDefaultInstance();
         } else {
           updateEntityTagsBuilder_.clear();
         }
@@ -7555,19 +7555,19 @@ public final class Server {
         return autocompleteRequestBuilder_;
       }
 
-      private com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTags updateEntityTags_ = com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTags.getDefaultInstance();
+      private com.blitzhere.BlitzMessage.EntityTags.EntityTagList updateEntityTags_ = com.blitzhere.BlitzMessage.EntityTags.EntityTagList.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
-          com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTags, com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTags.Builder, com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTagsOrBuilder> updateEntityTagsBuilder_;
+          com.blitzhere.BlitzMessage.EntityTags.EntityTagList, com.blitzhere.BlitzMessage.EntityTags.EntityTagList.Builder, com.blitzhere.BlitzMessage.EntityTags.EntityTagListOrBuilder> updateEntityTagsBuilder_;
       /**
-       * <code>optional .BlitzMessage.EntityTags updateEntityTags = 14;</code>
+       * <code>optional .BlitzMessage.EntityTagList updateEntityTags = 14;</code>
        */
       public boolean hasUpdateEntityTags() {
         return ((bitField0_ & 0x00002000) == 0x00002000);
       }
       /**
-       * <code>optional .BlitzMessage.EntityTags updateEntityTags = 14;</code>
+       * <code>optional .BlitzMessage.EntityTagList updateEntityTags = 14;</code>
        */
-      public com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTags getUpdateEntityTags() {
+      public com.blitzhere.BlitzMessage.EntityTags.EntityTagList getUpdateEntityTags() {
         if (updateEntityTagsBuilder_ == null) {
           return updateEntityTags_;
         } else {
@@ -7575,9 +7575,9 @@ public final class Server {
         }
       }
       /**
-       * <code>optional .BlitzMessage.EntityTags updateEntityTags = 14;</code>
+       * <code>optional .BlitzMessage.EntityTagList updateEntityTags = 14;</code>
        */
-      public Builder setUpdateEntityTags(com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTags value) {
+      public Builder setUpdateEntityTags(com.blitzhere.BlitzMessage.EntityTags.EntityTagList value) {
         if (updateEntityTagsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -7591,10 +7591,10 @@ public final class Server {
         return this;
       }
       /**
-       * <code>optional .BlitzMessage.EntityTags updateEntityTags = 14;</code>
+       * <code>optional .BlitzMessage.EntityTagList updateEntityTags = 14;</code>
        */
       public Builder setUpdateEntityTags(
-          com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTags.Builder builderForValue) {
+          com.blitzhere.BlitzMessage.EntityTags.EntityTagList.Builder builderForValue) {
         if (updateEntityTagsBuilder_ == null) {
           updateEntityTags_ = builderForValue.build();
           onChanged();
@@ -7605,14 +7605,14 @@ public final class Server {
         return this;
       }
       /**
-       * <code>optional .BlitzMessage.EntityTags updateEntityTags = 14;</code>
+       * <code>optional .BlitzMessage.EntityTagList updateEntityTags = 14;</code>
        */
-      public Builder mergeUpdateEntityTags(com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTags value) {
+      public Builder mergeUpdateEntityTags(com.blitzhere.BlitzMessage.EntityTags.EntityTagList value) {
         if (updateEntityTagsBuilder_ == null) {
           if (((bitField0_ & 0x00002000) == 0x00002000) &&
-              updateEntityTags_ != com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTags.getDefaultInstance()) {
+              updateEntityTags_ != com.blitzhere.BlitzMessage.EntityTags.EntityTagList.getDefaultInstance()) {
             updateEntityTags_ =
-              com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTags.newBuilder(updateEntityTags_).mergeFrom(value).buildPartial();
+              com.blitzhere.BlitzMessage.EntityTags.EntityTagList.newBuilder(updateEntityTags_).mergeFrom(value).buildPartial();
           } else {
             updateEntityTags_ = value;
           }
@@ -7624,11 +7624,11 @@ public final class Server {
         return this;
       }
       /**
-       * <code>optional .BlitzMessage.EntityTags updateEntityTags = 14;</code>
+       * <code>optional .BlitzMessage.EntityTagList updateEntityTags = 14;</code>
        */
       public Builder clearUpdateEntityTags() {
         if (updateEntityTagsBuilder_ == null) {
-          updateEntityTags_ = com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTags.getDefaultInstance();
+          updateEntityTags_ = com.blitzhere.BlitzMessage.EntityTags.EntityTagList.getDefaultInstance();
           onChanged();
         } else {
           updateEntityTagsBuilder_.clear();
@@ -7637,17 +7637,17 @@ public final class Server {
         return this;
       }
       /**
-       * <code>optional .BlitzMessage.EntityTags updateEntityTags = 14;</code>
+       * <code>optional .BlitzMessage.EntityTagList updateEntityTags = 14;</code>
        */
-      public com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTags.Builder getUpdateEntityTagsBuilder() {
+      public com.blitzhere.BlitzMessage.EntityTags.EntityTagList.Builder getUpdateEntityTagsBuilder() {
         bitField0_ |= 0x00002000;
         onChanged();
         return getUpdateEntityTagsFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .BlitzMessage.EntityTags updateEntityTags = 14;</code>
+       * <code>optional .BlitzMessage.EntityTagList updateEntityTags = 14;</code>
        */
-      public com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTagsOrBuilder getUpdateEntityTagsOrBuilder() {
+      public com.blitzhere.BlitzMessage.EntityTags.EntityTagListOrBuilder getUpdateEntityTagsOrBuilder() {
         if (updateEntityTagsBuilder_ != null) {
           return updateEntityTagsBuilder_.getMessageOrBuilder();
         } else {
@@ -7655,14 +7655,14 @@ public final class Server {
         }
       }
       /**
-       * <code>optional .BlitzMessage.EntityTags updateEntityTags = 14;</code>
+       * <code>optional .BlitzMessage.EntityTagList updateEntityTags = 14;</code>
        */
       private com.google.protobuf.SingleFieldBuilder<
-          com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTags, com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTags.Builder, com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTagsOrBuilder> 
+          com.blitzhere.BlitzMessage.EntityTags.EntityTagList, com.blitzhere.BlitzMessage.EntityTags.EntityTagList.Builder, com.blitzhere.BlitzMessage.EntityTags.EntityTagListOrBuilder> 
           getUpdateEntityTagsFieldBuilder() {
         if (updateEntityTagsBuilder_ == null) {
           updateEntityTagsBuilder_ = new com.google.protobuf.SingleFieldBuilder<
-              com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTags, com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTags.Builder, com.blitzhere.BlitzMessage.EntityTagsOuterClass.EntityTagsOrBuilder>(
+              com.blitzhere.BlitzMessage.EntityTags.EntityTagList, com.blitzhere.BlitzMessage.EntityTags.EntityTagList.Builder, com.blitzhere.BlitzMessage.EntityTags.EntityTagListOrBuilder>(
                   getUpdateEntityTags(),
                   getParentForChildren(),
                   isClean());
@@ -11893,7 +11893,7 @@ public final class Server {
       "setAllAppData\030\006 \001(\010\0228\n\rinviteRequest\030\007 \001" +
       "(\0132!.BlitzMessage.AcceptInviteRequest\022,\n",
       "\nappOptions\030\010 \001(\0132\030.BlitzMessage.AppOpti" +
-      "ons\"\306\006\n\013RequestType\0224\n\016sessionRequest\030\001 " +
+      "ons\"\311\006\n\013RequestType\0224\n\016sessionRequest\030\001 " +
       "\001(\0132\034.BlitzMessage.SessionRequest\0224\n\016use" +
       "rEventBatch\030\002 \001(\0132\034.BlitzMessage.UserEve" +
       "ntBatch\022:\n\021userProfileUpdate\030\003 \001(\0132\037.Bli" +
@@ -11912,38 +11912,38 @@ public final class Server {
       "FeedPostFetchRequest\022B\n\025feedPostUpdateRe" +
       "quest\030\014 \001(\0132#.BlitzMessage.FeedPostUpdat" +
       "eRequest\022>\n\023autocompleteRequest\030\r \001(\0132!.",
-      "BlitzMessage.AutocompleteRequest\0222\n\020upda" +
-      "teEntityTags\030\016 \001(\0132\030.BlitzMessage.Entity" +
-      "Tags\"U\n\rServerRequest\022\024\n\014sessionToken\030\001 " +
-      "\001(\t\022.\n\013requestType\030\002 \001(\0132\031.BlitzMessage." +
-      "RequestType\"\363\005\n\014ResponseType\0226\n\017sessionR" +
-      "esponse\030\001 \001(\0132\035.BlitzMessage.SessionResp" +
-      "onse\022D\n\026userEventBatchResponse\030\002 \001(\0132$.B" +
-      "litzMessage.UserEventBatchResponse\022:\n\021us" +
-      "erProfileUpdate\030\003 \001(\0132\037.BlitzMessage.Use" +
-      "rProfileUpdate\0228\n\020userProfileQuery\030\004 \001(\013",
-      "2\036.BlitzMessage.UserProfileQuery\022>\n\023conf" +
-      "irmationRequest\030\005 \001(\0132!.BlitzMessage.Con" +
-      "firmationRequest\022:\n\021userMessageUpdate\030\006 " +
-      "\001(\0132\037.BlitzMessage.UserMessageUpdate\0220\n\014" +
-      "debugMessage\030\007 \001(\0132\032.BlitzMessage.DebugM" +
-      "essage\0223\n\020imageUploadReply\030\010 \001(\0132\031.Blitz" +
-      "Message.ImageUpload\022@\n\024acceptInviteRespo" +
-      "nse\030\t \001(\0132\".BlitzMessage.AcceptInviteRes" +
-      "ponse\022B\n\025feedPostFetchResponse\030\n \001(\0132#.B" +
-      "litzMessage.FeedPostFetchResponse\022D\n\026fee",
-      "dPostUpdateResponse\030\013 \001(\0132$.BlitzMessage" +
-      ".FeedPostUpdateResponse\022@\n\024autocompleteR" +
-      "esponse\030\014 \001(\0132\".BlitzMessage.Autocomplet" +
-      "eResponse\"\215\001\n\016ServerResponse\0220\n\014response" +
-      "Code\030\001 \001(\0162\032.BlitzMessage.ResponseCode\022\027" +
-      "\n\017responseMessage\030\002 \001(\t\0220\n\014responseType\030" +
-      "\003 \001(\0132\032.BlitzMessage.ResponseType*\226\001\n\014Re" +
-      "sponseCode\022\r\n\tRCSuccess\020\001\022\022\n\016RCInputCorr" +
-      "upt\020\002\022\022\n\016RCInputInvalid\020\003\022\023\n\017RCServerWar" +
-      "ning\020\004\022\021\n\rRCServerError\020\005\022\023\n\017RCNotAuthor",
-      "ized\020\006\022\022\n\016RCClientTooOld\020\007B/\n\032com.blitzh" +
-      "ere.BlitzMessage\210\001\001\322>\002\n\000\322>\003\022\001B\322>\002\030\001"
+      "BlitzMessage.AutocompleteRequest\0225\n\020upda" +
+      "teEntityTags\030\016 \001(\0132\033.BlitzMessage.Entity" +
+      "TagList\"U\n\rServerRequest\022\024\n\014sessionToken" +
+      "\030\001 \001(\t\022.\n\013requestType\030\002 \001(\0132\031.BlitzMessa" +
+      "ge.RequestType\"\363\005\n\014ResponseType\0226\n\017sessi" +
+      "onResponse\030\001 \001(\0132\035.BlitzMessage.SessionR" +
+      "esponse\022D\n\026userEventBatchResponse\030\002 \001(\0132" +
+      "$.BlitzMessage.UserEventBatchResponse\022:\n" +
+      "\021userProfileUpdate\030\003 \001(\0132\037.BlitzMessage." +
+      "UserProfileUpdate\0228\n\020userProfileQuery\030\004 ",
+      "\001(\0132\036.BlitzMessage.UserProfileQuery\022>\n\023c" +
+      "onfirmationRequest\030\005 \001(\0132!.BlitzMessage." +
+      "ConfirmationRequest\022:\n\021userMessageUpdate" +
+      "\030\006 \001(\0132\037.BlitzMessage.UserMessageUpdate\022" +
+      "0\n\014debugMessage\030\007 \001(\0132\032.BlitzMessage.Deb" +
+      "ugMessage\0223\n\020imageUploadReply\030\010 \001(\0132\031.Bl" +
+      "itzMessage.ImageUpload\022@\n\024acceptInviteRe" +
+      "sponse\030\t \001(\0132\".BlitzMessage.AcceptInvite" +
+      "Response\022B\n\025feedPostFetchResponse\030\n \001(\0132" +
+      "#.BlitzMessage.FeedPostFetchResponse\022D\n\026",
+      "feedPostUpdateResponse\030\013 \001(\0132$.BlitzMess" +
+      "age.FeedPostUpdateResponse\022@\n\024autocomple" +
+      "teResponse\030\014 \001(\0132\".BlitzMessage.Autocomp" +
+      "leteResponse\"\215\001\n\016ServerResponse\0220\n\014respo" +
+      "nseCode\030\001 \001(\0162\032.BlitzMessage.ResponseCod" +
+      "e\022\027\n\017responseMessage\030\002 \001(\t\0220\n\014responseTy" +
+      "pe\030\003 \001(\0132\032.BlitzMessage.ResponseType*\226\001\n" +
+      "\014ResponseCode\022\r\n\tRCSuccess\020\001\022\022\n\016RCInputC" +
+      "orrupt\020\002\022\022\n\016RCInputInvalid\020\003\022\023\n\017RCServer" +
+      "Warning\020\004\022\021\n\rRCServerError\020\005\022\023\n\017RCNotAut",
+      "horized\020\006\022\022\n\016RCClientTooOld\020\007B/\n\032com.bli" +
+      "tzhere.BlitzMessage\210\001\001\322>\002\n\000\322>\003\022\001B\322>\002\030\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -11958,7 +11958,7 @@ public final class Server {
         new com.google.protobuf.Descriptors.FileDescriptor[] {
           google.protobuf.ObjectivecDescriptor.getDescriptor(),
           com.blitzhere.BlitzMessage.Types.getDescriptor(),
-          com.blitzhere.BlitzMessage.EntityTagsOuterClass.getDescriptor(),
+          com.blitzhere.BlitzMessage.EntityTags.getDescriptor(),
           com.blitzhere.BlitzMessage.Feed.getDescriptor(),
           com.blitzhere.BlitzMessage.Device.getDescriptor(),
           com.blitzhere.BlitzMessage.Search.getDescriptor(),
@@ -12028,7 +12028,7 @@ public final class Server {
         .internalUpdateFileDescriptor(descriptor, registry);
     google.protobuf.ObjectivecDescriptor.getDescriptor();
     com.blitzhere.BlitzMessage.Types.getDescriptor();
-    com.blitzhere.BlitzMessage.EntityTagsOuterClass.getDescriptor();
+    com.blitzhere.BlitzMessage.EntityTags.getDescriptor();
     com.blitzhere.BlitzMessage.Feed.getDescriptor();
     com.blitzhere.BlitzMessage.Device.getDescriptor();
     com.blitzhere.BlitzMessage.Search.getDescriptor();

@@ -179,7 +179,7 @@ func UpdateProfile(profile *BlitzMessage.UserProfile) error {
     UpdateUserIdentitesFromProfile(profile)
 
     config.DB.Exec(`delete from EmploymentTable where userID = $1;`, profile.UserID)
-    UpdateEmployment(profile.UserID, true, profile.CurrentEmployment)
+    UpdateEmployment(profile.UserID, true, profile.HeadlineEmployment)
     for _, employment := range profile.Employment {
         UpdateEmployment(profile.UserID, false, employment)
     }

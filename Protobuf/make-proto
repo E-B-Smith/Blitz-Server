@@ -35,7 +35,7 @@ path=../../Blitz-iOS/Shared/ProtocolBuffers/Message
 if [ -d "$path" ]; then
     echo ">>> Installing obj-c files in '$path'."
     (rm "$path/"*.pb.h  "$path"/*.pb.m || true)
-    rsync -av --exclude=".*" Build/obj-c/ "$path"/
+    rsync -a --exclude=".*" Build/obj-c/ "$path"/
 fi
 
 path=../src/BlitzMessage
@@ -47,5 +47,5 @@ if [ -d "$path" ]; then
         sed -i'.bak' -e 's,import _ ".",,' "$file"
         rm "${file}.bak"
     done
-    rsync -av --exclude=".*" Build/golang/  "$path"/
+    rsync -a --exclude=".*" Build/golang/  "$path"/
 fi

@@ -14,8 +14,8 @@
 @class BCoordinateRegionBuilder;
 @class BEntityTag;
 @class BEntityTagBuilder;
-@class BEntityTags;
-@class BEntityTagsBuilder;
+@class BEntityTagList;
+@class BEntityTagListBuilder;
 @class BFeedPost;
 @class BFeedPostBuilder;
 @class BFeedPostFetchRequest;

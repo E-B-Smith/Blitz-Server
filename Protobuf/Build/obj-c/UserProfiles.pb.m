@@ -2392,7 +2392,7 @@ static BImageData* defaultBImageDataInstance = nil;
 @property (strong) NSMutableArray * imagesArray;
 @property (strong) NSMutableArray * socialIdentitiesArray;
 @property (strong) NSMutableArray * contactInfoArray;
-@property (strong) BEmployment* currentEmployment;
+@property (strong) BEmployment* headlineEmployment;
 @property (strong) NSMutableArray * employmentArray;
 @property (strong) NSMutableArray * educationArray;
 @property (strong) NSMutableArray * expertiseTagsArray;
@@ -2457,13 +2457,13 @@ static BImageData* defaultBImageDataInstance = nil;
 @dynamic socialIdentities;
 @synthesize contactInfoArray;
 @dynamic contactInfo;
-- (BOOL) hasCurrentEmployment {
-  return !!hasCurrentEmployment_;
+- (BOOL) hasHeadlineEmployment {
+  return !!hasHeadlineEmployment_;
 }
-- (void) setHasCurrentEmployment:(BOOL) _value_ {
-  hasCurrentEmployment_ = !!_value_;
+- (void) setHasHeadlineEmployment:(BOOL) _value_ {
+  hasHeadlineEmployment_ = !!_value_;
 }
-@synthesize currentEmployment;
+@synthesize headlineEmployment;
 @synthesize employmentArray;
 @dynamic employment;
 @synthesize educationArray;
@@ -2488,7 +2488,7 @@ static BImageData* defaultBImageDataInstance = nil;
     self.name = @"";
     self.gender = BGenderGUnknown;
     self.birthday = [BTimestamp defaultInstance];
-    self.currentEmployment = [BEmployment defaultInstance];
+    self.headlineEmployment = [BEmployment defaultInstance];
     self.backgroundSummary = @"";
   }
   return self;
@@ -2587,8 +2587,8 @@ static BUserProfile* defaultBUserProfileInstance = nil;
     }
   }];
   if (!isInitcontactInfo) return isInitcontactInfo;
-  if (self.hasCurrentEmployment) {
-    if (!self.currentEmployment.isInitialized) {
+  if (self.hasHeadlineEmployment) {
+    if (!self.headlineEmployment.isInitialized) {
       return NO;
     }
   }
@@ -2641,8 +2641,8 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   [self.contactInfoArray enumerateObjectsUsingBlock:^(BContactInfo *element, NSUInteger idx, BOOL *stop) {
     [output writeMessage:10 value:element];
   }];
-  if (self.hasCurrentEmployment) {
-    [output writeMessage:11 value:self.currentEmployment];
+  if (self.hasHeadlineEmployment) {
+    [output writeMessage:11 value:self.headlineEmployment];
   }
   [self.employmentArray enumerateObjectsUsingBlock:^(BEmployment *element, NSUInteger idx, BOOL *stop) {
     [output writeMessage:12 value:element];
@@ -2698,8 +2698,8 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   [self.contactInfoArray enumerateObjectsUsingBlock:^(BContactInfo *element, NSUInteger idx, BOOL *stop) {
     size_ += computeMessageSize(10, element);
   }];
-  if (self.hasCurrentEmployment) {
-    size_ += computeMessageSize(11, self.currentEmployment);
+  if (self.hasHeadlineEmployment) {
+    size_ += computeMessageSize(11, self.headlineEmployment);
   }
   [self.employmentArray enumerateObjectsUsingBlock:^(BEmployment *element, NSUInteger idx, BOOL *stop) {
     size_ += computeMessageSize(12, element);
@@ -2805,9 +2805,9 @@ static BUserProfile* defaultBUserProfileInstance = nil;
                      withIndent:[NSString stringWithFormat:@"%@  ", indent]];
     [output appendFormat:@"%@}\n", indent];
   }];
-  if (self.hasCurrentEmployment) {
-    [output appendFormat:@"%@%@ {\n", indent, @"currentEmployment"];
-    [self.currentEmployment writeDescriptionTo:output
+  if (self.hasHeadlineEmployment) {
+    [output appendFormat:@"%@%@ {\n", indent, @"headlineEmployment"];
+    [self.headlineEmployment writeDescriptionTo:output
                          withIndent:[NSString stringWithFormat:@"%@  ", indent]];
     [output appendFormat:@"%@}\n", indent];
   }
@@ -2880,10 +2880,10 @@ static BUserProfile* defaultBUserProfileInstance = nil;
     [element storeInDictionary:elementDictionary];
     [dictionary setObject:[NSDictionary dictionaryWithDictionary:elementDictionary] forKey:@"contactInfo"];
   }
-  if (self.hasCurrentEmployment) {
+  if (self.hasHeadlineEmployment) {
    NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
-   [self.currentEmployment storeInDictionary:messageDictionary];
-   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"currentEmployment"];
+   [self.headlineEmployment storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"headlineEmployment"];
   }
   for (BEmployment* element in self.employmentArray) {
     NSMutableDictionary *elementDictionary = [NSMutableDictionary dictionary];
@@ -2932,8 +2932,8 @@ static BUserProfile* defaultBUserProfileInstance = nil;
       [self.imagesArray isEqualToArray:otherMessage.imagesArray] &&
       [self.socialIdentitiesArray isEqualToArray:otherMessage.socialIdentitiesArray] &&
       [self.contactInfoArray isEqualToArray:otherMessage.contactInfoArray] &&
-      self.hasCurrentEmployment == otherMessage.hasCurrentEmployment &&
-      (!self.hasCurrentEmployment || [self.currentEmployment isEqual:otherMessage.currentEmployment]) &&
+      self.hasHeadlineEmployment == otherMessage.hasHeadlineEmployment &&
+      (!self.hasHeadlineEmployment || [self.headlineEmployment isEqual:otherMessage.headlineEmployment]) &&
       [self.employmentArray isEqualToArray:otherMessage.employmentArray] &&
       [self.educationArray isEqualToArray:otherMessage.educationArray] &&
       [self.expertiseTagsArray isEqualToArray:otherMessage.expertiseTagsArray] &&
@@ -2974,8 +2974,8 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   [self.contactInfoArray enumerateObjectsUsingBlock:^(BContactInfo *element, NSUInteger idx, BOOL *stop) {
     hashCode = hashCode * 31 + [element hash];
   }];
-  if (self.hasCurrentEmployment) {
-    hashCode = hashCode * 31 + [self.currentEmployment hash];
+  if (self.hasHeadlineEmployment) {
+    hashCode = hashCode * 31 + [self.headlineEmployment hash];
   }
   [self.employmentArray enumerateObjectsUsingBlock:^(BEmployment *element, NSUInteger idx, BOOL *stop) {
     hashCode = hashCode * 31 + [element hash];
@@ -3077,8 +3077,8 @@ static BUserProfile* defaultBUserProfileInstance = nil;
       [resultUserProfile.contactInfoArray addObjectsFromArray:other.contactInfoArray];
     }
   }
-  if (other.hasCurrentEmployment) {
-    [self mergeCurrentEmployment:other.currentEmployment];
+  if (other.hasHeadlineEmployment) {
+    [self mergeHeadlineEmployment:other.headlineEmployment];
   }
   if (other.employmentArray.count > 0) {
     if (resultUserProfile.employmentArray == nil) {
@@ -3205,11 +3205,11 @@ static BUserProfile* defaultBUserProfileInstance = nil;
       }
       case 90: {
         BEmploymentBuilder* subBuilder = [BEmployment builder];
-        if (self.hasCurrentEmployment) {
-          [subBuilder mergeFrom:self.currentEmployment];
+        if (self.hasHeadlineEmployment) {
+          [subBuilder mergeFrom:self.headlineEmployment];
         }
         [input readMessage:subBuilder extensionRegistry:extensionRegistry];
-        [self setCurrentEmployment:[subBuilder buildPartial]];
+        [self setHeadlineEmployment:[subBuilder buildPartial]];
         break;
       }
       case 98: {
@@ -3458,34 +3458,34 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   resultUserProfile.contactInfoArray = nil;
   return self;
 }
-- (BOOL) hasCurrentEmployment {
-  return resultUserProfile.hasCurrentEmployment;
+- (BOOL) hasHeadlineEmployment {
+  return resultUserProfile.hasHeadlineEmployment;
 }
-- (BEmployment*) currentEmployment {
-  return resultUserProfile.currentEmployment;
+- (BEmployment*) headlineEmployment {
+  return resultUserProfile.headlineEmployment;
 }
-- (BUserProfileBuilder*) setCurrentEmployment:(BEmployment*) value {
-  resultUserProfile.hasCurrentEmployment = YES;
-  resultUserProfile.currentEmployment = value;
+- (BUserProfileBuilder*) setHeadlineEmployment:(BEmployment*) value {
+  resultUserProfile.hasHeadlineEmployment = YES;
+  resultUserProfile.headlineEmployment = value;
   return self;
 }
-- (BUserProfileBuilder*) setCurrentEmploymentBuilder:(BEmploymentBuilder*) builderForValue {
-  return [self setCurrentEmployment:[builderForValue build]];
+- (BUserProfileBuilder*) setHeadlineEmploymentBuilder:(BEmploymentBuilder*) builderForValue {
+  return [self setHeadlineEmployment:[builderForValue build]];
 }
-- (BUserProfileBuilder*) mergeCurrentEmployment:(BEmployment*) value {
-  if (resultUserProfile.hasCurrentEmployment &&
-      resultUserProfile.currentEmployment != [BEmployment defaultInstance]) {
-    resultUserProfile.currentEmployment =
-      [[[BEmployment builderWithPrototype:resultUserProfile.currentEmployment] mergeFrom:value] buildPartial];
+- (BUserProfileBuilder*) mergeHeadlineEmployment:(BEmployment*) value {
+  if (resultUserProfile.hasHeadlineEmployment &&
+      resultUserProfile.headlineEmployment != [BEmployment defaultInstance]) {
+    resultUserProfile.headlineEmployment =
+      [[[BEmployment builderWithPrototype:resultUserProfile.headlineEmployment] mergeFrom:value] buildPartial];
   } else {
-    resultUserProfile.currentEmployment = value;
+    resultUserProfile.headlineEmployment = value;
   }
-  resultUserProfile.hasCurrentEmployment = YES;
+  resultUserProfile.hasHeadlineEmployment = YES;
   return self;
 }
-- (BUserProfileBuilder*) clearCurrentEmployment {
-  resultUserProfile.hasCurrentEmployment = NO;
-  resultUserProfile.currentEmployment = [BEmployment defaultInstance];
+- (BUserProfileBuilder*) clearHeadlineEmployment {
+  resultUserProfile.hasHeadlineEmployment = NO;
+  resultUserProfile.headlineEmployment = [BEmployment defaultInstance];
   return self;
 }
 - (NSMutableArray *)employment {
