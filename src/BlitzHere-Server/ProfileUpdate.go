@@ -154,14 +154,12 @@ func UpdateProfile(profile *BlitzMessage.UserProfile) error {
 
     _, error = config.DB.Exec(
         `update usertable set (
-             userStatus
-            ,name
+             name
             ,gender
             ,birthday
             ,backgroundSummary
-            ,interestTags) = ($1, $2, $3, $4, $5, $6)
-                where userID = $7;`,
-        profile.UserStatus,
+            ,interestTags) = ($1, $2, $3, $4, $5)
+                where userID = $6;`,
         profile.Name,
         profile.Gender,
         BlitzMessage.NullTimeFromTimestamp(profile.Birthday),

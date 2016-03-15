@@ -74,7 +74,7 @@ create table UserTable
 create table EmploymentTable
     (
      userID             UserID  not null
-    ,isCurrentPosition  boolean
+    ,isHeadLineItem     boolean
     ,jobTitle           text
     ,companyName        text
     ,location           text

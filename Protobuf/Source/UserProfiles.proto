@@ -117,7 +117,7 @@ message UserProfile {
 
   //  Blitz work fields --
 
-  optional Employment   currentEmployment = 11;
+  optional Employment   headlineEmployment = 11;
 
   repeated Employment   employment    = 12;
   repeated Education    education     = 13;
