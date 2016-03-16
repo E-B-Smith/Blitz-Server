@@ -192,6 +192,24 @@ func UpdateFeedPost(session *Session, feedPostUpdate *BlitzMessage.FeedPostUpdat
             return ServerResponseForError(BlitzMessage.ResponseCode_RCServerError, error)
         }
         return ServerResponseForCode(BlitzMessage.ResponseCode_RCSuccess, nil)
+
+        //  Send a notification if it's a response --
+
+        if  feedPostUpdate.FeedPost.ParentID != nil {
+            parentPost, error := FeedPostForPostID(*feedPostUpdate.FeedPost.ParentID)
+            if  error == nil {
+                responseUser := ProfileForUserID(session.UserID)
+                if responseUser != nil {
+                    message := fmt.Sprintf("%s responded to your question.", *responseUser.Name)
+                    SendUserMessage(BlitzMessage.Default_Globals_SystemUserID,
+                        [] string { *parentPost.UserID },
+                        message,
+                        BlitzMessage.UserMessageType_MTNotification,
+                        "AppIcon",
+                        "")
+                }
+            }
+        }
     }
 
     if *feedPostUpdate.UpdateVerb == BlitzMessage.UpdateVerb_UVDelete {

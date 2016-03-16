@@ -22,7 +22,7 @@ func SetEntityTags(userID string, tags []*BlitzMessage.EntityTag) {
         var error error
         var result sql.Result
 
-        cleanTag := strings.ToLower(strings.TrimSpace(*tag.EntityTag))
+        cleanTag := strings.ToLower(strings.TrimSpace(*tag.EntityTagName))
         if len(cleanTag) <= 0 { continue }
 
         if *tag.EntityIsTagged {
@@ -84,7 +84,7 @@ func GetEntityTags(userID, entityID string, entityType BlitzMessage.EntityType) 
         entityTag := BlitzMessage.EntityTag {
             EntityID:       &entityID,
             EntityType:     &entityType,
-            EntityTag:      &cleanTag,
+            EntityTagName:  &cleanTag,
             EntityIsTagged: BoolPtr(true),
             EntityTagCount: Int32Ptr(int32(count)),
         }

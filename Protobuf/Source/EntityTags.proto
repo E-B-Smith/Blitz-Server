@@ -27,7 +27,7 @@ enum EntityType {
 message EntityTag {
   optional string       entityID        = 1;
   optional EntityType   entityType      = 2;
-  optional string       entityTag       = 3;
+  optional string       entityTagName   = 3;
   optional bool         entityIsTagged  = 4;
   optional int32        entityTagCount  = 5;
 }
