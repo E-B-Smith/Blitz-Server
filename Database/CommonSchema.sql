@@ -427,6 +427,7 @@ create table FeedPostTable
     ,bodyText                   text
     ,mayAddReply                bool
     ,mayChooseMulitpleReplies   bool
+    ,surveyAnswerSequence       int
     );
 create index FeedPostTimestampIndex on FeedPostTable(timestamp desc);
 create index FeedReplyTable         on FeedPostTable(parentID);

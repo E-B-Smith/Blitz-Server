@@ -147,11 +147,13 @@ NSString *NSStringFromBUpdateVerb(BUpdateVerb value);
 #define FeedPost_replies @"replies"
 #define FeedPost_mayAddReply @"mayAddReply"
 #define FeedPost_mayChooseMulitpleReplies @"mayChooseMulitpleReplies"
+#define FeedPost_surveyAnswerSequence @"surveyAnswerSequence"
 @interface BFeedPost : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
   BOOL hasAnonymousPost_:1;
   BOOL hasMayAddReply_:1;
   BOOL hasMayChooseMulitpleReplies_:1;
+  BOOL hasSurveyAnswerSequence_:1;
   BOOL hasPostID_:1;
   BOOL hasParentID_:1;
   BOOL hasUserID_:1;
@@ -164,6 +166,7 @@ NSString *NSStringFromBUpdateVerb(BUpdateVerb value);
   BOOL anonymousPost_:1;
   BOOL mayAddReply_:1;
   BOOL mayChooseMulitpleReplies_:1;
+  SInt32 surveyAnswerSequence;
   NSString* postID;
   NSString* parentID;
   NSString* userID;
@@ -188,6 +191,7 @@ NSString *NSStringFromBUpdateVerb(BUpdateVerb value);
 - (BOOL) hasBodyText;
 - (BOOL) hasMayAddReply;
 - (BOOL) hasMayChooseMulitpleReplies;
+- (BOOL) hasSurveyAnswerSequence;
 @property (readonly, strong) NSString* postID;
 @property (readonly, strong) NSString* parentID;
 @property (readonly) BFeedPostType postType;
@@ -202,6 +206,7 @@ NSString *NSStringFromBUpdateVerb(BUpdateVerb value);
 @property (readonly, strong) NSArray * replies;
 - (BOOL) mayAddReply;
 - (BOOL) mayChooseMulitpleReplies;
+@property (readonly) SInt32 surveyAnswerSequence;
 - (BEntityTag*)postTagsAtIndex:(NSUInteger)index;
 - (BFeedPost*)repliesAtIndex:(NSUInteger)index;
 
@@ -315,6 +320,11 @@ NSString *NSStringFromBUpdateVerb(BUpdateVerb value);
 - (BOOL) mayChooseMulitpleReplies;
 - (BFeedPostBuilder*) setMayChooseMulitpleReplies:(BOOL) value;
 - (BFeedPostBuilder*) clearMayChooseMulitpleReplies;
+
+- (BOOL) hasSurveyAnswerSequence;
+- (SInt32) surveyAnswerSequence;
+- (BFeedPostBuilder*) setSurveyAnswerSequence:(SInt32) value;
+- (BFeedPostBuilder*) clearSurveyAnswerSequence;
 @end
 
 #define FeedPostUpdateRequest_updateVerb @"updateVerb"

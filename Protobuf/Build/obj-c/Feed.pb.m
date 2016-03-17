@@ -136,6 +136,7 @@ NSString *NSStringFromBUpdateVerb(BUpdateVerb value) {
 @property (strong) NSMutableArray * repliesArray;
 @property BOOL mayAddReply;
 @property BOOL mayChooseMulitpleReplies;
+@property SInt32 surveyAnswerSequence;
 @end
 
 @implementation BFeedPost
@@ -243,6 +244,13 @@ NSString *NSStringFromBUpdateVerb(BUpdateVerb value) {
 - (void) setMayChooseMulitpleReplies:(BOOL) _value_ {
   mayChooseMulitpleReplies_ = !!_value_;
 }
+- (BOOL) hasSurveyAnswerSequence {
+  return !!hasSurveyAnswerSequence_;
+}
+- (void) setHasSurveyAnswerSequence:(BOOL) _value_ {
+  hasSurveyAnswerSequence_ = !!_value_;
+}
+@synthesize surveyAnswerSequence;
 - (instancetype) init {
   if ((self = [super init])) {
     self.postID = @"";
@@ -257,6 +265,7 @@ NSString *NSStringFromBUpdateVerb(BUpdateVerb value) {
     self.bodyText = @"";
     self.mayAddReply = NO;
     self.mayChooseMulitpleReplies = NO;
+    self.surveyAnswerSequence = 0;
   }
   return self;
 }
@@ -348,6 +357,9 @@ static BFeedPost* defaultBFeedPostInstance = nil;
   if (self.hasMayChooseMulitpleReplies) {
     [output writeBool:15 value:self.mayChooseMulitpleReplies];
   }
+  if (self.hasSurveyAnswerSequence) {
+    [output writeInt32:16 value:self.surveyAnswerSequence];
+  }
   [self.unknownFields writeToCodedOutputStream:output];
 }
 - (SInt32) serializedSize {
@@ -398,6 +410,9 @@ static BFeedPost* defaultBFeedPostInstance = nil;
   }
   if (self.hasMayChooseMulitpleReplies) {
     size_ += computeBoolSize(15, self.mayChooseMulitpleReplies);
+  }
+  if (self.hasSurveyAnswerSequence) {
+    size_ += computeInt32Size(16, self.surveyAnswerSequence);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -488,6 +503,9 @@ static BFeedPost* defaultBFeedPostInstance = nil;
   if (self.hasMayChooseMulitpleReplies) {
     [output appendFormat:@"%@%@: %@\n", indent, @"mayChooseMulitpleReplies", [NSNumber numberWithBool:self.mayChooseMulitpleReplies]];
   }
+  if (self.hasSurveyAnswerSequence) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"surveyAnswerSequence", [NSNumber numberWithInteger:self.surveyAnswerSequence]];
+  }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (void) storeInDictionary:(NSMutableDictionary *)dictionary {
@@ -541,6 +559,9 @@ static BFeedPost* defaultBFeedPostInstance = nil;
   if (self.hasMayChooseMulitpleReplies) {
     [dictionary setObject: [NSNumber numberWithBool:self.mayChooseMulitpleReplies] forKey: @"mayChooseMulitpleReplies"];
   }
+  if (self.hasSurveyAnswerSequence) {
+    [dictionary setObject: [NSNumber numberWithInteger:self.surveyAnswerSequence] forKey: @"surveyAnswerSequence"];
+  }
   [self.unknownFields storeInDictionary:dictionary];
 }
 - (BOOL) isEqual:(id)other {
@@ -578,6 +599,8 @@ static BFeedPost* defaultBFeedPostInstance = nil;
       (!self.hasMayAddReply || self.mayAddReply == otherMessage.mayAddReply) &&
       self.hasMayChooseMulitpleReplies == otherMessage.hasMayChooseMulitpleReplies &&
       (!self.hasMayChooseMulitpleReplies || self.mayChooseMulitpleReplies == otherMessage.mayChooseMulitpleReplies) &&
+      self.hasSurveyAnswerSequence == otherMessage.hasSurveyAnswerSequence &&
+      (!self.hasSurveyAnswerSequence || self.surveyAnswerSequence == otherMessage.surveyAnswerSequence) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
@@ -623,6 +646,9 @@ static BFeedPost* defaultBFeedPostInstance = nil;
   }
   if (self.hasMayChooseMulitpleReplies) {
     hashCode = hashCode * 31 + [[NSNumber numberWithBool:self.mayChooseMulitpleReplies] hash];
+  }
+  if (self.hasSurveyAnswerSequence) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithInteger:self.surveyAnswerSequence] hash];
   }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
@@ -716,6 +742,9 @@ static BFeedPost* defaultBFeedPostInstance = nil;
   }
   if (other.hasMayChooseMulitpleReplies) {
     [self setMayChooseMulitpleReplies:other.mayChooseMulitpleReplies];
+  }
+  if (other.hasSurveyAnswerSequence) {
+    [self setSurveyAnswerSequence:other.surveyAnswerSequence];
   }
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -816,6 +845,10 @@ static BFeedPost* defaultBFeedPostInstance = nil;
       }
       case 120: {
         [self setMayChooseMulitpleReplies:[input readBool]];
+        break;
+      }
+      case 128: {
+        [self setSurveyAnswerSequence:[input readInt32]];
         break;
       }
     }
@@ -1081,6 +1114,22 @@ static BFeedPost* defaultBFeedPostInstance = nil;
 - (BFeedPostBuilder*) clearMayChooseMulitpleReplies {
   resultFeedPost.hasMayChooseMulitpleReplies = NO;
   resultFeedPost.mayChooseMulitpleReplies = NO;
+  return self;
+}
+- (BOOL) hasSurveyAnswerSequence {
+  return resultFeedPost.hasSurveyAnswerSequence;
+}
+- (SInt32) surveyAnswerSequence {
+  return resultFeedPost.surveyAnswerSequence;
+}
+- (BFeedPostBuilder*) setSurveyAnswerSequence:(SInt32) value {
+  resultFeedPost.hasSurveyAnswerSequence = YES;
+  resultFeedPost.surveyAnswerSequence = value;
+  return self;
+}
+- (BFeedPostBuilder*) clearSurveyAnswerSequence {
+  resultFeedPost.hasSurveyAnswerSequence = NO;
+  resultFeedPost.surveyAnswerSequence = 0;
   return self;
 }
 @end

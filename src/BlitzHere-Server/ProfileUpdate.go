@@ -211,6 +211,7 @@ func UpdateProfiles(session *Session, profiles *BlitzMessage.UserProfileUpdate,
     errorCount := 0
     var firstError error = nil
 
+    userIDArray := make([]string, 0, len(profiles.Profiles))
     for i := 0; i < len(profiles.Profiles); i++ {
         error := UpdateProfile(profiles.Profiles[i])
         if error != nil {
@@ -218,27 +219,24 @@ func UpdateProfiles(session *Session, profiles *BlitzMessage.UserProfileUpdate,
             if firstError == nil { firstError = error }
             Log.Errorf("Error updating profile %s: %v.", *profiles.Profiles[i].UserID, error)
         }
+        if profiles.Profiles[i].UserID != nil {
+            userIDArray = append(userIDArray, *profiles.Profiles[i].UserID)
+        }
     }
 
-    code := BlitzMessage.ResponseCode_RCSuccess
-    var message string
-
     if errorCount > 0 {
-        Log.Errorf("Found %d errors on update.", errorCount)
-        code = BlitzMessage.ResponseCode_RCServerWarning
-        message = firstError.Error()
+        Log.Errorf("Found %d errors on update: %+v.", errorCount, firstError)
     }
 
     if  errorCount == len(profiles.Profiles) {
-        code = BlitzMessage.ResponseCode_RCServerError
-        if (message == "") { message = "No profiles to update" }
+        return ServerResponseForError(BlitzMessage.ResponseCode_RCServerError,
+            errors.New("No profiles to update"))
     }
 
-    response := &BlitzMessage.ServerResponse {
-        ResponseCode: &code,
-        ResponseMessage: &message,
+    requestType := BlitzMessage.UserProfileQuery {
+        UserIDs:        userIDArray,
     }
-    return response
+    return QueryProfiles(session, &requestType)
 }
 
 
@@ -257,33 +255,50 @@ func MergeProfileIDIntoProfileID(oldID string, newID string) error {
     } ()
 
 
-    var (oldStatus sql.NullInt64; oldName sql.NullString; oldGender sql.NullInt64; oldBirthday pq.NullTime; oldImage sql.NullString)
-    row := config.DB.QueryRow("select userstatus, name, gender, birthday, imageURL[1] from usertable where userid = $1;", oldID)
-    error := row.Scan(&oldStatus, &oldName, &oldGender, &oldBirthday, &oldImage)
+    var (
+        oldStatus       sql.NullInt64
+        oldName         sql.NullString
+        oldGender       sql.NullInt64
+        oldBirthday     pq.NullTime
+        oldSummary      sql.NullString
+        oldInterests    sql.NullString
+    )
+    row := config.DB.QueryRow(
+        `select userstatus, name, gender, birthday, backgroundSummary, interestTags
+            from usertable where userid = $1;`, oldID)
+    error := row.Scan(&oldStatus, &oldName, &oldGender, &oldBirthday, &oldSummary, &oldInterests)
     if error != nil {
         Log.LogError(error)
     }
-    var (newStatus sql.NullInt64; newName sql.NullString; newGender sql.NullInt64; newBirthday pq.NullTime; newImage sql.NullString)
-    row = config.DB.QueryRow("select userstatus, name, gender, birthday, imageURL[1] from usertable where userid = $1;", newID)
-    error = row.Scan(&newStatus, &newName, &newGender, &newBirthday, &newImage)
+    var (
+        newStatus       sql.NullInt64
+        newName         sql.NullString
+        newGender       sql.NullInt64
+        newBirthday     pq.NullTime
+        newSummary      sql.NullString
+        newInterests    sql.NullString
+    )
+    row = config.DB.QueryRow(
+        `select userstatus, name, gender, birthday, backgroundSummary, interestTags
+            from usertable where userid = $1;`, newID)
+    error = row.Scan(&newStatus, &newName, &newGender, &newBirthday, &newSummary, &newInterests)
     if error != nil {
         Log.LogError(error)
     }
-    if oldStatus.Int64 > newStatus.Int64 { newStatus = oldStatus; }
-    if ! newName.Valid || len(newName.String) <= 0 { newName = oldName; }
-    if ! newGender.Valid || newGender.Int64 == 0 { newGender = oldGender; }
+    if oldStatus.Int64 > newStatus.Int64              { newStatus = oldStatus; }
+    if ! newName.Valid || len(newName.String) <= 0    { newName = oldName; }
+    if ! newGender.Valid || newGender.Int64 == 0      { newGender = oldGender; }
     if ! newBirthday.Valid || newBirthday.Time.IsZero() { newBirthday = oldBirthday; }
-    if ! newImage.Valid || len(newImage.String) <= 0 { newImage = oldImage; }
+    if ! newSummary.Valid || len(newSummary.String) <= 0     { newSummary = oldSummary }
+    if ! newInterests.Valid || len(newInterests.String) <= 0 { newInterests = oldInterests }
 
     result, error := config.DB.Exec(
-        `update usertable set (userstatus, name, gender, birthday, imageURL[1])
-         = ($1, $2, $3, $4, $5) where userid = $6;`,
-        newStatus, newName, newGender, newBirthday, newImage, newID)
+        `update usertable set (userstatus, name, gender, birthday, backgroundSummary, interestTags)
+         = ($1, $2, $3, $4, $5, $6) where userid = $7;`,
+        newStatus, newName, newGender, newBirthday, newSummary, newInterests, newID)
+    error = pgsql.RowUpdateError(result, error)
     if error != nil {
         Log.LogError(error)
-    } else {
-        rowCount, _ := result.RowsAffected()
-        if rowCount != 1 { Log.Errorf("Update row count not 1!: %d.", rowCount); }
     }
 
     row = config.DB.QueryRow("select MergeUserIDIntoUserID($1, $2);", oldID, newID)
@@ -303,7 +318,7 @@ func MergeProfileIDIntoProfileID(oldID string, newID string) error {
         Log.LogError(error)
     } else {
         rowCount, _ := result.RowsAffected()
-        Log.Debugf("Updated %ld rows.", rowCount)
+        Log.Debugf("Updated %d rows.", rowCount)
     }
     return nil
 }

@@ -602,6 +602,15 @@ public final class Feed {
      * <code>optional bool mayChooseMulitpleReplies = 15;</code>
      */
     boolean getMayChooseMulitpleReplies();
+
+    /**
+     * <code>optional int32 surveyAnswerSequence = 16;</code>
+     */
+    boolean hasSurveyAnswerSequence();
+    /**
+     * <code>optional int32 surveyAnswerSequence = 16;</code>
+     */
+    int getSurveyAnswerSequence();
   }
   /**
    * Protobuf type {@code BlitzMessage.FeedPost}
@@ -762,6 +771,11 @@ public final class Feed {
             case 120: {
               bitField0_ |= 0x00000800;
               mayChooseMulitpleReplies_ = input.readBool();
+              break;
+            }
+            case 128: {
+              bitField0_ |= 0x00001000;
+              surveyAnswerSequence_ = input.readInt32();
               break;
             }
           }
@@ -1227,6 +1241,21 @@ public final class Feed {
       return mayChooseMulitpleReplies_;
     }
 
+    public static final int SURVEYANSWERSEQUENCE_FIELD_NUMBER = 16;
+    private int surveyAnswerSequence_;
+    /**
+     * <code>optional int32 surveyAnswerSequence = 16;</code>
+     */
+    public boolean hasSurveyAnswerSequence() {
+      return ((bitField0_ & 0x00001000) == 0x00001000);
+    }
+    /**
+     * <code>optional int32 surveyAnswerSequence = 16;</code>
+     */
+    public int getSurveyAnswerSequence() {
+      return surveyAnswerSequence_;
+    }
+
     private void initFields() {
       postID_ = "";
       parentID_ = "";
@@ -1242,6 +1271,7 @@ public final class Feed {
       replies_ = java.util.Collections.emptyList();
       mayAddReply_ = false;
       mayChooseMulitpleReplies_ = false;
+      surveyAnswerSequence_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -1316,6 +1346,9 @@ public final class Feed {
       if (((bitField0_ & 0x00000800) == 0x00000800)) {
         output.writeBool(15, mayChooseMulitpleReplies_);
       }
+      if (((bitField0_ & 0x00001000) == 0x00001000)) {
+        output.writeInt32(16, surveyAnswerSequence_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -1380,6 +1413,10 @@ public final class Feed {
       if (((bitField0_ & 0x00000800) == 0x00000800)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBoolSize(15, mayChooseMulitpleReplies_);
+      }
+      if (((bitField0_ & 0x00001000) == 0x00001000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(16, surveyAnswerSequence_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -1546,6 +1583,8 @@ public final class Feed {
         bitField0_ = (bitField0_ & ~0x00001000);
         mayChooseMulitpleReplies_ = false;
         bitField0_ = (bitField0_ & ~0x00002000);
+        surveyAnswerSequence_ = 0;
+        bitField0_ = (bitField0_ & ~0x00004000);
         return this;
       }
 
@@ -1648,6 +1687,10 @@ public final class Feed {
           to_bitField0_ |= 0x00000800;
         }
         result.mayChooseMulitpleReplies_ = mayChooseMulitpleReplies_;
+        if (((from_bitField0_ & 0x00004000) == 0x00004000)) {
+          to_bitField0_ |= 0x00001000;
+        }
+        result.surveyAnswerSequence_ = surveyAnswerSequence_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -1761,6 +1804,9 @@ public final class Feed {
         }
         if (other.hasMayChooseMulitpleReplies()) {
           setMayChooseMulitpleReplies(other.getMayChooseMulitpleReplies());
+        }
+        if (other.hasSurveyAnswerSequence()) {
+          setSurveyAnswerSequence(other.getSurveyAnswerSequence());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -3133,6 +3179,38 @@ public final class Feed {
       public Builder clearMayChooseMulitpleReplies() {
         bitField0_ = (bitField0_ & ~0x00002000);
         mayChooseMulitpleReplies_ = false;
+        onChanged();
+        return this;
+      }
+
+      private int surveyAnswerSequence_ ;
+      /**
+       * <code>optional int32 surveyAnswerSequence = 16;</code>
+       */
+      public boolean hasSurveyAnswerSequence() {
+        return ((bitField0_ & 0x00004000) == 0x00004000);
+      }
+      /**
+       * <code>optional int32 surveyAnswerSequence = 16;</code>
+       */
+      public int getSurveyAnswerSequence() {
+        return surveyAnswerSequence_;
+      }
+      /**
+       * <code>optional int32 surveyAnswerSequence = 16;</code>
+       */
+      public Builder setSurveyAnswerSequence(int value) {
+        bitField0_ |= 0x00004000;
+        surveyAnswerSequence_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int32 surveyAnswerSequence = 16;</code>
+       */
+      public Builder clearSurveyAnswerSequence() {
+        bitField0_ = (bitField0_ & ~0x00004000);
+        surveyAnswerSequence_ = 0;
         onChanged();
         return this;
       }
@@ -5875,7 +5953,7 @@ public final class Feed {
     java.lang.String[] descriptorData = {
       "\n\nFeed.proto\022\014BlitzMessage\032\033objectivec-d" +
       "escriptor.proto\032\013Types.proto\032\020EntityTags" +
-      ".proto\"\307\003\n\010FeedPost\022\016\n\006postID\030\001 \001(\t\022\020\n\010p" +
+      ".proto\"\345\003\n\010FeedPost\022\016\n\006postID\030\001 \001(\t\022\020\n\010p" +
       "arentID\030\002 \001(\t\022,\n\010postType\030\003 \001(\0162\032.BlitzM" +
       "essage.FeedPostType\022.\n\tpostScope\030\004 \001(\0162\033" +
       ".BlitzMessage.FeedPostScope\022\016\n\006userID\030\005 " +
@@ -5886,26 +5964,27 @@ public final class Feed {
       "\n \001(\t\022)\n\010postTags\030\014 \003(\0132\027.BlitzMessage.E" +
       "ntityTag\022\'\n\007replies\030\r \003(\0132\026.BlitzMessage" +
       ".FeedPost\022\023\n\013mayAddReply\030\016 \001(\010\022 \n\030mayCho" +
-      "oseMulitpleReplies\030\017 \001(\010\"o\n\025FeedPostUpda" +
-      "teRequest\022,\n\nupdateVerb\030\001 \001(\0162\030.BlitzMes" +
-      "sage.UpdateVerb\022(\n\010feedPost\030\002 \001(\0132\026.Blit" +
-      "zMessage.FeedPost\"B\n\026FeedPostUpdateRespo" +
-      "nse\022(\n\010feedPost\030\001 \001(\0132\026.BlitzMessage.Fee" +
-      "dPost\"\202\001\n\024FeedPostFetchRequest\022(\n\010timesp" +
-      "an\030\001 \001(\0132\026.BlitzMessage.Timespan\022.\n\tfeed",
-      "Scope\030\002 \001(\0162\033.BlitzMessage.FeedPostScope" +
-      "\022\020\n\010parentID\030\003 \001(\t\"B\n\025FeedPostFetchRespo" +
-      "nse\022)\n\tfeedPosts\030\001 \003(\0132\026.BlitzMessage.Fe" +
-      "edPost*v\n\014FeedPostType\022\r\n\tFPUnknown\020\000\022\027\n" +
-      "\023FPOpenEndedQuestion\020\001\022\024\n\020FPOpenEndedRep" +
-      "ly\020\002\022\024\n\020FPSurveyQuestion\020\003\022\022\n\016FPSurveyAn" +
-      "swer\020\004*V\n\rFeedPostScope\022\022\n\016FPScopeUnknow" +
-      "n\020\000\022\027\n\023FPScopeLocalNetwork\020\001\022\030\n\024FPScopeG" +
-      "lobalNetwork\020\002*?\n\016FeedPostStatus\022\016\n\nFPSU" +
-      "nknown\020\000\022\r\n\tFPSActive\020\001\022\016\n\nFPSDeleted\020\002*",
-      "6\n\nUpdateVerb\022\014\n\010UVCreate\020\001\022\014\n\010UVUpdate\020" +
-      "\002\022\014\n\010UVDelete\020\003B/\n\032com.blitzhere.BlitzMe" +
-      "ssage\210\001\001\322>\002\n\000\322>\003\022\001B\322>\002\030\001"
+      "oseMulitpleReplies\030\017 \001(\010\022\034\n\024surveyAnswer" +
+      "Sequence\030\020 \001(\005\"o\n\025FeedPostUpdateRequest\022" +
+      ",\n\nupdateVerb\030\001 \001(\0162\030.BlitzMessage.Updat" +
+      "eVerb\022(\n\010feedPost\030\002 \001(\0132\026.BlitzMessage.F" +
+      "eedPost\"B\n\026FeedPostUpdateResponse\022(\n\010fee" +
+      "dPost\030\001 \001(\0132\026.BlitzMessage.FeedPost\"\202\001\n\024" +
+      "FeedPostFetchRequest\022(\n\010timespan\030\001 \001(\0132\026",
+      ".BlitzMessage.Timespan\022.\n\tfeedScope\030\002 \001(" +
+      "\0162\033.BlitzMessage.FeedPostScope\022\020\n\010parent" +
+      "ID\030\003 \001(\t\"B\n\025FeedPostFetchResponse\022)\n\tfee" +
+      "dPosts\030\001 \003(\0132\026.BlitzMessage.FeedPost*v\n\014" +
+      "FeedPostType\022\r\n\tFPUnknown\020\000\022\027\n\023FPOpenEnd" +
+      "edQuestion\020\001\022\024\n\020FPOpenEndedReply\020\002\022\024\n\020FP" +
+      "SurveyQuestion\020\003\022\022\n\016FPSurveyAnswer\020\004*V\n\r" +
+      "FeedPostScope\022\022\n\016FPScopeUnknown\020\000\022\027\n\023FPS" +
+      "copeLocalNetwork\020\001\022\030\n\024FPScopeGlobalNetwo" +
+      "rk\020\002*?\n\016FeedPostStatus\022\016\n\nFPSUnknown\020\000\022\r",
+      "\n\tFPSActive\020\001\022\016\n\nFPSDeleted\020\002*6\n\nUpdateV" +
+      "erb\022\014\n\010UVCreate\020\001\022\014\n\010UVUpdate\020\002\022\014\n\010UVDel" +
+      "ete\020\003B/\n\032com.blitzhere.BlitzMessage\210\001\001\322>" +
+      "\002\n\000\322>\003\022\001B\322>\002\030\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -5927,7 +6006,7 @@ public final class Feed {
     internal_static_BlitzMessage_FeedPost_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_BlitzMessage_FeedPost_descriptor,
-        new java.lang.String[] { "PostID", "ParentID", "PostType", "PostScope", "UserID", "AnonymousPost", "Timestamp", "TimespanActive", "HeadlineText", "BodyText", "PostTags", "Replies", "MayAddReply", "MayChooseMulitpleReplies", });
+        new java.lang.String[] { "PostID", "ParentID", "PostType", "PostScope", "UserID", "AnonymousPost", "Timestamp", "TimespanActive", "HeadlineText", "BodyText", "PostTags", "Replies", "MayAddReply", "MayChooseMulitpleReplies", "SurveyAnswerSequence", });
     internal_static_BlitzMessage_FeedPostUpdateRequest_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_BlitzMessage_FeedPostUpdateRequest_fieldAccessorTable = new

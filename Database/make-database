@@ -54,7 +54,7 @@ com.blitzhere.blitzhere-labs,   BlitzLabs,     1.1.0,   2016-03-07 05:48:42.3575
 com.blitzhere.blitzhere,        BlitzHere,     1.1.0,   2016-03-07 05:48:42.357598+00
 \.
 
-select count(*) from AppTable;
+update AppTable set minAppDataDate = current_timestamp;
 
 DATABASE
 

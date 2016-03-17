@@ -45,8 +45,9 @@ func WriteFeedPost(feedPost *BlitzMessage.FeedPost) error {
             headlineText,
             bodyText,
             mayAddReply,
-            mayChooseMulitpleReplies
-        ) = ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) where postID = $12;`,
+            mayChooseMulitpleReplies,
+            surveyAnswerSequence
+        ) = ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) where postID = $13;`,
             feedPost.ParentID,
             feedPost.PostType,
             feedPost.PostScope,
@@ -58,7 +59,9 @@ func WriteFeedPost(feedPost *BlitzMessage.FeedPost) error {
             feedPost.BodyText,
             feedPost.MayAddReply,
             feedPost.MayChooseMulitpleReplies,
-            feedPost.PostID)
+            feedPost.SurveyAnswerSequence,
+            feedPost.PostID,
+        )
 
     error = pgsql.RowUpdateError(result, error)
     if error != nil {
@@ -89,7 +92,8 @@ var kScanFeedRowString =
             headlineText,
             bodyText,
             mayAddReply,
-            mayChooseMulitpleReplies
+            mayChooseMulitpleReplies,
+            surveyAnswerSequence
 `
 
 
@@ -115,6 +119,7 @@ func ScanFeedPostRow(row RowScanner) (*BlitzMessage.FeedPost, error) {
         bodyText        sql.NullString
         mayAddReply     sql.NullBool
         mayChooseMulitpleReplies    sql.NullBool
+        surveyAnswerSequence sql.NullInt64
     )
     error := row.Scan(
         &postID,
@@ -129,7 +134,8 @@ func ScanFeedPostRow(row RowScanner) (*BlitzMessage.FeedPost, error) {
         &headlineText,
         &bodyText,
         &mayAddReply,
-        &mayChooseMulitpleReplies)
+        &mayChooseMulitpleReplies,
+        &surveyAnswerSequence)
     if error != nil {
         Log.LogError(error)
         return nil, error
@@ -148,6 +154,7 @@ func ScanFeedPostRow(row RowScanner) (*BlitzMessage.FeedPost, error) {
         BodyText:           StringPtrFromNullString(bodyText),
         MayAddReply:        BoolPtrFromNullBool(mayAddReply),
         MayChooseMulitpleReplies:   BoolPtrFromNullBool(mayChooseMulitpleReplies),
+        SurveyAnswerSequence:       Int32PtrFromNullInt64(surveyAnswerSequence),
     }
 
     feedPost.PostTags = GetEntityTags(*feedPost.UserID, *feedPost.PostID, BlitzMessage.EntityType_ETFeedPost)
@@ -156,14 +163,19 @@ func ScanFeedPostRow(row RowScanner) (*BlitzMessage.FeedPost, error) {
 }
 
 
-func FeedPostForPostID(postID string) (*BlitzMessage.FeedPost, error) {
+func FeedPostForPostID(postID string) *BlitzMessage.FeedPost {
     Log.LogFunctionName()
 
     row := config.DB.QueryRow(
         `select ` + kScanFeedRowString +
-        `   where postID = $1`, postID)
+        `   from FeedPostTable
+            where postID = $1`, postID)
 
-    return ScanFeedPostRow(row)
+    feedPost, error := ScanFeedPostRow(row)
+    if error != nil {
+        Log.LogError(error)
+    }
+    return feedPost
 }
 
 
@@ -191,25 +203,39 @@ func UpdateFeedPost(session *Session, feedPostUpdate *BlitzMessage.FeedPostUpdat
         if error != nil {
             return ServerResponseForError(BlitzMessage.ResponseCode_RCServerError, error)
         }
-        return ServerResponseForCode(BlitzMessage.ResponseCode_RCSuccess, nil)
+
+        //  If it's a survey question, write the responses --
+
+        for _, reply := range feedPostUpdate.FeedPost.Replies {
+            error := WriteFeedPost(reply)
+            if error != nil { Log.LogError(error) }
+        }
 
         //  Send a notification if it's a response --
 
         if  feedPostUpdate.FeedPost.ParentID != nil {
-            parentPost, error := FeedPostForPostID(*feedPostUpdate.FeedPost.ParentID)
-            if  error == nil {
-                responseUser := ProfileForUserID(session.UserID)
-                if responseUser != nil {
-                    message := fmt.Sprintf("%s responded to your question.", *responseUser.Name)
-                    SendUserMessage(BlitzMessage.Default_Globals_SystemUserID,
-                        [] string { *parentPost.UserID },
-                        message,
-                        BlitzMessage.UserMessageType_MTNotification,
-                        "AppIcon",
-                        "")
+            Log.Debugf("Try to send a notification to the original poster:")
+            parentPost := FeedPostForPostID(*feedPostUpdate.FeedPost.ParentID)
+            if  parentPost != nil {
+                originalPoster := ProfileForUserID(*parentPost.UserID)
+                name := "Someone"
+                if  originalPoster != nil &&
+                    originalPoster.Name != nil &&
+                    len(*originalPoster.Name) > 0 {
+                    name = *originalPoster.Name
                 }
+                message := fmt.Sprintf("%s responded to your question.", name)
+                SendUserMessage(BlitzMessage.Default_Globals_SystemUserID,
+                    [] string { *originalPoster.UserID },
+                    message,
+                    BlitzMessage.UserMessageType_MTNotification,
+                    "AppIcon",
+                    "",
+                )
             }
         }
+
+        return ServerResponseForCode(BlitzMessage.ResponseCode_RCSuccess, nil)
     }
 
     if *feedPostUpdate.UpdateVerb == BlitzMessage.UpdateVerb_UVDelete {
@@ -225,6 +251,83 @@ func UpdateFeedPost(session *Session, feedPostUpdate *BlitzMessage.FeedPostUpdat
 
     return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid,
             fmt.Errorf("Unknown verb '%d'", feedPostUpdate.UpdateVerb))
+}
+
+
+//----------------------------------------------------------------------------------------
+//                                                          FetchTopOpenRepliesForFeedPost
+//----------------------------------------------------------------------------------------
+
+
+func FetchTopOpenRepliesForFeedPost(parentPostID string) []*BlitzMessage.FeedPost {
+    Log.LogFunctionName()
+
+    feedPosts := make([]*BlitzMessage.FeedPost, 0, 10)
+    rows, error := config.DB.Query(
+        `select ` + kScanFeedRowString +
+        `   from FeedPostTable
+            where postStatus = $1
+              and parentID = $2
+              order by timestamp limit 5 ;`,
+        BlitzMessage.FeedPostStatus_FPSActive,
+        parentPostID,
+    )
+
+    if error != nil {
+        Log.LogError(error)
+        return feedPosts
+    }
+
+    for rows.Next() {
+        feedPost, error := ScanFeedPostRow(rows)
+        if error != nil {
+            Log.LogError(error)
+        } else {
+            feedPosts = append(feedPosts, feedPost)
+        }
+    }
+
+    Log.Debugf("Found %d top posts.", len(feedPosts))
+    return feedPosts
+}
+
+
+//----------------------------------------------------------------------------------------
+//                                                        FetchTopSurveyRepliesForFeedPost
+//----------------------------------------------------------------------------------------
+
+
+func FetchTopSurveyRepliesForFeedPost(parentPostID string) []*BlitzMessage.FeedPost {
+    Log.LogFunctionName()
+
+    feedPosts := make([]*BlitzMessage.FeedPost, 0, 10)
+    rows, error := config.DB.Query(
+        `select ` + kScanFeedRowString +
+        `   from FeedPostTable
+            where postStatus = $1
+              and parentID = $2
+              order by surveyAnswerSequence nulls last, timestamp
+              limit 10;`,
+        BlitzMessage.FeedPostStatus_FPSActive,
+        parentPostID,
+    )
+
+    if error != nil {
+        Log.LogError(error)
+        return feedPosts
+    }
+
+    for rows.Next() {
+        feedPost, error := ScanFeedPostRow(rows)
+        if error != nil {
+            Log.LogError(error)
+        } else {
+            feedPosts = append(feedPosts, feedPost)
+        }
+    }
+
+    Log.Debugf("Found %d top posts.", len(feedPosts))
+    return feedPosts
 }
 
 
@@ -284,6 +387,21 @@ func FetchFeedPosts(session *Session, fetchRequest *BlitzMessage.FeedPostFetchRe
             Log.LogError(error)
         } else {
             feedPosts = append(feedPosts, feedPost)
+        }
+    }
+
+    //  Now go back through the feed posts to update their responses:
+
+    for _, feedPost := range feedPosts {
+
+        switch *feedPost.PostType {
+
+        case BlitzMessage.FeedPostType_FPOpenEndedQuestion:
+            feedPost.Replies = FetchTopOpenRepliesForFeedPost(*feedPost.PostID)
+
+        case BlitzMessage.FeedPostType_FPSurveyQuestion:
+            feedPost.Replies = FetchTopSurveyRepliesForFeedPost(*feedPost.PostID)
+
         }
     }
 
