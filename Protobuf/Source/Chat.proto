@@ -38,7 +38,14 @@ message ChatRoom {
 }
 
 
-message ChatEnterLeaveRoom {
+message ChatConnect {
+  optional bool       isConnecting      = 1;
+  optional ChatUser   user              = 2;
+  repeated ChatRoom   rooms             = 3;
+}
+
+
+message ChatRoomEntrance {
   optional ChatUser   user            = 1;
   optional string     roomID          = 2;
   optional bool       userIsEntering  = 3;
