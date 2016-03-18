@@ -14,8 +14,8 @@ import (
     "BlitzMessage"
 )
 
-
-func SetEntityTags(userID string, tags []*BlitzMessage.EntityTag) {
+/*
+func SetEntityTags(userID, entityID string, entityType BlitzMessage.EntityType tags []*BlitzMessage.EntityTag) {
     Log.LogFunctionName()
 
     for _, tag := range tags {
@@ -31,7 +31,7 @@ func SetEntityTags(userID string, tags []*BlitzMessage.EntityTag) {
                 `insert into EntityTagTable
                     (userID, entityID, entityType, entityTag)
                     values ($1, $2, $3, $4);`,
-                userID, tag.EntityID, tag.EntityType, cleanTag)
+                userID, entityID, entityType, cleanTag)
 
         } else {
 
@@ -49,21 +49,59 @@ func SetEntityTags(userID string, tags []*BlitzMessage.EntityTag) {
         if error != nil { Log.LogError(error) }
     }
 }
+*/
 
 
-func GetEntityTags(userID, entityID string, entityType BlitzMessage.EntityType) []*BlitzMessage.EntityTag {
+func SetEntityTagsWithUser(userID, entityID string, entityType BlitzMessage.EntityType, tags []*BlitzMessage.EntityTag) {
+    Log.LogFunctionName()
+
+    var error error
+    _, error = config.DB.Exec(
+        `delete from EntityTagTable
+            where userID = $1
+              and entityID = $2
+              and entityType = $3;`,
+        userID, entityID, entityType)
+    if error != nil { Log.LogError(error) }
+
+    for _, tag := range tags {
+        if tag.UserHasTagged == nil ||
+           tag.TagName == nil ||
+           ! *tag.UserHasTagged {
+            continue
+        }
+
+        cleanTag := strings.ToLower(strings.TrimSpace(*tag.TagName))
+        if len(cleanTag) <= 0 { continue }
+
+        var result sql.Result
+        result, error = config.DB.Exec(
+            `insert into EntityTagTable
+                (userID, entityID, entityType, entityTag)
+                values ($1, $2, $3, $4);`,
+            userID, entityID, entityType, cleanTag)
+
+        error = pgsql.RowUpdateError(result, error)
+        if error != nil { Log.LogError(error) }
+    }
+}
+
+
+func GetEntityTagsWithUser(userID, entityID string, entityType BlitzMessage.EntityType) []*BlitzMessage.EntityTag {
     Log.LogFunctionName()
 
     tagArray := make([]*BlitzMessage.EntityTag, 0, 10)
 
     rows, error := config.DB.Query(
-        `select entityTag,
-            (select count(*) from EntityTagTable where entityID = $2 and entityType = $3)
-            from EntityTagTable
-            where userID = $1
-              and entityID = $2
-              and entityType = $3;`,
-            userID, entityID, entityType)
+        `select
+            entityTag,
+            count(*),
+            sum(case when userid = $1 then 1 else 0 end)
+        from EntityTagTable
+        where entityID = $2
+        and entityType = $3;`,
+        userID, entityID, entityType,
+    )
     if error != nil {
         Log.LogError(error)
         return tagArray
@@ -72,21 +110,23 @@ func GetEntityTags(userID, entityID string, entityType BlitzMessage.EntityType) 
 
     for rows.Next() {
         var (
-            tag     string;
-            count   int64;
+            tag             string;
+            count           int64;
+            userSelected    sql.NullBool;
         )
-        error = rows.Scan(&tag, &count)
-        if error != nil { continue }
+        error = rows.Scan(&tag, &count, &userSelected)
+        if error != nil {
+            Log.LogError(error)
+            continue
+        }
 
         cleanTag := strings.ToLower(strings.TrimSpace(tag))
         if len(cleanTag) <= 0 { continue }
 
         entityTag := BlitzMessage.EntityTag {
-            EntityID:       &entityID,
-            EntityType:     &entityType,
-            EntityTagName:  &cleanTag,
-            EntityIsTagged: BoolPtr(true),
-            EntityTagCount: Int32Ptr(int32(count)),
+            TagName:        &cleanTag,
+            TagCount:       Int32Ptr(int32(count)),
+            UserHasTagged:  BoolPtrFromNullBool(userSelected),
         }
 
         tagArray = append(tagArray, &entityTag)
@@ -96,10 +136,16 @@ func GetEntityTags(userID, entityID string, entityType BlitzMessage.EntityType) 
 }
 
 
-func UpdateEntityTags(session *Session, tagUpdate *BlitzMessage.EntityTagList,
+func UpdateEntityTags(session *Session, tagList *BlitzMessage.EntityTagList,
     ) *BlitzMessage.ServerResponse {
 
-    SetEntityTags(session.UserID, tagUpdate.Tags)
+    if  tagList.EntityID == nil ||
+        tagList.EntityType == nil ||
+        *tagList.EntityType == BlitzMessage.EntityType_ETUnknown {
+        return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, nil)
+    }
+
+    SetEntityTagsWithUser(session.UserID, *tagList.EntityID, *tagList.EntityType, tagList.EntityTags)
     return ServerResponseForCode(BlitzMessage.ResponseCode_RCSuccess, nil)
 }
 
