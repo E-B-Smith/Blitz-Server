@@ -7,10 +7,20 @@ buildDate   := $(shell date | sed s.[[:space:]].-.g)
 buildVersion = 0
 buildLinux   = 0
 buildDarwin  = 0
+
+# Verbose options:
+
+#verbose    := echo
+#cp         := cp -av
+#rm         := rm -Rfv
+
+verbose     := true
+cp          := cp -a
 rm          := rm -Rf
+
 .SILENT:
 
-export userhost:=blitzhere@shimmering.blue
+export userhost:=blitzhere@blitzhere.com
 export installpath:=/home/blitzhere
 export GOPATH:=$(makepath)
 export GOROOT:=
@@ -20,20 +30,28 @@ export PATH:=$(makepath)/bin:$(PATH)
 # Compile --
 
 
+gobuildDarwin= \
+    $(verbose) ">>> Darwin."; \
+    env GOOS=darwin GOARCH=amd64 go install $(goflags) ; \
+    if [[ $$? != 0 ]]; then exit 1; fi; \
+    obj=$$(basename $1); \
+    $(cp) bin/$$obj Staging/Versions/$$obj.Darwin; \
+
+
+ gobuildLinux= \
+    $(verbose) ">>> Linux."; \
+    env GOOS=linux  GOARCH=amd64 go install $(goflags); \
+    if [[ $$? != 0 ]]; then exit 1; fi; \
+    obj=$$(basename $1); \
+    $(cp) ../../bin/linux_amd64/$$obj ../../Staging/Versions/$$obj.Linux; \
+
+
 gobuild= \
     cd $1; \
     echo ">>> Building `pwd`."; \
     $(eval goflags= -v -ldflags '-X main.globalCompileTime=$(buildDate) -X main.globalVersion=$(buildVersion)') \
-    env GOOS=darwin GOARCH=amd64 go install $(goflags) ; \
-    if [[ $$? != 0 ]]; then exit 1; fi; \
-    if [[ $(buildLinux) == 1 ]]; then env GOOS=linux  GOARCH=amd64 go install $(goflags); fi; \
-    if [[ $$? != 0 ]]; then exit 1; fi; \
+    $(call gobuildLinux, $1) \
     cd - >/dev/null; \
-    obj=$$(basename $1); \
-    if [[ "$2" == "" ]]; then bob=$$(basename $1); else bob=$$(basename $2); fi; \
-    cp -av bin/$$obj Staging/Versions/$$bob.Darwin; \
-    if [[ $(buildLinux) == 1 ]]; then cp -av bin/linux_amd64/$$obj Staging/Versions/$$bob.Linux; fi; \
-    if [[ $$? != 0 ]]; then exit 1; fi;
 
 
 compile: \
@@ -152,6 +170,7 @@ test: \
 
 
 deploy: \
+    FORCE \
     linux \
     ; \
         echo ">>> Deploying to $$userhost." ; \

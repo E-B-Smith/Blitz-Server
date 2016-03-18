@@ -1802,7 +1802,7 @@ static BSessionResponse* defaultBSessionResponseInstance = nil;
 @property (strong) BFeedPostFetchRequest* feedPostFetchRequest;
 @property (strong) BFeedPostUpdateRequest* feedPostUpdateRequest;
 @property (strong) BAutocompleteRequest* autocompleteRequest;
-@property (strong) BEntityTagList* updateEntityTags;
+@property (strong) BEntityTagList* entityTagUpdate;
 @end
 
 @implementation BRequestType
@@ -1898,13 +1898,13 @@ static BSessionResponse* defaultBSessionResponseInstance = nil;
   hasAutocompleteRequest_ = !!_value_;
 }
 @synthesize autocompleteRequest;
-- (BOOL) hasUpdateEntityTags {
-  return !!hasUpdateEntityTags_;
+- (BOOL) hasEntityTagUpdate {
+  return !!hasEntityTagUpdate_;
 }
-- (void) setHasUpdateEntityTags:(BOOL) _value_ {
-  hasUpdateEntityTags_ = !!_value_;
+- (void) setHasEntityTagUpdate:(BOOL) _value_ {
+  hasEntityTagUpdate_ = !!_value_;
 }
-@synthesize updateEntityTags;
+@synthesize entityTagUpdate;
 - (instancetype) init {
   if ((self = [super init])) {
     self.sessionRequest = [BSessionRequest defaultInstance];
@@ -1920,7 +1920,7 @@ static BSessionResponse* defaultBSessionResponseInstance = nil;
     self.feedPostFetchRequest = [BFeedPostFetchRequest defaultInstance];
     self.feedPostUpdateRequest = [BFeedPostUpdateRequest defaultInstance];
     self.autocompleteRequest = [BAutocompleteRequest defaultInstance];
-    self.updateEntityTags = [BEntityTagList defaultInstance];
+    self.entityTagUpdate = [BEntityTagList defaultInstance];
   }
   return self;
 }
@@ -2029,8 +2029,8 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   if (self.hasAutocompleteRequest) {
     [output writeMessage:13 value:self.autocompleteRequest];
   }
-  if (self.hasUpdateEntityTags) {
-    [output writeMessage:14 value:self.updateEntityTags];
+  if (self.hasEntityTagUpdate) {
+    [output writeMessage:14 value:self.entityTagUpdate];
   }
   [self.unknownFields writeToCodedOutputStream:output];
 }
@@ -2080,8 +2080,8 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   if (self.hasAutocompleteRequest) {
     size_ += computeMessageSize(13, self.autocompleteRequest);
   }
-  if (self.hasUpdateEntityTags) {
-    size_ += computeMessageSize(14, self.updateEntityTags);
+  if (self.hasEntityTagUpdate) {
+    size_ += computeMessageSize(14, self.entityTagUpdate);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -2196,9 +2196,9 @@ static BRequestType* defaultBRequestTypeInstance = nil;
                          withIndent:[NSString stringWithFormat:@"%@  ", indent]];
     [output appendFormat:@"%@}\n", indent];
   }
-  if (self.hasUpdateEntityTags) {
-    [output appendFormat:@"%@%@ {\n", indent, @"updateEntityTags"];
-    [self.updateEntityTags writeDescriptionTo:output
+  if (self.hasEntityTagUpdate) {
+    [output appendFormat:@"%@%@ {\n", indent, @"entityTagUpdate"];
+    [self.entityTagUpdate writeDescriptionTo:output
                          withIndent:[NSString stringWithFormat:@"%@  ", indent]];
     [output appendFormat:@"%@}\n", indent];
   }
@@ -2270,10 +2270,10 @@ static BRequestType* defaultBRequestTypeInstance = nil;
    [self.autocompleteRequest storeInDictionary:messageDictionary];
    [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"autocompleteRequest"];
   }
-  if (self.hasUpdateEntityTags) {
+  if (self.hasEntityTagUpdate) {
    NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
-   [self.updateEntityTags storeInDictionary:messageDictionary];
-   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"updateEntityTags"];
+   [self.entityTagUpdate storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"entityTagUpdate"];
   }
   [self.unknownFields storeInDictionary:dictionary];
 }
@@ -2312,8 +2312,8 @@ static BRequestType* defaultBRequestTypeInstance = nil;
       (!self.hasFeedPostUpdateRequest || [self.feedPostUpdateRequest isEqual:otherMessage.feedPostUpdateRequest]) &&
       self.hasAutocompleteRequest == otherMessage.hasAutocompleteRequest &&
       (!self.hasAutocompleteRequest || [self.autocompleteRequest isEqual:otherMessage.autocompleteRequest]) &&
-      self.hasUpdateEntityTags == otherMessage.hasUpdateEntityTags &&
-      (!self.hasUpdateEntityTags || [self.updateEntityTags isEqual:otherMessage.updateEntityTags]) &&
+      self.hasEntityTagUpdate == otherMessage.hasEntityTagUpdate &&
+      (!self.hasEntityTagUpdate || [self.entityTagUpdate isEqual:otherMessage.entityTagUpdate]) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
@@ -2357,8 +2357,8 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   if (self.hasAutocompleteRequest) {
     hashCode = hashCode * 31 + [self.autocompleteRequest hash];
   }
-  if (self.hasUpdateEntityTags) {
-    hashCode = hashCode * 31 + [self.updateEntityTags hash];
+  if (self.hasEntityTagUpdate) {
+    hashCode = hashCode * 31 + [self.entityTagUpdate hash];
   }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
@@ -2442,8 +2442,8 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   if (other.hasAutocompleteRequest) {
     [self mergeAutocompleteRequest:other.autocompleteRequest];
   }
-  if (other.hasUpdateEntityTags) {
-    [self mergeUpdateEntityTags:other.updateEntityTags];
+  if (other.hasEntityTagUpdate) {
+    [self mergeEntityTagUpdate:other.entityTagUpdate];
   }
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -2585,11 +2585,11 @@ static BRequestType* defaultBRequestTypeInstance = nil;
       }
       case 114: {
         BEntityTagListBuilder* subBuilder = [BEntityTagList builder];
-        if (self.hasUpdateEntityTags) {
-          [subBuilder mergeFrom:self.updateEntityTags];
+        if (self.hasEntityTagUpdate) {
+          [subBuilder mergeFrom:self.entityTagUpdate];
         }
         [input readMessage:subBuilder extensionRegistry:extensionRegistry];
-        [self setUpdateEntityTags:[subBuilder buildPartial]];
+        [self setEntityTagUpdate:[subBuilder buildPartial]];
         break;
       }
     }
@@ -2985,34 +2985,34 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   resultRequestType.autocompleteRequest = [BAutocompleteRequest defaultInstance];
   return self;
 }
-- (BOOL) hasUpdateEntityTags {
-  return resultRequestType.hasUpdateEntityTags;
+- (BOOL) hasEntityTagUpdate {
+  return resultRequestType.hasEntityTagUpdate;
 }
-- (BEntityTagList*) updateEntityTags {
-  return resultRequestType.updateEntityTags;
+- (BEntityTagList*) entityTagUpdate {
+  return resultRequestType.entityTagUpdate;
 }
-- (BRequestTypeBuilder*) setUpdateEntityTags:(BEntityTagList*) value {
-  resultRequestType.hasUpdateEntityTags = YES;
-  resultRequestType.updateEntityTags = value;
+- (BRequestTypeBuilder*) setEntityTagUpdate:(BEntityTagList*) value {
+  resultRequestType.hasEntityTagUpdate = YES;
+  resultRequestType.entityTagUpdate = value;
   return self;
 }
-- (BRequestTypeBuilder*) setUpdateEntityTagsBuilder:(BEntityTagListBuilder*) builderForValue {
-  return [self setUpdateEntityTags:[builderForValue build]];
+- (BRequestTypeBuilder*) setEntityTagUpdateBuilder:(BEntityTagListBuilder*) builderForValue {
+  return [self setEntityTagUpdate:[builderForValue build]];
 }
-- (BRequestTypeBuilder*) mergeUpdateEntityTags:(BEntityTagList*) value {
-  if (resultRequestType.hasUpdateEntityTags &&
-      resultRequestType.updateEntityTags != [BEntityTagList defaultInstance]) {
-    resultRequestType.updateEntityTags =
-      [[[BEntityTagList builderWithPrototype:resultRequestType.updateEntityTags] mergeFrom:value] buildPartial];
+- (BRequestTypeBuilder*) mergeEntityTagUpdate:(BEntityTagList*) value {
+  if (resultRequestType.hasEntityTagUpdate &&
+      resultRequestType.entityTagUpdate != [BEntityTagList defaultInstance]) {
+    resultRequestType.entityTagUpdate =
+      [[[BEntityTagList builderWithPrototype:resultRequestType.entityTagUpdate] mergeFrom:value] buildPartial];
   } else {
-    resultRequestType.updateEntityTags = value;
+    resultRequestType.entityTagUpdate = value;
   }
-  resultRequestType.hasUpdateEntityTags = YES;
+  resultRequestType.hasEntityTagUpdate = YES;
   return self;
 }
-- (BRequestTypeBuilder*) clearUpdateEntityTags {
-  resultRequestType.hasUpdateEntityTags = NO;
-  resultRequestType.updateEntityTags = [BEntityTagList defaultInstance];
+- (BRequestTypeBuilder*) clearEntityTagUpdate {
+  resultRequestType.hasEntityTagUpdate = NO;
+  resultRequestType.entityTagUpdate = [BEntityTagList defaultInstance];
   return self;
 }
 @end

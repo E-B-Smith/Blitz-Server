@@ -84,8 +84,8 @@ message RequestType {
   optional AcceptInviteRequest      acceptInviteRequest = 10;
   optional FeedPostFetchRequest     feedPostFetchRequest  = 11;
   optional FeedPostUpdateRequest    feedPostUpdateRequest = 12;
-  optional AutocompleteRequest      autocompleteRequest   = 13;
-  optional EntityTagList            updateEntityTags      = 14;
+  optional AutocompleteRequest      autocompleteRequest = 13;
+  optional EntityTagList            entityTagUpdate     = 14;
 }
 
 
