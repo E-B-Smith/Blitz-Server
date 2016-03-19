@@ -605,10 +605,18 @@ public final class Feed {
 
     /**
      * <code>optional int32 surveyAnswerSequence = 16;</code>
+     *
+     * <pre>
+     *repeated EntityTag      systemTags      = 17;
+     * </pre>
      */
     boolean hasSurveyAnswerSequence();
     /**
      * <code>optional int32 surveyAnswerSequence = 16;</code>
+     *
+     * <pre>
+     *repeated EntityTag      systemTags      = 17;
+     * </pre>
      */
     int getSurveyAnswerSequence();
   }
@@ -1245,12 +1253,20 @@ public final class Feed {
     private int surveyAnswerSequence_;
     /**
      * <code>optional int32 surveyAnswerSequence = 16;</code>
+     *
+     * <pre>
+     *repeated EntityTag      systemTags      = 17;
+     * </pre>
      */
     public boolean hasSurveyAnswerSequence() {
       return ((bitField0_ & 0x00001000) == 0x00001000);
     }
     /**
      * <code>optional int32 surveyAnswerSequence = 16;</code>
+     *
+     * <pre>
+     *repeated EntityTag      systemTags      = 17;
+     * </pre>
      */
     public int getSurveyAnswerSequence() {
       return surveyAnswerSequence_;
@@ -3186,18 +3202,30 @@ public final class Feed {
       private int surveyAnswerSequence_ ;
       /**
        * <code>optional int32 surveyAnswerSequence = 16;</code>
+       *
+       * <pre>
+       *repeated EntityTag      systemTags      = 17;
+       * </pre>
        */
       public boolean hasSurveyAnswerSequence() {
         return ((bitField0_ & 0x00004000) == 0x00004000);
       }
       /**
        * <code>optional int32 surveyAnswerSequence = 16;</code>
+       *
+       * <pre>
+       *repeated EntityTag      systemTags      = 17;
+       * </pre>
        */
       public int getSurveyAnswerSequence() {
         return surveyAnswerSequence_;
       }
       /**
        * <code>optional int32 surveyAnswerSequence = 16;</code>
+       *
+       * <pre>
+       *repeated EntityTag      systemTags      = 17;
+       * </pre>
        */
       public Builder setSurveyAnswerSequence(int value) {
         bitField0_ |= 0x00004000;
@@ -3207,6 +3235,10 @@ public final class Feed {
       }
       /**
        * <code>optional int32 surveyAnswerSequence = 16;</code>
+       *
+       * <pre>
+       *repeated EntityTag      systemTags      = 17;
+       * </pre>
        */
       public Builder clearSurveyAnswerSequence() {
         bitField0_ = (bitField0_ & ~0x00004000);

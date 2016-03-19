@@ -56,13 +56,15 @@ func SetEntityTagsWithUserID(userID, entityID string, entityType BlitzMessage.En
     Log.LogFunctionName()
 
     var error error
-    _, error = config.DB.Exec(
+    var result sql.Result
+    result, error = config.DB.Exec(
         `delete from EntityTagTable
             where userID = $1
               and entityID = $2
               and entityType = $3;`,
         userID, entityID, entityType)
     if error != nil { Log.LogError(error) }
+    Log.Debugf("Deleted %d tags.", pgsql.RowsUpdated(result))
 
     for _, tag := range tags {
         if tag.UserHasTagged == nil ||
