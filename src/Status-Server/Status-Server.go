@@ -31,7 +31,7 @@ var   config ServerUtil.Configuration =
                     ServicePrefix:      "/beinghappy/status",
                     ServerURL:          "https://violent.blue",
                     DatabaseURI:        "postgres://happylabs:happylabs@localhost:5432/happylabs",
-                    LogLevel:           Log.LevelAll,
+                    LogLevel:           Log.LogLevelAll,
                     LogFilename:        "",
             }
 
@@ -223,7 +223,7 @@ func ShowRequest(writer http.ResponseWriter, request *http.Request) {
 
 func StatsServer() int {
     var error error
-    Log.LogLevel = Log.LevelAll
+    Log.LogLevel = Log.LogLevelAll
     commandLine := strings.Trim(fmt.Sprint(os.Args), "[]")
 
     flag.BoolVar(&flagUsage,   "h", false, "Help.  Print usage and exit.")
@@ -257,7 +257,7 @@ func StatsServer() int {
         return 0
     }
     if flagVerbose {
-        config.LogLevel = Log.LevelDebug
+        config.LogLevel = Log.LogLevelDebug
     }
 
     Log.SetFilename(config.LogFilename);

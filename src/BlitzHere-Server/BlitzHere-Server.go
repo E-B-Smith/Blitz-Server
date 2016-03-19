@@ -436,7 +436,7 @@ func Server() (returnValue int) {
         }
     } ()
 
-    Log.LogLevel = Log.LevelAll
+    Log.LogLevel = Log.LogLevelAll
     commandLine := strings.Trim(fmt.Sprint(os.Args), "[]")
 
     //  Do config params --
@@ -474,7 +474,7 @@ func Server() (returnValue int) {
         //Log.Debugf("Parsed configuration file")
     }
     if flagVerbose {
-        config.LogLevel = Log.LevelDebug
+        config.LogLevel = Log.LogLevelDebug
     }
     if flagPID {
         fmt.Fprintf(os.Stdout, "%s\n", config.PIDFileName())

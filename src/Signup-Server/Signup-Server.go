@@ -36,7 +36,7 @@ var   config ServerUtil.Configuration =
                 ServicePrefix:      "/beinghappy/signup",
                 ServerURL:          "https://violent.blue",
                 DatabaseURI:        "psql://happylabsadmin:happylabsadmin@localhost:5432/happylabsdatabase",
-                LogLevel:           Log.LevelAll,
+                LogLevel:           Log.LogLevelAll,
                 LogFilename:        "",
             }
 const kSMSNotificationNumber = "4156152570"
@@ -462,7 +462,7 @@ func SendHello(writer http.ResponseWriter, request *http.Request) {
 
 
 func SignupServer() int {
-    Log.LogLevel = Log.LevelAll
+    Log.LogLevel = Log.LogLevelAll
     commandLine := strings.Trim(fmt.Sprint(os.Args), "[]")
 
     var (flagUsage bool; flagVersion bool; flagVerbose bool; flagPID bool; flagInputFilename string)
@@ -503,7 +503,7 @@ func SignupServer() int {
         return 0
     }
     if flagVerbose {
-        config.LogLevel = Log.LevelDebug
+        config.LogLevel = Log.LogLevelDebug
     }
 
     Log.SetFilename(config.LogFilename);
