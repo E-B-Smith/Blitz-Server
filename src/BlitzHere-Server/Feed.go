@@ -69,7 +69,7 @@ func WriteFeedPost(feedPost *BlitzMessage.FeedPost) error {
         return error
     }
 
-    SetEntityTagsWithUser(*feedPost.UserID, *feedPost.PostID, BlitzMessage.EntityType_ETFeedPost, feedPost.PostTags)
+    SetEntityTagsWithUserID(*feedPost.UserID, *feedPost.PostID, BlitzMessage.EntityType_ETFeedPost, feedPost.PostTags)
 
     return error
 }
@@ -157,7 +157,7 @@ func ScanFeedPostRow(row RowScanner) (*BlitzMessage.FeedPost, error) {
         SurveyAnswerSequence:       Int32PtrFromNullInt64(surveyAnswerSequence),
     }
 
-    feedPost.PostTags = GetEntityTagsWithUser(*feedPost.UserID, *feedPost.PostID, BlitzMessage.EntityType_ETFeedPost)
+    feedPost.PostTags = GetEntityTagsWithUserID(*feedPost.UserID, *feedPost.PostID, BlitzMessage.EntityType_ETFeedPost)
 
     return &feedPost, nil
 }

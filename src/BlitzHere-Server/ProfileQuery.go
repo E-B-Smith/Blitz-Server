@@ -305,7 +305,7 @@ func ProfileForUserID(userID string) *BlitzMessage.UserProfile {
     profile.Images        = ImagesForUserID(userID)
     profile.SocialIdentities = SocialIdentitiesWithUserID(userID)
     profile.ContactInfo   = ContactInfoForUserID(userID)
-    profile.ExpertiseTags = GetEntityTagsWithUser(userID, userID, BlitzMessage.EntityType_ETUser)
+    profile.ExpertiseTags = GetEntityTagsWithUserID(userID, userID, BlitzMessage.EntityType_ETUser)
     profile.Education     = EducationForUserID(userID)
     profile.Employment    = EmploymentForUserID(userID)
 

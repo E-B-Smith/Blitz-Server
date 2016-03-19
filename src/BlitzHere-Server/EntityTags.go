@@ -52,7 +52,7 @@ func SetEntityTags(userID, entityID string, entityType BlitzMessage.EntityType t
 */
 
 
-func SetEntityTagsWithUser(userID, entityID string, entityType BlitzMessage.EntityType, tags []*BlitzMessage.EntityTag) {
+func SetEntityTagsWithUserID(userID, entityID string, entityType BlitzMessage.EntityType, tags []*BlitzMessage.EntityTag) {
     Log.LogFunctionName()
 
     var error error
@@ -87,7 +87,7 @@ func SetEntityTagsWithUser(userID, entityID string, entityType BlitzMessage.Enti
 }
 
 
-func GetEntityTagsWithUser(userID, entityID string, entityType BlitzMessage.EntityType) []*BlitzMessage.EntityTag {
+func GetEntityTagsWithUserID(userID, entityID string, entityType BlitzMessage.EntityType) []*BlitzMessage.EntityTag {
     Log.LogFunctionName()
 
     tagArray := make([]*BlitzMessage.EntityTag, 0, 10)
@@ -99,7 +99,8 @@ func GetEntityTagsWithUser(userID, entityID string, entityType BlitzMessage.Enti
             sum(case when userid = $1 then 1 else 0 end)
         from EntityTagTable
         where entityID = $2
-        and entityType = $3;`,
+          and entityType = $3
+        group by entityTag;`,
         userID, entityID, entityType,
     )
     if error != nil {
@@ -145,7 +146,7 @@ func UpdateEntityTags(session *Session, tagList *BlitzMessage.EntityTagList,
         return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, nil)
     }
 
-    SetEntityTagsWithUser(session.UserID, *tagList.EntityID, *tagList.EntityType, tagList.EntityTags)
+    SetEntityTagsWithUserID(session.UserID, *tagList.EntityID, *tagList.EntityType, tagList.EntityTags)
     return ServerResponseForCode(BlitzMessage.ResponseCode_RCSuccess, nil)
 }
 

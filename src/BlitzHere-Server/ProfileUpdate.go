@@ -189,7 +189,7 @@ func UpdateProfile(profile *BlitzMessage.UserProfile) error {
         InsertEducation(profile.UserID, education)
     }
 
-    SetEntityTagsWithUser(*profile.UserID, *profile.UserID, BlitzMessage.EntityType_ETUser, profile.ExpertiseTags)
+    SetEntityTagsWithUserID(*profile.UserID, *profile.UserID, BlitzMessage.EntityType_ETUser, profile.ExpertiseTags)
 
     return error
 }

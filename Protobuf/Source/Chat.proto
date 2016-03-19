@@ -57,3 +57,17 @@ message ChatPresence {
   repeated ChatUser   users       = 2;
 }
 
+
+enum ChatErrorCode {
+  Success         = 1;
+  InputInvalid    = 2;
+  NotAuthorized   = 3;
+  ServerError     = 4;
+}
+
+
+message ChatError {
+  optional ChatErrorCode  code    = 1;
+  optional string         message = 2;
+}
+
