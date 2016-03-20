@@ -32,6 +32,11 @@ subprojects=(
     "https://go.googlesource.com/text"
     "master"
     "nopush"
+
+"src/golang.org/x/net/websocket"
+    "https://go.googlesource.com/net"
+    "master"
+    "nopush"
 )
 
 

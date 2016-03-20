@@ -103,7 +103,13 @@ func main() {
         select {
         case b := <- inputChannel:
             if b == '\n' {
+                message := strings.TrimSpace(string(inputBuffer))
                 inputBuffer = inputBuffer[:0]
+                if strings.HasPrefix(message, "\\") {
+                    message = ProcessCommandMessage(message)
+                } else {
+                    SendMessage(message)
+                }
             } else {
                 inputBuffer = append(inputBuffer, b)
             }
