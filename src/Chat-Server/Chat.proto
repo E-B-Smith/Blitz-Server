@@ -1,7 +1,7 @@
 syntax = "proto2";
-package BlitzMessage;
+package ChatMessage;
 
-option java_package = "com.blitzhere.BlitzMessage";
+option java_package = "com.blitzhere.ChatMessage";
 option java_generic_services = true;
 
 import "objectivec-descriptor.proto";
@@ -10,7 +10,6 @@ option (google.protobuf.objectivec_file_options).class_prefix = "B";
 option (google.protobuf.objectivec_file_options).relax_camel_case = true;
 
 
-import "Types.proto";
 //----------------------------------------------------------------------------------------
 //
 //                                                                             Simple Chat
@@ -21,7 +20,7 @@ import "Types.proto";
 message ChatMessage {
   optional string     senderID    = 1;
   optional string     roomID      = 2;
-  optional Timestamp  timestamp   = 3;
+  optional double     timestamp   = 3;
   optional string     message     = 4;
 }
 

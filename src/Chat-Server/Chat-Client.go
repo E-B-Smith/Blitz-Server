@@ -1,6 +1,14 @@
-//  Chat-Client  -  A simple chat server.
+
+
+//----------------------------------------------------------------------------------------
 //
-//  E.B.Smith  -  March, 2016
+//                                                                             Chat-Client
+//                                                                    A simple chat client
+//
+//                                                                   E.B.Smith, March 2016
+//                        -©- Copyright © 2015-2016 Edward Smith, all rights reserved. -©-
+//
+//----------------------------------------------------------------------------------------
 
 
 package main
@@ -14,6 +22,55 @@ import (
     "strings"
     "violent.blue/GoKit/Log"
 )
+
+
+//----------------------------------------------------------------------------------------
+//                                                                   ProcessCommandMessage
+//----------------------------------------------------------------------------------------
+
+
+func RemoveEmptyStrings(a []string) []string {
+    result := make([]string, 0, len(a))
+    for _, s := range a {
+        if len(s) > 0 {
+            result = append(result, s)
+        }
+    }
+}
+
+//----------------------------------------------------------------------------------------
+//                                                                   ProcessCommandMessage
+//----------------------------------------------------------------------------------------
+
+
+func ProcessCommandMessage(message string) string {
+    Log.LogFunctionName()
+
+    messageParts := strings.Split(message, " ")
+    messageParts  = RemoveEmptyStrings(messageParts)
+    if len(messageParts) == 0 { return "" }
+
+    switch messageParts[0] {
+
+    case "\\connect":
+        Connect()
+
+    case "\\disconnect":
+        Disconnect()
+
+    case "\\enter":
+
+    case "\\leave":
+        LeaveRoom(meesage)
+    }
+}
+
+
+//----------------------------------------------------------------------------------------
+//
+//                                                                                    Main
+//
+//----------------------------------------------------------------------------------------
 
 
 const (
