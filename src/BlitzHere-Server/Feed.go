@@ -102,7 +102,7 @@ type RowScanner interface {
 }
 
 
-func ScanFeedPostRow(row RowScanner) (*BlitzMessage.FeedPost, error) {
+func ScanFeedPostRowForUserID(queryUserID string, row RowScanner) (*BlitzMessage.FeedPost, error) {
     Log.LogFunctionName()
 
     var (
@@ -157,13 +157,13 @@ func ScanFeedPostRow(row RowScanner) (*BlitzMessage.FeedPost, error) {
         SurveyAnswerSequence:       Int32PtrFromNullInt64(surveyAnswerSequence),
     }
 
-    feedPost.PostTags = GetEntityTagsWithUserID(*feedPost.UserID, *feedPost.PostID, BlitzMessage.EntityType_ETFeedPost)
+    feedPost.PostTags = GetEntityTagsWithUserID(queryUserID, *feedPost.PostID, BlitzMessage.EntityType_ETFeedPost)
 
     return &feedPost, nil
 }
 
 
-func FeedPostForPostID(postID string) *BlitzMessage.FeedPost {
+func FeedPostForPostID(userID string, postID string) *BlitzMessage.FeedPost {
     Log.LogFunctionName()
 
     row := config.DB.QueryRow(
@@ -171,7 +171,7 @@ func FeedPostForPostID(postID string) *BlitzMessage.FeedPost {
         `   from FeedPostTable
             where postID = $1`, postID)
 
-    feedPost, error := ScanFeedPostRow(row)
+    feedPost, error := ScanFeedPostRowForUserID(userID, row)
     if error != nil {
         Log.LogError(error)
     }
@@ -215,7 +215,7 @@ func UpdateFeedPost(session *Session, feedPostUpdate *BlitzMessage.FeedPostUpdat
 
         if  feedPostUpdate.FeedPost.ParentID != nil {
             Log.Debugf("Try to send a notification to the original poster:")
-            parentPost := FeedPostForPostID(*feedPostUpdate.FeedPost.ParentID)
+            parentPost := FeedPostForPostID(session.UserID, *feedPostUpdate.FeedPost.ParentID)
             if  parentPost != nil {
                 originalPoster := ProfileForUserID(*parentPost.UserID)
                 name := "Someone"
@@ -259,7 +259,7 @@ func UpdateFeedPost(session *Session, feedPostUpdate *BlitzMessage.FeedPostUpdat
 //----------------------------------------------------------------------------------------
 
 
-func FetchTopOpenRepliesForFeedPost(parentPostID string) []*BlitzMessage.FeedPost {
+func FetchTopOpenRepliesForFeedPost(queryUserID string, parentPostID string) []*BlitzMessage.FeedPost {
     Log.LogFunctionName()
 
     feedPosts := make([]*BlitzMessage.FeedPost, 0, 10)
@@ -279,7 +279,7 @@ func FetchTopOpenRepliesForFeedPost(parentPostID string) []*BlitzMessage.FeedPos
     }
 
     for rows.Next() {
-        feedPost, error := ScanFeedPostRow(rows)
+        feedPost, error := ScanFeedPostRowForUserID(queryUserID, rows)
         if error != nil {
             Log.LogError(error)
         } else {
@@ -297,7 +297,7 @@ func FetchTopOpenRepliesForFeedPost(parentPostID string) []*BlitzMessage.FeedPos
 //----------------------------------------------------------------------------------------
 
 
-func FetchTopSurveyRepliesForFeedPost(parentPostID string) []*BlitzMessage.FeedPost {
+func FetchTopSurveyRepliesForFeedPost(queryUserID string, parentPostID string) []*BlitzMessage.FeedPost {
     Log.LogFunctionName()
 
     feedPosts := make([]*BlitzMessage.FeedPost, 0, 10)
@@ -318,7 +318,7 @@ func FetchTopSurveyRepliesForFeedPost(parentPostID string) []*BlitzMessage.FeedP
     }
 
     for rows.Next() {
-        feedPost, error := ScanFeedPostRow(rows)
+        feedPost, error := ScanFeedPostRowForUserID(queryUserID, rows)
         if error != nil {
             Log.LogError(error)
         } else {
@@ -382,7 +382,7 @@ func FetchFeedPosts(session *Session, fetchRequest *BlitzMessage.FeedPostFetchRe
 
     feedPosts := make([]*BlitzMessage.FeedPost, 0, 10)
     for rows.Next() {
-        feedPost, error := ScanFeedPostRow(rows)
+        feedPost, error := ScanFeedPostRowForUserID(session.UserID, rows)
         if error != nil {
             Log.LogError(error)
         } else {
@@ -397,10 +397,10 @@ func FetchFeedPosts(session *Session, fetchRequest *BlitzMessage.FeedPostFetchRe
         switch *feedPost.PostType {
 
         case BlitzMessage.FeedPostType_FPOpenEndedQuestion:
-            feedPost.Replies = FetchTopOpenRepliesForFeedPost(*feedPost.PostID)
+            feedPost.Replies = FetchTopOpenRepliesForFeedPost(session.UserID, *feedPost.PostID)
 
         case BlitzMessage.FeedPostType_FPSurveyQuestion:
-            feedPost.Replies = FetchTopSurveyRepliesForFeedPost(*feedPost.PostID)
+            feedPost.Replies = FetchTopSurveyRepliesForFeedPost(session.UserID, *feedPost.PostID)
 
         }
     }
