@@ -21,12 +21,17 @@ import (
     "os/exec"
     "strings"
     "violent.blue/GoKit/Log"
+    "./Chat"
 )
 
 
 //----------------------------------------------------------------------------------------
-//                                                                   ProcessCommandMessage
+//                                                                                 Globals
 //----------------------------------------------------------------------------------------
+
+
+var ChatClient *ChatClient
+const kChatHost = "ws://blitzhere.com/blitzlabs-chat"
 
 
 func RemoveEmptyStrings(a []string) []string {
@@ -36,6 +41,7 @@ func RemoveEmptyStrings(a []string) []string {
             result = append(result, s)
         }
     }
+    return result
 }
 
 //----------------------------------------------------------------------------------------
@@ -46,6 +52,7 @@ func RemoveEmptyStrings(a []string) []string {
 func ProcessCommandMessage(message string) string {
     Log.LogFunctionName()
 
+    var error error
     messageParts := strings.Split(message, " ")
     messageParts  = RemoveEmptyStrings(messageParts)
     if len(messageParts) == 0 { return "" }
@@ -53,16 +60,19 @@ func ProcessCommandMessage(message string) string {
     switch messageParts[0] {
 
     case "\\connect":
-        Connect()
+        error = ChatClient.Connect(kChatHost)
 
     case "\\disconnect":
-        Disconnect()
+        error = ChatClient.Disconnect()
 
     case "\\enter":
 
     case "\\leave":
-        LeaveRoom(meesage)
+        error = ChatClient.LeaveRoom()
+
     }
+
+    return error.Error()
 }
 
 
@@ -124,6 +134,7 @@ func main() {
     defer exec.Command("/bin/stty", "-f", "/dev/tty", "echo").Run()
 */
 
+    ChatClient = new(ChatClient)
     inputChannel := make(chan byte)
     messageChannel := make(chan string)
 
