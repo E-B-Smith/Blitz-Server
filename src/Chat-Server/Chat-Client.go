@@ -17,7 +17,6 @@ package main
 import (
     "os"
     "fmt"
-    "time"
     "os/exec"
     "strings"
     "violent.blue/GoKit/Log"
@@ -30,7 +29,8 @@ import (
 //----------------------------------------------------------------------------------------
 
 
-var ChatClient *ChatClient
+var ChatClient *Chat.ChatClient
+var ChatChannel chan *Chat.ChatMessageType
 const kChatHost = "ws://blitzhere.com/blitzlabs-chat"
 
 
@@ -44,45 +44,6 @@ func RemoveEmptyStrings(a []string) []string {
     return result
 }
 
-//----------------------------------------------------------------------------------------
-//                                                                   ProcessCommandMessage
-//----------------------------------------------------------------------------------------
-
-
-func ProcessCommandMessage(message string) string {
-    Log.LogFunctionName()
-
-    var error error
-    messageParts := strings.Split(message, " ")
-    messageParts  = RemoveEmptyStrings(messageParts)
-    if len(messageParts) == 0 { return "" }
-
-    switch messageParts[0] {
-
-    case "\\connect":
-        error = ChatClient.Connect(kChatHost)
-
-    case "\\disconnect":
-        error = ChatClient.Disconnect()
-
-    case "\\enter":
-
-    case "\\leave":
-        error = ChatClient.LeaveRoom()
-
-    }
-
-    return error.Error()
-}
-
-
-//----------------------------------------------------------------------------------------
-//
-//                                                                                    Main
-//
-//----------------------------------------------------------------------------------------
-
-
 const (
     kTermReset          = "\033[0m"     // Reset all custom styles
     kTermResetColor     = "\033[32m"    // Reset to default color
@@ -90,7 +51,9 @@ const (
     kTermClearScreen    = "\033[2J\033[;H"
 )
 
+
 type TermColor int32
+
 
 const (
     kTermColorBlack TermColor = iota
@@ -115,6 +78,45 @@ func SetBackColor(color TermColor) string {
 }
 
 
+//----------------------------------------------------------------------------------------
+//                                                                   ProcessCommandMessage
+//----------------------------------------------------------------------------------------
+
+
+func ProcessCommandMessage(message string) string {
+    Log.LogFunctionName()
+
+    var error error
+    messageParts := strings.Split(message, " ")
+    messageParts  = RemoveEmptyStrings(messageParts)
+    if len(messageParts) == 0 { return "" }
+
+    switch messageParts[0] {
+
+    case "\\connect":
+        error = ChatClient.Connect(kChatHost, ChatChannel)
+
+    case "\\disconnect":
+        error = ChatClient.Disconnect()
+
+    case "\\enter":
+
+    case "\\leave":
+        error = ChatClient.LeaveRoom()
+
+    }
+
+    return error.Error()
+}
+
+
+//----------------------------------------------------------------------------------------
+//
+//                                                                                    Main
+//
+//----------------------------------------------------------------------------------------
+
+
 func main() {
     Log.LogLevel = Log.LogLevelAll
     Log.Debugf("Howdy! Debug trace logging is on.")
@@ -134,8 +136,9 @@ func main() {
     defer exec.Command("/bin/stty", "-f", "/dev/tty", "echo").Run()
 */
 
-    ChatClient = new(ChatClient)
-    inputChannel := make(chan byte)
+    ChatClient = new(Chat.ChatClient)
+    ChatChannel     = make(chan *Chat.ChatMessageType)
+    keyboardChannel:= make(chan byte)
     messageChannel := make(chan string)
 
     //  Process to read from keyboard:
@@ -146,37 +149,44 @@ func main() {
         for {
             n, error := reader.Read(b)
             if error == nil && n > 0 {
-                inputChannel <- b[0]
+                keyboardChannel <- b[0]
             }
         }
 
     } ()
 
     //  Process to read from chat client:
+    // go func() {
+    //     var msgNo int64 = 1
+    //     for {
+    //         time.Sleep(5.0 * time.Second)
+    //         messageChannel <- fmt.Sprintf("Message %d.", msgNo)
+    //         msgNo++
+    //     }
+    // } ()
+
     go func() {
-
-        var msgNo int64 = 1
         for {
-            time.Sleep(5.0 * time.Second)
-            messageChannel <- fmt.Sprintf("Message %d.", msgNo)
-            msgNo++
+            chatMessage := <- ChatChannel
+            text := ChatClient.StringFromMessage(chatMessage)
+            messageChannel <- text
         }
-
     } ()
+
 
     inputBuffer  := make([]byte, 0, 4096)
 
     for {
 
         select {
-        case b := <- inputChannel:
+        case b := <- keyboardChannel:
             if b == '\n' {
                 message := strings.TrimSpace(string(inputBuffer))
                 inputBuffer = inputBuffer[:0]
                 if strings.HasPrefix(message, "\\") {
                     message = ProcessCommandMessage(message)
                 } else {
-                    SendMessage(message)
+                    ChatClient.SendMessage(message)
                 }
             } else {
                 inputBuffer = append(inputBuffer, b)
@@ -188,3 +198,4 @@ func main() {
         }
     }
 }
+

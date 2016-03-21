@@ -1,12 +1,12 @@
 syntax = "proto2";
-package ChatMessage;
+package Chat;
 
 option java_package = "com.blitzhere.ChatMessage";
 option java_generic_services = true;
 
 import "objectivec-descriptor.proto";
 option (google.protobuf.objectivec_file_options).package = "";
-option (google.protobuf.objectivec_file_options).class_prefix = "B";
+option (google.protobuf.objectivec_file_options).class_prefix = "CM";
 option (google.protobuf.objectivec_file_options).relax_camel_case = true;
 
 
@@ -44,7 +44,7 @@ message ChatConnect {
 }
 
 
-message ChatRoomEntrance {
+message ChatEnterRoom {
   optional ChatUser   user            = 1;
   optional string     roomID          = 2;
   optional bool       userIsEntering  = 3;
@@ -57,7 +57,7 @@ message ChatPresence {
 }
 
 
-enum ChatErrorCode {
+enum ChatStatusCode {
   Success         = 1;
   InputInvalid    = 2;
   NotAuthorized   = 3;
@@ -65,8 +65,17 @@ enum ChatErrorCode {
 }
 
 
-message ChatError {
-  optional ChatErrorCode  code    = 1;
+message ChatResponse {
+  optional ChatStatusCode code    = 1;
   optional string         message = 2;
+}
+
+
+message ChatMessageType {
+  optional ChatMessage      chatMessage   = 1;
+  optional ChatConnect      chatConnect   = 2;
+  optional ChatEnterRoom    chatEnterRoom = 3;
+  optional ChatPresence     chatPresence  = 4;
+  optional ChatResponse     chatResponse  = 5;
 }
 
