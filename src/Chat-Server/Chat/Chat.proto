@@ -57,17 +57,17 @@ message ChatPresence {
 }
 
 
-enum ChatStatusCode {
-  Success         = 1;
-  InputInvalid    = 2;
-  NotAuthorized   = 3;
-  ServerError     = 4;
+enum StatusCode {
+  StatusSuccess         = 1;
+  StatusInputInvalid    = 2;
+  StatusNotAuthorized   = 3;
+  StatusServerError     = 4;
 }
 
 
 message ChatResponse {
-  optional ChatStatusCode code    = 1;
-  optional string         message = 2;
+  optional StatusCode       code    = 1;
+  optional string           message = 2;
 }
 
 

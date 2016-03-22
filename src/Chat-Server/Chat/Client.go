@@ -45,6 +45,28 @@ type ChatClient struct {
 }
 
 
+//----------------------------------------------------------------------------------------
+//                                                                           NewChatClient
+//----------------------------------------------------------------------------------------
+
+
+func NewChatClient() *ChatClient {
+    client := new(ChatClient)
+    client.userMap         = make(map[string]*ChatUser)
+    client.roomMap         = make(map[string]*ChatRoom)
+    client.connection      = nil
+    client.currentUser     = nil
+    client.currentRoom     = nil
+    client.MessageFormat   = FormatProtobuf
+    return client
+}
+
+
+//----------------------------------------------------------------------------------------
+//                                                                                 Connect
+//----------------------------------------------------------------------------------------
+
+
 func (client *ChatClient) Connect(URL string, readChannel chan <- *ChatMessageType) error {
     Log.LogFunctionName()
 
@@ -105,7 +127,7 @@ func (client *ChatClient) LeaveRoom() error {
     }
     return WriteMessage(client.connection,
             client.MessageFormat,
-            ChatMessageType { ChatEnterRoom: &chatMessage })
+            &ChatMessageType { ChatEnterRoom: &chatMessage })
 }
 
 
@@ -121,13 +143,12 @@ func (client *ChatClient) SendMessage(message string) error {
 
     return WriteMessage(client.connection,
             client.MessageFormat,
-            ChatMessageType { ChatMessage: &chatMessage })
+            &ChatMessageType { ChatMessage: &chatMessage })
 }
 
 
 func (client *ChatClient) ChatClientReader(clientReaderChannel chan <- *ChatMessageType) {
     Log.LogFunctionName()
-
 
     for client.connection != nil {
 

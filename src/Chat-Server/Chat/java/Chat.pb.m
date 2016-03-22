@@ -21,27 +21,27 @@ static PBExtensionRegistry* extensionRegistry = nil;
 }
 @end
 
-BOOL CMChatStatusCodeIsValidValue(CMChatStatusCode value) {
+BOOL CMStatusCodeIsValidValue(CMStatusCode value) {
   switch (value) {
-    case CMChatStatusCodeSuccess:
-    case CMChatStatusCodeInputInvalid:
-    case CMChatStatusCodeNotAuthorized:
-    case CMChatStatusCodeServerError:
+    case CMStatusCodeStatusSuccess:
+    case CMStatusCodeStatusInputInvalid:
+    case CMStatusCodeStatusNotAuthorized:
+    case CMStatusCodeStatusServerError:
       return YES;
     default:
       return NO;
   }
 }
-NSString *NSStringFromCMChatStatusCode(CMChatStatusCode value) {
+NSString *NSStringFromCMStatusCode(CMStatusCode value) {
   switch (value) {
-    case CMChatStatusCodeSuccess:
-      return @"CMChatStatusCodeSuccess";
-    case CMChatStatusCodeInputInvalid:
-      return @"CMChatStatusCodeInputInvalid";
-    case CMChatStatusCodeNotAuthorized:
-      return @"CMChatStatusCodeNotAuthorized";
-    case CMChatStatusCodeServerError:
-      return @"CMChatStatusCodeServerError";
+    case CMStatusCodeStatusSuccess:
+      return @"CMStatusCodeStatusSuccess";
+    case CMStatusCodeStatusInputInvalid:
+      return @"CMStatusCodeStatusInputInvalid";
+    case CMStatusCodeStatusNotAuthorized:
+      return @"CMStatusCodeStatusNotAuthorized";
+    case CMStatusCodeStatusServerError:
+      return @"CMStatusCodeStatusServerError";
     default:
       return nil;
   }
@@ -1886,7 +1886,7 @@ static CMChatPresence* defaultCMChatPresenceInstance = nil;
 @end
 
 @interface CMChatResponse ()
-@property CMChatStatusCode code;
+@property CMStatusCode code;
 @property (strong) NSString* message;
 @end
 
@@ -1908,7 +1908,7 @@ static CMChatPresence* defaultCMChatPresenceInstance = nil;
 @synthesize message;
 - (instancetype) init {
   if ((self = [super init])) {
-    self.code = CMChatStatusCodeSuccess;
+    self.code = CMStatusCodeStatusSuccess;
     self.message = @"";
   }
   return self;
@@ -1986,7 +1986,7 @@ static CMChatResponse* defaultCMChatResponseInstance = nil;
 }
 - (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
   if (self.hasCode) {
-    [output appendFormat:@"%@%@: %@\n", indent, @"code", NSStringFromCMChatStatusCode(self.code)];
+    [output appendFormat:@"%@%@: %@\n", indent, @"code", NSStringFromCMStatusCode(self.code)];
   }
   if (self.hasMessage) {
     [output appendFormat:@"%@%@: %@\n", indent, @"message", self.message];
@@ -2096,8 +2096,8 @@ static CMChatResponse* defaultCMChatResponseInstance = nil;
         break;
       }
       case 8: {
-        CMChatStatusCode value = (CMChatStatusCode)[input readEnum];
-        if (CMChatStatusCodeIsValidValue(value)) {
+        CMStatusCode value = (CMStatusCode)[input readEnum];
+        if (CMStatusCodeIsValidValue(value)) {
           [self setCode:value];
         } else {
           [unknownFields mergeVarintField:1 value:value];
@@ -2114,17 +2114,17 @@ static CMChatResponse* defaultCMChatResponseInstance = nil;
 - (BOOL) hasCode {
   return resultChatResponse.hasCode;
 }
-- (CMChatStatusCode) code {
+- (CMStatusCode) code {
   return resultChatResponse.code;
 }
-- (CMChatResponseBuilder*) setCode:(CMChatStatusCode) value {
+- (CMChatResponseBuilder*) setCode:(CMStatusCode) value {
   resultChatResponse.hasCode = YES;
   resultChatResponse.code = value;
   return self;
 }
 - (CMChatResponseBuilder*) clearCode {
   resultChatResponse.hasCode = NO;
-  resultChatResponse.code = CMChatStatusCodeSuccess;
+  resultChatResponse.code = CMStatusCodeStatusSuccess;
   return self;
 }
 - (BOOL) hasMessage {

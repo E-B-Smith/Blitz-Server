@@ -9,67 +9,67 @@ public final class Chat {
       com.google.protobuf.ExtensionRegistry registry) {
   }
   /**
-   * Protobuf enum {@code Chat.ChatStatusCode}
+   * Protobuf enum {@code Chat.StatusCode}
    */
-  public enum ChatStatusCode
+  public enum StatusCode
       implements com.google.protobuf.ProtocolMessageEnum {
     /**
-     * <code>Success = 1;</code>
+     * <code>StatusSuccess = 1;</code>
      */
-    Success(0, 1),
+    StatusSuccess(0, 1),
     /**
-     * <code>InputInvalid = 2;</code>
+     * <code>StatusInputInvalid = 2;</code>
      */
-    InputInvalid(1, 2),
+    StatusInputInvalid(1, 2),
     /**
-     * <code>NotAuthorized = 3;</code>
+     * <code>StatusNotAuthorized = 3;</code>
      */
-    NotAuthorized(2, 3),
+    StatusNotAuthorized(2, 3),
     /**
-     * <code>ServerError = 4;</code>
+     * <code>StatusServerError = 4;</code>
      */
-    ServerError(3, 4),
+    StatusServerError(3, 4),
     ;
 
     /**
-     * <code>Success = 1;</code>
+     * <code>StatusSuccess = 1;</code>
      */
-    public static final int Success_VALUE = 1;
+    public static final int StatusSuccess_VALUE = 1;
     /**
-     * <code>InputInvalid = 2;</code>
+     * <code>StatusInputInvalid = 2;</code>
      */
-    public static final int InputInvalid_VALUE = 2;
+    public static final int StatusInputInvalid_VALUE = 2;
     /**
-     * <code>NotAuthorized = 3;</code>
+     * <code>StatusNotAuthorized = 3;</code>
      */
-    public static final int NotAuthorized_VALUE = 3;
+    public static final int StatusNotAuthorized_VALUE = 3;
     /**
-     * <code>ServerError = 4;</code>
+     * <code>StatusServerError = 4;</code>
      */
-    public static final int ServerError_VALUE = 4;
+    public static final int StatusServerError_VALUE = 4;
 
 
     public final int getNumber() { return value; }
 
-    public static ChatStatusCode valueOf(int value) {
+    public static StatusCode valueOf(int value) {
       switch (value) {
-        case 1: return Success;
-        case 2: return InputInvalid;
-        case 3: return NotAuthorized;
-        case 4: return ServerError;
+        case 1: return StatusSuccess;
+        case 2: return StatusInputInvalid;
+        case 3: return StatusNotAuthorized;
+        case 4: return StatusServerError;
         default: return null;
       }
     }
 
-    public static com.google.protobuf.Internal.EnumLiteMap<ChatStatusCode>
+    public static com.google.protobuf.Internal.EnumLiteMap<StatusCode>
         internalGetValueMap() {
       return internalValueMap;
     }
-    private static com.google.protobuf.Internal.EnumLiteMap<ChatStatusCode>
+    private static com.google.protobuf.Internal.EnumLiteMap<StatusCode>
         internalValueMap =
-          new com.google.protobuf.Internal.EnumLiteMap<ChatStatusCode>() {
-            public ChatStatusCode findValueByNumber(int number) {
-              return ChatStatusCode.valueOf(number);
+          new com.google.protobuf.Internal.EnumLiteMap<StatusCode>() {
+            public StatusCode findValueByNumber(int number) {
+              return StatusCode.valueOf(number);
             }
           };
 
@@ -86,9 +86,9 @@ public final class Chat {
       return com.blitzhere.ChatMessage.Chat.getDescriptor().getEnumTypes().get(0);
     }
 
-    private static final ChatStatusCode[] VALUES = values();
+    private static final StatusCode[] VALUES = values();
 
-    public static ChatStatusCode valueOf(
+    public static StatusCode valueOf(
         com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
       if (desc.getType() != getDescriptor()) {
         throw new java.lang.IllegalArgumentException(
@@ -100,12 +100,12 @@ public final class Chat {
     private final int index;
     private final int value;
 
-    private ChatStatusCode(int index, int value) {
+    private StatusCode(int index, int value) {
       this.index = index;
       this.value = value;
     }
 
-    // @@protoc_insertion_point(enum_scope:Chat.ChatStatusCode)
+    // @@protoc_insertion_point(enum_scope:Chat.StatusCode)
   }
 
   public interface ChatMessageOrBuilder extends
@@ -4804,13 +4804,13 @@ public final class Chat {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>optional .Chat.ChatStatusCode code = 1;</code>
+     * <code>optional .Chat.StatusCode code = 1;</code>
      */
     boolean hasCode();
     /**
-     * <code>optional .Chat.ChatStatusCode code = 1;</code>
+     * <code>optional .Chat.StatusCode code = 1;</code>
      */
-    com.blitzhere.ChatMessage.Chat.ChatStatusCode getCode();
+    com.blitzhere.ChatMessage.Chat.StatusCode getCode();
 
     /**
      * <code>optional string message = 2;</code>
@@ -4880,7 +4880,7 @@ public final class Chat {
             }
             case 8: {
               int rawValue = input.readEnum();
-              com.blitzhere.ChatMessage.Chat.ChatStatusCode value = com.blitzhere.ChatMessage.Chat.ChatStatusCode.valueOf(rawValue);
+              com.blitzhere.ChatMessage.Chat.StatusCode value = com.blitzhere.ChatMessage.Chat.StatusCode.valueOf(rawValue);
               if (value == null) {
                 unknownFields.mergeVarintField(1, rawValue);
               } else {
@@ -4936,17 +4936,17 @@ public final class Chat {
 
     private int bitField0_;
     public static final int CODE_FIELD_NUMBER = 1;
-    private com.blitzhere.ChatMessage.Chat.ChatStatusCode code_;
+    private com.blitzhere.ChatMessage.Chat.StatusCode code_;
     /**
-     * <code>optional .Chat.ChatStatusCode code = 1;</code>
+     * <code>optional .Chat.StatusCode code = 1;</code>
      */
     public boolean hasCode() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     /**
-     * <code>optional .Chat.ChatStatusCode code = 1;</code>
+     * <code>optional .Chat.StatusCode code = 1;</code>
      */
-    public com.blitzhere.ChatMessage.Chat.ChatStatusCode getCode() {
+    public com.blitzhere.ChatMessage.Chat.StatusCode getCode() {
       return code_;
     }
 
@@ -4993,7 +4993,7 @@ public final class Chat {
     }
 
     private void initFields() {
-      code_ = com.blitzhere.ChatMessage.Chat.ChatStatusCode.Success;
+      code_ = com.blitzhere.ChatMessage.Chat.StatusCode.StatusSuccess;
       message_ = "";
     }
     private byte memoizedIsInitialized = -1;
@@ -5149,7 +5149,7 @@ public final class Chat {
 
       public Builder clear() {
         super.clear();
-        code_ = com.blitzhere.ChatMessage.Chat.ChatStatusCode.Success;
+        code_ = com.blitzhere.ChatMessage.Chat.StatusCode.StatusSuccess;
         bitField0_ = (bitField0_ & ~0x00000001);
         message_ = "";
         bitField0_ = (bitField0_ & ~0x00000002);
@@ -5240,23 +5240,23 @@ public final class Chat {
       }
       private int bitField0_;
 
-      private com.blitzhere.ChatMessage.Chat.ChatStatusCode code_ = com.blitzhere.ChatMessage.Chat.ChatStatusCode.Success;
+      private com.blitzhere.ChatMessage.Chat.StatusCode code_ = com.blitzhere.ChatMessage.Chat.StatusCode.StatusSuccess;
       /**
-       * <code>optional .Chat.ChatStatusCode code = 1;</code>
+       * <code>optional .Chat.StatusCode code = 1;</code>
        */
       public boolean hasCode() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       /**
-       * <code>optional .Chat.ChatStatusCode code = 1;</code>
+       * <code>optional .Chat.StatusCode code = 1;</code>
        */
-      public com.blitzhere.ChatMessage.Chat.ChatStatusCode getCode() {
+      public com.blitzhere.ChatMessage.Chat.StatusCode getCode() {
         return code_;
       }
       /**
-       * <code>optional .Chat.ChatStatusCode code = 1;</code>
+       * <code>optional .Chat.StatusCode code = 1;</code>
        */
-      public Builder setCode(com.blitzhere.ChatMessage.Chat.ChatStatusCode value) {
+      public Builder setCode(com.blitzhere.ChatMessage.Chat.StatusCode value) {
         if (value == null) {
           throw new NullPointerException();
         }
@@ -5266,11 +5266,11 @@ public final class Chat {
         return this;
       }
       /**
-       * <code>optional .Chat.ChatStatusCode code = 1;</code>
+       * <code>optional .Chat.StatusCode code = 1;</code>
        */
       public Builder clearCode() {
         bitField0_ = (bitField0_ & ~0x00000001);
-        code_ = com.blitzhere.ChatMessage.Chat.ChatStatusCode.Success;
+        code_ = com.blitzhere.ChatMessage.Chat.StatusCode.StatusSuccess;
         onChanged();
         return this;
       }
@@ -6687,17 +6687,18 @@ public final class Chat {
       ".ChatUser\022\016\n\006roomID\030\002 \001(\t\022\026\n\016userIsEnter",
       "ing\030\003 \001(\010\"K\n\014ChatPresence\022\034\n\004room\030\001 \001(\0132" +
       "\016.Chat.ChatRoom\022\035\n\005users\030\002 \003(\0132\016.Chat.Ch" +
-      "atUser\"C\n\014ChatResponse\022\"\n\004code\030\001 \001(\0162\024.C" +
-      "hat.ChatStatusCode\022\017\n\007message\030\002 \001(\t\"\341\001\n\017" +
-      "ChatMessageType\022&\n\013chatMessage\030\001 \001(\0132\021.C" +
-      "hat.ChatMessage\022&\n\013chatConnect\030\002 \001(\0132\021.C" +
-      "hat.ChatConnect\022*\n\rchatEnterRoom\030\003 \001(\0132\023" +
-      ".Chat.ChatEnterRoom\022(\n\014chatPresence\030\004 \001(" +
-      "\0132\022.Chat.ChatPresence\022(\n\014chatResponse\030\005 " +
-      "\001(\0132\022.Chat.ChatResponse*S\n\016ChatStatusCod",
-      "e\022\013\n\007Success\020\001\022\020\n\014InputInvalid\020\002\022\021\n\rNotA" +
-      "uthorized\020\003\022\017\n\013ServerError\020\004B/\n\031com.blit" +
-      "zhere.ChatMessage\210\001\001\322>\002\n\000\322>\004\022\002CM\322>\002\030\001"
+      "atUser\"?\n\014ChatResponse\022\036\n\004code\030\001 \001(\0162\020.C" +
+      "hat.StatusCode\022\017\n\007message\030\002 \001(\t\"\341\001\n\017Chat" +
+      "MessageType\022&\n\013chatMessage\030\001 \001(\0132\021.Chat." +
+      "ChatMessage\022&\n\013chatConnect\030\002 \001(\0132\021.Chat." +
+      "ChatConnect\022*\n\rchatEnterRoom\030\003 \001(\0132\023.Cha" +
+      "t.ChatEnterRoom\022(\n\014chatPresence\030\004 \001(\0132\022." +
+      "Chat.ChatPresence\022(\n\014chatResponse\030\005 \001(\0132" +
+      "\022.Chat.ChatResponse*g\n\nStatusCode\022\021\n\rSta",
+      "tusSuccess\020\001\022\026\n\022StatusInputInvalid\020\002\022\027\n\023" +
+      "StatusNotAuthorized\020\003\022\025\n\021StatusServerErr" +
+      "or\020\004B/\n\031com.blitzhere.ChatMessage\210\001\001\322>\002\n" +
+      "\000\322>\004\022\002CM\322>\002\030\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {

@@ -68,15 +68,15 @@
 @class PBUninterpretedOptionNamePartBuilder;
 
 
-typedef NS_ENUM(SInt32, CMChatStatusCode) {
-  CMChatStatusCodeSuccess = 1,
-  CMChatStatusCodeInputInvalid = 2,
-  CMChatStatusCodeNotAuthorized = 3,
-  CMChatStatusCodeServerError = 4,
+typedef NS_ENUM(SInt32, CMStatusCode) {
+  CMStatusCodeStatusSuccess = 1,
+  CMStatusCodeStatusInputInvalid = 2,
+  CMStatusCodeStatusNotAuthorized = 3,
+  CMStatusCodeStatusServerError = 4,
 };
 
-BOOL CMChatStatusCodeIsValidValue(CMChatStatusCode value);
-NSString *NSStringFromCMChatStatusCode(CMChatStatusCode value);
+BOOL CMStatusCodeIsValidValue(CMStatusCode value);
+NSString *NSStringFromCMStatusCode(CMStatusCode value);
 
 
 @interface CMChatRoot : NSObject {
@@ -498,11 +498,11 @@ NSString *NSStringFromCMChatStatusCode(CMChatStatusCode value);
   BOOL hasMessage_:1;
   BOOL hasCode_:1;
   NSString* message;
-  CMChatStatusCode code;
+  CMStatusCode code;
 }
 - (BOOL) hasCode;
 - (BOOL) hasMessage;
-@property (readonly) CMChatStatusCode code;
+@property (readonly) CMStatusCode code;
 @property (readonly, strong) NSString* message;
 
 + (instancetype) defaultInstance;
@@ -541,8 +541,8 @@ NSString *NSStringFromCMChatStatusCode(CMChatStatusCode value);
 - (CMChatResponseBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
 
 - (BOOL) hasCode;
-- (CMChatStatusCode) code;
-- (CMChatResponseBuilder*) setCode:(CMChatStatusCode) value;
+- (CMStatusCode) code;
+- (CMChatResponseBuilder*) setCode:(CMStatusCode) value;
 - (CMChatResponseBuilder*) clearCode;
 
 - (BOOL) hasMessage;

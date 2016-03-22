@@ -2,8 +2,8 @@
 
 //----------------------------------------------------------------------------------------
 //
-//                                                                             Chat-Client
-//                                                                    A simple chat client
+//                                                                          Chat-Client.go
+//                                      Chat-Server: A simple client & server chat service
 //
 //                                                                   E.B.Smith, March 2016
 //                        -©- Copyright © 2015-2016 Edward Smith, all rights reserved. -©-
@@ -31,7 +31,7 @@ import (
 
 var ChatClient *Chat.ChatClient
 var ChatChannel chan *Chat.ChatMessageType
-const kChatHost = "ws://blitzhere.com/blitzlabs-chat"
+const kChatHost = "ws://localhost:12345/chat"
 
 
 func RemoveEmptyStrings(a []string) []string {
@@ -136,14 +136,13 @@ func main() {
     defer exec.Command("/bin/stty", "-f", "/dev/tty", "echo").Run()
 */
 
-    ChatClient = new(Chat.ChatClient)
+    ChatClient      = Chat.NewChatClient()
     ChatChannel     = make(chan *Chat.ChatMessageType)
     keyboardChannel:= make(chan byte)
     messageChannel := make(chan string)
 
     //  Process to read from keyboard:
     go  func() {
-
         b := make([]byte, 1)
         reader := os.Stdin
         for {
@@ -152,7 +151,6 @@ func main() {
                 keyboardChannel <- b[0]
             }
         }
-
     } ()
 
     //  Process to read from chat client:
@@ -172,7 +170,6 @@ func main() {
             messageChannel <- text
         }
     } ()
-
 
     inputBuffer  := make([]byte, 0, 4096)
 

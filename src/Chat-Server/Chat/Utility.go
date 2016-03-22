@@ -18,6 +18,7 @@ import (
     "math"
     "time"
     "encoding/json"
+    "github.com/satori/go.uuid"
     "golang.org/x/net/websocket"
     "github.com/golang/protobuf/proto"
     "violent.blue/GoKit/Log"
@@ -55,6 +56,7 @@ func TimeFromTimestamp(timestamp float64) time.Time {
 
 func BoolPtr(b bool) *bool          { return &b }
 func StringPtr(s string) *string    { return &s }
+func NewUUIDString() string         { return uuid.NewV4().String() }
 
 
 //----------------------------------------------------------------------------------------
@@ -62,16 +64,16 @@ func StringPtr(s string) *string    { return &s }
 //----------------------------------------------------------------------------------------
 
 
-func WriteMessage(connection *websocket.Conn, format MessageFormatType, message ChatMessageType) error {
+func WriteMessage(connection *websocket.Conn, format MessageFormatType, message *ChatMessageType) error {
     Log.LogFunctionName()
 
     var error error
     var data []byte
     switch format {
     case FormatProtobuf:
-        data, error = proto.Marshal(&message)
+        data, error = proto.Marshal(message)
     default:
-        data, error = json.Marshal(message)
+        data, error = json.Marshal(*message)
         data = append(data, []byte("\n")...)
         //Log.Debugf("%s", string(data))
     }
