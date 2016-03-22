@@ -60,11 +60,14 @@ func NewUUIDString() string         { return uuid.NewV4().String() }
 
 
 //----------------------------------------------------------------------------------------
-//                                                                            WriteMessage
+//                                                                 SendMessageToConnection
 //----------------------------------------------------------------------------------------
 
 
-func WriteMessage(connection *websocket.Conn, format MessageFormatType, message *ChatMessageType) error {
+func SendMessageToConnection(
+        connection *websocket.Conn,
+        format MessageFormatType,
+        message *ChatMessageType) error {
     Log.LogFunctionName()
 
     var error error
