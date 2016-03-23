@@ -55,7 +55,7 @@ func (x *FeedPostType) UnmarshalJSON(data []byte) error {
 	*x = FeedPostType(value)
 	return nil
 }
-func (FeedPostType) EnumDescriptor() ([]byte, []int) { return fileDescriptor3, []int{0} }
+func (FeedPostType) EnumDescriptor() ([]byte, []int) { return fileDescriptor2, []int{0} }
 
 type FeedPostScope int32
 
@@ -92,7 +92,7 @@ func (x *FeedPostScope) UnmarshalJSON(data []byte) error {
 	*x = FeedPostScope(value)
 	return nil
 }
-func (FeedPostScope) EnumDescriptor() ([]byte, []int) { return fileDescriptor3, []int{1} }
+func (FeedPostScope) EnumDescriptor() ([]byte, []int) { return fileDescriptor2, []int{1} }
 
 type FeedPostStatus int32
 
@@ -129,7 +129,7 @@ func (x *FeedPostStatus) UnmarshalJSON(data []byte) error {
 	*x = FeedPostStatus(value)
 	return nil
 }
-func (FeedPostStatus) EnumDescriptor() ([]byte, []int) { return fileDescriptor3, []int{2} }
+func (FeedPostStatus) EnumDescriptor() ([]byte, []int) { return fileDescriptor2, []int{2} }
 
 type UpdateVerb int32
 
@@ -166,7 +166,7 @@ func (x *UpdateVerb) UnmarshalJSON(data []byte) error {
 	*x = UpdateVerb(value)
 	return nil
 }
-func (UpdateVerb) EnumDescriptor() ([]byte, []int) { return fileDescriptor3, []int{3} }
+func (UpdateVerb) EnumDescriptor() ([]byte, []int) { return fileDescriptor2, []int{3} }
 
 type FeedPost struct {
 	PostID                   *string        `protobuf:"bytes,1,opt,name=postID" json:"postID,omitempty"`
@@ -190,7 +190,7 @@ type FeedPost struct {
 func (m *FeedPost) Reset()                    { *m = FeedPost{} }
 func (m *FeedPost) String() string            { return proto.CompactTextString(m) }
 func (*FeedPost) ProtoMessage()               {}
-func (*FeedPost) Descriptor() ([]byte, []int) { return fileDescriptor3, []int{0} }
+func (*FeedPost) Descriptor() ([]byte, []int) { return fileDescriptor2, []int{0} }
 
 const Default_FeedPost_AnonymousPost bool = false
 
@@ -308,7 +308,7 @@ type FeedPostUpdateRequest struct {
 func (m *FeedPostUpdateRequest) Reset()                    { *m = FeedPostUpdateRequest{} }
 func (m *FeedPostUpdateRequest) String() string            { return proto.CompactTextString(m) }
 func (*FeedPostUpdateRequest) ProtoMessage()               {}
-func (*FeedPostUpdateRequest) Descriptor() ([]byte, []int) { return fileDescriptor3, []int{1} }
+func (*FeedPostUpdateRequest) Descriptor() ([]byte, []int) { return fileDescriptor2, []int{1} }
 
 func (m *FeedPostUpdateRequest) GetUpdateVerb() UpdateVerb {
 	if m != nil && m.UpdateVerb != nil {
@@ -332,7 +332,7 @@ type FeedPostUpdateResponse struct {
 func (m *FeedPostUpdateResponse) Reset()                    { *m = FeedPostUpdateResponse{} }
 func (m *FeedPostUpdateResponse) String() string            { return proto.CompactTextString(m) }
 func (*FeedPostUpdateResponse) ProtoMessage()               {}
-func (*FeedPostUpdateResponse) Descriptor() ([]byte, []int) { return fileDescriptor3, []int{2} }
+func (*FeedPostUpdateResponse) Descriptor() ([]byte, []int) { return fileDescriptor2, []int{2} }
 
 func (m *FeedPostUpdateResponse) GetFeedPost() *FeedPost {
 	if m != nil {
@@ -351,7 +351,7 @@ type FeedPostFetchRequest struct {
 func (m *FeedPostFetchRequest) Reset()                    { *m = FeedPostFetchRequest{} }
 func (m *FeedPostFetchRequest) String() string            { return proto.CompactTextString(m) }
 func (*FeedPostFetchRequest) ProtoMessage()               {}
-func (*FeedPostFetchRequest) Descriptor() ([]byte, []int) { return fileDescriptor3, []int{3} }
+func (*FeedPostFetchRequest) Descriptor() ([]byte, []int) { return fileDescriptor2, []int{3} }
 
 func (m *FeedPostFetchRequest) GetTimespan() *Timespan {
 	if m != nil {
@@ -382,7 +382,7 @@ type FeedPostFetchResponse struct {
 func (m *FeedPostFetchResponse) Reset()                    { *m = FeedPostFetchResponse{} }
 func (m *FeedPostFetchResponse) String() string            { return proto.CompactTextString(m) }
 func (*FeedPostFetchResponse) ProtoMessage()               {}
-func (*FeedPostFetchResponse) Descriptor() ([]byte, []int) { return fileDescriptor3, []int{4} }
+func (*FeedPostFetchResponse) Descriptor() ([]byte, []int) { return fileDescriptor2, []int{4} }
 
 func (m *FeedPostFetchResponse) GetFeedPosts() []*FeedPost {
 	if m != nil {
@@ -403,7 +403,7 @@ func init() {
 	proto.RegisterEnum("BlitzMessage.UpdateVerb", UpdateVerb_name, UpdateVerb_value)
 }
 
-var fileDescriptor3 = []byte{
+var fileDescriptor2 = []byte{
 	// 660 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x09, 0x6e, 0x88, 0x02, 0xff, 0x84, 0x53, 0x4d, 0x53, 0xdb, 0x3a,
 	0x14, 0xc5, 0x09, 0x1f, 0xc9, 0x25, 0xc9, 0xf3, 0x88, 0x2f, 0x4d, 0x60, 0xc1, 0xb0, 0x79, 0x90,
