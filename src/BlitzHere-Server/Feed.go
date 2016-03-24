@@ -217,16 +217,16 @@ func UpdateFeedPost(session *Session, feedPostUpdate *BlitzMessage.FeedPostUpdat
             Log.Debugf("Try to send a notification to the original poster:")
             parentPost := FeedPostForPostID(session.UserID, *feedPostUpdate.FeedPost.ParentID)
             if  parentPost != nil {
-                originalPoster := ProfileForUserID(*parentPost.UserID)
+                replyPoster := ProfileForUserID(session.UserID)
                 name := "Someone"
-                if  originalPoster != nil &&
-                    originalPoster.Name != nil &&
-                    len(*originalPoster.Name) > 0 {
-                    name = *originalPoster.Name
+                if  replyPoster != nil &&
+                    replyPoster.Name != nil &&
+                    len(*replyPoster.Name) > 0 {
+                    name = *replyPoster.Name
                 }
                 message := fmt.Sprintf("%s responded to your question.", name)
                 SendUserMessage(BlitzMessage.Default_Globals_SystemUserID,
-                    [] string { *originalPoster.UserID },
+                    [] string { *parentPost.UserID },
                     message,
                     BlitzMessage.UserMessageType_MTNotification,
                     "AppIcon",
@@ -259,7 +259,7 @@ func UpdateFeedPost(session *Session, feedPostUpdate *BlitzMessage.FeedPostUpdat
 //----------------------------------------------------------------------------------------
 
 
-func FetchTopOpenRepliesForFeedPost(queryUserID string, parentPostID string) []*BlitzMessage.FeedPost {
+func FetchTopOpenRepliesForFeedPost(queryUserID string, parentPostID string, limit int) []*BlitzMessage.FeedPost {
     Log.LogFunctionName()
 
     feedPosts := make([]*BlitzMessage.FeedPost, 0, 10)
@@ -268,9 +268,10 @@ func FetchTopOpenRepliesForFeedPost(queryUserID string, parentPostID string) []*
         `   from FeedPostTable
             where postStatus = $1
               and parentID = $2
-              order by timestamp limit 5 ;`,
+              order by timestamp limit $3 ;`,
         BlitzMessage.FeedPostStatus_FPSActive,
         parentPostID,
+        limit,
     )
 
     if error != nil {
@@ -297,7 +298,7 @@ func FetchTopOpenRepliesForFeedPost(queryUserID string, parentPostID string) []*
 //----------------------------------------------------------------------------------------
 
 
-func FetchTopSurveyRepliesForFeedPost(queryUserID string, parentPostID string) []*BlitzMessage.FeedPost {
+func FetchTopSurveyRepliesForFeedPost(queryUserID string, parentPostID string, limit int) []*BlitzMessage.FeedPost {
     Log.LogFunctionName()
 
     feedPosts := make([]*BlitzMessage.FeedPost, 0, 10)
@@ -307,9 +308,10 @@ func FetchTopSurveyRepliesForFeedPost(queryUserID string, parentPostID string) [
             where postStatus = $1
               and parentID = $2
               order by surveyAnswerSequence nulls last, timestamp
-              limit 10;`,
+              limit $3;`,
         BlitzMessage.FeedPostStatus_FPSActive,
         parentPostID,
+        limit,
     )
 
     if error != nil {
@@ -393,16 +395,27 @@ func FetchFeedPosts(session *Session, fetchRequest *BlitzMessage.FeedPostFetchRe
     //  Now go back through the feed posts to update their responses:
 
     for _, feedPost := range feedPosts {
+        var limit int = 0
 
         switch *feedPost.PostType {
 
         case BlitzMessage.FeedPostType_FPOpenEndedQuestion:
-            feedPost.Replies = FetchTopOpenRepliesForFeedPost(session.UserID, *feedPost.PostID)
+            limit = 6
+            feedPost.Replies = FetchTopOpenRepliesForFeedPost(session.UserID, *feedPost.PostID, limit)
 
         case BlitzMessage.FeedPostType_FPSurveyQuestion:
-            feedPost.Replies = FetchTopSurveyRepliesForFeedPost(session.UserID, *feedPost.PostID)
+            limit = 10
+            feedPost.Replies = FetchTopSurveyRepliesForFeedPost(session.UserID, *feedPost.PostID, limit)
 
         }
+
+        if len(feedPost.Replies) >= limit && len(feedPost.Replies) > 0 {
+            feedPost.AreMoreReplies = BoolPtr(true)
+            feedPost.Replies = feedPost.Replies[:len(feedPost.Replies)-1]
+        } else {
+            feedPost.AreMoreReplies = BoolPtr(false)
+        }
+
     }
 
     Log.Debugf("Found %d feed posts.", len(feedPosts))
