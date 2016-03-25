@@ -138,6 +138,7 @@ NSString *NSStringFromBUpdateVerb(BUpdateVerb value) {
 @property BOOL mayChooseMulitpleReplies;
 @property SInt32 surveyAnswerSequence;
 @property BOOL areMoreReplies;
+@property SInt32 totalReplyCount;
 @end
 
 @implementation BFeedPost
@@ -264,6 +265,13 @@ NSString *NSStringFromBUpdateVerb(BUpdateVerb value) {
 - (void) setAreMoreReplies:(BOOL) _value_ {
   areMoreReplies_ = !!_value_;
 }
+- (BOOL) hasTotalReplyCount {
+  return !!hasTotalReplyCount_;
+}
+- (void) setHasTotalReplyCount:(BOOL) _value_ {
+  hasTotalReplyCount_ = !!_value_;
+}
+@synthesize totalReplyCount;
 - (instancetype) init {
   if ((self = [super init])) {
     self.postID = @"";
@@ -280,6 +288,7 @@ NSString *NSStringFromBUpdateVerb(BUpdateVerb value) {
     self.mayChooseMulitpleReplies = NO;
     self.surveyAnswerSequence = 0;
     self.areMoreReplies = NO;
+    self.totalReplyCount = 0;
   }
   return self;
 }
@@ -377,6 +386,9 @@ static BFeedPost* defaultBFeedPostInstance = nil;
   if (self.hasAreMoreReplies) {
     [output writeBool:17 value:self.areMoreReplies];
   }
+  if (self.hasTotalReplyCount) {
+    [output writeInt32:18 value:self.totalReplyCount];
+  }
   [self.unknownFields writeToCodedOutputStream:output];
 }
 - (SInt32) serializedSize {
@@ -433,6 +445,9 @@ static BFeedPost* defaultBFeedPostInstance = nil;
   }
   if (self.hasAreMoreReplies) {
     size_ += computeBoolSize(17, self.areMoreReplies);
+  }
+  if (self.hasTotalReplyCount) {
+    size_ += computeInt32Size(18, self.totalReplyCount);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -529,6 +544,9 @@ static BFeedPost* defaultBFeedPostInstance = nil;
   if (self.hasAreMoreReplies) {
     [output appendFormat:@"%@%@: %@\n", indent, @"areMoreReplies", [NSNumber numberWithBool:self.areMoreReplies]];
   }
+  if (self.hasTotalReplyCount) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"totalReplyCount", [NSNumber numberWithInteger:self.totalReplyCount]];
+  }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (void) storeInDictionary:(NSMutableDictionary *)dictionary {
@@ -588,6 +606,9 @@ static BFeedPost* defaultBFeedPostInstance = nil;
   if (self.hasAreMoreReplies) {
     [dictionary setObject: [NSNumber numberWithBool:self.areMoreReplies] forKey: @"areMoreReplies"];
   }
+  if (self.hasTotalReplyCount) {
+    [dictionary setObject: [NSNumber numberWithInteger:self.totalReplyCount] forKey: @"totalReplyCount"];
+  }
   [self.unknownFields storeInDictionary:dictionary];
 }
 - (BOOL) isEqual:(id)other {
@@ -629,6 +650,8 @@ static BFeedPost* defaultBFeedPostInstance = nil;
       (!self.hasSurveyAnswerSequence || self.surveyAnswerSequence == otherMessage.surveyAnswerSequence) &&
       self.hasAreMoreReplies == otherMessage.hasAreMoreReplies &&
       (!self.hasAreMoreReplies || self.areMoreReplies == otherMessage.areMoreReplies) &&
+      self.hasTotalReplyCount == otherMessage.hasTotalReplyCount &&
+      (!self.hasTotalReplyCount || self.totalReplyCount == otherMessage.totalReplyCount) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
@@ -680,6 +703,9 @@ static BFeedPost* defaultBFeedPostInstance = nil;
   }
   if (self.hasAreMoreReplies) {
     hashCode = hashCode * 31 + [[NSNumber numberWithBool:self.areMoreReplies] hash];
+  }
+  if (self.hasTotalReplyCount) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithInteger:self.totalReplyCount] hash];
   }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
@@ -779,6 +805,9 @@ static BFeedPost* defaultBFeedPostInstance = nil;
   }
   if (other.hasAreMoreReplies) {
     [self setAreMoreReplies:other.areMoreReplies];
+  }
+  if (other.hasTotalReplyCount) {
+    [self setTotalReplyCount:other.totalReplyCount];
   }
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -887,6 +916,10 @@ static BFeedPost* defaultBFeedPostInstance = nil;
       }
       case 136: {
         [self setAreMoreReplies:[input readBool]];
+        break;
+      }
+      case 144: {
+        [self setTotalReplyCount:[input readInt32]];
         break;
       }
     }
@@ -1184,6 +1217,22 @@ static BFeedPost* defaultBFeedPostInstance = nil;
 - (BFeedPostBuilder*) clearAreMoreReplies {
   resultFeedPost.hasAreMoreReplies = NO;
   resultFeedPost.areMoreReplies = NO;
+  return self;
+}
+- (BOOL) hasTotalReplyCount {
+  return resultFeedPost.hasTotalReplyCount;
+}
+- (SInt32) totalReplyCount {
+  return resultFeedPost.totalReplyCount;
+}
+- (BFeedPostBuilder*) setTotalReplyCount:(SInt32) value {
+  resultFeedPost.hasTotalReplyCount = YES;
+  resultFeedPost.totalReplyCount = value;
+  return self;
+}
+- (BFeedPostBuilder*) clearTotalReplyCount {
+  resultFeedPost.hasTotalReplyCount = NO;
+  resultFeedPost.totalReplyCount = 0;
   return self;
 }
 @end

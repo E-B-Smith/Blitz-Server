@@ -58,7 +58,8 @@ message FeedPost {
   optional bool           mayAddReply     = 14;
   optional bool           mayChooseMulitpleReplies = 15;
   optional int32          surveyAnswerSequence = 16;
-  optional bool           areMoreReplies = 17;
+  optional bool           areMoreReplies  = 17;
+  optional int32          totalReplyCount = 18;
 }
 
 

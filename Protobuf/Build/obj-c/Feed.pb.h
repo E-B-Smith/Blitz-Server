@@ -149,6 +149,7 @@ NSString *NSStringFromBUpdateVerb(BUpdateVerb value);
 #define FeedPost_mayChooseMulitpleReplies @"mayChooseMulitpleReplies"
 #define FeedPost_surveyAnswerSequence @"surveyAnswerSequence"
 #define FeedPost_areMoreReplies @"areMoreReplies"
+#define FeedPost_totalReplyCount @"totalReplyCount"
 @interface BFeedPost : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
   BOOL hasAnonymousPost_:1;
@@ -156,6 +157,7 @@ NSString *NSStringFromBUpdateVerb(BUpdateVerb value);
   BOOL hasMayChooseMulitpleReplies_:1;
   BOOL hasAreMoreReplies_:1;
   BOOL hasSurveyAnswerSequence_:1;
+  BOOL hasTotalReplyCount_:1;
   BOOL hasPostID_:1;
   BOOL hasParentID_:1;
   BOOL hasUserID_:1;
@@ -170,6 +172,7 @@ NSString *NSStringFromBUpdateVerb(BUpdateVerb value);
   BOOL mayChooseMulitpleReplies_:1;
   BOOL areMoreReplies_:1;
   SInt32 surveyAnswerSequence;
+  SInt32 totalReplyCount;
   NSString* postID;
   NSString* parentID;
   NSString* userID;
@@ -196,6 +199,7 @@ NSString *NSStringFromBUpdateVerb(BUpdateVerb value);
 - (BOOL) hasMayChooseMulitpleReplies;
 - (BOOL) hasSurveyAnswerSequence;
 - (BOOL) hasAreMoreReplies;
+- (BOOL) hasTotalReplyCount;
 @property (readonly, strong) NSString* postID;
 @property (readonly, strong) NSString* parentID;
 @property (readonly) BFeedPostType postType;
@@ -212,6 +216,7 @@ NSString *NSStringFromBUpdateVerb(BUpdateVerb value);
 - (BOOL) mayChooseMulitpleReplies;
 @property (readonly) SInt32 surveyAnswerSequence;
 - (BOOL) areMoreReplies;
+@property (readonly) SInt32 totalReplyCount;
 - (BEntityTag*)postTagsAtIndex:(NSUInteger)index;
 - (BFeedPost*)repliesAtIndex:(NSUInteger)index;
 
@@ -335,6 +340,11 @@ NSString *NSStringFromBUpdateVerb(BUpdateVerb value);
 - (BOOL) areMoreReplies;
 - (BFeedPostBuilder*) setAreMoreReplies:(BOOL) value;
 - (BFeedPostBuilder*) clearAreMoreReplies;
+
+- (BOOL) hasTotalReplyCount;
+- (SInt32) totalReplyCount;
+- (BFeedPostBuilder*) setTotalReplyCount:(SInt32) value;
+- (BFeedPostBuilder*) clearTotalReplyCount;
 @end
 
 #define FeedPostUpdateRequest_updateVerb @"updateVerb"

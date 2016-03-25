@@ -307,7 +307,9 @@ func FetchTopSurveyRepliesForFeedPost(queryUserID string, parentPostID string, l
         `   from FeedPostTable
             where postStatus = $1
               and parentID = $2
-              order by surveyAnswerSequence nulls last, timestamp
+              and surveyAnswerSequence is not null
+              and surveyAnswerSequence <> 0
+              order by surveyAnswerSequence, timestamp
               limit $3;`,
         BlitzMessage.FeedPostStatus_FPSActive,
         parentPostID,
