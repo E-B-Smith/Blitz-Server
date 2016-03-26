@@ -30,8 +30,6 @@ import (
 )
 
 
-var globalVersion            string = "0.0.0"
-var globalCompileTime        string = "Sun Mar 6 09:01:25 PST 2016"
 var PushNotificationService  ApplePushService.Service;
 var config ServerUtil.Configuration;
 
@@ -436,6 +434,7 @@ func Server() (returnValue int) {
         }
     } ()
 
+    var error error
     Log.LogLevel = Log.LogLevelAll
     commandLine := strings.Trim(fmt.Sprint(os.Args), "[]")
 
@@ -456,7 +455,7 @@ func Server() (returnValue int) {
         return 0
     }
     if (flagVersion) {
-        fmt.Fprintf(os.Stdout, "Version %s compiled %s.\n", globalVersion, globalCompileTime)
+        fmt.Fprintf(os.Stdout, "Version %s compiled %s.\n", ServerUtil.CompileVersion(), ServerUtil.CompileTime())
         return 0
     }
     if len(flagInputFilename) > 0 {
@@ -466,15 +465,12 @@ func Server() (returnValue int) {
             return 1
         }
         defer flagInputFile.Close()
-        error = config.ParseFile(flagInputFile)
+        error = config.ParseConfigFile(flagInputFile)
         if error != nil {
             Log.Errorf("Error: %v.", error)
             return 1
         }
         //Log.Debugf("Parsed configuration file")
-    }
-    if flagVerbose {
-        config.LogLevel = Log.LogLevelDebug
     }
     if flagPID {
         fmt.Fprintf(os.Stdout, "%s\n", config.PIDFileName())
@@ -484,41 +480,21 @@ func Server() (returnValue int) {
     //  Start --
 
     Log.SetFilename(config.LogFilename);
-    Log.Startf("BlitzHere-Server version %s pid %d compiled %s.", globalVersion, os.Getpid(), globalCompileTime)
+    Log.Startf("BlitzHere-Server version %s pid %d compiled %s.", ServerUtil.CompileVersion(), os.Getpid(), ServerUtil.CompileTime())
      Log.Infof("Command line: %s.", commandLine)
     Log.Debugf("Configuration: %+v.", config)
 
-    //  Lock our PID file --
-
-    error := config.CreatePIDFile()
-    if error != nil {
-        Log.Errorf("%v", error)
-        return 1
-    }
-    defer config.RemovePIDFile()
-
-    //  Set our path --
-
-    if error = os.Chdir(config.ServiceFilePath); error != nil {
-        Log.Errorf("Error setting the home path '%s': %v.", config.ServiceFilePath, error)
-        return 1
-    } else {
-        config.ServiceFilePath, _ = os.Getwd()
-        Log.Debugf("Working directory: '%s'", config.ServiceFilePath)
-    }
-
     //  Apply configuration paramaters --
 
-    if error = config.ApplyConfiguration(); error != nil {
+    if error = config.OpenConfig(); error != nil {
         Log.Errorf("Configuration error: %v", error)
         return 1
     }
+    if flagVerbose {
+        config.LogLevel = Log.LogLevelDebug
+    }
 
-    //  Start database --
-
-    Log.Infof("Starting database %s.", config.DatabaseURI)
-    error = config.ConnectDatabase()
-    if error != nil { return 1 }
+    //  Add a start time to the database --
 
     _, error = config.DB.Exec("insert into ServerStatTable "+
        "  (timestamp, messageType) values ($1, 'Started');", time.Now());
@@ -540,7 +516,7 @@ func Server() (returnValue int) {
         if error != nil {
             Log.Errorf("Error writing ServerStatTable: %v.", error)
         }
-        config.DisconnectDatabase()
+        config.CloseConfig()
     } ()
 
     //  Make our listener --

@@ -101,7 +101,7 @@ func UpdateDownloadTableWithLogLineCount(linecount int) {
     //  Just update with the last linecount log lines.  if < 0 read whole Log.
     Log.LogFunctionName()
 
-    logfilename := config.WebLog
+    logfilename := config.HTTPAccessLog
     shellparameter := fmt.Sprintf("tail -n %d %q | grep 'GET .*\\.ipa'", linecount, logfilename)
 
     if linecount == 0 {

@@ -25,21 +25,10 @@ import (
     )
 
 
-const globalVersion         = "0.1.50"
 var   SignupFormFilename    = "form.html"
 var   ProfileFormFilename   = "profile.html"
-var   config ServerUtil.Configuration =
-        ServerUtil.Configuration {
-                ServiceName:        "Signup-Server",
-                ServicePort:        9898,
-                ServiceFilePath:    "./signup",
-                ServicePrefix:      "/beinghappy/signup",
-                ServerURL:          "https://violent.blue",
-                DatabaseURI:        "psql://happylabsadmin:happylabsadmin@localhost:5432/happylabsdatabase",
-                LogLevel:           Log.LogLevelAll,
-                LogFilename:        "",
-            }
 const kSMSNotificationNumber = "4156152570"
+var   config ServerUtil.Configuration
 
 
 //  Signup flow:
@@ -480,7 +469,7 @@ func SignupServer() int {
         return 0
     }
     if (flagVersion) {
-        fmt.Fprintf(os.Stdout, "Version %s.\n", globalVersion)
+        fmt.Fprintf(os.Stdout, "Version %s.\n", ServerUtil.CompileVersion())
         return 0
     }
 
@@ -491,7 +480,7 @@ func SignupServer() int {
             return 1
         }
         defer flagInputFile.Close()
-        error = config.ParseFile(flagInputFile)
+        error = config.ParseConfigFile(flagInputFile)
         if error != nil {
             Log.Errorf("Error: %v.", error)
             return 1
@@ -507,7 +496,7 @@ func SignupServer() int {
     }
 
     Log.SetFilename(config.LogFilename);
-    Log.Startf("Signup version %s pid %d.", globalVersion, os.Getpid())
+    Log.Startf("Signup version %s pid %d.", ServerUtil.CompileVersion(), os.Getpid())
     Log.Infof("Command line: %s.",  commandLine)
     Log.Debugf("Configuration: %v.", config)
 

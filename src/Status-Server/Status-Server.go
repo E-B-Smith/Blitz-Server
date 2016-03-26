@@ -22,18 +22,13 @@ import (
 )
 
 
-var   config ServerUtil.Configuration =
-            ServerUtil.Configuration {
-                    SoftwareVersion:    "0.1.50",
-                    ServiceName:        "Stats-Server",
-                    ServicePort:        9999,
-                    ServiceFilePath:    "./stats",
-                    ServicePrefix:      "/beinghappy/status",
-                    ServerURL:          "https://violent.blue",
-                    DatabaseURI:        "postgres://happylabs:happylabs@localhost:5432/happylabs",
-                    LogLevel:           Log.LogLevelAll,
-                    LogFilename:        "",
-            }
+type StatusServerConfiguration struct {
+    ServerUtil.Configuration
+
+    HTTPAccessLog   string
+}
+var config StatusServerConfiguration
+
 
 //  Our run-time flags --
 
@@ -239,7 +234,7 @@ func StatsServer() int {
         return 0
     }
     if (flagVersion) {
-        fmt.Fprintf(os.Stdout, "Version %s.\n", config.SoftwareVersion)
+        fmt.Fprintf(os.Stdout, "Version %s.\n", ServerUtil.CompileVersion())
         return 0
     }
 
@@ -247,7 +242,7 @@ func StatsServer() int {
 
     flagInputFilename, error = filepath.Abs(flagInputFilename)
     if len(flagInputFilename) > 0 {
-        error = config.ParseFilename(flagInputFilename)
+        error = config.ParseConfigFileNamed(flagInputFilename)
         if error != nil {
             return 1
         }
@@ -261,7 +256,7 @@ func StatsServer() int {
     }
 
     Log.SetFilename(config.LogFilename);
-    Log.Startf("Stats-Server version %s pid %d.", config.SoftwareVersion, os.Getpid())
+    Log.Startf("Stats-Server version %s pid %d.", ServerUtil.CompileVersion(), os.Getpid())
     Log.Infof ("Command line: %s.",  commandLine)
     Log.Debugf("Configuration: %v.", config)
 
