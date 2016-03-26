@@ -68,7 +68,7 @@ func NewChatServer() *ChatServer {
 //----------------------------------------------------------------------------------------
 
 
-func (server *ChatServer) UserFromConnection(connection *websocket.Conn) (
+func (server *ChatServer) userFromConnection(connection *websocket.Conn) (
         userID string,
         user *ChatServerUser,
         room *ChatServerRoom) {
@@ -141,7 +141,7 @@ func (server *ChatServer) Disconnect(connection *websocket.Conn) {
     server.lock.Lock()
     defer server.lock.Unlock()
 
-    userID, user, room := server.UserFromConnection(connection)
+    userID, user, room := server.userFromConnection(connection)
 
     if room != nil {
         server.LeaveRoom(connection)
@@ -175,6 +175,10 @@ func (server *ChatServer) Disconnect(connection *websocket.Conn) {
 
 func (server *ChatServer) SendMessageToRoom(room *ChatServerRoom, message *ChatMessageType) {
     Log.LogFunctionName()
+
+    server.lock.Lock()
+    defer server.lock.Unlock()
+
     for userID, _ := range room.userIDMap {
         user, ok := server.userMap[userID]
         if ok {
@@ -195,7 +199,7 @@ func (server *ChatServer) EnterRoom(connection *websocket.Conn, roomID string) {
     server.lock.Lock()
     defer server.lock.Unlock()
 
-    userID, user, room := server.UserFromConnection(connection)
+    userID, user, room := server.userFromConnection(connection)
     if user == nil { return }
 
     if room != nil {
