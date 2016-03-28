@@ -436,18 +436,17 @@ func Server() (returnValue int) {
 
     var error error
     Log.LogLevel = Log.LogLevelAll
-    commandLine := strings.Trim(fmt.Sprint(os.Args), "[]")
 
     //  Do config params --
 
-    var (flagUsage bool; flagVersion bool; flagVerbose bool; flagPID bool; flagInputFilename string)
+    var (flagUsage bool; flagVersion bool; flagVerbose bool; flagPID bool; flagConfigFilename string)
 
     flag.BoolVar(&flagUsage,   "h", false, "Help.  Print usage and exit.")
     flag.BoolVar(&flagUsage,   "?", false, "Help.  Print usage and exit.")
     flag.BoolVar(&flagVersion, "v", false, "Version.  Print version and exit.")
     flag.BoolVar(&flagVerbose, "V", false, "Verbose.  Verbose output.")
     flag.BoolVar(&flagPID,     "p", false, "PID filename.  Print the pid filename and exit.")
-    flag.StringVar(&flagInputFilename, "c", "", "Configuration.  The file from which to read the configuration.")
+    flag.StringVar(&flagConfigFilename, "c", "", "Configuration.  The file from which to read the configuration.")
     flag.Parse()
 
     if (flagUsage) {
@@ -458,34 +457,17 @@ func Server() (returnValue int) {
         fmt.Fprintf(os.Stdout, "Version %s compiled %s.\n", ServerUtil.CompileVersion(), ServerUtil.CompileTime())
         return 0
     }
-    if len(flagInputFilename) > 0 {
-        flagInputFile, error := os.Open(flagInputFilename)
-        if error != nil {
-            Log.Errorf("Error: Can't open file '%s' for reading: %v.", flagInputFilename, error)
-            return 1
-        }
-        defer flagInputFile.Close()
-        error = config.ParseConfigFile(flagInputFile)
+    if len(flagConfigFilename) > 0 {
+        error = config.ParseConfigFileNamed(flagConfigFilename)
         if error != nil {
             Log.Errorf("Error: %v.", error)
             return 1
         }
-        //Log.Debugf("Parsed configuration file")
     }
     if flagPID {
         fmt.Fprintf(os.Stdout, "%s\n", config.PIDFileName())
         return 0
     }
-
-    //  Start --
-
-    Log.SetFilename(config.LogFilename);
-    Log.Startf("BlitzHere-Server version %s pid %d compiled %s.", ServerUtil.CompileVersion(), os.Getpid(), ServerUtil.CompileTime())
-     Log.Infof("Command line: %s.", commandLine)
-    Log.Debugf("Configuration: %+v.", config)
-
-    //  Apply configuration paramaters --
-
     if error = config.OpenConfig(); error != nil {
         Log.Errorf("Configuration error: %v", error)
         return 1
@@ -493,6 +475,11 @@ func Server() (returnValue int) {
     if flagVerbose {
         config.LogLevel = Log.LogLevelDebug
     }
+
+    //  Start --
+
+    //  Apply configuration paramaters --
+
 
     //  Add a start time to the database --
 
