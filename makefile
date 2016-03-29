@@ -49,7 +49,7 @@ gobuildDarwin= \
 gobuild= \
     cd $1; \
     echo ">>> Building `pwd`."; \
-    $(eval goflags= -v -ldflags '-X ServerUtil.compileTime=$(buildDate) -X ServerUtil.compileVersion=$(buildVersion)') \
+    $(eval goflags= -v -ldflags '-X violent.blue/GoKit/ServerUtil.compileTime=$(buildDate) -X violent.blue/GoKit/ServerUtil.compileVersion=$(buildVersion)') \
     $(call gobuildLinux, $1) \
     cd - >/dev/null; \
 
