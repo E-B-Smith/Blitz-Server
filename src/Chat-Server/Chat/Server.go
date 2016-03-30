@@ -18,7 +18,6 @@ import (
     "sync"
     "time"
     "golang.org/x/net/websocket"
-    "github.com/golang/protobuf/proto"
     "violent.blue/GoKit/Log"
 )
 
@@ -29,10 +28,11 @@ import (
 
 
 type ChatServer struct {
-    lock            sync.Mutex
+    lock            sync.RWMutex
     connectionMap   map[*websocket.Conn]string
     userMap         map[string]*ChatServerUser
     roomMap         map[string]*ChatServerRoom
+    Interface       *ServerInterface
 }
 
 
@@ -40,7 +40,6 @@ type ChatServerUser struct {
     ChatUser
     connection      *websocket.Conn
     roomID          *string
-    MessageFormat   MessageFormatType
 }
 
 
@@ -63,42 +62,14 @@ func NewChatServer() *ChatServer {
     return server
 }
 
-//----------------------------------------------------------------------------------------
-//                                                                      UserFromConnection
-//----------------------------------------------------------------------------------------
 
-
-func (server *ChatServer) userFromConnection(connection *websocket.Conn) (
-        userID string,
-        user *ChatServerUser,
-        room *ChatServerRoom) {
-
-    userID = ""
-    user = nil
-    room = nil
-
-    if connection == nil { return }
-
-    var ok bool
-    userID, ok = server.connectionMap[connection]
-    if ! ok { return }
-
-    user, ok = server.userMap[userID]
-    if ! ok { return }
-
-    if user.roomID != nil {
-        room, ok = server.roomMap[*user.roomID]
-    }
-
-    return
-}
 
 //----------------------------------------------------------------------------------------
 //                                                                             ConnectUser
 //----------------------------------------------------------------------------------------
 
 
-func (server *ChatServer) ConnectUser(connection *websocket.Conn, newUser *ChatUser) {
+func (server *ChatServer) ConnectUser(connection *websocket.Conn, chatConnect *ChatConnect) {
     Log.LogFunctionName()
 /*
     result := fmt.Sprintf("Connected to %s. Rooms:\n", connection.Config().Location.String())
@@ -140,7 +111,6 @@ func (server *ChatServer) Disconnect(connection *websocket.Conn) {
 
     server.lock.Lock()
     defer server.lock.Unlock()
-
     userID, user, room := server.userFromConnection(connection)
 
     if room != nil {
@@ -156,7 +126,7 @@ func (server *ChatServer) Disconnect(connection *websocket.Conn) {
         chatMessage := ChatMessageType {
             ChatConnect:    &chatDisconnect,
         }
-        SendMessageToConnection(connection, user.MessageFormat, &chatMessage)
+        SendMessageToConnection(connection, *user.Format, &chatMessage)
 
     }
 
@@ -165,6 +135,10 @@ func (server *ChatServer) Disconnect(connection *websocket.Conn) {
     }
 
     delete(server.connectionMap, connection)
+
+    if server.Interface != nil {
+        (*server.Interface).UserDidDisconnect(user.ChatUser)
+    }
 }
 
 
@@ -173,18 +147,22 @@ func (server *ChatServer) Disconnect(connection *websocket.Conn) {
 //----------------------------------------------------------------------------------------
 
 
-func (server *ChatServer) SendMessageToRoom(room *ChatServerRoom, message *ChatMessageType) {
+func (server *ChatServer) sendMessageToRoom(room *ChatServerRoom, message *ChatMessageType) {
     Log.LogFunctionName()
-
-    server.lock.Lock()
-    defer server.lock.Unlock()
-
     for userID, _ := range room.userIDMap {
         user, ok := server.userMap[userID]
         if ok {
-            SendMessageToConnection(user.connection, user.MessageFormat, message)
+            SendMessageToConnection(user.connection, *user.Format, message)
         }
     }
+}
+
+
+func (server *ChatServer) SendMessageToRoom(room *ChatServerRoom, message *ChatMessageType) {
+    Log.LogFunctionName()
+    server.lock.Lock()
+    defer server.lock.Unlock()
+    server.sendMessageToRoom(room, message)
 }
 
 
@@ -197,10 +175,11 @@ func (server *ChatServer) EnterRoom(connection *websocket.Conn, roomID string) {
     Log.LogFunctionName()
 
     server.lock.Lock()
-    defer server.lock.Unlock()
-
     userID, user, room := server.userFromConnection(connection)
-    if user == nil { return }
+    if user == nil {
+        server.lock.Unlock()
+        return
+    }
 
     if room != nil {
         server.LeaveRoom(connection)
@@ -212,7 +191,7 @@ func (server *ChatServer) EnterRoom(connection *websocket.Conn, roomID string) {
 
     enterMessage := ChatEnterRoom {
         User:           &user.ChatUser,
-        RoomID:         room.RoomID,
+        Room:           &room.ChatRoom,
         UserIsEntering: BoolPtr(true),
     }
     chatMessage := ChatMessageType { ChatEnterRoom: &enterMessage }
@@ -235,7 +214,7 @@ func (server *ChatServer) EnterRoom(connection *websocket.Conn, roomID string) {
         ChatPresence: &presenceMessage,
     }
 
-    SendMessageToConnection(connection, user.MessageFormat, &chatMessage)
+    SendMessageToConnection(connection, *user.Format, &chatMessage)
 }
 
 
@@ -248,19 +227,20 @@ func (server *ChatServer) LeaveRoom(connection *websocket.Conn) {
     Log.LogFunctionName()
 
     server.lock.Lock()
-    defer server.lock.Unlock()
-
-    userID, user, room := server.UserFromConnection(connection)
-    if user == nil || room == nil { return }
+    userID, user, room := server.userFromConnection(connection)
+    if user == nil || room == nil {
+        server.lock.Unlock()
+        return
+    }
 
     leaveMessage := ChatEnterRoom {
         User:           &user.ChatUser,
-        RoomID:         room.RoomID,
+        Room:           &room.ChatRoom,
         UserIsEntering: BoolPtr(false),
     }
     chatMessage := ChatMessageType { ChatEnterRoom: &leaveMessage }
 
-    server.SendMessageToRoom(room, &chatMessage)
+    server.sendMessageToRoom(room, &chatMessage)
 
     //  Delete user from room --
 
@@ -270,6 +250,11 @@ func (server *ChatServer) LeaveRoom(connection *websocket.Conn) {
     }
 
     user.roomID = nil
+    server.lock.Unlock()
+
+    if server.Interface != nil {
+        (*server.Interface).UserDidLeaveRoom(user.ChatUser, room.ChatRoom)
+    }
 }
 
 
@@ -291,11 +276,11 @@ func (server *ChatServer) SendResponse(
 
     server.lock.Lock()
     defer server.lock.Unlock()
-    _, user, _ := server.UserFromConnection(connection)
+    _, user, _ := server.userFromConnection(connection)
 
-    format := FormatJSON
+    format := Format_FormatJSON
     if user != nil {
-        format = user.MessageFormat
+        format = *user.Format
     }
 
     SendMessageToConnection(connection,
@@ -309,7 +294,7 @@ func (server *ChatServer) SendResponse(
 //----------------------------------------------------------------------------------------
 
 
-func (server *ChatServer) SendChatMessage(message *ChatMessage) {
+func (server *ChatServer) SendChatMessage(connection *websocket.Conn, message *ChatMessage) {
     Log.LogFunctionName()
 
     if message.SenderID == nil ||
@@ -319,19 +304,60 @@ func (server *ChatServer) SendChatMessage(message *ChatMessage) {
     }
     message.Timestamp = TimestampFromTime(time.Now())
 
-    server.lock.Lock()
-    defer server.lock.Unlock()
+    server.lock.RLock()
+    _, user , room := server.userFromConnection(connection)
+    server.lock.RUnlock()
 
-    room, ok := server.roomMap[*message.RoomID]
-    if ! ok { return }
+    if server.Interface != nil {
+        var error error
+        var msg ChatMessage
+        msg, error = (*server.Interface).UserMaySendMessage(user.ChatUser, *message)
+        if error != nil { return }
+        message = &msg
+    }
 
     server.SendMessageToRoom(room, &ChatMessageType{ChatMessage: message})
+
+    if server.Interface != nil {
+        (*server.Interface).UserDidSendMessage(user.ChatUser, *message)
+    }
+}
+
+
+//----------------------------------------------------------------------------------------
+//                                                                      userFromConnection
+//----------------------------------------------------------------------------------------
+
+
+func (server *ChatServer) userFromConnection(connection *websocket.Conn) (
+        userID string,
+        user *ChatServerUser,
+        room *ChatServerRoom) {
+
+    userID = ""
+    user = nil
+    room = nil
+
+    if connection == nil { return }
+
+    var ok bool
+    userID, ok = server.connectionMap[connection]
+    if ! ok { return }
+
+    user, ok = server.userMap[userID]
+    if ! ok { return }
+
+    if user.roomID != nil {
+        room, ok = server.roomMap[*user.roomID]
+    }
+
+    return
 }
 
 
 //----------------------------------------------------------------------------------------
 //
-//                                                                             Chat Server
+//                                                                    HandleChatConnection
 //
 //----------------------------------------------------------------------------------------
 
@@ -351,12 +377,30 @@ func (server *ChatServer) HandleChatConnection(connection *websocket.Conn) {
         return
     }
 
-    var chatMessageType ChatMessageType
-    error = proto.Unmarshal(wireMessage, &chatMessageType)
+    //  Get the user info --
+
+
+    server.lock.RLock()
+    _, user, _ := server.userFromConnection(connection)
+    server.lock.RUnlock()
+
+    //  Decode the message --
+
+    format := Format_FormatUnknown
+    if user != nil && user.Format != nil {
+        format = *user.Format
+    }
+
+    var chatMessageType *ChatMessageType
+    chatMessageType, format, error = DecodeMessage(format, wireMessage)
     if error != nil {
         Log.LogError(error)
         server.SendResponse(connection, StatusCode_StatusInputInvalid, "Input corrupt")
         return
+    }
+
+    if user != nil {
+        user.Format = &format
     }
 
     //  Process the message --
@@ -364,23 +408,24 @@ func (server *ChatServer) HandleChatConnection(connection *websocket.Conn) {
     switch {
 
     case chatMessageType.ChatMessage != nil:
-        server.SendChatMessage(chatMessageType.ChatMessage)
+        server.SendChatMessage(connection, chatMessageType.ChatMessage)
         return
 
     case chatMessageType.ChatConnect != nil:
         if chatMessageType.ChatConnect.GetIsConnecting() {
-            server.ConnectUser(connection, chatMessageType.ChatConnect.User)
+            server.ConnectUser(connection, chatMessageType.ChatConnect)
         } else {
             server.Disconnect(connection)
         }
         return
 
     case chatMessageType.ChatEnterRoom != nil:
-        if chatMessageType.ChatEnterRoom.GetUserIsEntering() {
-            if chatMessageType.ChatEnterRoom.RoomID == nil {
+        enterRoom := chatMessageType.ChatEnterRoom
+        if enterRoom.GetUserIsEntering() {
+            if enterRoom.Room.RoomID == nil {
                 server.SendResponse(connection, StatusCode_StatusInputInvalid, "No room ID")
             } else {
-                server.EnterRoom(connection, *chatMessageType.ChatEnterRoom.RoomID)
+                server.EnterRoom(connection, *enterRoom.Room.RoomID)
             }
         } else {
             server.LeaveRoom(connection)

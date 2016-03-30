@@ -21,17 +21,17 @@ import (
 )
 
 
-var globalChatServer *Chat.ChatServer = nil
+var chatServer *Chat.ChatServer = nil
 
 
 func ChatServerHandler(userConnection *websocket.Conn) {
-    globalChatServer.HandleChatConnection(userConnection)
+    chatServer.HandleChatConnection(userConnection)
 }
 
 
 func main() {
     //  Initialize our chat server.
-    globalChatServer = Chat.NewChatServer()
+    chatServer = Chat.NewChatServer()
 
     //  Set the handler, then serve the connections.
     http.Handle("/chat", websocket.Handler(ChatServerHandler))

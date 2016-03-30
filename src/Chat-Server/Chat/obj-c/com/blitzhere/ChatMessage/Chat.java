@@ -9,6 +9,97 @@ public final class Chat {
       com.google.protobuf.ExtensionRegistry registry) {
   }
   /**
+   * Protobuf enum {@code Chat.Format}
+   */
+  public enum Format
+      implements com.google.protobuf.ProtocolMessageEnum {
+    /**
+     * <code>FormatUnknown = 0;</code>
+     */
+    FormatUnknown(0, 0),
+    /**
+     * <code>FormatJSON = 1;</code>
+     */
+    FormatJSON(1, 1),
+    /**
+     * <code>FormatProtobuf = 2;</code>
+     */
+    FormatProtobuf(2, 2),
+    ;
+
+    /**
+     * <code>FormatUnknown = 0;</code>
+     */
+    public static final int FormatUnknown_VALUE = 0;
+    /**
+     * <code>FormatJSON = 1;</code>
+     */
+    public static final int FormatJSON_VALUE = 1;
+    /**
+     * <code>FormatProtobuf = 2;</code>
+     */
+    public static final int FormatProtobuf_VALUE = 2;
+
+
+    public final int getNumber() { return value; }
+
+    public static Format valueOf(int value) {
+      switch (value) {
+        case 0: return FormatUnknown;
+        case 1: return FormatJSON;
+        case 2: return FormatProtobuf;
+        default: return null;
+      }
+    }
+
+    public static com.google.protobuf.Internal.EnumLiteMap<Format>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static com.google.protobuf.Internal.EnumLiteMap<Format>
+        internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<Format>() {
+            public Format findValueByNumber(int number) {
+              return Format.valueOf(number);
+            }
+          };
+
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+        getValueDescriptor() {
+      return getDescriptor().getValues().get(index);
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptor() {
+      return com.blitzhere.ChatMessage.Chat.getDescriptor().getEnumTypes().get(0);
+    }
+
+    private static final Format[] VALUES = values();
+
+    public static Format valueOf(
+        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new java.lang.IllegalArgumentException(
+          "EnumValueDescriptor is not for this type.");
+      }
+      return VALUES[desc.getIndex()];
+    }
+
+    private final int index;
+    private final int value;
+
+    private Format(int index, int value) {
+      this.index = index;
+      this.value = value;
+    }
+
+    // @@protoc_insertion_point(enum_scope:Chat.Format)
+  }
+
+  /**
    * Protobuf enum {@code Chat.StatusCode}
    */
   public enum StatusCode
@@ -83,7 +174,7 @@ public final class Chat {
     }
     public static final com.google.protobuf.Descriptors.EnumDescriptor
         getDescriptor() {
-      return com.blitzhere.ChatMessage.Chat.getDescriptor().getEnumTypes().get(0);
+      return com.blitzhere.ChatMessage.Chat.getDescriptor().getEnumTypes().get(1);
     }
 
     private static final StatusCode[] VALUES = values();
@@ -1007,6 +1098,15 @@ public final class Chat {
      */
     com.google.protobuf.ByteString
         getNicknameBytes();
+
+    /**
+     * <code>optional .Chat.Format format = 3;</code>
+     */
+    boolean hasFormat();
+    /**
+     * <code>optional .Chat.Format format = 3;</code>
+     */
+    com.blitzhere.ChatMessage.Chat.Format getFormat();
   }
   /**
    * Protobuf type {@code Chat.ChatUser}
@@ -1070,6 +1170,17 @@ public final class Chat {
               com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
               nickname_ = bs;
+              break;
+            }
+            case 24: {
+              int rawValue = input.readEnum();
+              com.blitzhere.ChatMessage.Chat.Format value = com.blitzhere.ChatMessage.Chat.Format.valueOf(rawValue);
+              if (value == null) {
+                unknownFields.mergeVarintField(3, rawValue);
+              } else {
+                bitField0_ |= 0x00000004;
+                format_ = value;
+              }
               break;
             }
           }
@@ -1196,9 +1307,25 @@ public final class Chat {
       }
     }
 
+    public static final int FORMAT_FIELD_NUMBER = 3;
+    private com.blitzhere.ChatMessage.Chat.Format format_;
+    /**
+     * <code>optional .Chat.Format format = 3;</code>
+     */
+    public boolean hasFormat() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional .Chat.Format format = 3;</code>
+     */
+    public com.blitzhere.ChatMessage.Chat.Format getFormat() {
+      return format_;
+    }
+
     private void initFields() {
       userID_ = "";
       nickname_ = "";
+      format_ = com.blitzhere.ChatMessage.Chat.Format.FormatUnknown;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -1219,6 +1346,9 @@ public final class Chat {
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         output.writeBytes(2, getNicknameBytes());
       }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeEnum(3, format_.getNumber());
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -1235,6 +1365,10 @@ public final class Chat {
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(2, getNicknameBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(3, format_.getNumber());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -1357,6 +1491,8 @@ public final class Chat {
         bitField0_ = (bitField0_ & ~0x00000001);
         nickname_ = "";
         bitField0_ = (bitField0_ & ~0x00000002);
+        format_ = com.blitzhere.ChatMessage.Chat.Format.FormatUnknown;
+        bitField0_ = (bitField0_ & ~0x00000004);
         return this;
       }
 
@@ -1393,6 +1529,10 @@ public final class Chat {
           to_bitField0_ |= 0x00000002;
         }
         result.nickname_ = nickname_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.format_ = format_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -1418,6 +1558,9 @@ public final class Chat {
           bitField0_ |= 0x00000002;
           nickname_ = other.nickname_;
           onChanged();
+        }
+        if (other.hasFormat()) {
+          setFormat(other.getFormat());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -1594,6 +1737,41 @@ public final class Chat {
   }
   bitField0_ |= 0x00000002;
         nickname_ = value;
+        onChanged();
+        return this;
+      }
+
+      private com.blitzhere.ChatMessage.Chat.Format format_ = com.blitzhere.ChatMessage.Chat.Format.FormatUnknown;
+      /**
+       * <code>optional .Chat.Format format = 3;</code>
+       */
+      public boolean hasFormat() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional .Chat.Format format = 3;</code>
+       */
+      public com.blitzhere.ChatMessage.Chat.Format getFormat() {
+        return format_;
+      }
+      /**
+       * <code>optional .Chat.Format format = 3;</code>
+       */
+      public Builder setFormat(com.blitzhere.ChatMessage.Chat.Format value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000004;
+        format_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional .Chat.Format format = 3;</code>
+       */
+      public Builder clearFormat() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        format_ = com.blitzhere.ChatMessage.Chat.Format.FormatUnknown;
         onChanged();
         return this;
       }
@@ -2270,24 +2448,44 @@ public final class Chat {
 
     /**
      * <code>repeated .Chat.ChatRoom rooms = 3;</code>
+     *
+     * <pre>
+     *  &lt;= out
+     * </pre>
      */
     java.util.List<com.blitzhere.ChatMessage.Chat.ChatRoom> 
         getRoomsList();
     /**
      * <code>repeated .Chat.ChatRoom rooms = 3;</code>
+     *
+     * <pre>
+     *  &lt;= out
+     * </pre>
      */
     com.blitzhere.ChatMessage.Chat.ChatRoom getRooms(int index);
     /**
      * <code>repeated .Chat.ChatRoom rooms = 3;</code>
+     *
+     * <pre>
+     *  &lt;= out
+     * </pre>
      */
     int getRoomsCount();
     /**
      * <code>repeated .Chat.ChatRoom rooms = 3;</code>
+     *
+     * <pre>
+     *  &lt;= out
+     * </pre>
      */
     java.util.List<? extends com.blitzhere.ChatMessage.Chat.ChatRoomOrBuilder> 
         getRoomsOrBuilderList();
     /**
      * <code>repeated .Chat.ChatRoom rooms = 3;</code>
+     *
+     * <pre>
+     *  &lt;= out
+     * </pre>
      */
     com.blitzhere.ChatMessage.Chat.ChatRoomOrBuilder getRoomsOrBuilder(
         int index);
@@ -2453,12 +2651,20 @@ public final class Chat {
     private java.util.List<com.blitzhere.ChatMessage.Chat.ChatRoom> rooms_;
     /**
      * <code>repeated .Chat.ChatRoom rooms = 3;</code>
+     *
+     * <pre>
+     *  &lt;= out
+     * </pre>
      */
     public java.util.List<com.blitzhere.ChatMessage.Chat.ChatRoom> getRoomsList() {
       return rooms_;
     }
     /**
      * <code>repeated .Chat.ChatRoom rooms = 3;</code>
+     *
+     * <pre>
+     *  &lt;= out
+     * </pre>
      */
     public java.util.List<? extends com.blitzhere.ChatMessage.Chat.ChatRoomOrBuilder> 
         getRoomsOrBuilderList() {
@@ -2466,18 +2672,30 @@ public final class Chat {
     }
     /**
      * <code>repeated .Chat.ChatRoom rooms = 3;</code>
+     *
+     * <pre>
+     *  &lt;= out
+     * </pre>
      */
     public int getRoomsCount() {
       return rooms_.size();
     }
     /**
      * <code>repeated .Chat.ChatRoom rooms = 3;</code>
+     *
+     * <pre>
+     *  &lt;= out
+     * </pre>
      */
     public com.blitzhere.ChatMessage.Chat.ChatRoom getRooms(int index) {
       return rooms_.get(index);
     }
     /**
      * <code>repeated .Chat.ChatRoom rooms = 3;</code>
+     *
+     * <pre>
+     *  &lt;= out
+     * </pre>
      */
     public com.blitzhere.ChatMessage.Chat.ChatRoomOrBuilder getRoomsOrBuilder(
         int index) {
@@ -2951,6 +3169,10 @@ public final class Chat {
 
       /**
        * <code>repeated .Chat.ChatRoom rooms = 3;</code>
+       *
+       * <pre>
+       *  &lt;= out
+       * </pre>
        */
       public java.util.List<com.blitzhere.ChatMessage.Chat.ChatRoom> getRoomsList() {
         if (roomsBuilder_ == null) {
@@ -2961,6 +3183,10 @@ public final class Chat {
       }
       /**
        * <code>repeated .Chat.ChatRoom rooms = 3;</code>
+       *
+       * <pre>
+       *  &lt;= out
+       * </pre>
        */
       public int getRoomsCount() {
         if (roomsBuilder_ == null) {
@@ -2971,6 +3197,10 @@ public final class Chat {
       }
       /**
        * <code>repeated .Chat.ChatRoom rooms = 3;</code>
+       *
+       * <pre>
+       *  &lt;= out
+       * </pre>
        */
       public com.blitzhere.ChatMessage.Chat.ChatRoom getRooms(int index) {
         if (roomsBuilder_ == null) {
@@ -2981,6 +3211,10 @@ public final class Chat {
       }
       /**
        * <code>repeated .Chat.ChatRoom rooms = 3;</code>
+       *
+       * <pre>
+       *  &lt;= out
+       * </pre>
        */
       public Builder setRooms(
           int index, com.blitzhere.ChatMessage.Chat.ChatRoom value) {
@@ -2998,6 +3232,10 @@ public final class Chat {
       }
       /**
        * <code>repeated .Chat.ChatRoom rooms = 3;</code>
+       *
+       * <pre>
+       *  &lt;= out
+       * </pre>
        */
       public Builder setRooms(
           int index, com.blitzhere.ChatMessage.Chat.ChatRoom.Builder builderForValue) {
@@ -3012,6 +3250,10 @@ public final class Chat {
       }
       /**
        * <code>repeated .Chat.ChatRoom rooms = 3;</code>
+       *
+       * <pre>
+       *  &lt;= out
+       * </pre>
        */
       public Builder addRooms(com.blitzhere.ChatMessage.Chat.ChatRoom value) {
         if (roomsBuilder_ == null) {
@@ -3028,6 +3270,10 @@ public final class Chat {
       }
       /**
        * <code>repeated .Chat.ChatRoom rooms = 3;</code>
+       *
+       * <pre>
+       *  &lt;= out
+       * </pre>
        */
       public Builder addRooms(
           int index, com.blitzhere.ChatMessage.Chat.ChatRoom value) {
@@ -3045,6 +3291,10 @@ public final class Chat {
       }
       /**
        * <code>repeated .Chat.ChatRoom rooms = 3;</code>
+       *
+       * <pre>
+       *  &lt;= out
+       * </pre>
        */
       public Builder addRooms(
           com.blitzhere.ChatMessage.Chat.ChatRoom.Builder builderForValue) {
@@ -3059,6 +3309,10 @@ public final class Chat {
       }
       /**
        * <code>repeated .Chat.ChatRoom rooms = 3;</code>
+       *
+       * <pre>
+       *  &lt;= out
+       * </pre>
        */
       public Builder addRooms(
           int index, com.blitzhere.ChatMessage.Chat.ChatRoom.Builder builderForValue) {
@@ -3073,6 +3327,10 @@ public final class Chat {
       }
       /**
        * <code>repeated .Chat.ChatRoom rooms = 3;</code>
+       *
+       * <pre>
+       *  &lt;= out
+       * </pre>
        */
       public Builder addAllRooms(
           java.lang.Iterable<? extends com.blitzhere.ChatMessage.Chat.ChatRoom> values) {
@@ -3088,6 +3346,10 @@ public final class Chat {
       }
       /**
        * <code>repeated .Chat.ChatRoom rooms = 3;</code>
+       *
+       * <pre>
+       *  &lt;= out
+       * </pre>
        */
       public Builder clearRooms() {
         if (roomsBuilder_ == null) {
@@ -3101,6 +3363,10 @@ public final class Chat {
       }
       /**
        * <code>repeated .Chat.ChatRoom rooms = 3;</code>
+       *
+       * <pre>
+       *  &lt;= out
+       * </pre>
        */
       public Builder removeRooms(int index) {
         if (roomsBuilder_ == null) {
@@ -3114,6 +3380,10 @@ public final class Chat {
       }
       /**
        * <code>repeated .Chat.ChatRoom rooms = 3;</code>
+       *
+       * <pre>
+       *  &lt;= out
+       * </pre>
        */
       public com.blitzhere.ChatMessage.Chat.ChatRoom.Builder getRoomsBuilder(
           int index) {
@@ -3121,6 +3391,10 @@ public final class Chat {
       }
       /**
        * <code>repeated .Chat.ChatRoom rooms = 3;</code>
+       *
+       * <pre>
+       *  &lt;= out
+       * </pre>
        */
       public com.blitzhere.ChatMessage.Chat.ChatRoomOrBuilder getRoomsOrBuilder(
           int index) {
@@ -3131,6 +3405,10 @@ public final class Chat {
       }
       /**
        * <code>repeated .Chat.ChatRoom rooms = 3;</code>
+       *
+       * <pre>
+       *  &lt;= out
+       * </pre>
        */
       public java.util.List<? extends com.blitzhere.ChatMessage.Chat.ChatRoomOrBuilder> 
            getRoomsOrBuilderList() {
@@ -3142,6 +3420,10 @@ public final class Chat {
       }
       /**
        * <code>repeated .Chat.ChatRoom rooms = 3;</code>
+       *
+       * <pre>
+       *  &lt;= out
+       * </pre>
        */
       public com.blitzhere.ChatMessage.Chat.ChatRoom.Builder addRoomsBuilder() {
         return getRoomsFieldBuilder().addBuilder(
@@ -3149,6 +3431,10 @@ public final class Chat {
       }
       /**
        * <code>repeated .Chat.ChatRoom rooms = 3;</code>
+       *
+       * <pre>
+       *  &lt;= out
+       * </pre>
        */
       public com.blitzhere.ChatMessage.Chat.ChatRoom.Builder addRoomsBuilder(
           int index) {
@@ -3157,6 +3443,10 @@ public final class Chat {
       }
       /**
        * <code>repeated .Chat.ChatRoom rooms = 3;</code>
+       *
+       * <pre>
+       *  &lt;= out
+       * </pre>
        */
       public java.util.List<com.blitzhere.ChatMessage.Chat.ChatRoom.Builder> 
            getRoomsBuilderList() {
@@ -3206,18 +3496,17 @@ public final class Chat {
     com.blitzhere.ChatMessage.Chat.ChatUserOrBuilder getUserOrBuilder();
 
     /**
-     * <code>optional string roomID = 2;</code>
+     * <code>optional .Chat.ChatRoom room = 2;</code>
      */
-    boolean hasRoomID();
+    boolean hasRoom();
     /**
-     * <code>optional string roomID = 2;</code>
+     * <code>optional .Chat.ChatRoom room = 2;</code>
      */
-    java.lang.String getRoomID();
+    com.blitzhere.ChatMessage.Chat.ChatRoom getRoom();
     /**
-     * <code>optional string roomID = 2;</code>
+     * <code>optional .Chat.ChatRoom room = 2;</code>
      */
-    com.google.protobuf.ByteString
-        getRoomIDBytes();
+    com.blitzhere.ChatMessage.Chat.ChatRoomOrBuilder getRoomOrBuilder();
 
     /**
      * <code>optional bool userIsEntering = 3;</code>
@@ -3294,9 +3583,16 @@ public final class Chat {
               break;
             }
             case 18: {
-              com.google.protobuf.ByteString bs = input.readBytes();
+              com.blitzhere.ChatMessage.Chat.ChatRoom.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000002) == 0x00000002)) {
+                subBuilder = room_.toBuilder();
+              }
+              room_ = input.readMessage(com.blitzhere.ChatMessage.Chat.ChatRoom.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(room_);
+                room_ = subBuilder.buildPartial();
+              }
               bitField0_ |= 0x00000002;
-              roomID_ = bs;
               break;
             }
             case 24: {
@@ -3365,46 +3661,25 @@ public final class Chat {
       return user_;
     }
 
-    public static final int ROOMID_FIELD_NUMBER = 2;
-    private java.lang.Object roomID_;
+    public static final int ROOM_FIELD_NUMBER = 2;
+    private com.blitzhere.ChatMessage.Chat.ChatRoom room_;
     /**
-     * <code>optional string roomID = 2;</code>
+     * <code>optional .Chat.ChatRoom room = 2;</code>
      */
-    public boolean hasRoomID() {
+    public boolean hasRoom() {
       return ((bitField0_ & 0x00000002) == 0x00000002);
     }
     /**
-     * <code>optional string roomID = 2;</code>
+     * <code>optional .Chat.ChatRoom room = 2;</code>
      */
-    public java.lang.String getRoomID() {
-      java.lang.Object ref = roomID_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          roomID_ = s;
-        }
-        return s;
-      }
+    public com.blitzhere.ChatMessage.Chat.ChatRoom getRoom() {
+      return room_;
     }
     /**
-     * <code>optional string roomID = 2;</code>
+     * <code>optional .Chat.ChatRoom room = 2;</code>
      */
-    public com.google.protobuf.ByteString
-        getRoomIDBytes() {
-      java.lang.Object ref = roomID_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        roomID_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
+    public com.blitzhere.ChatMessage.Chat.ChatRoomOrBuilder getRoomOrBuilder() {
+      return room_;
     }
 
     public static final int USERISENTERING_FIELD_NUMBER = 3;
@@ -3424,7 +3699,7 @@ public final class Chat {
 
     private void initFields() {
       user_ = com.blitzhere.ChatMessage.Chat.ChatUser.getDefaultInstance();
-      roomID_ = "";
+      room_ = com.blitzhere.ChatMessage.Chat.ChatRoom.getDefaultInstance();
       userIsEntering_ = false;
     }
     private byte memoizedIsInitialized = -1;
@@ -3444,7 +3719,7 @@ public final class Chat {
         output.writeMessage(1, user_);
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeBytes(2, getRoomIDBytes());
+        output.writeMessage(2, room_);
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         output.writeBool(3, userIsEntering_);
@@ -3464,7 +3739,7 @@ public final class Chat {
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(2, getRoomIDBytes());
+          .computeMessageSize(2, room_);
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
@@ -3580,6 +3855,7 @@ public final class Chat {
       private void maybeForceBuilderInitialization() {
         if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
           getUserFieldBuilder();
+          getRoomFieldBuilder();
         }
       }
       private static Builder create() {
@@ -3594,7 +3870,11 @@ public final class Chat {
           userBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000001);
-        roomID_ = "";
+        if (roomBuilder_ == null) {
+          room_ = com.blitzhere.ChatMessage.Chat.ChatRoom.getDefaultInstance();
+        } else {
+          roomBuilder_.clear();
+        }
         bitField0_ = (bitField0_ & ~0x00000002);
         userIsEntering_ = false;
         bitField0_ = (bitField0_ & ~0x00000004);
@@ -3637,7 +3917,11 @@ public final class Chat {
         if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
           to_bitField0_ |= 0x00000002;
         }
-        result.roomID_ = roomID_;
+        if (roomBuilder_ == null) {
+          result.room_ = room_;
+        } else {
+          result.room_ = roomBuilder_.build();
+        }
         if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
           to_bitField0_ |= 0x00000004;
         }
@@ -3661,10 +3945,8 @@ public final class Chat {
         if (other.hasUser()) {
           mergeUser(other.getUser());
         }
-        if (other.hasRoomID()) {
-          bitField0_ |= 0x00000002;
-          roomID_ = other.roomID_;
-          onChanged();
+        if (other.hasRoom()) {
+          mergeRoom(other.getRoom());
         }
         if (other.hasUserIsEntering()) {
           setUserIsEntering(other.getUserIsEntering());
@@ -3812,80 +4094,120 @@ public final class Chat {
         return userBuilder_;
       }
 
-      private java.lang.Object roomID_ = "";
+      private com.blitzhere.ChatMessage.Chat.ChatRoom room_ = com.blitzhere.ChatMessage.Chat.ChatRoom.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          com.blitzhere.ChatMessage.Chat.ChatRoom, com.blitzhere.ChatMessage.Chat.ChatRoom.Builder, com.blitzhere.ChatMessage.Chat.ChatRoomOrBuilder> roomBuilder_;
       /**
-       * <code>optional string roomID = 2;</code>
+       * <code>optional .Chat.ChatRoom room = 2;</code>
        */
-      public boolean hasRoomID() {
+      public boolean hasRoom() {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
       /**
-       * <code>optional string roomID = 2;</code>
+       * <code>optional .Chat.ChatRoom room = 2;</code>
        */
-      public java.lang.String getRoomID() {
-        java.lang.Object ref = roomID_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            roomID_ = s;
+      public com.blitzhere.ChatMessage.Chat.ChatRoom getRoom() {
+        if (roomBuilder_ == null) {
+          return room_;
+        } else {
+          return roomBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .Chat.ChatRoom room = 2;</code>
+       */
+      public Builder setRoom(com.blitzhere.ChatMessage.Chat.ChatRoom value) {
+        if (roomBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
           }
-          return s;
+          room_ = value;
+          onChanged();
         } else {
-          return (java.lang.String) ref;
+          roomBuilder_.setMessage(value);
         }
-      }
-      /**
-       * <code>optional string roomID = 2;</code>
-       */
-      public com.google.protobuf.ByteString
-          getRoomIDBytes() {
-        java.lang.Object ref = roomID_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          roomID_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>optional string roomID = 2;</code>
-       */
-      public Builder setRoomID(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
-        roomID_ = value;
-        onChanged();
+        bitField0_ |= 0x00000002;
         return this;
       }
       /**
-       * <code>optional string roomID = 2;</code>
+       * <code>optional .Chat.ChatRoom room = 2;</code>
        */
-      public Builder clearRoomID() {
+      public Builder setRoom(
+          com.blitzhere.ChatMessage.Chat.ChatRoom.Builder builderForValue) {
+        if (roomBuilder_ == null) {
+          room_ = builderForValue.build();
+          onChanged();
+        } else {
+          roomBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000002;
+        return this;
+      }
+      /**
+       * <code>optional .Chat.ChatRoom room = 2;</code>
+       */
+      public Builder mergeRoom(com.blitzhere.ChatMessage.Chat.ChatRoom value) {
+        if (roomBuilder_ == null) {
+          if (((bitField0_ & 0x00000002) == 0x00000002) &&
+              room_ != com.blitzhere.ChatMessage.Chat.ChatRoom.getDefaultInstance()) {
+            room_ =
+              com.blitzhere.ChatMessage.Chat.ChatRoom.newBuilder(room_).mergeFrom(value).buildPartial();
+          } else {
+            room_ = value;
+          }
+          onChanged();
+        } else {
+          roomBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000002;
+        return this;
+      }
+      /**
+       * <code>optional .Chat.ChatRoom room = 2;</code>
+       */
+      public Builder clearRoom() {
+        if (roomBuilder_ == null) {
+          room_ = com.blitzhere.ChatMessage.Chat.ChatRoom.getDefaultInstance();
+          onChanged();
+        } else {
+          roomBuilder_.clear();
+        }
         bitField0_ = (bitField0_ & ~0x00000002);
-        roomID_ = getDefaultInstance().getRoomID();
-        onChanged();
         return this;
       }
       /**
-       * <code>optional string roomID = 2;</code>
+       * <code>optional .Chat.ChatRoom room = 2;</code>
        */
-      public Builder setRoomIDBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
-        roomID_ = value;
+      public com.blitzhere.ChatMessage.Chat.ChatRoom.Builder getRoomBuilder() {
+        bitField0_ |= 0x00000002;
         onChanged();
-        return this;
+        return getRoomFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .Chat.ChatRoom room = 2;</code>
+       */
+      public com.blitzhere.ChatMessage.Chat.ChatRoomOrBuilder getRoomOrBuilder() {
+        if (roomBuilder_ != null) {
+          return roomBuilder_.getMessageOrBuilder();
+        } else {
+          return room_;
+        }
+      }
+      /**
+       * <code>optional .Chat.ChatRoom room = 2;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          com.blitzhere.ChatMessage.Chat.ChatRoom, com.blitzhere.ChatMessage.Chat.ChatRoom.Builder, com.blitzhere.ChatMessage.Chat.ChatRoomOrBuilder> 
+          getRoomFieldBuilder() {
+        if (roomBuilder_ == null) {
+          roomBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.blitzhere.ChatMessage.Chat.ChatRoom, com.blitzhere.ChatMessage.Chat.ChatRoom.Builder, com.blitzhere.ChatMessage.Chat.ChatRoomOrBuilder>(
+                  getRoom(),
+                  getParentForChildren(),
+                  isClean());
+          room_ = null;
+        }
+        return roomBuilder_;
       }
 
       private boolean userIsEntering_ ;
@@ -6678,27 +7000,30 @@ public final class Chat {
       "\n\nChat.proto\022\004Chat\032\033objectivec-descripto" +
       "r.proto\"S\n\013ChatMessage\022\020\n\010senderID\030\001 \001(\t" +
       "\022\016\n\006roomID\030\002 \001(\t\022\021\n\ttimestamp\030\003 \001(\001\022\017\n\007m" +
-      "essage\030\004 \001(\t\",\n\010ChatUser\022\016\n\006userID\030\001 \001(\t" +
-      "\022\020\n\010nickname\030\002 \001(\t\",\n\010ChatRoom\022\016\n\006roomID" +
-      "\030\001 \001(\t\022\020\n\010roomName\030\002 \001(\t\"`\n\013ChatConnect\022" +
-      "\024\n\014isConnecting\030\001 \001(\010\022\034\n\004user\030\002 \001(\0132\016.Ch" +
-      "at.ChatUser\022\035\n\005rooms\030\003 \003(\0132\016.Chat.ChatRo" +
-      "om\"U\n\rChatEnterRoom\022\034\n\004user\030\001 \001(\0132\016.Chat" +
-      ".ChatUser\022\016\n\006roomID\030\002 \001(\t\022\026\n\016userIsEnter",
-      "ing\030\003 \001(\010\"K\n\014ChatPresence\022\034\n\004room\030\001 \001(\0132" +
-      "\016.Chat.ChatRoom\022\035\n\005users\030\002 \003(\0132\016.Chat.Ch" +
-      "atUser\"?\n\014ChatResponse\022\036\n\004code\030\001 \001(\0162\020.C" +
-      "hat.StatusCode\022\017\n\007message\030\002 \001(\t\"\341\001\n\017Chat" +
-      "MessageType\022&\n\013chatMessage\030\001 \001(\0132\021.Chat." +
-      "ChatMessage\022&\n\013chatConnect\030\002 \001(\0132\021.Chat." +
-      "ChatConnect\022*\n\rchatEnterRoom\030\003 \001(\0132\023.Cha" +
-      "t.ChatEnterRoom\022(\n\014chatPresence\030\004 \001(\0132\022." +
-      "Chat.ChatPresence\022(\n\014chatResponse\030\005 \001(\0132" +
-      "\022.Chat.ChatResponse*g\n\nStatusCode\022\021\n\rSta",
-      "tusSuccess\020\001\022\026\n\022StatusInputInvalid\020\002\022\027\n\023" +
-      "StatusNotAuthorized\020\003\022\025\n\021StatusServerErr" +
-      "or\020\004B/\n\031com.blitzhere.ChatMessage\210\001\001\322>\002\n" +
-      "\000\322>\004\022\002CM\322>\002\030\001"
+      "essage\030\004 \001(\t\"J\n\010ChatUser\022\016\n\006userID\030\001 \001(\t" +
+      "\022\020\n\010nickname\030\002 \001(\t\022\034\n\006format\030\003 \001(\0162\014.Cha" +
+      "t.Format\",\n\010ChatRoom\022\016\n\006roomID\030\001 \001(\t\022\020\n\010" +
+      "roomName\030\002 \001(\t\"`\n\013ChatConnect\022\024\n\014isConne" +
+      "cting\030\001 \001(\010\022\034\n\004user\030\002 \001(\0132\016.Chat.ChatUse" +
+      "r\022\035\n\005rooms\030\003 \003(\0132\016.Chat.ChatRoom\"c\n\rChat" +
+      "EnterRoom\022\034\n\004user\030\001 \001(\0132\016.Chat.ChatUser\022",
+      "\034\n\004room\030\002 \001(\0132\016.Chat.ChatRoom\022\026\n\016userIsE" +
+      "ntering\030\003 \001(\010\"K\n\014ChatPresence\022\034\n\004room\030\001 " +
+      "\001(\0132\016.Chat.ChatRoom\022\035\n\005users\030\002 \003(\0132\016.Cha" +
+      "t.ChatUser\"?\n\014ChatResponse\022\036\n\004code\030\001 \001(\016" +
+      "2\020.Chat.StatusCode\022\017\n\007message\030\002 \001(\t\"\341\001\n\017" +
+      "ChatMessageType\022&\n\013chatMessage\030\001 \001(\0132\021.C" +
+      "hat.ChatMessage\022&\n\013chatConnect\030\002 \001(\0132\021.C" +
+      "hat.ChatConnect\022*\n\rchatEnterRoom\030\003 \001(\0132\023" +
+      ".Chat.ChatEnterRoom\022(\n\014chatPresence\030\004 \001(" +
+      "\0132\022.Chat.ChatPresence\022(\n\014chatResponse\030\005 ",
+      "\001(\0132\022.Chat.ChatResponse*?\n\006Format\022\021\n\rFor" +
+      "matUnknown\020\000\022\016\n\nFormatJSON\020\001\022\022\n\016FormatPr" +
+      "otobuf\020\002*g\n\nStatusCode\022\021\n\rStatusSuccess\020" +
+      "\001\022\026\n\022StatusInputInvalid\020\002\022\027\n\023StatusNotAu" +
+      "thorized\020\003\022\025\n\021StatusServerError\020\004B/\n\031com" +
+      ".blitzhere.ChatMessage\210\001\001\322>\002\n\000\322>\004\022\002CM\322>\002" +
+      "\030\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -6724,7 +7049,7 @@ public final class Chat {
     internal_static_Chat_ChatUser_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_Chat_ChatUser_descriptor,
-        new java.lang.String[] { "UserID", "Nickname", });
+        new java.lang.String[] { "UserID", "Nickname", "Format", });
     internal_static_Chat_ChatRoom_descriptor =
       getDescriptor().getMessageTypes().get(2);
     internal_static_Chat_ChatRoom_fieldAccessorTable = new
@@ -6742,7 +7067,7 @@ public final class Chat {
     internal_static_Chat_ChatEnterRoom_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_Chat_ChatEnterRoom_descriptor,
-        new java.lang.String[] { "User", "RoomID", "UserIsEntering", });
+        new java.lang.String[] { "User", "Room", "UserIsEntering", });
     internal_static_Chat_ChatPresence_descriptor =
       getDescriptor().getMessageTypes().get(5);
     internal_static_Chat_ChatPresence_fieldAccessorTable = new

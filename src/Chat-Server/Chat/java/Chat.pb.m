@@ -21,6 +21,29 @@ static PBExtensionRegistry* extensionRegistry = nil;
 }
 @end
 
+BOOL CMFormatIsValidValue(CMFormat value) {
+  switch (value) {
+    case CMFormatFormatUnknown:
+    case CMFormatFormatJSON:
+    case CMFormatFormatProtobuf:
+      return YES;
+    default:
+      return NO;
+  }
+}
+NSString *NSStringFromCMFormat(CMFormat value) {
+  switch (value) {
+    case CMFormatFormatUnknown:
+      return @"CMFormatFormatUnknown";
+    case CMFormatFormatJSON:
+      return @"CMFormatFormatJSON";
+    case CMFormatFormatProtobuf:
+      return @"CMFormatFormatProtobuf";
+    default:
+      return nil;
+  }
+}
+
 BOOL CMStatusCodeIsValidValue(CMStatusCode value) {
   switch (value) {
     case CMStatusCodeStatusSuccess:
@@ -403,6 +426,7 @@ static CMChatMessage* defaultCMChatMessageInstance = nil;
 @interface CMChatUser ()
 @property (strong) NSString* userID;
 @property (strong) NSString* nickname;
+@property CMFormat format;
 @end
 
 @implementation CMChatUser
@@ -421,10 +445,18 @@ static CMChatMessage* defaultCMChatMessageInstance = nil;
   hasNickname_ = !!_value_;
 }
 @synthesize nickname;
+- (BOOL) hasFormat {
+  return !!hasFormat_;
+}
+- (void) setHasFormat:(BOOL) _value_ {
+  hasFormat_ = !!_value_;
+}
+@synthesize format;
 - (instancetype) init {
   if ((self = [super init])) {
     self.userID = @"";
     self.nickname = @"";
+    self.format = CMFormatFormatUnknown;
   }
   return self;
 }
@@ -450,6 +482,9 @@ static CMChatUser* defaultCMChatUserInstance = nil;
   if (self.hasNickname) {
     [output writeString:2 value:self.nickname];
   }
+  if (self.hasFormat) {
+    [output writeEnum:3 value:self.format];
+  }
   [self.unknownFields writeToCodedOutputStream:output];
 }
 - (SInt32) serializedSize {
@@ -464,6 +499,9 @@ static CMChatUser* defaultCMChatUserInstance = nil;
   }
   if (self.hasNickname) {
     size_ += computeStringSize(2, self.nickname);
+  }
+  if (self.hasFormat) {
+    size_ += computeEnumSize(3, self.format);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -506,6 +544,9 @@ static CMChatUser* defaultCMChatUserInstance = nil;
   if (self.hasNickname) {
     [output appendFormat:@"%@%@: %@\n", indent, @"nickname", self.nickname];
   }
+  if (self.hasFormat) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"format", NSStringFromCMFormat(self.format)];
+  }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (void) storeInDictionary:(NSMutableDictionary *)dictionary {
@@ -514,6 +555,9 @@ static CMChatUser* defaultCMChatUserInstance = nil;
   }
   if (self.hasNickname) {
     [dictionary setObject: self.nickname forKey: @"nickname"];
+  }
+  if (self.hasFormat) {
+    [dictionary setObject: @(self.format) forKey: @"format"];
   }
   [self.unknownFields storeInDictionary:dictionary];
 }
@@ -530,6 +574,8 @@ static CMChatUser* defaultCMChatUserInstance = nil;
       (!self.hasUserID || [self.userID isEqual:otherMessage.userID]) &&
       self.hasNickname == otherMessage.hasNickname &&
       (!self.hasNickname || [self.nickname isEqual:otherMessage.nickname]) &&
+      self.hasFormat == otherMessage.hasFormat &&
+      (!self.hasFormat || self.format == otherMessage.format) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
@@ -539,6 +585,9 @@ static CMChatUser* defaultCMChatUserInstance = nil;
   }
   if (self.hasNickname) {
     hashCode = hashCode * 31 + [self.nickname hash];
+  }
+  if (self.hasFormat) {
+    hashCode = hashCode * 31 + self.format;
   }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
@@ -589,6 +638,9 @@ static CMChatUser* defaultCMChatUserInstance = nil;
   if (other.hasNickname) {
     [self setNickname:other.nickname];
   }
+  if (other.hasFormat) {
+    [self setFormat:other.format];
+  }
   [self mergeUnknownFields:other.unknownFields];
   return self;
 }
@@ -616,6 +668,15 @@ static CMChatUser* defaultCMChatUserInstance = nil;
       }
       case 18: {
         [self setNickname:[input readString]];
+        break;
+      }
+      case 24: {
+        CMFormat value = (CMFormat)[input readEnum];
+        if (CMFormatIsValidValue(value)) {
+          [self setFormat:value];
+        } else {
+          [unknownFields mergeVarintField:3 value:value];
+        }
         break;
       }
     }
@@ -651,6 +712,22 @@ static CMChatUser* defaultCMChatUserInstance = nil;
 - (CMChatUserBuilder*) clearNickname {
   resultChatUser.hasNickname = NO;
   resultChatUser.nickname = @"";
+  return self;
+}
+- (BOOL) hasFormat {
+  return resultChatUser.hasFormat;
+}
+- (CMFormat) format {
+  return resultChatUser.format;
+}
+- (CMChatUserBuilder*) setFormat:(CMFormat) value {
+  resultChatUser.hasFormat = YES;
+  resultChatUser.format = value;
+  return self;
+}
+- (CMChatUserBuilder*) clearFormat {
+  resultChatUser.hasFormat = NO;
+  resultChatUser.format = CMFormatFormatUnknown;
   return self;
 }
 @end
@@ -1260,7 +1337,7 @@ static CMChatConnect* defaultCMChatConnectInstance = nil;
 
 @interface CMChatEnterRoom ()
 @property (strong) CMChatUser* user;
-@property (strong) NSString* roomID;
+@property (strong) CMChatRoom* room;
 @property BOOL userIsEntering;
 @end
 
@@ -1273,13 +1350,13 @@ static CMChatConnect* defaultCMChatConnectInstance = nil;
   hasUser_ = !!_value_;
 }
 @synthesize user;
-- (BOOL) hasRoomID {
-  return !!hasRoomID_;
+- (BOOL) hasRoom {
+  return !!hasRoom_;
 }
-- (void) setHasRoomID:(BOOL) _value_ {
-  hasRoomID_ = !!_value_;
+- (void) setHasRoom:(BOOL) _value_ {
+  hasRoom_ = !!_value_;
 }
-@synthesize roomID;
+@synthesize room;
 - (BOOL) hasUserIsEntering {
   return !!hasUserIsEntering_;
 }
@@ -1295,7 +1372,7 @@ static CMChatConnect* defaultCMChatConnectInstance = nil;
 - (instancetype) init {
   if ((self = [super init])) {
     self.user = [CMChatUser defaultInstance];
-    self.roomID = @"";
+    self.room = [CMChatRoom defaultInstance];
     self.userIsEntering = NO;
   }
   return self;
@@ -1319,8 +1396,8 @@ static CMChatEnterRoom* defaultCMChatEnterRoomInstance = nil;
   if (self.hasUser) {
     [output writeMessage:1 value:self.user];
   }
-  if (self.hasRoomID) {
-    [output writeString:2 value:self.roomID];
+  if (self.hasRoom) {
+    [output writeMessage:2 value:self.room];
   }
   if (self.hasUserIsEntering) {
     [output writeBool:3 value:self.userIsEntering];
@@ -1337,8 +1414,8 @@ static CMChatEnterRoom* defaultCMChatEnterRoomInstance = nil;
   if (self.hasUser) {
     size_ += computeMessageSize(1, self.user);
   }
-  if (self.hasRoomID) {
-    size_ += computeStringSize(2, self.roomID);
+  if (self.hasRoom) {
+    size_ += computeMessageSize(2, self.room);
   }
   if (self.hasUserIsEntering) {
     size_ += computeBoolSize(3, self.userIsEntering);
@@ -1384,8 +1461,11 @@ static CMChatEnterRoom* defaultCMChatEnterRoomInstance = nil;
                          withIndent:[NSString stringWithFormat:@"%@  ", indent]];
     [output appendFormat:@"%@}\n", indent];
   }
-  if (self.hasRoomID) {
-    [output appendFormat:@"%@%@: %@\n", indent, @"roomID", self.roomID];
+  if (self.hasRoom) {
+    [output appendFormat:@"%@%@ {\n", indent, @"room"];
+    [self.room writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
   }
   if (self.hasUserIsEntering) {
     [output appendFormat:@"%@%@: %@\n", indent, @"userIsEntering", [NSNumber numberWithBool:self.userIsEntering]];
@@ -1398,8 +1478,10 @@ static CMChatEnterRoom* defaultCMChatEnterRoomInstance = nil;
    [self.user storeInDictionary:messageDictionary];
    [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"user"];
   }
-  if (self.hasRoomID) {
-    [dictionary setObject: self.roomID forKey: @"roomID"];
+  if (self.hasRoom) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.room storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"room"];
   }
   if (self.hasUserIsEntering) {
     [dictionary setObject: [NSNumber numberWithBool:self.userIsEntering] forKey: @"userIsEntering"];
@@ -1417,8 +1499,8 @@ static CMChatEnterRoom* defaultCMChatEnterRoomInstance = nil;
   return
       self.hasUser == otherMessage.hasUser &&
       (!self.hasUser || [self.user isEqual:otherMessage.user]) &&
-      self.hasRoomID == otherMessage.hasRoomID &&
-      (!self.hasRoomID || [self.roomID isEqual:otherMessage.roomID]) &&
+      self.hasRoom == otherMessage.hasRoom &&
+      (!self.hasRoom || [self.room isEqual:otherMessage.room]) &&
       self.hasUserIsEntering == otherMessage.hasUserIsEntering &&
       (!self.hasUserIsEntering || self.userIsEntering == otherMessage.userIsEntering) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
@@ -1428,8 +1510,8 @@ static CMChatEnterRoom* defaultCMChatEnterRoomInstance = nil;
   if (self.hasUser) {
     hashCode = hashCode * 31 + [self.user hash];
   }
-  if (self.hasRoomID) {
-    hashCode = hashCode * 31 + [self.roomID hash];
+  if (self.hasRoom) {
+    hashCode = hashCode * 31 + [self.room hash];
   }
   if (self.hasUserIsEntering) {
     hashCode = hashCode * 31 + [[NSNumber numberWithBool:self.userIsEntering] hash];
@@ -1480,8 +1562,8 @@ static CMChatEnterRoom* defaultCMChatEnterRoomInstance = nil;
   if (other.hasUser) {
     [self mergeUser:other.user];
   }
-  if (other.hasRoomID) {
-    [self setRoomID:other.roomID];
+  if (other.hasRoom) {
+    [self mergeRoom:other.room];
   }
   if (other.hasUserIsEntering) {
     [self setUserIsEntering:other.userIsEntering];
@@ -1517,7 +1599,12 @@ static CMChatEnterRoom* defaultCMChatEnterRoomInstance = nil;
         break;
       }
       case 18: {
-        [self setRoomID:[input readString]];
+        CMChatRoomBuilder* subBuilder = [CMChatRoom builder];
+        if (self.hasRoom) {
+          [subBuilder mergeFrom:self.room];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setRoom:[subBuilder buildPartial]];
         break;
       }
       case 24: {
@@ -1557,20 +1644,34 @@ static CMChatEnterRoom* defaultCMChatEnterRoomInstance = nil;
   resultChatEnterRoom.user = [CMChatUser defaultInstance];
   return self;
 }
-- (BOOL) hasRoomID {
-  return resultChatEnterRoom.hasRoomID;
+- (BOOL) hasRoom {
+  return resultChatEnterRoom.hasRoom;
 }
-- (NSString*) roomID {
-  return resultChatEnterRoom.roomID;
+- (CMChatRoom*) room {
+  return resultChatEnterRoom.room;
 }
-- (CMChatEnterRoomBuilder*) setRoomID:(NSString*) value {
-  resultChatEnterRoom.hasRoomID = YES;
-  resultChatEnterRoom.roomID = value;
+- (CMChatEnterRoomBuilder*) setRoom:(CMChatRoom*) value {
+  resultChatEnterRoom.hasRoom = YES;
+  resultChatEnterRoom.room = value;
   return self;
 }
-- (CMChatEnterRoomBuilder*) clearRoomID {
-  resultChatEnterRoom.hasRoomID = NO;
-  resultChatEnterRoom.roomID = @"";
+- (CMChatEnterRoomBuilder*) setRoomBuilder:(CMChatRoomBuilder*) builderForValue {
+  return [self setRoom:[builderForValue build]];
+}
+- (CMChatEnterRoomBuilder*) mergeRoom:(CMChatRoom*) value {
+  if (resultChatEnterRoom.hasRoom &&
+      resultChatEnterRoom.room != [CMChatRoom defaultInstance]) {
+    resultChatEnterRoom.room =
+      [[[CMChatRoom builderWithPrototype:resultChatEnterRoom.room] mergeFrom:value] buildPartial];
+  } else {
+    resultChatEnterRoom.room = value;
+  }
+  resultChatEnterRoom.hasRoom = YES;
+  return self;
+}
+- (CMChatEnterRoomBuilder*) clearRoom {
+  resultChatEnterRoom.hasRoom = NO;
+  resultChatEnterRoom.room = [CMChatRoom defaultInstance];
   return self;
 }
 - (BOOL) hasUserIsEntering {

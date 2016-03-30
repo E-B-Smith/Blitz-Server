@@ -2,7 +2,7 @@
 
 //----------------------------------------------------------------------------------------
 //
-//                                                                               Client.go
+//                                                                              Utility.go
 //                                      Chat-Server: A simple client & server chat service
 //
 //                                                                  E.B. Smith, March 2016
@@ -17,6 +17,7 @@ package Chat
 import (
     "math"
     "time"
+    "strings"
     "encoding/json"
     "github.com/satori/go.uuid"
     "golang.org/x/net/websocket"
@@ -30,13 +31,6 @@ import (
 //                                                                 Basic Types & Functions
 //
 //----------------------------------------------------------------------------------------
-
-
-type MessageFormatType int
-const (
-    FormatJSON      MessageFormatType = iota
-    FormatProtobuf
-)
 
 
 func TimestampFromTime(time time.Time) *float64 {
@@ -56,6 +50,7 @@ func TimeFromTimestamp(timestamp float64) time.Time {
 
 func BoolPtr(b bool) *bool          { return &b }
 func StringPtr(s string) *string    { return &s }
+func FormatPtr(f Format) *Format    { return &f }
 func NewUUIDString() string         { return uuid.NewV4().String() }
 
 
@@ -66,14 +61,14 @@ func NewUUIDString() string         { return uuid.NewV4().String() }
 
 func SendMessageToConnection(
         connection *websocket.Conn,
-        format MessageFormatType,
+        format Format,
         message *ChatMessageType) error {
     Log.LogFunctionName()
 
     var error error
     var data []byte
     switch format {
-    case FormatProtobuf:
+    case Format_FormatProtobuf:
         data, error = proto.Marshal(message)
     default:
         data, error = json.Marshal(*message)
@@ -85,9 +80,43 @@ func SendMessageToConnection(
         return error
     }
 
-    connection.SetReadDeadline(time.Now().Add(10 * time.Second))
+    connection.SetWriteDeadline(time.Now().Add(10 * time.Second))
     _, error = connection.Write(data)
     if error != nil { Log.LogError(error) }
     return error
+}
+
+
+//----------------------------------------------------------------------------------------
+//                                                                           DecodeMessage
+//----------------------------------------------------------------------------------------
+
+
+func DecodeMessage(formatIn Format, wireMessage []byte) (chatMessage *ChatMessageType, format Format, error error) {
+    Log.LogFunctionName()
+
+    chatMessage = &ChatMessageType {}
+    format = formatIn
+    error = nil
+
+    if format == Format_FormatUnknown {
+        test := strings.TrimSpace(string(wireMessage))
+        if strings.HasPrefix(test, "{") {
+            format = Format_FormatJSON
+        } else {
+            format = Format_FormatProtobuf
+        }
+    }
+
+    switch format {
+    case Format_FormatProtobuf:
+        error = proto.Unmarshal(wireMessage, chatMessage)
+
+    default:
+        error = json.Unmarshal(wireMessage, chatMessage)
+        format = Format_FormatJSON
+    }
+
+    return
 }
 

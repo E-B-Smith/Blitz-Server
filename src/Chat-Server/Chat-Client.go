@@ -24,25 +24,13 @@ import (
 )
 
 
-//----------------------------------------------------------------------------------------
-//                                                                                 Globals
-//----------------------------------------------------------------------------------------
-
-
-var ChatClient *Chat.ChatClient
-var ChatChannel chan *Chat.ChatMessageType
 const kChatHost = "ws://localhost:12345/chat"
 
 
-func RemoveEmptyStrings(a []string) []string {
-    result := make([]string, 0, len(a))
-    for _, s := range a {
-        if len(s) > 0 {
-            result = append(result, s)
-        }
-    }
-    return result
-}
+//----------------------------------------------------------------------------------------
+//                                                                       Terminal Handling
+//----------------------------------------------------------------------------------------
+
 
 const (
     kTermReset          = "\033[0m"     // Reset all custom styles
@@ -53,8 +41,6 @@ const (
 
 
 type TermColor int32
-
-
 const (
     kTermColorBlack TermColor = iota
     kTermColorRed
@@ -73,14 +59,45 @@ func SetTextColor(color TermColor) string {
 }
 
 
-func SetBackColor(color TermColor) string {
+func SetBackgroundColor(color TermColor) string {
     return fmt.Sprintf("\033[4%dm", color)
+}
+
+
+func DisableTerminalInputBuffer() error {
+    //  Disable input buffering:
+    error := exec.Command("/bin/stty", "-f", "/dev/tty", "cbreak", "min", "1").Run()
+    if error != nil { Log.LogError(error) }
+    return error
+}
+
+
+func SetTerminalEcho(enable bool) error {
+    //  Do not display entered characters on the screen:
+    s := "-echo"
+    if enable { s = "echo"}
+    error := exec.Command("/bin/stty", "-f", "/dev/tty", s).Run()
+    if error != nil { Log.LogError(error) }
+    return error
+}
+
+
+func RestoreTerminal() error {
+    SetTerminalEcho(true)
+    error := exec.Command("/bin/stty", "-f", "/dev/tty", "sane").Run()
+    if error != nil { Log.LogError(error) }
+    fmt.Printf("%s\n", kTermReset)
+    return error
 }
 
 
 //----------------------------------------------------------------------------------------
 //                                                                   ProcessCommandMessage
 //----------------------------------------------------------------------------------------
+
+
+var ChatClient *Chat.ChatClient
+var ChatChannel chan *Chat.ChatMessageType
 
 
 func ProcessCommandMessage(message string) string {
@@ -94,7 +111,16 @@ func ProcessCommandMessage(message string) string {
     switch messageParts[0] {
 
     case "\\connect":
-        error = ChatClient.Connect(kChatHost, ChatChannel)
+        if len(messageParts) < 3 {
+            error = fmt.Errorf("Expected: \\connect <user-id> <nickname>")
+        } else {
+            user := Chat.ChatUser {
+                UserID:         &messageParts[1],
+                Nickname:       &messageParts[2],
+                Format:         Chat.FormatPtr(Chat.Format_FormatProtobuf),
+            }
+            error = ChatClient.Connect(kChatHost, user, ChatChannel)
+        }
 
     case "\\disconnect":
         error = ChatClient.Disconnect()
@@ -104,9 +130,23 @@ func ProcessCommandMessage(message string) string {
     case "\\leave":
         error = ChatClient.LeaveRoom()
 
+    default:
+        error = fmt.Errorf("Unknown command '%s'.", messageParts[0])
     }
 
     return error.Error()
+}
+
+
+func RemoveEmptyStrings(a []string) []string {
+    result := make([]string, 0, len(a))
+    for _, s := range a {
+        s = strings.TrimSpace(s)
+        if len(s) > 0 {
+            result = append(result, s)
+        }
+    }
+    return result
 }
 
 
@@ -121,27 +161,15 @@ func main() {
     Log.LogLevel = Log.LogLevelAll
     Log.Debugf("Howdy! Debug trace logging is on.")
 
-    var error error
-
-    //  Disable input buffering:
-    error = exec.Command("/bin/stty", "-f", "/dev/tty", "cbreak", "min", "1").Run()
-    if error != nil { Log.LogError(error) }
-
-/*
-    //  Do not display entered characters on the screen:
-    error = exec.Command("/bin/stty", "-f", "/dev/tty", "-echo").Run()
-    if error != nil { Log.LogError(error) }
-
-    //  Restore the echoing state when exiting:
-    defer exec.Command("/bin/stty", "-f", "/dev/tty", "echo").Run()
-*/
-
     ChatClient      = Chat.NewChatClient()
     ChatChannel     = make(chan *Chat.ChatMessageType)
     keyboardChannel:= make(chan byte)
     messageChannel := make(chan string)
 
-    //  Process to read from keyboard:
+    DisableTerminalInputBuffer()
+    defer RestoreTerminal()
+
+    //  Read from the keyboard:
     go  func() {
         b := make([]byte, 1)
         reader := os.Stdin
@@ -153,7 +181,7 @@ func main() {
         }
     } ()
 
-    //  Process to read from chat client:
+    // Pretend we're reading the chat client:
     // go func() {
     //     var msgNo int64 = 1
     //     for {
@@ -163,6 +191,7 @@ func main() {
     //     }
     // } ()
 
+    // Read from the chat client:
     go func() {
         for {
             chatMessage := <- ChatChannel
@@ -180,6 +209,10 @@ func main() {
             if b == '\n' {
                 message := strings.TrimSpace(string(inputBuffer))
                 inputBuffer = inputBuffer[:0]
+                if message == "\\exit" {
+                    fmt.Printf(kTermResetLine+"Goodbye\n")
+                    break
+                }
                 if strings.HasPrefix(message, "\\") {
                     message = ProcessCommandMessage(message)
                 } else {

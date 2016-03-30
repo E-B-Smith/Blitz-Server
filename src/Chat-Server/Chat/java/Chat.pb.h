@@ -68,6 +68,15 @@
 @class PBUninterpretedOptionNamePartBuilder;
 
 
+typedef NS_ENUM(SInt32, CMFormat) {
+  CMFormatFormatUnknown = 0,
+  CMFormatFormatJSON = 1,
+  CMFormatFormatProtobuf = 2,
+};
+
+BOOL CMFormatIsValidValue(CMFormat value);
+NSString *NSStringFromCMFormat(CMFormat value);
+
 typedef NS_ENUM(SInt32, CMStatusCode) {
   CMStatusCodeStatusSuccess = 1,
   CMStatusCodeStatusInputInvalid = 2,
@@ -167,17 +176,22 @@ NSString *NSStringFromCMStatusCode(CMStatusCode value);
 
 #define ChatUser_userID @"userID"
 #define ChatUser_nickname @"nickname"
+#define ChatUser_format @"format"
 @interface CMChatUser : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
   BOOL hasUserID_:1;
   BOOL hasNickname_:1;
+  BOOL hasFormat_:1;
   NSString* userID;
   NSString* nickname;
+  CMFormat format;
 }
 - (BOOL) hasUserID;
 - (BOOL) hasNickname;
+- (BOOL) hasFormat;
 @property (readonly, strong) NSString* userID;
 @property (readonly, strong) NSString* nickname;
+@property (readonly) CMFormat format;
 
 + (instancetype) defaultInstance;
 - (instancetype) defaultInstance;
@@ -223,6 +237,11 @@ NSString *NSStringFromCMStatusCode(CMStatusCode value);
 - (NSString*) nickname;
 - (CMChatUserBuilder*) setNickname:(NSString*) value;
 - (CMChatUserBuilder*) clearNickname;
+
+- (BOOL) hasFormat;
+- (CMFormat) format;
+- (CMChatUserBuilder*) setFormat:(CMFormat) value;
+- (CMChatUserBuilder*) clearFormat;
 @end
 
 #define ChatRoom_roomID @"roomID"
@@ -358,22 +377,22 @@ NSString *NSStringFromCMStatusCode(CMStatusCode value);
 @end
 
 #define ChatEnterRoom_user @"user"
-#define ChatEnterRoom_roomID @"roomID"
+#define ChatEnterRoom_room @"room"
 #define ChatEnterRoom_userIsEntering @"userIsEntering"
 @interface CMChatEnterRoom : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
   BOOL hasUserIsEntering_:1;
-  BOOL hasRoomID_:1;
   BOOL hasUser_:1;
+  BOOL hasRoom_:1;
   BOOL userIsEntering_:1;
-  NSString* roomID;
   CMChatUser* user;
+  CMChatRoom* room;
 }
 - (BOOL) hasUser;
-- (BOOL) hasRoomID;
+- (BOOL) hasRoom;
 - (BOOL) hasUserIsEntering;
 @property (readonly, strong) CMChatUser* user;
-@property (readonly, strong) NSString* roomID;
+@property (readonly, strong) CMChatRoom* room;
 - (BOOL) userIsEntering;
 
 + (instancetype) defaultInstance;
@@ -418,10 +437,12 @@ NSString *NSStringFromCMStatusCode(CMStatusCode value);
 - (CMChatEnterRoomBuilder*) mergeUser:(CMChatUser*) value;
 - (CMChatEnterRoomBuilder*) clearUser;
 
-- (BOOL) hasRoomID;
-- (NSString*) roomID;
-- (CMChatEnterRoomBuilder*) setRoomID:(NSString*) value;
-- (CMChatEnterRoomBuilder*) clearRoomID;
+- (BOOL) hasRoom;
+- (CMChatRoom*) room;
+- (CMChatEnterRoomBuilder*) setRoom:(CMChatRoom*) value;
+- (CMChatEnterRoomBuilder*) setRoomBuilder:(CMChatRoomBuilder*) builderForValue;
+- (CMChatEnterRoomBuilder*) mergeRoom:(CMChatRoom*) value;
+- (CMChatEnterRoomBuilder*) clearRoom;
 
 - (BOOL) hasUserIsEntering;
 - (BOOL) userIsEntering;
