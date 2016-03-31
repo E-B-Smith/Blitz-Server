@@ -66,6 +66,7 @@ message ChatPresence {
 
 
 enum StatusCode {
+  StatusUnknown         = 0;
   StatusSuccess         = 1;
   StatusInputInvalid    = 2;
   StatusNotAuthorized   = 3;

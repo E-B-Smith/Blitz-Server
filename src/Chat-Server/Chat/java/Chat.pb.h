@@ -78,6 +78,7 @@ BOOL CMFormatIsValidValue(CMFormat value);
 NSString *NSStringFromCMFormat(CMFormat value);
 
 typedef NS_ENUM(SInt32, CMStatusCode) {
+  CMStatusCodeStatusUnknown = 0,
   CMStatusCodeStatusSuccess = 1,
   CMStatusCodeStatusInputInvalid = 2,
   CMStatusCodeStatusNotAuthorized = 3,

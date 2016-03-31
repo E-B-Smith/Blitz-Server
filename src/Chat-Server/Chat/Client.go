@@ -70,6 +70,10 @@ func (client *ChatClient) StringFromMessage(chatMessageType *ChatMessageType) st
 
     switch {
 
+    case chatMessageType == nil:
+        return "< null message >"
+
+
     case chatMessageType.ChatMessage != nil:
         m := chatMessageType.ChatMessage
         if m.SenderID == nil || m.RoomID == nil {
@@ -93,6 +97,7 @@ func (client *ChatClient) StringFromMessage(chatMessageType *ChatMessageType) st
         }
         return fmt.Sprintf("%15s:%15s: %s", roomname, username, *m.Message)
 
+
     case chatMessageType.ChatConnect != nil:
         m := chatMessageType.ChatConnect
         var result string
@@ -107,10 +112,12 @@ func (client *ChatClient) StringFromMessage(chatMessageType *ChatMessageType) st
         }
         return result
 
+
     case chatMessageType.ChatEnterRoom != nil:
-        m := chatMessageType.ChatEnterRoom
-        if m.UserIsEntering != nil  && *m.UserIsEntering {
+        enter := chatMessageType.ChatEnterRoom
+        if enter.UserIsEntering != nil  && *enter.UserIsEntering {
         }
+
 
     case chatMessageType.ChatPresence != nil:
         m := chatMessageType.ChatPresence
@@ -121,12 +128,18 @@ func (client *ChatClient) StringFromMessage(chatMessageType *ChatMessageType) st
         result += fmt.Sprintf("%d occupants.", len(m.Users))
         return result
 
+
     case chatMessageType.ChatResponse != nil:
         m := chatMessageType.ChatResponse
-        return fmt.Sprintf("Code %d: %s", *m.Code, *m.Message)
+        code := StatusCode_StatusUnknown
+        if m.Code != nil { code = *m.Code }
+        msg := ""
+        if m.Message != nil { msg = *m.Message }
+        return fmt.Sprintf("Code %d: %s", code, msg)
+
 
     default:
-        return fmt.Sprintf("Unknown message type: %+v", chatMessageType)
+        return fmt.Sprintf("Unknown message type: %+v", *chatMessageType)
     }
 
     return "Shouldn't happen."
@@ -187,7 +200,33 @@ func (client *ChatClient) Disconnect() error {
     client.connection = nil
     client.userMap = make(map[string]*ChatUser)
     client.roomMap = make(map[string]*ChatRoom)
+    client.room = nil
+    client.user = nil
     return error
+}
+
+
+func (client *ChatClient) EnterRoom(room ChatRoom) error {
+    Log.LogFunctionName()
+
+    client.lock.RLock()
+    defer client.lock.RUnlock()
+
+    if client.connection == nil {
+        return fmt.Errorf("Not connected")
+    }
+    if client.user == nil {
+        return fmt.Errorf("Not connected as a user")
+    }
+
+    chatMessage := ChatEnterRoom {
+        UserIsEntering:     BoolPtr(true),
+        User:               client.user,
+        Room:               &room,
+    }
+    return SendMessageToConnection(client.connection,
+            *client.user.Format,
+            &ChatMessageType { ChatEnterRoom: &chatMessage })
 }
 
 
@@ -330,6 +369,7 @@ func (client *ChatClient) ChatClientReader(clientReaderChannel chan <- *ChatMess
                 }
             }
             client.lock.Unlock()
+
 
         default:
             Log.Errorf("Error: unknown message %+v.", chatMessage)

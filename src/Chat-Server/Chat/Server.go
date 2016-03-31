@@ -147,22 +147,16 @@ func (server *ChatServer) Disconnect(connection *websocket.Conn) {
 //----------------------------------------------------------------------------------------
 
 
-func (server *ChatServer) sendMessageToRoom(room *ChatServerRoom, message *ChatMessageType) {
+func (server *ChatServer) SendMessageToRoom(room *ChatServerRoom, message *ChatMessageType) {
     Log.LogFunctionName()
+
+    server.lock.RLock()
+    defer server.lock.RUnlock()
     for userID, _ := range room.userIDMap {
-        user, ok := server.userMap[userID]
-        if ok {
+        if user, ok := server.userMap[userID]; ok {
             SendMessageToConnection(user.connection, *user.Format, message)
         }
     }
-}
-
-
-func (server *ChatServer) SendMessageToRoom(room *ChatServerRoom, message *ChatMessageType) {
-    Log.LogFunctionName()
-    server.lock.Lock()
-    defer server.lock.Unlock()
-    server.sendMessageToRoom(room, message)
 }
 
 
@@ -240,7 +234,7 @@ func (server *ChatServer) LeaveRoom(connection *websocket.Conn) {
     }
     chatMessage := ChatMessageType { ChatEnterRoom: &leaveMessage }
 
-    server.sendMessageToRoom(room, &chatMessage)
+    server.LockedSendMessageToRoom(room, &chatMessage)
 
     //  Delete user from room --
 
@@ -378,7 +372,6 @@ func (server *ChatServer) HandleChatConnection(connection *websocket.Conn) {
     }
 
     //  Get the user info --
-
 
     server.lock.RLock()
     _, user, _ := server.userFromConnection(connection)

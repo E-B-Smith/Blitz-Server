@@ -46,6 +46,7 @@ NSString *NSStringFromCMFormat(CMFormat value) {
 
 BOOL CMStatusCodeIsValidValue(CMStatusCode value) {
   switch (value) {
+    case CMStatusCodeStatusUnknown:
     case CMStatusCodeStatusSuccess:
     case CMStatusCodeStatusInputInvalid:
     case CMStatusCodeStatusNotAuthorized:
@@ -57,6 +58,8 @@ BOOL CMStatusCodeIsValidValue(CMStatusCode value) {
 }
 NSString *NSStringFromCMStatusCode(CMStatusCode value) {
   switch (value) {
+    case CMStatusCodeStatusUnknown:
+      return @"CMStatusCodeStatusUnknown";
     case CMStatusCodeStatusSuccess:
       return @"CMStatusCodeStatusSuccess";
     case CMStatusCodeStatusInputInvalid:
@@ -2009,7 +2012,7 @@ static CMChatPresence* defaultCMChatPresenceInstance = nil;
 @synthesize message;
 - (instancetype) init {
   if ((self = [super init])) {
-    self.code = CMStatusCodeStatusSuccess;
+    self.code = CMStatusCodeStatusUnknown;
     self.message = @"";
   }
   return self;
@@ -2225,7 +2228,7 @@ static CMChatResponse* defaultCMChatResponseInstance = nil;
 }
 - (CMChatResponseBuilder*) clearCode {
   resultChatResponse.hasCode = NO;
-  resultChatResponse.code = CMStatusCodeStatusSuccess;
+  resultChatResponse.code = CMStatusCodeStatusUnknown;
   return self;
 }
 - (BOOL) hasMessage {
