@@ -219,6 +219,8 @@ func EducationForUserID(userID string) []*BlitzMessage.Education {
             &startDate,
             &stopDate)
         if error != nil {
+            Log.LogError(error)
+        } else {
             education := BlitzMessage.Education {
                 SchoolName:   StringPtrFromNullString(schoolName),
                 Degree:       StringPtrFromNullString(degree),
