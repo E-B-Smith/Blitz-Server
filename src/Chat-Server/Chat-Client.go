@@ -181,7 +181,7 @@ func main() {
         }
     } ()
 
-    // Pretend we're reading the chat client:
+    // For testing, pretend we're reading the chat client:
     // go func() {
     //     var msgNo int64 = 1
     //     for {
