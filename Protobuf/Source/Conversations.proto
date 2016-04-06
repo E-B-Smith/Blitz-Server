@@ -23,6 +23,6 @@ message Conversation {
   optional string       parentFeedPostID    = 2;
   optional Timestamp    creationDate        = 3;
   optional Timestamp    lastActivityDate    = 4;
-  repeated string       members             = 5;
+  repeated string       memberIDs           = 5;
 }
 

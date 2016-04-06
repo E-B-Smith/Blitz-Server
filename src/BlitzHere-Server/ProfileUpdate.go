@@ -18,14 +18,15 @@ import (
 )
 
 
-func StringsAreEmptyWithClean(strs ...*string) bool {
+func StringsAreEmptyAfterClean(strs ...*string) bool {
     result := true
-
     for _, s := range strs {
         if s == nil { continue }
         *s = strings.TrimSpace(*s)
         if len(*s) > 0 {
             result = false
+        } else {
+            *s = nil
         }
     }
 
@@ -38,7 +39,7 @@ func InsertEmployment(userID *string, isHeadLineItem bool, employment *BlitzMess
 
     if employment == nil || userID == nil { return }
 
-    if StringsAreEmptyWithClean(
+    if StringsAreEmptyAfterClean(
         employment.JobTitle,
         employment.CompanyName,
         employment.Location,
@@ -78,10 +79,11 @@ func InsertEducation(userID *string, education *BlitzMessage.Education) {
 
     if education == nil || userID == nil { return }
 
-    if StringsAreEmptyWithClean(
+    if StringsAreEmptyAfterClean(
         education.SchoolName,
         education.Degree,
-        education.Emphasis) {
+        education.Emphasis,
+        education.Summary) {
         return
     }
 
@@ -92,13 +94,15 @@ func InsertEducation(userID *string, education *BlitzMessage.Education) {
             ,degree
             ,emphasis
             ,startDate
-            ,stopDate) values ($1, $2, $3, $4, $5, $6);`,
+            ,stopDate
+            ,summary) values ($1, $2, $3, $4, $5, $6, $7);`,
         userID,
         education.SchoolName,
         education.Degree,
         education.Emphasis,
         BlitzMessage.NullTimeFromTimespanStart(education.Timespan),
-        BlitzMessage.NullTimeFromTimespanStop(education.Timespan))
+        BlitzMessage.NullTimeFromTimespanStop(education.Timespan),
+        education.Summary)
     if error != nil {
         Log.LogError(error)
     }

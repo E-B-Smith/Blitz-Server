@@ -1573,6 +1573,7 @@ static BEmployment* defaultBEmploymentInstance = nil;
 @property (strong) NSString* degree;
 @property (strong) NSString* emphasis;
 @property (strong) BTimespan* timespan;
+@property (strong) NSString* summary;
 @end
 
 @implementation BEducation
@@ -1605,12 +1606,20 @@ static BEmployment* defaultBEmploymentInstance = nil;
   hasTimespan_ = !!_value_;
 }
 @synthesize timespan;
+- (BOOL) hasSummary {
+  return !!hasSummary_;
+}
+- (void) setHasSummary:(BOOL) _value_ {
+  hasSummary_ = !!_value_;
+}
+@synthesize summary;
 - (instancetype) init {
   if ((self = [super init])) {
     self.schoolName = @"";
     self.degree = @"";
     self.emphasis = @"";
     self.timespan = [BTimespan defaultInstance];
+    self.summary = @"";
   }
   return self;
 }
@@ -1647,6 +1656,9 @@ static BEducation* defaultBEducationInstance = nil;
   if (self.hasTimespan) {
     [output writeMessage:4 value:self.timespan];
   }
+  if (self.hasSummary) {
+    [output writeString:5 value:self.summary];
+  }
   [self.unknownFields writeToCodedOutputStream:output];
 }
 - (SInt32) serializedSize {
@@ -1667,6 +1679,9 @@ static BEducation* defaultBEducationInstance = nil;
   }
   if (self.hasTimespan) {
     size_ += computeMessageSize(4, self.timespan);
+  }
+  if (self.hasSummary) {
+    size_ += computeStringSize(5, self.summary);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -1718,6 +1733,9 @@ static BEducation* defaultBEducationInstance = nil;
                          withIndent:[NSString stringWithFormat:@"%@  ", indent]];
     [output appendFormat:@"%@}\n", indent];
   }
+  if (self.hasSummary) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"summary", self.summary];
+  }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (void) storeInDictionary:(NSMutableDictionary *)dictionary {
@@ -1734,6 +1752,9 @@ static BEducation* defaultBEducationInstance = nil;
    NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
    [self.timespan storeInDictionary:messageDictionary];
    [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"timespan"];
+  }
+  if (self.hasSummary) {
+    [dictionary setObject: self.summary forKey: @"summary"];
   }
   [self.unknownFields storeInDictionary:dictionary];
 }
@@ -1754,6 +1775,8 @@ static BEducation* defaultBEducationInstance = nil;
       (!self.hasEmphasis || [self.emphasis isEqual:otherMessage.emphasis]) &&
       self.hasTimespan == otherMessage.hasTimespan &&
       (!self.hasTimespan || [self.timespan isEqual:otherMessage.timespan]) &&
+      self.hasSummary == otherMessage.hasSummary &&
+      (!self.hasSummary || [self.summary isEqual:otherMessage.summary]) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
@@ -1769,6 +1792,9 @@ static BEducation* defaultBEducationInstance = nil;
   }
   if (self.hasTimespan) {
     hashCode = hashCode * 31 + [self.timespan hash];
+  }
+  if (self.hasSummary) {
+    hashCode = hashCode * 31 + [self.summary hash];
   }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
@@ -1825,6 +1851,9 @@ static BEducation* defaultBEducationInstance = nil;
   if (other.hasTimespan) {
     [self mergeTimespan:other.timespan];
   }
+  if (other.hasSummary) {
+    [self setSummary:other.summary];
+  }
   [self mergeUnknownFields:other.unknownFields];
   return self;
 }
@@ -1865,6 +1894,10 @@ static BEducation* defaultBEducationInstance = nil;
         }
         [input readMessage:subBuilder extensionRegistry:extensionRegistry];
         [self setTimespan:[subBuilder buildPartial]];
+        break;
+      }
+      case 42: {
+        [self setSummary:[input readString]];
         break;
       }
     }
@@ -1946,6 +1979,22 @@ static BEducation* defaultBEducationInstance = nil;
 - (BEducationBuilder*) clearTimespan {
   resultEducation.hasTimespan = NO;
   resultEducation.timespan = [BTimespan defaultInstance];
+  return self;
+}
+- (BOOL) hasSummary {
+  return resultEducation.hasSummary;
+}
+- (NSString*) summary {
+  return resultEducation.summary;
+}
+- (BEducationBuilder*) setSummary:(NSString*) value {
+  resultEducation.hasSummary = YES;
+  resultEducation.summary = value;
+  return self;
+}
+- (BEducationBuilder*) clearSummary {
+  resultEducation.hasSummary = NO;
+  resultEducation.summary = @"";
   return self;
 }
 @end

@@ -4151,6 +4151,20 @@ public final class UserProfiles {
      * <code>optional .BlitzMessage.Timespan timespan = 4;</code>
      */
     com.blitzhere.BlitzMessage.Types.TimespanOrBuilder getTimespanOrBuilder();
+
+    /**
+     * <code>optional string summary = 5;</code>
+     */
+    boolean hasSummary();
+    /**
+     * <code>optional string summary = 5;</code>
+     */
+    java.lang.String getSummary();
+    /**
+     * <code>optional string summary = 5;</code>
+     */
+    com.google.protobuf.ByteString
+        getSummaryBytes();
   }
   /**
    * Protobuf type {@code BlitzMessage.Education}
@@ -4233,6 +4247,12 @@ public final class UserProfiles {
                 timespan_ = subBuilder.buildPartial();
               }
               bitField0_ |= 0x00000008;
+              break;
+            }
+            case 42: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000010;
+              summary_ = bs;
               break;
             }
           }
@@ -4422,11 +4442,54 @@ public final class UserProfiles {
       return timespan_;
     }
 
+    public static final int SUMMARY_FIELD_NUMBER = 5;
+    private java.lang.Object summary_;
+    /**
+     * <code>optional string summary = 5;</code>
+     */
+    public boolean hasSummary() {
+      return ((bitField0_ & 0x00000010) == 0x00000010);
+    }
+    /**
+     * <code>optional string summary = 5;</code>
+     */
+    public java.lang.String getSummary() {
+      java.lang.Object ref = summary_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          summary_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string summary = 5;</code>
+     */
+    public com.google.protobuf.ByteString
+        getSummaryBytes() {
+      java.lang.Object ref = summary_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        summary_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private void initFields() {
       schoolName_ = "";
       degree_ = "";
       emphasis_ = "";
       timespan_ = com.blitzhere.BlitzMessage.Types.Timespan.getDefaultInstance();
+      summary_ = "";
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -4459,6 +4522,9 @@ public final class UserProfiles {
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         output.writeMessage(4, timespan_);
       }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        output.writeBytes(5, getSummaryBytes());
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -4483,6 +4549,10 @@ public final class UserProfiles {
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(4, timespan_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(5, getSummaryBytes());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -4614,6 +4684,8 @@ public final class UserProfiles {
           timespanBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000008);
+        summary_ = "";
+        bitField0_ = (bitField0_ & ~0x00000010);
         return this;
       }
 
@@ -4662,6 +4734,10 @@ public final class UserProfiles {
         } else {
           result.timespan_ = timespanBuilder_.build();
         }
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000010;
+        }
+        result.summary_ = summary_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -4695,6 +4771,11 @@ public final class UserProfiles {
         }
         if (other.hasTimespan()) {
           mergeTimespan(other.getTimespan());
+        }
+        if (other.hasSummary()) {
+          bitField0_ |= 0x00000010;
+          summary_ = other.summary_;
+          onChanged();
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -5071,6 +5152,82 @@ public final class UserProfiles {
           timespan_ = null;
         }
         return timespanBuilder_;
+      }
+
+      private java.lang.Object summary_ = "";
+      /**
+       * <code>optional string summary = 5;</code>
+       */
+      public boolean hasSummary() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      /**
+       * <code>optional string summary = 5;</code>
+       */
+      public java.lang.String getSummary() {
+        java.lang.Object ref = summary_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            summary_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string summary = 5;</code>
+       */
+      public com.google.protobuf.ByteString
+          getSummaryBytes() {
+        java.lang.Object ref = summary_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          summary_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string summary = 5;</code>
+       */
+      public Builder setSummary(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000010;
+        summary_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string summary = 5;</code>
+       */
+      public Builder clearSummary() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        summary_ = getDefaultInstance().getSummary();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string summary = 5;</code>
+       */
+      public Builder setSummaryBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000010;
+        summary_ = value;
+        onChanged();
+        return this;
       }
 
       // @@protoc_insertion_point(builder_scope:BlitzMessage.Education)
@@ -14011,50 +14168,50 @@ public final class UserProfiles {
       "me\030\002 \001(\t\022\020\n\010location\030\003 \001(\t\022\020\n\010industry\030\004" +
       " \001(\t\022(\n\010timespan\030\005 \001(\0132\026.BlitzMessage.Ti" +
       "mespan\022\017\n\007summary\030\006 \001(\t\022\026\n\016isHeadlineIte" +
-      "m\030\007 \001(\010\"k\n\tEducation\022\022\n\nschoolName\030\001 \001(\t" +
+      "m\030\007 \001(\010\"|\n\tEducation\022\022\n\nschoolName\030\001 \001(\t" +
       "\022\016\n\006degree\030\002 \001(\t\022\020\n\010emphasis\030\003 \001(\t\022(\n\010ti" +
-      "mespan\030\004 \001(\0132\026.BlitzMessage.Timespan\"\263\001\n" +
-      "\tImageData\0220\n\014imageContent\030\001 \001(\0162\032.Blitz" +
-      "Message.ImageContent\022\022\n\nimageBytes\030\002 \001(\014" +
-      "\022\023\n\013contentType\030\003 \001(\t\022\020\n\010imageURL\030\004 \001(\t\022",
-      "*\n\tdateAdded\030\005 \001(\0132\027.BlitzMessage.Timest" +
-      "amp\022\r\n\005crc32\030\006 \001(\003\"\206\005\n\013UserProfile\022\016\n\006us" +
-      "erID\030\001 \001(\t\022,\n\nuserStatus\030\002 \001(\0162\030.BlitzMe" +
-      "ssage.UserStatus\022-\n\014creationDate\030\003 \001(\0132\027" +
-      ".BlitzMessage.Timestamp\022)\n\010lastSeen\030\004 \001(" +
-      "\0132\027.BlitzMessage.Timestamp\022\014\n\004name\030\005 \001(\t" +
-      "\022$\n\006gender\030\006 \001(\0162\024.BlitzMessage.Gender\022)" +
-      "\n\010birthday\030\007 \001(\0132\027.BlitzMessage.Timestam" +
-      "p\022\'\n\006images\030\010 \003(\0132\027.BlitzMessage.ImageDa" +
-      "ta\0226\n\020socialIdentities\030\t \003(\0132\034.BlitzMess",
-      "age.SocialIdentity\022.\n\013contactInfo\030\n \003(\0132" +
-      "\031.BlitzMessage.ContactInfo\0224\n\022headlineEm" +
-      "ployment\030\013 \001(\0132\030.BlitzMessage.Employment" +
-      "\022,\n\nemployment\030\014 \003(\0132\030.BlitzMessage.Empl" +
-      "oyment\022*\n\teducation\030\r \003(\0132\027.BlitzMessage" +
-      ".Education\022.\n\rexpertiseTags\030\016 \003(\0132\027.Blit" +
-      "zMessage.EntityTag\022\024\n\014interestTags\030\017 \003(\t" +
-      "\022\031\n\021backgroundSummary\030\020 \001(\t\"9\n\013ImageUplo" +
-      "ad\022*\n\timageData\030\001 \003(\0132\027.BlitzMessage.Ima" +
-      "geData\"@\n\021UserProfileUpdate\022+\n\010profiles\030",
-      "\001 \003(\0132\031.BlitzMessage.UserProfile\"#\n\020User" +
-      "ProfileQuery\022\017\n\007userIDs\030\001 \003(\t\"\246\001\n\023Confir" +
-      "mationRequest\022.\n\013contactInfo\030\001 \001(\0132\031.Bli" +
-      "tzMessage.ContactInfo\022.\n\013userProfile\030\002 \001" +
-      "(\0132\031.BlitzMessage.UserProfile\022\030\n\020confirm" +
-      "ationCode\030\003 \001(\t\022\025\n\rinviterUserID\030\004 \001(\t\"F" +
-      "\n\027ProfilesFromContactInfo\022+\n\010profiles\030\001 " +
-      "\003(\0132\031.BlitzMessage.UserProfile*Z\n\013Contac" +
-      "tType\022\r\n\tCTUnknown\020\000\022\016\n\nCTPhoneSMS\020\001\022\013\n\007" +
-      "CTEmail\020\002\022\n\n\006CTChat\020\003\022\023\n\017CTSocialService",
-      "\020\004*j\n\nUserStatus\022\r\n\tUSUnknown\020\000\022\r\n\tUSBlo" +
-      "cked\020\001\022\r\n\tUSInvited\020\002\022\014\n\010USActive\020\003\022\020\n\014U" +
-      "SConfirming\020\004\022\017\n\013USConfirmed\020\005*:\n\006Gender" +
-      "\022\014\n\010GUnknown\020\000\022\013\n\007GFemale\020\001\022\t\n\005GMale\020\002\022\n" +
-      "\n\006GOther\020\003*F\n\014ImageContent\022\r\n\tICUnknown\020" +
-      "\000\022\021\n\rICUserProfile\020\001\022\024\n\020ICUserBackground" +
-      "\020\002B/\n\032com.blitzhere.BlitzMessage\210\001\001\322>\002\n\000" +
-      "\322>\003\022\001B\322>\002\030\001"
+      "mespan\030\004 \001(\0132\026.BlitzMessage.Timespan\022\017\n\007" +
+      "summary\030\005 \001(\t\"\263\001\n\tImageData\0220\n\014imageCont" +
+      "ent\030\001 \001(\0162\032.BlitzMessage.ImageContent\022\022\n" +
+      "\nimageBytes\030\002 \001(\014\022\023\n\013contentType\030\003 \001(\t\022\020",
+      "\n\010imageURL\030\004 \001(\t\022*\n\tdateAdded\030\005 \001(\0132\027.Bl" +
+      "itzMessage.Timestamp\022\r\n\005crc32\030\006 \001(\003\"\206\005\n\013" +
+      "UserProfile\022\016\n\006userID\030\001 \001(\t\022,\n\nuserStatu" +
+      "s\030\002 \001(\0162\030.BlitzMessage.UserStatus\022-\n\014cre" +
+      "ationDate\030\003 \001(\0132\027.BlitzMessage.Timestamp" +
+      "\022)\n\010lastSeen\030\004 \001(\0132\027.BlitzMessage.Timest" +
+      "amp\022\014\n\004name\030\005 \001(\t\022$\n\006gender\030\006 \001(\0162\024.Blit" +
+      "zMessage.Gender\022)\n\010birthday\030\007 \001(\0132\027.Blit" +
+      "zMessage.Timestamp\022\'\n\006images\030\010 \003(\0132\027.Bli" +
+      "tzMessage.ImageData\0226\n\020socialIdentities\030",
+      "\t \003(\0132\034.BlitzMessage.SocialIdentity\022.\n\013c" +
+      "ontactInfo\030\n \003(\0132\031.BlitzMessage.ContactI" +
+      "nfo\0224\n\022headlineEmployment\030\013 \001(\0132\030.BlitzM" +
+      "essage.Employment\022,\n\nemployment\030\014 \003(\0132\030." +
+      "BlitzMessage.Employment\022*\n\teducation\030\r \003" +
+      "(\0132\027.BlitzMessage.Education\022.\n\rexpertise" +
+      "Tags\030\016 \003(\0132\027.BlitzMessage.EntityTag\022\024\n\014i" +
+      "nterestTags\030\017 \003(\t\022\031\n\021backgroundSummary\030\020" +
+      " \001(\t\"9\n\013ImageUpload\022*\n\timageData\030\001 \003(\0132\027" +
+      ".BlitzMessage.ImageData\"@\n\021UserProfileUp",
+      "date\022+\n\010profiles\030\001 \003(\0132\031.BlitzMessage.Us" +
+      "erProfile\"#\n\020UserProfileQuery\022\017\n\007userIDs" +
+      "\030\001 \003(\t\"\246\001\n\023ConfirmationRequest\022.\n\013contac" +
+      "tInfo\030\001 \001(\0132\031.BlitzMessage.ContactInfo\022." +
+      "\n\013userProfile\030\002 \001(\0132\031.BlitzMessage.UserP" +
+      "rofile\022\030\n\020confirmationCode\030\003 \001(\t\022\025\n\rinvi" +
+      "terUserID\030\004 \001(\t\"F\n\027ProfilesFromContactIn" +
+      "fo\022+\n\010profiles\030\001 \003(\0132\031.BlitzMessage.User" +
+      "Profile*Z\n\013ContactType\022\r\n\tCTUnknown\020\000\022\016\n" +
+      "\nCTPhoneSMS\020\001\022\013\n\007CTEmail\020\002\022\n\n\006CTChat\020\003\022\023",
+      "\n\017CTSocialService\020\004*j\n\nUserStatus\022\r\n\tUSU" +
+      "nknown\020\000\022\r\n\tUSBlocked\020\001\022\r\n\tUSInvited\020\002\022\014" +
+      "\n\010USActive\020\003\022\020\n\014USConfirming\020\004\022\017\n\013USConf" +
+      "irmed\020\005*:\n\006Gender\022\014\n\010GUnknown\020\000\022\013\n\007GFema" +
+      "le\020\001\022\t\n\005GMale\020\002\022\n\n\006GOther\020\003*F\n\014ImageCont" +
+      "ent\022\r\n\tICUnknown\020\000\022\021\n\rICUserProfile\020\001\022\024\n" +
+      "\020ICUserBackground\020\002B/\n\032com.blitzhere.Bli" +
+      "tzMessage\210\001\001\322>\002\n\000\322>\003\022\001B\322>\002\030\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -14094,7 +14251,7 @@ public final class UserProfiles {
     internal_static_BlitzMessage_Education_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_BlitzMessage_Education_descriptor,
-        new java.lang.String[] { "SchoolName", "Degree", "Emphasis", "Timespan", });
+        new java.lang.String[] { "SchoolName", "Degree", "Emphasis", "Timespan", "Summary", });
     internal_static_BlitzMessage_ImageData_descriptor =
       getDescriptor().getMessageTypes().get(4);
     internal_static_BlitzMessage_ImageData_fieldAccessorTable = new

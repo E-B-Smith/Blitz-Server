@@ -94,6 +94,7 @@ create table EducationTable
     ,emphasis           text
     ,startDate          timestamptz
     ,stopDate           timestamptz
+    ,summary            text
     );
 create index EducationTableIndex on EducationTable(userID);
 

@@ -195,6 +195,7 @@ func EducationForUserID(userID string) []*BlitzMessage.Education {
             ,emphasis
             ,startDate
             ,stopDate
+            ,summary
                 from EducationTable where userID = $1
                 order by stopDate desc;`, userID)
     if error != nil {
@@ -211,13 +212,15 @@ func EducationForUserID(userID string) []*BlitzMessage.Education {
             emphasis           sql.NullString
             startDate          pq.NullTime
             stopDate           pq.NullTime
+            summary            sql.NullString
         )
         error = rows.Scan(
             &schoolName,
             &degree,
             &emphasis,
             &startDate,
-            &stopDate)
+            &stopDate,
+            &summary)
         if error != nil {
             Log.LogError(error)
         } else {
@@ -226,6 +229,7 @@ func EducationForUserID(userID string) []*BlitzMessage.Education {
                 Degree:       StringPtrFromNullString(degree),
                 Emphasis:     StringPtrFromNullString(emphasis),
                 Timespan:     BlitzMessage.TimespanFromNullTimes(startDate, stopDate),
+                Summary:      StringPtrFromNullString(summary),
             }
             educationArray = append(educationArray, &education)
         }

@@ -457,25 +457,30 @@ NSString *NSStringFromBImageContent(BImageContent value);
 #define Education_degree @"degree"
 #define Education_emphasis @"emphasis"
 #define Education_timespan @"timespan"
+#define Education_summary @"summary"
 @interface BEducation : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
   BOOL hasSchoolName_:1;
   BOOL hasDegree_:1;
   BOOL hasEmphasis_:1;
+  BOOL hasSummary_:1;
   BOOL hasTimespan_:1;
   NSString* schoolName;
   NSString* degree;
   NSString* emphasis;
+  NSString* summary;
   BTimespan* timespan;
 }
 - (BOOL) hasSchoolName;
 - (BOOL) hasDegree;
 - (BOOL) hasEmphasis;
 - (BOOL) hasTimespan;
+- (BOOL) hasSummary;
 @property (readonly, strong) NSString* schoolName;
 @property (readonly, strong) NSString* degree;
 @property (readonly, strong) NSString* emphasis;
 @property (readonly, strong) BTimespan* timespan;
+@property (readonly, strong) NSString* summary;
 
 + (instancetype) defaultInstance;
 - (instancetype) defaultInstance;
@@ -533,6 +538,11 @@ NSString *NSStringFromBImageContent(BImageContent value);
 - (BEducationBuilder*) setTimespanBuilder:(BTimespanBuilder*) builderForValue;
 - (BEducationBuilder*) mergeTimespan:(BTimespan*) value;
 - (BEducationBuilder*) clearTimespan;
+
+- (BOOL) hasSummary;
+- (NSString*) summary;
+- (BEducationBuilder*) setSummary:(NSString*) value;
+- (BEducationBuilder*) clearSummary;
 @end
 
 #define ImageData_imageContent @"imageContent"

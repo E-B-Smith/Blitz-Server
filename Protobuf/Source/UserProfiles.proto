@@ -63,6 +63,7 @@ message Education {
   optional string   degree     = 2;
   optional string   emphasis   = 3;
   optional Timespan timespan   = 4;
+  optional string   summary    = 5;
 }
 
 
