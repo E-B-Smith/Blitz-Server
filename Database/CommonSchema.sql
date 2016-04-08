@@ -68,7 +68,10 @@ create table UserTable
 
     ,backgroundSummary  text
     ,interestTags       text[]
+
+    ,search             tsvector
     );
+create index UserSearchIndex on UserTable using gin(search);
 
 
 create table EmploymentTable
@@ -747,6 +750,137 @@ create table HTTPDeepLinkTable
     ,referrer           text
     );
 create unique index HTTPDeepLinkIndex on HTTPDeepLinkTable(deviceSignature, creationDate);
+
+
+------------------------------------------------------------------------------------------
+--
+--                                                                   Search & Autocomplete
+--
+------------------------------------------------------------------------------------------
+
+
+create table autocompletetable
+    (
+     word       text    not null
+    ,rank       int     not null
+    );
+create unique index autocompleteindex on autocompletetable (word text_pattern_ops);
+
+
+create or replace
+function UpdateAutocompleteTable(words text) returns void as
+    $$
+    declare
+        wordarray text[];
+        newword   text;
+    begin
+
+    words := lower(words);
+    wordarray := regexp_split_to_array(words, E'\\s+');
+
+    foreach newword in array wordarray
+        loop
+        if char_length(newword) > 1 then
+            insert into autocompletetable
+                (rank, word) values (1, newword)
+            on conflict(word) do
+                update set rank = autocompletetable.rank + 1;
+            end if;
+        end loop;
+
+    end;
+    $$
+    language plpgsql;
+
+
+create or replace
+function UpdateSearchIndexForUserID(indexID text) returns void as
+    $$
+    declare
+        --indexID   text = 'cd4f01ff-ca88-4e4b-9aaf-756660c34ea0';
+        searchtext  text[];
+        result      text;
+        job         employmenttable%rowtype;
+        a text; b text; c text; d text;
+        edu         educationtable%rowtype;
+    begin
+
+    searchtext[1] = '';
+    searchtext[2] = '';
+    searchtext[3] = '';
+    searchtext[4] = '';
+
+    --  User Table
+
+    select name, backgroundsummary into a, b from usertable where userID = indexID;
+    searchtext[1] = concat(searchtext[1], ' ', a);
+    searchtext[2] = concat(searchtext[2], ' ', b);
+
+    --  Entity Table
+
+    for a in select entitytag from entitytagtable where entityid = indexid::uuid
+        loop
+        searchtext[1] = concat(searchtext[1], ' ', a);
+        end loop;
+
+    --  Employment
+
+    for job in select * from employmenttable where userid = indexid
+        loop
+
+        searchtext[1] = concat(searchtext[1], ' ', job.jobtitle);
+        searchtext[1] = concat(searchtext[1], ' ', job.companyname);
+
+        searchtext[2] = concat(searchtext[2], ' ', job.industry);
+
+        searchtext[3] = concat(searchtext[3], ' ', job.location);
+        searchtext[3] = concat(searchtext[3], ' ', job.summary);
+
+        end loop;
+
+    --  Education
+
+    for edu in select * from educationtable where userid = indexid
+        loop
+
+        searchtext[1] = concat(searchtext[1], ' ', edu.schoolname);
+
+        searchtext[2] = concat(searchtext[2], ' ', edu.degree);
+        searchtext[2] = concat(searchtext[2], ' ', edu.emphasis);
+
+        searchtext[3] = concat(searchtext[3], ' ', edu.summary);
+
+        end loop;
+
+    --  Done.  Update search column:
+
+    update usertable set search =
+        setweight(to_tsvector('english', searchtext[1]), 'A') ||
+        setweight(to_tsvector('english', searchtext[2]), 'B') ||
+        setweight(to_tsvector('english', searchtext[3]), 'C') ||
+        setweight(to_tsvector('english', searchtext[4]), 'D')
+            where userid = indexid;
+
+    --  Update autocomplete:
+
+    perform UpdateAutocompleteTable(searchtext[1]);
+    perform UpdateAutocompleteTable(searchtext[2]);
+    perform UpdateAutocompleteTable(searchtext[3]);
+    perform UpdateAutocompleteTable(searchtext[4]);
+
+    -- result =
+    --     '1: ' || searchtext[1] || E'\n'
+    --     '2: ' || searchtext[2] || E'\n'
+    --     '3: ' || searchtext[3] || E'\n'
+    --     '4: ' || searchtext[4] || E'\n'
+    --     ;
+
+    -- return result;
+
+    end;
+    $$
+    language plpgsql;
+
 
 
 ------------------------------------------------------------------------------------------

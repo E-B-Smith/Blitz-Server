@@ -2,12 +2,63 @@
 
 #import <ProtocolBuffers/ProtocolBuffers.h>
 
+#import "UserProfiles.pb.h"
 // @@protoc_insertion_point(imports)
 
 @class BAutocompleteRequest;
 @class BAutocompleteRequestBuilder;
 @class BAutocompleteResponse;
 @class BAutocompleteResponseBuilder;
+@class BConfirmationRequest;
+@class BConfirmationRequestBuilder;
+@class BContactInfo;
+@class BContactInfoBuilder;
+@class BCoordinate;
+@class BCoordinateBuilder;
+@class BCoordinatePolygon;
+@class BCoordinatePolygonBuilder;
+@class BCoordinateRegion;
+@class BCoordinateRegionBuilder;
+@class BEducation;
+@class BEducationBuilder;
+@class BEmployment;
+@class BEmploymentBuilder;
+@class BEntityTag;
+@class BEntityTagBuilder;
+@class BEntityTagList;
+@class BEntityTagListBuilder;
+@class BGlobals;
+@class BGlobalsBuilder;
+@class BImageData;
+@class BImageDataBuilder;
+@class BImageUpload;
+@class BImageUploadBuilder;
+@class BKeyValue;
+@class BKeyValueBuilder;
+@class BLocation;
+@class BLocationBuilder;
+@class BProfilesFromContactInfo;
+@class BProfilesFromContactInfoBuilder;
+@class BSize;
+@class BSizeBuilder;
+@class BSocialIdentity;
+@class BSocialIdentityBuilder;
+@class BTimespan;
+@class BTimespanBuilder;
+@class BTimestamp;
+@class BTimestampBuilder;
+@class BUserProfile;
+@class BUserProfileBuilder;
+@class BUserProfileQuery;
+@class BUserProfileQueryBuilder;
+@class BUserProfileUpdate;
+@class BUserProfileUpdateBuilder;
+@class BUserSearchRequest;
+@class BUserSearchRequestBuilder;
+@class BUserSearchResponse;
+@class BUserSearchResponseBuilder;
+@class BVoid;
+@class BVoidBuilder;
 @class ObjectiveCFileOptions;
 @class ObjectiveCFileOptionsBuilder;
 @class PBDescriptorProto;
@@ -56,15 +107,6 @@
 @class PBUninterpretedOptionNamePartBuilder;
 
 
-typedef NS_ENUM(SInt32, BSearchType) {
-  BSearchTypeSTSearchAll = 0,
-  BSearchTypeSTUsers = 1,
-  BSearchTypeSTTopics = 2,
-};
-
-BOOL BSearchTypeIsValidValue(BSearchType value);
-NSString *NSStringFromBSearchType(BSearchType value);
-
 
 @interface BSearchRoot : NSObject {
 }
@@ -73,18 +115,13 @@ NSString *NSStringFromBSearchType(BSearchType value);
 @end
 
 #define AutocompleteRequest_query @"query"
-#define AutocompleteRequest_type @"type"
 @interface BAutocompleteRequest : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
   BOOL hasQuery_:1;
-  BOOL hasType_:1;
   NSString* query;
-  BSearchType type;
 }
 - (BOOL) hasQuery;
-- (BOOL) hasType;
 @property (readonly, strong) NSString* query;
-@property (readonly) BSearchType type;
 
 + (instancetype) defaultInstance;
 - (instancetype) defaultInstance;
@@ -125,20 +162,20 @@ NSString *NSStringFromBSearchType(BSearchType value);
 - (NSString*) query;
 - (BAutocompleteRequestBuilder*) setQuery:(NSString*) value;
 - (BAutocompleteRequestBuilder*) clearQuery;
-
-- (BOOL) hasType;
-- (BSearchType) type;
-- (BAutocompleteRequestBuilder*) setType:(BSearchType) value;
-- (BAutocompleteRequestBuilder*) clearType;
 @end
 
-#define AutocompleteResponse_items @"items"
+#define AutocompleteResponse_query @"query"
+#define AutocompleteResponse_suggestions @"suggestions"
 @interface BAutocompleteResponse : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
-  NSMutableArray * itemsArray;
+  BOOL hasQuery_:1;
+  NSString* query;
+  NSMutableArray * suggestionsArray;
 }
-@property (readonly, strong) NSArray * items;
-- (NSString*)itemsAtIndex:(NSUInteger)index;
+- (BOOL) hasQuery;
+@property (readonly, strong) NSString* query;
+@property (readonly, strong) NSArray * suggestions;
+- (NSString*)suggestionsAtIndex:(NSUInteger)index;
 
 + (instancetype) defaultInstance;
 - (instancetype) defaultInstance;
@@ -175,11 +212,126 @@ NSString *NSStringFromBSearchType(BSearchType value);
 - (BAutocompleteResponseBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
 - (BAutocompleteResponseBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
 
-- (NSMutableArray *)items;
-- (NSString*)itemsAtIndex:(NSUInteger)index;
-- (BAutocompleteResponseBuilder *)addItems:(NSString*)value;
-- (BAutocompleteResponseBuilder *)setItemsArray:(NSArray *)array;
-- (BAutocompleteResponseBuilder *)clearItems;
+- (BOOL) hasQuery;
+- (NSString*) query;
+- (BAutocompleteResponseBuilder*) setQuery:(NSString*) value;
+- (BAutocompleteResponseBuilder*) clearQuery;
+
+- (NSMutableArray *)suggestions;
+- (NSString*)suggestionsAtIndex:(NSUInteger)index;
+- (BAutocompleteResponseBuilder *)addSuggestions:(NSString*)value;
+- (BAutocompleteResponseBuilder *)setSuggestionsArray:(NSArray *)array;
+- (BAutocompleteResponseBuilder *)clearSuggestions;
+@end
+
+#define UserSearchRequest_query @"query"
+@interface BUserSearchRequest : PBGeneratedMessage<GeneratedMessageProtocol> {
+@private
+  BOOL hasQuery_:1;
+  NSString* query;
+}
+- (BOOL) hasQuery;
+@property (readonly, strong) NSString* query;
+
++ (instancetype) defaultInstance;
+- (instancetype) defaultInstance;
+
+- (BOOL) isInitialized;
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
+- (BUserSearchRequestBuilder*) builder;
++ (BUserSearchRequestBuilder*) builder;
++ (BUserSearchRequestBuilder*) builderWithPrototype:(BUserSearchRequest*) prototype;
+- (BUserSearchRequestBuilder*) toBuilder;
+
++ (BUserSearchRequest*) parseFromData:(NSData*) data;
++ (BUserSearchRequest*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (BUserSearchRequest*) parseFromInputStream:(NSInputStream*) input;
++ (BUserSearchRequest*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (BUserSearchRequest*) parseFromCodedInputStream:(PBCodedInputStream*) input;
++ (BUserSearchRequest*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+@end
+
+@interface BUserSearchRequestBuilder : PBGeneratedMessageBuilder {
+@private
+  BUserSearchRequest* resultUserSearchRequest;
+}
+
+- (BUserSearchRequest*) defaultInstance;
+
+- (BUserSearchRequestBuilder*) clear;
+- (BUserSearchRequestBuilder*) clone;
+
+- (BUserSearchRequest*) build;
+- (BUserSearchRequest*) buildPartial;
+
+- (BUserSearchRequestBuilder*) mergeFrom:(BUserSearchRequest*) other;
+- (BUserSearchRequestBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
+- (BUserSearchRequestBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+
+- (BOOL) hasQuery;
+- (NSString*) query;
+- (BUserSearchRequestBuilder*) setQuery:(NSString*) value;
+- (BUserSearchRequestBuilder*) clearQuery;
+@end
+
+#define UserSearchResponse_query @"query"
+#define UserSearchResponse_profiles @"profiles"
+@interface BUserSearchResponse : PBGeneratedMessage<GeneratedMessageProtocol> {
+@private
+  BOOL hasQuery_:1;
+  NSString* query;
+  NSMutableArray * profilesArray;
+}
+- (BOOL) hasQuery;
+@property (readonly, strong) NSString* query;
+@property (readonly, strong) NSArray * profiles;
+- (BUserProfile*)profilesAtIndex:(NSUInteger)index;
+
++ (instancetype) defaultInstance;
+- (instancetype) defaultInstance;
+
+- (BOOL) isInitialized;
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
+- (BUserSearchResponseBuilder*) builder;
++ (BUserSearchResponseBuilder*) builder;
++ (BUserSearchResponseBuilder*) builderWithPrototype:(BUserSearchResponse*) prototype;
+- (BUserSearchResponseBuilder*) toBuilder;
+
++ (BUserSearchResponse*) parseFromData:(NSData*) data;
++ (BUserSearchResponse*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (BUserSearchResponse*) parseFromInputStream:(NSInputStream*) input;
++ (BUserSearchResponse*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (BUserSearchResponse*) parseFromCodedInputStream:(PBCodedInputStream*) input;
++ (BUserSearchResponse*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+@end
+
+@interface BUserSearchResponseBuilder : PBGeneratedMessageBuilder {
+@private
+  BUserSearchResponse* resultUserSearchResponse;
+}
+
+- (BUserSearchResponse*) defaultInstance;
+
+- (BUserSearchResponseBuilder*) clear;
+- (BUserSearchResponseBuilder*) clone;
+
+- (BUserSearchResponse*) build;
+- (BUserSearchResponse*) buildPartial;
+
+- (BUserSearchResponseBuilder*) mergeFrom:(BUserSearchResponse*) other;
+- (BUserSearchResponseBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
+- (BUserSearchResponseBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+
+- (BOOL) hasQuery;
+- (NSString*) query;
+- (BUserSearchResponseBuilder*) setQuery:(NSString*) value;
+- (BUserSearchResponseBuilder*) clearQuery;
+
+- (NSMutableArray *)profiles;
+- (BUserProfile*)profilesAtIndex:(NSUInteger)index;
+- (BUserSearchResponseBuilder *)addProfiles:(BUserProfile*)value;
+- (BUserSearchResponseBuilder *)setProfilesArray:(NSArray *)array;
+- (BUserSearchResponseBuilder *)clearProfiles;
 @end
 
 

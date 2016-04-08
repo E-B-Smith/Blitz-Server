@@ -28,6 +28,7 @@ psql postgres -U postgres -X --pset pager=off  -v ON_ERROR_STOP=1 <<DATABASE
 
 create extension if not exists "uuid-ossp";
 create extension if not exists adminpack;
+create extension if not exists pg_trgm;
 
 drop schema if exists ${database}Schema cascade;
 drop database if exists ${database};

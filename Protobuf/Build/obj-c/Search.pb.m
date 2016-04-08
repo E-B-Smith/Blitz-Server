@@ -14,6 +14,7 @@ static PBExtensionRegistry* extensionRegistry = nil;
     PBMutableExtensionRegistry* registry = [PBMutableExtensionRegistry registry];
     [self registerAllExtensions:registry];
     [ObjectivecDescriptorRoot registerAllExtensions:registry];
+    [BUserProfilesRoot registerAllExtensions:registry];
     extensionRegistry = registry;
   }
 }
@@ -21,32 +22,8 @@ static PBExtensionRegistry* extensionRegistry = nil;
 }
 @end
 
-BOOL BSearchTypeIsValidValue(BSearchType value) {
-  switch (value) {
-    case BSearchTypeSTSearchAll:
-    case BSearchTypeSTUsers:
-    case BSearchTypeSTTopics:
-      return YES;
-    default:
-      return NO;
-  }
-}
-NSString *NSStringFromBSearchType(BSearchType value) {
-  switch (value) {
-    case BSearchTypeSTSearchAll:
-      return @"BSearchTypeSTSearchAll";
-    case BSearchTypeSTUsers:
-      return @"BSearchTypeSTUsers";
-    case BSearchTypeSTTopics:
-      return @"BSearchTypeSTTopics";
-    default:
-      return nil;
-  }
-}
-
 @interface BAutocompleteRequest ()
 @property (strong) NSString* query;
-@property BSearchType type;
 @end
 
 @implementation BAutocompleteRequest
@@ -58,17 +35,9 @@ NSString *NSStringFromBSearchType(BSearchType value) {
   hasQuery_ = !!_value_;
 }
 @synthesize query;
-- (BOOL) hasType {
-  return !!hasType_;
-}
-- (void) setHasType:(BOOL) _value_ {
-  hasType_ = !!_value_;
-}
-@synthesize type;
 - (instancetype) init {
   if ((self = [super init])) {
     self.query = @"";
-    self.type = BSearchTypeSTSearchAll;
   }
   return self;
 }
@@ -91,9 +60,6 @@ static BAutocompleteRequest* defaultBAutocompleteRequestInstance = nil;
   if (self.hasQuery) {
     [output writeString:1 value:self.query];
   }
-  if (self.hasType) {
-    [output writeEnum:2 value:self.type];
-  }
   [self.unknownFields writeToCodedOutputStream:output];
 }
 - (SInt32) serializedSize {
@@ -105,9 +71,6 @@ static BAutocompleteRequest* defaultBAutocompleteRequestInstance = nil;
   size_ = 0;
   if (self.hasQuery) {
     size_ += computeStringSize(1, self.query);
-  }
-  if (self.hasType) {
-    size_ += computeEnumSize(2, self.type);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -147,17 +110,11 @@ static BAutocompleteRequest* defaultBAutocompleteRequestInstance = nil;
   if (self.hasQuery) {
     [output appendFormat:@"%@%@: %@\n", indent, @"query", self.query];
   }
-  if (self.hasType) {
-    [output appendFormat:@"%@%@: %@\n", indent, @"type", NSStringFromBSearchType(self.type)];
-  }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (void) storeInDictionary:(NSMutableDictionary *)dictionary {
   if (self.hasQuery) {
     [dictionary setObject: self.query forKey: @"query"];
-  }
-  if (self.hasType) {
-    [dictionary setObject: @(self.type) forKey: @"type"];
   }
   [self.unknownFields storeInDictionary:dictionary];
 }
@@ -172,17 +129,12 @@ static BAutocompleteRequest* defaultBAutocompleteRequestInstance = nil;
   return
       self.hasQuery == otherMessage.hasQuery &&
       (!self.hasQuery || [self.query isEqual:otherMessage.query]) &&
-      self.hasType == otherMessage.hasType &&
-      (!self.hasType || self.type == otherMessage.type) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
   __block NSUInteger hashCode = 7;
   if (self.hasQuery) {
     hashCode = hashCode * 31 + [self.query hash];
-  }
-  if (self.hasType) {
-    hashCode = hashCode * 31 + self.type;
   }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
@@ -230,9 +182,6 @@ static BAutocompleteRequest* defaultBAutocompleteRequestInstance = nil;
   if (other.hasQuery) {
     [self setQuery:other.query];
   }
-  if (other.hasType) {
-    [self setType:other.type];
-  }
   [self mergeUnknownFields:other.unknownFields];
   return self;
 }
@@ -258,15 +207,6 @@ static BAutocompleteRequest* defaultBAutocompleteRequestInstance = nil;
         [self setQuery:[input readString]];
         break;
       }
-      case 16: {
-        BSearchType value = (BSearchType)[input readEnum];
-        if (BSearchTypeIsValidValue(value)) {
-          [self setType:value];
-        } else {
-          [unknownFields mergeVarintField:2 value:value];
-        }
-        break;
-      }
     }
   }
 }
@@ -286,34 +226,27 @@ static BAutocompleteRequest* defaultBAutocompleteRequestInstance = nil;
   resultAutocompleteRequest.query = @"";
   return self;
 }
-- (BOOL) hasType {
-  return resultAutocompleteRequest.hasType;
-}
-- (BSearchType) type {
-  return resultAutocompleteRequest.type;
-}
-- (BAutocompleteRequestBuilder*) setType:(BSearchType) value {
-  resultAutocompleteRequest.hasType = YES;
-  resultAutocompleteRequest.type = value;
-  return self;
-}
-- (BAutocompleteRequestBuilder*) clearType {
-  resultAutocompleteRequest.hasType = NO;
-  resultAutocompleteRequest.type = BSearchTypeSTSearchAll;
-  return self;
-}
 @end
 
 @interface BAutocompleteResponse ()
-@property (strong) NSMutableArray * itemsArray;
+@property (strong) NSString* query;
+@property (strong) NSMutableArray * suggestionsArray;
 @end
 
 @implementation BAutocompleteResponse
 
-@synthesize itemsArray;
-@dynamic items;
+- (BOOL) hasQuery {
+  return !!hasQuery_;
+}
+- (void) setHasQuery:(BOOL) _value_ {
+  hasQuery_ = !!_value_;
+}
+@synthesize query;
+@synthesize suggestionsArray;
+@dynamic suggestions;
 - (instancetype) init {
   if ((self = [super init])) {
+    self.query = @"";
   }
   return self;
 }
@@ -329,18 +262,21 @@ static BAutocompleteResponse* defaultBAutocompleteResponseInstance = nil;
 - (instancetype) defaultInstance {
   return defaultBAutocompleteResponseInstance;
 }
-- (NSArray *)items {
-  return itemsArray;
+- (NSArray *)suggestions {
+  return suggestionsArray;
 }
-- (NSString*)itemsAtIndex:(NSUInteger)index {
-  return [itemsArray objectAtIndex:index];
+- (NSString*)suggestionsAtIndex:(NSUInteger)index {
+  return [suggestionsArray objectAtIndex:index];
 }
 - (BOOL) isInitialized {
   return YES;
 }
 - (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
-  [self.itemsArray enumerateObjectsUsingBlock:^(NSString *element, NSUInteger idx, BOOL *stop) {
-    [output writeString:1 value:element];
+  if (self.hasQuery) {
+    [output writeString:1 value:self.query];
+  }
+  [self.suggestionsArray enumerateObjectsUsingBlock:^(NSString *element, NSUInteger idx, BOOL *stop) {
+    [output writeString:2 value:element];
   }];
   [self.unknownFields writeToCodedOutputStream:output];
 }
@@ -351,10 +287,13 @@ static BAutocompleteResponse* defaultBAutocompleteResponseInstance = nil;
   }
 
   size_ = 0;
+  if (self.hasQuery) {
+    size_ += computeStringSize(1, self.query);
+  }
   {
     __block SInt32 dataSize = 0;
-    const NSUInteger count = self.itemsArray.count;
-    [self.itemsArray enumerateObjectsUsingBlock:^(NSString *element, NSUInteger idx, BOOL *stop) {
+    const NSUInteger count = self.suggestionsArray.count;
+    [self.suggestionsArray enumerateObjectsUsingBlock:^(NSString *element, NSUInteger idx, BOOL *stop) {
       dataSize += computeStringSizeNoTag(element);
     }];
     size_ += dataSize;
@@ -395,13 +334,19 @@ static BAutocompleteResponse* defaultBAutocompleteResponseInstance = nil;
   return [BAutocompleteResponse builderWithPrototype:self];
 }
 - (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
-  [self.itemsArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-    [output appendFormat:@"%@%@: %@\n", indent, @"items", obj];
+  if (self.hasQuery) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"query", self.query];
+  }
+  [self.suggestionsArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"suggestions", obj];
   }];
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (void) storeInDictionary:(NSMutableDictionary *)dictionary {
-  [dictionary setObject:self.items forKey: @"items"];
+  if (self.hasQuery) {
+    [dictionary setObject: self.query forKey: @"query"];
+  }
+  [dictionary setObject:self.suggestions forKey: @"suggestions"];
   [self.unknownFields storeInDictionary:dictionary];
 }
 - (BOOL) isEqual:(id)other {
@@ -413,12 +358,17 @@ static BAutocompleteResponse* defaultBAutocompleteResponseInstance = nil;
   }
   BAutocompleteResponse *otherMessage = other;
   return
-      [self.itemsArray isEqualToArray:otherMessage.itemsArray] &&
+      self.hasQuery == otherMessage.hasQuery &&
+      (!self.hasQuery || [self.query isEqual:otherMessage.query]) &&
+      [self.suggestionsArray isEqualToArray:otherMessage.suggestionsArray] &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
   __block NSUInteger hashCode = 7;
-  [self.itemsArray enumerateObjectsUsingBlock:^(NSString *element, NSUInteger idx, BOOL *stop) {
+  if (self.hasQuery) {
+    hashCode = hashCode * 31 + [self.query hash];
+  }
+  [self.suggestionsArray enumerateObjectsUsingBlock:^(NSString *element, NSUInteger idx, BOOL *stop) {
     hashCode = hashCode * 31 + [element hash];
   }];
   hashCode = hashCode * 31 + [self.unknownFields hash];
@@ -464,11 +414,14 @@ static BAutocompleteResponse* defaultBAutocompleteResponseInstance = nil;
   if (other == [BAutocompleteResponse defaultInstance]) {
     return self;
   }
-  if (other.itemsArray.count > 0) {
-    if (resultAutocompleteResponse.itemsArray == nil) {
-      resultAutocompleteResponse.itemsArray = [[NSMutableArray alloc] initWithArray:other.itemsArray];
+  if (other.hasQuery) {
+    [self setQuery:other.query];
+  }
+  if (other.suggestionsArray.count > 0) {
+    if (resultAutocompleteResponse.suggestionsArray == nil) {
+      resultAutocompleteResponse.suggestionsArray = [[NSMutableArray alloc] initWithArray:other.suggestionsArray];
     } else {
-      [resultAutocompleteResponse.itemsArray addObjectsFromArray:other.itemsArray];
+      [resultAutocompleteResponse.suggestionsArray addObjectsFromArray:other.suggestionsArray];
     }
   }
   [self mergeUnknownFields:other.unknownFields];
@@ -493,31 +446,535 @@ static BAutocompleteResponse* defaultBAutocompleteResponseInstance = nil;
         break;
       }
       case 10: {
-        [self addItems:[input readString]];
+        [self setQuery:[input readString]];
+        break;
+      }
+      case 18: {
+        [self addSuggestions:[input readString]];
         break;
       }
     }
   }
 }
-- (NSMutableArray *)items {
-  return resultAutocompleteResponse.itemsArray;
+- (BOOL) hasQuery {
+  return resultAutocompleteResponse.hasQuery;
 }
-- (NSString*)itemsAtIndex:(NSUInteger)index {
-  return [resultAutocompleteResponse itemsAtIndex:index];
+- (NSString*) query {
+  return resultAutocompleteResponse.query;
 }
-- (BAutocompleteResponseBuilder *)addItems:(NSString*)value {
-  if (resultAutocompleteResponse.itemsArray == nil) {
-    resultAutocompleteResponse.itemsArray = [[NSMutableArray alloc]init];
+- (BAutocompleteResponseBuilder*) setQuery:(NSString*) value {
+  resultAutocompleteResponse.hasQuery = YES;
+  resultAutocompleteResponse.query = value;
+  return self;
+}
+- (BAutocompleteResponseBuilder*) clearQuery {
+  resultAutocompleteResponse.hasQuery = NO;
+  resultAutocompleteResponse.query = @"";
+  return self;
+}
+- (NSMutableArray *)suggestions {
+  return resultAutocompleteResponse.suggestionsArray;
+}
+- (NSString*)suggestionsAtIndex:(NSUInteger)index {
+  return [resultAutocompleteResponse suggestionsAtIndex:index];
+}
+- (BAutocompleteResponseBuilder *)addSuggestions:(NSString*)value {
+  if (resultAutocompleteResponse.suggestionsArray == nil) {
+    resultAutocompleteResponse.suggestionsArray = [[NSMutableArray alloc]init];
   }
-  [resultAutocompleteResponse.itemsArray addObject:value];
+  [resultAutocompleteResponse.suggestionsArray addObject:value];
   return self;
 }
-- (BAutocompleteResponseBuilder *)setItemsArray:(NSArray *)array {
-  resultAutocompleteResponse.itemsArray = [[NSMutableArray alloc] initWithArray:array];
+- (BAutocompleteResponseBuilder *)setSuggestionsArray:(NSArray *)array {
+  resultAutocompleteResponse.suggestionsArray = [[NSMutableArray alloc] initWithArray:array];
   return self;
 }
-- (BAutocompleteResponseBuilder *)clearItems {
-  resultAutocompleteResponse.itemsArray = nil;
+- (BAutocompleteResponseBuilder *)clearSuggestions {
+  resultAutocompleteResponse.suggestionsArray = nil;
+  return self;
+}
+@end
+
+@interface BUserSearchRequest ()
+@property (strong) NSString* query;
+@end
+
+@implementation BUserSearchRequest
+
+- (BOOL) hasQuery {
+  return !!hasQuery_;
+}
+- (void) setHasQuery:(BOOL) _value_ {
+  hasQuery_ = !!_value_;
+}
+@synthesize query;
+- (instancetype) init {
+  if ((self = [super init])) {
+    self.query = @"";
+  }
+  return self;
+}
+static BUserSearchRequest* defaultBUserSearchRequestInstance = nil;
++ (void) initialize {
+  if (self == [BUserSearchRequest class]) {
+    defaultBUserSearchRequestInstance = [[BUserSearchRequest alloc] init];
+  }
+}
++ (instancetype) defaultInstance {
+  return defaultBUserSearchRequestInstance;
+}
+- (instancetype) defaultInstance {
+  return defaultBUserSearchRequestInstance;
+}
+- (BOOL) isInitialized {
+  return YES;
+}
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
+  if (self.hasQuery) {
+    [output writeString:1 value:self.query];
+  }
+  [self.unknownFields writeToCodedOutputStream:output];
+}
+- (SInt32) serializedSize {
+  __block SInt32 size_ = memoizedSerializedSize;
+  if (size_ != -1) {
+    return size_;
+  }
+
+  size_ = 0;
+  if (self.hasQuery) {
+    size_ += computeStringSize(1, self.query);
+  }
+  size_ += self.unknownFields.serializedSize;
+  memoizedSerializedSize = size_;
+  return size_;
+}
++ (BUserSearchRequest*) parseFromData:(NSData*) data {
+  return (BUserSearchRequest*)[[[BUserSearchRequest builder] mergeFromData:data] build];
+}
++ (BUserSearchRequest*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BUserSearchRequest*)[[[BUserSearchRequest builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
+}
++ (BUserSearchRequest*) parseFromInputStream:(NSInputStream*) input {
+  return (BUserSearchRequest*)[[[BUserSearchRequest builder] mergeFromInputStream:input] build];
+}
++ (BUserSearchRequest*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BUserSearchRequest*)[[[BUserSearchRequest builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (BUserSearchRequest*) parseFromCodedInputStream:(PBCodedInputStream*) input {
+  return (BUserSearchRequest*)[[[BUserSearchRequest builder] mergeFromCodedInputStream:input] build];
+}
++ (BUserSearchRequest*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BUserSearchRequest*)[[[BUserSearchRequest builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (BUserSearchRequestBuilder*) builder {
+  return [[BUserSearchRequestBuilder alloc] init];
+}
++ (BUserSearchRequestBuilder*) builderWithPrototype:(BUserSearchRequest*) prototype {
+  return [[BUserSearchRequest builder] mergeFrom:prototype];
+}
+- (BUserSearchRequestBuilder*) builder {
+  return [BUserSearchRequest builder];
+}
+- (BUserSearchRequestBuilder*) toBuilder {
+  return [BUserSearchRequest builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  if (self.hasQuery) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"query", self.query];
+  }
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (void) storeInDictionary:(NSMutableDictionary *)dictionary {
+  if (self.hasQuery) {
+    [dictionary setObject: self.query forKey: @"query"];
+  }
+  [self.unknownFields storeInDictionary:dictionary];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[BUserSearchRequest class]]) {
+    return NO;
+  }
+  BUserSearchRequest *otherMessage = other;
+  return
+      self.hasQuery == otherMessage.hasQuery &&
+      (!self.hasQuery || [self.query isEqual:otherMessage.query]) &&
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  __block NSUInteger hashCode = 7;
+  if (self.hasQuery) {
+    hashCode = hashCode * 31 + [self.query hash];
+  }
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
+}
+@end
+
+@interface BUserSearchRequestBuilder()
+@property (strong) BUserSearchRequest* resultUserSearchRequest;
+@end
+
+@implementation BUserSearchRequestBuilder
+@synthesize resultUserSearchRequest;
+- (instancetype) init {
+  if ((self = [super init])) {
+    self.resultUserSearchRequest = [[BUserSearchRequest alloc] init];
+  }
+  return self;
+}
+- (PBGeneratedMessage*) internalGetResult {
+  return resultUserSearchRequest;
+}
+- (BUserSearchRequestBuilder*) clear {
+  self.resultUserSearchRequest = [[BUserSearchRequest alloc] init];
+  return self;
+}
+- (BUserSearchRequestBuilder*) clone {
+  return [BUserSearchRequest builderWithPrototype:resultUserSearchRequest];
+}
+- (BUserSearchRequest*) defaultInstance {
+  return [BUserSearchRequest defaultInstance];
+}
+- (BUserSearchRequest*) build {
+  [self checkInitialized];
+  return [self buildPartial];
+}
+- (BUserSearchRequest*) buildPartial {
+  BUserSearchRequest* returnMe = resultUserSearchRequest;
+  self.resultUserSearchRequest = nil;
+  return returnMe;
+}
+- (BUserSearchRequestBuilder*) mergeFrom:(BUserSearchRequest*) other {
+  if (other == [BUserSearchRequest defaultInstance]) {
+    return self;
+  }
+  if (other.hasQuery) {
+    [self setQuery:other.query];
+  }
+  [self mergeUnknownFields:other.unknownFields];
+  return self;
+}
+- (BUserSearchRequestBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
+  return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
+}
+- (BUserSearchRequestBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  PBUnknownFieldSetBuilder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
+  while (YES) {
+    SInt32 tag = [input readTag];
+    switch (tag) {
+      case 0:
+        [self setUnknownFields:[unknownFields build]];
+        return self;
+      default: {
+        if (![self parseUnknownField:input unknownFields:unknownFields extensionRegistry:extensionRegistry tag:tag]) {
+          [self setUnknownFields:[unknownFields build]];
+          return self;
+        }
+        break;
+      }
+      case 10: {
+        [self setQuery:[input readString]];
+        break;
+      }
+    }
+  }
+}
+- (BOOL) hasQuery {
+  return resultUserSearchRequest.hasQuery;
+}
+- (NSString*) query {
+  return resultUserSearchRequest.query;
+}
+- (BUserSearchRequestBuilder*) setQuery:(NSString*) value {
+  resultUserSearchRequest.hasQuery = YES;
+  resultUserSearchRequest.query = value;
+  return self;
+}
+- (BUserSearchRequestBuilder*) clearQuery {
+  resultUserSearchRequest.hasQuery = NO;
+  resultUserSearchRequest.query = @"";
+  return self;
+}
+@end
+
+@interface BUserSearchResponse ()
+@property (strong) NSString* query;
+@property (strong) NSMutableArray * profilesArray;
+@end
+
+@implementation BUserSearchResponse
+
+- (BOOL) hasQuery {
+  return !!hasQuery_;
+}
+- (void) setHasQuery:(BOOL) _value_ {
+  hasQuery_ = !!_value_;
+}
+@synthesize query;
+@synthesize profilesArray;
+@dynamic profiles;
+- (instancetype) init {
+  if ((self = [super init])) {
+    self.query = @"";
+  }
+  return self;
+}
+static BUserSearchResponse* defaultBUserSearchResponseInstance = nil;
++ (void) initialize {
+  if (self == [BUserSearchResponse class]) {
+    defaultBUserSearchResponseInstance = [[BUserSearchResponse alloc] init];
+  }
+}
++ (instancetype) defaultInstance {
+  return defaultBUserSearchResponseInstance;
+}
+- (instancetype) defaultInstance {
+  return defaultBUserSearchResponseInstance;
+}
+- (NSArray *)profiles {
+  return profilesArray;
+}
+- (BUserProfile*)profilesAtIndex:(NSUInteger)index {
+  return [profilesArray objectAtIndex:index];
+}
+- (BOOL) isInitialized {
+  __block BOOL isInitprofiles = YES;
+   [self.profiles enumerateObjectsUsingBlock:^(BUserProfile *element, NSUInteger idx, BOOL *stop) {
+    if (!element.isInitialized) {
+      isInitprofiles = NO;
+      *stop = YES;
+    }
+  }];
+  if (!isInitprofiles) return isInitprofiles;
+  return YES;
+}
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
+  if (self.hasQuery) {
+    [output writeString:1 value:self.query];
+  }
+  [self.profilesArray enumerateObjectsUsingBlock:^(BUserProfile *element, NSUInteger idx, BOOL *stop) {
+    [output writeMessage:2 value:element];
+  }];
+  [self.unknownFields writeToCodedOutputStream:output];
+}
+- (SInt32) serializedSize {
+  __block SInt32 size_ = memoizedSerializedSize;
+  if (size_ != -1) {
+    return size_;
+  }
+
+  size_ = 0;
+  if (self.hasQuery) {
+    size_ += computeStringSize(1, self.query);
+  }
+  [self.profilesArray enumerateObjectsUsingBlock:^(BUserProfile *element, NSUInteger idx, BOOL *stop) {
+    size_ += computeMessageSize(2, element);
+  }];
+  size_ += self.unknownFields.serializedSize;
+  memoizedSerializedSize = size_;
+  return size_;
+}
++ (BUserSearchResponse*) parseFromData:(NSData*) data {
+  return (BUserSearchResponse*)[[[BUserSearchResponse builder] mergeFromData:data] build];
+}
++ (BUserSearchResponse*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BUserSearchResponse*)[[[BUserSearchResponse builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
+}
++ (BUserSearchResponse*) parseFromInputStream:(NSInputStream*) input {
+  return (BUserSearchResponse*)[[[BUserSearchResponse builder] mergeFromInputStream:input] build];
+}
++ (BUserSearchResponse*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BUserSearchResponse*)[[[BUserSearchResponse builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (BUserSearchResponse*) parseFromCodedInputStream:(PBCodedInputStream*) input {
+  return (BUserSearchResponse*)[[[BUserSearchResponse builder] mergeFromCodedInputStream:input] build];
+}
++ (BUserSearchResponse*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BUserSearchResponse*)[[[BUserSearchResponse builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (BUserSearchResponseBuilder*) builder {
+  return [[BUserSearchResponseBuilder alloc] init];
+}
++ (BUserSearchResponseBuilder*) builderWithPrototype:(BUserSearchResponse*) prototype {
+  return [[BUserSearchResponse builder] mergeFrom:prototype];
+}
+- (BUserSearchResponseBuilder*) builder {
+  return [BUserSearchResponse builder];
+}
+- (BUserSearchResponseBuilder*) toBuilder {
+  return [BUserSearchResponse builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  if (self.hasQuery) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"query", self.query];
+  }
+  [self.profilesArray enumerateObjectsUsingBlock:^(BUserProfile *element, NSUInteger idx, BOOL *stop) {
+    [output appendFormat:@"%@%@ {\n", indent, @"profiles"];
+    [element writeDescriptionTo:output
+                     withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }];
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (void) storeInDictionary:(NSMutableDictionary *)dictionary {
+  if (self.hasQuery) {
+    [dictionary setObject: self.query forKey: @"query"];
+  }
+  for (BUserProfile* element in self.profilesArray) {
+    NSMutableDictionary *elementDictionary = [NSMutableDictionary dictionary];
+    [element storeInDictionary:elementDictionary];
+    [dictionary setObject:[NSDictionary dictionaryWithDictionary:elementDictionary] forKey:@"profiles"];
+  }
+  [self.unknownFields storeInDictionary:dictionary];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[BUserSearchResponse class]]) {
+    return NO;
+  }
+  BUserSearchResponse *otherMessage = other;
+  return
+      self.hasQuery == otherMessage.hasQuery &&
+      (!self.hasQuery || [self.query isEqual:otherMessage.query]) &&
+      [self.profilesArray isEqualToArray:otherMessage.profilesArray] &&
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  __block NSUInteger hashCode = 7;
+  if (self.hasQuery) {
+    hashCode = hashCode * 31 + [self.query hash];
+  }
+  [self.profilesArray enumerateObjectsUsingBlock:^(BUserProfile *element, NSUInteger idx, BOOL *stop) {
+    hashCode = hashCode * 31 + [element hash];
+  }];
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
+}
+@end
+
+@interface BUserSearchResponseBuilder()
+@property (strong) BUserSearchResponse* resultUserSearchResponse;
+@end
+
+@implementation BUserSearchResponseBuilder
+@synthesize resultUserSearchResponse;
+- (instancetype) init {
+  if ((self = [super init])) {
+    self.resultUserSearchResponse = [[BUserSearchResponse alloc] init];
+  }
+  return self;
+}
+- (PBGeneratedMessage*) internalGetResult {
+  return resultUserSearchResponse;
+}
+- (BUserSearchResponseBuilder*) clear {
+  self.resultUserSearchResponse = [[BUserSearchResponse alloc] init];
+  return self;
+}
+- (BUserSearchResponseBuilder*) clone {
+  return [BUserSearchResponse builderWithPrototype:resultUserSearchResponse];
+}
+- (BUserSearchResponse*) defaultInstance {
+  return [BUserSearchResponse defaultInstance];
+}
+- (BUserSearchResponse*) build {
+  [self checkInitialized];
+  return [self buildPartial];
+}
+- (BUserSearchResponse*) buildPartial {
+  BUserSearchResponse* returnMe = resultUserSearchResponse;
+  self.resultUserSearchResponse = nil;
+  return returnMe;
+}
+- (BUserSearchResponseBuilder*) mergeFrom:(BUserSearchResponse*) other {
+  if (other == [BUserSearchResponse defaultInstance]) {
+    return self;
+  }
+  if (other.hasQuery) {
+    [self setQuery:other.query];
+  }
+  if (other.profilesArray.count > 0) {
+    if (resultUserSearchResponse.profilesArray == nil) {
+      resultUserSearchResponse.profilesArray = [[NSMutableArray alloc] initWithArray:other.profilesArray];
+    } else {
+      [resultUserSearchResponse.profilesArray addObjectsFromArray:other.profilesArray];
+    }
+  }
+  [self mergeUnknownFields:other.unknownFields];
+  return self;
+}
+- (BUserSearchResponseBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
+  return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
+}
+- (BUserSearchResponseBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  PBUnknownFieldSetBuilder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
+  while (YES) {
+    SInt32 tag = [input readTag];
+    switch (tag) {
+      case 0:
+        [self setUnknownFields:[unknownFields build]];
+        return self;
+      default: {
+        if (![self parseUnknownField:input unknownFields:unknownFields extensionRegistry:extensionRegistry tag:tag]) {
+          [self setUnknownFields:[unknownFields build]];
+          return self;
+        }
+        break;
+      }
+      case 10: {
+        [self setQuery:[input readString]];
+        break;
+      }
+      case 18: {
+        BUserProfileBuilder* subBuilder = [BUserProfile builder];
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self addProfiles:[subBuilder buildPartial]];
+        break;
+      }
+    }
+  }
+}
+- (BOOL) hasQuery {
+  return resultUserSearchResponse.hasQuery;
+}
+- (NSString*) query {
+  return resultUserSearchResponse.query;
+}
+- (BUserSearchResponseBuilder*) setQuery:(NSString*) value {
+  resultUserSearchResponse.hasQuery = YES;
+  resultUserSearchResponse.query = value;
+  return self;
+}
+- (BUserSearchResponseBuilder*) clearQuery {
+  resultUserSearchResponse.hasQuery = NO;
+  resultUserSearchResponse.query = @"";
+  return self;
+}
+- (NSMutableArray *)profiles {
+  return resultUserSearchResponse.profilesArray;
+}
+- (BUserProfile*)profilesAtIndex:(NSUInteger)index {
+  return [resultUserSearchResponse profilesAtIndex:index];
+}
+- (BUserSearchResponseBuilder *)addProfiles:(BUserProfile*)value {
+  if (resultUserSearchResponse.profilesArray == nil) {
+    resultUserSearchResponse.profilesArray = [[NSMutableArray alloc]init];
+  }
+  [resultUserSearchResponse.profilesArray addObject:value];
+  return self;
+}
+- (BUserSearchResponseBuilder *)setProfilesArray:(NSArray *)array {
+  resultUserSearchResponse.profilesArray = [[NSMutableArray alloc]initWithArray:array];
+  return self;
+}
+- (BUserSearchResponseBuilder *)clearProfiles {
+  resultUserSearchResponse.profilesArray = nil;
   return self;
 }
 @end

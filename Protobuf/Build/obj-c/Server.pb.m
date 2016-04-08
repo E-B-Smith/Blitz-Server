@@ -1803,6 +1803,7 @@ static BSessionResponse* defaultBSessionResponseInstance = nil;
 @property (strong) BFeedPostUpdateRequest* feedPostUpdateRequest;
 @property (strong) BAutocompleteRequest* autocompleteRequest;
 @property (strong) BEntityTagList* entityTagUpdate;
+@property (strong) BUserSearchRequest* userSearchRequest;
 @end
 
 @implementation BRequestType
@@ -1905,6 +1906,13 @@ static BSessionResponse* defaultBSessionResponseInstance = nil;
   hasEntityTagUpdate_ = !!_value_;
 }
 @synthesize entityTagUpdate;
+- (BOOL) hasUserSearchRequest {
+  return !!hasUserSearchRequest_;
+}
+- (void) setHasUserSearchRequest:(BOOL) _value_ {
+  hasUserSearchRequest_ = !!_value_;
+}
+@synthesize userSearchRequest;
 - (instancetype) init {
   if ((self = [super init])) {
     self.sessionRequest = [BSessionRequest defaultInstance];
@@ -1921,6 +1929,7 @@ static BSessionResponse* defaultBSessionResponseInstance = nil;
     self.feedPostUpdateRequest = [BFeedPostUpdateRequest defaultInstance];
     self.autocompleteRequest = [BAutocompleteRequest defaultInstance];
     self.entityTagUpdate = [BEntityTagList defaultInstance];
+    self.userSearchRequest = [BUserSearchRequest defaultInstance];
   }
   return self;
 }
@@ -2032,6 +2041,9 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   if (self.hasEntityTagUpdate) {
     [output writeMessage:14 value:self.entityTagUpdate];
   }
+  if (self.hasUserSearchRequest) {
+    [output writeMessage:15 value:self.userSearchRequest];
+  }
   [self.unknownFields writeToCodedOutputStream:output];
 }
 - (SInt32) serializedSize {
@@ -2082,6 +2094,9 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   }
   if (self.hasEntityTagUpdate) {
     size_ += computeMessageSize(14, self.entityTagUpdate);
+  }
+  if (self.hasUserSearchRequest) {
+    size_ += computeMessageSize(15, self.userSearchRequest);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -2202,6 +2217,12 @@ static BRequestType* defaultBRequestTypeInstance = nil;
                          withIndent:[NSString stringWithFormat:@"%@  ", indent]];
     [output appendFormat:@"%@}\n", indent];
   }
+  if (self.hasUserSearchRequest) {
+    [output appendFormat:@"%@%@ {\n", indent, @"userSearchRequest"];
+    [self.userSearchRequest writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (void) storeInDictionary:(NSMutableDictionary *)dictionary {
@@ -2275,6 +2296,11 @@ static BRequestType* defaultBRequestTypeInstance = nil;
    [self.entityTagUpdate storeInDictionary:messageDictionary];
    [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"entityTagUpdate"];
   }
+  if (self.hasUserSearchRequest) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.userSearchRequest storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"userSearchRequest"];
+  }
   [self.unknownFields storeInDictionary:dictionary];
 }
 - (BOOL) isEqual:(id)other {
@@ -2314,6 +2340,8 @@ static BRequestType* defaultBRequestTypeInstance = nil;
       (!self.hasAutocompleteRequest || [self.autocompleteRequest isEqual:otherMessage.autocompleteRequest]) &&
       self.hasEntityTagUpdate == otherMessage.hasEntityTagUpdate &&
       (!self.hasEntityTagUpdate || [self.entityTagUpdate isEqual:otherMessage.entityTagUpdate]) &&
+      self.hasUserSearchRequest == otherMessage.hasUserSearchRequest &&
+      (!self.hasUserSearchRequest || [self.userSearchRequest isEqual:otherMessage.userSearchRequest]) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
@@ -2359,6 +2387,9 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   }
   if (self.hasEntityTagUpdate) {
     hashCode = hashCode * 31 + [self.entityTagUpdate hash];
+  }
+  if (self.hasUserSearchRequest) {
+    hashCode = hashCode * 31 + [self.userSearchRequest hash];
   }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
@@ -2444,6 +2475,9 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   }
   if (other.hasEntityTagUpdate) {
     [self mergeEntityTagUpdate:other.entityTagUpdate];
+  }
+  if (other.hasUserSearchRequest) {
+    [self mergeUserSearchRequest:other.userSearchRequest];
   }
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -2590,6 +2624,15 @@ static BRequestType* defaultBRequestTypeInstance = nil;
         }
         [input readMessage:subBuilder extensionRegistry:extensionRegistry];
         [self setEntityTagUpdate:[subBuilder buildPartial]];
+        break;
+      }
+      case 122: {
+        BUserSearchRequestBuilder* subBuilder = [BUserSearchRequest builder];
+        if (self.hasUserSearchRequest) {
+          [subBuilder mergeFrom:self.userSearchRequest];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setUserSearchRequest:[subBuilder buildPartial]];
         break;
       }
     }
@@ -3015,6 +3058,36 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   resultRequestType.entityTagUpdate = [BEntityTagList defaultInstance];
   return self;
 }
+- (BOOL) hasUserSearchRequest {
+  return resultRequestType.hasUserSearchRequest;
+}
+- (BUserSearchRequest*) userSearchRequest {
+  return resultRequestType.userSearchRequest;
+}
+- (BRequestTypeBuilder*) setUserSearchRequest:(BUserSearchRequest*) value {
+  resultRequestType.hasUserSearchRequest = YES;
+  resultRequestType.userSearchRequest = value;
+  return self;
+}
+- (BRequestTypeBuilder*) setUserSearchRequestBuilder:(BUserSearchRequestBuilder*) builderForValue {
+  return [self setUserSearchRequest:[builderForValue build]];
+}
+- (BRequestTypeBuilder*) mergeUserSearchRequest:(BUserSearchRequest*) value {
+  if (resultRequestType.hasUserSearchRequest &&
+      resultRequestType.userSearchRequest != [BUserSearchRequest defaultInstance]) {
+    resultRequestType.userSearchRequest =
+      [[[BUserSearchRequest builderWithPrototype:resultRequestType.userSearchRequest] mergeFrom:value] buildPartial];
+  } else {
+    resultRequestType.userSearchRequest = value;
+  }
+  resultRequestType.hasUserSearchRequest = YES;
+  return self;
+}
+- (BRequestTypeBuilder*) clearUserSearchRequest {
+  resultRequestType.hasUserSearchRequest = NO;
+  resultRequestType.userSearchRequest = [BUserSearchRequest defaultInstance];
+  return self;
+}
 @end
 
 @interface BServerRequest ()
@@ -3314,6 +3387,7 @@ static BServerRequest* defaultBServerRequestInstance = nil;
 @property (strong) BFeedPostFetchResponse* feedPostFetchResponse;
 @property (strong) BFeedPostUpdateResponse* feedPostUpdateResponse;
 @property (strong) BAutocompleteResponse* autocompleteResponse;
+@property (strong) BUserSearchResponse* userSearchResponse;
 @end
 
 @implementation BResponseType
@@ -3402,6 +3476,13 @@ static BServerRequest* defaultBServerRequestInstance = nil;
   hasAutocompleteResponse_ = !!_value_;
 }
 @synthesize autocompleteResponse;
+- (BOOL) hasUserSearchResponse {
+  return !!hasUserSearchResponse_;
+}
+- (void) setHasUserSearchResponse:(BOOL) _value_ {
+  hasUserSearchResponse_ = !!_value_;
+}
+@synthesize userSearchResponse;
 - (instancetype) init {
   if ((self = [super init])) {
     self.sessionResponse = [BSessionResponse defaultInstance];
@@ -3416,6 +3497,7 @@ static BServerRequest* defaultBServerRequestInstance = nil;
     self.feedPostFetchResponse = [BFeedPostFetchResponse defaultInstance];
     self.feedPostUpdateResponse = [BFeedPostUpdateResponse defaultInstance];
     self.autocompleteResponse = [BAutocompleteResponse defaultInstance];
+    self.userSearchResponse = [BUserSearchResponse defaultInstance];
   }
   return self;
 }
@@ -3477,6 +3559,11 @@ static BResponseType* defaultBResponseTypeInstance = nil;
       return NO;
     }
   }
+  if (self.hasUserSearchResponse) {
+    if (!self.userSearchResponse.isInitialized) {
+      return NO;
+    }
+  }
   return YES;
 }
 - (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
@@ -3515,6 +3602,9 @@ static BResponseType* defaultBResponseTypeInstance = nil;
   }
   if (self.hasAutocompleteResponse) {
     [output writeMessage:12 value:self.autocompleteResponse];
+  }
+  if (self.hasUserSearchResponse) {
+    [output writeMessage:13 value:self.userSearchResponse];
   }
   [self.unknownFields writeToCodedOutputStream:output];
 }
@@ -3560,6 +3650,9 @@ static BResponseType* defaultBResponseTypeInstance = nil;
   }
   if (self.hasAutocompleteResponse) {
     size_ += computeMessageSize(12, self.autocompleteResponse);
+  }
+  if (self.hasUserSearchResponse) {
+    size_ += computeMessageSize(13, self.userSearchResponse);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -3668,6 +3761,12 @@ static BResponseType* defaultBResponseTypeInstance = nil;
                          withIndent:[NSString stringWithFormat:@"%@  ", indent]];
     [output appendFormat:@"%@}\n", indent];
   }
+  if (self.hasUserSearchResponse) {
+    [output appendFormat:@"%@%@ {\n", indent, @"userSearchResponse"];
+    [self.userSearchResponse writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (void) storeInDictionary:(NSMutableDictionary *)dictionary {
@@ -3731,6 +3830,11 @@ static BResponseType* defaultBResponseTypeInstance = nil;
    [self.autocompleteResponse storeInDictionary:messageDictionary];
    [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"autocompleteResponse"];
   }
+  if (self.hasUserSearchResponse) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.userSearchResponse storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"userSearchResponse"];
+  }
   [self.unknownFields storeInDictionary:dictionary];
 }
 - (BOOL) isEqual:(id)other {
@@ -3766,6 +3870,8 @@ static BResponseType* defaultBResponseTypeInstance = nil;
       (!self.hasFeedPostUpdateResponse || [self.feedPostUpdateResponse isEqual:otherMessage.feedPostUpdateResponse]) &&
       self.hasAutocompleteResponse == otherMessage.hasAutocompleteResponse &&
       (!self.hasAutocompleteResponse || [self.autocompleteResponse isEqual:otherMessage.autocompleteResponse]) &&
+      self.hasUserSearchResponse == otherMessage.hasUserSearchResponse &&
+      (!self.hasUserSearchResponse || [self.userSearchResponse isEqual:otherMessage.userSearchResponse]) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
@@ -3805,6 +3911,9 @@ static BResponseType* defaultBResponseTypeInstance = nil;
   }
   if (self.hasAutocompleteResponse) {
     hashCode = hashCode * 31 + [self.autocompleteResponse hash];
+  }
+  if (self.hasUserSearchResponse) {
+    hashCode = hashCode * 31 + [self.userSearchResponse hash];
   }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
@@ -3884,6 +3993,9 @@ static BResponseType* defaultBResponseTypeInstance = nil;
   }
   if (other.hasAutocompleteResponse) {
     [self mergeAutocompleteResponse:other.autocompleteResponse];
+  }
+  if (other.hasUserSearchResponse) {
+    [self mergeUserSearchResponse:other.userSearchResponse];
   }
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -4012,6 +4124,15 @@ static BResponseType* defaultBResponseTypeInstance = nil;
         }
         [input readMessage:subBuilder extensionRegistry:extensionRegistry];
         [self setAutocompleteResponse:[subBuilder buildPartial]];
+        break;
+      }
+      case 106: {
+        BUserSearchResponseBuilder* subBuilder = [BUserSearchResponse builder];
+        if (self.hasUserSearchResponse) {
+          [subBuilder mergeFrom:self.userSearchResponse];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setUserSearchResponse:[subBuilder buildPartial]];
         break;
       }
     }
@@ -4375,6 +4496,36 @@ static BResponseType* defaultBResponseTypeInstance = nil;
 - (BResponseTypeBuilder*) clearAutocompleteResponse {
   resultResponseType.hasAutocompleteResponse = NO;
   resultResponseType.autocompleteResponse = [BAutocompleteResponse defaultInstance];
+  return self;
+}
+- (BOOL) hasUserSearchResponse {
+  return resultResponseType.hasUserSearchResponse;
+}
+- (BUserSearchResponse*) userSearchResponse {
+  return resultResponseType.userSearchResponse;
+}
+- (BResponseTypeBuilder*) setUserSearchResponse:(BUserSearchResponse*) value {
+  resultResponseType.hasUserSearchResponse = YES;
+  resultResponseType.userSearchResponse = value;
+  return self;
+}
+- (BResponseTypeBuilder*) setUserSearchResponseBuilder:(BUserSearchResponseBuilder*) builderForValue {
+  return [self setUserSearchResponse:[builderForValue build]];
+}
+- (BResponseTypeBuilder*) mergeUserSearchResponse:(BUserSearchResponse*) value {
+  if (resultResponseType.hasUserSearchResponse &&
+      resultResponseType.userSearchResponse != [BUserSearchResponse defaultInstance]) {
+    resultResponseType.userSearchResponse =
+      [[[BUserSearchResponse builderWithPrototype:resultResponseType.userSearchResponse] mergeFrom:value] buildPartial];
+  } else {
+    resultResponseType.userSearchResponse = value;
+  }
+  resultResponseType.hasUserSearchResponse = YES;
+  return self;
+}
+- (BResponseTypeBuilder*) clearUserSearchResponse {
+  resultResponseType.hasUserSearchResponse = NO;
+  resultResponseType.userSearchResponse = [BUserSearchResponse defaultInstance];
   return self;
 }
 @end

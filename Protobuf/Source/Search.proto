@@ -10,6 +10,7 @@ option (google.protobuf.objectivec_file_options).class_prefix = "B";
 option (google.protobuf.objectivec_file_options).relax_camel_case = true;
 
 
+import "UserProfiles.proto";
 //----------------------------------------------------------------------------------------
 //
 //                                                                                  Search
@@ -17,24 +18,33 @@ option (google.protobuf.objectivec_file_options).relax_camel_case = true;
 //----------------------------------------------------------------------------------------
 
 
-//----------------------------------------------------------------------------------------
-//                                                                            Autocomplete
-//----------------------------------------------------------------------------------------
-
-
+/*
 enum SearchType {
   STSearchAll = 0;
   STUsers     = 1;
   STTopics    = 2;
 }
+*/
 
 
 message AutocompleteRequest {
-  optional string     query = 1;
-  optional SearchType type  = 2 [default = STSearchAll];
+  optional string       query = 1;
 }
 
 
 message AutocompleteResponse {
-  repeated string  items = 1;
+  optional string       query = 1;
+  repeated string       suggestions = 2;
 }
+
+
+message UserSearchRequest {
+    optional string     query = 1;
+}
+
+
+message UserSearchResponse {
+    optional string         query    = 1;
+    repeated UserProfile    profiles = 2;
+}
+

@@ -26,7 +26,7 @@ func StringsAreEmptyAfterClean(strs ...*string) bool {
         if len(*s) > 0 {
             result = false
         } else {
-            *s = nil
+            s = nil
         }
     }
 

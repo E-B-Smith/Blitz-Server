@@ -35,6 +35,8 @@ It has these top-level messages:
 	AcceptInviteResponse
 	AutocompleteRequest
 	AutocompleteResponse
+	UserSearchRequest
+	UserSearchResponse
 	DebugMessage
 	SessionRequest
 	BlitzHereAppOptions

@@ -86,6 +86,7 @@ message RequestType {
   optional FeedPostUpdateRequest    feedPostUpdateRequest = 12;
   optional AutocompleteRequest      autocompleteRequest = 13;
   optional EntityTagList            entityTagUpdate     = 14;
+  optional UserSearchRequest        userSearchRequest   = 15;
 }
 
 
@@ -119,6 +120,7 @@ message ResponseType {
   optional FeedPostFetchResponse  feedPostFetchResponse   = 10;
   optional FeedPostUpdateResponse feedPostUpdateResponse  = 11;
   optional AutocompleteResponse   autocompleteResponse    = 12;
+  optional UserSearchResponse     userSearchResponse      = 13;
 }
 
 

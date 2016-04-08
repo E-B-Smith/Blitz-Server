@@ -111,6 +111,10 @@
 @class BUserProfileQueryBuilder;
 @class BUserProfileUpdate;
 @class BUserProfileUpdateBuilder;
+@class BUserSearchRequest;
+@class BUserSearchRequestBuilder;
+@class BUserSearchResponse;
+@class BUserSearchResponseBuilder;
 @class BVoid;
 @class BVoidBuilder;
 @class ObjectiveCFileOptions;
@@ -551,6 +555,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 #define RequestType_feedPostUpdateRequest @"feedPostUpdateRequest"
 #define RequestType_autocompleteRequest @"autocompleteRequest"
 #define RequestType_entityTagUpdate @"entityTagUpdate"
+#define RequestType_userSearchRequest @"userSearchRequest"
 @interface BRequestType : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
   BOOL hasSessionRequest_:1;
@@ -567,6 +572,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
   BOOL hasFeedPostUpdateRequest_:1;
   BOOL hasAutocompleteRequest_:1;
   BOOL hasEntityTagUpdate_:1;
+  BOOL hasUserSearchRequest_:1;
   BSessionRequest* sessionRequest;
   BUserEventBatch* userEventBatch;
   BUserProfileUpdate* userProfileUpdate;
@@ -581,6 +587,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
   BFeedPostUpdateRequest* feedPostUpdateRequest;
   BAutocompleteRequest* autocompleteRequest;
   BEntityTagList* entityTagUpdate;
+  BUserSearchRequest* userSearchRequest;
 }
 - (BOOL) hasSessionRequest;
 - (BOOL) hasUserEventBatch;
@@ -596,6 +603,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BOOL) hasFeedPostUpdateRequest;
 - (BOOL) hasAutocompleteRequest;
 - (BOOL) hasEntityTagUpdate;
+- (BOOL) hasUserSearchRequest;
 @property (readonly, strong) BSessionRequest* sessionRequest;
 @property (readonly, strong) BUserEventBatch* userEventBatch;
 @property (readonly, strong) BUserProfileUpdate* userProfileUpdate;
@@ -610,6 +618,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 @property (readonly, strong) BFeedPostUpdateRequest* feedPostUpdateRequest;
 @property (readonly, strong) BAutocompleteRequest* autocompleteRequest;
 @property (readonly, strong) BEntityTagList* entityTagUpdate;
+@property (readonly, strong) BUserSearchRequest* userSearchRequest;
 
 + (instancetype) defaultInstance;
 - (instancetype) defaultInstance;
@@ -743,6 +752,13 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BRequestTypeBuilder*) setEntityTagUpdateBuilder:(BEntityTagListBuilder*) builderForValue;
 - (BRequestTypeBuilder*) mergeEntityTagUpdate:(BEntityTagList*) value;
 - (BRequestTypeBuilder*) clearEntityTagUpdate;
+
+- (BOOL) hasUserSearchRequest;
+- (BUserSearchRequest*) userSearchRequest;
+- (BRequestTypeBuilder*) setUserSearchRequest:(BUserSearchRequest*) value;
+- (BRequestTypeBuilder*) setUserSearchRequestBuilder:(BUserSearchRequestBuilder*) builderForValue;
+- (BRequestTypeBuilder*) mergeUserSearchRequest:(BUserSearchRequest*) value;
+- (BRequestTypeBuilder*) clearUserSearchRequest;
 @end
 
 #define ServerRequest_sessionToken @"sessionToken"
@@ -819,6 +835,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 #define ResponseType_feedPostFetchResponse @"feedPostFetchResponse"
 #define ResponseType_feedPostUpdateResponse @"feedPostUpdateResponse"
 #define ResponseType_autocompleteResponse @"autocompleteResponse"
+#define ResponseType_userSearchResponse @"userSearchResponse"
 @interface BResponseType : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
   BOOL hasSessionResponse_:1;
@@ -833,6 +850,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
   BOOL hasFeedPostFetchResponse_:1;
   BOOL hasFeedPostUpdateResponse_:1;
   BOOL hasAutocompleteResponse_:1;
+  BOOL hasUserSearchResponse_:1;
   BSessionResponse* sessionResponse;
   BUserEventBatchResponse* userEventBatchResponse;
   BUserProfileUpdate* userProfileUpdate;
@@ -845,6 +863,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
   BFeedPostFetchResponse* feedPostFetchResponse;
   BFeedPostUpdateResponse* feedPostUpdateResponse;
   BAutocompleteResponse* autocompleteResponse;
+  BUserSearchResponse* userSearchResponse;
 }
 - (BOOL) hasSessionResponse;
 - (BOOL) hasUserEventBatchResponse;
@@ -858,6 +877,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BOOL) hasFeedPostFetchResponse;
 - (BOOL) hasFeedPostUpdateResponse;
 - (BOOL) hasAutocompleteResponse;
+- (BOOL) hasUserSearchResponse;
 @property (readonly, strong) BSessionResponse* sessionResponse;
 @property (readonly, strong) BUserEventBatchResponse* userEventBatchResponse;
 @property (readonly, strong) BUserProfileUpdate* userProfileUpdate;
@@ -870,6 +890,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 @property (readonly, strong) BFeedPostFetchResponse* feedPostFetchResponse;
 @property (readonly, strong) BFeedPostUpdateResponse* feedPostUpdateResponse;
 @property (readonly, strong) BAutocompleteResponse* autocompleteResponse;
+@property (readonly, strong) BUserSearchResponse* userSearchResponse;
 
 + (instancetype) defaultInstance;
 - (instancetype) defaultInstance;
@@ -989,6 +1010,13 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BResponseTypeBuilder*) setAutocompleteResponseBuilder:(BAutocompleteResponseBuilder*) builderForValue;
 - (BResponseTypeBuilder*) mergeAutocompleteResponse:(BAutocompleteResponse*) value;
 - (BResponseTypeBuilder*) clearAutocompleteResponse;
+
+- (BOOL) hasUserSearchResponse;
+- (BUserSearchResponse*) userSearchResponse;
+- (BResponseTypeBuilder*) setUserSearchResponse:(BUserSearchResponse*) value;
+- (BResponseTypeBuilder*) setUserSearchResponseBuilder:(BUserSearchResponseBuilder*) builderForValue;
+- (BResponseTypeBuilder*) mergeUserSearchResponse:(BUserSearchResponse*) value;
+- (BResponseTypeBuilder*) clearUserSearchResponse;
 @end
 
 #define ServerResponse_responseCode @"responseCode"

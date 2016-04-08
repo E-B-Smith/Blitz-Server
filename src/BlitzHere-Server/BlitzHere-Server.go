@@ -280,6 +280,12 @@ func DispatchServiceRequests(writer http.ResponseWriter, httpRequest *http.Reque
     case *BlitzMessage.EntityTagList:
         response = UpdateEntityTags(session, requestMessageType)
 
+    case *BlitzMessage.AutocompleteRequest:
+        response = AutocompleteRequest(session, requestMessageType)
+
+    case *BlitzMessage.UserSearchRequest:
+        response = UserSearchRequest(session, requestMessageType)
+
     default:
         error = fmt.Errorf("Unrecognized request '%+v'", request)
         response = ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
