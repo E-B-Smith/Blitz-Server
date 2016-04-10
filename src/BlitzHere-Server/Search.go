@@ -1,6 +1,14 @@
-//  BlitzHere-Server : Search.go  -  Search facility.
+
+
+//----------------------------------------------------------------------------------------
 //
-//  E.B.Smith  -  April, 2016
+//                                                            BlitzHere-Server : Search.go
+//                                                                         Search facility
+//
+//                                                                 E.B. Smith, April, 2016
+//                        -©- Copyright © 2015-2016 Edward Smith, all rights reserved. -©-
+//
+//----------------------------------------------------------------------------------------
 
 
 package main

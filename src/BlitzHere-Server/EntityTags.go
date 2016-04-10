@@ -1,6 +1,14 @@
-//  BlitzHere-Server : EntityTags.go
+
+
+//----------------------------------------------------------------------------------------
 //
-//  E.B.Smith  -  March, 2015
+//                                                        BlitzHere-Server : EntityTags.go
+//                                                        The server back-end to BlitzHere
+//
+//                                                                 E.B. Smith, March, 2015
+//                        -©- Copyright © 2015-2016 Edward Smith, all rights reserved. -©-
+//
+//----------------------------------------------------------------------------------------
 
 
 package main

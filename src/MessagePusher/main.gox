@@ -1,0 +1,44 @@
+
+
+//----------------------------------------------------------------------------------------
+//
+//                                                                          Chat-Server.go
+//                                      Chat-Server: A simple client & server chat service
+//
+//                                                                  E.B. Smith, March 2016
+//                        -©- Copyright © 2015-2016 Edward Smith, all rights reserved. -©-
+//
+//----------------------------------------------------------------------------------------
+
+
+
+/*
+package main
+
+
+import (
+    "net/http"
+    "golang.org/x/net/websocket"
+)
+
+
+var messagePusher *MessagePusher.MessagePusher = nil
+
+
+func MessagePushHandler(userConnection *websocket.Conn) {
+    messagePusher.HandlePushConnection(userConnection)
+}
+
+
+func main() {
+    //  Initialize our chat server.
+    messagePusher = MessagePusher.NewMessagePusher()
+
+    //  Set the handler, then serve the connections.
+    http.Handle("/push", websocket.Handler(MessagePushHandler))
+    error := http.ListenAndServe(":12345", nil)
+    if error != nil {
+        panic("ListenAndServe: " + error.Error())
+    }
+}
+*/

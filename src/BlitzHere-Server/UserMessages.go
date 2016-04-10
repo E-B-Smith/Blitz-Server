@@ -142,19 +142,15 @@ func UserMessageFetchRequest(session *Session, fetch *BlitzMessage.UserMessageUp
 }
 
 
-
 //----------------------------------------------------------------------------------------
 //                                                                         SendUserMessage
 //----------------------------------------------------------------------------------------
 
 
-func SendUserMessage(sender string, recipients []string, message string,
-                 messageType BlitzMessage.UserMessageType, actionIcon string, actionURL string) {
+func SendBlitzUserMessage(message *BlitzMessage.UserMessage) {
     Log.LogFunctionName()
 
-    for _, recipient := range recipients {
-        if sender == recipient { continue; }
-
+    for _, recipientID := range message.Recipients {
         _, error := config.DB.Exec("insert into UserMessageTable "+
             "(messageID, " +
             " senderID, "  +
@@ -165,19 +161,52 @@ func SendUserMessage(sender string, recipients []string, message string,
             " actionIcon, "+
             " actionURL  "  +
             ") values ($1, $2, $3, $4, $5, $6, $7, $8); ",
-            Util.NewUUIDString(),
-            sender,
-            recipient,
-            time.Now(),
-            messageType,
-            message,
-            actionIcon,
-            actionURL)
+            message.MessageID,
+            message.SenderID,
+            recipientID,
+            BlitzMessage.NullTimeFromTimestamp(message.CreationDate),
+            message.MessageType,
+            message.MessageText,
+            message.ActionIcon,
+            message.ActionURL)
 
         if error != nil {
-            Log.Errorf("Error inserting message: %+v.", error)
+            Log.Errorf("Error inserting message: %v. MessageID: %s From: %s To: %s.",
+                error, *message.MessageID, *message.SenderID, recipientID)
         }
     }
+
+    globalMessagePusher.PushMessage(message)
+}
+
+
+//----------------------------------------------------------------------------------------
+//                                                                         SendUserMessage
+//----------------------------------------------------------------------------------------
+
+
+func SendUserMessage(
+        sender string,
+        recipients []string,
+        message string,
+        messageType BlitzMessage.UserMessageType,
+        actionIcon string,
+        actionURL string) {
+    Log.LogFunctionName()
+
+    status := BlitzMessage.UserMessageStatus_MSNew
+    blitzMessage := &BlitzMessage.UserMessage {
+        MessageID:      StringPtr(Util.NewUUIDString()),
+        SenderID:       &sender,
+        Recipients:     recipients,
+        CreationDate:   BlitzMessage.TimestampFromTime(time.Now()),
+        MessageType:    &messageType,
+        MessageStatus:  &status,
+        MessageText:    &message,
+        ActionIcon:     &actionIcon,
+        ActionURL:      &actionURL,
+    }
+    SendBlitzUserMessage(blitzMessage)
 }
 
 
@@ -200,33 +229,8 @@ func UserMessageSendRequest(session *Session,
     messagesSent := 0
     for _, message := range sendMessage.Messages {
         Log.Debugf("Message %d has %d recipients.", messagesSent+1, len(message.Recipients))
-        for _, recipientID := range message.Recipients {
-            _, error := config.DB.Exec("insert into UserMessageTable "+
-                "(messageID, " +
-                " senderID, "  +
-                " recipientID,"+
-                " creationDate,"+
-                " messageType,"+
-                " messageText,"+
-                " actionIcon, "+
-                " actionURL  "  +
-                ") values ($1, $2, $3, $4, $5, $6, $7, $8); ",
-                message.MessageID,
-                message.SenderID,
-                recipientID,
-                BlitzMessage.NullTimeFromTimestamp(message.CreationDate),
-                message.MessageType,
-                message.MessageText,
-                message.ActionIcon,
-                message.ActionURL)
-
-            if error == nil {
-                messagesSent++
-            } else {
-                Log.Errorf("Error inserting message: %v. MessageID: %s From: %s To: %s.",
-                    error, *message.MessageID, *message.SenderID, recipientID)
-            }
-        }
+        SendBlitzUserMessage(message)
+        messagesSent += len(message.Recipients)
     }
 
     Log.Debugf("Received %d message bundles, sent %d messages.", len(sendMessage.Messages), messagesSent)

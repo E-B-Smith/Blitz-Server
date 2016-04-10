@@ -4597,6 +4597,795 @@ public final class Server {
     // @@protoc_insertion_point(class_scope:BlitzMessage.SessionResponse)
   }
 
+  public interface PushConnectOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:BlitzMessage.PushConnect)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional string userID = 1;</code>
+     */
+    boolean hasUserID();
+    /**
+     * <code>optional string userID = 1;</code>
+     */
+    java.lang.String getUserID();
+    /**
+     * <code>optional string userID = 1;</code>
+     */
+    com.google.protobuf.ByteString
+        getUserIDBytes();
+  }
+  /**
+   * Protobuf type {@code BlitzMessage.PushConnect}
+   */
+  public static final class PushConnect extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:BlitzMessage.PushConnect)
+      PushConnectOrBuilder {
+    // Use PushConnect.newBuilder() to construct.
+    private PushConnect(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private PushConnect(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final PushConnect defaultInstance;
+    public static PushConnect getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public PushConnect getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private PushConnect(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000001;
+              userID_ = bs;
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.blitzhere.BlitzMessage.Server.internal_static_BlitzMessage_PushConnect_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.blitzhere.BlitzMessage.Server.internal_static_BlitzMessage_PushConnect_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.blitzhere.BlitzMessage.Server.PushConnect.class, com.blitzhere.BlitzMessage.Server.PushConnect.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<PushConnect> PARSER =
+        new com.google.protobuf.AbstractParser<PushConnect>() {
+      public PushConnect parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new PushConnect(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<PushConnect> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int USERID_FIELD_NUMBER = 1;
+    private java.lang.Object userID_;
+    /**
+     * <code>optional string userID = 1;</code>
+     */
+    public boolean hasUserID() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional string userID = 1;</code>
+     */
+    public java.lang.String getUserID() {
+      java.lang.Object ref = userID_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          userID_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string userID = 1;</code>
+     */
+    public com.google.protobuf.ByteString
+        getUserIDBytes() {
+      java.lang.Object ref = userID_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        userID_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private void initFields() {
+      userID_ = "";
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeBytes(1, getUserIDBytes());
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(1, getUserIDBytes());
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.blitzhere.BlitzMessage.Server.PushConnect parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.blitzhere.BlitzMessage.Server.PushConnect parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.blitzhere.BlitzMessage.Server.PushConnect parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.blitzhere.BlitzMessage.Server.PushConnect parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.blitzhere.BlitzMessage.Server.PushConnect parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.blitzhere.BlitzMessage.Server.PushConnect parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.blitzhere.BlitzMessage.Server.PushConnect parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.blitzhere.BlitzMessage.Server.PushConnect parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.blitzhere.BlitzMessage.Server.PushConnect parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.blitzhere.BlitzMessage.Server.PushConnect parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.blitzhere.BlitzMessage.Server.PushConnect prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code BlitzMessage.PushConnect}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:BlitzMessage.PushConnect)
+        com.blitzhere.BlitzMessage.Server.PushConnectOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.blitzhere.BlitzMessage.Server.internal_static_BlitzMessage_PushConnect_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.blitzhere.BlitzMessage.Server.internal_static_BlitzMessage_PushConnect_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.blitzhere.BlitzMessage.Server.PushConnect.class, com.blitzhere.BlitzMessage.Server.PushConnect.Builder.class);
+      }
+
+      // Construct using com.blitzhere.BlitzMessage.Server.PushConnect.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        userID_ = "";
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.blitzhere.BlitzMessage.Server.internal_static_BlitzMessage_PushConnect_descriptor;
+      }
+
+      public com.blitzhere.BlitzMessage.Server.PushConnect getDefaultInstanceForType() {
+        return com.blitzhere.BlitzMessage.Server.PushConnect.getDefaultInstance();
+      }
+
+      public com.blitzhere.BlitzMessage.Server.PushConnect build() {
+        com.blitzhere.BlitzMessage.Server.PushConnect result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.blitzhere.BlitzMessage.Server.PushConnect buildPartial() {
+        com.blitzhere.BlitzMessage.Server.PushConnect result = new com.blitzhere.BlitzMessage.Server.PushConnect(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.userID_ = userID_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.blitzhere.BlitzMessage.Server.PushConnect) {
+          return mergeFrom((com.blitzhere.BlitzMessage.Server.PushConnect)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.blitzhere.BlitzMessage.Server.PushConnect other) {
+        if (other == com.blitzhere.BlitzMessage.Server.PushConnect.getDefaultInstance()) return this;
+        if (other.hasUserID()) {
+          bitField0_ |= 0x00000001;
+          userID_ = other.userID_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.blitzhere.BlitzMessage.Server.PushConnect parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.blitzhere.BlitzMessage.Server.PushConnect) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private java.lang.Object userID_ = "";
+      /**
+       * <code>optional string userID = 1;</code>
+       */
+      public boolean hasUserID() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional string userID = 1;</code>
+       */
+      public java.lang.String getUserID() {
+        java.lang.Object ref = userID_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            userID_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string userID = 1;</code>
+       */
+      public com.google.protobuf.ByteString
+          getUserIDBytes() {
+        java.lang.Object ref = userID_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          userID_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string userID = 1;</code>
+       */
+      public Builder setUserID(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        userID_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string userID = 1;</code>
+       */
+      public Builder clearUserID() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        userID_ = getDefaultInstance().getUserID();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string userID = 1;</code>
+       */
+      public Builder setUserIDBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        userID_ = value;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:BlitzMessage.PushConnect)
+    }
+
+    static {
+      defaultInstance = new PushConnect(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:BlitzMessage.PushConnect)
+  }
+
+  public interface PushDisconnectOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:BlitzMessage.PushDisconnect)
+      com.google.protobuf.MessageOrBuilder {
+  }
+  /**
+   * Protobuf type {@code BlitzMessage.PushDisconnect}
+   */
+  public static final class PushDisconnect extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:BlitzMessage.PushDisconnect)
+      PushDisconnectOrBuilder {
+    // Use PushDisconnect.newBuilder() to construct.
+    private PushDisconnect(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private PushDisconnect(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final PushDisconnect defaultInstance;
+    public static PushDisconnect getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public PushDisconnect getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private PushDisconnect(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.blitzhere.BlitzMessage.Server.internal_static_BlitzMessage_PushDisconnect_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.blitzhere.BlitzMessage.Server.internal_static_BlitzMessage_PushDisconnect_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.blitzhere.BlitzMessage.Server.PushDisconnect.class, com.blitzhere.BlitzMessage.Server.PushDisconnect.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<PushDisconnect> PARSER =
+        new com.google.protobuf.AbstractParser<PushDisconnect>() {
+      public PushDisconnect parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new PushDisconnect(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<PushDisconnect> getParserForType() {
+      return PARSER;
+    }
+
+    private void initFields() {
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.blitzhere.BlitzMessage.Server.PushDisconnect parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.blitzhere.BlitzMessage.Server.PushDisconnect parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.blitzhere.BlitzMessage.Server.PushDisconnect parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.blitzhere.BlitzMessage.Server.PushDisconnect parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.blitzhere.BlitzMessage.Server.PushDisconnect parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.blitzhere.BlitzMessage.Server.PushDisconnect parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.blitzhere.BlitzMessage.Server.PushDisconnect parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.blitzhere.BlitzMessage.Server.PushDisconnect parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.blitzhere.BlitzMessage.Server.PushDisconnect parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.blitzhere.BlitzMessage.Server.PushDisconnect parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.blitzhere.BlitzMessage.Server.PushDisconnect prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code BlitzMessage.PushDisconnect}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:BlitzMessage.PushDisconnect)
+        com.blitzhere.BlitzMessage.Server.PushDisconnectOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.blitzhere.BlitzMessage.Server.internal_static_BlitzMessage_PushDisconnect_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.blitzhere.BlitzMessage.Server.internal_static_BlitzMessage_PushDisconnect_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.blitzhere.BlitzMessage.Server.PushDisconnect.class, com.blitzhere.BlitzMessage.Server.PushDisconnect.Builder.class);
+      }
+
+      // Construct using com.blitzhere.BlitzMessage.Server.PushDisconnect.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.blitzhere.BlitzMessage.Server.internal_static_BlitzMessage_PushDisconnect_descriptor;
+      }
+
+      public com.blitzhere.BlitzMessage.Server.PushDisconnect getDefaultInstanceForType() {
+        return com.blitzhere.BlitzMessage.Server.PushDisconnect.getDefaultInstance();
+      }
+
+      public com.blitzhere.BlitzMessage.Server.PushDisconnect build() {
+        com.blitzhere.BlitzMessage.Server.PushDisconnect result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.blitzhere.BlitzMessage.Server.PushDisconnect buildPartial() {
+        com.blitzhere.BlitzMessage.Server.PushDisconnect result = new com.blitzhere.BlitzMessage.Server.PushDisconnect(this);
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.blitzhere.BlitzMessage.Server.PushDisconnect) {
+          return mergeFrom((com.blitzhere.BlitzMessage.Server.PushDisconnect)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.blitzhere.BlitzMessage.Server.PushDisconnect other) {
+        if (other == com.blitzhere.BlitzMessage.Server.PushDisconnect.getDefaultInstance()) return this;
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.blitzhere.BlitzMessage.Server.PushDisconnect parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.blitzhere.BlitzMessage.Server.PushDisconnect) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:BlitzMessage.PushDisconnect)
+    }
+
+    static {
+      defaultInstance = new PushDisconnect(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:BlitzMessage.PushDisconnect)
+  }
+
   public interface RequestTypeOrBuilder extends
       // @@protoc_insertion_point(interface_extends:BlitzMessage.RequestType)
       com.google.protobuf.MessageOrBuilder {
@@ -4795,6 +5584,32 @@ public final class Server {
      * <code>optional .BlitzMessage.UserSearchRequest userSearchRequest = 15;</code>
      */
     com.blitzhere.BlitzMessage.Search.UserSearchRequestOrBuilder getUserSearchRequestOrBuilder();
+
+    /**
+     * <code>optional .BlitzMessage.PushConnect pushConnect = 16;</code>
+     */
+    boolean hasPushConnect();
+    /**
+     * <code>optional .BlitzMessage.PushConnect pushConnect = 16;</code>
+     */
+    com.blitzhere.BlitzMessage.Server.PushConnect getPushConnect();
+    /**
+     * <code>optional .BlitzMessage.PushConnect pushConnect = 16;</code>
+     */
+    com.blitzhere.BlitzMessage.Server.PushConnectOrBuilder getPushConnectOrBuilder();
+
+    /**
+     * <code>optional .BlitzMessage.PushDisconnect pushDisconnect = 17;</code>
+     */
+    boolean hasPushDisconnect();
+    /**
+     * <code>optional .BlitzMessage.PushDisconnect pushDisconnect = 17;</code>
+     */
+    com.blitzhere.BlitzMessage.Server.PushDisconnect getPushDisconnect();
+    /**
+     * <code>optional .BlitzMessage.PushDisconnect pushDisconnect = 17;</code>
+     */
+    com.blitzhere.BlitzMessage.Server.PushDisconnectOrBuilder getPushDisconnectOrBuilder();
   }
   /**
    * Protobuf type {@code BlitzMessage.RequestType}
@@ -5041,6 +5856,32 @@ public final class Server {
                 userSearchRequest_ = subBuilder.buildPartial();
               }
               bitField0_ |= 0x00004000;
+              break;
+            }
+            case 130: {
+              com.blitzhere.BlitzMessage.Server.PushConnect.Builder subBuilder = null;
+              if (((bitField0_ & 0x00008000) == 0x00008000)) {
+                subBuilder = pushConnect_.toBuilder();
+              }
+              pushConnect_ = input.readMessage(com.blitzhere.BlitzMessage.Server.PushConnect.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(pushConnect_);
+                pushConnect_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00008000;
+              break;
+            }
+            case 138: {
+              com.blitzhere.BlitzMessage.Server.PushDisconnect.Builder subBuilder = null;
+              if (((bitField0_ & 0x00010000) == 0x00010000)) {
+                subBuilder = pushDisconnect_.toBuilder();
+              }
+              pushDisconnect_ = input.readMessage(com.blitzhere.BlitzMessage.Server.PushDisconnect.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(pushDisconnect_);
+                pushDisconnect_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00010000;
               break;
             }
           }
@@ -5398,6 +6239,48 @@ public final class Server {
       return userSearchRequest_;
     }
 
+    public static final int PUSHCONNECT_FIELD_NUMBER = 16;
+    private com.blitzhere.BlitzMessage.Server.PushConnect pushConnect_;
+    /**
+     * <code>optional .BlitzMessage.PushConnect pushConnect = 16;</code>
+     */
+    public boolean hasPushConnect() {
+      return ((bitField0_ & 0x00008000) == 0x00008000);
+    }
+    /**
+     * <code>optional .BlitzMessage.PushConnect pushConnect = 16;</code>
+     */
+    public com.blitzhere.BlitzMessage.Server.PushConnect getPushConnect() {
+      return pushConnect_;
+    }
+    /**
+     * <code>optional .BlitzMessage.PushConnect pushConnect = 16;</code>
+     */
+    public com.blitzhere.BlitzMessage.Server.PushConnectOrBuilder getPushConnectOrBuilder() {
+      return pushConnect_;
+    }
+
+    public static final int PUSHDISCONNECT_FIELD_NUMBER = 17;
+    private com.blitzhere.BlitzMessage.Server.PushDisconnect pushDisconnect_;
+    /**
+     * <code>optional .BlitzMessage.PushDisconnect pushDisconnect = 17;</code>
+     */
+    public boolean hasPushDisconnect() {
+      return ((bitField0_ & 0x00010000) == 0x00010000);
+    }
+    /**
+     * <code>optional .BlitzMessage.PushDisconnect pushDisconnect = 17;</code>
+     */
+    public com.blitzhere.BlitzMessage.Server.PushDisconnect getPushDisconnect() {
+      return pushDisconnect_;
+    }
+    /**
+     * <code>optional .BlitzMessage.PushDisconnect pushDisconnect = 17;</code>
+     */
+    public com.blitzhere.BlitzMessage.Server.PushDisconnectOrBuilder getPushDisconnectOrBuilder() {
+      return pushDisconnect_;
+    }
+
     private void initFields() {
       sessionRequest_ = com.blitzhere.BlitzMessage.Server.SessionRequest.getDefaultInstance();
       userEventBatch_ = com.blitzhere.BlitzMessage.UserEvents.UserEventBatch.getDefaultInstance();
@@ -5414,6 +6297,8 @@ public final class Server {
       autocompleteRequest_ = com.blitzhere.BlitzMessage.Search.AutocompleteRequest.getDefaultInstance();
       entityTagUpdate_ = com.blitzhere.BlitzMessage.EntityTags.EntityTagList.getDefaultInstance();
       userSearchRequest_ = com.blitzhere.BlitzMessage.Search.UserSearchRequest.getDefaultInstance();
+      pushConnect_ = com.blitzhere.BlitzMessage.Server.PushConnect.getDefaultInstance();
+      pushDisconnect_ = com.blitzhere.BlitzMessage.Server.PushDisconnect.getDefaultInstance();
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -5533,6 +6418,12 @@ public final class Server {
       if (((bitField0_ & 0x00004000) == 0x00004000)) {
         output.writeMessage(15, userSearchRequest_);
       }
+      if (((bitField0_ & 0x00008000) == 0x00008000)) {
+        output.writeMessage(16, pushConnect_);
+      }
+      if (((bitField0_ & 0x00010000) == 0x00010000)) {
+        output.writeMessage(17, pushDisconnect_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -5601,6 +6492,14 @@ public final class Server {
       if (((bitField0_ & 0x00004000) == 0x00004000)) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(15, userSearchRequest_);
+      }
+      if (((bitField0_ & 0x00008000) == 0x00008000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(16, pushConnect_);
+      }
+      if (((bitField0_ & 0x00010000) == 0x00010000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(17, pushDisconnect_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -5726,6 +6625,8 @@ public final class Server {
           getAutocompleteRequestFieldBuilder();
           getEntityTagUpdateFieldBuilder();
           getUserSearchRequestFieldBuilder();
+          getPushConnectFieldBuilder();
+          getPushDisconnectFieldBuilder();
         }
       }
       private static Builder create() {
@@ -5824,6 +6725,18 @@ public final class Server {
           userSearchRequestBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00004000);
+        if (pushConnectBuilder_ == null) {
+          pushConnect_ = com.blitzhere.BlitzMessage.Server.PushConnect.getDefaultInstance();
+        } else {
+          pushConnectBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00008000);
+        if (pushDisconnectBuilder_ == null) {
+          pushDisconnect_ = com.blitzhere.BlitzMessage.Server.PushDisconnect.getDefaultInstance();
+        } else {
+          pushDisconnectBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00010000);
         return this;
       }
 
@@ -5972,6 +6885,22 @@ public final class Server {
         } else {
           result.userSearchRequest_ = userSearchRequestBuilder_.build();
         }
+        if (((from_bitField0_ & 0x00008000) == 0x00008000)) {
+          to_bitField0_ |= 0x00008000;
+        }
+        if (pushConnectBuilder_ == null) {
+          result.pushConnect_ = pushConnect_;
+        } else {
+          result.pushConnect_ = pushConnectBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x00010000) == 0x00010000)) {
+          to_bitField0_ |= 0x00010000;
+        }
+        if (pushDisconnectBuilder_ == null) {
+          result.pushDisconnect_ = pushDisconnect_;
+        } else {
+          result.pushDisconnect_ = pushDisconnectBuilder_.build();
+        }
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -6032,6 +6961,12 @@ public final class Server {
         }
         if (other.hasUserSearchRequest()) {
           mergeUserSearchRequest(other.getUserSearchRequest());
+        }
+        if (other.hasPushConnect()) {
+          mergePushConnect(other.getPushConnect());
+        }
+        if (other.hasPushDisconnect()) {
+          mergePushDisconnect(other.getPushDisconnect());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -7858,6 +8793,238 @@ public final class Server {
           userSearchRequest_ = null;
         }
         return userSearchRequestBuilder_;
+      }
+
+      private com.blitzhere.BlitzMessage.Server.PushConnect pushConnect_ = com.blitzhere.BlitzMessage.Server.PushConnect.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          com.blitzhere.BlitzMessage.Server.PushConnect, com.blitzhere.BlitzMessage.Server.PushConnect.Builder, com.blitzhere.BlitzMessage.Server.PushConnectOrBuilder> pushConnectBuilder_;
+      /**
+       * <code>optional .BlitzMessage.PushConnect pushConnect = 16;</code>
+       */
+      public boolean hasPushConnect() {
+        return ((bitField0_ & 0x00008000) == 0x00008000);
+      }
+      /**
+       * <code>optional .BlitzMessage.PushConnect pushConnect = 16;</code>
+       */
+      public com.blitzhere.BlitzMessage.Server.PushConnect getPushConnect() {
+        if (pushConnectBuilder_ == null) {
+          return pushConnect_;
+        } else {
+          return pushConnectBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .BlitzMessage.PushConnect pushConnect = 16;</code>
+       */
+      public Builder setPushConnect(com.blitzhere.BlitzMessage.Server.PushConnect value) {
+        if (pushConnectBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          pushConnect_ = value;
+          onChanged();
+        } else {
+          pushConnectBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00008000;
+        return this;
+      }
+      /**
+       * <code>optional .BlitzMessage.PushConnect pushConnect = 16;</code>
+       */
+      public Builder setPushConnect(
+          com.blitzhere.BlitzMessage.Server.PushConnect.Builder builderForValue) {
+        if (pushConnectBuilder_ == null) {
+          pushConnect_ = builderForValue.build();
+          onChanged();
+        } else {
+          pushConnectBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00008000;
+        return this;
+      }
+      /**
+       * <code>optional .BlitzMessage.PushConnect pushConnect = 16;</code>
+       */
+      public Builder mergePushConnect(com.blitzhere.BlitzMessage.Server.PushConnect value) {
+        if (pushConnectBuilder_ == null) {
+          if (((bitField0_ & 0x00008000) == 0x00008000) &&
+              pushConnect_ != com.blitzhere.BlitzMessage.Server.PushConnect.getDefaultInstance()) {
+            pushConnect_ =
+              com.blitzhere.BlitzMessage.Server.PushConnect.newBuilder(pushConnect_).mergeFrom(value).buildPartial();
+          } else {
+            pushConnect_ = value;
+          }
+          onChanged();
+        } else {
+          pushConnectBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00008000;
+        return this;
+      }
+      /**
+       * <code>optional .BlitzMessage.PushConnect pushConnect = 16;</code>
+       */
+      public Builder clearPushConnect() {
+        if (pushConnectBuilder_ == null) {
+          pushConnect_ = com.blitzhere.BlitzMessage.Server.PushConnect.getDefaultInstance();
+          onChanged();
+        } else {
+          pushConnectBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00008000);
+        return this;
+      }
+      /**
+       * <code>optional .BlitzMessage.PushConnect pushConnect = 16;</code>
+       */
+      public com.blitzhere.BlitzMessage.Server.PushConnect.Builder getPushConnectBuilder() {
+        bitField0_ |= 0x00008000;
+        onChanged();
+        return getPushConnectFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .BlitzMessage.PushConnect pushConnect = 16;</code>
+       */
+      public com.blitzhere.BlitzMessage.Server.PushConnectOrBuilder getPushConnectOrBuilder() {
+        if (pushConnectBuilder_ != null) {
+          return pushConnectBuilder_.getMessageOrBuilder();
+        } else {
+          return pushConnect_;
+        }
+      }
+      /**
+       * <code>optional .BlitzMessage.PushConnect pushConnect = 16;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          com.blitzhere.BlitzMessage.Server.PushConnect, com.blitzhere.BlitzMessage.Server.PushConnect.Builder, com.blitzhere.BlitzMessage.Server.PushConnectOrBuilder> 
+          getPushConnectFieldBuilder() {
+        if (pushConnectBuilder_ == null) {
+          pushConnectBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.blitzhere.BlitzMessage.Server.PushConnect, com.blitzhere.BlitzMessage.Server.PushConnect.Builder, com.blitzhere.BlitzMessage.Server.PushConnectOrBuilder>(
+                  getPushConnect(),
+                  getParentForChildren(),
+                  isClean());
+          pushConnect_ = null;
+        }
+        return pushConnectBuilder_;
+      }
+
+      private com.blitzhere.BlitzMessage.Server.PushDisconnect pushDisconnect_ = com.blitzhere.BlitzMessage.Server.PushDisconnect.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          com.blitzhere.BlitzMessage.Server.PushDisconnect, com.blitzhere.BlitzMessage.Server.PushDisconnect.Builder, com.blitzhere.BlitzMessage.Server.PushDisconnectOrBuilder> pushDisconnectBuilder_;
+      /**
+       * <code>optional .BlitzMessage.PushDisconnect pushDisconnect = 17;</code>
+       */
+      public boolean hasPushDisconnect() {
+        return ((bitField0_ & 0x00010000) == 0x00010000);
+      }
+      /**
+       * <code>optional .BlitzMessage.PushDisconnect pushDisconnect = 17;</code>
+       */
+      public com.blitzhere.BlitzMessage.Server.PushDisconnect getPushDisconnect() {
+        if (pushDisconnectBuilder_ == null) {
+          return pushDisconnect_;
+        } else {
+          return pushDisconnectBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .BlitzMessage.PushDisconnect pushDisconnect = 17;</code>
+       */
+      public Builder setPushDisconnect(com.blitzhere.BlitzMessage.Server.PushDisconnect value) {
+        if (pushDisconnectBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          pushDisconnect_ = value;
+          onChanged();
+        } else {
+          pushDisconnectBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00010000;
+        return this;
+      }
+      /**
+       * <code>optional .BlitzMessage.PushDisconnect pushDisconnect = 17;</code>
+       */
+      public Builder setPushDisconnect(
+          com.blitzhere.BlitzMessage.Server.PushDisconnect.Builder builderForValue) {
+        if (pushDisconnectBuilder_ == null) {
+          pushDisconnect_ = builderForValue.build();
+          onChanged();
+        } else {
+          pushDisconnectBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00010000;
+        return this;
+      }
+      /**
+       * <code>optional .BlitzMessage.PushDisconnect pushDisconnect = 17;</code>
+       */
+      public Builder mergePushDisconnect(com.blitzhere.BlitzMessage.Server.PushDisconnect value) {
+        if (pushDisconnectBuilder_ == null) {
+          if (((bitField0_ & 0x00010000) == 0x00010000) &&
+              pushDisconnect_ != com.blitzhere.BlitzMessage.Server.PushDisconnect.getDefaultInstance()) {
+            pushDisconnect_ =
+              com.blitzhere.BlitzMessage.Server.PushDisconnect.newBuilder(pushDisconnect_).mergeFrom(value).buildPartial();
+          } else {
+            pushDisconnect_ = value;
+          }
+          onChanged();
+        } else {
+          pushDisconnectBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00010000;
+        return this;
+      }
+      /**
+       * <code>optional .BlitzMessage.PushDisconnect pushDisconnect = 17;</code>
+       */
+      public Builder clearPushDisconnect() {
+        if (pushDisconnectBuilder_ == null) {
+          pushDisconnect_ = com.blitzhere.BlitzMessage.Server.PushDisconnect.getDefaultInstance();
+          onChanged();
+        } else {
+          pushDisconnectBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00010000);
+        return this;
+      }
+      /**
+       * <code>optional .BlitzMessage.PushDisconnect pushDisconnect = 17;</code>
+       */
+      public com.blitzhere.BlitzMessage.Server.PushDisconnect.Builder getPushDisconnectBuilder() {
+        bitField0_ |= 0x00010000;
+        onChanged();
+        return getPushDisconnectFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .BlitzMessage.PushDisconnect pushDisconnect = 17;</code>
+       */
+      public com.blitzhere.BlitzMessage.Server.PushDisconnectOrBuilder getPushDisconnectOrBuilder() {
+        if (pushDisconnectBuilder_ != null) {
+          return pushDisconnectBuilder_.getMessageOrBuilder();
+        } else {
+          return pushDisconnect_;
+        }
+      }
+      /**
+       * <code>optional .BlitzMessage.PushDisconnect pushDisconnect = 17;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          com.blitzhere.BlitzMessage.Server.PushDisconnect, com.blitzhere.BlitzMessage.Server.PushDisconnect.Builder, com.blitzhere.BlitzMessage.Server.PushDisconnectOrBuilder> 
+          getPushDisconnectFieldBuilder() {
+        if (pushDisconnectBuilder_ == null) {
+          pushDisconnectBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.blitzhere.BlitzMessage.Server.PushDisconnect, com.blitzhere.BlitzMessage.Server.PushDisconnect.Builder, com.blitzhere.BlitzMessage.Server.PushDisconnectOrBuilder>(
+                  getPushDisconnect(),
+                  getParentForChildren(),
+                  isClean());
+          pushDisconnect_ = null;
+        }
+        return pushDisconnectBuilder_;
       }
 
       // @@protoc_insertion_point(builder_scope:BlitzMessage.RequestType)
@@ -12234,6 +13401,16 @@ public final class Server {
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_BlitzMessage_SessionResponse_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_BlitzMessage_PushConnect_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_BlitzMessage_PushConnect_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_BlitzMessage_PushDisconnect_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_BlitzMessage_PushDisconnect_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_BlitzMessage_RequestType_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
@@ -12283,60 +13460,64 @@ public final class Server {
       "setAllAppData\030\006 \001(\010\0228\n\rinviteRequest\030\007 \001" +
       "(\0132!.BlitzMessage.AcceptInviteRequest\022,\n",
       "\nappOptions\030\010 \001(\0132\030.BlitzMessage.AppOpti" +
-      "ons\"\204\007\n\013RequestType\0224\n\016sessionRequest\030\001 " +
-      "\001(\0132\034.BlitzMessage.SessionRequest\0224\n\016use" +
-      "rEventBatch\030\002 \001(\0132\034.BlitzMessage.UserEve" +
-      "ntBatch\022:\n\021userProfileUpdate\030\003 \001(\0132\037.Bli" +
-      "tzMessage.UserProfileUpdate\0228\n\020userProfi" +
-      "leQuery\030\004 \001(\0132\036.BlitzMessage.UserProfile" +
-      "Query\022>\n\023confirmationRequest\030\005 \001(\0132!.Bli" +
-      "tzMessage.ConfirmationRequest\022;\n\022message" +
-      "SendRequest\030\006 \001(\0132\037.BlitzMessage.UserMes",
-      "sageUpdate\022<\n\023messageFetchRequest\030\007 \001(\0132" +
-      "\037.BlitzMessage.UserMessageUpdate\0220\n\014debu" +
-      "gMessage\030\010 \001(\0132\032.BlitzMessage.DebugMessa" +
-      "ge\022.\n\013imageUpload\030\t \001(\0132\031.BlitzMessage.I" +
-      "mageUpload\022>\n\023acceptInviteRequest\030\n \001(\0132" +
-      "!.BlitzMessage.AcceptInviteRequest\022@\n\024fe" +
-      "edPostFetchRequest\030\013 \001(\0132\".BlitzMessage." +
-      "FeedPostFetchRequest\022B\n\025feedPostUpdateRe" +
-      "quest\030\014 \001(\0132#.BlitzMessage.FeedPostUpdat" +
-      "eRequest\022>\n\023autocompleteRequest\030\r \001(\0132!.",
-      "BlitzMessage.AutocompleteRequest\0224\n\017enti" +
-      "tyTagUpdate\030\016 \001(\0132\033.BlitzMessage.EntityT" +
-      "agList\022:\n\021userSearchRequest\030\017 \001(\0132\037.Blit" +
-      "zMessage.UserSearchRequest\"U\n\rServerRequ" +
-      "est\022\024\n\014sessionToken\030\001 \001(\t\022.\n\013requestType" +
-      "\030\002 \001(\0132\031.BlitzMessage.RequestType\"\261\006\n\014Re" +
-      "sponseType\0226\n\017sessionResponse\030\001 \001(\0132\035.Bl" +
-      "itzMessage.SessionResponse\022D\n\026userEventB" +
-      "atchResponse\030\002 \001(\0132$.BlitzMessage.UserEv" +
-      "entBatchResponse\022:\n\021userProfileUpdate\030\003 ",
+      "ons\"\035\n\013PushConnect\022\016\n\006userID\030\001 \001(\t\"\020\n\016Pu" +
+      "shDisconnect\"\352\007\n\013RequestType\0224\n\016sessionR" +
+      "equest\030\001 \001(\0132\034.BlitzMessage.SessionReque" +
+      "st\0224\n\016userEventBatch\030\002 \001(\0132\034.BlitzMessag" +
+      "e.UserEventBatch\022:\n\021userProfileUpdate\030\003 " +
       "\001(\0132\037.BlitzMessage.UserProfileUpdate\0228\n\020" +
       "userProfileQuery\030\004 \001(\0132\036.BlitzMessage.Us" +
       "erProfileQuery\022>\n\023confirmationRequest\030\005 " +
-      "\001(\0132!.BlitzMessage.ConfirmationRequest\022:" +
-      "\n\021userMessageUpdate\030\006 \001(\0132\037.BlitzMessage" +
-      ".UserMessageUpdate\0220\n\014debugMessage\030\007 \001(\013" +
-      "2\032.BlitzMessage.DebugMessage\0223\n\020imageUpl" +
-      "oadReply\030\010 \001(\0132\031.BlitzMessage.ImageUploa" +
-      "d\022@\n\024acceptInviteResponse\030\t \001(\0132\".BlitzM" +
-      "essage.AcceptInviteResponse\022B\n\025feedPostF",
-      "etchResponse\030\n \001(\0132#.BlitzMessage.FeedPo" +
-      "stFetchResponse\022D\n\026feedPostUpdateRespons" +
-      "e\030\013 \001(\0132$.BlitzMessage.FeedPostUpdateRes" +
-      "ponse\022@\n\024autocompleteResponse\030\014 \001(\0132\".Bl" +
-      "itzMessage.AutocompleteResponse\022<\n\022userS" +
-      "earchResponse\030\r \001(\0132 .BlitzMessage.UserS" +
-      "earchResponse\"\215\001\n\016ServerResponse\0220\n\014resp" +
-      "onseCode\030\001 \001(\0162\032.BlitzMessage.ResponseCo" +
-      "de\022\027\n\017responseMessage\030\002 \001(\t\0220\n\014responseT" +
-      "ype\030\003 \001(\0132\032.BlitzMessage.ResponseType*\226\001",
-      "\n\014ResponseCode\022\r\n\tRCSuccess\020\001\022\022\n\016RCInput" +
-      "Corrupt\020\002\022\022\n\016RCInputInvalid\020\003\022\023\n\017RCServe" +
-      "rWarning\020\004\022\021\n\rRCServerError\020\005\022\023\n\017RCNotAu" +
-      "thorized\020\006\022\022\n\016RCClientTooOld\020\007B/\n\032com.bl" +
-      "itzhere.BlitzMessage\210\001\001\322>\002\n\000\322>\003\022\001B\322>\002\030\001"
+      "\001(\0132!.BlitzMessage.ConfirmationRequest\022;",
+      "\n\022messageSendRequest\030\006 \001(\0132\037.BlitzMessag" +
+      "e.UserMessageUpdate\022<\n\023messageFetchReque" +
+      "st\030\007 \001(\0132\037.BlitzMessage.UserMessageUpdat" +
+      "e\0220\n\014debugMessage\030\010 \001(\0132\032.BlitzMessage.D" +
+      "ebugMessage\022.\n\013imageUpload\030\t \001(\0132\031.Blitz" +
+      "Message.ImageUpload\022>\n\023acceptInviteReque" +
+      "st\030\n \001(\0132!.BlitzMessage.AcceptInviteRequ" +
+      "est\022@\n\024feedPostFetchRequest\030\013 \001(\0132\".Blit" +
+      "zMessage.FeedPostFetchRequest\022B\n\025feedPos" +
+      "tUpdateRequest\030\014 \001(\0132#.BlitzMessage.Feed",
+      "PostUpdateRequest\022>\n\023autocompleteRequest" +
+      "\030\r \001(\0132!.BlitzMessage.AutocompleteReques" +
+      "t\0224\n\017entityTagUpdate\030\016 \001(\0132\033.BlitzMessag" +
+      "e.EntityTagList\022:\n\021userSearchRequest\030\017 \001" +
+      "(\0132\037.BlitzMessage.UserSearchRequest\022.\n\013p" +
+      "ushConnect\030\020 \001(\0132\031.BlitzMessage.PushConn" +
+      "ect\0224\n\016pushDisconnect\030\021 \001(\0132\034.BlitzMessa" +
+      "ge.PushDisconnect\"U\n\rServerRequest\022\024\n\014se" +
+      "ssionToken\030\001 \001(\t\022.\n\013requestType\030\002 \001(\0132\031." +
+      "BlitzMessage.RequestType\"\261\006\n\014ResponseTyp",
+      "e\0226\n\017sessionResponse\030\001 \001(\0132\035.BlitzMessag" +
+      "e.SessionResponse\022D\n\026userEventBatchRespo" +
+      "nse\030\002 \001(\0132$.BlitzMessage.UserEventBatchR" +
+      "esponse\022:\n\021userProfileUpdate\030\003 \001(\0132\037.Bli" +
+      "tzMessage.UserProfileUpdate\0228\n\020userProfi" +
+      "leQuery\030\004 \001(\0132\036.BlitzMessage.UserProfile" +
+      "Query\022>\n\023confirmationRequest\030\005 \001(\0132!.Bli" +
+      "tzMessage.ConfirmationRequest\022:\n\021userMes" +
+      "sageUpdate\030\006 \001(\0132\037.BlitzMessage.UserMess" +
+      "ageUpdate\0220\n\014debugMessage\030\007 \001(\0132\032.BlitzM",
+      "essage.DebugMessage\0223\n\020imageUploadReply\030" +
+      "\010 \001(\0132\031.BlitzMessage.ImageUpload\022@\n\024acce" +
+      "ptInviteResponse\030\t \001(\0132\".BlitzMessage.Ac" +
+      "ceptInviteResponse\022B\n\025feedPostFetchRespo" +
+      "nse\030\n \001(\0132#.BlitzMessage.FeedPostFetchRe" +
+      "sponse\022D\n\026feedPostUpdateResponse\030\013 \001(\0132$" +
+      ".BlitzMessage.FeedPostUpdateResponse\022@\n\024" +
+      "autocompleteResponse\030\014 \001(\0132\".BlitzMessag" +
+      "e.AutocompleteResponse\022<\n\022userSearchResp" +
+      "onse\030\r \001(\0132 .BlitzMessage.UserSearchResp",
+      "onse\"\215\001\n\016ServerResponse\0220\n\014responseCode\030" +
+      "\001 \001(\0162\032.BlitzMessage.ResponseCode\022\027\n\017res" +
+      "ponseMessage\030\002 \001(\t\0220\n\014responseType\030\003 \001(\013" +
+      "2\032.BlitzMessage.ResponseType*\226\001\n\014Respons" +
+      "eCode\022\r\n\tRCSuccess\020\001\022\022\n\016RCInputCorrupt\020\002" +
+      "\022\022\n\016RCInputInvalid\020\003\022\023\n\017RCServerWarning\020" +
+      "\004\022\021\n\rRCServerError\020\005\022\023\n\017RCNotAuthorized\020" +
+      "\006\022\022\n\016RCClientTooOld\020\007B/\n\032com.blitzhere.B" +
+      "litzMessage\210\001\001\322>\002\n\000\322>\003\022\001B\322>\002\030\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -12390,26 +13571,38 @@ public final class Server {
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_BlitzMessage_SessionResponse_descriptor,
         new java.lang.String[] { "UserID", "SessionToken", "ServerURL", "UserMessages", "UserProfile", "ResetAllAppData", "InviteRequest", "AppOptions", });
-    internal_static_BlitzMessage_RequestType_descriptor =
+    internal_static_BlitzMessage_PushConnect_descriptor =
       getDescriptor().getMessageTypes().get(5);
+    internal_static_BlitzMessage_PushConnect_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_BlitzMessage_PushConnect_descriptor,
+        new java.lang.String[] { "UserID", });
+    internal_static_BlitzMessage_PushDisconnect_descriptor =
+      getDescriptor().getMessageTypes().get(6);
+    internal_static_BlitzMessage_PushDisconnect_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_BlitzMessage_PushDisconnect_descriptor,
+        new java.lang.String[] { });
+    internal_static_BlitzMessage_RequestType_descriptor =
+      getDescriptor().getMessageTypes().get(7);
     internal_static_BlitzMessage_RequestType_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_BlitzMessage_RequestType_descriptor,
-        new java.lang.String[] { "SessionRequest", "UserEventBatch", "UserProfileUpdate", "UserProfileQuery", "ConfirmationRequest", "MessageSendRequest", "MessageFetchRequest", "DebugMessage", "ImageUpload", "AcceptInviteRequest", "FeedPostFetchRequest", "FeedPostUpdateRequest", "AutocompleteRequest", "EntityTagUpdate", "UserSearchRequest", });
+        new java.lang.String[] { "SessionRequest", "UserEventBatch", "UserProfileUpdate", "UserProfileQuery", "ConfirmationRequest", "MessageSendRequest", "MessageFetchRequest", "DebugMessage", "ImageUpload", "AcceptInviteRequest", "FeedPostFetchRequest", "FeedPostUpdateRequest", "AutocompleteRequest", "EntityTagUpdate", "UserSearchRequest", "PushConnect", "PushDisconnect", });
     internal_static_BlitzMessage_ServerRequest_descriptor =
-      getDescriptor().getMessageTypes().get(6);
+      getDescriptor().getMessageTypes().get(8);
     internal_static_BlitzMessage_ServerRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_BlitzMessage_ServerRequest_descriptor,
         new java.lang.String[] { "SessionToken", "RequestType", });
     internal_static_BlitzMessage_ResponseType_descriptor =
-      getDescriptor().getMessageTypes().get(7);
+      getDescriptor().getMessageTypes().get(9);
     internal_static_BlitzMessage_ResponseType_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_BlitzMessage_ResponseType_descriptor,
         new java.lang.String[] { "SessionResponse", "UserEventBatchResponse", "UserProfileUpdate", "UserProfileQuery", "ConfirmationRequest", "UserMessageUpdate", "DebugMessage", "ImageUploadReply", "AcceptInviteResponse", "FeedPostFetchResponse", "FeedPostUpdateResponse", "AutocompleteResponse", "UserSearchResponse", });
     internal_static_BlitzMessage_ServerResponse_descriptor =
-      getDescriptor().getMessageTypes().get(8);
+      getDescriptor().getMessageTypes().get(10);
     internal_static_BlitzMessage_ServerResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_BlitzMessage_ServerResponse_descriptor,

@@ -67,15 +67,29 @@ message SessionResponse {
 
 
 //----------------------------------------------------------------------------------------
+//                                                               Push Connect / Disconnect
+//----------------------------------------------------------------------------------------
+
+
+message PushConnect {
+  optional string     userID = 1;
+}
+
+
+message PushDisconnect {
+}
+
+
+//----------------------------------------------------------------------------------------
 //                                                                Client / Server Requests
 //----------------------------------------------------------------------------------------
 
 
 message RequestType {
-  optional SessionRequest           sessionRequest    = 1;
-  optional UserEventBatch           userEventBatch    = 2;
-  optional UserProfileUpdate        userProfileUpdate = 3;
-  optional UserProfileQuery         userProfileQuery  = 4;
+  optional SessionRequest           sessionRequest      = 1;
+  optional UserEventBatch           userEventBatch      = 2;
+  optional UserProfileUpdate        userProfileUpdate   = 3;
+  optional UserProfileQuery         userProfileQuery    = 4;
   optional ConfirmationRequest      confirmationRequest = 5;
   optional UserMessageUpdate        messageSendRequest  = 6;
   optional UserMessageUpdate        messageFetchRequest = 7;
@@ -87,6 +101,8 @@ message RequestType {
   optional AutocompleteRequest      autocompleteRequest = 13;
   optional EntityTagList            entityTagUpdate     = 14;
   optional UserSearchRequest        userSearchRequest   = 15;
+  optional PushConnect              pushConnect         = 16;
+  optional PushDisconnect           pushDisconnect      = 17;
 }
 
 

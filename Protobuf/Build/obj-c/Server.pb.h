@@ -29,6 +29,8 @@
 @class BConfirmationRequestBuilder;
 @class BContactInfo;
 @class BContactInfoBuilder;
+@class BConversation;
+@class BConversationBuilder;
 @class BCoordinate;
 @class BCoordinateBuilder;
 @class BCoordinatePolygon;
@@ -75,6 +77,10 @@
 @class BLocationBuilder;
 @class BProfilesFromContactInfo;
 @class BProfilesFromContactInfoBuilder;
+@class BPushConnect;
+@class BPushConnectBuilder;
+@class BPushDisconnect;
+@class BPushDisconnectBuilder;
 @class BRequestType;
 @class BRequestTypeBuilder;
 @class BResponseType;
@@ -541,6 +547,96 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BSessionResponseBuilder*) clearAppOptions;
 @end
 
+#define PushConnect_userID @"userID"
+@interface BPushConnect : PBGeneratedMessage<GeneratedMessageProtocol> {
+@private
+  BOOL hasUserID_:1;
+  NSString* userID;
+}
+- (BOOL) hasUserID;
+@property (readonly, strong) NSString* userID;
+
++ (instancetype) defaultInstance;
+- (instancetype) defaultInstance;
+
+- (BOOL) isInitialized;
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
+- (BPushConnectBuilder*) builder;
++ (BPushConnectBuilder*) builder;
++ (BPushConnectBuilder*) builderWithPrototype:(BPushConnect*) prototype;
+- (BPushConnectBuilder*) toBuilder;
+
++ (BPushConnect*) parseFromData:(NSData*) data;
++ (BPushConnect*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (BPushConnect*) parseFromInputStream:(NSInputStream*) input;
++ (BPushConnect*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (BPushConnect*) parseFromCodedInputStream:(PBCodedInputStream*) input;
++ (BPushConnect*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+@end
+
+@interface BPushConnectBuilder : PBGeneratedMessageBuilder {
+@private
+  BPushConnect* resultPushConnect;
+}
+
+- (BPushConnect*) defaultInstance;
+
+- (BPushConnectBuilder*) clear;
+- (BPushConnectBuilder*) clone;
+
+- (BPushConnect*) build;
+- (BPushConnect*) buildPartial;
+
+- (BPushConnectBuilder*) mergeFrom:(BPushConnect*) other;
+- (BPushConnectBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
+- (BPushConnectBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+
+- (BOOL) hasUserID;
+- (NSString*) userID;
+- (BPushConnectBuilder*) setUserID:(NSString*) value;
+- (BPushConnectBuilder*) clearUserID;
+@end
+
+@interface BPushDisconnect : PBGeneratedMessage<GeneratedMessageProtocol> {
+@private
+}
+
++ (instancetype) defaultInstance;
+- (instancetype) defaultInstance;
+
+- (BOOL) isInitialized;
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
+- (BPushDisconnectBuilder*) builder;
++ (BPushDisconnectBuilder*) builder;
++ (BPushDisconnectBuilder*) builderWithPrototype:(BPushDisconnect*) prototype;
+- (BPushDisconnectBuilder*) toBuilder;
+
++ (BPushDisconnect*) parseFromData:(NSData*) data;
++ (BPushDisconnect*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (BPushDisconnect*) parseFromInputStream:(NSInputStream*) input;
++ (BPushDisconnect*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (BPushDisconnect*) parseFromCodedInputStream:(PBCodedInputStream*) input;
++ (BPushDisconnect*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+@end
+
+@interface BPushDisconnectBuilder : PBGeneratedMessageBuilder {
+@private
+  BPushDisconnect* resultPushDisconnect;
+}
+
+- (BPushDisconnect*) defaultInstance;
+
+- (BPushDisconnectBuilder*) clear;
+- (BPushDisconnectBuilder*) clone;
+
+- (BPushDisconnect*) build;
+- (BPushDisconnect*) buildPartial;
+
+- (BPushDisconnectBuilder*) mergeFrom:(BPushDisconnect*) other;
+- (BPushDisconnectBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
+- (BPushDisconnectBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+@end
+
 #define RequestType_sessionRequest @"sessionRequest"
 #define RequestType_userEventBatch @"userEventBatch"
 #define RequestType_userProfileUpdate @"userProfileUpdate"
@@ -556,6 +652,8 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 #define RequestType_autocompleteRequest @"autocompleteRequest"
 #define RequestType_entityTagUpdate @"entityTagUpdate"
 #define RequestType_userSearchRequest @"userSearchRequest"
+#define RequestType_pushConnect @"pushConnect"
+#define RequestType_pushDisconnect @"pushDisconnect"
 @interface BRequestType : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
   BOOL hasSessionRequest_:1;
@@ -573,6 +671,8 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
   BOOL hasAutocompleteRequest_:1;
   BOOL hasEntityTagUpdate_:1;
   BOOL hasUserSearchRequest_:1;
+  BOOL hasPushConnect_:1;
+  BOOL hasPushDisconnect_:1;
   BSessionRequest* sessionRequest;
   BUserEventBatch* userEventBatch;
   BUserProfileUpdate* userProfileUpdate;
@@ -588,6 +688,8 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
   BAutocompleteRequest* autocompleteRequest;
   BEntityTagList* entityTagUpdate;
   BUserSearchRequest* userSearchRequest;
+  BPushConnect* pushConnect;
+  BPushDisconnect* pushDisconnect;
 }
 - (BOOL) hasSessionRequest;
 - (BOOL) hasUserEventBatch;
@@ -604,6 +706,8 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BOOL) hasAutocompleteRequest;
 - (BOOL) hasEntityTagUpdate;
 - (BOOL) hasUserSearchRequest;
+- (BOOL) hasPushConnect;
+- (BOOL) hasPushDisconnect;
 @property (readonly, strong) BSessionRequest* sessionRequest;
 @property (readonly, strong) BUserEventBatch* userEventBatch;
 @property (readonly, strong) BUserProfileUpdate* userProfileUpdate;
@@ -619,6 +723,8 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 @property (readonly, strong) BAutocompleteRequest* autocompleteRequest;
 @property (readonly, strong) BEntityTagList* entityTagUpdate;
 @property (readonly, strong) BUserSearchRequest* userSearchRequest;
+@property (readonly, strong) BPushConnect* pushConnect;
+@property (readonly, strong) BPushDisconnect* pushDisconnect;
 
 + (instancetype) defaultInstance;
 - (instancetype) defaultInstance;
@@ -759,6 +865,20 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BRequestTypeBuilder*) setUserSearchRequestBuilder:(BUserSearchRequestBuilder*) builderForValue;
 - (BRequestTypeBuilder*) mergeUserSearchRequest:(BUserSearchRequest*) value;
 - (BRequestTypeBuilder*) clearUserSearchRequest;
+
+- (BOOL) hasPushConnect;
+- (BPushConnect*) pushConnect;
+- (BRequestTypeBuilder*) setPushConnect:(BPushConnect*) value;
+- (BRequestTypeBuilder*) setPushConnectBuilder:(BPushConnectBuilder*) builderForValue;
+- (BRequestTypeBuilder*) mergePushConnect:(BPushConnect*) value;
+- (BRequestTypeBuilder*) clearPushConnect;
+
+- (BOOL) hasPushDisconnect;
+- (BPushDisconnect*) pushDisconnect;
+- (BRequestTypeBuilder*) setPushDisconnect:(BPushDisconnect*) value;
+- (BRequestTypeBuilder*) setPushDisconnectBuilder:(BPushDisconnectBuilder*) builderForValue;
+- (BRequestTypeBuilder*) mergePushDisconnect:(BPushDisconnect*) value;
+- (BRequestTypeBuilder*) clearPushDisconnect;
 @end
 
 #define ServerRequest_sessionToken @"sessionToken"

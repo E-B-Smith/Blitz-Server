@@ -18,32 +18,44 @@ import "Types.proto";
 //----------------------------------------------------------------------------------------
 
 
+message Conversation {
+  optional string       conversationID      = 1;
+  optional string       parentFeedPostID    = 2;
+  optional Timestamp    creationDate        = 3;
+  optional Timestamp    lastActivityDate    = 4;
+  repeated string       memberIDs           = 5;
+}
+
+
 enum UserMessageType {
   MTUnknown      = 0;
   MTSystem       = 1;
-  MTNotification = 2;
+  MTConversation = 2;
+  MTNotification = 3;
 }
 
 
 enum UserMessageStatus {
-  MSNew     = 0;
-  MSHidden  = 1;
-  MSRead    = 2;
+  MSUnknown   = 0;
+  MSNew       = 1;
+  MSRead      = 2;
+  MSArchived  = 3;
 }
 
 
 message UserMessage {
-  optional string           messageID     = 1;
-  optional string           senderID      = 2;
-  repeated string           recipients    = 3;
-  optional Timestamp        creationDate  = 4;
-  optional Timestamp        notificationDate = 5;
-  optional Timestamp        readDate      = 6;
-  optional UserMessageType  messageType   = 7;
-  optional string           messageText   = 8;
-  optional UserMessageStatus messageStatus= 9;
-  optional string           actionIcon    = 10;
-  optional string           actionURL     = 11;
+  optional string           messageID         = 1;
+  optional string           senderID          = 2;
+  optional string           conversationID    = 3;
+  repeated string           recipients        = 4;
+  optional Timestamp        creationDate      = 5;
+  optional Timestamp        notificationDate  = 6;
+  optional Timestamp        readDate          = 7;
+  optional UserMessageType  messageType       = 8;
+  optional UserMessageStatus messageStatus    = 9;
+  optional string           messageText       = 10;
+  optional string           actionIcon        = 11;
+  optional string           actionURL         = 12;
 }
 
 
@@ -51,3 +63,4 @@ message UserMessageUpdate {
   optional Timespan      timespan = 1;  //  Timespan for request
   repeated UserMessage   messages = 2;
 }
+

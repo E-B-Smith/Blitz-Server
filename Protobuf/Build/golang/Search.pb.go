@@ -22,7 +22,7 @@ type AutocompleteRequest struct {
 func (m *AutocompleteRequest) Reset()                    { *m = AutocompleteRequest{} }
 func (m *AutocompleteRequest) String() string            { return proto.CompactTextString(m) }
 func (*AutocompleteRequest) ProtoMessage()               {}
-func (*AutocompleteRequest) Descriptor() ([]byte, []int) { return fileDescriptor5, []int{0} }
+func (*AutocompleteRequest) Descriptor() ([]byte, []int) { return fileDescriptor4, []int{0} }
 
 func (m *AutocompleteRequest) GetQuery() string {
 	if m != nil && m.Query != nil {
@@ -40,7 +40,7 @@ type AutocompleteResponse struct {
 func (m *AutocompleteResponse) Reset()                    { *m = AutocompleteResponse{} }
 func (m *AutocompleteResponse) String() string            { return proto.CompactTextString(m) }
 func (*AutocompleteResponse) ProtoMessage()               {}
-func (*AutocompleteResponse) Descriptor() ([]byte, []int) { return fileDescriptor5, []int{1} }
+func (*AutocompleteResponse) Descriptor() ([]byte, []int) { return fileDescriptor4, []int{1} }
 
 func (m *AutocompleteResponse) GetQuery() string {
 	if m != nil && m.Query != nil {
@@ -64,7 +64,7 @@ type UserSearchRequest struct {
 func (m *UserSearchRequest) Reset()                    { *m = UserSearchRequest{} }
 func (m *UserSearchRequest) String() string            { return proto.CompactTextString(m) }
 func (*UserSearchRequest) ProtoMessage()               {}
-func (*UserSearchRequest) Descriptor() ([]byte, []int) { return fileDescriptor5, []int{2} }
+func (*UserSearchRequest) Descriptor() ([]byte, []int) { return fileDescriptor4, []int{2} }
 
 func (m *UserSearchRequest) GetQuery() string {
 	if m != nil && m.Query != nil {
@@ -82,7 +82,7 @@ type UserSearchResponse struct {
 func (m *UserSearchResponse) Reset()                    { *m = UserSearchResponse{} }
 func (m *UserSearchResponse) String() string            { return proto.CompactTextString(m) }
 func (*UserSearchResponse) ProtoMessage()               {}
-func (*UserSearchResponse) Descriptor() ([]byte, []int) { return fileDescriptor5, []int{3} }
+func (*UserSearchResponse) Descriptor() ([]byte, []int) { return fileDescriptor4, []int{3} }
 
 func (m *UserSearchResponse) GetQuery() string {
 	if m != nil && m.Query != nil {
@@ -105,7 +105,7 @@ func init() {
 	proto.RegisterType((*UserSearchResponse)(nil), "BlitzMessage.UserSearchResponse")
 }
 
-var fileDescriptor5 = []byte{
+var fileDescriptor4 = []byte{
 	// 233 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x09, 0x6e, 0x88, 0x02, 0xff, 0xe2, 0xe2, 0x09, 0x4e, 0x4d, 0x2c,
 	0x4a, 0xce, 0xd0, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0xe2, 0x71, 0xca, 0xc9, 0x2c, 0xa9, 0xf2,

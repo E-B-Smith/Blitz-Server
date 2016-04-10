@@ -1,6 +1,14 @@
-//  HTTPAppDeepLink.go  -  Save an app deep-link for later execution.
+
+
+//----------------------------------------------------------------------------------------
 //
-//  E.B.Smith  -  May, 2015.
+//                                                   BlitzHere-Server : HTTPAppDeepLink.go
+//                                               Save an app deep-link for later execution
+//
+//                                                                   E.B. Smith, May, 2015
+//                        -©- Copyright © 2015-2016 Edward Smith, all rights reserved. -©-
+//
+//----------------------------------------------------------------------------------------
 
 
 package main

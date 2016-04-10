@@ -1788,6 +1788,369 @@ static BSessionResponse* defaultBSessionResponseInstance = nil;
 }
 @end
 
+@interface BPushConnect ()
+@property (strong) NSString* userID;
+@end
+
+@implementation BPushConnect
+
+- (BOOL) hasUserID {
+  return !!hasUserID_;
+}
+- (void) setHasUserID:(BOOL) _value_ {
+  hasUserID_ = !!_value_;
+}
+@synthesize userID;
+- (instancetype) init {
+  if ((self = [super init])) {
+    self.userID = @"";
+  }
+  return self;
+}
+static BPushConnect* defaultBPushConnectInstance = nil;
++ (void) initialize {
+  if (self == [BPushConnect class]) {
+    defaultBPushConnectInstance = [[BPushConnect alloc] init];
+  }
+}
++ (instancetype) defaultInstance {
+  return defaultBPushConnectInstance;
+}
+- (instancetype) defaultInstance {
+  return defaultBPushConnectInstance;
+}
+- (BOOL) isInitialized {
+  return YES;
+}
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
+  if (self.hasUserID) {
+    [output writeString:1 value:self.userID];
+  }
+  [self.unknownFields writeToCodedOutputStream:output];
+}
+- (SInt32) serializedSize {
+  __block SInt32 size_ = memoizedSerializedSize;
+  if (size_ != -1) {
+    return size_;
+  }
+
+  size_ = 0;
+  if (self.hasUserID) {
+    size_ += computeStringSize(1, self.userID);
+  }
+  size_ += self.unknownFields.serializedSize;
+  memoizedSerializedSize = size_;
+  return size_;
+}
++ (BPushConnect*) parseFromData:(NSData*) data {
+  return (BPushConnect*)[[[BPushConnect builder] mergeFromData:data] build];
+}
++ (BPushConnect*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BPushConnect*)[[[BPushConnect builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
+}
++ (BPushConnect*) parseFromInputStream:(NSInputStream*) input {
+  return (BPushConnect*)[[[BPushConnect builder] mergeFromInputStream:input] build];
+}
++ (BPushConnect*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BPushConnect*)[[[BPushConnect builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (BPushConnect*) parseFromCodedInputStream:(PBCodedInputStream*) input {
+  return (BPushConnect*)[[[BPushConnect builder] mergeFromCodedInputStream:input] build];
+}
++ (BPushConnect*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BPushConnect*)[[[BPushConnect builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (BPushConnectBuilder*) builder {
+  return [[BPushConnectBuilder alloc] init];
+}
++ (BPushConnectBuilder*) builderWithPrototype:(BPushConnect*) prototype {
+  return [[BPushConnect builder] mergeFrom:prototype];
+}
+- (BPushConnectBuilder*) builder {
+  return [BPushConnect builder];
+}
+- (BPushConnectBuilder*) toBuilder {
+  return [BPushConnect builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  if (self.hasUserID) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"userID", self.userID];
+  }
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (void) storeInDictionary:(NSMutableDictionary *)dictionary {
+  if (self.hasUserID) {
+    [dictionary setObject: self.userID forKey: @"userID"];
+  }
+  [self.unknownFields storeInDictionary:dictionary];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[BPushConnect class]]) {
+    return NO;
+  }
+  BPushConnect *otherMessage = other;
+  return
+      self.hasUserID == otherMessage.hasUserID &&
+      (!self.hasUserID || [self.userID isEqual:otherMessage.userID]) &&
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  __block NSUInteger hashCode = 7;
+  if (self.hasUserID) {
+    hashCode = hashCode * 31 + [self.userID hash];
+  }
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
+}
+@end
+
+@interface BPushConnectBuilder()
+@property (strong) BPushConnect* resultPushConnect;
+@end
+
+@implementation BPushConnectBuilder
+@synthesize resultPushConnect;
+- (instancetype) init {
+  if ((self = [super init])) {
+    self.resultPushConnect = [[BPushConnect alloc] init];
+  }
+  return self;
+}
+- (PBGeneratedMessage*) internalGetResult {
+  return resultPushConnect;
+}
+- (BPushConnectBuilder*) clear {
+  self.resultPushConnect = [[BPushConnect alloc] init];
+  return self;
+}
+- (BPushConnectBuilder*) clone {
+  return [BPushConnect builderWithPrototype:resultPushConnect];
+}
+- (BPushConnect*) defaultInstance {
+  return [BPushConnect defaultInstance];
+}
+- (BPushConnect*) build {
+  [self checkInitialized];
+  return [self buildPartial];
+}
+- (BPushConnect*) buildPartial {
+  BPushConnect* returnMe = resultPushConnect;
+  self.resultPushConnect = nil;
+  return returnMe;
+}
+- (BPushConnectBuilder*) mergeFrom:(BPushConnect*) other {
+  if (other == [BPushConnect defaultInstance]) {
+    return self;
+  }
+  if (other.hasUserID) {
+    [self setUserID:other.userID];
+  }
+  [self mergeUnknownFields:other.unknownFields];
+  return self;
+}
+- (BPushConnectBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
+  return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
+}
+- (BPushConnectBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  PBUnknownFieldSetBuilder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
+  while (YES) {
+    SInt32 tag = [input readTag];
+    switch (tag) {
+      case 0:
+        [self setUnknownFields:[unknownFields build]];
+        return self;
+      default: {
+        if (![self parseUnknownField:input unknownFields:unknownFields extensionRegistry:extensionRegistry tag:tag]) {
+          [self setUnknownFields:[unknownFields build]];
+          return self;
+        }
+        break;
+      }
+      case 10: {
+        [self setUserID:[input readString]];
+        break;
+      }
+    }
+  }
+}
+- (BOOL) hasUserID {
+  return resultPushConnect.hasUserID;
+}
+- (NSString*) userID {
+  return resultPushConnect.userID;
+}
+- (BPushConnectBuilder*) setUserID:(NSString*) value {
+  resultPushConnect.hasUserID = YES;
+  resultPushConnect.userID = value;
+  return self;
+}
+- (BPushConnectBuilder*) clearUserID {
+  resultPushConnect.hasUserID = NO;
+  resultPushConnect.userID = @"";
+  return self;
+}
+@end
+
+@interface BPushDisconnect ()
+@end
+
+@implementation BPushDisconnect
+
+- (instancetype) init {
+  if ((self = [super init])) {
+  }
+  return self;
+}
+static BPushDisconnect* defaultBPushDisconnectInstance = nil;
++ (void) initialize {
+  if (self == [BPushDisconnect class]) {
+    defaultBPushDisconnectInstance = [[BPushDisconnect alloc] init];
+  }
+}
++ (instancetype) defaultInstance {
+  return defaultBPushDisconnectInstance;
+}
+- (instancetype) defaultInstance {
+  return defaultBPushDisconnectInstance;
+}
+- (BOOL) isInitialized {
+  return YES;
+}
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
+  [self.unknownFields writeToCodedOutputStream:output];
+}
+- (SInt32) serializedSize {
+  __block SInt32 size_ = memoizedSerializedSize;
+  if (size_ != -1) {
+    return size_;
+  }
+
+  size_ = 0;
+  size_ += self.unknownFields.serializedSize;
+  memoizedSerializedSize = size_;
+  return size_;
+}
++ (BPushDisconnect*) parseFromData:(NSData*) data {
+  return (BPushDisconnect*)[[[BPushDisconnect builder] mergeFromData:data] build];
+}
++ (BPushDisconnect*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BPushDisconnect*)[[[BPushDisconnect builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
+}
++ (BPushDisconnect*) parseFromInputStream:(NSInputStream*) input {
+  return (BPushDisconnect*)[[[BPushDisconnect builder] mergeFromInputStream:input] build];
+}
++ (BPushDisconnect*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BPushDisconnect*)[[[BPushDisconnect builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (BPushDisconnect*) parseFromCodedInputStream:(PBCodedInputStream*) input {
+  return (BPushDisconnect*)[[[BPushDisconnect builder] mergeFromCodedInputStream:input] build];
+}
++ (BPushDisconnect*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BPushDisconnect*)[[[BPushDisconnect builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (BPushDisconnectBuilder*) builder {
+  return [[BPushDisconnectBuilder alloc] init];
+}
++ (BPushDisconnectBuilder*) builderWithPrototype:(BPushDisconnect*) prototype {
+  return [[BPushDisconnect builder] mergeFrom:prototype];
+}
+- (BPushDisconnectBuilder*) builder {
+  return [BPushDisconnect builder];
+}
+- (BPushDisconnectBuilder*) toBuilder {
+  return [BPushDisconnect builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (void) storeInDictionary:(NSMutableDictionary *)dictionary {
+  [self.unknownFields storeInDictionary:dictionary];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[BPushDisconnect class]]) {
+    return NO;
+  }
+  BPushDisconnect *otherMessage = other;
+  return
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  __block NSUInteger hashCode = 7;
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
+}
+@end
+
+@interface BPushDisconnectBuilder()
+@property (strong) BPushDisconnect* resultPushDisconnect;
+@end
+
+@implementation BPushDisconnectBuilder
+@synthesize resultPushDisconnect;
+- (instancetype) init {
+  if ((self = [super init])) {
+    self.resultPushDisconnect = [[BPushDisconnect alloc] init];
+  }
+  return self;
+}
+- (PBGeneratedMessage*) internalGetResult {
+  return resultPushDisconnect;
+}
+- (BPushDisconnectBuilder*) clear {
+  self.resultPushDisconnect = [[BPushDisconnect alloc] init];
+  return self;
+}
+- (BPushDisconnectBuilder*) clone {
+  return [BPushDisconnect builderWithPrototype:resultPushDisconnect];
+}
+- (BPushDisconnect*) defaultInstance {
+  return [BPushDisconnect defaultInstance];
+}
+- (BPushDisconnect*) build {
+  [self checkInitialized];
+  return [self buildPartial];
+}
+- (BPushDisconnect*) buildPartial {
+  BPushDisconnect* returnMe = resultPushDisconnect;
+  self.resultPushDisconnect = nil;
+  return returnMe;
+}
+- (BPushDisconnectBuilder*) mergeFrom:(BPushDisconnect*) other {
+  if (other == [BPushDisconnect defaultInstance]) {
+    return self;
+  }
+  [self mergeUnknownFields:other.unknownFields];
+  return self;
+}
+- (BPushDisconnectBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
+  return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
+}
+- (BPushDisconnectBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  PBUnknownFieldSetBuilder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
+  while (YES) {
+    SInt32 tag = [input readTag];
+    switch (tag) {
+      case 0:
+        [self setUnknownFields:[unknownFields build]];
+        return self;
+      default: {
+        if (![self parseUnknownField:input unknownFields:unknownFields extensionRegistry:extensionRegistry tag:tag]) {
+          [self setUnknownFields:[unknownFields build]];
+          return self;
+        }
+        break;
+      }
+    }
+  }
+}
+@end
+
 @interface BRequestType ()
 @property (strong) BSessionRequest* sessionRequest;
 @property (strong) BUserEventBatch* userEventBatch;
@@ -1804,6 +2167,8 @@ static BSessionResponse* defaultBSessionResponseInstance = nil;
 @property (strong) BAutocompleteRequest* autocompleteRequest;
 @property (strong) BEntityTagList* entityTagUpdate;
 @property (strong) BUserSearchRequest* userSearchRequest;
+@property (strong) BPushConnect* pushConnect;
+@property (strong) BPushDisconnect* pushDisconnect;
 @end
 
 @implementation BRequestType
@@ -1913,6 +2278,20 @@ static BSessionResponse* defaultBSessionResponseInstance = nil;
   hasUserSearchRequest_ = !!_value_;
 }
 @synthesize userSearchRequest;
+- (BOOL) hasPushConnect {
+  return !!hasPushConnect_;
+}
+- (void) setHasPushConnect:(BOOL) _value_ {
+  hasPushConnect_ = !!_value_;
+}
+@synthesize pushConnect;
+- (BOOL) hasPushDisconnect {
+  return !!hasPushDisconnect_;
+}
+- (void) setHasPushDisconnect:(BOOL) _value_ {
+  hasPushDisconnect_ = !!_value_;
+}
+@synthesize pushDisconnect;
 - (instancetype) init {
   if ((self = [super init])) {
     self.sessionRequest = [BSessionRequest defaultInstance];
@@ -1930,6 +2309,8 @@ static BSessionResponse* defaultBSessionResponseInstance = nil;
     self.autocompleteRequest = [BAutocompleteRequest defaultInstance];
     self.entityTagUpdate = [BEntityTagList defaultInstance];
     self.userSearchRequest = [BUserSearchRequest defaultInstance];
+    self.pushConnect = [BPushConnect defaultInstance];
+    self.pushDisconnect = [BPushDisconnect defaultInstance];
   }
   return self;
 }
@@ -2044,6 +2425,12 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   if (self.hasUserSearchRequest) {
     [output writeMessage:15 value:self.userSearchRequest];
   }
+  if (self.hasPushConnect) {
+    [output writeMessage:16 value:self.pushConnect];
+  }
+  if (self.hasPushDisconnect) {
+    [output writeMessage:17 value:self.pushDisconnect];
+  }
   [self.unknownFields writeToCodedOutputStream:output];
 }
 - (SInt32) serializedSize {
@@ -2097,6 +2484,12 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   }
   if (self.hasUserSearchRequest) {
     size_ += computeMessageSize(15, self.userSearchRequest);
+  }
+  if (self.hasPushConnect) {
+    size_ += computeMessageSize(16, self.pushConnect);
+  }
+  if (self.hasPushDisconnect) {
+    size_ += computeMessageSize(17, self.pushDisconnect);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -2223,6 +2616,18 @@ static BRequestType* defaultBRequestTypeInstance = nil;
                          withIndent:[NSString stringWithFormat:@"%@  ", indent]];
     [output appendFormat:@"%@}\n", indent];
   }
+  if (self.hasPushConnect) {
+    [output appendFormat:@"%@%@ {\n", indent, @"pushConnect"];
+    [self.pushConnect writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
+  if (self.hasPushDisconnect) {
+    [output appendFormat:@"%@%@ {\n", indent, @"pushDisconnect"];
+    [self.pushDisconnect writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (void) storeInDictionary:(NSMutableDictionary *)dictionary {
@@ -2301,6 +2706,16 @@ static BRequestType* defaultBRequestTypeInstance = nil;
    [self.userSearchRequest storeInDictionary:messageDictionary];
    [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"userSearchRequest"];
   }
+  if (self.hasPushConnect) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.pushConnect storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"pushConnect"];
+  }
+  if (self.hasPushDisconnect) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.pushDisconnect storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"pushDisconnect"];
+  }
   [self.unknownFields storeInDictionary:dictionary];
 }
 - (BOOL) isEqual:(id)other {
@@ -2342,6 +2757,10 @@ static BRequestType* defaultBRequestTypeInstance = nil;
       (!self.hasEntityTagUpdate || [self.entityTagUpdate isEqual:otherMessage.entityTagUpdate]) &&
       self.hasUserSearchRequest == otherMessage.hasUserSearchRequest &&
       (!self.hasUserSearchRequest || [self.userSearchRequest isEqual:otherMessage.userSearchRequest]) &&
+      self.hasPushConnect == otherMessage.hasPushConnect &&
+      (!self.hasPushConnect || [self.pushConnect isEqual:otherMessage.pushConnect]) &&
+      self.hasPushDisconnect == otherMessage.hasPushDisconnect &&
+      (!self.hasPushDisconnect || [self.pushDisconnect isEqual:otherMessage.pushDisconnect]) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
@@ -2390,6 +2809,12 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   }
   if (self.hasUserSearchRequest) {
     hashCode = hashCode * 31 + [self.userSearchRequest hash];
+  }
+  if (self.hasPushConnect) {
+    hashCode = hashCode * 31 + [self.pushConnect hash];
+  }
+  if (self.hasPushDisconnect) {
+    hashCode = hashCode * 31 + [self.pushDisconnect hash];
   }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
@@ -2478,6 +2903,12 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   }
   if (other.hasUserSearchRequest) {
     [self mergeUserSearchRequest:other.userSearchRequest];
+  }
+  if (other.hasPushConnect) {
+    [self mergePushConnect:other.pushConnect];
+  }
+  if (other.hasPushDisconnect) {
+    [self mergePushDisconnect:other.pushDisconnect];
   }
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -2633,6 +3064,24 @@ static BRequestType* defaultBRequestTypeInstance = nil;
         }
         [input readMessage:subBuilder extensionRegistry:extensionRegistry];
         [self setUserSearchRequest:[subBuilder buildPartial]];
+        break;
+      }
+      case 130: {
+        BPushConnectBuilder* subBuilder = [BPushConnect builder];
+        if (self.hasPushConnect) {
+          [subBuilder mergeFrom:self.pushConnect];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setPushConnect:[subBuilder buildPartial]];
+        break;
+      }
+      case 138: {
+        BPushDisconnectBuilder* subBuilder = [BPushDisconnect builder];
+        if (self.hasPushDisconnect) {
+          [subBuilder mergeFrom:self.pushDisconnect];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setPushDisconnect:[subBuilder buildPartial]];
         break;
       }
     }
@@ -3086,6 +3535,66 @@ static BRequestType* defaultBRequestTypeInstance = nil;
 - (BRequestTypeBuilder*) clearUserSearchRequest {
   resultRequestType.hasUserSearchRequest = NO;
   resultRequestType.userSearchRequest = [BUserSearchRequest defaultInstance];
+  return self;
+}
+- (BOOL) hasPushConnect {
+  return resultRequestType.hasPushConnect;
+}
+- (BPushConnect*) pushConnect {
+  return resultRequestType.pushConnect;
+}
+- (BRequestTypeBuilder*) setPushConnect:(BPushConnect*) value {
+  resultRequestType.hasPushConnect = YES;
+  resultRequestType.pushConnect = value;
+  return self;
+}
+- (BRequestTypeBuilder*) setPushConnectBuilder:(BPushConnectBuilder*) builderForValue {
+  return [self setPushConnect:[builderForValue build]];
+}
+- (BRequestTypeBuilder*) mergePushConnect:(BPushConnect*) value {
+  if (resultRequestType.hasPushConnect &&
+      resultRequestType.pushConnect != [BPushConnect defaultInstance]) {
+    resultRequestType.pushConnect =
+      [[[BPushConnect builderWithPrototype:resultRequestType.pushConnect] mergeFrom:value] buildPartial];
+  } else {
+    resultRequestType.pushConnect = value;
+  }
+  resultRequestType.hasPushConnect = YES;
+  return self;
+}
+- (BRequestTypeBuilder*) clearPushConnect {
+  resultRequestType.hasPushConnect = NO;
+  resultRequestType.pushConnect = [BPushConnect defaultInstance];
+  return self;
+}
+- (BOOL) hasPushDisconnect {
+  return resultRequestType.hasPushDisconnect;
+}
+- (BPushDisconnect*) pushDisconnect {
+  return resultRequestType.pushDisconnect;
+}
+- (BRequestTypeBuilder*) setPushDisconnect:(BPushDisconnect*) value {
+  resultRequestType.hasPushDisconnect = YES;
+  resultRequestType.pushDisconnect = value;
+  return self;
+}
+- (BRequestTypeBuilder*) setPushDisconnectBuilder:(BPushDisconnectBuilder*) builderForValue {
+  return [self setPushDisconnect:[builderForValue build]];
+}
+- (BRequestTypeBuilder*) mergePushDisconnect:(BPushDisconnect*) value {
+  if (resultRequestType.hasPushDisconnect &&
+      resultRequestType.pushDisconnect != [BPushDisconnect defaultInstance]) {
+    resultRequestType.pushDisconnect =
+      [[[BPushDisconnect builderWithPrototype:resultRequestType.pushDisconnect] mergeFrom:value] buildPartial];
+  } else {
+    resultRequestType.pushDisconnect = value;
+  }
+  resultRequestType.hasPushDisconnect = YES;
+  return self;
+}
+- (BRequestTypeBuilder*) clearPushDisconnect {
+  resultRequestType.hasPushDisconnect = NO;
+  resultRequestType.pushDisconnect = [BPushDisconnect defaultInstance];
   return self;
 }
 @end

@@ -1,6 +1,14 @@
-//  Images.go  -  Image handling.
+
+
+//----------------------------------------------------------------------------------------
 //
-//  E.B.Smith  -  June, 2015
+//                                                            BlitzHere-Server : Images.go
+//                                                                          Image handling
+//
+//                                                               E.B. Smith, October, 2015
+//                        -©- Copyright © 2015-2016 Edward Smith, all rights reserved. -©-
+//
+//----------------------------------------------------------------------------------------
 
 
 package main

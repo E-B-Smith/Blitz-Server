@@ -1,6 +1,14 @@
-//  BlitzHere-Server  -  The server back-end to BlitzHere.
+
+
+//----------------------------------------------------------------------------------------
 //
-//  E.B.Smith  -  March, 2016
+//                                                  BlitzHere-Server : BlitzHere-Server.go
+//                                                        The back-end server to BlitzHere
+//
+//                                                                  E.B. Smith, March 2016
+//                        -©- Copyright © 2015-2016 Edward Smith, all rights reserved. -©-
+//
+//----------------------------------------------------------------------------------------
 
 
 package main
@@ -25,13 +33,18 @@ import (
     "violent.blue/GoKit/Util"
     "violent.blue/GoKit/ServerUtil"
     "github.com/golang/protobuf/proto"
+    "golang.org/x/net/websocket"
     "ApplePushService"
+    "MessagePusher"
     "BlitzMessage"
 )
 
 
-var PushNotificationService  ApplePushService.Service;
-var config ServerUtil.Configuration;
+var (
+    config                      ServerUtil.Configuration
+    PushNotificationService     ApplePushService.Service
+    globalMessagePusher         *MessagePusher.MessagePusher
+)
 
 
 //----------------------------------------------------------------------------------------
@@ -420,6 +433,11 @@ func AdminFormRequest(writer http.ResponseWriter, request *http.Request) {
 }
 
 
+func PushMessageHandler(userConnection *websocket.Conn) {
+    globalMessagePusher.HandlePushConnection(userConnection)
+}
+
+
 //----------------------------------------------------------------------------------------
 //
 //                                                                      Main & BlitzServer
@@ -571,6 +589,12 @@ func Server() (returnValue int) {
     http.Handle("/",
         http.StripPrefix(config.ServicePrefix,
         http.FileServer(http.Dir(config.ServiceFilePath))))
+
+    //  Push messages --
+
+    globalMessagePusher = MessagePusher.NewMessagePusher()
+    http.Handle(config.ServicePrefix+"/push", websocket.Handler(PushMessageHandler))
+
 
     Log.Infof("Server listening at %d:%s.", config.ServicePort, config.ServicePrefix)
     http.Serve(httpListener, nil)

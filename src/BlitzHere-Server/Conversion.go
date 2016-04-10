@@ -1,6 +1,14 @@
-//  Conversion.go  -  Simple type conversion utilities.
+
+
+//----------------------------------------------------------------------------------------
 //
-//  E.B.Smith  -  October, 2015.
+//                                                        BlitzHere-Server : Conversion.go
+//                                                           Casting / conversion routines
+//
+//                                                               E.B. Smith, October, 2015
+//                        -©- Copyright © 2015-2016 Edward Smith, all rights reserved. -©-
+//
+//----------------------------------------------------------------------------------------
 
 
 package main

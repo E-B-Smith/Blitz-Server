@@ -57,7 +57,6 @@ gobuild= \
 compile: \
     FORCE \
     updateversion \
-    src/BlitzMessage/Conversations.pb.go \
     src/BlitzMessage/Device.pb.go \
     src/BlitzMessage/EntityTags.pb.go \
     src/BlitzMessage/Feed.pb.go \
@@ -101,7 +100,6 @@ FORCE:
 
 
 proto \
-src/BlitzMessage/Conversations.pb.go \
 src/BlitzMessage/Device.pb.go \
 src/BlitzMessage/EntityTags.pb.go \
 src/BlitzMessage/Feed.pb.go \
@@ -112,7 +110,6 @@ src/BlitzMessage/Types.pb.go \
 src/BlitzMessage/UserEvents.pb.go \
 src/BlitzMessage/UserMessages.pb.go \
 src/BlitzMessage/UserProfiles.pb.go : \
-    Protobuf/Source/Conversations.proto \
     Protobuf/Source/Device.proto \
     Protobuf/Source/EntityTags.proto \
     Protobuf/Source/Feed.proto \
