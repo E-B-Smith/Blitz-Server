@@ -24,6 +24,12 @@ import (
 )
 
 
+type MessagePusherInterface interface {
+    UserMayConnect(message *BlitzMessage.ServerRequest) error
+    UserDidSendMessage(message *BlitzMessage.ServerRequest)
+}
+
+
 //----------------------------------------------------------------------------------------
 //                                                                           MessagePusher
 //----------------------------------------------------------------------------------------
@@ -33,6 +39,7 @@ type MessagePusher struct {
     lock            sync.RWMutex
     connectionMap   map[*websocket.Conn]string  //  Connection -> UserID
     userMap         map[string]*MessagePushUser //  UserID -> MessagePushUser
+    PusherInterface *MessagePusherInterface
 }
 
 
