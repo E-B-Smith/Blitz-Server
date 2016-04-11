@@ -126,6 +126,8 @@ func (pusher *MessagePusher) HandlePushConnection(connection *websocket.Conn) {
         pusher.Disconnect(connection)
         return
     }
+    Log.Debugf("Read %d bytes.", len(wireMessage))
+    if len(wireMessage) == 0 { return }
 
     //  Decode the message --
 
