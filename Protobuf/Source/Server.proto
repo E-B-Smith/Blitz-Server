@@ -103,6 +103,7 @@ message RequestType {
   optional UserSearchRequest        userSearchRequest   = 15;
   optional PushConnect              pushConnect         = 16;
   optional PushDisconnect           pushDisconnect      = 17;
+  optional ConversationRequest      conversationRequest = 18;
 }
 
 
@@ -137,6 +138,7 @@ message ResponseType {
   optional FeedPostUpdateResponse feedPostUpdateResponse  = 11;
   optional AutocompleteResponse   autocompleteResponse    = 12;
   optional UserSearchResponse     userSearchResponse      = 13;
+  optional ConversationResponse   conversationResponse    = 14;
 }
 
 

@@ -35,7 +35,7 @@ import (
 
 
 const (
-    kReadTimeoutSeconds     time.Duration = (60 * time.Second)
+    kReadTimeoutSeconds     time.Duration = (30 * time.Second)
     kWriteTimeoutSeconds    time.Duration = (10 * time.Second)
 )
 
@@ -87,6 +87,7 @@ func SendMessageToConnection(
         return error
     }
 
+    connection.PayloadType = websocket.BinaryFrame
     connection.SetWriteDeadline(time.Now().Add(kWriteTimeoutSeconds))
     _, error = connection.Write(data)
     if error != nil { Log.LogError(error) }

@@ -2169,6 +2169,7 @@ static BPushDisconnect* defaultBPushDisconnectInstance = nil;
 @property (strong) BUserSearchRequest* userSearchRequest;
 @property (strong) BPushConnect* pushConnect;
 @property (strong) BPushDisconnect* pushDisconnect;
+@property (strong) BConversationRequest* conversationRequest;
 @end
 
 @implementation BRequestType
@@ -2292,6 +2293,13 @@ static BPushDisconnect* defaultBPushDisconnectInstance = nil;
   hasPushDisconnect_ = !!_value_;
 }
 @synthesize pushDisconnect;
+- (BOOL) hasConversationRequest {
+  return !!hasConversationRequest_;
+}
+- (void) setHasConversationRequest:(BOOL) _value_ {
+  hasConversationRequest_ = !!_value_;
+}
+@synthesize conversationRequest;
 - (instancetype) init {
   if ((self = [super init])) {
     self.sessionRequest = [BSessionRequest defaultInstance];
@@ -2311,6 +2319,7 @@ static BPushDisconnect* defaultBPushDisconnectInstance = nil;
     self.userSearchRequest = [BUserSearchRequest defaultInstance];
     self.pushConnect = [BPushConnect defaultInstance];
     self.pushDisconnect = [BPushDisconnect defaultInstance];
+    self.conversationRequest = [BConversationRequest defaultInstance];
   }
   return self;
 }
@@ -2431,6 +2440,9 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   if (self.hasPushDisconnect) {
     [output writeMessage:17 value:self.pushDisconnect];
   }
+  if (self.hasConversationRequest) {
+    [output writeMessage:18 value:self.conversationRequest];
+  }
   [self.unknownFields writeToCodedOutputStream:output];
 }
 - (SInt32) serializedSize {
@@ -2490,6 +2502,9 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   }
   if (self.hasPushDisconnect) {
     size_ += computeMessageSize(17, self.pushDisconnect);
+  }
+  if (self.hasConversationRequest) {
+    size_ += computeMessageSize(18, self.conversationRequest);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -2628,6 +2643,12 @@ static BRequestType* defaultBRequestTypeInstance = nil;
                          withIndent:[NSString stringWithFormat:@"%@  ", indent]];
     [output appendFormat:@"%@}\n", indent];
   }
+  if (self.hasConversationRequest) {
+    [output appendFormat:@"%@%@ {\n", indent, @"conversationRequest"];
+    [self.conversationRequest writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (void) storeInDictionary:(NSMutableDictionary *)dictionary {
@@ -2716,6 +2737,11 @@ static BRequestType* defaultBRequestTypeInstance = nil;
    [self.pushDisconnect storeInDictionary:messageDictionary];
    [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"pushDisconnect"];
   }
+  if (self.hasConversationRequest) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.conversationRequest storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"conversationRequest"];
+  }
   [self.unknownFields storeInDictionary:dictionary];
 }
 - (BOOL) isEqual:(id)other {
@@ -2761,6 +2787,8 @@ static BRequestType* defaultBRequestTypeInstance = nil;
       (!self.hasPushConnect || [self.pushConnect isEqual:otherMessage.pushConnect]) &&
       self.hasPushDisconnect == otherMessage.hasPushDisconnect &&
       (!self.hasPushDisconnect || [self.pushDisconnect isEqual:otherMessage.pushDisconnect]) &&
+      self.hasConversationRequest == otherMessage.hasConversationRequest &&
+      (!self.hasConversationRequest || [self.conversationRequest isEqual:otherMessage.conversationRequest]) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
@@ -2815,6 +2843,9 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   }
   if (self.hasPushDisconnect) {
     hashCode = hashCode * 31 + [self.pushDisconnect hash];
+  }
+  if (self.hasConversationRequest) {
+    hashCode = hashCode * 31 + [self.conversationRequest hash];
   }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
@@ -2909,6 +2940,9 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   }
   if (other.hasPushDisconnect) {
     [self mergePushDisconnect:other.pushDisconnect];
+  }
+  if (other.hasConversationRequest) {
+    [self mergeConversationRequest:other.conversationRequest];
   }
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -3082,6 +3116,15 @@ static BRequestType* defaultBRequestTypeInstance = nil;
         }
         [input readMessage:subBuilder extensionRegistry:extensionRegistry];
         [self setPushDisconnect:[subBuilder buildPartial]];
+        break;
+      }
+      case 146: {
+        BConversationRequestBuilder* subBuilder = [BConversationRequest builder];
+        if (self.hasConversationRequest) {
+          [subBuilder mergeFrom:self.conversationRequest];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setConversationRequest:[subBuilder buildPartial]];
         break;
       }
     }
@@ -3597,6 +3640,36 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   resultRequestType.pushDisconnect = [BPushDisconnect defaultInstance];
   return self;
 }
+- (BOOL) hasConversationRequest {
+  return resultRequestType.hasConversationRequest;
+}
+- (BConversationRequest*) conversationRequest {
+  return resultRequestType.conversationRequest;
+}
+- (BRequestTypeBuilder*) setConversationRequest:(BConversationRequest*) value {
+  resultRequestType.hasConversationRequest = YES;
+  resultRequestType.conversationRequest = value;
+  return self;
+}
+- (BRequestTypeBuilder*) setConversationRequestBuilder:(BConversationRequestBuilder*) builderForValue {
+  return [self setConversationRequest:[builderForValue build]];
+}
+- (BRequestTypeBuilder*) mergeConversationRequest:(BConversationRequest*) value {
+  if (resultRequestType.hasConversationRequest &&
+      resultRequestType.conversationRequest != [BConversationRequest defaultInstance]) {
+    resultRequestType.conversationRequest =
+      [[[BConversationRequest builderWithPrototype:resultRequestType.conversationRequest] mergeFrom:value] buildPartial];
+  } else {
+    resultRequestType.conversationRequest = value;
+  }
+  resultRequestType.hasConversationRequest = YES;
+  return self;
+}
+- (BRequestTypeBuilder*) clearConversationRequest {
+  resultRequestType.hasConversationRequest = NO;
+  resultRequestType.conversationRequest = [BConversationRequest defaultInstance];
+  return self;
+}
 @end
 
 @interface BServerRequest ()
@@ -3897,6 +3970,7 @@ static BServerRequest* defaultBServerRequestInstance = nil;
 @property (strong) BFeedPostUpdateResponse* feedPostUpdateResponse;
 @property (strong) BAutocompleteResponse* autocompleteResponse;
 @property (strong) BUserSearchResponse* userSearchResponse;
+@property (strong) BConversationResponse* conversationResponse;
 @end
 
 @implementation BResponseType
@@ -3992,6 +4066,13 @@ static BServerRequest* defaultBServerRequestInstance = nil;
   hasUserSearchResponse_ = !!_value_;
 }
 @synthesize userSearchResponse;
+- (BOOL) hasConversationResponse {
+  return !!hasConversationResponse_;
+}
+- (void) setHasConversationResponse:(BOOL) _value_ {
+  hasConversationResponse_ = !!_value_;
+}
+@synthesize conversationResponse;
 - (instancetype) init {
   if ((self = [super init])) {
     self.sessionResponse = [BSessionResponse defaultInstance];
@@ -4007,6 +4088,7 @@ static BServerRequest* defaultBServerRequestInstance = nil;
     self.feedPostUpdateResponse = [BFeedPostUpdateResponse defaultInstance];
     self.autocompleteResponse = [BAutocompleteResponse defaultInstance];
     self.userSearchResponse = [BUserSearchResponse defaultInstance];
+    self.conversationResponse = [BConversationResponse defaultInstance];
   }
   return self;
 }
@@ -4073,6 +4155,11 @@ static BResponseType* defaultBResponseTypeInstance = nil;
       return NO;
     }
   }
+  if (self.hasConversationResponse) {
+    if (!self.conversationResponse.isInitialized) {
+      return NO;
+    }
+  }
   return YES;
 }
 - (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
@@ -4114,6 +4201,9 @@ static BResponseType* defaultBResponseTypeInstance = nil;
   }
   if (self.hasUserSearchResponse) {
     [output writeMessage:13 value:self.userSearchResponse];
+  }
+  if (self.hasConversationResponse) {
+    [output writeMessage:14 value:self.conversationResponse];
   }
   [self.unknownFields writeToCodedOutputStream:output];
 }
@@ -4162,6 +4252,9 @@ static BResponseType* defaultBResponseTypeInstance = nil;
   }
   if (self.hasUserSearchResponse) {
     size_ += computeMessageSize(13, self.userSearchResponse);
+  }
+  if (self.hasConversationResponse) {
+    size_ += computeMessageSize(14, self.conversationResponse);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -4276,6 +4369,12 @@ static BResponseType* defaultBResponseTypeInstance = nil;
                          withIndent:[NSString stringWithFormat:@"%@  ", indent]];
     [output appendFormat:@"%@}\n", indent];
   }
+  if (self.hasConversationResponse) {
+    [output appendFormat:@"%@%@ {\n", indent, @"conversationResponse"];
+    [self.conversationResponse writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (void) storeInDictionary:(NSMutableDictionary *)dictionary {
@@ -4344,6 +4443,11 @@ static BResponseType* defaultBResponseTypeInstance = nil;
    [self.userSearchResponse storeInDictionary:messageDictionary];
    [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"userSearchResponse"];
   }
+  if (self.hasConversationResponse) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.conversationResponse storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"conversationResponse"];
+  }
   [self.unknownFields storeInDictionary:dictionary];
 }
 - (BOOL) isEqual:(id)other {
@@ -4381,6 +4485,8 @@ static BResponseType* defaultBResponseTypeInstance = nil;
       (!self.hasAutocompleteResponse || [self.autocompleteResponse isEqual:otherMessage.autocompleteResponse]) &&
       self.hasUserSearchResponse == otherMessage.hasUserSearchResponse &&
       (!self.hasUserSearchResponse || [self.userSearchResponse isEqual:otherMessage.userSearchResponse]) &&
+      self.hasConversationResponse == otherMessage.hasConversationResponse &&
+      (!self.hasConversationResponse || [self.conversationResponse isEqual:otherMessage.conversationResponse]) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
@@ -4423,6 +4529,9 @@ static BResponseType* defaultBResponseTypeInstance = nil;
   }
   if (self.hasUserSearchResponse) {
     hashCode = hashCode * 31 + [self.userSearchResponse hash];
+  }
+  if (self.hasConversationResponse) {
+    hashCode = hashCode * 31 + [self.conversationResponse hash];
   }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
@@ -4505,6 +4614,9 @@ static BResponseType* defaultBResponseTypeInstance = nil;
   }
   if (other.hasUserSearchResponse) {
     [self mergeUserSearchResponse:other.userSearchResponse];
+  }
+  if (other.hasConversationResponse) {
+    [self mergeConversationResponse:other.conversationResponse];
   }
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -4642,6 +4754,15 @@ static BResponseType* defaultBResponseTypeInstance = nil;
         }
         [input readMessage:subBuilder extensionRegistry:extensionRegistry];
         [self setUserSearchResponse:[subBuilder buildPartial]];
+        break;
+      }
+      case 114: {
+        BConversationResponseBuilder* subBuilder = [BConversationResponse builder];
+        if (self.hasConversationResponse) {
+          [subBuilder mergeFrom:self.conversationResponse];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setConversationResponse:[subBuilder buildPartial]];
         break;
       }
     }
@@ -5035,6 +5156,36 @@ static BResponseType* defaultBResponseTypeInstance = nil;
 - (BResponseTypeBuilder*) clearUserSearchResponse {
   resultResponseType.hasUserSearchResponse = NO;
   resultResponseType.userSearchResponse = [BUserSearchResponse defaultInstance];
+  return self;
+}
+- (BOOL) hasConversationResponse {
+  return resultResponseType.hasConversationResponse;
+}
+- (BConversationResponse*) conversationResponse {
+  return resultResponseType.conversationResponse;
+}
+- (BResponseTypeBuilder*) setConversationResponse:(BConversationResponse*) value {
+  resultResponseType.hasConversationResponse = YES;
+  resultResponseType.conversationResponse = value;
+  return self;
+}
+- (BResponseTypeBuilder*) setConversationResponseBuilder:(BConversationResponseBuilder*) builderForValue {
+  return [self setConversationResponse:[builderForValue build]];
+}
+- (BResponseTypeBuilder*) mergeConversationResponse:(BConversationResponse*) value {
+  if (resultResponseType.hasConversationResponse &&
+      resultResponseType.conversationResponse != [BConversationResponse defaultInstance]) {
+    resultResponseType.conversationResponse =
+      [[[BConversationResponse builderWithPrototype:resultResponseType.conversationResponse] mergeFrom:value] buildPartial];
+  } else {
+    resultResponseType.conversationResponse = value;
+  }
+  resultResponseType.hasConversationResponse = YES;
+  return self;
+}
+- (BResponseTypeBuilder*) clearConversationResponse {
+  resultResponseType.hasConversationResponse = NO;
+  resultResponseType.conversationResponse = [BConversationResponse defaultInstance];
   return self;
 }
 @end

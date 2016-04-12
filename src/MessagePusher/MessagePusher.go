@@ -15,6 +15,8 @@ package MessagePusher
 
 
 import (
+    "fmt"
+    "net"
     "sync"
     "time"
     "strings"
@@ -65,6 +67,66 @@ func (pusher *MessagePusher) PushMessage(message *BlitzMessage.UserMessage) {
 }
 
 
+func (pusher *MessagePusher) Connect(connection *websocket.Conn) (*MessagePushUser, error) {
+    Log.LogFunctionName()
+
+    //  Read the connect message --
+
+    var n int
+    var error error
+    var wireMessage []byte = make([]byte, 3200)
+
+    connection.SetReadDeadline(time.Now().Add(kReadTimeoutSeconds))
+    for n == 0 {
+        n, error = connection.Read(wireMessage)
+        Log.Debugf("Read %d/%d bytes.", n, len(wireMessage))
+        if error != nil {
+            Log.Errorf("Disconnecting %+v because of error %+v.", *connection, error)
+            return nil, error
+        }
+    }
+
+    //  Decode the message --
+
+    format := FormatUnknown
+    var request *BlitzMessage.ServerRequest
+    request, format, error = DecodeMessage(format, wireMessage[:n])
+    if error != nil {
+        Log.LogError(error)
+        return nil, error
+    }
+    Log.Debugf("Connect message: %+v.", request)
+    if  request == nil ||
+        request.SessionToken == nil ||
+        request.RequestType  == nil ||
+        request.RequestType.PushConnect == nil ||
+        request.RequestType.PushConnect.UserID == nil {
+        return nil, fmt.Errorf("Bad connect message")
+    }
+
+    pusher.lock.Lock()
+    defer pusher.lock.Unlock()
+
+    //  Connect user?
+
+    userID := strings.TrimSpace(*request.RequestType.PushConnect.UserID)
+    if pusher.PusherInterface != nil {
+        error = (*pusher.PusherInterface).UserMayConnect(request)
+        if error != nil {
+            Log.LogError(error)
+            return nil, error
+        }
+    }
+
+    user := NewMessagePushUser(connection)
+    user.Format = format
+    pusher.connectionMap[connection] = userID
+    pusher.userMap[userID] = user
+
+    return user, nil
+}
+
+
 func (pusher *MessagePusher) Disconnect(connection *websocket.Conn) {
     Log.LogFunctionName()
 
@@ -78,30 +140,65 @@ func (pusher *MessagePusher) Disconnect(connection *websocket.Conn) {
 
     user, ok := pusher.userMap[userID]
     if ok {
-        user.lock.Lock()
-        user.connection = nil
-        user.pusher = nil
-        user.messageEvent = nil
-        user.messageQueue = make([]*BlitzMessage.UserMessage, 0, 0)
-        user.lock.Unlock()
+        user.Disconnect()
         delete(pusher.userMap, userID)
     }
 }
 
 
-func (pusher *MessagePusher) Connect(connection *websocket.Conn, message *BlitzMessage.ServerRequest) {
+//----------------------------------------------------------------------------------------
+//                                                                          readConnection
+//----------------------------------------------------------------------------------------
+
+
+func IsTimeoutError(err error) bool {
+    if err, ok := err.(net.Error); ok && err.Timeout() {
+        return true
+    }
+    return false
+}
+
+
+func (pusher *MessagePusher) readConnection(connection *websocket.Conn, readChannel chan *BlitzMessage.ServerRequest) {
     Log.LogFunctionName()
+    defer Log.Debugf("Exit readConnection")
 
-    userID := "10101"   //  eDebug UserIDFromConnectionMessage(message)
-    userID = strings.TrimSpace(userID)
-    if len(userID) == 0 { return }
+    var n int
+    var error error
+    var wireMessage []byte = make([]byte, 3200)
+    var message *BlitzMessage.ServerRequest
+    var format Format = FormatUnknown
 
-    pusher.lock.Lock()
-    defer pusher.lock.Unlock()
+    for {
 
-    user := NewMessagePushUser(connection, pusher)
-    pusher.connectionMap[connection] = userID
-    pusher.userMap[userID] = user
+        connection.SetReadDeadline(time.Now().Add(kReadTimeoutSeconds))
+        n, error = connection.Read(wireMessage)
+        if  IsTimeoutError(error) {
+            //  Send a ping keep alive message --
+            Log.Debugf("Sending ping.")
+            connection.PayloadType = websocket.PingFrame
+            connection.Write(wireMessage[:0])
+            continue
+        }
+
+        if error != nil {
+            Log.Errorf("Disconnecting %+v because of error %+v.", *connection, error)
+            pusher.Disconnect(connection)
+            return
+        }
+
+        Log.Debugf("Read %d/%d bytes.", n, len(wireMessage))
+        message, format, error = DecodeMessage(format, wireMessage[:n])
+        if error != nil {
+            Log.LogError(error)
+            pusher.Disconnect(connection)
+            return
+        }
+
+        if message != nil {
+            readChannel <- message
+        }
+    }
 }
 
 
@@ -114,43 +211,52 @@ func (pusher *MessagePusher) Connect(connection *websocket.Conn, message *BlitzM
 
 func (pusher *MessagePusher) HandlePushConnection(connection *websocket.Conn) {
     Log.LogFunctionName()
-
-    //  Read the message --
+    defer Log.Debugf("Exit HandlePushConnection.")
 
     var error error
-    var wireMessage []byte
-    connection.SetReadDeadline(time.Now().Add(kReadTimeoutSeconds))
-    _, error = connection.Read(wireMessage)
+    var user *MessagePushUser
+
+    user, error = pusher.Connect(connection)
     if error != nil {
         Log.Errorf("Disconnecting %+v because of error %+v.", *connection, error)
-        pusher.Disconnect(connection)
-        return
-    }
-    Log.Debugf("Read %d bytes.", len(wireMessage))
-    if len(wireMessage) == 0 { return }
-
-    //  Decode the message --
-
-    format := FormatUnknown
-    var request *BlitzMessage.ServerRequest
-    request, format, error = DecodeMessage(format, wireMessage)
-    if error != nil {
-        Log.LogError(error)
         return
     }
 
-    //  Route the message --
+    //  Loop, proccessing the messages --
 
-    if request.RequestType.PushConnect != nil {
-        pusher.Connect(connection, request)
-        return
+    messageQueue := make([]*BlitzMessage.UserMessage, 0, 10)
+    readChannel  := make(chan *BlitzMessage.ServerRequest)
+    go pusher.readConnection(connection, readChannel)
+
+    for user.IsConnected() {
+
+        Log.Debugf("Waiting for messages...")
+        select {
+            case request := <- readChannel:
+                if request != nil &&
+                   request.RequestType != nil &&
+                   request.RequestType.PushDisconnect != nil {
+                   pusher.Disconnect(connection)
+                }
+
+            case message := <- user.writeChannel:
+                messageQueue = append(messageQueue, message)
+        }
+        Log.Debugf("Sending messages...")
+
+        for len(messageQueue) > 0 && user.IsConnected() {
+
+            message := messageQueue[0]
+            messageQueue = messageQueue[1:]
+
+            error = SendMessageToConnection(connection, user.Format, message)
+            if error != nil {
+                Log.LogError(error)
+                pusher.Disconnect(connection)
+            }
+            Log.Debugf("Sent one message.")
+
+        }
     }
-
-    if request.RequestType.PushDisconnect != nil {
-        pusher.Disconnect(connection)
-        return
-    }
-
-    Log.Errorf("Received unexpected message type %+v.", *request.RequestType)
 }
 

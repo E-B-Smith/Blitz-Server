@@ -18,12 +18,32 @@ import "Types.proto";
 //----------------------------------------------------------------------------------------
 
 
+enum UserMessageStatus {
+  MSUnknown   = 0;
+  MSImportant = 1;
+  MSNew       = 2;
+  MSRead      = 3;
+  MSArchived  = 4;
+}
+
+
 message Conversation {
-  optional string       conversationID      = 1;
-  optional string       parentFeedPostID    = 2;
-  optional Timestamp    creationDate        = 3;
-  optional Timestamp    lastActivityDate    = 4;
-  repeated string       memberIDs           = 5;
+  optional string             conversationID  = 1;
+  optional UserMessageStatus  status          = 2;
+  optional string             parentFeedPostID= 3;
+  optional Timestamp          creationDate    = 4;
+  optional Timestamp          lastActivityDate= 5;
+  repeated string             memberIDs       = 6;
+}
+
+
+message ConversationRequest {
+  repeated string             userIDs   = 1;
+}
+
+
+message ConversationResponse {
+  optional Conversation       conversation  = 1;
 }
 
 
@@ -32,14 +52,6 @@ enum UserMessageType {
   MTSystem       = 1;
   MTConversation = 2;
   MTNotification = 3;
-}
-
-
-enum UserMessageStatus {
-  MSUnknown   = 0;
-  MSNew       = 1;
-  MSRead      = 2;
-  MSArchived  = 3;
 }
 
 

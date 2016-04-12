@@ -60,6 +60,8 @@ It has these top-level messages:
 	UserEventBatch
 	UserEventBatchResponse
 	Conversation
+	ConversationRequest
+	ConversationResponse
 	UserMessage
 	UserMessageUpdate
 	SocialIdentity

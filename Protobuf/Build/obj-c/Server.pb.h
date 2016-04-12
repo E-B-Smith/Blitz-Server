@@ -31,6 +31,10 @@
 @class BContactInfoBuilder;
 @class BConversation;
 @class BConversationBuilder;
+@class BConversationRequest;
+@class BConversationRequestBuilder;
+@class BConversationResponse;
+@class BConversationResponseBuilder;
 @class BCoordinate;
 @class BCoordinateBuilder;
 @class BCoordinatePolygon;
@@ -654,6 +658,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 #define RequestType_userSearchRequest @"userSearchRequest"
 #define RequestType_pushConnect @"pushConnect"
 #define RequestType_pushDisconnect @"pushDisconnect"
+#define RequestType_conversationRequest @"conversationRequest"
 @interface BRequestType : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
   BOOL hasSessionRequest_:1;
@@ -673,6 +678,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
   BOOL hasUserSearchRequest_:1;
   BOOL hasPushConnect_:1;
   BOOL hasPushDisconnect_:1;
+  BOOL hasConversationRequest_:1;
   BSessionRequest* sessionRequest;
   BUserEventBatch* userEventBatch;
   BUserProfileUpdate* userProfileUpdate;
@@ -690,6 +696,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
   BUserSearchRequest* userSearchRequest;
   BPushConnect* pushConnect;
   BPushDisconnect* pushDisconnect;
+  BConversationRequest* conversationRequest;
 }
 - (BOOL) hasSessionRequest;
 - (BOOL) hasUserEventBatch;
@@ -708,6 +715,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BOOL) hasUserSearchRequest;
 - (BOOL) hasPushConnect;
 - (BOOL) hasPushDisconnect;
+- (BOOL) hasConversationRequest;
 @property (readonly, strong) BSessionRequest* sessionRequest;
 @property (readonly, strong) BUserEventBatch* userEventBatch;
 @property (readonly, strong) BUserProfileUpdate* userProfileUpdate;
@@ -725,6 +733,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 @property (readonly, strong) BUserSearchRequest* userSearchRequest;
 @property (readonly, strong) BPushConnect* pushConnect;
 @property (readonly, strong) BPushDisconnect* pushDisconnect;
+@property (readonly, strong) BConversationRequest* conversationRequest;
 
 + (instancetype) defaultInstance;
 - (instancetype) defaultInstance;
@@ -879,6 +888,13 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BRequestTypeBuilder*) setPushDisconnectBuilder:(BPushDisconnectBuilder*) builderForValue;
 - (BRequestTypeBuilder*) mergePushDisconnect:(BPushDisconnect*) value;
 - (BRequestTypeBuilder*) clearPushDisconnect;
+
+- (BOOL) hasConversationRequest;
+- (BConversationRequest*) conversationRequest;
+- (BRequestTypeBuilder*) setConversationRequest:(BConversationRequest*) value;
+- (BRequestTypeBuilder*) setConversationRequestBuilder:(BConversationRequestBuilder*) builderForValue;
+- (BRequestTypeBuilder*) mergeConversationRequest:(BConversationRequest*) value;
+- (BRequestTypeBuilder*) clearConversationRequest;
 @end
 
 #define ServerRequest_sessionToken @"sessionToken"
@@ -956,6 +972,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 #define ResponseType_feedPostUpdateResponse @"feedPostUpdateResponse"
 #define ResponseType_autocompleteResponse @"autocompleteResponse"
 #define ResponseType_userSearchResponse @"userSearchResponse"
+#define ResponseType_conversationResponse @"conversationResponse"
 @interface BResponseType : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
   BOOL hasSessionResponse_:1;
@@ -971,6 +988,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
   BOOL hasFeedPostUpdateResponse_:1;
   BOOL hasAutocompleteResponse_:1;
   BOOL hasUserSearchResponse_:1;
+  BOOL hasConversationResponse_:1;
   BSessionResponse* sessionResponse;
   BUserEventBatchResponse* userEventBatchResponse;
   BUserProfileUpdate* userProfileUpdate;
@@ -984,6 +1002,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
   BFeedPostUpdateResponse* feedPostUpdateResponse;
   BAutocompleteResponse* autocompleteResponse;
   BUserSearchResponse* userSearchResponse;
+  BConversationResponse* conversationResponse;
 }
 - (BOOL) hasSessionResponse;
 - (BOOL) hasUserEventBatchResponse;
@@ -998,6 +1017,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BOOL) hasFeedPostUpdateResponse;
 - (BOOL) hasAutocompleteResponse;
 - (BOOL) hasUserSearchResponse;
+- (BOOL) hasConversationResponse;
 @property (readonly, strong) BSessionResponse* sessionResponse;
 @property (readonly, strong) BUserEventBatchResponse* userEventBatchResponse;
 @property (readonly, strong) BUserProfileUpdate* userProfileUpdate;
@@ -1011,6 +1031,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 @property (readonly, strong) BFeedPostUpdateResponse* feedPostUpdateResponse;
 @property (readonly, strong) BAutocompleteResponse* autocompleteResponse;
 @property (readonly, strong) BUserSearchResponse* userSearchResponse;
+@property (readonly, strong) BConversationResponse* conversationResponse;
 
 + (instancetype) defaultInstance;
 - (instancetype) defaultInstance;
@@ -1137,6 +1158,13 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BResponseTypeBuilder*) setUserSearchResponseBuilder:(BUserSearchResponseBuilder*) builderForValue;
 - (BResponseTypeBuilder*) mergeUserSearchResponse:(BUserSearchResponse*) value;
 - (BResponseTypeBuilder*) clearUserSearchResponse;
+
+- (BOOL) hasConversationResponse;
+- (BConversationResponse*) conversationResponse;
+- (BResponseTypeBuilder*) setConversationResponse:(BConversationResponse*) value;
+- (BResponseTypeBuilder*) setConversationResponseBuilder:(BConversationResponseBuilder*) builderForValue;
+- (BResponseTypeBuilder*) mergeConversationResponse:(BConversationResponse*) value;
+- (BResponseTypeBuilder*) clearConversationResponse;
 @end
 
 #define ServerResponse_responseCode @"responseCode"
