@@ -63,6 +63,8 @@
 @class BFeedPostUpdateRequestBuilder;
 @class BFeedPostUpdateResponse;
 @class BFeedPostUpdateResponseBuilder;
+@class BFetchConversations;
+@class BFetchConversationsBuilder;
 @class BFriend;
 @class BFriendBuilder;
 @class BFriendRequest;
@@ -659,6 +661,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 #define RequestType_pushConnect @"pushConnect"
 #define RequestType_pushDisconnect @"pushDisconnect"
 #define RequestType_conversationRequest @"conversationRequest"
+#define RequestType_fetchConversations @"fetchConversations"
 @interface BRequestType : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
   BOOL hasSessionRequest_:1;
@@ -679,6 +682,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
   BOOL hasPushConnect_:1;
   BOOL hasPushDisconnect_:1;
   BOOL hasConversationRequest_:1;
+  BOOL hasFetchConversations_:1;
   BSessionRequest* sessionRequest;
   BUserEventBatch* userEventBatch;
   BUserProfileUpdate* userProfileUpdate;
@@ -697,6 +701,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
   BPushConnect* pushConnect;
   BPushDisconnect* pushDisconnect;
   BConversationRequest* conversationRequest;
+  BFetchConversations* fetchConversations;
 }
 - (BOOL) hasSessionRequest;
 - (BOOL) hasUserEventBatch;
@@ -716,6 +721,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BOOL) hasPushConnect;
 - (BOOL) hasPushDisconnect;
 - (BOOL) hasConversationRequest;
+- (BOOL) hasFetchConversations;
 @property (readonly, strong) BSessionRequest* sessionRequest;
 @property (readonly, strong) BUserEventBatch* userEventBatch;
 @property (readonly, strong) BUserProfileUpdate* userProfileUpdate;
@@ -734,6 +740,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 @property (readonly, strong) BPushConnect* pushConnect;
 @property (readonly, strong) BPushDisconnect* pushDisconnect;
 @property (readonly, strong) BConversationRequest* conversationRequest;
+@property (readonly, strong) BFetchConversations* fetchConversations;
 
 + (instancetype) defaultInstance;
 - (instancetype) defaultInstance;
@@ -895,6 +902,13 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BRequestTypeBuilder*) setConversationRequestBuilder:(BConversationRequestBuilder*) builderForValue;
 - (BRequestTypeBuilder*) mergeConversationRequest:(BConversationRequest*) value;
 - (BRequestTypeBuilder*) clearConversationRequest;
+
+- (BOOL) hasFetchConversations;
+- (BFetchConversations*) fetchConversations;
+- (BRequestTypeBuilder*) setFetchConversations:(BFetchConversations*) value;
+- (BRequestTypeBuilder*) setFetchConversationsBuilder:(BFetchConversationsBuilder*) builderForValue;
+- (BRequestTypeBuilder*) mergeFetchConversations:(BFetchConversations*) value;
+- (BRequestTypeBuilder*) clearFetchConversations;
 @end
 
 #define ServerRequest_sessionToken @"sessionToken"
@@ -973,6 +987,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 #define ResponseType_autocompleteResponse @"autocompleteResponse"
 #define ResponseType_userSearchResponse @"userSearchResponse"
 #define ResponseType_conversationResponse @"conversationResponse"
+#define ResponseType_fetchConversations @"fetchConversations"
 @interface BResponseType : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
   BOOL hasSessionResponse_:1;
@@ -989,6 +1004,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
   BOOL hasAutocompleteResponse_:1;
   BOOL hasUserSearchResponse_:1;
   BOOL hasConversationResponse_:1;
+  BOOL hasFetchConversations_:1;
   BSessionResponse* sessionResponse;
   BUserEventBatchResponse* userEventBatchResponse;
   BUserProfileUpdate* userProfileUpdate;
@@ -1003,6 +1019,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
   BAutocompleteResponse* autocompleteResponse;
   BUserSearchResponse* userSearchResponse;
   BConversationResponse* conversationResponse;
+  BFetchConversations* fetchConversations;
 }
 - (BOOL) hasSessionResponse;
 - (BOOL) hasUserEventBatchResponse;
@@ -1018,6 +1035,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BOOL) hasAutocompleteResponse;
 - (BOOL) hasUserSearchResponse;
 - (BOOL) hasConversationResponse;
+- (BOOL) hasFetchConversations;
 @property (readonly, strong) BSessionResponse* sessionResponse;
 @property (readonly, strong) BUserEventBatchResponse* userEventBatchResponse;
 @property (readonly, strong) BUserProfileUpdate* userProfileUpdate;
@@ -1032,6 +1050,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 @property (readonly, strong) BAutocompleteResponse* autocompleteResponse;
 @property (readonly, strong) BUserSearchResponse* userSearchResponse;
 @property (readonly, strong) BConversationResponse* conversationResponse;
+@property (readonly, strong) BFetchConversations* fetchConversations;
 
 + (instancetype) defaultInstance;
 - (instancetype) defaultInstance;
@@ -1165,6 +1184,13 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BResponseTypeBuilder*) setConversationResponseBuilder:(BConversationResponseBuilder*) builderForValue;
 - (BResponseTypeBuilder*) mergeConversationResponse:(BConversationResponse*) value;
 - (BResponseTypeBuilder*) clearConversationResponse;
+
+- (BOOL) hasFetchConversations;
+- (BFetchConversations*) fetchConversations;
+- (BResponseTypeBuilder*) setFetchConversations:(BFetchConversations*) value;
+- (BResponseTypeBuilder*) setFetchConversationsBuilder:(BFetchConversationsBuilder*) builderForValue;
+- (BResponseTypeBuilder*) mergeFetchConversations:(BFetchConversations*) value;
+- (BResponseTypeBuilder*) clearFetchConversations;
 @end
 
 #define ServerResponse_responseCode @"responseCode"

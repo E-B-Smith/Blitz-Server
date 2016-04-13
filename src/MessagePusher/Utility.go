@@ -36,7 +36,7 @@ import (
 
 const (
     kReadTimeoutSeconds     time.Duration = (30 * time.Second)
-    kWriteTimeoutSeconds    time.Duration = (10 * time.Second)
+    kWriteTimeoutSeconds    time.Duration = (30 * time.Second)
 )
 
 

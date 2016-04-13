@@ -355,6 +355,7 @@ create table UserMessageTable
     (
      messageID          UUID            not null
     ,senderID           UserID          not null
+    ,conversationID     UUID
     ,recipientID        UserID          not null
     ,creationDate       timestamptz     not null
     ,notificationDate   timestamptz
@@ -450,6 +451,32 @@ create table EntityTagTable
 create unique index EntityTagTableIndex
     on  EntityTagTable(entityID, entityType, userID, entityTag);
 
+
+
+------------------------------------------------------------------------------------------
+--
+--                                                                           Conversations
+--
+------------------------------------------------------------------------------------------
+
+
+create table ConversationTable
+    (
+     conversationID             UUID        unique not null primary key
+    ,status                     smallint    not null
+    ,initiatorUserID            UserID      not null
+    ,parentFeedPostID           UUID
+    ,creationDate               timestamptz not null
+    );
+
+
+create table ConversationMemberTable
+    (
+     conversationID             UUID        not null primary key
+    ,memberID                   UserID      not null
+    );
+create unique index ConversationMemberTableIndex
+    on ConversationMemberTable(conversationID, memberID);
 
 
 ------------------------------------------------------------------------------------------

@@ -7,6 +7,7 @@ package main
 
 
 import (
+    "fmt"
     "time"
     "errors"
     "database/sql"
@@ -47,22 +48,23 @@ func UserMessageFetchRequest(session *Session, fetch *BlitzMessage.UserMessageUp
     warnings := 0
 
     rows, error := config.DB.Query(
-        "select " +
-            "messageID, "+
-            "senderID, "+
-            "recipientID, "+
-            "creationDate, "+
-            "notificationDate, "+
-            "readDate, "+
-            "messageType, "+
-            "messageText, "+
-            "actionIcon, "+
-            "actionURL "+
-            "from UserMessageTable "+
-            "  where recipientID = $1 "+
-            "  and creationDate >  $2 "+
-            "  and creationDate <= $3 "+
-            "    order by creationDate;",
+        `select
+            messageID,
+            senderID,
+            recipientID,
+            creationDate,
+            notificationDate,
+            readDate,
+            messageType,
+            messageText,
+            actionIcon,
+            actionURL,
+            conversationID
+                from UserMessageTable
+                  where recipientID = $1
+                  and creationDate >  $2
+                  and creationDate <= $3
+                    order by creationDate;`,
             session.UserID, startDate, stopDate)
     defer func() { if rows != nil { rows.Close(); } }()
     if error != nil {
@@ -73,16 +75,17 @@ func UserMessageFetchRequest(session *Session, fetch *BlitzMessage.UserMessageUp
     var messageArray []*BlitzMessage.UserMessage
     for rows.Next() {
         var (
-            messageID string
-            senderID string
-            recipientID string
-            creationDate pq.NullTime
-            notificationDate pq.NullTime
-            readDate pq.NullTime
-            messageType int
-            messageText sql.NullString
-            actionIcon sql.NullString
-            actionURL sql.NullString
+            messageID           string
+            senderID            string
+            recipientID         string
+            creationDate        pq.NullTime
+            notificationDate    pq.NullTime
+            readDate            pq.NullTime
+            messageType         int
+            messageText         sql.NullString
+            actionIcon          sql.NullString
+            actionURL           sql.NullString
+            conversationID      sql.NullString
         )
         error = rows.Scan(
             &messageID,
@@ -95,6 +98,7 @@ func UserMessageFetchRequest(session *Session, fetch *BlitzMessage.UserMessageUp
             &messageText,
             &actionIcon,
             &actionURL,
+            &conversationID,
         )
         if error != nil {
             Log.LogError(error)
@@ -108,12 +112,13 @@ func UserMessageFetchRequest(session *Session, fetch *BlitzMessage.UserMessageUp
             Recipients:  []string{recipientID},
             MessageType: &mt,
         }
-        if creationDate.Valid { message.CreationDate = BlitzMessage.TimestampFromTime(creationDate.Time) }
-        if notificationDate.Valid {message.NotificationDate = BlitzMessage.TimestampFromTime(notificationDate.Time) }
-        if readDate.Valid { message.ReadDate = BlitzMessage.TimestampFromTime(readDate.Time) }
-        if messageText.Valid { message.MessageText = &messageText.String }
-        if actionIcon.Valid { message.ActionIcon = &actionIcon.String }
-        if actionURL.Valid { message.ActionURL = &actionURL.String }
+        if creationDate.Valid       { message.CreationDate = BlitzMessage.TimestampFromTime(creationDate.Time) }
+        if notificationDate.Valid   { message.NotificationDate = BlitzMessage.TimestampFromTime(notificationDate.Time) }
+        if readDate.Valid           { message.ReadDate = BlitzMessage.TimestampFromTime(readDate.Time) }
+        if messageText.Valid        { message.MessageText = &messageText.String }
+        if actionIcon.Valid         { message.ActionIcon = &actionIcon.String }
+        if actionURL.Valid          { message.ActionURL = &actionURL.String }
+        if conversationID.Valid     { message.ConversationID = &conversationID.String }
         messageArray = append(messageArray, &message)
     }
 
@@ -147,20 +152,35 @@ func UserMessageFetchRequest(session *Session, fetch *BlitzMessage.UserMessageUp
 //----------------------------------------------------------------------------------------
 
 
-func SendBlitzUserMessage(message *BlitzMessage.UserMessage) {
+func SendBlitzUserMessage(message *BlitzMessage.UserMessage) error {
     Log.LogFunctionName()
 
-    for _, recipientID := range message.Recipients {
-        _, error := config.DB.Exec("insert into UserMessageTable "+
-            "(messageID, " +
-            " senderID, "  +
-            " recipientID,"+
-            " creationDate,"+
-            " messageType,"+
-            " messageText,"+
-            " actionIcon, "+
-            " actionURL  "  +
-            ") values ($1, $2, $3, $4, $5, $6, $7, $8); ",
+    if message.SenderID == nil {
+        return fmt.Errorf("No sender ID")
+    }
+
+    var recipients []string
+    if message.ConversationID == nil {
+        recipients = message.Recipients
+        recipients = append(recipients, *message.SenderID)
+    } else {
+        recipients = MembersForConversationID(*message.ConversationID)
+    }
+    message.Recipients = recipients
+
+    for _, recipientID := range recipients {
+        _, error := config.DB.Exec(
+            `insert into UserMessageTable(
+                messageID,
+                senderID,
+                recipientID,
+                creationDate,
+                messageType,
+                messageText,
+                actionIcon,
+                actionURL,
+                conversationID)
+                values ($1, $2, $3, $4, $5, $6, $7, $8, $9);`,
             message.MessageID,
             message.SenderID,
             recipientID,
@@ -168,7 +188,8 @@ func SendBlitzUserMessage(message *BlitzMessage.UserMessage) {
             message.MessageType,
             message.MessageText,
             message.ActionIcon,
-            message.ActionURL)
+            message.ActionURL,
+            message.ConversationID)
 
         if error != nil {
             Log.Errorf("Error inserting message: %v. MessageID: %s From: %s To: %s.",
@@ -177,6 +198,7 @@ func SendBlitzUserMessage(message *BlitzMessage.UserMessage) {
     }
 
     globalMessagePusher.PushMessage(message)
+    return nil
 }
 
 
@@ -206,6 +228,7 @@ func SendUserMessage(
         ActionIcon:     &actionIcon,
         ActionURL:      &actionURL,
     }
+
     SendBlitzUserMessage(blitzMessage)
 }
 
@@ -217,9 +240,11 @@ func SendUserMessage(
 //----------------------------------------------------------------------------------------
 
 
-func UserMessageSendRequest(session *Session,
-                            sendMessage *BlitzMessage.UserMessageUpdate,
-                           ) *BlitzMessage.ServerResponse {
+func UserMessageSendRequest(
+        session *Session,
+        sendMessage *BlitzMessage.UserMessageUpdate,
+        ) *BlitzMessage.ServerResponse {
+
     //
     //  * Save each new message to the database.
     //

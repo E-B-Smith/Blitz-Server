@@ -29,21 +29,29 @@ enum UserMessageStatus {
 
 message Conversation {
   optional string             conversationID  = 1;
-  optional UserMessageStatus  status          = 2;
-  optional string             parentFeedPostID= 3;
-  optional Timestamp          creationDate    = 4;
-  optional Timestamp          lastActivityDate= 5;
-  repeated string             memberIDs       = 6;
+  optional string             initiatorUserID = 2;
+  optional UserMessageStatus  status          = 3;
+  optional string             parentFeedPostID= 4;
+  optional Timestamp          creationDate    = 5;
+  optional Timestamp          lastActivityDate= 6;
+  repeated string             memberIDs       = 7;
 }
 
 
 message ConversationRequest {
-  repeated string             userIDs   = 1;
+  repeated string             userIDs          = 1;
+  optional string             parentFeedPostID = 2;
 }
 
 
 message ConversationResponse {
   optional Conversation       conversation  = 1;
+}
+
+
+message FetchConversations {
+  optional Timespan       timespan      = 1;
+  repeated Conversation   conversations = 2;
 }
 
 

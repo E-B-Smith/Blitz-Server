@@ -299,6 +299,14 @@ func DispatchServiceRequests(writer http.ResponseWriter, httpRequest *http.Reque
     case *BlitzMessage.UserSearchRequest:
         response = UserSearchRequest(session, requestMessageType)
 
+    case *BlitzMessage.ConversationRequest:
+        response = StartConversation(session, requestMessageType)
+
+    case *BlitzMessage.UserMessageUpdate:
+        if serverRequest.RequestType.MessageSendRequest != nil {
+            response =  UserMessageSendRequest(session, requestMessageType)
+        }
+
     default:
         error = fmt.Errorf("Unrecognized request '%+v'", request)
         response = ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)

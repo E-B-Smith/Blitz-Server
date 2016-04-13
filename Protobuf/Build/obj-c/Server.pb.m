@@ -2170,6 +2170,7 @@ static BPushDisconnect* defaultBPushDisconnectInstance = nil;
 @property (strong) BPushConnect* pushConnect;
 @property (strong) BPushDisconnect* pushDisconnect;
 @property (strong) BConversationRequest* conversationRequest;
+@property (strong) BFetchConversations* fetchConversations;
 @end
 
 @implementation BRequestType
@@ -2300,6 +2301,13 @@ static BPushDisconnect* defaultBPushDisconnectInstance = nil;
   hasConversationRequest_ = !!_value_;
 }
 @synthesize conversationRequest;
+- (BOOL) hasFetchConversations {
+  return !!hasFetchConversations_;
+}
+- (void) setHasFetchConversations:(BOOL) _value_ {
+  hasFetchConversations_ = !!_value_;
+}
+@synthesize fetchConversations;
 - (instancetype) init {
   if ((self = [super init])) {
     self.sessionRequest = [BSessionRequest defaultInstance];
@@ -2320,6 +2328,7 @@ static BPushDisconnect* defaultBPushDisconnectInstance = nil;
     self.pushConnect = [BPushConnect defaultInstance];
     self.pushDisconnect = [BPushDisconnect defaultInstance];
     self.conversationRequest = [BConversationRequest defaultInstance];
+    self.fetchConversations = [BFetchConversations defaultInstance];
   }
   return self;
 }
@@ -2386,6 +2395,11 @@ static BRequestType* defaultBRequestTypeInstance = nil;
       return NO;
     }
   }
+  if (self.hasFetchConversations) {
+    if (!self.fetchConversations.isInitialized) {
+      return NO;
+    }
+  }
   return YES;
 }
 - (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
@@ -2442,6 +2456,9 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   }
   if (self.hasConversationRequest) {
     [output writeMessage:18 value:self.conversationRequest];
+  }
+  if (self.hasFetchConversations) {
+    [output writeMessage:19 value:self.fetchConversations];
   }
   [self.unknownFields writeToCodedOutputStream:output];
 }
@@ -2505,6 +2522,9 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   }
   if (self.hasConversationRequest) {
     size_ += computeMessageSize(18, self.conversationRequest);
+  }
+  if (self.hasFetchConversations) {
+    size_ += computeMessageSize(19, self.fetchConversations);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -2649,6 +2669,12 @@ static BRequestType* defaultBRequestTypeInstance = nil;
                          withIndent:[NSString stringWithFormat:@"%@  ", indent]];
     [output appendFormat:@"%@}\n", indent];
   }
+  if (self.hasFetchConversations) {
+    [output appendFormat:@"%@%@ {\n", indent, @"fetchConversations"];
+    [self.fetchConversations writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (void) storeInDictionary:(NSMutableDictionary *)dictionary {
@@ -2742,6 +2768,11 @@ static BRequestType* defaultBRequestTypeInstance = nil;
    [self.conversationRequest storeInDictionary:messageDictionary];
    [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"conversationRequest"];
   }
+  if (self.hasFetchConversations) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.fetchConversations storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"fetchConversations"];
+  }
   [self.unknownFields storeInDictionary:dictionary];
 }
 - (BOOL) isEqual:(id)other {
@@ -2789,6 +2820,8 @@ static BRequestType* defaultBRequestTypeInstance = nil;
       (!self.hasPushDisconnect || [self.pushDisconnect isEqual:otherMessage.pushDisconnect]) &&
       self.hasConversationRequest == otherMessage.hasConversationRequest &&
       (!self.hasConversationRequest || [self.conversationRequest isEqual:otherMessage.conversationRequest]) &&
+      self.hasFetchConversations == otherMessage.hasFetchConversations &&
+      (!self.hasFetchConversations || [self.fetchConversations isEqual:otherMessage.fetchConversations]) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
@@ -2846,6 +2879,9 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   }
   if (self.hasConversationRequest) {
     hashCode = hashCode * 31 + [self.conversationRequest hash];
+  }
+  if (self.hasFetchConversations) {
+    hashCode = hashCode * 31 + [self.fetchConversations hash];
   }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
@@ -2943,6 +2979,9 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   }
   if (other.hasConversationRequest) {
     [self mergeConversationRequest:other.conversationRequest];
+  }
+  if (other.hasFetchConversations) {
+    [self mergeFetchConversations:other.fetchConversations];
   }
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -3125,6 +3164,15 @@ static BRequestType* defaultBRequestTypeInstance = nil;
         }
         [input readMessage:subBuilder extensionRegistry:extensionRegistry];
         [self setConversationRequest:[subBuilder buildPartial]];
+        break;
+      }
+      case 154: {
+        BFetchConversationsBuilder* subBuilder = [BFetchConversations builder];
+        if (self.hasFetchConversations) {
+          [subBuilder mergeFrom:self.fetchConversations];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setFetchConversations:[subBuilder buildPartial]];
         break;
       }
     }
@@ -3670,6 +3718,36 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   resultRequestType.conversationRequest = [BConversationRequest defaultInstance];
   return self;
 }
+- (BOOL) hasFetchConversations {
+  return resultRequestType.hasFetchConversations;
+}
+- (BFetchConversations*) fetchConversations {
+  return resultRequestType.fetchConversations;
+}
+- (BRequestTypeBuilder*) setFetchConversations:(BFetchConversations*) value {
+  resultRequestType.hasFetchConversations = YES;
+  resultRequestType.fetchConversations = value;
+  return self;
+}
+- (BRequestTypeBuilder*) setFetchConversationsBuilder:(BFetchConversationsBuilder*) builderForValue {
+  return [self setFetchConversations:[builderForValue build]];
+}
+- (BRequestTypeBuilder*) mergeFetchConversations:(BFetchConversations*) value {
+  if (resultRequestType.hasFetchConversations &&
+      resultRequestType.fetchConversations != [BFetchConversations defaultInstance]) {
+    resultRequestType.fetchConversations =
+      [[[BFetchConversations builderWithPrototype:resultRequestType.fetchConversations] mergeFrom:value] buildPartial];
+  } else {
+    resultRequestType.fetchConversations = value;
+  }
+  resultRequestType.hasFetchConversations = YES;
+  return self;
+}
+- (BRequestTypeBuilder*) clearFetchConversations {
+  resultRequestType.hasFetchConversations = NO;
+  resultRequestType.fetchConversations = [BFetchConversations defaultInstance];
+  return self;
+}
 @end
 
 @interface BServerRequest ()
@@ -3971,6 +4049,7 @@ static BServerRequest* defaultBServerRequestInstance = nil;
 @property (strong) BAutocompleteResponse* autocompleteResponse;
 @property (strong) BUserSearchResponse* userSearchResponse;
 @property (strong) BConversationResponse* conversationResponse;
+@property (strong) BFetchConversations* fetchConversations;
 @end
 
 @implementation BResponseType
@@ -4073,6 +4152,13 @@ static BServerRequest* defaultBServerRequestInstance = nil;
   hasConversationResponse_ = !!_value_;
 }
 @synthesize conversationResponse;
+- (BOOL) hasFetchConversations {
+  return !!hasFetchConversations_;
+}
+- (void) setHasFetchConversations:(BOOL) _value_ {
+  hasFetchConversations_ = !!_value_;
+}
+@synthesize fetchConversations;
 - (instancetype) init {
   if ((self = [super init])) {
     self.sessionResponse = [BSessionResponse defaultInstance];
@@ -4089,6 +4175,7 @@ static BServerRequest* defaultBServerRequestInstance = nil;
     self.autocompleteResponse = [BAutocompleteResponse defaultInstance];
     self.userSearchResponse = [BUserSearchResponse defaultInstance];
     self.conversationResponse = [BConversationResponse defaultInstance];
+    self.fetchConversations = [BFetchConversations defaultInstance];
   }
   return self;
 }
@@ -4160,6 +4247,11 @@ static BResponseType* defaultBResponseTypeInstance = nil;
       return NO;
     }
   }
+  if (self.hasFetchConversations) {
+    if (!self.fetchConversations.isInitialized) {
+      return NO;
+    }
+  }
   return YES;
 }
 - (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
@@ -4204,6 +4296,9 @@ static BResponseType* defaultBResponseTypeInstance = nil;
   }
   if (self.hasConversationResponse) {
     [output writeMessage:14 value:self.conversationResponse];
+  }
+  if (self.hasFetchConversations) {
+    [output writeMessage:15 value:self.fetchConversations];
   }
   [self.unknownFields writeToCodedOutputStream:output];
 }
@@ -4255,6 +4350,9 @@ static BResponseType* defaultBResponseTypeInstance = nil;
   }
   if (self.hasConversationResponse) {
     size_ += computeMessageSize(14, self.conversationResponse);
+  }
+  if (self.hasFetchConversations) {
+    size_ += computeMessageSize(15, self.fetchConversations);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -4375,6 +4473,12 @@ static BResponseType* defaultBResponseTypeInstance = nil;
                          withIndent:[NSString stringWithFormat:@"%@  ", indent]];
     [output appendFormat:@"%@}\n", indent];
   }
+  if (self.hasFetchConversations) {
+    [output appendFormat:@"%@%@ {\n", indent, @"fetchConversations"];
+    [self.fetchConversations writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (void) storeInDictionary:(NSMutableDictionary *)dictionary {
@@ -4448,6 +4552,11 @@ static BResponseType* defaultBResponseTypeInstance = nil;
    [self.conversationResponse storeInDictionary:messageDictionary];
    [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"conversationResponse"];
   }
+  if (self.hasFetchConversations) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.fetchConversations storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"fetchConversations"];
+  }
   [self.unknownFields storeInDictionary:dictionary];
 }
 - (BOOL) isEqual:(id)other {
@@ -4487,6 +4596,8 @@ static BResponseType* defaultBResponseTypeInstance = nil;
       (!self.hasUserSearchResponse || [self.userSearchResponse isEqual:otherMessage.userSearchResponse]) &&
       self.hasConversationResponse == otherMessage.hasConversationResponse &&
       (!self.hasConversationResponse || [self.conversationResponse isEqual:otherMessage.conversationResponse]) &&
+      self.hasFetchConversations == otherMessage.hasFetchConversations &&
+      (!self.hasFetchConversations || [self.fetchConversations isEqual:otherMessage.fetchConversations]) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
@@ -4532,6 +4643,9 @@ static BResponseType* defaultBResponseTypeInstance = nil;
   }
   if (self.hasConversationResponse) {
     hashCode = hashCode * 31 + [self.conversationResponse hash];
+  }
+  if (self.hasFetchConversations) {
+    hashCode = hashCode * 31 + [self.fetchConversations hash];
   }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
@@ -4617,6 +4731,9 @@ static BResponseType* defaultBResponseTypeInstance = nil;
   }
   if (other.hasConversationResponse) {
     [self mergeConversationResponse:other.conversationResponse];
+  }
+  if (other.hasFetchConversations) {
+    [self mergeFetchConversations:other.fetchConversations];
   }
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -4763,6 +4880,15 @@ static BResponseType* defaultBResponseTypeInstance = nil;
         }
         [input readMessage:subBuilder extensionRegistry:extensionRegistry];
         [self setConversationResponse:[subBuilder buildPartial]];
+        break;
+      }
+      case 122: {
+        BFetchConversationsBuilder* subBuilder = [BFetchConversations builder];
+        if (self.hasFetchConversations) {
+          [subBuilder mergeFrom:self.fetchConversations];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setFetchConversations:[subBuilder buildPartial]];
         break;
       }
     }
@@ -5186,6 +5312,36 @@ static BResponseType* defaultBResponseTypeInstance = nil;
 - (BResponseTypeBuilder*) clearConversationResponse {
   resultResponseType.hasConversationResponse = NO;
   resultResponseType.conversationResponse = [BConversationResponse defaultInstance];
+  return self;
+}
+- (BOOL) hasFetchConversations {
+  return resultResponseType.hasFetchConversations;
+}
+- (BFetchConversations*) fetchConversations {
+  return resultResponseType.fetchConversations;
+}
+- (BResponseTypeBuilder*) setFetchConversations:(BFetchConversations*) value {
+  resultResponseType.hasFetchConversations = YES;
+  resultResponseType.fetchConversations = value;
+  return self;
+}
+- (BResponseTypeBuilder*) setFetchConversationsBuilder:(BFetchConversationsBuilder*) builderForValue {
+  return [self setFetchConversations:[builderForValue build]];
+}
+- (BResponseTypeBuilder*) mergeFetchConversations:(BFetchConversations*) value {
+  if (resultResponseType.hasFetchConversations &&
+      resultResponseType.fetchConversations != [BFetchConversations defaultInstance]) {
+    resultResponseType.fetchConversations =
+      [[[BFetchConversations builderWithPrototype:resultResponseType.fetchConversations] mergeFrom:value] buildPartial];
+  } else {
+    resultResponseType.fetchConversations = value;
+  }
+  resultResponseType.hasFetchConversations = YES;
+  return self;
+}
+- (BResponseTypeBuilder*) clearFetchConversations {
+  resultResponseType.hasFetchConversations = NO;
+  resultResponseType.fetchConversations = [BFetchConversations defaultInstance];
   return self;
 }
 @end

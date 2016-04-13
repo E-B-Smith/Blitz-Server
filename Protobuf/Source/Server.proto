@@ -104,6 +104,7 @@ message RequestType {
   optional PushConnect              pushConnect         = 16;
   optional PushDisconnect           pushDisconnect      = 17;
   optional ConversationRequest      conversationRequest = 18;
+  optional FetchConversations       fetchConversations  = 19;
 }
 
 
@@ -139,6 +140,7 @@ message ResponseType {
   optional AutocompleteResponse   autocompleteResponse    = 12;
   optional UserSearchResponse     userSearchResponse      = 13;
   optional ConversationResponse   conversationResponse    = 14;
+  optional FetchConversations     fetchConversations      = 15;
 }
 
 
