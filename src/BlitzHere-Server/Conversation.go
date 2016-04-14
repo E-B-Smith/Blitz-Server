@@ -30,14 +30,16 @@ func WriteConversation(conv *BlitzMessage.Conversation) error {
 
     result, error := config.DB.Exec(
         `insert into ConversationTable
-            (conversationID, status, initiatorUserID, parentFeedPostID, creationDate)
-            values ($1, $2, $3, $4, current_timestamp)
+            (conversationID, status, initiatorUserID, parentFeedPostID, creationDate, closedDate)
+            values ($1, $2, $3, $4, current_timestamp, $5)
          on conflict(conversationID) do
-            update set (status, parentFeedPostID) = ($2, $4);`,
+            update set (status, parentFeedPostID, closedDate) = ($2, $4, $5);`,
         conv.ConversationID,
         conv.Status,
         conv.InitiatorUserID,
-        conv.ParentFeedPostID)
+        conv.ParentFeedPostID,
+        conv.ClosedDate,
+    )
     Log.Debugf("Conversation Create status: %v.", error)
 
     error = pgsql.RowUpdateError(result, error)
@@ -107,7 +109,8 @@ func ReadUserConversation(userID string, conversationID string) (*BlitzMessage.C
             status,
             initiatorUserID,
             parentFeedPostID,
-            creationDate
+            creationDate,
+            closedDate
                 from ConversationTable
                 where conversationID = $1;`, conversationID)
 
@@ -116,6 +119,7 @@ func ReadUserConversation(userID string, conversationID string) (*BlitzMessage.C
         initiatorUserID     sql.NullString
         parentFeedPostID    sql.NullString
         creationDate        pq.NullTime
+        closedDate          pq.NullTime
 
         replyCount          sql.NullInt64
         unreadCount         sql.NullInt64
@@ -124,7 +128,14 @@ func ReadUserConversation(userID string, conversationID string) (*BlitzMessage.C
         lastActivity        pq.NullTime
     )
 
-    error := row.Scan(&conversationID, &status, &initiatorUserID, &parentFeedPostID, &creationDate)
+    error := row.Scan(
+        &conversationID,
+        &status,
+        &initiatorUserID,
+        &parentFeedPostID,
+        &creationDate,
+        &closedDate,
+    )
     if error != nil {
         Log.LogError(error)
         return nil, error
@@ -160,6 +171,7 @@ func ReadUserConversation(userID string, conversationID string) (*BlitzMessage.C
     conv.UnreadCount        =   Int32PtrFromNullInt64(unreadCount)
     conv.LastMessage        =   &lastMessage.String
     conv.LastActivityDate   =   BlitzMessage.TimestampPtrFromNullTime(lastActivity)
+    conv.ClosedDate         =   BlitzMessage.TimestampPtrFromNullTime(closedDate)
 
     if parentFeedPostID.Valid {
         conv.ParentFeedPostID = &parentFeedPostID.String

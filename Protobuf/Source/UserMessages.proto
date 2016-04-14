@@ -38,6 +38,7 @@ message Conversation {
   optional int32              messageCount    = 8;
   optional int32              unreadCount     = 9;
   repeated string             memberIDs       = 10;
+  optional Timestamp          closedDate      = 11;
 }
 
 

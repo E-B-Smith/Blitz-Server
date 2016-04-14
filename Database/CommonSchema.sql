@@ -468,6 +468,7 @@ create table ConversationTable
     ,initiatorUserID            UserID      not null
     ,parentFeedPostID           UUID
     ,creationDate               timestamptz not null
+    ,closedDate                 timestamptz
     );
 
 
