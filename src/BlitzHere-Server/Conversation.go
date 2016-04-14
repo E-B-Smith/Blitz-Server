@@ -55,11 +55,15 @@ func WriteConversation(conv *BlitzMessage.Conversation) error {
     }
 
     for _, memberID := range conv.MemberIDs {
-        _, _ = config.DB.Exec(
+        Log.Debugf("Conversation %s adding %s", *conv.ConversationID, memberID)
+        result, error = config.DB.Exec(
             `insert into ConversationMemberTable
-                (conversationID, memberID) values ($1, $2);`,
+                (conversationID, memberID) values ($1, $2)
+                on conflict do nothing;`,
             conv.ConversationID,
             memberID)
+        error = pgsql.RowUpdateError(result, error)
+        if error != nil { Log.LogError(error) }
     }
 
     return nil
@@ -94,7 +98,7 @@ func MembersForConversationID(conversationID string) []string {
 }
 
 
-func ReadConversation(conversationID string) (*BlitzMessage.Conversation, error) {
+func ReadUserConversation(userID string, conversationID string) (*BlitzMessage.Conversation, error) {
     Log.LogFunctionName()
 
     row := config.DB.QueryRow(
@@ -112,6 +116,12 @@ func ReadConversation(conversationID string) (*BlitzMessage.Conversation, error)
         initiatorUserID     sql.NullString
         parentFeedPostID    sql.NullString
         creationDate        pq.NullTime
+
+        replyCount          sql.NullInt64
+        unreadCount         sql.NullInt64
+
+        lastMessage         sql.NullString
+        lastActivity        pq.NullTime
     )
 
     error := row.Scan(&conversationID, &status, &initiatorUserID, &parentFeedPostID, &creationDate)
@@ -120,11 +130,37 @@ func ReadConversation(conversationID string) (*BlitzMessage.Conversation, error)
         return nil, error
     }
 
+    row = config.DB.QueryRow(
+        `select
+            count(*),
+            sum(case when messageStatus <= 2 or messageStatus is null then 1 else 0 end)
+            from usermessagetable
+            where conversationID = $1
+              and recipientID = $2
+            group by conversationID;`, conversationID, userID)
+    error = row.Scan(&replyCount, &unreadCount)
+    if error != nil { Log.LogError(error) }
+
+    row = config.DB.QueryRow(
+        `select messageText,
+            creationDate
+            from usermessagetable
+            where conversationID = $1
+            order by creationDate desc
+            limit 1;`, conversationID)
+    error = row.Scan(&lastMessage, &lastActivity)
+    if error != nil { Log.LogError(error) }
+
     var conv BlitzMessage.Conversation
     conv.ConversationID     =   &conversationID
     conv.InitiatorUserID    =   &initiatorUserID.String
     conv.Status             =   BlitzMessage.UserMessageStatus(status.Int64).Enum()
     conv.CreationDate       =   BlitzMessage.TimestampPtrFromNullTime(creationDate)
+    conv.MessageCount       =   Int32PtrFromNullInt64(replyCount)
+    conv.UnreadCount        =   Int32PtrFromNullInt64(unreadCount)
+    conv.LastMessage        =   &lastMessage.String
+    conv.LastActivityDate   =   BlitzMessage.TimestampPtrFromNullTime(lastActivity)
+
     if parentFeedPostID.Valid {
         conv.ParentFeedPostID = &parentFeedPostID.String
     }
@@ -175,7 +211,7 @@ func StartConversation(session *Session, req *BlitzMessage.ConversationRequest) 
         return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
     }
 
-    convPtr, error := ReadConversation(convID)
+    convPtr, error := ReadUserConversation(session.UserID, convID)
     if error != nil {
         return ServerResponseForError(BlitzMessage.ResponseCode_RCServerError, error)
     }
@@ -213,7 +249,7 @@ func FetchConversations(session *Session, req *BlitzMessage.FetchConversations) 
         if error != nil {
             Log.LogError(error)
         } else {
-            convo, error := ReadConversation(convID)
+            convo, error := ReadUserConversation(session.UserID, convID)
             if error == nil {
                 convos = append(convos, convo)
             }

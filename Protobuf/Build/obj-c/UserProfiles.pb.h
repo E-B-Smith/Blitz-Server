@@ -956,11 +956,16 @@ NSString *NSStringFromBImageContent(BImageContent value);
 @end
 
 #define UserProfileQuery_userIDs @"userIDs"
+#define UserProfileQuery_fetchDemoProfiles @"fetchDemoProfiles"
 @interface BUserProfileQuery : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
+  BOOL hasFetchDemoProfiles_:1;
+  BOOL fetchDemoProfiles_:1;
   NSMutableArray * userIDsArray;
 }
+- (BOOL) hasFetchDemoProfiles;
 @property (readonly, strong) NSArray * userIDs;
+- (BOOL) fetchDemoProfiles;
 - (NSString*)userIDsAtIndex:(NSUInteger)index;
 
 + (instancetype) defaultInstance;
@@ -1003,6 +1008,11 @@ NSString *NSStringFromBImageContent(BImageContent value);
 - (BUserProfileQueryBuilder *)addUserIDs:(NSString*)value;
 - (BUserProfileQueryBuilder *)setUserIDsArray:(NSArray *)array;
 - (BUserProfileQueryBuilder *)clearUserIDs;
+
+- (BOOL) hasFetchDemoProfiles;
+- (BOOL) fetchDemoProfiles;
+- (BUserProfileQueryBuilder*) setFetchDemoProfiles:(BOOL) value;
+- (BUserProfileQueryBuilder*) clearFetchDemoProfiles;
 @end
 
 #define ConfirmationRequest_contactInfo @"contactInfo"

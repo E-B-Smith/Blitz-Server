@@ -139,7 +139,8 @@ message UserProfileUpdate {
 
 
 message UserProfileQuery {
-  repeated string userIDs = 1;
+  repeated string userIDs           = 1;
+  optional bool   fetchDemoProfiles = 2;
 }
 
 

@@ -4153,14 +4153,28 @@ static BUserProfileUpdate* defaultBUserProfileUpdateInstance = nil;
 
 @interface BUserProfileQuery ()
 @property (strong) NSMutableArray * userIDsArray;
+@property BOOL fetchDemoProfiles;
 @end
 
 @implementation BUserProfileQuery
 
 @synthesize userIDsArray;
 @dynamic userIDs;
+- (BOOL) hasFetchDemoProfiles {
+  return !!hasFetchDemoProfiles_;
+}
+- (void) setHasFetchDemoProfiles:(BOOL) _value_ {
+  hasFetchDemoProfiles_ = !!_value_;
+}
+- (BOOL) fetchDemoProfiles {
+  return !!fetchDemoProfiles_;
+}
+- (void) setFetchDemoProfiles:(BOOL) _value_ {
+  fetchDemoProfiles_ = !!_value_;
+}
 - (instancetype) init {
   if ((self = [super init])) {
+    self.fetchDemoProfiles = NO;
   }
   return self;
 }
@@ -4189,6 +4203,9 @@ static BUserProfileQuery* defaultBUserProfileQueryInstance = nil;
   [self.userIDsArray enumerateObjectsUsingBlock:^(NSString *element, NSUInteger idx, BOOL *stop) {
     [output writeString:1 value:element];
   }];
+  if (self.hasFetchDemoProfiles) {
+    [output writeBool:2 value:self.fetchDemoProfiles];
+  }
   [self.unknownFields writeToCodedOutputStream:output];
 }
 - (SInt32) serializedSize {
@@ -4206,6 +4223,9 @@ static BUserProfileQuery* defaultBUserProfileQueryInstance = nil;
     }];
     size_ += dataSize;
     size_ += (SInt32)(1 * count);
+  }
+  if (self.hasFetchDemoProfiles) {
+    size_ += computeBoolSize(2, self.fetchDemoProfiles);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -4245,10 +4265,16 @@ static BUserProfileQuery* defaultBUserProfileQueryInstance = nil;
   [self.userIDsArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
     [output appendFormat:@"%@%@: %@\n", indent, @"userIDs", obj];
   }];
+  if (self.hasFetchDemoProfiles) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"fetchDemoProfiles", [NSNumber numberWithBool:self.fetchDemoProfiles]];
+  }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (void) storeInDictionary:(NSMutableDictionary *)dictionary {
   [dictionary setObject:self.userIDs forKey: @"userIDs"];
+  if (self.hasFetchDemoProfiles) {
+    [dictionary setObject: [NSNumber numberWithBool:self.fetchDemoProfiles] forKey: @"fetchDemoProfiles"];
+  }
   [self.unknownFields storeInDictionary:dictionary];
 }
 - (BOOL) isEqual:(id)other {
@@ -4261,6 +4287,8 @@ static BUserProfileQuery* defaultBUserProfileQueryInstance = nil;
   BUserProfileQuery *otherMessage = other;
   return
       [self.userIDsArray isEqualToArray:otherMessage.userIDsArray] &&
+      self.hasFetchDemoProfiles == otherMessage.hasFetchDemoProfiles &&
+      (!self.hasFetchDemoProfiles || self.fetchDemoProfiles == otherMessage.fetchDemoProfiles) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
@@ -4268,6 +4296,9 @@ static BUserProfileQuery* defaultBUserProfileQueryInstance = nil;
   [self.userIDsArray enumerateObjectsUsingBlock:^(NSString *element, NSUInteger idx, BOOL *stop) {
     hashCode = hashCode * 31 + [element hash];
   }];
+  if (self.hasFetchDemoProfiles) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithBool:self.fetchDemoProfiles] hash];
+  }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
 }
@@ -4318,6 +4349,9 @@ static BUserProfileQuery* defaultBUserProfileQueryInstance = nil;
       [resultUserProfileQuery.userIDsArray addObjectsFromArray:other.userIDsArray];
     }
   }
+  if (other.hasFetchDemoProfiles) {
+    [self setFetchDemoProfiles:other.fetchDemoProfiles];
+  }
   [self mergeUnknownFields:other.unknownFields];
   return self;
 }
@@ -4343,6 +4377,10 @@ static BUserProfileQuery* defaultBUserProfileQueryInstance = nil;
         [self addUserIDs:[input readString]];
         break;
       }
+      case 16: {
+        [self setFetchDemoProfiles:[input readBool]];
+        break;
+      }
     }
   }
 }
@@ -4365,6 +4403,22 @@ static BUserProfileQuery* defaultBUserProfileQueryInstance = nil;
 }
 - (BUserProfileQueryBuilder *)clearUserIDs {
   resultUserProfileQuery.userIDsArray = nil;
+  return self;
+}
+- (BOOL) hasFetchDemoProfiles {
+  return resultUserProfileQuery.hasFetchDemoProfiles;
+}
+- (BOOL) fetchDemoProfiles {
+  return resultUserProfileQuery.fetchDemoProfiles;
+}
+- (BUserProfileQueryBuilder*) setFetchDemoProfiles:(BOOL) value {
+  resultUserProfileQuery.hasFetchDemoProfiles = YES;
+  resultUserProfileQuery.fetchDemoProfiles = value;
+  return self;
+}
+- (BUserProfileQueryBuilder*) clearFetchDemoProfiles {
+  resultUserProfileQuery.hasFetchDemoProfiles = NO;
+  resultUserProfileQuery.fetchDemoProfiles = NO;
   return self;
 }
 @end

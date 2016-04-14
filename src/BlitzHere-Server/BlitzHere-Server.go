@@ -302,9 +302,17 @@ func DispatchServiceRequests(writer http.ResponseWriter, httpRequest *http.Reque
     case *BlitzMessage.ConversationRequest:
         response = StartConversation(session, requestMessageType)
 
+    case *BlitzMessage.FetchConversations:
+        response = FetchConversations(session, requestMessageType)
+
     case *BlitzMessage.UserMessageUpdate:
-        if serverRequest.RequestType.MessageSendRequest != nil {
-            response =  UserMessageSendRequest(session, requestMessageType)
+
+        switch {
+        case serverRequest.RequestType.MessageSendRequest != nil:
+            response = UserMessageSendRequest(session, requestMessageType)
+
+        case serverRequest.RequestType.MessageFetchRequest != nil:
+            response = UserMessageFetchRequest(session, requestMessageType)
         }
 
     default:

@@ -59,7 +59,8 @@ func UserMessageFetchRequest(session *Session, fetch *BlitzMessage.UserMessageUp
             messageText,
             actionIcon,
             actionURL,
-            conversationID
+            conversationID,
+            messageStatus
                 from UserMessageTable
                   where recipientID = $1
                   and creationDate >  $2
@@ -86,6 +87,7 @@ func UserMessageFetchRequest(session *Session, fetch *BlitzMessage.UserMessageUp
             actionIcon          sql.NullString
             actionURL           sql.NullString
             conversationID      sql.NullString
+            messageStatus       sql.NullInt64
         )
         error = rows.Scan(
             &messageID,
@@ -99,6 +101,7 @@ func UserMessageFetchRequest(session *Session, fetch *BlitzMessage.UserMessageUp
             &actionIcon,
             &actionURL,
             &conversationID,
+            &messageStatus,
         )
         if error != nil {
             Log.LogError(error)
@@ -107,10 +110,10 @@ func UserMessageFetchRequest(session *Session, fetch *BlitzMessage.UserMessageUp
         }
         mt := BlitzMessage.UserMessageType(messageType);
         message := BlitzMessage.UserMessage {
-            MessageID:   &messageID,
-            SenderID:    &senderID,
-            Recipients:  []string{recipientID},
-            MessageType: &mt,
+            MessageID:      &messageID,
+            SenderID:       &senderID,
+            Recipients:     []string{recipientID},
+            MessageType:    &mt,
         }
         if creationDate.Valid       { message.CreationDate = BlitzMessage.TimestampFromTime(creationDate.Time) }
         if notificationDate.Valid   { message.NotificationDate = BlitzMessage.TimestampFromTime(notificationDate.Time) }
@@ -119,6 +122,14 @@ func UserMessageFetchRequest(session *Session, fetch *BlitzMessage.UserMessageUp
         if actionIcon.Valid         { message.ActionIcon = &actionIcon.String }
         if actionURL.Valid          { message.ActionURL = &actionURL.String }
         if conversationID.Valid     { message.ConversationID = &conversationID.String }
+
+        if  messageStatus.Valid {
+            message.MessageStatus = BlitzMessage.UserMessageStatus(messageStatus.Int64).Enum()
+        } else {
+            message.MessageStatus = BlitzMessage.UserMessageStatus(BlitzMessage.UserMessageStatus_MSNew).Enum()
+        }
+
+
         messageArray = append(messageArray, &message)
     }
 

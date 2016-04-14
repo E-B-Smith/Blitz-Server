@@ -361,6 +361,7 @@ create table UserMessageTable
     ,notificationDate   timestamptz
     ,readDate           timestamptz
     ,messageType        MessageType     not null
+    ,messageStatus      smallint
     ,messageText        text
     ,actionIcon         text
     ,actionURL          text
@@ -472,7 +473,7 @@ create table ConversationTable
 
 create table ConversationMemberTable
     (
-     conversationID             UUID        not null primary key
+     conversationID             UUID        not null
     ,memberID                   UserID      not null
     );
 create unique index ConversationMemberTableIndex

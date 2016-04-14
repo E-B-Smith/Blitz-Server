@@ -151,8 +151,8 @@ func (pusher *MessagePusher) Disconnect(connection *websocket.Conn) {
 //----------------------------------------------------------------------------------------
 
 
-func IsTimeoutError(err error) bool {
-    if err, ok := err.(net.Error); ok && err.Timeout() {
+func IsTemporaryTimeoutError(err error) bool {
+    if err, ok := err.(net.Error); ok && err.Timeout() && err.Temporary() {
         return true
     }
     return false
@@ -173,7 +173,7 @@ func (pusher *MessagePusher) readConnection(connection *websocket.Conn, readChan
 
         connection.SetReadDeadline(time.Now().Add(kReadTimeoutSeconds))
         n, error = connection.Read(wireMessage)
-        if  IsTimeoutError(error) {
+        if  IsTemporaryTimeoutError(error) {
             //  Send a ping keep alive message --
             Log.Debugf("Sending ping.")
             connection.PayloadType = websocket.PingFrame
@@ -250,11 +250,15 @@ func (pusher *MessagePusher) HandlePushConnection(connection *websocket.Conn) {
             messageQueue = messageQueue[1:]
 
             error = SendMessageToConnection(connection, user.Format, message)
+            if IsTemporaryTimeoutError(error) {
+                error = SendMessageToConnection(connection, user.Format, message)
+            }
             if error != nil {
                 Log.LogError(error)
                 pusher.Disconnect(connection)
+            } else {
+                Log.Debugf("Sent one message.")
             }
-            Log.Debugf("Sent one message.")
 
         }
     }

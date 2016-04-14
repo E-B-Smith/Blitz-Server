@@ -34,7 +34,10 @@ message Conversation {
   optional string             parentFeedPostID= 4;
   optional Timestamp          creationDate    = 5;
   optional Timestamp          lastActivityDate= 6;
-  repeated string             memberIDs       = 7;
+  optional string             lastMessage     = 7;
+  optional int32              messageCount    = 8;
+  optional int32              unreadCount     = 9;
+  repeated string             memberIDs       = 10;
 }
 
 

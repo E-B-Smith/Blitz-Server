@@ -11890,6 +11890,15 @@ public final class UserProfiles {
      */
     com.google.protobuf.ByteString
         getUserIDsBytes(int index);
+
+    /**
+     * <code>optional bool fetchDemoProfiles = 2;</code>
+     */
+    boolean hasFetchDemoProfiles();
+    /**
+     * <code>optional bool fetchDemoProfiles = 2;</code>
+     */
+    boolean getFetchDemoProfiles();
   }
   /**
    * Protobuf type {@code BlitzMessage.UserProfileQuery}
@@ -11952,6 +11961,11 @@ public final class UserProfiles {
               userIDs_.add(bs);
               break;
             }
+            case 16: {
+              bitField0_ |= 0x00000001;
+              fetchDemoProfiles_ = input.readBool();
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -11994,6 +12008,7 @@ public final class UserProfiles {
       return PARSER;
     }
 
+    private int bitField0_;
     public static final int USERIDS_FIELD_NUMBER = 1;
     private com.google.protobuf.LazyStringList userIDs_;
     /**
@@ -12023,8 +12038,24 @@ public final class UserProfiles {
       return userIDs_.getByteString(index);
     }
 
+    public static final int FETCHDEMOPROFILES_FIELD_NUMBER = 2;
+    private boolean fetchDemoProfiles_;
+    /**
+     * <code>optional bool fetchDemoProfiles = 2;</code>
+     */
+    public boolean hasFetchDemoProfiles() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional bool fetchDemoProfiles = 2;</code>
+     */
+    public boolean getFetchDemoProfiles() {
+      return fetchDemoProfiles_;
+    }
+
     private void initFields() {
       userIDs_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      fetchDemoProfiles_ = false;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -12041,6 +12072,9 @@ public final class UserProfiles {
       getSerializedSize();
       for (int i = 0; i < userIDs_.size(); i++) {
         output.writeBytes(1, userIDs_.getByteString(i));
+      }
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeBool(2, fetchDemoProfiles_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -12059,6 +12093,10 @@ public final class UserProfiles {
         }
         size += dataSize;
         size += 1 * getUserIDsList().size();
+      }
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(2, fetchDemoProfiles_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -12179,6 +12217,8 @@ public final class UserProfiles {
         super.clear();
         userIDs_ = com.google.protobuf.LazyStringArrayList.EMPTY;
         bitField0_ = (bitField0_ & ~0x00000001);
+        fetchDemoProfiles_ = false;
+        bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
 
@@ -12206,11 +12246,17 @@ public final class UserProfiles {
       public com.blitzhere.BlitzMessage.UserProfiles.UserProfileQuery buildPartial() {
         com.blitzhere.BlitzMessage.UserProfiles.UserProfileQuery result = new com.blitzhere.BlitzMessage.UserProfiles.UserProfileQuery(this);
         int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
         if (((bitField0_ & 0x00000001) == 0x00000001)) {
           userIDs_ = userIDs_.getUnmodifiableView();
           bitField0_ = (bitField0_ & ~0x00000001);
         }
         result.userIDs_ = userIDs_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.fetchDemoProfiles_ = fetchDemoProfiles_;
+        result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
       }
@@ -12235,6 +12281,9 @@ public final class UserProfiles {
             userIDs_.addAll(other.userIDs_);
           }
           onChanged();
+        }
+        if (other.hasFetchDemoProfiles()) {
+          setFetchDemoProfiles(other.getFetchDemoProfiles());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -12352,6 +12401,38 @@ public final class UserProfiles {
   }
   ensureUserIDsIsMutable();
         userIDs_.add(value);
+        onChanged();
+        return this;
+      }
+
+      private boolean fetchDemoProfiles_ ;
+      /**
+       * <code>optional bool fetchDemoProfiles = 2;</code>
+       */
+      public boolean hasFetchDemoProfiles() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional bool fetchDemoProfiles = 2;</code>
+       */
+      public boolean getFetchDemoProfiles() {
+        return fetchDemoProfiles_;
+      }
+      /**
+       * <code>optional bool fetchDemoProfiles = 2;</code>
+       */
+      public Builder setFetchDemoProfiles(boolean value) {
+        bitField0_ |= 0x00000002;
+        fetchDemoProfiles_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool fetchDemoProfiles = 2;</code>
+       */
+      public Builder clearFetchDemoProfiles() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        fetchDemoProfiles_ = false;
         onChanged();
         return this;
       }
@@ -14195,23 +14276,24 @@ public final class UserProfiles {
       " \001(\t\"9\n\013ImageUpload\022*\n\timageData\030\001 \003(\0132\027" +
       ".BlitzMessage.ImageData\"@\n\021UserProfileUp",
       "date\022+\n\010profiles\030\001 \003(\0132\031.BlitzMessage.Us" +
-      "erProfile\"#\n\020UserProfileQuery\022\017\n\007userIDs" +
-      "\030\001 \003(\t\"\246\001\n\023ConfirmationRequest\022.\n\013contac" +
-      "tInfo\030\001 \001(\0132\031.BlitzMessage.ContactInfo\022." +
-      "\n\013userProfile\030\002 \001(\0132\031.BlitzMessage.UserP" +
-      "rofile\022\030\n\020confirmationCode\030\003 \001(\t\022\025\n\rinvi" +
-      "terUserID\030\004 \001(\t\"F\n\027ProfilesFromContactIn" +
-      "fo\022+\n\010profiles\030\001 \003(\0132\031.BlitzMessage.User" +
-      "Profile*Z\n\013ContactType\022\r\n\tCTUnknown\020\000\022\016\n" +
-      "\nCTPhoneSMS\020\001\022\013\n\007CTEmail\020\002\022\n\n\006CTChat\020\003\022\023",
-      "\n\017CTSocialService\020\004*j\n\nUserStatus\022\r\n\tUSU" +
-      "nknown\020\000\022\r\n\tUSBlocked\020\001\022\r\n\tUSInvited\020\002\022\014" +
-      "\n\010USActive\020\003\022\020\n\014USConfirming\020\004\022\017\n\013USConf" +
-      "irmed\020\005*:\n\006Gender\022\014\n\010GUnknown\020\000\022\013\n\007GFema" +
-      "le\020\001\022\t\n\005GMale\020\002\022\n\n\006GOther\020\003*F\n\014ImageCont" +
-      "ent\022\r\n\tICUnknown\020\000\022\021\n\rICUserProfile\020\001\022\024\n" +
-      "\020ICUserBackground\020\002B/\n\032com.blitzhere.Bli" +
-      "tzMessage\210\001\001\322>\002\n\000\322>\003\022\001B\322>\002\030\001"
+      "erProfile\">\n\020UserProfileQuery\022\017\n\007userIDs" +
+      "\030\001 \003(\t\022\031\n\021fetchDemoProfiles\030\002 \001(\010\"\246\001\n\023Co" +
+      "nfirmationRequest\022.\n\013contactInfo\030\001 \001(\0132\031" +
+      ".BlitzMessage.ContactInfo\022.\n\013userProfile" +
+      "\030\002 \001(\0132\031.BlitzMessage.UserProfile\022\030\n\020con" +
+      "firmationCode\030\003 \001(\t\022\025\n\rinviterUserID\030\004 \001" +
+      "(\t\"F\n\027ProfilesFromContactInfo\022+\n\010profile" +
+      "s\030\001 \003(\0132\031.BlitzMessage.UserProfile*Z\n\013Co" +
+      "ntactType\022\r\n\tCTUnknown\020\000\022\016\n\nCTPhoneSMS\020\001",
+      "\022\013\n\007CTEmail\020\002\022\n\n\006CTChat\020\003\022\023\n\017CTSocialSer" +
+      "vice\020\004*j\n\nUserStatus\022\r\n\tUSUnknown\020\000\022\r\n\tU" +
+      "SBlocked\020\001\022\r\n\tUSInvited\020\002\022\014\n\010USActive\020\003\022" +
+      "\020\n\014USConfirming\020\004\022\017\n\013USConfirmed\020\005*:\n\006Ge" +
+      "nder\022\014\n\010GUnknown\020\000\022\013\n\007GFemale\020\001\022\t\n\005GMale" +
+      "\020\002\022\n\n\006GOther\020\003*F\n\014ImageContent\022\r\n\tICUnkn" +
+      "own\020\000\022\021\n\rICUserProfile\020\001\022\024\n\020ICUserBackgr" +
+      "ound\020\002B/\n\032com.blitzhere.BlitzMessage\210\001\001\322" +
+      ">\002\n\000\322>\003\022\001B\322>\002\030\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -14281,7 +14363,7 @@ public final class UserProfiles {
     internal_static_BlitzMessage_UserProfileQuery_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_BlitzMessage_UserProfileQuery_descriptor,
-        new java.lang.String[] { "UserIDs", });
+        new java.lang.String[] { "UserIDs", "FetchDemoProfiles", });
     internal_static_BlitzMessage_ConfirmationRequest_descriptor =
       getDescriptor().getMessageTypes().get(9);
     internal_static_BlitzMessage_ConfirmationRequest_fieldAccessorTable = new

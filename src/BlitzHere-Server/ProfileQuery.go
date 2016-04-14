@@ -333,9 +333,38 @@ func QueryProfiles(session *Session, profileQuery *BlitzMessage.UserProfileQuery
         ) *BlitzMessage.ServerResponse {
     Log.LogFunctionName()
 
+    var profileList []string
+
+    if profileQuery.FetchDemoProfiles != nil &&
+       *profileQuery.FetchDemoProfiles {
+        profileList = make([]string, 0, 10)
+        rows, error := config.DB.Query(
+            `select userID from UserTable
+                where userStatus >= $1
+                limit 10;`,
+            BlitzMessage.UserStatus_USConfirming,
+        )
+        if error != nil {
+            Log.LogError(error)
+            return ServerResponseForError(BlitzMessage.ResponseCode_RCServerError, error)
+        }
+        defer rows.Close()
+        for rows.Next() {
+            var userID string
+            error = rows.Scan(&userID)
+            if error != nil {
+                Log.LogError(error)
+            } else {
+                profileList = append(profileList, userID)
+            }
+        }
+    } else {
+        profileList = profileQuery.UserIDs
+    }
+
     var profileUpdate BlitzMessage.UserProfileUpdate
-    for i := range profileQuery.UserIDs {
-        profile := ProfileForUserID(profileQuery.UserIDs[i])
+    for _, userID := range profileList {
+        profile := ProfileForUserID(userID)
         if profile != nil {
             profileUpdate.Profiles = append(profileUpdate.Profiles, profile)
         }
