@@ -36,3 +36,4 @@ message EntityTagList {
   optional EntityType   entityType  = 2;
   repeated EntityTag    entityTags  = 3;
 }
+
