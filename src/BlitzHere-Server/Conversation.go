@@ -191,6 +191,8 @@ func ReadUserConversation(userID string, conversationID string) (*BlitzMessage.C
 func StartConversation(session *Session, req *BlitzMessage.ConversationRequest) *BlitzMessage.ServerResponse {
     Log.LogFunctionName()
 
+    //  Check the members --
+
     memberMap := make(map[string]bool)
     memberMap[session.UserID] = true
     for _, memID := range req.UserIDs {
@@ -209,26 +211,54 @@ func StartConversation(session *Session, req *BlitzMessage.ConversationRequest) 
         idx++
     }
 
-    convID := Util.NewUUIDString()
-    conv := BlitzMessage.Conversation {
-        ConversationID:     &convID,
-        InitiatorUserID:    &session.UserID,
-        Status:             BlitzMessage.UserMessageStatus(BlitzMessage.UserMessageStatus_MSNew).Enum(),
-        ParentFeedPostID:   req.ParentFeedPostID,
-        MemberIDs:          memberArray,
-    }
+    //  Check for an existing conversation --
 
-    error := WriteConversation(&conv)
+    row := config.DB.QueryRow(
+        `select A.conversationID
+            from ConversationMemberTable A
+            inner join ConversationMemberTable B
+               on A.conversationID = B.conversationID
+            inner join ConversationTable C
+               on A.conversationID = C.conversationID
+            where A.memberID = $1
+              and B.memberID = $2
+              and C.closedDate is null
+         order by C.creationDate asc
+            limit 1;`,
+        memberArray[0],
+        memberArray[1],
+    )
+
+    var conversationID string
+    var conversation *BlitzMessage.Conversation
+    error := row.Scan(&conversationID)
     if error != nil {
-        return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
+
+        //  Create a new conversation --
+
+        conversationID = Util.NewUUIDString()
+        Log.Debugf("Find existing error was +%v'.", error)
+        Log.Debugf("Creating new conversation '%s'.", conversationID)
+        conversation = &BlitzMessage.Conversation {
+            ConversationID:     &conversationID,
+            InitiatorUserID:    &session.UserID,
+            Status:             BlitzMessage.UserMessageStatus(BlitzMessage.UserMessageStatus_MSNew).Enum(),
+            ParentFeedPostID:   req.ParentFeedPostID,
+            MemberIDs:          memberArray,
+        }
+
+        error := WriteConversation(conversation)
+        if error != nil {
+            return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
+        }
     }
 
-    convPtr, error := ReadUserConversation(session.UserID, convID)
+    conversation, error = ReadUserConversation(session.UserID, conversationID)
     if error != nil {
         return ServerResponseForError(BlitzMessage.ResponseCode_RCServerError, error)
     }
 
-    response := BlitzMessage.ConversationResponse { Conversation: convPtr }
+    response := BlitzMessage.ConversationResponse { Conversation: conversation }
     serverResponse := &BlitzMessage.ServerResponse {
         ResponseCode:       BlitzMessage.ResponseCode(BlitzMessage.ResponseCode_RCSuccess).Enum(),
         ResponseType:       &BlitzMessage.ResponseType { ConversationResponse: &response },
