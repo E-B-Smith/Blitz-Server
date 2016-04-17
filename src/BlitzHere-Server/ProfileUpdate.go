@@ -195,6 +195,11 @@ func UpdateProfile(profile *BlitzMessage.UserProfile) error {
 
     SetEntityTagsWithUserID(*profile.UserID, *profile.UserID, BlitzMessage.EntityType_ETUser, profile.ExpertiseTags)
 
+    row := config.DB.QueryRow("select UpdateSearchIndexForUserID($1);", profile.UserID)
+    var resultstring string
+    error = row.Scan(&resultstring)
+    if error != nil { Log.LogError(error); }
+
     return error
 }
 
