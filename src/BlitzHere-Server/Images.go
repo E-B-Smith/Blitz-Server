@@ -54,6 +54,22 @@ func UploadImage(session *Session, imageUpload *BlitzMessage.ImageUpload,
         return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, errors.New("No image in message"))
     }
     imageData := imageUpload.ImageData[0]
+
+    //  Deleted?
+
+    if imageData.Deleted != nil && *imageData.Deleted {
+        result, error := config.DB.Exec(
+            `update ImageTable set deleted = true
+                where userID = $1
+                  and crc32 = $2`,
+            session.UserID,
+            imageData.Crc32,
+        )
+        error = pgsql.RowUpdateError(result, error)
+        if error != nil { Log.LogError(error) }
+        return ServerResponseForError(BlitzMessage.ResponseCode_RCSuccess, nil)
+    }
+
     if len(imageData.ImageBytes) == 0 {
         return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, errors.New("No image in message"))
     }

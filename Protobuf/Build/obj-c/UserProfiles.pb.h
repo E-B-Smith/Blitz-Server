@@ -551,14 +551,17 @@ NSString *NSStringFromBImageContent(BImageContent value);
 #define ImageData_imageURL @"imageURL"
 #define ImageData_dateAdded @"dateAdded"
 #define ImageData_crc32 @"crc32"
+#define ImageData_deleted @"deleted"
 @interface BImageData : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
+  BOOL hasDeleted_:1;
   BOOL hasCrc32_:1;
   BOOL hasContentType_:1;
   BOOL hasImageURL_:1;
   BOOL hasDateAdded_:1;
   BOOL hasImageBytes_:1;
   BOOL hasImageContent_:1;
+  BOOL deleted_:1;
   SInt64 crc32;
   NSString* contentType;
   NSString* imageURL;
@@ -572,12 +575,14 @@ NSString *NSStringFromBImageContent(BImageContent value);
 - (BOOL) hasImageURL;
 - (BOOL) hasDateAdded;
 - (BOOL) hasCrc32;
+- (BOOL) hasDeleted;
 @property (readonly) BImageContent imageContent;
 @property (readonly, strong) NSData* imageBytes;
 @property (readonly, strong) NSString* contentType;
 @property (readonly, strong) NSString* imageURL;
 @property (readonly, strong) BTimestamp* dateAdded;
 @property (readonly) SInt64 crc32;
+- (BOOL) deleted;
 
 + (instancetype) defaultInstance;
 - (instancetype) defaultInstance;
@@ -645,6 +650,11 @@ NSString *NSStringFromBImageContent(BImageContent value);
 - (SInt64) crc32;
 - (BImageDataBuilder*) setCrc32:(SInt64) value;
 - (BImageDataBuilder*) clearCrc32;
+
+- (BOOL) hasDeleted;
+- (BOOL) deleted;
+- (BImageDataBuilder*) setDeleted:(BOOL) value;
+- (BImageDataBuilder*) clearDeleted;
 @end
 
 #define UserProfile_userID @"userID"

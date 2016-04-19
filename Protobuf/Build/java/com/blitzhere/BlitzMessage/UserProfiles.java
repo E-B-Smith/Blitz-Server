@@ -5312,6 +5312,15 @@ public final class UserProfiles {
      * <code>optional int64 crc32 = 6;</code>
      */
     long getCrc32();
+
+    /**
+     * <code>optional bool deleted = 7;</code>
+     */
+    boolean hasDeleted();
+    /**
+     * <code>optional bool deleted = 7;</code>
+     */
+    boolean getDeleted();
   }
   /**
    * Protobuf type {@code BlitzMessage.ImageData}
@@ -5409,6 +5418,11 @@ public final class UserProfiles {
             case 48: {
               bitField0_ |= 0x00000020;
               crc32_ = input.readInt64();
+              break;
+            }
+            case 56: {
+              bitField0_ |= 0x00000040;
+              deleted_ = input.readBool();
               break;
             }
           }
@@ -5601,6 +5615,21 @@ public final class UserProfiles {
       return crc32_;
     }
 
+    public static final int DELETED_FIELD_NUMBER = 7;
+    private boolean deleted_;
+    /**
+     * <code>optional bool deleted = 7;</code>
+     */
+    public boolean hasDeleted() {
+      return ((bitField0_ & 0x00000040) == 0x00000040);
+    }
+    /**
+     * <code>optional bool deleted = 7;</code>
+     */
+    public boolean getDeleted() {
+      return deleted_;
+    }
+
     private void initFields() {
       imageContent_ = com.blitzhere.BlitzMessage.UserProfiles.ImageContent.ICUnknown;
       imageBytes_ = com.google.protobuf.ByteString.EMPTY;
@@ -5608,6 +5637,7 @@ public final class UserProfiles {
       imageURL_ = "";
       dateAdded_ = com.blitzhere.BlitzMessage.Types.Timestamp.getDefaultInstance();
       crc32_ = 0L;
+      deleted_ = false;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -5646,6 +5676,9 @@ public final class UserProfiles {
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
         output.writeInt64(6, crc32_);
       }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        output.writeBool(7, deleted_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -5678,6 +5711,10 @@ public final class UserProfiles {
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt64Size(6, crc32_);
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(7, deleted_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -5813,6 +5850,8 @@ public final class UserProfiles {
         bitField0_ = (bitField0_ & ~0x00000010);
         crc32_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000020);
+        deleted_ = false;
+        bitField0_ = (bitField0_ & ~0x00000040);
         return this;
       }
 
@@ -5869,6 +5908,10 @@ public final class UserProfiles {
           to_bitField0_ |= 0x00000020;
         }
         result.crc32_ = crc32_;
+        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
+          to_bitField0_ |= 0x00000040;
+        }
+        result.deleted_ = deleted_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -5906,6 +5949,9 @@ public final class UserProfiles {
         }
         if (other.hasCrc32()) {
           setCrc32(other.getCrc32());
+        }
+        if (other.hasDeleted()) {
+          setDeleted(other.getDeleted());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -6306,6 +6352,38 @@ public final class UserProfiles {
       public Builder clearCrc32() {
         bitField0_ = (bitField0_ & ~0x00000020);
         crc32_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private boolean deleted_ ;
+      /**
+       * <code>optional bool deleted = 7;</code>
+       */
+      public boolean hasDeleted() {
+        return ((bitField0_ & 0x00000040) == 0x00000040);
+      }
+      /**
+       * <code>optional bool deleted = 7;</code>
+       */
+      public boolean getDeleted() {
+        return deleted_;
+      }
+      /**
+       * <code>optional bool deleted = 7;</code>
+       */
+      public Builder setDeleted(boolean value) {
+        bitField0_ |= 0x00000040;
+        deleted_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool deleted = 7;</code>
+       */
+      public Builder clearDeleted() {
+        bitField0_ = (bitField0_ & ~0x00000040);
+        deleted_ = false;
         onChanged();
         return this;
       }
@@ -14252,48 +14330,48 @@ public final class UserProfiles {
       "m\030\007 \001(\010\"|\n\tEducation\022\022\n\nschoolName\030\001 \001(\t" +
       "\022\016\n\006degree\030\002 \001(\t\022\020\n\010emphasis\030\003 \001(\t\022(\n\010ti" +
       "mespan\030\004 \001(\0132\026.BlitzMessage.Timespan\022\017\n\007" +
-      "summary\030\005 \001(\t\"\263\001\n\tImageData\0220\n\014imageCont" +
+      "summary\030\005 \001(\t\"\304\001\n\tImageData\0220\n\014imageCont" +
       "ent\030\001 \001(\0162\032.BlitzMessage.ImageContent\022\022\n" +
       "\nimageBytes\030\002 \001(\014\022\023\n\013contentType\030\003 \001(\t\022\020",
       "\n\010imageURL\030\004 \001(\t\022*\n\tdateAdded\030\005 \001(\0132\027.Bl" +
-      "itzMessage.Timestamp\022\r\n\005crc32\030\006 \001(\003\"\206\005\n\013" +
-      "UserProfile\022\016\n\006userID\030\001 \001(\t\022,\n\nuserStatu" +
-      "s\030\002 \001(\0162\030.BlitzMessage.UserStatus\022-\n\014cre" +
-      "ationDate\030\003 \001(\0132\027.BlitzMessage.Timestamp" +
-      "\022)\n\010lastSeen\030\004 \001(\0132\027.BlitzMessage.Timest" +
-      "amp\022\014\n\004name\030\005 \001(\t\022$\n\006gender\030\006 \001(\0162\024.Blit" +
-      "zMessage.Gender\022)\n\010birthday\030\007 \001(\0132\027.Blit" +
-      "zMessage.Timestamp\022\'\n\006images\030\010 \003(\0132\027.Bli" +
-      "tzMessage.ImageData\0226\n\020socialIdentities\030",
-      "\t \003(\0132\034.BlitzMessage.SocialIdentity\022.\n\013c" +
-      "ontactInfo\030\n \003(\0132\031.BlitzMessage.ContactI" +
-      "nfo\0224\n\022headlineEmployment\030\013 \001(\0132\030.BlitzM" +
-      "essage.Employment\022,\n\nemployment\030\014 \003(\0132\030." +
-      "BlitzMessage.Employment\022*\n\teducation\030\r \003" +
-      "(\0132\027.BlitzMessage.Education\022.\n\rexpertise" +
-      "Tags\030\016 \003(\0132\027.BlitzMessage.EntityTag\022\024\n\014i" +
-      "nterestTags\030\017 \003(\t\022\031\n\021backgroundSummary\030\020" +
-      " \001(\t\"9\n\013ImageUpload\022*\n\timageData\030\001 \003(\0132\027" +
-      ".BlitzMessage.ImageData\"@\n\021UserProfileUp",
-      "date\022+\n\010profiles\030\001 \003(\0132\031.BlitzMessage.Us" +
-      "erProfile\">\n\020UserProfileQuery\022\017\n\007userIDs" +
-      "\030\001 \003(\t\022\031\n\021fetchDemoProfiles\030\002 \001(\010\"\246\001\n\023Co" +
-      "nfirmationRequest\022.\n\013contactInfo\030\001 \001(\0132\031" +
-      ".BlitzMessage.ContactInfo\022.\n\013userProfile" +
-      "\030\002 \001(\0132\031.BlitzMessage.UserProfile\022\030\n\020con" +
-      "firmationCode\030\003 \001(\t\022\025\n\rinviterUserID\030\004 \001" +
-      "(\t\"F\n\027ProfilesFromContactInfo\022+\n\010profile" +
-      "s\030\001 \003(\0132\031.BlitzMessage.UserProfile*Z\n\013Co" +
-      "ntactType\022\r\n\tCTUnknown\020\000\022\016\n\nCTPhoneSMS\020\001",
-      "\022\013\n\007CTEmail\020\002\022\n\n\006CTChat\020\003\022\023\n\017CTSocialSer" +
-      "vice\020\004*j\n\nUserStatus\022\r\n\tUSUnknown\020\000\022\r\n\tU" +
-      "SBlocked\020\001\022\r\n\tUSInvited\020\002\022\014\n\010USActive\020\003\022" +
-      "\020\n\014USConfirming\020\004\022\017\n\013USConfirmed\020\005*:\n\006Ge" +
-      "nder\022\014\n\010GUnknown\020\000\022\013\n\007GFemale\020\001\022\t\n\005GMale" +
-      "\020\002\022\n\n\006GOther\020\003*F\n\014ImageContent\022\r\n\tICUnkn" +
-      "own\020\000\022\021\n\rICUserProfile\020\001\022\024\n\020ICUserBackgr" +
-      "ound\020\002B/\n\032com.blitzhere.BlitzMessage\210\001\001\322" +
-      ">\002\n\000\322>\003\022\001B\322>\002\030\001"
+      "itzMessage.Timestamp\022\r\n\005crc32\030\006 \001(\003\022\017\n\007d" +
+      "eleted\030\007 \001(\010\"\206\005\n\013UserProfile\022\016\n\006userID\030\001" +
+      " \001(\t\022,\n\nuserStatus\030\002 \001(\0162\030.BlitzMessage." +
+      "UserStatus\022-\n\014creationDate\030\003 \001(\0132\027.Blitz" +
+      "Message.Timestamp\022)\n\010lastSeen\030\004 \001(\0132\027.Bl" +
+      "itzMessage.Timestamp\022\014\n\004name\030\005 \001(\t\022$\n\006ge" +
+      "nder\030\006 \001(\0162\024.BlitzMessage.Gender\022)\n\010birt" +
+      "hday\030\007 \001(\0132\027.BlitzMessage.Timestamp\022\'\n\006i" +
+      "mages\030\010 \003(\0132\027.BlitzMessage.ImageData\0226\n\020",
+      "socialIdentities\030\t \003(\0132\034.BlitzMessage.So" +
+      "cialIdentity\022.\n\013contactInfo\030\n \003(\0132\031.Blit" +
+      "zMessage.ContactInfo\0224\n\022headlineEmployme" +
+      "nt\030\013 \001(\0132\030.BlitzMessage.Employment\022,\n\nem" +
+      "ployment\030\014 \003(\0132\030.BlitzMessage.Employment" +
+      "\022*\n\teducation\030\r \003(\0132\027.BlitzMessage.Educa" +
+      "tion\022.\n\rexpertiseTags\030\016 \003(\0132\027.BlitzMessa" +
+      "ge.EntityTag\022\024\n\014interestTags\030\017 \003(\t\022\031\n\021ba" +
+      "ckgroundSummary\030\020 \001(\t\"9\n\013ImageUpload\022*\n\t" +
+      "imageData\030\001 \003(\0132\027.BlitzMessage.ImageData",
+      "\"@\n\021UserProfileUpdate\022+\n\010profiles\030\001 \003(\0132" +
+      "\031.BlitzMessage.UserProfile\">\n\020UserProfil" +
+      "eQuery\022\017\n\007userIDs\030\001 \003(\t\022\031\n\021fetchDemoProf" +
+      "iles\030\002 \001(\010\"\246\001\n\023ConfirmationRequest\022.\n\013co" +
+      "ntactInfo\030\001 \001(\0132\031.BlitzMessage.ContactIn" +
+      "fo\022.\n\013userProfile\030\002 \001(\0132\031.BlitzMessage.U" +
+      "serProfile\022\030\n\020confirmationCode\030\003 \001(\t\022\025\n\r" +
+      "inviterUserID\030\004 \001(\t\"F\n\027ProfilesFromConta" +
+      "ctInfo\022+\n\010profiles\030\001 \003(\0132\031.BlitzMessage." +
+      "UserProfile*Z\n\013ContactType\022\r\n\tCTUnknown\020",
+      "\000\022\016\n\nCTPhoneSMS\020\001\022\013\n\007CTEmail\020\002\022\n\n\006CTChat" +
+      "\020\003\022\023\n\017CTSocialService\020\004*j\n\nUserStatus\022\r\n" +
+      "\tUSUnknown\020\000\022\r\n\tUSBlocked\020\001\022\r\n\tUSInvited" +
+      "\020\002\022\014\n\010USActive\020\003\022\020\n\014USConfirming\020\004\022\017\n\013US" +
+      "Confirmed\020\005*:\n\006Gender\022\014\n\010GUnknown\020\000\022\013\n\007G" +
+      "Female\020\001\022\t\n\005GMale\020\002\022\n\n\006GOther\020\003*F\n\014Image" +
+      "Content\022\r\n\tICUnknown\020\000\022\021\n\rICUserProfile\020" +
+      "\001\022\024\n\020ICUserBackground\020\002B/\n\032com.blitzhere" +
+      ".BlitzMessage\210\001\001\322>\002\n\000\322>\003\022\001B\322>\002\030\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -14339,7 +14417,7 @@ public final class UserProfiles {
     internal_static_BlitzMessage_ImageData_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_BlitzMessage_ImageData_descriptor,
-        new java.lang.String[] { "ImageContent", "ImageBytes", "ContentType", "ImageURL", "DateAdded", "Crc32", });
+        new java.lang.String[] { "ImageContent", "ImageBytes", "ContentType", "ImageURL", "DateAdded", "Crc32", "Deleted", });
     internal_static_BlitzMessage_UserProfile_descriptor =
       getDescriptor().getMessageTypes().get(5);
     internal_static_BlitzMessage_UserProfile_fieldAccessorTable = new

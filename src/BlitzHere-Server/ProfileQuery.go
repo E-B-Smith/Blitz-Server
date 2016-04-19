@@ -86,6 +86,7 @@ func ImagesForUserID(userID string) []*BlitzMessage.ImageData {
         `select dateAdded, imageContent, contentType, crc32
             from ImageTable
             where userID = $1
+              and (deleted is null or deleted = false)
             order by dateAdded desc;`, userID)
 
     if error != nil {

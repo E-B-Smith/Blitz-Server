@@ -398,7 +398,8 @@ create table ImageTable
     ,dateAdded          timestamptz     not null
     ,imageContent       ImageContent
     ,contentType        text
-    ,crc32              bigint             not null
+    ,crc32              bigint          not null
+    ,deleted            boolean
     ,imageData          bytea
     );
 create unique index ImageTableUniqueIndex on ImageTable(UserID, crc32);

@@ -2006,6 +2006,7 @@ static BEducation* defaultBEducationInstance = nil;
 @property (strong) NSString* imageURL;
 @property (strong) BTimestamp* dateAdded;
 @property SInt64 crc32;
+@property BOOL deleted;
 @end
 
 @implementation BImageData
@@ -2052,6 +2053,18 @@ static BEducation* defaultBEducationInstance = nil;
   hasCrc32_ = !!_value_;
 }
 @synthesize crc32;
+- (BOOL) hasDeleted {
+  return !!hasDeleted_;
+}
+- (void) setHasDeleted:(BOOL) _value_ {
+  hasDeleted_ = !!_value_;
+}
+- (BOOL) deleted {
+  return !!deleted_;
+}
+- (void) setDeleted:(BOOL) _value_ {
+  deleted_ = !!_value_;
+}
 - (instancetype) init {
   if ((self = [super init])) {
     self.imageContent = BImageContentICUnknown;
@@ -2060,6 +2073,7 @@ static BEducation* defaultBEducationInstance = nil;
     self.imageURL = @"";
     self.dateAdded = [BTimestamp defaultInstance];
     self.crc32 = 0L;
+    self.deleted = NO;
   }
   return self;
 }
@@ -2102,6 +2116,9 @@ static BImageData* defaultBImageDataInstance = nil;
   if (self.hasCrc32) {
     [output writeInt64:6 value:self.crc32];
   }
+  if (self.hasDeleted) {
+    [output writeBool:7 value:self.deleted];
+  }
   [self.unknownFields writeToCodedOutputStream:output];
 }
 - (SInt32) serializedSize {
@@ -2128,6 +2145,9 @@ static BImageData* defaultBImageDataInstance = nil;
   }
   if (self.hasCrc32) {
     size_ += computeInt64Size(6, self.crc32);
+  }
+  if (self.hasDeleted) {
+    size_ += computeBoolSize(7, self.deleted);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -2185,6 +2205,9 @@ static BImageData* defaultBImageDataInstance = nil;
   if (self.hasCrc32) {
     [output appendFormat:@"%@%@: %@\n", indent, @"crc32", [NSNumber numberWithLongLong:self.crc32]];
   }
+  if (self.hasDeleted) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"deleted", [NSNumber numberWithBool:self.deleted]];
+  }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (void) storeInDictionary:(NSMutableDictionary *)dictionary {
@@ -2207,6 +2230,9 @@ static BImageData* defaultBImageDataInstance = nil;
   }
   if (self.hasCrc32) {
     [dictionary setObject: [NSNumber numberWithLongLong:self.crc32] forKey: @"crc32"];
+  }
+  if (self.hasDeleted) {
+    [dictionary setObject: [NSNumber numberWithBool:self.deleted] forKey: @"deleted"];
   }
   [self.unknownFields storeInDictionary:dictionary];
 }
@@ -2231,6 +2257,8 @@ static BImageData* defaultBImageDataInstance = nil;
       (!self.hasDateAdded || [self.dateAdded isEqual:otherMessage.dateAdded]) &&
       self.hasCrc32 == otherMessage.hasCrc32 &&
       (!self.hasCrc32 || self.crc32 == otherMessage.crc32) &&
+      self.hasDeleted == otherMessage.hasDeleted &&
+      (!self.hasDeleted || self.deleted == otherMessage.deleted) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
@@ -2252,6 +2280,9 @@ static BImageData* defaultBImageDataInstance = nil;
   }
   if (self.hasCrc32) {
     hashCode = hashCode * 31 + [[NSNumber numberWithLongLong:self.crc32] hash];
+  }
+  if (self.hasDeleted) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithBool:self.deleted] hash];
   }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
@@ -2314,6 +2345,9 @@ static BImageData* defaultBImageDataInstance = nil;
   if (other.hasCrc32) {
     [self setCrc32:other.crc32];
   }
+  if (other.hasDeleted) {
+    [self setDeleted:other.deleted];
+  }
   [self mergeUnknownFields:other.unknownFields];
   return self;
 }
@@ -2367,6 +2401,10 @@ static BImageData* defaultBImageDataInstance = nil;
       }
       case 48: {
         [self setCrc32:[input readInt64]];
+        break;
+      }
+      case 56: {
+        [self setDeleted:[input readBool]];
         break;
       }
     }
@@ -2480,6 +2518,22 @@ static BImageData* defaultBImageDataInstance = nil;
 - (BImageDataBuilder*) clearCrc32 {
   resultImageData.hasCrc32 = NO;
   resultImageData.crc32 = 0L;
+  return self;
+}
+- (BOOL) hasDeleted {
+  return resultImageData.hasDeleted;
+}
+- (BOOL) deleted {
+  return resultImageData.deleted;
+}
+- (BImageDataBuilder*) setDeleted:(BOOL) value {
+  resultImageData.hasDeleted = YES;
+  resultImageData.deleted = value;
+  return self;
+}
+- (BImageDataBuilder*) clearDeleted {
+  resultImageData.hasDeleted = NO;
+  resultImageData.deleted = NO;
   return self;
 }
 @end

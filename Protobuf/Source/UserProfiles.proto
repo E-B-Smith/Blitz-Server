@@ -99,6 +99,7 @@ message ImageData {
   optional string         imageURL      = 4;
   optional Timestamp      dateAdded     = 5;
   optional int64          crc32         = 6;
+  optional bool           deleted       = 7;
 }
 
 
