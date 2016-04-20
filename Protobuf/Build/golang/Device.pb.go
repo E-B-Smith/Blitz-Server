@@ -70,6 +70,7 @@ It has these top-level messages:
 	Employment
 	Education
 	ImageData
+	UserReview
 	UserProfile
 	ImageUpload
 	UserProfileUpdate

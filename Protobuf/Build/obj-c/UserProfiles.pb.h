@@ -50,6 +50,8 @@
 @class BUserProfileQueryBuilder;
 @class BUserProfileUpdate;
 @class BUserProfileUpdateBuilder;
+@class BUserReview;
+@class BUserReviewBuilder;
 @class BVoid;
 @class BVoidBuilder;
 @class ObjectiveCFileOptions;
@@ -657,6 +659,138 @@ NSString *NSStringFromBImageContent(BImageContent value);
 - (BImageDataBuilder*) clearDeleted;
 @end
 
+#define UserReview_userID @"userID"
+#define UserReview_reviewerID @"reviewerID"
+#define UserReview_timestamp @"timestamp"
+#define UserReview_conversationID @"conversationID"
+#define UserReview_responsiveness @"responsiveness"
+#define UserReview_satisfaction @"satisfaction"
+#define UserReview_recommended @"recommended"
+#define UserReview_reviewText @"reviewText"
+#define UserReview_tags @"tags"
+@interface BUserReview : PBGeneratedMessage<GeneratedMessageProtocol> {
+@private
+  BOOL hasResponsiveness_:1;
+  BOOL hasSatisfaction_:1;
+  BOOL hasRecommended_:1;
+  BOOL hasUserID_:1;
+  BOOL hasReviewerID_:1;
+  BOOL hasConversationID_:1;
+  BOOL hasReviewText_:1;
+  BOOL hasTimestamp_:1;
+  Float64 responsiveness;
+  Float64 satisfaction;
+  Float64 recommended;
+  NSString* userID;
+  NSString* reviewerID;
+  NSString* conversationID;
+  NSString* reviewText;
+  BTimestamp* timestamp;
+  NSMutableArray * tagsArray;
+}
+- (BOOL) hasUserID;
+- (BOOL) hasReviewerID;
+- (BOOL) hasTimestamp;
+- (BOOL) hasConversationID;
+- (BOOL) hasResponsiveness;
+- (BOOL) hasSatisfaction;
+- (BOOL) hasRecommended;
+- (BOOL) hasReviewText;
+@property (readonly, strong) NSString* userID;
+@property (readonly, strong) NSString* reviewerID;
+@property (readonly, strong) BTimestamp* timestamp;
+@property (readonly, strong) NSString* conversationID;
+@property (readonly) Float64 responsiveness;
+@property (readonly) Float64 satisfaction;
+@property (readonly) Float64 recommended;
+@property (readonly, strong) NSString* reviewText;
+@property (readonly, strong) NSArray * tags;
+- (NSString*)tagsAtIndex:(NSUInteger)index;
+
++ (instancetype) defaultInstance;
+- (instancetype) defaultInstance;
+
+- (BOOL) isInitialized;
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
+- (BUserReviewBuilder*) builder;
++ (BUserReviewBuilder*) builder;
++ (BUserReviewBuilder*) builderWithPrototype:(BUserReview*) prototype;
+- (BUserReviewBuilder*) toBuilder;
+
++ (BUserReview*) parseFromData:(NSData*) data;
++ (BUserReview*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (BUserReview*) parseFromInputStream:(NSInputStream*) input;
++ (BUserReview*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (BUserReview*) parseFromCodedInputStream:(PBCodedInputStream*) input;
++ (BUserReview*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+@end
+
+@interface BUserReviewBuilder : PBGeneratedMessageBuilder {
+@private
+  BUserReview* resultUserReview;
+}
+
+- (BUserReview*) defaultInstance;
+
+- (BUserReviewBuilder*) clear;
+- (BUserReviewBuilder*) clone;
+
+- (BUserReview*) build;
+- (BUserReview*) buildPartial;
+
+- (BUserReviewBuilder*) mergeFrom:(BUserReview*) other;
+- (BUserReviewBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
+- (BUserReviewBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+
+- (BOOL) hasUserID;
+- (NSString*) userID;
+- (BUserReviewBuilder*) setUserID:(NSString*) value;
+- (BUserReviewBuilder*) clearUserID;
+
+- (BOOL) hasReviewerID;
+- (NSString*) reviewerID;
+- (BUserReviewBuilder*) setReviewerID:(NSString*) value;
+- (BUserReviewBuilder*) clearReviewerID;
+
+- (BOOL) hasTimestamp;
+- (BTimestamp*) timestamp;
+- (BUserReviewBuilder*) setTimestamp:(BTimestamp*) value;
+- (BUserReviewBuilder*) setTimestampBuilder:(BTimestampBuilder*) builderForValue;
+- (BUserReviewBuilder*) mergeTimestamp:(BTimestamp*) value;
+- (BUserReviewBuilder*) clearTimestamp;
+
+- (BOOL) hasConversationID;
+- (NSString*) conversationID;
+- (BUserReviewBuilder*) setConversationID:(NSString*) value;
+- (BUserReviewBuilder*) clearConversationID;
+
+- (BOOL) hasResponsiveness;
+- (Float64) responsiveness;
+- (BUserReviewBuilder*) setResponsiveness:(Float64) value;
+- (BUserReviewBuilder*) clearResponsiveness;
+
+- (BOOL) hasSatisfaction;
+- (Float64) satisfaction;
+- (BUserReviewBuilder*) setSatisfaction:(Float64) value;
+- (BUserReviewBuilder*) clearSatisfaction;
+
+- (BOOL) hasRecommended;
+- (Float64) recommended;
+- (BUserReviewBuilder*) setRecommended:(Float64) value;
+- (BUserReviewBuilder*) clearRecommended;
+
+- (BOOL) hasReviewText;
+- (NSString*) reviewText;
+- (BUserReviewBuilder*) setReviewText:(NSString*) value;
+- (BUserReviewBuilder*) clearReviewText;
+
+- (NSMutableArray *)tags;
+- (NSString*)tagsAtIndex:(NSUInteger)index;
+- (BUserReviewBuilder *)addTags:(NSString*)value;
+- (BUserReviewBuilder *)setTagsArray:(NSArray *)array;
+- (BUserReviewBuilder *)clearTags;
+@end
+
 #define UserProfile_userID @"userID"
 #define UserProfile_userStatus @"userStatus"
 #define UserProfile_creationDate @"creationDate"
@@ -673,8 +807,15 @@ NSString *NSStringFromBImageContent(BImageContent value);
 #define UserProfile_expertiseTags @"expertiseTags"
 #define UserProfile_interestTags @"interestTags"
 #define UserProfile_backgroundSummary @"backgroundSummary"
+#define UserProfile_ratingOverall @"ratingOverall"
+#define UserProfile_ratingOutgoing @"ratingOutgoing"
+#define UserProfile_responseSeconds @"responseSeconds"
+#define UserProfile_reviews @"reviews"
 @interface BUserProfile : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
+  BOOL hasRatingOverall_:1;
+  BOOL hasRatingOutgoing_:1;
+  BOOL hasResponseSeconds_:1;
   BOOL hasUserID_:1;
   BOOL hasName_:1;
   BOOL hasBackgroundSummary_:1;
@@ -684,6 +825,9 @@ NSString *NSStringFromBImageContent(BImageContent value);
   BOOL hasHeadlineEmployment_:1;
   BOOL hasUserStatus_:1;
   BOOL hasGender_:1;
+  Float64 ratingOverall;
+  Float64 ratingOutgoing;
+  SInt32 responseSeconds;
   NSString* userID;
   NSString* name;
   NSString* backgroundSummary;
@@ -700,6 +844,7 @@ NSString *NSStringFromBImageContent(BImageContent value);
   NSMutableArray * employmentArray;
   NSMutableArray * educationArray;
   NSMutableArray * expertiseTagsArray;
+  NSMutableArray * reviewsArray;
 }
 - (BOOL) hasUserID;
 - (BOOL) hasUserStatus;
@@ -710,6 +855,9 @@ NSString *NSStringFromBImageContent(BImageContent value);
 - (BOOL) hasBirthday;
 - (BOOL) hasHeadlineEmployment;
 - (BOOL) hasBackgroundSummary;
+- (BOOL) hasRatingOverall;
+- (BOOL) hasRatingOutgoing;
+- (BOOL) hasResponseSeconds;
 @property (readonly, strong) NSString* userID;
 @property (readonly) BUserStatus userStatus;
 @property (readonly, strong) BTimestamp* creationDate;
@@ -726,6 +874,10 @@ NSString *NSStringFromBImageContent(BImageContent value);
 @property (readonly, strong) NSArray * expertiseTags;
 @property (readonly, strong) NSArray * interestTags;
 @property (readonly, strong) NSString* backgroundSummary;
+@property (readonly) Float64 ratingOverall;
+@property (readonly) Float64 ratingOutgoing;
+@property (readonly) SInt32 responseSeconds;
+@property (readonly, strong) NSArray * reviews;
 - (BImageData*)imagesAtIndex:(NSUInteger)index;
 - (BSocialIdentity*)socialIdentitiesAtIndex:(NSUInteger)index;
 - (BContactInfo*)contactInfoAtIndex:(NSUInteger)index;
@@ -733,6 +885,7 @@ NSString *NSStringFromBImageContent(BImageContent value);
 - (BEducation*)educationAtIndex:(NSUInteger)index;
 - (BEntityTag*)expertiseTagsAtIndex:(NSUInteger)index;
 - (NSString*)interestTagsAtIndex:(NSUInteger)index;
+- (BUserReview*)reviewsAtIndex:(NSUInteger)index;
 
 + (instancetype) defaultInstance;
 - (instancetype) defaultInstance;
@@ -863,6 +1016,27 @@ NSString *NSStringFromBImageContent(BImageContent value);
 - (NSString*) backgroundSummary;
 - (BUserProfileBuilder*) setBackgroundSummary:(NSString*) value;
 - (BUserProfileBuilder*) clearBackgroundSummary;
+
+- (BOOL) hasRatingOverall;
+- (Float64) ratingOverall;
+- (BUserProfileBuilder*) setRatingOverall:(Float64) value;
+- (BUserProfileBuilder*) clearRatingOverall;
+
+- (BOOL) hasRatingOutgoing;
+- (Float64) ratingOutgoing;
+- (BUserProfileBuilder*) setRatingOutgoing:(Float64) value;
+- (BUserProfileBuilder*) clearRatingOutgoing;
+
+- (BOOL) hasResponseSeconds;
+- (SInt32) responseSeconds;
+- (BUserProfileBuilder*) setResponseSeconds:(SInt32) value;
+- (BUserProfileBuilder*) clearResponseSeconds;
+
+- (NSMutableArray *)reviews;
+- (BUserReview*)reviewsAtIndex:(NSUInteger)index;
+- (BUserProfileBuilder *)addReviews:(BUserReview*)value;
+- (BUserProfileBuilder *)setReviewsArray:(NSArray *)array;
+- (BUserProfileBuilder *)clearReviews;
 @end
 
 #define ImageUpload_imageData @"imageData"

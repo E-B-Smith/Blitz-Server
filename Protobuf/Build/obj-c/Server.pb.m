@@ -2171,6 +2171,7 @@ static BPushDisconnect* defaultBPushDisconnectInstance = nil;
 @property (strong) BPushDisconnect* pushDisconnect;
 @property (strong) BConversationRequest* conversationRequest;
 @property (strong) BFetchConversations* fetchConversations;
+@property (strong) BUserReview* userReview;
 @end
 
 @implementation BRequestType
@@ -2308,6 +2309,13 @@ static BPushDisconnect* defaultBPushDisconnectInstance = nil;
   hasFetchConversations_ = !!_value_;
 }
 @synthesize fetchConversations;
+- (BOOL) hasUserReview {
+  return !!hasUserReview_;
+}
+- (void) setHasUserReview:(BOOL) _value_ {
+  hasUserReview_ = !!_value_;
+}
+@synthesize userReview;
 - (instancetype) init {
   if ((self = [super init])) {
     self.sessionRequest = [BSessionRequest defaultInstance];
@@ -2329,6 +2337,7 @@ static BPushDisconnect* defaultBPushDisconnectInstance = nil;
     self.pushDisconnect = [BPushDisconnect defaultInstance];
     self.conversationRequest = [BConversationRequest defaultInstance];
     self.fetchConversations = [BFetchConversations defaultInstance];
+    self.userReview = [BUserReview defaultInstance];
   }
   return self;
 }
@@ -2400,6 +2409,11 @@ static BRequestType* defaultBRequestTypeInstance = nil;
       return NO;
     }
   }
+  if (self.hasUserReview) {
+    if (!self.userReview.isInitialized) {
+      return NO;
+    }
+  }
   return YES;
 }
 - (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
@@ -2459,6 +2473,9 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   }
   if (self.hasFetchConversations) {
     [output writeMessage:19 value:self.fetchConversations];
+  }
+  if (self.hasUserReview) {
+    [output writeMessage:20 value:self.userReview];
   }
   [self.unknownFields writeToCodedOutputStream:output];
 }
@@ -2525,6 +2542,9 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   }
   if (self.hasFetchConversations) {
     size_ += computeMessageSize(19, self.fetchConversations);
+  }
+  if (self.hasUserReview) {
+    size_ += computeMessageSize(20, self.userReview);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -2675,6 +2695,12 @@ static BRequestType* defaultBRequestTypeInstance = nil;
                          withIndent:[NSString stringWithFormat:@"%@  ", indent]];
     [output appendFormat:@"%@}\n", indent];
   }
+  if (self.hasUserReview) {
+    [output appendFormat:@"%@%@ {\n", indent, @"userReview"];
+    [self.userReview writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (void) storeInDictionary:(NSMutableDictionary *)dictionary {
@@ -2773,6 +2799,11 @@ static BRequestType* defaultBRequestTypeInstance = nil;
    [self.fetchConversations storeInDictionary:messageDictionary];
    [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"fetchConversations"];
   }
+  if (self.hasUserReview) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.userReview storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"userReview"];
+  }
   [self.unknownFields storeInDictionary:dictionary];
 }
 - (BOOL) isEqual:(id)other {
@@ -2822,6 +2853,8 @@ static BRequestType* defaultBRequestTypeInstance = nil;
       (!self.hasConversationRequest || [self.conversationRequest isEqual:otherMessage.conversationRequest]) &&
       self.hasFetchConversations == otherMessage.hasFetchConversations &&
       (!self.hasFetchConversations || [self.fetchConversations isEqual:otherMessage.fetchConversations]) &&
+      self.hasUserReview == otherMessage.hasUserReview &&
+      (!self.hasUserReview || [self.userReview isEqual:otherMessage.userReview]) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
@@ -2882,6 +2915,9 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   }
   if (self.hasFetchConversations) {
     hashCode = hashCode * 31 + [self.fetchConversations hash];
+  }
+  if (self.hasUserReview) {
+    hashCode = hashCode * 31 + [self.userReview hash];
   }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
@@ -2982,6 +3018,9 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   }
   if (other.hasFetchConversations) {
     [self mergeFetchConversations:other.fetchConversations];
+  }
+  if (other.hasUserReview) {
+    [self mergeUserReview:other.userReview];
   }
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -3173,6 +3212,15 @@ static BRequestType* defaultBRequestTypeInstance = nil;
         }
         [input readMessage:subBuilder extensionRegistry:extensionRegistry];
         [self setFetchConversations:[subBuilder buildPartial]];
+        break;
+      }
+      case 162: {
+        BUserReviewBuilder* subBuilder = [BUserReview builder];
+        if (self.hasUserReview) {
+          [subBuilder mergeFrom:self.userReview];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setUserReview:[subBuilder buildPartial]];
         break;
       }
     }
@@ -3746,6 +3794,36 @@ static BRequestType* defaultBRequestTypeInstance = nil;
 - (BRequestTypeBuilder*) clearFetchConversations {
   resultRequestType.hasFetchConversations = NO;
   resultRequestType.fetchConversations = [BFetchConversations defaultInstance];
+  return self;
+}
+- (BOOL) hasUserReview {
+  return resultRequestType.hasUserReview;
+}
+- (BUserReview*) userReview {
+  return resultRequestType.userReview;
+}
+- (BRequestTypeBuilder*) setUserReview:(BUserReview*) value {
+  resultRequestType.hasUserReview = YES;
+  resultRequestType.userReview = value;
+  return self;
+}
+- (BRequestTypeBuilder*) setUserReviewBuilder:(BUserReviewBuilder*) builderForValue {
+  return [self setUserReview:[builderForValue build]];
+}
+- (BRequestTypeBuilder*) mergeUserReview:(BUserReview*) value {
+  if (resultRequestType.hasUserReview &&
+      resultRequestType.userReview != [BUserReview defaultInstance]) {
+    resultRequestType.userReview =
+      [[[BUserReview builderWithPrototype:resultRequestType.userReview] mergeFrom:value] buildPartial];
+  } else {
+    resultRequestType.userReview = value;
+  }
+  resultRequestType.hasUserReview = YES;
+  return self;
+}
+- (BRequestTypeBuilder*) clearUserReview {
+  resultRequestType.hasUserReview = NO;
+  resultRequestType.userReview = [BUserReview defaultInstance];
   return self;
 }
 @end

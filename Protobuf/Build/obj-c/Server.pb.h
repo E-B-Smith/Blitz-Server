@@ -123,6 +123,8 @@
 @class BUserProfileQueryBuilder;
 @class BUserProfileUpdate;
 @class BUserProfileUpdateBuilder;
+@class BUserReview;
+@class BUserReviewBuilder;
 @class BUserSearchRequest;
 @class BUserSearchRequestBuilder;
 @class BUserSearchResponse;
@@ -662,6 +664,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 #define RequestType_pushDisconnect @"pushDisconnect"
 #define RequestType_conversationRequest @"conversationRequest"
 #define RequestType_fetchConversations @"fetchConversations"
+#define RequestType_userReview @"userReview"
 @interface BRequestType : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
   BOOL hasSessionRequest_:1;
@@ -683,6 +686,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
   BOOL hasPushDisconnect_:1;
   BOOL hasConversationRequest_:1;
   BOOL hasFetchConversations_:1;
+  BOOL hasUserReview_:1;
   BSessionRequest* sessionRequest;
   BUserEventBatch* userEventBatch;
   BUserProfileUpdate* userProfileUpdate;
@@ -702,6 +706,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
   BPushDisconnect* pushDisconnect;
   BConversationRequest* conversationRequest;
   BFetchConversations* fetchConversations;
+  BUserReview* userReview;
 }
 - (BOOL) hasSessionRequest;
 - (BOOL) hasUserEventBatch;
@@ -722,6 +727,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BOOL) hasPushDisconnect;
 - (BOOL) hasConversationRequest;
 - (BOOL) hasFetchConversations;
+- (BOOL) hasUserReview;
 @property (readonly, strong) BSessionRequest* sessionRequest;
 @property (readonly, strong) BUserEventBatch* userEventBatch;
 @property (readonly, strong) BUserProfileUpdate* userProfileUpdate;
@@ -741,6 +747,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 @property (readonly, strong) BPushDisconnect* pushDisconnect;
 @property (readonly, strong) BConversationRequest* conversationRequest;
 @property (readonly, strong) BFetchConversations* fetchConversations;
+@property (readonly, strong) BUserReview* userReview;
 
 + (instancetype) defaultInstance;
 - (instancetype) defaultInstance;
@@ -909,6 +916,13 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BRequestTypeBuilder*) setFetchConversationsBuilder:(BFetchConversationsBuilder*) builderForValue;
 - (BRequestTypeBuilder*) mergeFetchConversations:(BFetchConversations*) value;
 - (BRequestTypeBuilder*) clearFetchConversations;
+
+- (BOOL) hasUserReview;
+- (BUserReview*) userReview;
+- (BRequestTypeBuilder*) setUserReview:(BUserReview*) value;
+- (BRequestTypeBuilder*) setUserReviewBuilder:(BUserReviewBuilder*) builderForValue;
+- (BRequestTypeBuilder*) mergeUserReview:(BUserReview*) value;
+- (BRequestTypeBuilder*) clearUserReview;
 @end
 
 #define ServerRequest_sessionToken @"sessionToken"

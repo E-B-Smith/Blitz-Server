@@ -39,6 +39,7 @@ message Conversation {
   optional int32              unreadCount     = 9;
   repeated string             memberIDs       = 10;
   optional Timestamp          closedDate      = 11;
+  optional string             headlineText    = 12;
 }
 
 
@@ -49,13 +50,13 @@ message ConversationRequest {
 
 
 message ConversationResponse {
-  optional Conversation       conversation  = 1;
+  optional Conversation       conversation    = 1;
 }
 
 
 message FetchConversations {
-  optional Timespan       timespan      = 1;
-  repeated Conversation   conversations = 2;
+  optional Timespan       timespan            = 1;
+  repeated Conversation   conversations       = 2;
 }
 
 

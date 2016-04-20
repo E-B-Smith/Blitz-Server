@@ -53,6 +53,8 @@
 @class BUserProfileQueryBuilder;
 @class BUserProfileUpdate;
 @class BUserProfileUpdateBuilder;
+@class BUserReview;
+@class BUserReviewBuilder;
 @class BUserSearchRequest;
 @class BUserSearchRequestBuilder;
 @class BUserSearchResponse;

@@ -484,6 +484,30 @@ create unique index ConversationMemberTableIndex
 
 ------------------------------------------------------------------------------------------
 --
+--                                                                                 Reviews
+--
+------------------------------------------------------------------------------------------
+
+
+create table ReviewTable
+    (
+     userID         UserID      not null
+    ,reviewerID     UserID      not null
+    ,timestamp      timestamptz not null
+    ,conversationID UUID
+    ,responseTime   interval
+    ,promptness     real
+    ,satisfaction   real
+    ,recommended    real
+    ,reviewText     text
+    ,tags           text[]
+    );
+create unique index ReviewTableIndex
+    on ReviewTable(userID, reviewerID, timestamp);
+
+
+------------------------------------------------------------------------------------------
+--
 --                                                                        Helper Functions
 --
 ------------------------------------------------------------------------------------------
@@ -789,12 +813,12 @@ create unique index HTTPDeepLinkIndex on HTTPDeepLinkTable(deviceSignature, crea
 ------------------------------------------------------------------------------------------
 
 
-create table autocompletetable
+create table AutocompleteTable
     (
      word       text    not null
     ,rank       int     not null
     );
-create unique index autocompleteindex on autocompletetable (word text_pattern_ops);
+create unique index AutocompleteIndex on autocompletetable (word text_pattern_ops);
 
 
 create or replace

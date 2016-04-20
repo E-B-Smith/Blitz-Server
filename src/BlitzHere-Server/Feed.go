@@ -368,7 +368,7 @@ func FetchFeedPosts(session *Session, fetchRequest *BlitzMessage.FeedPostFetchRe
             `select ` + kScanFeedRowString +
             `   from FeedPostTable
                 where postStatus = $1
-                  and parentID is null
+                  and (parentID is null or parentID = postID)
                   and timeActiveStart <= current_timestamp
                   and timeActiveStop   > current_timestamp
                 order by timestamp desc;`,

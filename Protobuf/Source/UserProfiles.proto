@@ -103,6 +103,19 @@ message ImageData {
 }
 
 
+message UserReview {
+  optional string       userID          = 1;
+  optional string       reviewerID      = 2;
+  optional Timestamp    timestamp       = 3;
+  optional string       conversationID  = 4;
+  optional double       responsiveness  = 5;
+  optional double       satisfaction    = 6;
+  optional double       recommended     = 7;
+  optional string       reviewText      = 8;
+  repeated string       tags            = 9;
+}
+
+
 message UserProfile {
   optional string       userID        = 1;
   optional UserStatus   userStatus    = 2;
@@ -118,7 +131,7 @@ message UserProfile {
   repeated SocialIdentity socialIdentities = 9;
   repeated ContactInfo  contactInfo   = 10;
 
-  //  Blitz work fields --
+  //  Blitz Experience fields --
 
   optional Employment   headlineEmployment = 11;
 
@@ -127,6 +140,14 @@ message UserProfile {
   repeated EntityTag    expertiseTags = 14;
   repeated string       interestTags  = 15;
   optional string       backgroundSummary = 16;
+
+  //  Reviews --
+
+  optional double       ratingOverall   = 17;
+  optional double       ratingOutgoing  = 18;
+  optional int32        responseSeconds = 19;
+
+  repeated UserReview   reviews         = 20;
 }
 
 

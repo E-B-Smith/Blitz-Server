@@ -105,6 +105,7 @@ message RequestType {
   optional PushDisconnect           pushDisconnect      = 17;
   optional ConversationRequest      conversationRequest = 18;
   optional FetchConversations       fetchConversations  = 19;
+  optional UserReview               userReview          = 20;
 }
 
 

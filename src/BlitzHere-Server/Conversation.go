@@ -273,6 +273,108 @@ func StartConversation(session *Session, req *BlitzMessage.ConversationRequest) 
 //----------------------------------------------------------------------------------------
 
 
+func FetchFeedPostsAsConversations(userID string) []*BlitzMessage.Conversation {
+    Log.LogFunctionName()
+
+    resultArray := make([]*BlitzMessage.Conversation, 0, 10)
+
+    rows, error := config.DB.Query(
+        `with FeedPostIDTable as (
+            select entityid as postID from entitytagtable
+                where entitytype = 2
+                  and userid = $1
+                  and entityTag = '.followed'
+            union
+            select coalesce(parentID, postID) as postID
+                from feedposttable
+                where userid = $1
+        )
+        , FeedPost as (
+            select  FeedPostTable.postID,
+                    FeedPostTable.parentID,
+                    FeedPostTable.userID,
+                    FeedPostTable.timestamp,
+                    FeedPostTable.headlineText
+                 from FeedPostIDTable
+                inner join FeedPostTable
+                   on FeedPostTable.postID = FeedPostIDTable.postID
+        )
+        select
+            FeedPost.*,
+            (select count(*) from feedposttable where parentID = FeedPost.postID),
+            Latest.timestamp,
+            Latest.headlineText,
+            Latest.userID
+            from FeedPost
+            left join FeedPostTable as Latest
+             on Latest.parentID = FeedPost.postID
+            and latest.timestamp =
+                (select max(timestamp) from FeedPostTable as ff
+                    where ff.parentID = FeedPost.postID);`,
+        userID,
+    )
+    if error != nil {
+        Log.LogError(error)
+        return resultArray
+    }
+    defer rows.Close()
+
+    for rows.Next() {
+        var (
+            postID      sql.NullString
+            parentID    sql.NullString
+            userID      sql.NullString
+            createDate  pq.NullTime
+            headline    sql.NullString
+            replyCount  sql.NullInt64
+            replyDate   pq.NullTime
+            replyText   sql.NullString
+            replyUser   sql.NullString
+        )
+
+        error = rows.Scan(
+            &postID,
+            &parentID,
+            &userID,
+            &createDate,
+            &headline,
+            &replyCount,
+            &replyDate,
+            &replyText,
+            &replyUser,
+        )
+        if error != nil {
+            Log.LogError(error)
+            continue
+        }
+
+        var conv BlitzMessage.Conversation
+        conv.InitiatorUserID    =   &userID.String
+        conv.ParentFeedPostID   =   &postID.String
+        conv.Status             =   BlitzMessage.UserMessageStatus(BlitzMessage.UserMessageStatus_MSRead).Enum()
+        conv.CreationDate       =   BlitzMessage.TimestampPtrFromNullTime(createDate)
+        conv.LastMessage        =   &replyText.String
+        conv.MessageCount       =   Int32PtrFromNullInt64(replyCount)
+        conv.HeadlineText       =   &headline.String
+
+        if replyDate.Valid {
+            conv.LastActivityDate = BlitzMessage.TimestampPtrFromNullTime(replyDate)
+        } else {
+            conv.LastActivityDate = BlitzMessage.TimestampPtrFromNullTime(createDate)
+        }
+
+        if replyUser.Valid {
+            conv.MemberIDs = []string{ replyUser.String }
+        }
+
+        resultArray = append(resultArray, &conv)
+    }
+
+    Log.Debugf("Found %d feed posts.", len(resultArray))
+    return resultArray
+}
+
+
 func FetchConversations(session *Session, req *BlitzMessage.FetchConversations) *BlitzMessage.ServerResponse {
     Log.LogFunctionName()
 
@@ -297,6 +399,8 @@ func FetchConversations(session *Session, req *BlitzMessage.FetchConversations) 
             }
         }
     }
+
+    convos = append(convos, FetchFeedPostsAsConversations(session.UserID)...)
 
     response := BlitzMessage.FetchConversations { Conversations: convos }
     serverResponse := &BlitzMessage.ServerResponse {
