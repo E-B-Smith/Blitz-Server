@@ -6459,22 +6459,22 @@ public final class UserProfiles {
         getConversationIDBytes();
 
     /**
-     * <code>optional double responsiveness = 5;</code>
+     * <code>optional double responsive = 5;</code>
      */
-    boolean hasResponsiveness();
+    boolean hasResponsive();
     /**
-     * <code>optional double responsiveness = 5;</code>
+     * <code>optional double responsive = 5;</code>
      */
-    double getResponsiveness();
+    double getResponsive();
 
     /**
-     * <code>optional double satisfaction = 6;</code>
+     * <code>optional double outgoing = 6;</code>
      */
-    boolean hasSatisfaction();
+    boolean hasOutgoing();
     /**
-     * <code>optional double satisfaction = 6;</code>
+     * <code>optional double outgoing = 6;</code>
      */
-    double getSatisfaction();
+    double getOutgoing();
 
     /**
      * <code>optional double recommended = 7;</code>
@@ -6603,12 +6603,12 @@ public final class UserProfiles {
             }
             case 41: {
               bitField0_ |= 0x00000010;
-              responsiveness_ = input.readDouble();
+              responsive_ = input.readDouble();
               break;
             }
             case 49: {
               bitField0_ |= 0x00000020;
-              satisfaction_ = input.readDouble();
+              outgoing_ = input.readDouble();
               break;
             }
             case 57: {
@@ -6821,34 +6821,34 @@ public final class UserProfiles {
       }
     }
 
-    public static final int RESPONSIVENESS_FIELD_NUMBER = 5;
-    private double responsiveness_;
+    public static final int RESPONSIVE_FIELD_NUMBER = 5;
+    private double responsive_;
     /**
-     * <code>optional double responsiveness = 5;</code>
+     * <code>optional double responsive = 5;</code>
      */
-    public boolean hasResponsiveness() {
+    public boolean hasResponsive() {
       return ((bitField0_ & 0x00000010) == 0x00000010);
     }
     /**
-     * <code>optional double responsiveness = 5;</code>
+     * <code>optional double responsive = 5;</code>
      */
-    public double getResponsiveness() {
-      return responsiveness_;
+    public double getResponsive() {
+      return responsive_;
     }
 
-    public static final int SATISFACTION_FIELD_NUMBER = 6;
-    private double satisfaction_;
+    public static final int OUTGOING_FIELD_NUMBER = 6;
+    private double outgoing_;
     /**
-     * <code>optional double satisfaction = 6;</code>
+     * <code>optional double outgoing = 6;</code>
      */
-    public boolean hasSatisfaction() {
+    public boolean hasOutgoing() {
       return ((bitField0_ & 0x00000020) == 0x00000020);
     }
     /**
-     * <code>optional double satisfaction = 6;</code>
+     * <code>optional double outgoing = 6;</code>
      */
-    public double getSatisfaction() {
-      return satisfaction_;
+    public double getOutgoing() {
+      return outgoing_;
     }
 
     public static final int RECOMMENDED_FIELD_NUMBER = 7;
@@ -6942,8 +6942,8 @@ public final class UserProfiles {
       reviewerID_ = "";
       timestamp_ = com.blitzhere.BlitzMessage.Types.Timestamp.getDefaultInstance();
       conversationID_ = "";
-      responsiveness_ = 0D;
-      satisfaction_ = 0D;
+      responsive_ = 0D;
+      outgoing_ = 0D;
       recommended_ = 0D;
       reviewText_ = "";
       tags_ = com.google.protobuf.LazyStringArrayList.EMPTY;
@@ -6980,10 +6980,10 @@ public final class UserProfiles {
         output.writeBytes(4, getConversationIDBytes());
       }
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
-        output.writeDouble(5, responsiveness_);
+        output.writeDouble(5, responsive_);
       }
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
-        output.writeDouble(6, satisfaction_);
+        output.writeDouble(6, outgoing_);
       }
       if (((bitField0_ & 0x00000040) == 0x00000040)) {
         output.writeDouble(7, recommended_);
@@ -7021,11 +7021,11 @@ public final class UserProfiles {
       }
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeDoubleSize(5, responsiveness_);
+          .computeDoubleSize(5, responsive_);
       }
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeDoubleSize(6, satisfaction_);
+          .computeDoubleSize(6, outgoing_);
       }
       if (((bitField0_ & 0x00000040) == 0x00000040)) {
         size += com.google.protobuf.CodedOutputStream
@@ -7174,9 +7174,9 @@ public final class UserProfiles {
         bitField0_ = (bitField0_ & ~0x00000004);
         conversationID_ = "";
         bitField0_ = (bitField0_ & ~0x00000008);
-        responsiveness_ = 0D;
+        responsive_ = 0D;
         bitField0_ = (bitField0_ & ~0x00000010);
-        satisfaction_ = 0D;
+        outgoing_ = 0D;
         bitField0_ = (bitField0_ & ~0x00000020);
         recommended_ = 0D;
         bitField0_ = (bitField0_ & ~0x00000040);
@@ -7235,11 +7235,11 @@ public final class UserProfiles {
         if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
           to_bitField0_ |= 0x00000010;
         }
-        result.responsiveness_ = responsiveness_;
+        result.responsive_ = responsive_;
         if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
           to_bitField0_ |= 0x00000020;
         }
-        result.satisfaction_ = satisfaction_;
+        result.outgoing_ = outgoing_;
         if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
           to_bitField0_ |= 0x00000040;
         }
@@ -7287,11 +7287,11 @@ public final class UserProfiles {
           conversationID_ = other.conversationID_;
           onChanged();
         }
-        if (other.hasResponsiveness()) {
-          setResponsiveness(other.getResponsiveness());
+        if (other.hasResponsive()) {
+          setResponsive(other.getResponsive());
         }
-        if (other.hasSatisfaction()) {
-          setSatisfaction(other.getSatisfaction());
+        if (other.hasOutgoing()) {
+          setOutgoing(other.getOutgoing());
         }
         if (other.hasRecommended()) {
           setRecommended(other.getRecommended());
@@ -7688,66 +7688,66 @@ public final class UserProfiles {
         return this;
       }
 
-      private double responsiveness_ ;
+      private double responsive_ ;
       /**
-       * <code>optional double responsiveness = 5;</code>
+       * <code>optional double responsive = 5;</code>
        */
-      public boolean hasResponsiveness() {
+      public boolean hasResponsive() {
         return ((bitField0_ & 0x00000010) == 0x00000010);
       }
       /**
-       * <code>optional double responsiveness = 5;</code>
+       * <code>optional double responsive = 5;</code>
        */
-      public double getResponsiveness() {
-        return responsiveness_;
+      public double getResponsive() {
+        return responsive_;
       }
       /**
-       * <code>optional double responsiveness = 5;</code>
+       * <code>optional double responsive = 5;</code>
        */
-      public Builder setResponsiveness(double value) {
+      public Builder setResponsive(double value) {
         bitField0_ |= 0x00000010;
-        responsiveness_ = value;
+        responsive_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional double responsiveness = 5;</code>
+       * <code>optional double responsive = 5;</code>
        */
-      public Builder clearResponsiveness() {
+      public Builder clearResponsive() {
         bitField0_ = (bitField0_ & ~0x00000010);
-        responsiveness_ = 0D;
+        responsive_ = 0D;
         onChanged();
         return this;
       }
 
-      private double satisfaction_ ;
+      private double outgoing_ ;
       /**
-       * <code>optional double satisfaction = 6;</code>
+       * <code>optional double outgoing = 6;</code>
        */
-      public boolean hasSatisfaction() {
+      public boolean hasOutgoing() {
         return ((bitField0_ & 0x00000020) == 0x00000020);
       }
       /**
-       * <code>optional double satisfaction = 6;</code>
+       * <code>optional double outgoing = 6;</code>
        */
-      public double getSatisfaction() {
-        return satisfaction_;
+      public double getOutgoing() {
+        return outgoing_;
       }
       /**
-       * <code>optional double satisfaction = 6;</code>
+       * <code>optional double outgoing = 6;</code>
        */
-      public Builder setSatisfaction(double value) {
+      public Builder setOutgoing(double value) {
         bitField0_ |= 0x00000020;
-        satisfaction_ = value;
+        outgoing_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional double satisfaction = 6;</code>
+       * <code>optional double outgoing = 6;</code>
        */
-      public Builder clearSatisfaction() {
+      public Builder clearOutgoing() {
         bitField0_ = (bitField0_ & ~0x00000020);
-        satisfaction_ = 0D;
+        outgoing_ = 0D;
         onChanged();
         return this;
       }
@@ -8244,52 +8244,70 @@ public final class UserProfiles {
         getBackgroundSummaryBytes();
 
     /**
-     * <code>optional double ratingOverall = 17;</code>
+     * <code>optional int32 ratingCount = 17;</code>
      */
-    boolean hasRatingOverall();
+    boolean hasRatingCount();
     /**
-     * <code>optional double ratingOverall = 17;</code>
+     * <code>optional int32 ratingCount = 17;</code>
      */
-    double getRatingOverall();
+    int getRatingCount();
 
     /**
-     * <code>optional double ratingOutgoing = 18;</code>
+     * <code>optional double ratingResponsive = 18;</code>
+     */
+    boolean hasRatingResponsive();
+    /**
+     * <code>optional double ratingResponsive = 18;</code>
+     */
+    double getRatingResponsive();
+
+    /**
+     * <code>optional double ratingOutgoing = 19;</code>
      */
     boolean hasRatingOutgoing();
     /**
-     * <code>optional double ratingOutgoing = 18;</code>
+     * <code>optional double ratingOutgoing = 19;</code>
      */
     double getRatingOutgoing();
 
     /**
-     * <code>optional int32 responseSeconds = 19;</code>
+     * <code>optional double ratingRecommended = 20;</code>
+     */
+    boolean hasRatingRecommended();
+    /**
+     * <code>optional double ratingRecommended = 20;</code>
+     */
+    double getRatingRecommended();
+
+    /**
+     * <code>optional double responseSeconds = 21;</code>
      */
     boolean hasResponseSeconds();
     /**
-     * <code>optional int32 responseSeconds = 19;</code>
+     * <code>optional double responseSeconds = 21;</code>
      */
-    int getResponseSeconds();
+    double getResponseSeconds();
 
     /**
-     * <code>repeated .BlitzMessage.UserReview reviews = 20;</code>
+     * <code>repeated .BlitzMessage.UserReview reviews = 22;</code>
      */
     java.util.List<com.blitzhere.BlitzMessage.UserProfiles.UserReview> 
         getReviewsList();
     /**
-     * <code>repeated .BlitzMessage.UserReview reviews = 20;</code>
+     * <code>repeated .BlitzMessage.UserReview reviews = 22;</code>
      */
     com.blitzhere.BlitzMessage.UserProfiles.UserReview getReviews(int index);
     /**
-     * <code>repeated .BlitzMessage.UserReview reviews = 20;</code>
+     * <code>repeated .BlitzMessage.UserReview reviews = 22;</code>
      */
     int getReviewsCount();
     /**
-     * <code>repeated .BlitzMessage.UserReview reviews = 20;</code>
+     * <code>repeated .BlitzMessage.UserReview reviews = 22;</code>
      */
     java.util.List<? extends com.blitzhere.BlitzMessage.UserProfiles.UserReviewOrBuilder> 
         getReviewsOrBuilderList();
     /**
-     * <code>repeated .BlitzMessage.UserReview reviews = 20;</code>
+     * <code>repeated .BlitzMessage.UserReview reviews = 22;</code>
      */
     com.blitzhere.BlitzMessage.UserProfiles.UserReviewOrBuilder getReviewsOrBuilder(
         int index);
@@ -8495,25 +8513,35 @@ public final class UserProfiles {
               backgroundSummary_ = bs;
               break;
             }
-            case 137: {
+            case 136: {
               bitField0_ |= 0x00000200;
-              ratingOverall_ = input.readDouble();
+              ratingCount_ = input.readInt32();
               break;
             }
             case 145: {
               bitField0_ |= 0x00000400;
+              ratingResponsive_ = input.readDouble();
+              break;
+            }
+            case 153: {
+              bitField0_ |= 0x00000800;
               ratingOutgoing_ = input.readDouble();
               break;
             }
-            case 152: {
-              bitField0_ |= 0x00000800;
-              responseSeconds_ = input.readInt32();
+            case 161: {
+              bitField0_ |= 0x00001000;
+              ratingRecommended_ = input.readDouble();
               break;
             }
-            case 162: {
-              if (!((mutable_bitField0_ & 0x00080000) == 0x00080000)) {
+            case 169: {
+              bitField0_ |= 0x00002000;
+              responseSeconds_ = input.readDouble();
+              break;
+            }
+            case 178: {
+              if (!((mutable_bitField0_ & 0x00200000) == 0x00200000)) {
                 reviews_ = new java.util.ArrayList<com.blitzhere.BlitzMessage.UserProfiles.UserReview>();
-                mutable_bitField0_ |= 0x00080000;
+                mutable_bitField0_ |= 0x00200000;
               }
               reviews_.add(input.readMessage(com.blitzhere.BlitzMessage.UserProfiles.UserReview.PARSER, extensionRegistry));
               break;
@@ -8547,7 +8575,7 @@ public final class UserProfiles {
         if (((mutable_bitField0_ & 0x00004000) == 0x00004000)) {
           interestTags_ = interestTags_.getUnmodifiableView();
         }
-        if (((mutable_bitField0_ & 0x00080000) == 0x00080000)) {
+        if (((mutable_bitField0_ & 0x00200000) == 0x00200000)) {
           reviews_ = java.util.Collections.unmodifiableList(reviews_);
         }
         this.unknownFields = unknownFields.build();
@@ -9061,80 +9089,110 @@ public final class UserProfiles {
       }
     }
 
-    public static final int RATINGOVERALL_FIELD_NUMBER = 17;
-    private double ratingOverall_;
+    public static final int RATINGCOUNT_FIELD_NUMBER = 17;
+    private int ratingCount_;
     /**
-     * <code>optional double ratingOverall = 17;</code>
+     * <code>optional int32 ratingCount = 17;</code>
      */
-    public boolean hasRatingOverall() {
+    public boolean hasRatingCount() {
       return ((bitField0_ & 0x00000200) == 0x00000200);
     }
     /**
-     * <code>optional double ratingOverall = 17;</code>
+     * <code>optional int32 ratingCount = 17;</code>
      */
-    public double getRatingOverall() {
-      return ratingOverall_;
+    public int getRatingCount() {
+      return ratingCount_;
     }
 
-    public static final int RATINGOUTGOING_FIELD_NUMBER = 18;
-    private double ratingOutgoing_;
+    public static final int RATINGRESPONSIVE_FIELD_NUMBER = 18;
+    private double ratingResponsive_;
     /**
-     * <code>optional double ratingOutgoing = 18;</code>
+     * <code>optional double ratingResponsive = 18;</code>
      */
-    public boolean hasRatingOutgoing() {
+    public boolean hasRatingResponsive() {
       return ((bitField0_ & 0x00000400) == 0x00000400);
     }
     /**
-     * <code>optional double ratingOutgoing = 18;</code>
+     * <code>optional double ratingResponsive = 18;</code>
+     */
+    public double getRatingResponsive() {
+      return ratingResponsive_;
+    }
+
+    public static final int RATINGOUTGOING_FIELD_NUMBER = 19;
+    private double ratingOutgoing_;
+    /**
+     * <code>optional double ratingOutgoing = 19;</code>
+     */
+    public boolean hasRatingOutgoing() {
+      return ((bitField0_ & 0x00000800) == 0x00000800);
+    }
+    /**
+     * <code>optional double ratingOutgoing = 19;</code>
      */
     public double getRatingOutgoing() {
       return ratingOutgoing_;
     }
 
-    public static final int RESPONSESECONDS_FIELD_NUMBER = 19;
-    private int responseSeconds_;
+    public static final int RATINGRECOMMENDED_FIELD_NUMBER = 20;
+    private double ratingRecommended_;
     /**
-     * <code>optional int32 responseSeconds = 19;</code>
+     * <code>optional double ratingRecommended = 20;</code>
      */
-    public boolean hasResponseSeconds() {
-      return ((bitField0_ & 0x00000800) == 0x00000800);
+    public boolean hasRatingRecommended() {
+      return ((bitField0_ & 0x00001000) == 0x00001000);
     }
     /**
-     * <code>optional int32 responseSeconds = 19;</code>
+     * <code>optional double ratingRecommended = 20;</code>
      */
-    public int getResponseSeconds() {
+    public double getRatingRecommended() {
+      return ratingRecommended_;
+    }
+
+    public static final int RESPONSESECONDS_FIELD_NUMBER = 21;
+    private double responseSeconds_;
+    /**
+     * <code>optional double responseSeconds = 21;</code>
+     */
+    public boolean hasResponseSeconds() {
+      return ((bitField0_ & 0x00002000) == 0x00002000);
+    }
+    /**
+     * <code>optional double responseSeconds = 21;</code>
+     */
+    public double getResponseSeconds() {
       return responseSeconds_;
     }
 
-    public static final int REVIEWS_FIELD_NUMBER = 20;
+    public static final int REVIEWS_FIELD_NUMBER = 22;
     private java.util.List<com.blitzhere.BlitzMessage.UserProfiles.UserReview> reviews_;
     /**
-     * <code>repeated .BlitzMessage.UserReview reviews = 20;</code>
+     * <code>repeated .BlitzMessage.UserReview reviews = 22;</code>
      */
     public java.util.List<com.blitzhere.BlitzMessage.UserProfiles.UserReview> getReviewsList() {
       return reviews_;
     }
     /**
-     * <code>repeated .BlitzMessage.UserReview reviews = 20;</code>
+     * <code>repeated .BlitzMessage.UserReview reviews = 22;</code>
      */
     public java.util.List<? extends com.blitzhere.BlitzMessage.UserProfiles.UserReviewOrBuilder> 
         getReviewsOrBuilderList() {
       return reviews_;
     }
     /**
-     * <code>repeated .BlitzMessage.UserReview reviews = 20;</code>
+     * <code>repeated .BlitzMessage.UserReview reviews = 22;</code>
      */
     public int getReviewsCount() {
       return reviews_.size();
     }
     /**
-     * <code>repeated .BlitzMessage.UserReview reviews = 20;</code>
+     * <code>repeated .BlitzMessage.UserReview reviews = 22;</code>
      */
     public com.blitzhere.BlitzMessage.UserProfiles.UserReview getReviews(int index) {
       return reviews_.get(index);
     }
     /**
-     * <code>repeated .BlitzMessage.UserReview reviews = 20;</code>
+     * <code>repeated .BlitzMessage.UserReview reviews = 22;</code>
      */
     public com.blitzhere.BlitzMessage.UserProfiles.UserReviewOrBuilder getReviewsOrBuilder(
         int index) {
@@ -9158,9 +9216,11 @@ public final class UserProfiles {
       expertiseTags_ = java.util.Collections.emptyList();
       interestTags_ = com.google.protobuf.LazyStringArrayList.EMPTY;
       backgroundSummary_ = "";
-      ratingOverall_ = 0D;
+      ratingCount_ = 0;
+      ratingResponsive_ = 0D;
       ratingOutgoing_ = 0D;
-      responseSeconds_ = 0;
+      ratingRecommended_ = 0D;
+      responseSeconds_ = 0D;
       reviews_ = java.util.Collections.emptyList();
     }
     private byte memoizedIsInitialized = -1;
@@ -9285,16 +9345,22 @@ public final class UserProfiles {
         output.writeBytes(16, getBackgroundSummaryBytes());
       }
       if (((bitField0_ & 0x00000200) == 0x00000200)) {
-        output.writeDouble(17, ratingOverall_);
+        output.writeInt32(17, ratingCount_);
       }
       if (((bitField0_ & 0x00000400) == 0x00000400)) {
-        output.writeDouble(18, ratingOutgoing_);
+        output.writeDouble(18, ratingResponsive_);
       }
       if (((bitField0_ & 0x00000800) == 0x00000800)) {
-        output.writeInt32(19, responseSeconds_);
+        output.writeDouble(19, ratingOutgoing_);
+      }
+      if (((bitField0_ & 0x00001000) == 0x00001000)) {
+        output.writeDouble(20, ratingRecommended_);
+      }
+      if (((bitField0_ & 0x00002000) == 0x00002000)) {
+        output.writeDouble(21, responseSeconds_);
       }
       for (int i = 0; i < reviews_.size(); i++) {
-        output.writeMessage(20, reviews_.get(i));
+        output.writeMessage(22, reviews_.get(i));
       }
       getUnknownFields().writeTo(output);
     }
@@ -9376,19 +9442,27 @@ public final class UserProfiles {
       }
       if (((bitField0_ & 0x00000200) == 0x00000200)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeDoubleSize(17, ratingOverall_);
+          .computeInt32Size(17, ratingCount_);
       }
       if (((bitField0_ & 0x00000400) == 0x00000400)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeDoubleSize(18, ratingOutgoing_);
+          .computeDoubleSize(18, ratingResponsive_);
       }
       if (((bitField0_ & 0x00000800) == 0x00000800)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(19, responseSeconds_);
+          .computeDoubleSize(19, ratingOutgoing_);
+      }
+      if (((bitField0_ & 0x00001000) == 0x00001000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeDoubleSize(20, ratingRecommended_);
+      }
+      if (((bitField0_ & 0x00002000) == 0x00002000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeDoubleSize(21, responseSeconds_);
       }
       for (int i = 0; i < reviews_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(20, reviews_.get(i));
+          .computeMessageSize(22, reviews_.get(i));
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -9590,15 +9664,19 @@ public final class UserProfiles {
         bitField0_ = (bitField0_ & ~0x00004000);
         backgroundSummary_ = "";
         bitField0_ = (bitField0_ & ~0x00008000);
-        ratingOverall_ = 0D;
+        ratingCount_ = 0;
         bitField0_ = (bitField0_ & ~0x00010000);
-        ratingOutgoing_ = 0D;
+        ratingResponsive_ = 0D;
         bitField0_ = (bitField0_ & ~0x00020000);
-        responseSeconds_ = 0;
+        ratingOutgoing_ = 0D;
         bitField0_ = (bitField0_ & ~0x00040000);
+        ratingRecommended_ = 0D;
+        bitField0_ = (bitField0_ & ~0x00080000);
+        responseSeconds_ = 0D;
+        bitField0_ = (bitField0_ & ~0x00100000);
         if (reviewsBuilder_ == null) {
           reviews_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00080000);
+          bitField0_ = (bitField0_ & ~0x00200000);
         } else {
           reviewsBuilder_.clear();
         }
@@ -9744,19 +9822,27 @@ public final class UserProfiles {
         if (((from_bitField0_ & 0x00010000) == 0x00010000)) {
           to_bitField0_ |= 0x00000200;
         }
-        result.ratingOverall_ = ratingOverall_;
+        result.ratingCount_ = ratingCount_;
         if (((from_bitField0_ & 0x00020000) == 0x00020000)) {
           to_bitField0_ |= 0x00000400;
         }
-        result.ratingOutgoing_ = ratingOutgoing_;
+        result.ratingResponsive_ = ratingResponsive_;
         if (((from_bitField0_ & 0x00040000) == 0x00040000)) {
           to_bitField0_ |= 0x00000800;
         }
+        result.ratingOutgoing_ = ratingOutgoing_;
+        if (((from_bitField0_ & 0x00080000) == 0x00080000)) {
+          to_bitField0_ |= 0x00001000;
+        }
+        result.ratingRecommended_ = ratingRecommended_;
+        if (((from_bitField0_ & 0x00100000) == 0x00100000)) {
+          to_bitField0_ |= 0x00002000;
+        }
         result.responseSeconds_ = responseSeconds_;
         if (reviewsBuilder_ == null) {
-          if (((bitField0_ & 0x00080000) == 0x00080000)) {
+          if (((bitField0_ & 0x00200000) == 0x00200000)) {
             reviews_ = java.util.Collections.unmodifiableList(reviews_);
-            bitField0_ = (bitField0_ & ~0x00080000);
+            bitField0_ = (bitField0_ & ~0x00200000);
           }
           result.reviews_ = reviews_;
         } else {
@@ -9977,11 +10063,17 @@ public final class UserProfiles {
           backgroundSummary_ = other.backgroundSummary_;
           onChanged();
         }
-        if (other.hasRatingOverall()) {
-          setRatingOverall(other.getRatingOverall());
+        if (other.hasRatingCount()) {
+          setRatingCount(other.getRatingCount());
+        }
+        if (other.hasRatingResponsive()) {
+          setRatingResponsive(other.getRatingResponsive());
         }
         if (other.hasRatingOutgoing()) {
           setRatingOutgoing(other.getRatingOutgoing());
+        }
+        if (other.hasRatingRecommended()) {
+          setRatingRecommended(other.getRatingRecommended());
         }
         if (other.hasResponseSeconds()) {
           setResponseSeconds(other.getResponseSeconds());
@@ -9990,7 +10082,7 @@ public final class UserProfiles {
           if (!other.reviews_.isEmpty()) {
             if (reviews_.isEmpty()) {
               reviews_ = other.reviews_;
-              bitField0_ = (bitField0_ & ~0x00080000);
+              bitField0_ = (bitField0_ & ~0x00200000);
             } else {
               ensureReviewsIsMutable();
               reviews_.addAll(other.reviews_);
@@ -10003,7 +10095,7 @@ public final class UserProfiles {
               reviewsBuilder_.dispose();
               reviewsBuilder_ = null;
               reviews_ = other.reviews_;
-              bitField0_ = (bitField0_ & ~0x00080000);
+              bitField0_ = (bitField0_ & ~0x00200000);
               reviewsBuilder_ = 
                 com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
                    getReviewsFieldBuilder() : null;
@@ -12394,98 +12486,162 @@ public final class UserProfiles {
         return this;
       }
 
-      private double ratingOverall_ ;
+      private int ratingCount_ ;
       /**
-       * <code>optional double ratingOverall = 17;</code>
+       * <code>optional int32 ratingCount = 17;</code>
        */
-      public boolean hasRatingOverall() {
+      public boolean hasRatingCount() {
         return ((bitField0_ & 0x00010000) == 0x00010000);
       }
       /**
-       * <code>optional double ratingOverall = 17;</code>
+       * <code>optional int32 ratingCount = 17;</code>
        */
-      public double getRatingOverall() {
-        return ratingOverall_;
+      public int getRatingCount() {
+        return ratingCount_;
       }
       /**
-       * <code>optional double ratingOverall = 17;</code>
+       * <code>optional int32 ratingCount = 17;</code>
        */
-      public Builder setRatingOverall(double value) {
+      public Builder setRatingCount(int value) {
         bitField0_ |= 0x00010000;
-        ratingOverall_ = value;
+        ratingCount_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional double ratingOverall = 17;</code>
+       * <code>optional int32 ratingCount = 17;</code>
        */
-      public Builder clearRatingOverall() {
+      public Builder clearRatingCount() {
         bitField0_ = (bitField0_ & ~0x00010000);
-        ratingOverall_ = 0D;
+        ratingCount_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private double ratingResponsive_ ;
+      /**
+       * <code>optional double ratingResponsive = 18;</code>
+       */
+      public boolean hasRatingResponsive() {
+        return ((bitField0_ & 0x00020000) == 0x00020000);
+      }
+      /**
+       * <code>optional double ratingResponsive = 18;</code>
+       */
+      public double getRatingResponsive() {
+        return ratingResponsive_;
+      }
+      /**
+       * <code>optional double ratingResponsive = 18;</code>
+       */
+      public Builder setRatingResponsive(double value) {
+        bitField0_ |= 0x00020000;
+        ratingResponsive_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional double ratingResponsive = 18;</code>
+       */
+      public Builder clearRatingResponsive() {
+        bitField0_ = (bitField0_ & ~0x00020000);
+        ratingResponsive_ = 0D;
         onChanged();
         return this;
       }
 
       private double ratingOutgoing_ ;
       /**
-       * <code>optional double ratingOutgoing = 18;</code>
+       * <code>optional double ratingOutgoing = 19;</code>
        */
       public boolean hasRatingOutgoing() {
-        return ((bitField0_ & 0x00020000) == 0x00020000);
+        return ((bitField0_ & 0x00040000) == 0x00040000);
       }
       /**
-       * <code>optional double ratingOutgoing = 18;</code>
+       * <code>optional double ratingOutgoing = 19;</code>
        */
       public double getRatingOutgoing() {
         return ratingOutgoing_;
       }
       /**
-       * <code>optional double ratingOutgoing = 18;</code>
+       * <code>optional double ratingOutgoing = 19;</code>
        */
       public Builder setRatingOutgoing(double value) {
-        bitField0_ |= 0x00020000;
+        bitField0_ |= 0x00040000;
         ratingOutgoing_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional double ratingOutgoing = 18;</code>
+       * <code>optional double ratingOutgoing = 19;</code>
        */
       public Builder clearRatingOutgoing() {
-        bitField0_ = (bitField0_ & ~0x00020000);
+        bitField0_ = (bitField0_ & ~0x00040000);
         ratingOutgoing_ = 0D;
         onChanged();
         return this;
       }
 
-      private int responseSeconds_ ;
+      private double ratingRecommended_ ;
       /**
-       * <code>optional int32 responseSeconds = 19;</code>
+       * <code>optional double ratingRecommended = 20;</code>
        */
-      public boolean hasResponseSeconds() {
-        return ((bitField0_ & 0x00040000) == 0x00040000);
+      public boolean hasRatingRecommended() {
+        return ((bitField0_ & 0x00080000) == 0x00080000);
       }
       /**
-       * <code>optional int32 responseSeconds = 19;</code>
+       * <code>optional double ratingRecommended = 20;</code>
        */
-      public int getResponseSeconds() {
+      public double getRatingRecommended() {
+        return ratingRecommended_;
+      }
+      /**
+       * <code>optional double ratingRecommended = 20;</code>
+       */
+      public Builder setRatingRecommended(double value) {
+        bitField0_ |= 0x00080000;
+        ratingRecommended_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional double ratingRecommended = 20;</code>
+       */
+      public Builder clearRatingRecommended() {
+        bitField0_ = (bitField0_ & ~0x00080000);
+        ratingRecommended_ = 0D;
+        onChanged();
+        return this;
+      }
+
+      private double responseSeconds_ ;
+      /**
+       * <code>optional double responseSeconds = 21;</code>
+       */
+      public boolean hasResponseSeconds() {
+        return ((bitField0_ & 0x00100000) == 0x00100000);
+      }
+      /**
+       * <code>optional double responseSeconds = 21;</code>
+       */
+      public double getResponseSeconds() {
         return responseSeconds_;
       }
       /**
-       * <code>optional int32 responseSeconds = 19;</code>
+       * <code>optional double responseSeconds = 21;</code>
        */
-      public Builder setResponseSeconds(int value) {
-        bitField0_ |= 0x00040000;
+      public Builder setResponseSeconds(double value) {
+        bitField0_ |= 0x00100000;
         responseSeconds_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional int32 responseSeconds = 19;</code>
+       * <code>optional double responseSeconds = 21;</code>
        */
       public Builder clearResponseSeconds() {
-        bitField0_ = (bitField0_ & ~0x00040000);
-        responseSeconds_ = 0;
+        bitField0_ = (bitField0_ & ~0x00100000);
+        responseSeconds_ = 0D;
         onChanged();
         return this;
       }
@@ -12493,9 +12649,9 @@ public final class UserProfiles {
       private java.util.List<com.blitzhere.BlitzMessage.UserProfiles.UserReview> reviews_ =
         java.util.Collections.emptyList();
       private void ensureReviewsIsMutable() {
-        if (!((bitField0_ & 0x00080000) == 0x00080000)) {
+        if (!((bitField0_ & 0x00200000) == 0x00200000)) {
           reviews_ = new java.util.ArrayList<com.blitzhere.BlitzMessage.UserProfiles.UserReview>(reviews_);
-          bitField0_ |= 0x00080000;
+          bitField0_ |= 0x00200000;
          }
       }
 
@@ -12503,7 +12659,7 @@ public final class UserProfiles {
           com.blitzhere.BlitzMessage.UserProfiles.UserReview, com.blitzhere.BlitzMessage.UserProfiles.UserReview.Builder, com.blitzhere.BlitzMessage.UserProfiles.UserReviewOrBuilder> reviewsBuilder_;
 
       /**
-       * <code>repeated .BlitzMessage.UserReview reviews = 20;</code>
+       * <code>repeated .BlitzMessage.UserReview reviews = 22;</code>
        */
       public java.util.List<com.blitzhere.BlitzMessage.UserProfiles.UserReview> getReviewsList() {
         if (reviewsBuilder_ == null) {
@@ -12513,7 +12669,7 @@ public final class UserProfiles {
         }
       }
       /**
-       * <code>repeated .BlitzMessage.UserReview reviews = 20;</code>
+       * <code>repeated .BlitzMessage.UserReview reviews = 22;</code>
        */
       public int getReviewsCount() {
         if (reviewsBuilder_ == null) {
@@ -12523,7 +12679,7 @@ public final class UserProfiles {
         }
       }
       /**
-       * <code>repeated .BlitzMessage.UserReview reviews = 20;</code>
+       * <code>repeated .BlitzMessage.UserReview reviews = 22;</code>
        */
       public com.blitzhere.BlitzMessage.UserProfiles.UserReview getReviews(int index) {
         if (reviewsBuilder_ == null) {
@@ -12533,7 +12689,7 @@ public final class UserProfiles {
         }
       }
       /**
-       * <code>repeated .BlitzMessage.UserReview reviews = 20;</code>
+       * <code>repeated .BlitzMessage.UserReview reviews = 22;</code>
        */
       public Builder setReviews(
           int index, com.blitzhere.BlitzMessage.UserProfiles.UserReview value) {
@@ -12550,7 +12706,7 @@ public final class UserProfiles {
         return this;
       }
       /**
-       * <code>repeated .BlitzMessage.UserReview reviews = 20;</code>
+       * <code>repeated .BlitzMessage.UserReview reviews = 22;</code>
        */
       public Builder setReviews(
           int index, com.blitzhere.BlitzMessage.UserProfiles.UserReview.Builder builderForValue) {
@@ -12564,7 +12720,7 @@ public final class UserProfiles {
         return this;
       }
       /**
-       * <code>repeated .BlitzMessage.UserReview reviews = 20;</code>
+       * <code>repeated .BlitzMessage.UserReview reviews = 22;</code>
        */
       public Builder addReviews(com.blitzhere.BlitzMessage.UserProfiles.UserReview value) {
         if (reviewsBuilder_ == null) {
@@ -12580,7 +12736,7 @@ public final class UserProfiles {
         return this;
       }
       /**
-       * <code>repeated .BlitzMessage.UserReview reviews = 20;</code>
+       * <code>repeated .BlitzMessage.UserReview reviews = 22;</code>
        */
       public Builder addReviews(
           int index, com.blitzhere.BlitzMessage.UserProfiles.UserReview value) {
@@ -12597,7 +12753,7 @@ public final class UserProfiles {
         return this;
       }
       /**
-       * <code>repeated .BlitzMessage.UserReview reviews = 20;</code>
+       * <code>repeated .BlitzMessage.UserReview reviews = 22;</code>
        */
       public Builder addReviews(
           com.blitzhere.BlitzMessage.UserProfiles.UserReview.Builder builderForValue) {
@@ -12611,7 +12767,7 @@ public final class UserProfiles {
         return this;
       }
       /**
-       * <code>repeated .BlitzMessage.UserReview reviews = 20;</code>
+       * <code>repeated .BlitzMessage.UserReview reviews = 22;</code>
        */
       public Builder addReviews(
           int index, com.blitzhere.BlitzMessage.UserProfiles.UserReview.Builder builderForValue) {
@@ -12625,7 +12781,7 @@ public final class UserProfiles {
         return this;
       }
       /**
-       * <code>repeated .BlitzMessage.UserReview reviews = 20;</code>
+       * <code>repeated .BlitzMessage.UserReview reviews = 22;</code>
        */
       public Builder addAllReviews(
           java.lang.Iterable<? extends com.blitzhere.BlitzMessage.UserProfiles.UserReview> values) {
@@ -12640,12 +12796,12 @@ public final class UserProfiles {
         return this;
       }
       /**
-       * <code>repeated .BlitzMessage.UserReview reviews = 20;</code>
+       * <code>repeated .BlitzMessage.UserReview reviews = 22;</code>
        */
       public Builder clearReviews() {
         if (reviewsBuilder_ == null) {
           reviews_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00080000);
+          bitField0_ = (bitField0_ & ~0x00200000);
           onChanged();
         } else {
           reviewsBuilder_.clear();
@@ -12653,7 +12809,7 @@ public final class UserProfiles {
         return this;
       }
       /**
-       * <code>repeated .BlitzMessage.UserReview reviews = 20;</code>
+       * <code>repeated .BlitzMessage.UserReview reviews = 22;</code>
        */
       public Builder removeReviews(int index) {
         if (reviewsBuilder_ == null) {
@@ -12666,14 +12822,14 @@ public final class UserProfiles {
         return this;
       }
       /**
-       * <code>repeated .BlitzMessage.UserReview reviews = 20;</code>
+       * <code>repeated .BlitzMessage.UserReview reviews = 22;</code>
        */
       public com.blitzhere.BlitzMessage.UserProfiles.UserReview.Builder getReviewsBuilder(
           int index) {
         return getReviewsFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .BlitzMessage.UserReview reviews = 20;</code>
+       * <code>repeated .BlitzMessage.UserReview reviews = 22;</code>
        */
       public com.blitzhere.BlitzMessage.UserProfiles.UserReviewOrBuilder getReviewsOrBuilder(
           int index) {
@@ -12683,7 +12839,7 @@ public final class UserProfiles {
         }
       }
       /**
-       * <code>repeated .BlitzMessage.UserReview reviews = 20;</code>
+       * <code>repeated .BlitzMessage.UserReview reviews = 22;</code>
        */
       public java.util.List<? extends com.blitzhere.BlitzMessage.UserProfiles.UserReviewOrBuilder> 
            getReviewsOrBuilderList() {
@@ -12694,14 +12850,14 @@ public final class UserProfiles {
         }
       }
       /**
-       * <code>repeated .BlitzMessage.UserReview reviews = 20;</code>
+       * <code>repeated .BlitzMessage.UserReview reviews = 22;</code>
        */
       public com.blitzhere.BlitzMessage.UserProfiles.UserReview.Builder addReviewsBuilder() {
         return getReviewsFieldBuilder().addBuilder(
             com.blitzhere.BlitzMessage.UserProfiles.UserReview.getDefaultInstance());
       }
       /**
-       * <code>repeated .BlitzMessage.UserReview reviews = 20;</code>
+       * <code>repeated .BlitzMessage.UserReview reviews = 22;</code>
        */
       public com.blitzhere.BlitzMessage.UserProfiles.UserReview.Builder addReviewsBuilder(
           int index) {
@@ -12709,7 +12865,7 @@ public final class UserProfiles {
             index, com.blitzhere.BlitzMessage.UserProfiles.UserReview.getDefaultInstance());
       }
       /**
-       * <code>repeated .BlitzMessage.UserReview reviews = 20;</code>
+       * <code>repeated .BlitzMessage.UserReview reviews = 22;</code>
        */
       public java.util.List<com.blitzhere.BlitzMessage.UserProfiles.UserReview.Builder> 
            getReviewsBuilderList() {
@@ -12722,7 +12878,7 @@ public final class UserProfiles {
           reviewsBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
               com.blitzhere.BlitzMessage.UserProfiles.UserReview, com.blitzhere.BlitzMessage.UserProfiles.UserReview.Builder, com.blitzhere.BlitzMessage.UserProfiles.UserReviewOrBuilder>(
                   reviews_,
-                  ((bitField0_ & 0x00080000) == 0x00080000),
+                  ((bitField0_ & 0x00200000) == 0x00200000),
                   getParentForChildren(),
                   isClean());
           reviews_ = null;
@@ -16511,52 +16667,53 @@ public final class UserProfiles {
       "\nimageBytes\030\002 \001(\014\022\023\n\013contentType\030\003 \001(\t\022\020",
       "\n\010imageURL\030\004 \001(\t\022*\n\tdateAdded\030\005 \001(\0132\027.Bl" +
       "itzMessage.Timestamp\022\r\n\005crc32\030\006 \001(\003\022\017\n\007d" +
-      "eleted\030\007 \001(\010\"\331\001\n\nUserReview\022\016\n\006userID\030\001 " +
+      "eleted\030\007 \001(\010\"\321\001\n\nUserReview\022\016\n\006userID\030\001 " +
       "\001(\t\022\022\n\nreviewerID\030\002 \001(\t\022*\n\ttimestamp\030\003 \001" +
       "(\0132\027.BlitzMessage.Timestamp\022\026\n\016conversat" +
-      "ionID\030\004 \001(\t\022\026\n\016responsiveness\030\005 \001(\001\022\024\n\014s" +
-      "atisfaction\030\006 \001(\001\022\023\n\013recommended\030\007 \001(\001\022\022" +
-      "\n\nreviewText\030\010 \001(\t\022\014\n\004tags\030\t \003(\t\"\371\005\n\013Use" +
-      "rProfile\022\016\n\006userID\030\001 \001(\t\022,\n\nuserStatus\030\002" +
-      " \001(\0162\030.BlitzMessage.UserStatus\022-\n\014creati",
-      "onDate\030\003 \001(\0132\027.BlitzMessage.Timestamp\022)\n" +
-      "\010lastSeen\030\004 \001(\0132\027.BlitzMessage.Timestamp" +
-      "\022\014\n\004name\030\005 \001(\t\022$\n\006gender\030\006 \001(\0162\024.BlitzMe" +
-      "ssage.Gender\022)\n\010birthday\030\007 \001(\0132\027.BlitzMe" +
-      "ssage.Timestamp\022\'\n\006images\030\010 \003(\0132\027.BlitzM" +
-      "essage.ImageData\0226\n\020socialIdentities\030\t \003" +
-      "(\0132\034.BlitzMessage.SocialIdentity\022.\n\013cont" +
-      "actInfo\030\n \003(\0132\031.BlitzMessage.ContactInfo" +
-      "\0224\n\022headlineEmployment\030\013 \001(\0132\030.BlitzMess" +
-      "age.Employment\022,\n\nemployment\030\014 \003(\0132\030.Bli",
-      "tzMessage.Employment\022*\n\teducation\030\r \003(\0132" +
-      "\027.BlitzMessage.Education\022.\n\rexpertiseTag" +
-      "s\030\016 \003(\0132\027.BlitzMessage.EntityTag\022\024\n\014inte" +
-      "restTags\030\017 \003(\t\022\031\n\021backgroundSummary\030\020 \001(" +
-      "\t\022\025\n\rratingOverall\030\021 \001(\001\022\026\n\016ratingOutgoi" +
-      "ng\030\022 \001(\001\022\027\n\017responseSeconds\030\023 \001(\005\022)\n\007rev" +
-      "iews\030\024 \003(\0132\030.BlitzMessage.UserReview\"9\n\013" +
-      "ImageUpload\022*\n\timageData\030\001 \003(\0132\027.BlitzMe" +
-      "ssage.ImageData\"@\n\021UserProfileUpdate\022+\n\010" +
-      "profiles\030\001 \003(\0132\031.BlitzMessage.UserProfil",
-      "e\">\n\020UserProfileQuery\022\017\n\007userIDs\030\001 \003(\t\022\031" +
-      "\n\021fetchDemoProfiles\030\002 \001(\010\"\246\001\n\023Confirmati" +
-      "onRequest\022.\n\013contactInfo\030\001 \001(\0132\031.BlitzMe" +
-      "ssage.ContactInfo\022.\n\013userProfile\030\002 \001(\0132\031" +
-      ".BlitzMessage.UserProfile\022\030\n\020confirmatio" +
-      "nCode\030\003 \001(\t\022\025\n\rinviterUserID\030\004 \001(\t\"F\n\027Pr" +
-      "ofilesFromContactInfo\022+\n\010profiles\030\001 \003(\0132" +
-      "\031.BlitzMessage.UserProfile*Z\n\013ContactTyp" +
-      "e\022\r\n\tCTUnknown\020\000\022\016\n\nCTPhoneSMS\020\001\022\013\n\007CTEm" +
-      "ail\020\002\022\n\n\006CTChat\020\003\022\023\n\017CTSocialService\020\004*j",
-      "\n\nUserStatus\022\r\n\tUSUnknown\020\000\022\r\n\tUSBlocked" +
-      "\020\001\022\r\n\tUSInvited\020\002\022\014\n\010USActive\020\003\022\020\n\014USCon" +
-      "firming\020\004\022\017\n\013USConfirmed\020\005*:\n\006Gender\022\014\n\010" +
-      "GUnknown\020\000\022\013\n\007GFemale\020\001\022\t\n\005GMale\020\002\022\n\n\006GO" +
-      "ther\020\003*F\n\014ImageContent\022\r\n\tICUnknown\020\000\022\021\n" +
-      "\rICUserProfile\020\001\022\024\n\020ICUserBackground\020\002B/" +
-      "\n\032com.blitzhere.BlitzMessage\210\001\001\322>\002\n\000\322>\003\022" +
-      "\001B\322>\002\030\001"
+      "ionID\030\004 \001(\t\022\022\n\nresponsive\030\005 \001(\001\022\020\n\010outgo" +
+      "ing\030\006 \001(\001\022\023\n\013recommended\030\007 \001(\001\022\022\n\nreview" +
+      "Text\030\010 \001(\t\022\014\n\004tags\030\t \003(\t\"\254\006\n\013UserProfile" +
+      "\022\016\n\006userID\030\001 \001(\t\022,\n\nuserStatus\030\002 \001(\0162\030.B" +
+      "litzMessage.UserStatus\022-\n\014creationDate\030\003",
+      " \001(\0132\027.BlitzMessage.Timestamp\022)\n\010lastSee" +
+      "n\030\004 \001(\0132\027.BlitzMessage.Timestamp\022\014\n\004name" +
+      "\030\005 \001(\t\022$\n\006gender\030\006 \001(\0162\024.BlitzMessage.Ge" +
+      "nder\022)\n\010birthday\030\007 \001(\0132\027.BlitzMessage.Ti" +
+      "mestamp\022\'\n\006images\030\010 \003(\0132\027.BlitzMessage.I" +
+      "mageData\0226\n\020socialIdentities\030\t \003(\0132\034.Bli" +
+      "tzMessage.SocialIdentity\022.\n\013contactInfo\030" +
+      "\n \003(\0132\031.BlitzMessage.ContactInfo\0224\n\022head" +
+      "lineEmployment\030\013 \001(\0132\030.BlitzMessage.Empl" +
+      "oyment\022,\n\nemployment\030\014 \003(\0132\030.BlitzMessag",
+      "e.Employment\022*\n\teducation\030\r \003(\0132\027.BlitzM" +
+      "essage.Education\022.\n\rexpertiseTags\030\016 \003(\0132" +
+      "\027.BlitzMessage.EntityTag\022\024\n\014interestTags" +
+      "\030\017 \003(\t\022\031\n\021backgroundSummary\030\020 \001(\t\022\023\n\013rat" +
+      "ingCount\030\021 \001(\005\022\030\n\020ratingResponsive\030\022 \001(\001" +
+      "\022\026\n\016ratingOutgoing\030\023 \001(\001\022\031\n\021ratingRecomm" +
+      "ended\030\024 \001(\001\022\027\n\017responseSeconds\030\025 \001(\001\022)\n\007" +
+      "reviews\030\026 \003(\0132\030.BlitzMessage.UserReview\"" +
+      "9\n\013ImageUpload\022*\n\timageData\030\001 \003(\0132\027.Blit" +
+      "zMessage.ImageData\"@\n\021UserProfileUpdate\022",
+      "+\n\010profiles\030\001 \003(\0132\031.BlitzMessage.UserPro" +
+      "file\">\n\020UserProfileQuery\022\017\n\007userIDs\030\001 \003(" +
+      "\t\022\031\n\021fetchDemoProfiles\030\002 \001(\010\"\246\001\n\023Confirm" +
+      "ationRequest\022.\n\013contactInfo\030\001 \001(\0132\031.Blit" +
+      "zMessage.ContactInfo\022.\n\013userProfile\030\002 \001(" +
+      "\0132\031.BlitzMessage.UserProfile\022\030\n\020confirma" +
+      "tionCode\030\003 \001(\t\022\025\n\rinviterUserID\030\004 \001(\t\"F\n" +
+      "\027ProfilesFromContactInfo\022+\n\010profiles\030\001 \003" +
+      "(\0132\031.BlitzMessage.UserProfile*Z\n\013Contact" +
+      "Type\022\r\n\tCTUnknown\020\000\022\016\n\nCTPhoneSMS\020\001\022\013\n\007C",
+      "TEmail\020\002\022\n\n\006CTChat\020\003\022\023\n\017CTSocialService\020" +
+      "\004*j\n\nUserStatus\022\r\n\tUSUnknown\020\000\022\r\n\tUSBloc" +
+      "ked\020\001\022\r\n\tUSInvited\020\002\022\014\n\010USActive\020\003\022\020\n\014US" +
+      "Confirming\020\004\022\017\n\013USConfirmed\020\005*:\n\006Gender\022" +
+      "\014\n\010GUnknown\020\000\022\013\n\007GFemale\020\001\022\t\n\005GMale\020\002\022\n\n" +
+      "\006GOther\020\003*F\n\014ImageContent\022\r\n\tICUnknown\020\000" +
+      "\022\021\n\rICUserProfile\020\001\022\024\n\020ICUserBackground\020" +
+      "\002B/\n\032com.blitzhere.BlitzMessage\210\001\001\322>\002\n\000\322" +
+      ">\003\022\001B\322>\002\030\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -16608,13 +16765,13 @@ public final class UserProfiles {
     internal_static_BlitzMessage_UserReview_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_BlitzMessage_UserReview_descriptor,
-        new java.lang.String[] { "UserID", "ReviewerID", "Timestamp", "ConversationID", "Responsiveness", "Satisfaction", "Recommended", "ReviewText", "Tags", });
+        new java.lang.String[] { "UserID", "ReviewerID", "Timestamp", "ConversationID", "Responsive", "Outgoing", "Recommended", "ReviewText", "Tags", });
     internal_static_BlitzMessage_UserProfile_descriptor =
       getDescriptor().getMessageTypes().get(6);
     internal_static_BlitzMessage_UserProfile_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_BlitzMessage_UserProfile_descriptor,
-        new java.lang.String[] { "UserID", "UserStatus", "CreationDate", "LastSeen", "Name", "Gender", "Birthday", "Images", "SocialIdentities", "ContactInfo", "HeadlineEmployment", "Employment", "Education", "ExpertiseTags", "InterestTags", "BackgroundSummary", "RatingOverall", "RatingOutgoing", "ResponseSeconds", "Reviews", });
+        new java.lang.String[] { "UserID", "UserStatus", "CreationDate", "LastSeen", "Name", "Gender", "Birthday", "Images", "SocialIdentities", "ContactInfo", "HeadlineEmployment", "Employment", "Education", "ExpertiseTags", "InterestTags", "BackgroundSummary", "RatingCount", "RatingResponsive", "RatingOutgoing", "RatingRecommended", "ResponseSeconds", "Reviews", });
     internal_static_BlitzMessage_ImageUpload_descriptor =
       getDescriptor().getMessageTypes().get(7);
     internal_static_BlitzMessage_ImageUpload_fieldAccessorTable = new

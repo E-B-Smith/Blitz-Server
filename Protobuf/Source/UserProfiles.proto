@@ -108,8 +108,8 @@ message UserReview {
   optional string       reviewerID      = 2;
   optional Timestamp    timestamp       = 3;
   optional string       conversationID  = 4;
-  optional double       responsiveness  = 5;
-  optional double       satisfaction    = 6;
+  optional double       responsive      = 5;
+  optional double       outgoing        = 6;
   optional double       recommended     = 7;
   optional string       reviewText      = 8;
   repeated string       tags            = 9;
@@ -143,11 +143,12 @@ message UserProfile {
 
   //  Reviews --
 
-  optional double       ratingOverall   = 17;
-  optional double       ratingOutgoing  = 18;
-  optional int32        responseSeconds = 19;
-
-  repeated UserReview   reviews         = 20;
+  optional int32        ratingCount       = 17;
+  optional double       ratingResponsive  = 18;
+  optional double       ratingOutgoing    = 19;
+  optional double       ratingRecommended = 20;
+  optional double       responseSeconds   = 21;
+  repeated UserReview   reviews           = 22;
 }
 
 

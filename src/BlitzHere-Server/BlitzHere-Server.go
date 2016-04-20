@@ -315,6 +315,9 @@ func DispatchServiceRequests(writer http.ResponseWriter, httpRequest *http.Reque
             response = UserMessageFetchRequest(session, requestMessageType)
         }
 
+    case *BlitzMessage.UserReview:
+        response = WriteReview(session, requestMessageType)
+
     default:
         error = fmt.Errorf("Unrecognized request '%+v'", request)
         response = ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)

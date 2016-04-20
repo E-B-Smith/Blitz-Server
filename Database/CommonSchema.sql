@@ -495,15 +495,77 @@ create table ReviewTable
     ,reviewerID     UserID      not null
     ,timestamp      timestamptz not null
     ,conversationID UUID
-    ,responseTime   interval
-    ,promptness     real
-    ,satisfaction   real
+    ,responseTime   real        --  In seconds
+    ,responsive     real
+    ,outgoing       real
     ,recommended    real
     ,reviewText     text
     ,tags           text[]
     );
 create unique index ReviewTableIndex
     on ReviewTable(userID, reviewerID, timestamp);
+
+
+create or replace
+function AverageResponseTimeSecondsForUserID(userID UserID) returns int as
+    $$
+    declare seconds int;
+    begin
+
+    with Conversation as (
+    select ConversationTable.conversationID as cID,
+           ConversationMemberTable.memberID as mID,
+           ConversationTable.creationDate as Start
+        from ConversationMemberTable
+        inner join ConversationTable
+          on ConversationTable.conversationID = ConversationMemberTable.conversationID
+        where memberID = userID
+          and ConversationTable.initiatorUserID <> userID
+    )
+    , ConversationAll as (
+    select *,
+        (select creationDate from UserMessageTable
+           where conversationID = Conversation.cID
+             and senderID = Conversation.mID
+             order by creationDate asc
+             limit 1) as stop
+        from Conversation
+    )
+    select extract(epoch from avg(stop - start)) into seconds from ConversationAll;
+
+    return seconds;
+    end;
+    $$
+    language plpgsql immutable
+    returns null on null input;
+
+
+create or replace
+function ResponseTimeForConversationUser(conversationIDIn text, userIDIn text) returns real as
+    $$
+    declare
+        result real;
+        start timestamptz;
+        stop timestamptz;
+    begin
+
+    select
+        ConversationTable.creationDate,
+        UserMessageTable.creationDate
+            into start, stop
+        from UserMessageTable
+        inner join ConversationTable
+        on ConversationTable.conversationID = UserMessageTable.conversationID
+        where UserMessageTable.conversationID = conversationIDIn::uuid
+          and UserMessageTable.senderID = userIDIn
+          order by UserMessageTable.creationDate limit 1;
+
+    result = extract(epoch from (stop - start));
+    return result;
+    end;
+    $$
+    language plpgsql immutable
+    returns null on null input;
 
 
 ------------------------------------------------------------------------------------------

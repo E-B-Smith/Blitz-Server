@@ -2543,8 +2543,8 @@ static BImageData* defaultBImageDataInstance = nil;
 @property (strong) NSString* reviewerID;
 @property (strong) BTimestamp* timestamp;
 @property (strong) NSString* conversationID;
-@property Float64 responsiveness;
-@property Float64 satisfaction;
+@property Float64 responsive;
+@property Float64 outgoing;
 @property Float64 recommended;
 @property (strong) NSString* reviewText;
 @property (strong) NSMutableArray * tagsArray;
@@ -2580,20 +2580,20 @@ static BImageData* defaultBImageDataInstance = nil;
   hasConversationID_ = !!_value_;
 }
 @synthesize conversationID;
-- (BOOL) hasResponsiveness {
-  return !!hasResponsiveness_;
+- (BOOL) hasResponsive {
+  return !!hasResponsive_;
 }
-- (void) setHasResponsiveness:(BOOL) _value_ {
-  hasResponsiveness_ = !!_value_;
+- (void) setHasResponsive:(BOOL) _value_ {
+  hasResponsive_ = !!_value_;
 }
-@synthesize responsiveness;
-- (BOOL) hasSatisfaction {
-  return !!hasSatisfaction_;
+@synthesize responsive;
+- (BOOL) hasOutgoing {
+  return !!hasOutgoing_;
 }
-- (void) setHasSatisfaction:(BOOL) _value_ {
-  hasSatisfaction_ = !!_value_;
+- (void) setHasOutgoing:(BOOL) _value_ {
+  hasOutgoing_ = !!_value_;
 }
-@synthesize satisfaction;
+@synthesize outgoing;
 - (BOOL) hasRecommended {
   return !!hasRecommended_;
 }
@@ -2616,8 +2616,8 @@ static BImageData* defaultBImageDataInstance = nil;
     self.reviewerID = @"";
     self.timestamp = [BTimestamp defaultInstance];
     self.conversationID = @"";
-    self.responsiveness = 0;
-    self.satisfaction = 0;
+    self.responsive = 0;
+    self.outgoing = 0;
     self.recommended = 0;
     self.reviewText = @"";
   }
@@ -2662,11 +2662,11 @@ static BUserReview* defaultBUserReviewInstance = nil;
   if (self.hasConversationID) {
     [output writeString:4 value:self.conversationID];
   }
-  if (self.hasResponsiveness) {
-    [output writeDouble:5 value:self.responsiveness];
+  if (self.hasResponsive) {
+    [output writeDouble:5 value:self.responsive];
   }
-  if (self.hasSatisfaction) {
-    [output writeDouble:6 value:self.satisfaction];
+  if (self.hasOutgoing) {
+    [output writeDouble:6 value:self.outgoing];
   }
   if (self.hasRecommended) {
     [output writeDouble:7 value:self.recommended];
@@ -2698,11 +2698,11 @@ static BUserReview* defaultBUserReviewInstance = nil;
   if (self.hasConversationID) {
     size_ += computeStringSize(4, self.conversationID);
   }
-  if (self.hasResponsiveness) {
-    size_ += computeDoubleSize(5, self.responsiveness);
+  if (self.hasResponsive) {
+    size_ += computeDoubleSize(5, self.responsive);
   }
-  if (self.hasSatisfaction) {
-    size_ += computeDoubleSize(6, self.satisfaction);
+  if (self.hasOutgoing) {
+    size_ += computeDoubleSize(6, self.outgoing);
   }
   if (self.hasRecommended) {
     size_ += computeDoubleSize(7, self.recommended);
@@ -2769,11 +2769,11 @@ static BUserReview* defaultBUserReviewInstance = nil;
   if (self.hasConversationID) {
     [output appendFormat:@"%@%@: %@\n", indent, @"conversationID", self.conversationID];
   }
-  if (self.hasResponsiveness) {
-    [output appendFormat:@"%@%@: %@\n", indent, @"responsiveness", [NSNumber numberWithDouble:self.responsiveness]];
+  if (self.hasResponsive) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"responsive", [NSNumber numberWithDouble:self.responsive]];
   }
-  if (self.hasSatisfaction) {
-    [output appendFormat:@"%@%@: %@\n", indent, @"satisfaction", [NSNumber numberWithDouble:self.satisfaction]];
+  if (self.hasOutgoing) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"outgoing", [NSNumber numberWithDouble:self.outgoing]];
   }
   if (self.hasRecommended) {
     [output appendFormat:@"%@%@: %@\n", indent, @"recommended", [NSNumber numberWithDouble:self.recommended]];
@@ -2801,11 +2801,11 @@ static BUserReview* defaultBUserReviewInstance = nil;
   if (self.hasConversationID) {
     [dictionary setObject: self.conversationID forKey: @"conversationID"];
   }
-  if (self.hasResponsiveness) {
-    [dictionary setObject: [NSNumber numberWithDouble:self.responsiveness] forKey: @"responsiveness"];
+  if (self.hasResponsive) {
+    [dictionary setObject: [NSNumber numberWithDouble:self.responsive] forKey: @"responsive"];
   }
-  if (self.hasSatisfaction) {
-    [dictionary setObject: [NSNumber numberWithDouble:self.satisfaction] forKey: @"satisfaction"];
+  if (self.hasOutgoing) {
+    [dictionary setObject: [NSNumber numberWithDouble:self.outgoing] forKey: @"outgoing"];
   }
   if (self.hasRecommended) {
     [dictionary setObject: [NSNumber numberWithDouble:self.recommended] forKey: @"recommended"];
@@ -2833,10 +2833,10 @@ static BUserReview* defaultBUserReviewInstance = nil;
       (!self.hasTimestamp || [self.timestamp isEqual:otherMessage.timestamp]) &&
       self.hasConversationID == otherMessage.hasConversationID &&
       (!self.hasConversationID || [self.conversationID isEqual:otherMessage.conversationID]) &&
-      self.hasResponsiveness == otherMessage.hasResponsiveness &&
-      (!self.hasResponsiveness || self.responsiveness == otherMessage.responsiveness) &&
-      self.hasSatisfaction == otherMessage.hasSatisfaction &&
-      (!self.hasSatisfaction || self.satisfaction == otherMessage.satisfaction) &&
+      self.hasResponsive == otherMessage.hasResponsive &&
+      (!self.hasResponsive || self.responsive == otherMessage.responsive) &&
+      self.hasOutgoing == otherMessage.hasOutgoing &&
+      (!self.hasOutgoing || self.outgoing == otherMessage.outgoing) &&
       self.hasRecommended == otherMessage.hasRecommended &&
       (!self.hasRecommended || self.recommended == otherMessage.recommended) &&
       self.hasReviewText == otherMessage.hasReviewText &&
@@ -2858,11 +2858,11 @@ static BUserReview* defaultBUserReviewInstance = nil;
   if (self.hasConversationID) {
     hashCode = hashCode * 31 + [self.conversationID hash];
   }
-  if (self.hasResponsiveness) {
-    hashCode = hashCode * 31 + [[NSNumber numberWithDouble:self.responsiveness] hash];
+  if (self.hasResponsive) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithDouble:self.responsive] hash];
   }
-  if (self.hasSatisfaction) {
-    hashCode = hashCode * 31 + [[NSNumber numberWithDouble:self.satisfaction] hash];
+  if (self.hasOutgoing) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithDouble:self.outgoing] hash];
   }
   if (self.hasRecommended) {
     hashCode = hashCode * 31 + [[NSNumber numberWithDouble:self.recommended] hash];
@@ -2928,11 +2928,11 @@ static BUserReview* defaultBUserReviewInstance = nil;
   if (other.hasConversationID) {
     [self setConversationID:other.conversationID];
   }
-  if (other.hasResponsiveness) {
-    [self setResponsiveness:other.responsiveness];
+  if (other.hasResponsive) {
+    [self setResponsive:other.responsive];
   }
-  if (other.hasSatisfaction) {
-    [self setSatisfaction:other.satisfaction];
+  if (other.hasOutgoing) {
+    [self setOutgoing:other.outgoing];
   }
   if (other.hasRecommended) {
     [self setRecommended:other.recommended];
@@ -2990,11 +2990,11 @@ static BUserReview* defaultBUserReviewInstance = nil;
         break;
       }
       case 41: {
-        [self setResponsiveness:[input readDouble]];
+        [self setResponsive:[input readDouble]];
         break;
       }
       case 49: {
-        [self setSatisfaction:[input readDouble]];
+        [self setOutgoing:[input readDouble]];
         break;
       }
       case 57: {
@@ -3090,36 +3090,36 @@ static BUserReview* defaultBUserReviewInstance = nil;
   resultUserReview.conversationID = @"";
   return self;
 }
-- (BOOL) hasResponsiveness {
-  return resultUserReview.hasResponsiveness;
+- (BOOL) hasResponsive {
+  return resultUserReview.hasResponsive;
 }
-- (Float64) responsiveness {
-  return resultUserReview.responsiveness;
+- (Float64) responsive {
+  return resultUserReview.responsive;
 }
-- (BUserReviewBuilder*) setResponsiveness:(Float64) value {
-  resultUserReview.hasResponsiveness = YES;
-  resultUserReview.responsiveness = value;
+- (BUserReviewBuilder*) setResponsive:(Float64) value {
+  resultUserReview.hasResponsive = YES;
+  resultUserReview.responsive = value;
   return self;
 }
-- (BUserReviewBuilder*) clearResponsiveness {
-  resultUserReview.hasResponsiveness = NO;
-  resultUserReview.responsiveness = 0;
+- (BUserReviewBuilder*) clearResponsive {
+  resultUserReview.hasResponsive = NO;
+  resultUserReview.responsive = 0;
   return self;
 }
-- (BOOL) hasSatisfaction {
-  return resultUserReview.hasSatisfaction;
+- (BOOL) hasOutgoing {
+  return resultUserReview.hasOutgoing;
 }
-- (Float64) satisfaction {
-  return resultUserReview.satisfaction;
+- (Float64) outgoing {
+  return resultUserReview.outgoing;
 }
-- (BUserReviewBuilder*) setSatisfaction:(Float64) value {
-  resultUserReview.hasSatisfaction = YES;
-  resultUserReview.satisfaction = value;
+- (BUserReviewBuilder*) setOutgoing:(Float64) value {
+  resultUserReview.hasOutgoing = YES;
+  resultUserReview.outgoing = value;
   return self;
 }
-- (BUserReviewBuilder*) clearSatisfaction {
-  resultUserReview.hasSatisfaction = NO;
-  resultUserReview.satisfaction = 0;
+- (BUserReviewBuilder*) clearOutgoing {
+  resultUserReview.hasOutgoing = NO;
+  resultUserReview.outgoing = 0;
   return self;
 }
 - (BOOL) hasRecommended {
@@ -3194,9 +3194,11 @@ static BUserReview* defaultBUserReviewInstance = nil;
 @property (strong) NSMutableArray * expertiseTagsArray;
 @property (strong) NSMutableArray * interestTagsArray;
 @property (strong) NSString* backgroundSummary;
-@property Float64 ratingOverall;
+@property SInt32 ratingCount;
+@property Float64 ratingResponsive;
 @property Float64 ratingOutgoing;
-@property SInt32 responseSeconds;
+@property Float64 ratingRecommended;
+@property Float64 responseSeconds;
 @property (strong) NSMutableArray * reviewsArray;
 @end
 
@@ -3279,13 +3281,20 @@ static BUserReview* defaultBUserReviewInstance = nil;
   hasBackgroundSummary_ = !!_value_;
 }
 @synthesize backgroundSummary;
-- (BOOL) hasRatingOverall {
-  return !!hasRatingOverall_;
+- (BOOL) hasRatingCount {
+  return !!hasRatingCount_;
 }
-- (void) setHasRatingOverall:(BOOL) _value_ {
-  hasRatingOverall_ = !!_value_;
+- (void) setHasRatingCount:(BOOL) _value_ {
+  hasRatingCount_ = !!_value_;
 }
-@synthesize ratingOverall;
+@synthesize ratingCount;
+- (BOOL) hasRatingResponsive {
+  return !!hasRatingResponsive_;
+}
+- (void) setHasRatingResponsive:(BOOL) _value_ {
+  hasRatingResponsive_ = !!_value_;
+}
+@synthesize ratingResponsive;
 - (BOOL) hasRatingOutgoing {
   return !!hasRatingOutgoing_;
 }
@@ -3293,6 +3302,13 @@ static BUserReview* defaultBUserReviewInstance = nil;
   hasRatingOutgoing_ = !!_value_;
 }
 @synthesize ratingOutgoing;
+- (BOOL) hasRatingRecommended {
+  return !!hasRatingRecommended_;
+}
+- (void) setHasRatingRecommended:(BOOL) _value_ {
+  hasRatingRecommended_ = !!_value_;
+}
+@synthesize ratingRecommended;
 - (BOOL) hasResponseSeconds {
   return !!hasResponseSeconds_;
 }
@@ -3313,8 +3329,10 @@ static BUserReview* defaultBUserReviewInstance = nil;
     self.birthday = [BTimestamp defaultInstance];
     self.headlineEmployment = [BEmployment defaultInstance];
     self.backgroundSummary = @"";
-    self.ratingOverall = 0;
+    self.ratingCount = 0;
+    self.ratingResponsive = 0;
     self.ratingOutgoing = 0;
+    self.ratingRecommended = 0;
     self.responseSeconds = 0;
   }
   return self;
@@ -3499,17 +3517,23 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   if (self.hasBackgroundSummary) {
     [output writeString:16 value:self.backgroundSummary];
   }
-  if (self.hasRatingOverall) {
-    [output writeDouble:17 value:self.ratingOverall];
+  if (self.hasRatingCount) {
+    [output writeInt32:17 value:self.ratingCount];
+  }
+  if (self.hasRatingResponsive) {
+    [output writeDouble:18 value:self.ratingResponsive];
   }
   if (self.hasRatingOutgoing) {
-    [output writeDouble:18 value:self.ratingOutgoing];
+    [output writeDouble:19 value:self.ratingOutgoing];
+  }
+  if (self.hasRatingRecommended) {
+    [output writeDouble:20 value:self.ratingRecommended];
   }
   if (self.hasResponseSeconds) {
-    [output writeInt32:19 value:self.responseSeconds];
+    [output writeDouble:21 value:self.responseSeconds];
   }
   [self.reviewsArray enumerateObjectsUsingBlock:^(BUserReview *element, NSUInteger idx, BOOL *stop) {
-    [output writeMessage:20 value:element];
+    [output writeMessage:22 value:element];
   }];
   [self.unknownFields writeToCodedOutputStream:output];
 }
@@ -3574,17 +3598,23 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   if (self.hasBackgroundSummary) {
     size_ += computeStringSize(16, self.backgroundSummary);
   }
-  if (self.hasRatingOverall) {
-    size_ += computeDoubleSize(17, self.ratingOverall);
+  if (self.hasRatingCount) {
+    size_ += computeInt32Size(17, self.ratingCount);
+  }
+  if (self.hasRatingResponsive) {
+    size_ += computeDoubleSize(18, self.ratingResponsive);
   }
   if (self.hasRatingOutgoing) {
-    size_ += computeDoubleSize(18, self.ratingOutgoing);
+    size_ += computeDoubleSize(19, self.ratingOutgoing);
+  }
+  if (self.hasRatingRecommended) {
+    size_ += computeDoubleSize(20, self.ratingRecommended);
   }
   if (self.hasResponseSeconds) {
-    size_ += computeInt32Size(19, self.responseSeconds);
+    size_ += computeDoubleSize(21, self.responseSeconds);
   }
   [self.reviewsArray enumerateObjectsUsingBlock:^(BUserReview *element, NSUInteger idx, BOOL *stop) {
-    size_ += computeMessageSize(20, element);
+    size_ += computeMessageSize(22, element);
   }];
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -3699,14 +3729,20 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   if (self.hasBackgroundSummary) {
     [output appendFormat:@"%@%@: %@\n", indent, @"backgroundSummary", self.backgroundSummary];
   }
-  if (self.hasRatingOverall) {
-    [output appendFormat:@"%@%@: %@\n", indent, @"ratingOverall", [NSNumber numberWithDouble:self.ratingOverall]];
+  if (self.hasRatingCount) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"ratingCount", [NSNumber numberWithInteger:self.ratingCount]];
+  }
+  if (self.hasRatingResponsive) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"ratingResponsive", [NSNumber numberWithDouble:self.ratingResponsive]];
   }
   if (self.hasRatingOutgoing) {
     [output appendFormat:@"%@%@: %@\n", indent, @"ratingOutgoing", [NSNumber numberWithDouble:self.ratingOutgoing]];
   }
+  if (self.hasRatingRecommended) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"ratingRecommended", [NSNumber numberWithDouble:self.ratingRecommended]];
+  }
   if (self.hasResponseSeconds) {
-    [output appendFormat:@"%@%@: %@\n", indent, @"responseSeconds", [NSNumber numberWithInteger:self.responseSeconds]];
+    [output appendFormat:@"%@%@: %@\n", indent, @"responseSeconds", [NSNumber numberWithDouble:self.responseSeconds]];
   }
   [self.reviewsArray enumerateObjectsUsingBlock:^(BUserReview *element, NSUInteger idx, BOOL *stop) {
     [output appendFormat:@"%@%@ {\n", indent, @"reviews"];
@@ -3783,14 +3819,20 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   if (self.hasBackgroundSummary) {
     [dictionary setObject: self.backgroundSummary forKey: @"backgroundSummary"];
   }
-  if (self.hasRatingOverall) {
-    [dictionary setObject: [NSNumber numberWithDouble:self.ratingOverall] forKey: @"ratingOverall"];
+  if (self.hasRatingCount) {
+    [dictionary setObject: [NSNumber numberWithInteger:self.ratingCount] forKey: @"ratingCount"];
+  }
+  if (self.hasRatingResponsive) {
+    [dictionary setObject: [NSNumber numberWithDouble:self.ratingResponsive] forKey: @"ratingResponsive"];
   }
   if (self.hasRatingOutgoing) {
     [dictionary setObject: [NSNumber numberWithDouble:self.ratingOutgoing] forKey: @"ratingOutgoing"];
   }
+  if (self.hasRatingRecommended) {
+    [dictionary setObject: [NSNumber numberWithDouble:self.ratingRecommended] forKey: @"ratingRecommended"];
+  }
   if (self.hasResponseSeconds) {
-    [dictionary setObject: [NSNumber numberWithInteger:self.responseSeconds] forKey: @"responseSeconds"];
+    [dictionary setObject: [NSNumber numberWithDouble:self.responseSeconds] forKey: @"responseSeconds"];
   }
   for (BUserReview* element in self.reviewsArray) {
     NSMutableDictionary *elementDictionary = [NSMutableDictionary dictionary];
@@ -3833,10 +3875,14 @@ static BUserProfile* defaultBUserProfileInstance = nil;
       [self.interestTagsArray isEqualToArray:otherMessage.interestTagsArray] &&
       self.hasBackgroundSummary == otherMessage.hasBackgroundSummary &&
       (!self.hasBackgroundSummary || [self.backgroundSummary isEqual:otherMessage.backgroundSummary]) &&
-      self.hasRatingOverall == otherMessage.hasRatingOverall &&
-      (!self.hasRatingOverall || self.ratingOverall == otherMessage.ratingOverall) &&
+      self.hasRatingCount == otherMessage.hasRatingCount &&
+      (!self.hasRatingCount || self.ratingCount == otherMessage.ratingCount) &&
+      self.hasRatingResponsive == otherMessage.hasRatingResponsive &&
+      (!self.hasRatingResponsive || self.ratingResponsive == otherMessage.ratingResponsive) &&
       self.hasRatingOutgoing == otherMessage.hasRatingOutgoing &&
       (!self.hasRatingOutgoing || self.ratingOutgoing == otherMessage.ratingOutgoing) &&
+      self.hasRatingRecommended == otherMessage.hasRatingRecommended &&
+      (!self.hasRatingRecommended || self.ratingRecommended == otherMessage.ratingRecommended) &&
       self.hasResponseSeconds == otherMessage.hasResponseSeconds &&
       (!self.hasResponseSeconds || self.responseSeconds == otherMessage.responseSeconds) &&
       [self.reviewsArray isEqualToArray:otherMessage.reviewsArray] &&
@@ -3892,14 +3938,20 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   if (self.hasBackgroundSummary) {
     hashCode = hashCode * 31 + [self.backgroundSummary hash];
   }
-  if (self.hasRatingOverall) {
-    hashCode = hashCode * 31 + [[NSNumber numberWithDouble:self.ratingOverall] hash];
+  if (self.hasRatingCount) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithInteger:self.ratingCount] hash];
+  }
+  if (self.hasRatingResponsive) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithDouble:self.ratingResponsive] hash];
   }
   if (self.hasRatingOutgoing) {
     hashCode = hashCode * 31 + [[NSNumber numberWithDouble:self.ratingOutgoing] hash];
   }
+  if (self.hasRatingRecommended) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithDouble:self.ratingRecommended] hash];
+  }
   if (self.hasResponseSeconds) {
-    hashCode = hashCode * 31 + [[NSNumber numberWithInteger:self.responseSeconds] hash];
+    hashCode = hashCode * 31 + [[NSNumber numberWithDouble:self.responseSeconds] hash];
   }
   [self.reviewsArray enumerateObjectsUsingBlock:^(BUserReview *element, NSUInteger idx, BOOL *stop) {
     hashCode = hashCode * 31 + [element hash];
@@ -4023,11 +4075,17 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   if (other.hasBackgroundSummary) {
     [self setBackgroundSummary:other.backgroundSummary];
   }
-  if (other.hasRatingOverall) {
-    [self setRatingOverall:other.ratingOverall];
+  if (other.hasRatingCount) {
+    [self setRatingCount:other.ratingCount];
+  }
+  if (other.hasRatingResponsive) {
+    [self setRatingResponsive:other.ratingResponsive];
   }
   if (other.hasRatingOutgoing) {
     [self setRatingOutgoing:other.ratingOutgoing];
+  }
+  if (other.hasRatingRecommended) {
+    [self setRatingRecommended:other.ratingRecommended];
   }
   if (other.hasResponseSeconds) {
     [self setResponseSeconds:other.responseSeconds];
@@ -4166,19 +4224,27 @@ static BUserProfile* defaultBUserProfileInstance = nil;
         [self setBackgroundSummary:[input readString]];
         break;
       }
-      case 137: {
-        [self setRatingOverall:[input readDouble]];
+      case 136: {
+        [self setRatingCount:[input readInt32]];
         break;
       }
       case 145: {
+        [self setRatingResponsive:[input readDouble]];
+        break;
+      }
+      case 153: {
         [self setRatingOutgoing:[input readDouble]];
         break;
       }
-      case 152: {
-        [self setResponseSeconds:[input readInt32]];
+      case 161: {
+        [self setRatingRecommended:[input readDouble]];
         break;
       }
-      case 162: {
+      case 169: {
+        [self setResponseSeconds:[input readDouble]];
+        break;
+      }
+      case 178: {
         BUserReviewBuilder* subBuilder = [BUserReview builder];
         [input readMessage:subBuilder extensionRegistry:extensionRegistry];
         [self addReviews:[subBuilder buildPartial]];
@@ -4534,20 +4600,36 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   resultUserProfile.backgroundSummary = @"";
   return self;
 }
-- (BOOL) hasRatingOverall {
-  return resultUserProfile.hasRatingOverall;
+- (BOOL) hasRatingCount {
+  return resultUserProfile.hasRatingCount;
 }
-- (Float64) ratingOverall {
-  return resultUserProfile.ratingOverall;
+- (SInt32) ratingCount {
+  return resultUserProfile.ratingCount;
 }
-- (BUserProfileBuilder*) setRatingOverall:(Float64) value {
-  resultUserProfile.hasRatingOverall = YES;
-  resultUserProfile.ratingOverall = value;
+- (BUserProfileBuilder*) setRatingCount:(SInt32) value {
+  resultUserProfile.hasRatingCount = YES;
+  resultUserProfile.ratingCount = value;
   return self;
 }
-- (BUserProfileBuilder*) clearRatingOverall {
-  resultUserProfile.hasRatingOverall = NO;
-  resultUserProfile.ratingOverall = 0;
+- (BUserProfileBuilder*) clearRatingCount {
+  resultUserProfile.hasRatingCount = NO;
+  resultUserProfile.ratingCount = 0;
+  return self;
+}
+- (BOOL) hasRatingResponsive {
+  return resultUserProfile.hasRatingResponsive;
+}
+- (Float64) ratingResponsive {
+  return resultUserProfile.ratingResponsive;
+}
+- (BUserProfileBuilder*) setRatingResponsive:(Float64) value {
+  resultUserProfile.hasRatingResponsive = YES;
+  resultUserProfile.ratingResponsive = value;
+  return self;
+}
+- (BUserProfileBuilder*) clearRatingResponsive {
+  resultUserProfile.hasRatingResponsive = NO;
+  resultUserProfile.ratingResponsive = 0;
   return self;
 }
 - (BOOL) hasRatingOutgoing {
@@ -4566,13 +4648,29 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   resultUserProfile.ratingOutgoing = 0;
   return self;
 }
+- (BOOL) hasRatingRecommended {
+  return resultUserProfile.hasRatingRecommended;
+}
+- (Float64) ratingRecommended {
+  return resultUserProfile.ratingRecommended;
+}
+- (BUserProfileBuilder*) setRatingRecommended:(Float64) value {
+  resultUserProfile.hasRatingRecommended = YES;
+  resultUserProfile.ratingRecommended = value;
+  return self;
+}
+- (BUserProfileBuilder*) clearRatingRecommended {
+  resultUserProfile.hasRatingRecommended = NO;
+  resultUserProfile.ratingRecommended = 0;
+  return self;
+}
 - (BOOL) hasResponseSeconds {
   return resultUserProfile.hasResponseSeconds;
 }
-- (SInt32) responseSeconds {
+- (Float64) responseSeconds {
   return resultUserProfile.responseSeconds;
 }
-- (BUserProfileBuilder*) setResponseSeconds:(SInt32) value {
+- (BUserProfileBuilder*) setResponseSeconds:(Float64) value {
   resultUserProfile.hasResponseSeconds = YES;
   resultUserProfile.responseSeconds = value;
   return self;

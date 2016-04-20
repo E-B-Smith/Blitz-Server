@@ -316,7 +316,7 @@ func ProfileForUserID(userID string) *BlitzMessage.UserProfile {
     profile.Education     = EducationForUserID(userID)
     profile.Employment    = EmploymentForUserID(userID)
 
-    //  Fix up th 'headloine' employment --
+    //  Fix up th 'headline' employment --
 
     for index, emp := range profile.Employment {
         if emp.IsHeadlineItem != nil && *emp.IsHeadlineItem {
@@ -325,6 +325,8 @@ func ProfileForUserID(userID string) *BlitzMessage.UserProfile {
             break
         }
     }
+
+    AddReviewsToProfile(profile)
 
     return profile
 }

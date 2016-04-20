@@ -663,23 +663,23 @@ NSString *NSStringFromBImageContent(BImageContent value);
 #define UserReview_reviewerID @"reviewerID"
 #define UserReview_timestamp @"timestamp"
 #define UserReview_conversationID @"conversationID"
-#define UserReview_responsiveness @"responsiveness"
-#define UserReview_satisfaction @"satisfaction"
+#define UserReview_responsive @"responsive"
+#define UserReview_outgoing @"outgoing"
 #define UserReview_recommended @"recommended"
 #define UserReview_reviewText @"reviewText"
 #define UserReview_tags @"tags"
 @interface BUserReview : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
-  BOOL hasResponsiveness_:1;
-  BOOL hasSatisfaction_:1;
+  BOOL hasResponsive_:1;
+  BOOL hasOutgoing_:1;
   BOOL hasRecommended_:1;
   BOOL hasUserID_:1;
   BOOL hasReviewerID_:1;
   BOOL hasConversationID_:1;
   BOOL hasReviewText_:1;
   BOOL hasTimestamp_:1;
-  Float64 responsiveness;
-  Float64 satisfaction;
+  Float64 responsive;
+  Float64 outgoing;
   Float64 recommended;
   NSString* userID;
   NSString* reviewerID;
@@ -692,16 +692,16 @@ NSString *NSStringFromBImageContent(BImageContent value);
 - (BOOL) hasReviewerID;
 - (BOOL) hasTimestamp;
 - (BOOL) hasConversationID;
-- (BOOL) hasResponsiveness;
-- (BOOL) hasSatisfaction;
+- (BOOL) hasResponsive;
+- (BOOL) hasOutgoing;
 - (BOOL) hasRecommended;
 - (BOOL) hasReviewText;
 @property (readonly, strong) NSString* userID;
 @property (readonly, strong) NSString* reviewerID;
 @property (readonly, strong) BTimestamp* timestamp;
 @property (readonly, strong) NSString* conversationID;
-@property (readonly) Float64 responsiveness;
-@property (readonly) Float64 satisfaction;
+@property (readonly) Float64 responsive;
+@property (readonly) Float64 outgoing;
 @property (readonly) Float64 recommended;
 @property (readonly, strong) NSString* reviewText;
 @property (readonly, strong) NSArray * tags;
@@ -764,15 +764,15 @@ NSString *NSStringFromBImageContent(BImageContent value);
 - (BUserReviewBuilder*) setConversationID:(NSString*) value;
 - (BUserReviewBuilder*) clearConversationID;
 
-- (BOOL) hasResponsiveness;
-- (Float64) responsiveness;
-- (BUserReviewBuilder*) setResponsiveness:(Float64) value;
-- (BUserReviewBuilder*) clearResponsiveness;
+- (BOOL) hasResponsive;
+- (Float64) responsive;
+- (BUserReviewBuilder*) setResponsive:(Float64) value;
+- (BUserReviewBuilder*) clearResponsive;
 
-- (BOOL) hasSatisfaction;
-- (Float64) satisfaction;
-- (BUserReviewBuilder*) setSatisfaction:(Float64) value;
-- (BUserReviewBuilder*) clearSatisfaction;
+- (BOOL) hasOutgoing;
+- (Float64) outgoing;
+- (BUserReviewBuilder*) setOutgoing:(Float64) value;
+- (BUserReviewBuilder*) clearOutgoing;
 
 - (BOOL) hasRecommended;
 - (Float64) recommended;
@@ -807,15 +807,19 @@ NSString *NSStringFromBImageContent(BImageContent value);
 #define UserProfile_expertiseTags @"expertiseTags"
 #define UserProfile_interestTags @"interestTags"
 #define UserProfile_backgroundSummary @"backgroundSummary"
-#define UserProfile_ratingOverall @"ratingOverall"
+#define UserProfile_ratingCount @"ratingCount"
+#define UserProfile_ratingResponsive @"ratingResponsive"
 #define UserProfile_ratingOutgoing @"ratingOutgoing"
+#define UserProfile_ratingRecommended @"ratingRecommended"
 #define UserProfile_responseSeconds @"responseSeconds"
 #define UserProfile_reviews @"reviews"
 @interface BUserProfile : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
-  BOOL hasRatingOverall_:1;
+  BOOL hasRatingResponsive_:1;
   BOOL hasRatingOutgoing_:1;
+  BOOL hasRatingRecommended_:1;
   BOOL hasResponseSeconds_:1;
+  BOOL hasRatingCount_:1;
   BOOL hasUserID_:1;
   BOOL hasName_:1;
   BOOL hasBackgroundSummary_:1;
@@ -825,9 +829,11 @@ NSString *NSStringFromBImageContent(BImageContent value);
   BOOL hasHeadlineEmployment_:1;
   BOOL hasUserStatus_:1;
   BOOL hasGender_:1;
-  Float64 ratingOverall;
+  Float64 ratingResponsive;
   Float64 ratingOutgoing;
-  SInt32 responseSeconds;
+  Float64 ratingRecommended;
+  Float64 responseSeconds;
+  SInt32 ratingCount;
   NSString* userID;
   NSString* name;
   NSString* backgroundSummary;
@@ -855,8 +861,10 @@ NSString *NSStringFromBImageContent(BImageContent value);
 - (BOOL) hasBirthday;
 - (BOOL) hasHeadlineEmployment;
 - (BOOL) hasBackgroundSummary;
-- (BOOL) hasRatingOverall;
+- (BOOL) hasRatingCount;
+- (BOOL) hasRatingResponsive;
 - (BOOL) hasRatingOutgoing;
+- (BOOL) hasRatingRecommended;
 - (BOOL) hasResponseSeconds;
 @property (readonly, strong) NSString* userID;
 @property (readonly) BUserStatus userStatus;
@@ -874,9 +882,11 @@ NSString *NSStringFromBImageContent(BImageContent value);
 @property (readonly, strong) NSArray * expertiseTags;
 @property (readonly, strong) NSArray * interestTags;
 @property (readonly, strong) NSString* backgroundSummary;
-@property (readonly) Float64 ratingOverall;
+@property (readonly) SInt32 ratingCount;
+@property (readonly) Float64 ratingResponsive;
 @property (readonly) Float64 ratingOutgoing;
-@property (readonly) SInt32 responseSeconds;
+@property (readonly) Float64 ratingRecommended;
+@property (readonly) Float64 responseSeconds;
 @property (readonly, strong) NSArray * reviews;
 - (BImageData*)imagesAtIndex:(NSUInteger)index;
 - (BSocialIdentity*)socialIdentitiesAtIndex:(NSUInteger)index;
@@ -1017,19 +1027,29 @@ NSString *NSStringFromBImageContent(BImageContent value);
 - (BUserProfileBuilder*) setBackgroundSummary:(NSString*) value;
 - (BUserProfileBuilder*) clearBackgroundSummary;
 
-- (BOOL) hasRatingOverall;
-- (Float64) ratingOverall;
-- (BUserProfileBuilder*) setRatingOverall:(Float64) value;
-- (BUserProfileBuilder*) clearRatingOverall;
+- (BOOL) hasRatingCount;
+- (SInt32) ratingCount;
+- (BUserProfileBuilder*) setRatingCount:(SInt32) value;
+- (BUserProfileBuilder*) clearRatingCount;
+
+- (BOOL) hasRatingResponsive;
+- (Float64) ratingResponsive;
+- (BUserProfileBuilder*) setRatingResponsive:(Float64) value;
+- (BUserProfileBuilder*) clearRatingResponsive;
 
 - (BOOL) hasRatingOutgoing;
 - (Float64) ratingOutgoing;
 - (BUserProfileBuilder*) setRatingOutgoing:(Float64) value;
 - (BUserProfileBuilder*) clearRatingOutgoing;
 
+- (BOOL) hasRatingRecommended;
+- (Float64) ratingRecommended;
+- (BUserProfileBuilder*) setRatingRecommended:(Float64) value;
+- (BUserProfileBuilder*) clearRatingRecommended;
+
 - (BOOL) hasResponseSeconds;
-- (SInt32) responseSeconds;
-- (BUserProfileBuilder*) setResponseSeconds:(SInt32) value;
+- (Float64) responseSeconds;
+- (BUserProfileBuilder*) setResponseSeconds:(Float64) value;
 - (BUserProfileBuilder*) clearResponseSeconds;
 
 - (NSMutableArray *)reviews;
