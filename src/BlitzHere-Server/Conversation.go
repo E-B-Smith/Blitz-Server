@@ -127,6 +127,7 @@ func ReadUserConversation(userID string, conversationID string) (*BlitzMessage.C
         lastMessage         sql.NullString
         lastActivity        pq.NullTime
         lastUserID          sql.NullString
+        lastActionURL       sql.NullString
     )
 
     error := row.Scan(
@@ -156,12 +157,13 @@ func ReadUserConversation(userID string, conversationID string) (*BlitzMessage.C
     row = config.DB.QueryRow(
         `select messageText,
             creationDate,
-            senderID
+            senderID,
+            actionURL
             from usermessagetable
             where conversationID = $1
             order by creationDate desc
             limit 1;`, conversationID)
-    error = row.Scan(&lastMessage, &lastActivity, &lastUserID)
+    error = row.Scan(&lastMessage, &lastActivity, &lastUserID, &lastActionURL)
     if error != nil { Log.LogError(error) }
 
     var conv BlitzMessage.Conversation
@@ -181,7 +183,9 @@ func ReadUserConversation(userID string, conversationID string) (*BlitzMessage.C
     if lastUserID.Valid {
         conv.LastActivityUserID = &lastUserID.String
     }
-
+    if lastActionURL.Valid {
+        conv.LastActionURL = &lastActionURL.String
+    }
 
     conv.MemberIDs = MembersForConversationID(conversationID)
     return &conv, nil

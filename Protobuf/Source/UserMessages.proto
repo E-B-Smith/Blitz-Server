@@ -41,6 +41,7 @@ message Conversation {
   optional Timestamp          closedDate      = 11;
   optional string             headlineText    = 12;
   optional string             lastActivityUserID = 13;
+  optional string             lastActionURL   = 14;
 }
 
 
@@ -72,6 +73,7 @@ enum UserMessageType {
   MTSystem       = 1;
   MTConversation = 2;
   MTNotification = 3;
+  MTFeedPost     = 4;
 }
 
 

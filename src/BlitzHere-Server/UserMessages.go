@@ -15,6 +15,7 @@ import (
     "violent.blue/GoKit/Log"
     "violent.blue/GoKit/pgsql"
     "violent.blue/GoKit/Util"
+    "github.com/golang/protobuf/proto"
     "BlitzMessage"
 )
 
@@ -171,13 +172,25 @@ func SendBlitzUserMessage(message *BlitzMessage.UserMessage) error {
     }
 
     var recipients []string
-    if message.ConversationID == nil {
+    if  message.ConversationID == nil {
         recipients = message.Recipients
         recipients = append(recipients, *message.SenderID)
     } else {
         recipients = MembersForConversationID(*message.ConversationID)
     }
     message.Recipients = recipients
+
+    if  message.ConversationID != nil &&
+        *message.MessageType == BlitzMessage.UserMessageType_MTConversation &&
+        (message.ActionURL == nil || len(*message.ActionURL) == 0) {
+
+        message.ActionURL = proto.String(
+            fmt.Sprintf("%s?action=showchat&chatid=%s",
+                config.AppLinkURL,
+                *message.ConversationID,
+            ))
+
+    }
 
     for _, recipientID := range recipients {
         _, error := config.DB.Exec(

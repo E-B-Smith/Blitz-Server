@@ -232,13 +232,15 @@ func UpdateFeedPost(session *Session, feedPostUpdate *BlitzMessage.FeedPostUpdat
                     len(*replyPoster.Name) > 0 {
                     name = *replyPoster.Name
                 }
-                message := fmt.Sprintf("%s responded to your question.", name)
+                message := fmt.Sprintf("%s responded to your post.", name)
+                actionURL := fmt.Sprintf("%s?action=showpost&postid=%s",
+                    config.AppLinkURL, *feedPostUpdate.FeedPost.ParentID)
                 SendUserMessage(BlitzMessage.Default_Globals_SystemUserID,
                     [] string { *parentPost.UserID },
                     message,
                     BlitzMessage.UserMessageType_MTNotification,
                     "AppIcon",
-                    "",
+                    actionURL,
                 )
             }
         }
