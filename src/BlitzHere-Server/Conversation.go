@@ -126,6 +126,7 @@ func ReadUserConversation(userID string, conversationID string) (*BlitzMessage.C
 
         lastMessage         sql.NullString
         lastActivity        pq.NullTime
+        lastUserID          sql.NullString
     )
 
     error := row.Scan(
@@ -154,12 +155,13 @@ func ReadUserConversation(userID string, conversationID string) (*BlitzMessage.C
 
     row = config.DB.QueryRow(
         `select messageText,
-            creationDate
+            creationDate,
+            senderID
             from usermessagetable
             where conversationID = $1
             order by creationDate desc
             limit 1;`, conversationID)
-    error = row.Scan(&lastMessage, &lastActivity)
+    error = row.Scan(&lastMessage, &lastActivity, &lastUserID)
     if error != nil { Log.LogError(error) }
 
     var conv BlitzMessage.Conversation
@@ -175,6 +177,9 @@ func ReadUserConversation(userID string, conversationID string) (*BlitzMessage.C
 
     if parentFeedPostID.Valid {
         conv.ParentFeedPostID = &parentFeedPostID.String
+    }
+    if lastUserID.Valid {
+        conv.LastActivityUserID = &lastUserID.String
     }
 
 
@@ -364,7 +369,7 @@ func FetchFeedPostsAsConversations(userID string) []*BlitzMessage.Conversation {
         }
 
         if replyUser.Valid {
-            conv.MemberIDs = []string{ replyUser.String }
+            conv.LastActivityUserID = &replyUser.String
         }
 
         resultArray = append(resultArray, &conv)
@@ -409,5 +414,39 @@ func FetchConversations(session *Session, req *BlitzMessage.FetchConversations) 
     }
 
     return serverResponse
+}
+
+
+//----------------------------------------------------------------------------------------
+//                                                                UpdateConversationStatus
+//----------------------------------------------------------------------------------------
+
+
+func UpdateConversationStatus(session *Session, updateStatus *BlitzMessage.UpdateConversationStatus,
+    ) *BlitzMessage.ServerResponse {
+    Log.LogFunctionName()
+
+    if  updateStatus.ConversationID == nil ||
+        updateStatus.Status == nil ||
+        *updateStatus.Status != BlitzMessage.UserMessageStatus_MSRead {
+        return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, fmt.Errorf("Invalid input"))
+    }
+
+    _, error := config.DB.Exec(
+        `update UserMessageTable set
+            messageStatus = $3,
+            readDate = transaction_timestamp()
+                where conversationID = $1
+                  and recipientID = $2
+                  and (messageStatus is null or messageStatus < $3);`,
+        updateStatus.ConversationID,
+        session.UserID,
+        updateStatus.Status,
+    )
+    if error != nil {
+        return ServerResponseForError(BlitzMessage.ResponseCode_RCServerError, error)
+    }
+
+    return ServerResponseForError(BlitzMessage.ResponseCode_RCSuccess, nil)
 }
 

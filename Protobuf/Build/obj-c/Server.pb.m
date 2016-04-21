@@ -2172,6 +2172,7 @@ static BPushDisconnect* defaultBPushDisconnectInstance = nil;
 @property (strong) BConversationRequest* conversationRequest;
 @property (strong) BFetchConversations* fetchConversations;
 @property (strong) BUserReview* userReview;
+@property (strong) BUpdateConversationStatus* updateConversationStatus;
 @end
 
 @implementation BRequestType
@@ -2316,6 +2317,13 @@ static BPushDisconnect* defaultBPushDisconnectInstance = nil;
   hasUserReview_ = !!_value_;
 }
 @synthesize userReview;
+- (BOOL) hasUpdateConversationStatus {
+  return !!hasUpdateConversationStatus_;
+}
+- (void) setHasUpdateConversationStatus:(BOOL) _value_ {
+  hasUpdateConversationStatus_ = !!_value_;
+}
+@synthesize updateConversationStatus;
 - (instancetype) init {
   if ((self = [super init])) {
     self.sessionRequest = [BSessionRequest defaultInstance];
@@ -2338,6 +2346,7 @@ static BPushDisconnect* defaultBPushDisconnectInstance = nil;
     self.conversationRequest = [BConversationRequest defaultInstance];
     self.fetchConversations = [BFetchConversations defaultInstance];
     self.userReview = [BUserReview defaultInstance];
+    self.updateConversationStatus = [BUpdateConversationStatus defaultInstance];
   }
   return self;
 }
@@ -2477,6 +2486,9 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   if (self.hasUserReview) {
     [output writeMessage:20 value:self.userReview];
   }
+  if (self.hasUpdateConversationStatus) {
+    [output writeMessage:21 value:self.updateConversationStatus];
+  }
   [self.unknownFields writeToCodedOutputStream:output];
 }
 - (SInt32) serializedSize {
@@ -2545,6 +2557,9 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   }
   if (self.hasUserReview) {
     size_ += computeMessageSize(20, self.userReview);
+  }
+  if (self.hasUpdateConversationStatus) {
+    size_ += computeMessageSize(21, self.updateConversationStatus);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -2701,6 +2716,12 @@ static BRequestType* defaultBRequestTypeInstance = nil;
                          withIndent:[NSString stringWithFormat:@"%@  ", indent]];
     [output appendFormat:@"%@}\n", indent];
   }
+  if (self.hasUpdateConversationStatus) {
+    [output appendFormat:@"%@%@ {\n", indent, @"updateConversationStatus"];
+    [self.updateConversationStatus writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (void) storeInDictionary:(NSMutableDictionary *)dictionary {
@@ -2804,6 +2825,11 @@ static BRequestType* defaultBRequestTypeInstance = nil;
    [self.userReview storeInDictionary:messageDictionary];
    [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"userReview"];
   }
+  if (self.hasUpdateConversationStatus) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.updateConversationStatus storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"updateConversationStatus"];
+  }
   [self.unknownFields storeInDictionary:dictionary];
 }
 - (BOOL) isEqual:(id)other {
@@ -2855,6 +2881,8 @@ static BRequestType* defaultBRequestTypeInstance = nil;
       (!self.hasFetchConversations || [self.fetchConversations isEqual:otherMessage.fetchConversations]) &&
       self.hasUserReview == otherMessage.hasUserReview &&
       (!self.hasUserReview || [self.userReview isEqual:otherMessage.userReview]) &&
+      self.hasUpdateConversationStatus == otherMessage.hasUpdateConversationStatus &&
+      (!self.hasUpdateConversationStatus || [self.updateConversationStatus isEqual:otherMessage.updateConversationStatus]) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
@@ -2918,6 +2946,9 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   }
   if (self.hasUserReview) {
     hashCode = hashCode * 31 + [self.userReview hash];
+  }
+  if (self.hasUpdateConversationStatus) {
+    hashCode = hashCode * 31 + [self.updateConversationStatus hash];
   }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
@@ -3021,6 +3052,9 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   }
   if (other.hasUserReview) {
     [self mergeUserReview:other.userReview];
+  }
+  if (other.hasUpdateConversationStatus) {
+    [self mergeUpdateConversationStatus:other.updateConversationStatus];
   }
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -3221,6 +3255,15 @@ static BRequestType* defaultBRequestTypeInstance = nil;
         }
         [input readMessage:subBuilder extensionRegistry:extensionRegistry];
         [self setUserReview:[subBuilder buildPartial]];
+        break;
+      }
+      case 170: {
+        BUpdateConversationStatusBuilder* subBuilder = [BUpdateConversationStatus builder];
+        if (self.hasUpdateConversationStatus) {
+          [subBuilder mergeFrom:self.updateConversationStatus];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setUpdateConversationStatus:[subBuilder buildPartial]];
         break;
       }
     }
@@ -3824,6 +3867,36 @@ static BRequestType* defaultBRequestTypeInstance = nil;
 - (BRequestTypeBuilder*) clearUserReview {
   resultRequestType.hasUserReview = NO;
   resultRequestType.userReview = [BUserReview defaultInstance];
+  return self;
+}
+- (BOOL) hasUpdateConversationStatus {
+  return resultRequestType.hasUpdateConversationStatus;
+}
+- (BUpdateConversationStatus*) updateConversationStatus {
+  return resultRequestType.updateConversationStatus;
+}
+- (BRequestTypeBuilder*) setUpdateConversationStatus:(BUpdateConversationStatus*) value {
+  resultRequestType.hasUpdateConversationStatus = YES;
+  resultRequestType.updateConversationStatus = value;
+  return self;
+}
+- (BRequestTypeBuilder*) setUpdateConversationStatusBuilder:(BUpdateConversationStatusBuilder*) builderForValue {
+  return [self setUpdateConversationStatus:[builderForValue build]];
+}
+- (BRequestTypeBuilder*) mergeUpdateConversationStatus:(BUpdateConversationStatus*) value {
+  if (resultRequestType.hasUpdateConversationStatus &&
+      resultRequestType.updateConversationStatus != [BUpdateConversationStatus defaultInstance]) {
+    resultRequestType.updateConversationStatus =
+      [[[BUpdateConversationStatus builderWithPrototype:resultRequestType.updateConversationStatus] mergeFrom:value] buildPartial];
+  } else {
+    resultRequestType.updateConversationStatus = value;
+  }
+  resultRequestType.hasUpdateConversationStatus = YES;
+  return self;
+}
+- (BRequestTypeBuilder*) clearUpdateConversationStatus {
+  resultRequestType.hasUpdateConversationStatus = NO;
+  resultRequestType.updateConversationStatus = [BUpdateConversationStatus defaultInstance];
   return self;
 }
 @end

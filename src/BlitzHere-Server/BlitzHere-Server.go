@@ -53,7 +53,9 @@ var (
 
 
 func ServerResponseForError(code BlitzMessage.ResponseCode, error error) *BlitzMessage.ServerResponse {
-    Log.Errorf("%s. Error %s: %v.", Log.PrettyStackString(2), code.String(), error)
+    if code != BlitzMessage.ResponseCode_RCSuccess {
+        Log.Errorf("%s. Error %s: %v.", Log.PrettyStackString(2), code.String(), error)
+    }
     response := &BlitzMessage.ServerResponse{
         ResponseCode:   &code,
     }
@@ -317,6 +319,9 @@ func DispatchServiceRequests(writer http.ResponseWriter, httpRequest *http.Reque
 
     case *BlitzMessage.UserReview:
         response = WriteReview(session, requestMessageType)
+
+    case *BlitzMessage.UpdateConversationStatus:
+        response = UpdateConversationStatus(session, requestMessageType)
 
     default:
         error = fmt.Errorf("Unrecognized request '%+v'", request)

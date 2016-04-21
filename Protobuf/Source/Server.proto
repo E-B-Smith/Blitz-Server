@@ -106,6 +106,7 @@ message RequestType {
   optional ConversationRequest      conversationRequest = 18;
   optional FetchConversations       fetchConversations  = 19;
   optional UserReview               userReview          = 20;
+  optional UpdateConversationStatus updateConversationStatus = 21;
 }
 
 

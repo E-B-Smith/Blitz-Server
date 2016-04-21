@@ -40,6 +40,7 @@ message Conversation {
   repeated string             memberIDs       = 10;
   optional Timestamp          closedDate      = 11;
   optional string             headlineText    = 12;
+  optional string             lastActivityUserID = 13;
 }
 
 
@@ -57,6 +58,12 @@ message ConversationResponse {
 message FetchConversations {
   optional Timespan       timespan            = 1;
   repeated Conversation   conversations       = 2;
+}
+
+
+message UpdateConversationStatus {
+  optional string             conversationID  = 1;
+  optional UserMessageStatus  status          = 2;
 }
 
 

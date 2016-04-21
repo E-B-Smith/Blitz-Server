@@ -107,6 +107,8 @@
 @class BTimespanBuilder;
 @class BTimestamp;
 @class BTimestampBuilder;
+@class BUpdateConversationStatus;
+@class BUpdateConversationStatusBuilder;
 @class BUserEvent;
 @class BUserEventBatch;
 @class BUserEventBatchBuilder;
@@ -665,6 +667,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 #define RequestType_conversationRequest @"conversationRequest"
 #define RequestType_fetchConversations @"fetchConversations"
 #define RequestType_userReview @"userReview"
+#define RequestType_updateConversationStatus @"updateConversationStatus"
 @interface BRequestType : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
   BOOL hasSessionRequest_:1;
@@ -687,6 +690,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
   BOOL hasConversationRequest_:1;
   BOOL hasFetchConversations_:1;
   BOOL hasUserReview_:1;
+  BOOL hasUpdateConversationStatus_:1;
   BSessionRequest* sessionRequest;
   BUserEventBatch* userEventBatch;
   BUserProfileUpdate* userProfileUpdate;
@@ -707,6 +711,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
   BConversationRequest* conversationRequest;
   BFetchConversations* fetchConversations;
   BUserReview* userReview;
+  BUpdateConversationStatus* updateConversationStatus;
 }
 - (BOOL) hasSessionRequest;
 - (BOOL) hasUserEventBatch;
@@ -728,6 +733,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BOOL) hasConversationRequest;
 - (BOOL) hasFetchConversations;
 - (BOOL) hasUserReview;
+- (BOOL) hasUpdateConversationStatus;
 @property (readonly, strong) BSessionRequest* sessionRequest;
 @property (readonly, strong) BUserEventBatch* userEventBatch;
 @property (readonly, strong) BUserProfileUpdate* userProfileUpdate;
@@ -748,6 +754,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 @property (readonly, strong) BConversationRequest* conversationRequest;
 @property (readonly, strong) BFetchConversations* fetchConversations;
 @property (readonly, strong) BUserReview* userReview;
+@property (readonly, strong) BUpdateConversationStatus* updateConversationStatus;
 
 + (instancetype) defaultInstance;
 - (instancetype) defaultInstance;
@@ -923,6 +930,13 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BRequestTypeBuilder*) setUserReviewBuilder:(BUserReviewBuilder*) builderForValue;
 - (BRequestTypeBuilder*) mergeUserReview:(BUserReview*) value;
 - (BRequestTypeBuilder*) clearUserReview;
+
+- (BOOL) hasUpdateConversationStatus;
+- (BUpdateConversationStatus*) updateConversationStatus;
+- (BRequestTypeBuilder*) setUpdateConversationStatus:(BUpdateConversationStatus*) value;
+- (BRequestTypeBuilder*) setUpdateConversationStatusBuilder:(BUpdateConversationStatusBuilder*) builderForValue;
+- (BRequestTypeBuilder*) mergeUpdateConversationStatus:(BUpdateConversationStatus*) value;
+- (BRequestTypeBuilder*) clearUpdateConversationStatus;
 @end
 
 #define ServerRequest_sessionToken @"sessionToken"

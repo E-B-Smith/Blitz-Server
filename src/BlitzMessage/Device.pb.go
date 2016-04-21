@@ -63,6 +63,7 @@ It has these top-level messages:
 	ConversationRequest
 	ConversationResponse
 	FetchConversations
+	UpdateConversationStatus
 	UserMessage
 	UserMessageUpdate
 	SocialIdentity
