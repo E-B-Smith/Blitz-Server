@@ -18,17 +18,16 @@ import "UserProfiles.proto";
 //----------------------------------------------------------------------------------------
 
 
-/*
 enum SearchType {
   STSearchAll = 0;
   STUsers     = 1;
   STTopics    = 2;
 }
-*/
 
 
 message AutocompleteRequest {
-  optional string       query = 1;
+  optional string       query      = 1;
+  optional SearchType   searchType = 2;
 }
 
 

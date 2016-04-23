@@ -38,13 +38,31 @@ func AutocompleteRequest(session *Session, query *BlitzMessage.AutocompleteReque
         return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, nil)
     }
 
-    rows, error := config.DB.Query(
-        `select word, similarity(word, $1) as similarity
-            from autocompletetable
-            order by similarity desc, word
-            limit 5;`,
-        *query.Query,
-    )
+    var rows *sql.Rows
+    var error error
+
+    if query.SearchType != nil && *query.SearchType == BlitzMessage.SearchType_STTopics {
+
+        rows, error = config.DB.Query(
+            `select distinct entityTag, similarity(entityTag, $1) as similarity
+                from EntityTagTable
+                where substring(entityTag from 1 for 1) <> '.'
+                order by similarity desc, entityTag
+                limit 5;`,
+            *query.Query,
+        )
+
+    } else {
+
+        rows, error = config.DB.Query(
+            `select word, similarity(word, $1) as similarity
+                from autocompletetable
+                order by similarity desc, word
+                limit 5;`,
+            *query.Query,
+        )
+
+    }
     defer pgsql.CloseRows(rows)
     if error != nil {
         Log.LogError(error)

@@ -109,6 +109,15 @@
 @class PBUninterpretedOptionNamePartBuilder;
 
 
+typedef NS_ENUM(SInt32, BSearchType) {
+  BSearchTypeSTSearchAll = 0,
+  BSearchTypeSTUsers = 1,
+  BSearchTypeSTTopics = 2,
+};
+
+BOOL BSearchTypeIsValidValue(BSearchType value);
+NSString *NSStringFromBSearchType(BSearchType value);
+
 
 @interface BSearchRoot : NSObject {
 }
@@ -117,13 +126,18 @@
 @end
 
 #define AutocompleteRequest_query @"query"
+#define AutocompleteRequest_searchType @"searchType"
 @interface BAutocompleteRequest : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
   BOOL hasQuery_:1;
+  BOOL hasSearchType_:1;
   NSString* query;
+  BSearchType searchType;
 }
 - (BOOL) hasQuery;
+- (BOOL) hasSearchType;
 @property (readonly, strong) NSString* query;
+@property (readonly) BSearchType searchType;
 
 + (instancetype) defaultInstance;
 - (instancetype) defaultInstance;
@@ -164,6 +178,11 @@
 - (NSString*) query;
 - (BAutocompleteRequestBuilder*) setQuery:(NSString*) value;
 - (BAutocompleteRequestBuilder*) clearQuery;
+
+- (BOOL) hasSearchType;
+- (BSearchType) searchType;
+- (BAutocompleteRequestBuilder*) setSearchType:(BSearchType) value;
+- (BAutocompleteRequestBuilder*) clearSearchType;
 @end
 
 #define AutocompleteResponse_query @"query"
