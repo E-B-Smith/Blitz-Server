@@ -68,6 +68,7 @@ func notifyTask() {
               from UserMessageTable
               join DeviceTable on DeviceTable.userID = UserMessageTable.recipientID
                 where UserMessageTable.notificationDate is null
+                  and UserMessageTable.recipientID <> UserMessageTable.senderID
                   and DeviceTable.notificationToken is not null
                   and DeviceTable.appID is not null
                 order by UserMessageTable.recipientID, UserMessageTable.creationDate;`)
