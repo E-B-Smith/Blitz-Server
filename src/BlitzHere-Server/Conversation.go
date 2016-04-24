@@ -267,7 +267,18 @@ func StartConversation(session *Session, req *BlitzMessage.ConversationRequest) 
         return ServerResponseForError(BlitzMessage.ResponseCode_RCServerError, error)
     }
 
-    response := BlitzMessage.ConversationResponse { Conversation: conversation }
+    profiles := make([]*BlitzMessage.UserProfile, 0, 3)
+    for _, memberID := range memberArray {
+        profile := ProfileForUserID(memberID)
+        if profile != nil {
+            profiles = append(profiles, profile)
+        }
+    }
+
+    response := BlitzMessage.ConversationResponse {
+        Conversation:   conversation,
+        Profiles:       profiles,
+    }
     serverResponse := &BlitzMessage.ServerResponse {
         ResponseCode:       BlitzMessage.ResponseCode(BlitzMessage.ResponseCode_RCSuccess).Enum(),
         ResponseType:       &BlitzMessage.ResponseType { ConversationResponse: &response },
