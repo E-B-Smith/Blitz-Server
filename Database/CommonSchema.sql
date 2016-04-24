@@ -453,6 +453,8 @@ create table EntityTagTable
 create unique index EntityTagTableIndex
     on  EntityTagTable(entityID, entityType, userID, entityTag);
 
+create index EntityTagTableAutocompleteIndex
+    on EntityTagTable (entityTag text_pattern_ops);
 
 
 ------------------------------------------------------------------------------------------

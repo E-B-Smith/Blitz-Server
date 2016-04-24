@@ -22,8 +22,32 @@ static PBExtensionRegistry* extensionRegistry = nil;
 }
 @end
 
+BOOL BSearchTypeIsValidValue(BSearchType value) {
+  switch (value) {
+    case BSearchTypeSTSearchAll:
+    case BSearchTypeSTUsers:
+    case BSearchTypeSTTopics:
+      return YES;
+    default:
+      return NO;
+  }
+}
+NSString *NSStringFromBSearchType(BSearchType value) {
+  switch (value) {
+    case BSearchTypeSTSearchAll:
+      return @"BSearchTypeSTSearchAll";
+    case BSearchTypeSTUsers:
+      return @"BSearchTypeSTUsers";
+    case BSearchTypeSTTopics:
+      return @"BSearchTypeSTTopics";
+    default:
+      return nil;
+  }
+}
+
 @interface BAutocompleteRequest ()
 @property (strong) NSString* query;
+@property BSearchType searchType;
 @end
 
 @implementation BAutocompleteRequest
@@ -35,9 +59,17 @@ static PBExtensionRegistry* extensionRegistry = nil;
   hasQuery_ = !!_value_;
 }
 @synthesize query;
+- (BOOL) hasSearchType {
+  return !!hasSearchType_;
+}
+- (void) setHasSearchType:(BOOL) _value_ {
+  hasSearchType_ = !!_value_;
+}
+@synthesize searchType;
 - (instancetype) init {
   if ((self = [super init])) {
     self.query = @"";
+    self.searchType = BSearchTypeSTSearchAll;
   }
   return self;
 }
@@ -60,6 +92,9 @@ static BAutocompleteRequest* defaultBAutocompleteRequestInstance = nil;
   if (self.hasQuery) {
     [output writeString:1 value:self.query];
   }
+  if (self.hasSearchType) {
+    [output writeEnum:2 value:self.searchType];
+  }
   [self.unknownFields writeToCodedOutputStream:output];
 }
 - (SInt32) serializedSize {
@@ -71,6 +106,9 @@ static BAutocompleteRequest* defaultBAutocompleteRequestInstance = nil;
   size_ = 0;
   if (self.hasQuery) {
     size_ += computeStringSize(1, self.query);
+  }
+  if (self.hasSearchType) {
+    size_ += computeEnumSize(2, self.searchType);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -110,11 +148,17 @@ static BAutocompleteRequest* defaultBAutocompleteRequestInstance = nil;
   if (self.hasQuery) {
     [output appendFormat:@"%@%@: %@\n", indent, @"query", self.query];
   }
+  if (self.hasSearchType) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"searchType", NSStringFromBSearchType(self.searchType)];
+  }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (void) storeInDictionary:(NSMutableDictionary *)dictionary {
   if (self.hasQuery) {
     [dictionary setObject: self.query forKey: @"query"];
+  }
+  if (self.hasSearchType) {
+    [dictionary setObject: @(self.searchType) forKey: @"searchType"];
   }
   [self.unknownFields storeInDictionary:dictionary];
 }
@@ -129,12 +173,17 @@ static BAutocompleteRequest* defaultBAutocompleteRequestInstance = nil;
   return
       self.hasQuery == otherMessage.hasQuery &&
       (!self.hasQuery || [self.query isEqual:otherMessage.query]) &&
+      self.hasSearchType == otherMessage.hasSearchType &&
+      (!self.hasSearchType || self.searchType == otherMessage.searchType) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
   __block NSUInteger hashCode = 7;
   if (self.hasQuery) {
     hashCode = hashCode * 31 + [self.query hash];
+  }
+  if (self.hasSearchType) {
+    hashCode = hashCode * 31 + self.searchType;
   }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
@@ -182,6 +231,9 @@ static BAutocompleteRequest* defaultBAutocompleteRequestInstance = nil;
   if (other.hasQuery) {
     [self setQuery:other.query];
   }
+  if (other.hasSearchType) {
+    [self setSearchType:other.searchType];
+  }
   [self mergeUnknownFields:other.unknownFields];
   return self;
 }
@@ -207,6 +259,15 @@ static BAutocompleteRequest* defaultBAutocompleteRequestInstance = nil;
         [self setQuery:[input readString]];
         break;
       }
+      case 16: {
+        BSearchType value = (BSearchType)[input readEnum];
+        if (BSearchTypeIsValidValue(value)) {
+          [self setSearchType:value];
+        } else {
+          [unknownFields mergeVarintField:2 value:value];
+        }
+        break;
+      }
     }
   }
 }
@@ -224,6 +285,22 @@ static BAutocompleteRequest* defaultBAutocompleteRequestInstance = nil;
 - (BAutocompleteRequestBuilder*) clearQuery {
   resultAutocompleteRequest.hasQuery = NO;
   resultAutocompleteRequest.query = @"";
+  return self;
+}
+- (BOOL) hasSearchType {
+  return resultAutocompleteRequest.hasSearchType;
+}
+- (BSearchType) searchType {
+  return resultAutocompleteRequest.searchType;
+}
+- (BAutocompleteRequestBuilder*) setSearchType:(BSearchType) value {
+  resultAutocompleteRequest.hasSearchType = YES;
+  resultAutocompleteRequest.searchType = value;
+  return self;
+}
+- (BAutocompleteRequestBuilder*) clearSearchType {
+  resultAutocompleteRequest.hasSearchType = NO;
+  resultAutocompleteRequest.searchType = BSearchTypeSTSearchAll;
   return self;
 }
 @end

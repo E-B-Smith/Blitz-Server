@@ -8,6 +8,97 @@ public final class Search {
   public static void registerAllExtensions(
       com.google.protobuf.ExtensionRegistry registry) {
   }
+  /**
+   * Protobuf enum {@code BlitzMessage.SearchType}
+   */
+  public enum SearchType
+      implements com.google.protobuf.ProtocolMessageEnum {
+    /**
+     * <code>STSearchAll = 0;</code>
+     */
+    STSearchAll(0, 0),
+    /**
+     * <code>STUsers = 1;</code>
+     */
+    STUsers(1, 1),
+    /**
+     * <code>STTopics = 2;</code>
+     */
+    STTopics(2, 2),
+    ;
+
+    /**
+     * <code>STSearchAll = 0;</code>
+     */
+    public static final int STSearchAll_VALUE = 0;
+    /**
+     * <code>STUsers = 1;</code>
+     */
+    public static final int STUsers_VALUE = 1;
+    /**
+     * <code>STTopics = 2;</code>
+     */
+    public static final int STTopics_VALUE = 2;
+
+
+    public final int getNumber() { return value; }
+
+    public static SearchType valueOf(int value) {
+      switch (value) {
+        case 0: return STSearchAll;
+        case 1: return STUsers;
+        case 2: return STTopics;
+        default: return null;
+      }
+    }
+
+    public static com.google.protobuf.Internal.EnumLiteMap<SearchType>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static com.google.protobuf.Internal.EnumLiteMap<SearchType>
+        internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<SearchType>() {
+            public SearchType findValueByNumber(int number) {
+              return SearchType.valueOf(number);
+            }
+          };
+
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+        getValueDescriptor() {
+      return getDescriptor().getValues().get(index);
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptor() {
+      return com.blitzhere.BlitzMessage.Search.getDescriptor().getEnumTypes().get(0);
+    }
+
+    private static final SearchType[] VALUES = values();
+
+    public static SearchType valueOf(
+        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new java.lang.IllegalArgumentException(
+          "EnumValueDescriptor is not for this type.");
+      }
+      return VALUES[desc.getIndex()];
+    }
+
+    private final int index;
+    private final int value;
+
+    private SearchType(int index, int value) {
+      this.index = index;
+      this.value = value;
+    }
+
+    // @@protoc_insertion_point(enum_scope:BlitzMessage.SearchType)
+  }
+
   public interface AutocompleteRequestOrBuilder extends
       // @@protoc_insertion_point(interface_extends:BlitzMessage.AutocompleteRequest)
       com.google.protobuf.MessageOrBuilder {
@@ -25,6 +116,15 @@ public final class Search {
      */
     com.google.protobuf.ByteString
         getQueryBytes();
+
+    /**
+     * <code>optional .BlitzMessage.SearchType searchType = 2;</code>
+     */
+    boolean hasSearchType();
+    /**
+     * <code>optional .BlitzMessage.SearchType searchType = 2;</code>
+     */
+    com.blitzhere.BlitzMessage.Search.SearchType getSearchType();
   }
   /**
    * Protobuf type {@code BlitzMessage.AutocompleteRequest}
@@ -82,6 +182,17 @@ public final class Search {
               com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000001;
               query_ = bs;
+              break;
+            }
+            case 16: {
+              int rawValue = input.readEnum();
+              com.blitzhere.BlitzMessage.Search.SearchType value = com.blitzhere.BlitzMessage.Search.SearchType.valueOf(rawValue);
+              if (value == null) {
+                unknownFields.mergeVarintField(2, rawValue);
+              } else {
+                bitField0_ |= 0x00000002;
+                searchType_ = value;
+              }
               break;
             }
           }
@@ -166,8 +277,24 @@ public final class Search {
       }
     }
 
+    public static final int SEARCHTYPE_FIELD_NUMBER = 2;
+    private com.blitzhere.BlitzMessage.Search.SearchType searchType_;
+    /**
+     * <code>optional .BlitzMessage.SearchType searchType = 2;</code>
+     */
+    public boolean hasSearchType() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional .BlitzMessage.SearchType searchType = 2;</code>
+     */
+    public com.blitzhere.BlitzMessage.Search.SearchType getSearchType() {
+      return searchType_;
+    }
+
     private void initFields() {
       query_ = "";
+      searchType_ = com.blitzhere.BlitzMessage.Search.SearchType.STSearchAll;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -185,6 +312,9 @@ public final class Search {
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         output.writeBytes(1, getQueryBytes());
       }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeEnum(2, searchType_.getNumber());
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -197,6 +327,10 @@ public final class Search {
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(1, getQueryBytes());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(2, searchType_.getNumber());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -317,6 +451,8 @@ public final class Search {
         super.clear();
         query_ = "";
         bitField0_ = (bitField0_ & ~0x00000001);
+        searchType_ = com.blitzhere.BlitzMessage.Search.SearchType.STSearchAll;
+        bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
 
@@ -349,6 +485,10 @@ public final class Search {
           to_bitField0_ |= 0x00000001;
         }
         result.query_ = query_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.searchType_ = searchType_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -369,6 +509,9 @@ public final class Search {
           bitField0_ |= 0x00000001;
           query_ = other.query_;
           onChanged();
+        }
+        if (other.hasSearchType()) {
+          setSearchType(other.getSearchType());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -469,6 +612,41 @@ public final class Search {
   }
   bitField0_ |= 0x00000001;
         query_ = value;
+        onChanged();
+        return this;
+      }
+
+      private com.blitzhere.BlitzMessage.Search.SearchType searchType_ = com.blitzhere.BlitzMessage.Search.SearchType.STSearchAll;
+      /**
+       * <code>optional .BlitzMessage.SearchType searchType = 2;</code>
+       */
+      public boolean hasSearchType() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional .BlitzMessage.SearchType searchType = 2;</code>
+       */
+      public com.blitzhere.BlitzMessage.Search.SearchType getSearchType() {
+        return searchType_;
+      }
+      /**
+       * <code>optional .BlitzMessage.SearchType searchType = 2;</code>
+       */
+      public Builder setSearchType(com.blitzhere.BlitzMessage.Search.SearchType value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000002;
+        searchType_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional .BlitzMessage.SearchType searchType = 2;</code>
+       */
+      public Builder clearSearchType() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        searchType_ = com.blitzhere.BlitzMessage.Search.SearchType.STSearchAll;
         onChanged();
         return this;
       }
@@ -2497,14 +2675,17 @@ public final class Search {
   static {
     java.lang.String[] descriptorData = {
       "\n\014Search.proto\022\014BlitzMessage\032\033objectivec" +
-      "-descriptor.proto\032\022UserProfiles.proto\"$\n" +
-      "\023AutocompleteRequest\022\r\n\005query\030\001 \001(\t\":\n\024A" +
-      "utocompleteResponse\022\r\n\005query\030\001 \001(\t\022\023\n\013su" +
-      "ggestions\030\002 \003(\t\"\"\n\021UserSearchRequest\022\r\n\005" +
-      "query\030\001 \001(\t\"P\n\022UserSearchResponse\022\r\n\005que" +
-      "ry\030\001 \001(\t\022+\n\010profiles\030\002 \003(\0132\031.BlitzMessag" +
-      "e.UserProfileB/\n\032com.blitzhere.BlitzMess" +
-      "age\210\001\001\322>\002\n\000\322>\003\022\001B\322>\002\030\001"
+      "-descriptor.proto\032\022UserProfiles.proto\"R\n" +
+      "\023AutocompleteRequest\022\r\n\005query\030\001 \001(\t\022,\n\ns" +
+      "earchType\030\002 \001(\0162\030.BlitzMessage.SearchTyp" +
+      "e\":\n\024AutocompleteResponse\022\r\n\005query\030\001 \001(\t" +
+      "\022\023\n\013suggestions\030\002 \003(\t\"\"\n\021UserSearchReque" +
+      "st\022\r\n\005query\030\001 \001(\t\"P\n\022UserSearchResponse\022" +
+      "\r\n\005query\030\001 \001(\t\022+\n\010profiles\030\002 \003(\0132\031.Blitz" +
+      "Message.UserProfile*8\n\nSearchType\022\017\n\013STS" +
+      "earchAll\020\000\022\013\n\007STUsers\020\001\022\014\n\010STTopics\020\002B/\n",
+      "\032com.blitzhere.BlitzMessage\210\001\001\322>\002\n\000\322>\003\022\001" +
+      "B\322>\002\030\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -2525,7 +2706,7 @@ public final class Search {
     internal_static_BlitzMessage_AutocompleteRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_BlitzMessage_AutocompleteRequest_descriptor,
-        new java.lang.String[] { "Query", });
+        new java.lang.String[] { "Query", "SearchType", });
     internal_static_BlitzMessage_AutocompleteResponse_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_BlitzMessage_AutocompleteResponse_fieldAccessorTable = new

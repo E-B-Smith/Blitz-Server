@@ -108,7 +108,7 @@ func notifyTask() {
             ServiceType:    serviceType,
             DeviceToken:    notificationToken,
             MessageText:    messageText,
-            SoundName:      "Pulse.caf",
+            SoundName:      "NewMessage.caf",
         }
         if actionURL.Valid && len(actionURL.String) > 0 {
             notification.OptionalKeys = map[string]string {
