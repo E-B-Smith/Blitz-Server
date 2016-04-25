@@ -30,7 +30,11 @@ func AddContactInfoToUserID(userID string, contact *BlitzMessage.ContactInfo) {
         contact.ContactType,
         Util.CleanStringPtr(contact.Contact),
         contact.IsVerified);
-    if error != nil { Log.Errorf("Insert UserContactInfo result: %v error: %v.", result, error) }
+    if error != nil {
+        Log.Errorf("Insert UserContactInfo result: %v error: %v.", result, error)
+    } else {
+        Log.Debugf("Added %s.", *Util.CleanStringPtr(contact.Contact))
+    }
 }
 
 
@@ -238,6 +242,15 @@ func EducationForUserID(userID string) []*BlitzMessage.Education {
     return educationArray
 }
 
+
+func NameForUserID(userID string) (string, error) {
+    Log.LogFunctionName()
+
+    row := config.DB.QueryRow(`select name from UserTable where userID = $1;`, userID)
+    var name sql.NullString
+    error := row.Scan(&name)
+    return name.String, error
+}
 
 //----------------------------------------------------------------------------------------
 //                                                                        ProfileForUserID

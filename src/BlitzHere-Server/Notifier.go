@@ -8,6 +8,7 @@ package main
 
 
 import (
+    "fmt"
     "time"
     "database/sql"
     "ApplePushService"
@@ -62,6 +63,8 @@ func notifyTask() {
             UserMessageTable.recipientID,
             UserMessageTable.messageText,
             UserMessageTable.actionURL,
+            UserMessageTable.conversationID,
+            UserMessageTable.senderID,
             DeviceTable.appID,
             DeviceTable.notificationToken,
             DeviceTable.appIsReleaseVersion
@@ -85,13 +88,24 @@ func notifyTask() {
             recipientID     string
             messageText     string
             actionURL       sql.NullString
+            conversationID  sql.NullString
+            senderID        sql.NullString
             appID           string
             notificationToken string
             appIsReleaseVersion bool
         )
 
         notificationsToSend++
-        error = rows.Scan(&recipientID, &messageText, &actionURL, &appID, &notificationToken, &appIsReleaseVersion)
+        error = rows.Scan(
+            &recipientID,
+            &messageText,
+            &actionURL,
+            &conversationID,
+            &senderID,
+            &appID,
+            &notificationToken,
+            &appIsReleaseVersion,
+        )
         if error != nil {
             notificationErrors++
             Log.LogError(error)
@@ -103,19 +117,24 @@ func notifyTask() {
             serviceType = ApplePushService.ServiceTypeProduction
         }
 
+        name, error := NameForUserID(senderID.String)
+        if len(name) > 0 {
+            messageText = fmt.Sprintf("%s says:\n%s", name ,messageText)
+        }
+
         notification := ApplePushService.Notification {
             BundleID:       appID,
             ServiceType:    serviceType,
             DeviceToken:    notificationToken,
             MessageText:    messageText,
             SoundName:      "NewMessage.caf",
+            OptionalKeys:   map[string]string { "conversationID": conversationID.String },
         }
         if actionURL.Valid && len(actionURL.String) > 0 {
-            notification.OptionalKeys = map[string]string {
-                "url":  actionURL.String,
-            }
+            notification.OptionalKeys["url"] = actionURL.String
         }
-        error := PushNotificationService.Send(&notification)
+
+        error = PushNotificationService.Send(&notification)
         if error != nil {
             notificationErrors++
             Log.LogError(error)
@@ -151,7 +170,7 @@ func notifier() {
 
     var shouldContinue bool = true
     for shouldContinue {
-        var timer *time.Timer = time.NewTimer(time.Second*30)
+        var timer *time.Timer = time.NewTimer(time.Second*2)
         select {
             case shouldContinue = <- notifierChannel:
                 Log.Debugf("Notifier should continue: %v.", shouldContinue)
