@@ -232,7 +232,7 @@ func UpdateFeedPost(session *Session, feedPostUpdate *BlitzMessage.FeedPostUpdat
                 name, _ := NameForUserID(session.UserID)
                 if len(name) == 0 { name = "Someone" }
                 message := fmt.Sprintf("%s responded to your post.", name)
-                SendUserMessage(BlitzMessage.Default_Globals_SystemUserID,
+                SendUserMessage(*feedPostUpdate.FeedPost.UserID,
                     [] string { *parentPost.UserID },
                     message,
                     BlitzMessage.UserMessageType_MTNotification,

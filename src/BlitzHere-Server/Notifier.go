@@ -128,7 +128,13 @@ func notifyTask() {
             DeviceToken:    notificationToken,
             MessageText:    messageText,
             SoundName:      "NewMessage.caf",
-            OptionalKeys:   map[string]string { "conversationID": conversationID.String },
+            OptionalKeys:   map[string]string {},
+        }
+        if len(conversationID.String) > 0 {
+            notification.OptionalKeys["conversationID"] = conversationID.String
+        }
+        if len(senderID.String) > 0 {
+            notification.OptionalKeys["senderID"] = senderID.String
         }
         if actionURL.Valid && len(actionURL.String) > 0 {
             notification.OptionalKeys["url"] = actionURL.String
