@@ -8187,27 +8187,27 @@ public final class UserProfiles {
         int index);
 
     /**
-     * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
+     * <code>repeated .BlitzMessage.EntityTag entityTags = 14;</code>
      */
     java.util.List<com.blitzhere.BlitzMessage.EntityTags.EntityTag> 
-        getExpertiseTagsList();
+        getEntityTagsList();
     /**
-     * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
+     * <code>repeated .BlitzMessage.EntityTag entityTags = 14;</code>
      */
-    com.blitzhere.BlitzMessage.EntityTags.EntityTag getExpertiseTags(int index);
+    com.blitzhere.BlitzMessage.EntityTags.EntityTag getEntityTags(int index);
     /**
-     * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
+     * <code>repeated .BlitzMessage.EntityTag entityTags = 14;</code>
      */
-    int getExpertiseTagsCount();
+    int getEntityTagsCount();
     /**
-     * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
+     * <code>repeated .BlitzMessage.EntityTag entityTags = 14;</code>
      */
     java.util.List<? extends com.blitzhere.BlitzMessage.EntityTags.EntityTagOrBuilder> 
-        getExpertiseTagsOrBuilderList();
+        getEntityTagsOrBuilderList();
     /**
-     * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
+     * <code>repeated .BlitzMessage.EntityTag entityTags = 14;</code>
      */
-    com.blitzhere.BlitzMessage.EntityTags.EntityTagOrBuilder getExpertiseTagsOrBuilder(
+    com.blitzhere.BlitzMessage.EntityTags.EntityTagOrBuilder getEntityTagsOrBuilder(
         int index);
 
     /**
@@ -8492,10 +8492,10 @@ public final class UserProfiles {
             }
             case 114: {
               if (!((mutable_bitField0_ & 0x00002000) == 0x00002000)) {
-                expertiseTags_ = new java.util.ArrayList<com.blitzhere.BlitzMessage.EntityTags.EntityTag>();
+                entityTags_ = new java.util.ArrayList<com.blitzhere.BlitzMessage.EntityTags.EntityTag>();
                 mutable_bitField0_ |= 0x00002000;
               }
-              expertiseTags_.add(input.readMessage(com.blitzhere.BlitzMessage.EntityTags.EntityTag.PARSER, extensionRegistry));
+              entityTags_.add(input.readMessage(com.blitzhere.BlitzMessage.EntityTags.EntityTag.PARSER, extensionRegistry));
               break;
             }
             case 122: {
@@ -8570,7 +8570,7 @@ public final class UserProfiles {
           education_ = java.util.Collections.unmodifiableList(education_);
         }
         if (((mutable_bitField0_ & 0x00002000) == 0x00002000)) {
-          expertiseTags_ = java.util.Collections.unmodifiableList(expertiseTags_);
+          entityTags_ = java.util.Collections.unmodifiableList(entityTags_);
         }
         if (((mutable_bitField0_ & 0x00004000) == 0x00004000)) {
           interestTags_ = interestTags_.getUnmodifiableView();
@@ -8983,39 +8983,39 @@ public final class UserProfiles {
       return education_.get(index);
     }
 
-    public static final int EXPERTISETAGS_FIELD_NUMBER = 14;
-    private java.util.List<com.blitzhere.BlitzMessage.EntityTags.EntityTag> expertiseTags_;
+    public static final int ENTITYTAGS_FIELD_NUMBER = 14;
+    private java.util.List<com.blitzhere.BlitzMessage.EntityTags.EntityTag> entityTags_;
     /**
-     * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
+     * <code>repeated .BlitzMessage.EntityTag entityTags = 14;</code>
      */
-    public java.util.List<com.blitzhere.BlitzMessage.EntityTags.EntityTag> getExpertiseTagsList() {
-      return expertiseTags_;
+    public java.util.List<com.blitzhere.BlitzMessage.EntityTags.EntityTag> getEntityTagsList() {
+      return entityTags_;
     }
     /**
-     * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
+     * <code>repeated .BlitzMessage.EntityTag entityTags = 14;</code>
      */
     public java.util.List<? extends com.blitzhere.BlitzMessage.EntityTags.EntityTagOrBuilder> 
-        getExpertiseTagsOrBuilderList() {
-      return expertiseTags_;
+        getEntityTagsOrBuilderList() {
+      return entityTags_;
     }
     /**
-     * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
+     * <code>repeated .BlitzMessage.EntityTag entityTags = 14;</code>
      */
-    public int getExpertiseTagsCount() {
-      return expertiseTags_.size();
+    public int getEntityTagsCount() {
+      return entityTags_.size();
     }
     /**
-     * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
+     * <code>repeated .BlitzMessage.EntityTag entityTags = 14;</code>
      */
-    public com.blitzhere.BlitzMessage.EntityTags.EntityTag getExpertiseTags(int index) {
-      return expertiseTags_.get(index);
+    public com.blitzhere.BlitzMessage.EntityTags.EntityTag getEntityTags(int index) {
+      return entityTags_.get(index);
     }
     /**
-     * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
+     * <code>repeated .BlitzMessage.EntityTag entityTags = 14;</code>
      */
-    public com.blitzhere.BlitzMessage.EntityTags.EntityTagOrBuilder getExpertiseTagsOrBuilder(
+    public com.blitzhere.BlitzMessage.EntityTags.EntityTagOrBuilder getEntityTagsOrBuilder(
         int index) {
-      return expertiseTags_.get(index);
+      return entityTags_.get(index);
     }
 
     public static final int INTERESTTAGS_FIELD_NUMBER = 15;
@@ -9213,7 +9213,7 @@ public final class UserProfiles {
       headlineEmployment_ = com.blitzhere.BlitzMessage.UserProfiles.Employment.getDefaultInstance();
       employment_ = java.util.Collections.emptyList();
       education_ = java.util.Collections.emptyList();
-      expertiseTags_ = java.util.Collections.emptyList();
+      entityTags_ = java.util.Collections.emptyList();
       interestTags_ = com.google.protobuf.LazyStringArrayList.EMPTY;
       backgroundSummary_ = "";
       ratingCount_ = 0;
@@ -9335,8 +9335,8 @@ public final class UserProfiles {
       for (int i = 0; i < education_.size(); i++) {
         output.writeMessage(13, education_.get(i));
       }
-      for (int i = 0; i < expertiseTags_.size(); i++) {
-        output.writeMessage(14, expertiseTags_.get(i));
+      for (int i = 0; i < entityTags_.size(); i++) {
+        output.writeMessage(14, entityTags_.get(i));
       }
       for (int i = 0; i < interestTags_.size(); i++) {
         output.writeBytes(15, interestTags_.getByteString(i));
@@ -9423,9 +9423,9 @@ public final class UserProfiles {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(13, education_.get(i));
       }
-      for (int i = 0; i < expertiseTags_.size(); i++) {
+      for (int i = 0; i < entityTags_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(14, expertiseTags_.get(i));
+          .computeMessageSize(14, entityTags_.get(i));
       }
       {
         int dataSize = 0;
@@ -9582,7 +9582,7 @@ public final class UserProfiles {
           getHeadlineEmploymentFieldBuilder();
           getEmploymentFieldBuilder();
           getEducationFieldBuilder();
-          getExpertiseTagsFieldBuilder();
+          getEntityTagsFieldBuilder();
           getReviewsFieldBuilder();
         }
       }
@@ -9654,11 +9654,11 @@ public final class UserProfiles {
         } else {
           educationBuilder_.clear();
         }
-        if (expertiseTagsBuilder_ == null) {
-          expertiseTags_ = java.util.Collections.emptyList();
+        if (entityTagsBuilder_ == null) {
+          entityTags_ = java.util.Collections.emptyList();
           bitField0_ = (bitField0_ & ~0x00002000);
         } else {
-          expertiseTagsBuilder_.clear();
+          entityTagsBuilder_.clear();
         }
         interestTags_ = com.google.protobuf.LazyStringArrayList.EMPTY;
         bitField0_ = (bitField0_ & ~0x00004000);
@@ -9801,14 +9801,14 @@ public final class UserProfiles {
         } else {
           result.education_ = educationBuilder_.build();
         }
-        if (expertiseTagsBuilder_ == null) {
+        if (entityTagsBuilder_ == null) {
           if (((bitField0_ & 0x00002000) == 0x00002000)) {
-            expertiseTags_ = java.util.Collections.unmodifiableList(expertiseTags_);
+            entityTags_ = java.util.Collections.unmodifiableList(entityTags_);
             bitField0_ = (bitField0_ & ~0x00002000);
           }
-          result.expertiseTags_ = expertiseTags_;
+          result.entityTags_ = entityTags_;
         } else {
-          result.expertiseTags_ = expertiseTagsBuilder_.build();
+          result.entityTags_ = entityTagsBuilder_.build();
         }
         if (((bitField0_ & 0x00004000) == 0x00004000)) {
           interestTags_ = interestTags_.getUnmodifiableView();
@@ -10022,29 +10022,29 @@ public final class UserProfiles {
             }
           }
         }
-        if (expertiseTagsBuilder_ == null) {
-          if (!other.expertiseTags_.isEmpty()) {
-            if (expertiseTags_.isEmpty()) {
-              expertiseTags_ = other.expertiseTags_;
+        if (entityTagsBuilder_ == null) {
+          if (!other.entityTags_.isEmpty()) {
+            if (entityTags_.isEmpty()) {
+              entityTags_ = other.entityTags_;
               bitField0_ = (bitField0_ & ~0x00002000);
             } else {
-              ensureExpertiseTagsIsMutable();
-              expertiseTags_.addAll(other.expertiseTags_);
+              ensureEntityTagsIsMutable();
+              entityTags_.addAll(other.entityTags_);
             }
             onChanged();
           }
         } else {
-          if (!other.expertiseTags_.isEmpty()) {
-            if (expertiseTagsBuilder_.isEmpty()) {
-              expertiseTagsBuilder_.dispose();
-              expertiseTagsBuilder_ = null;
-              expertiseTags_ = other.expertiseTags_;
+          if (!other.entityTags_.isEmpty()) {
+            if (entityTagsBuilder_.isEmpty()) {
+              entityTagsBuilder_.dispose();
+              entityTagsBuilder_ = null;
+              entityTags_ = other.entityTags_;
               bitField0_ = (bitField0_ & ~0x00002000);
-              expertiseTagsBuilder_ = 
+              entityTagsBuilder_ = 
                 com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
-                   getExpertiseTagsFieldBuilder() : null;
+                   getEntityTagsFieldBuilder() : null;
             } else {
-              expertiseTagsBuilder_.addAllMessages(other.expertiseTags_);
+              entityTagsBuilder_.addAllMessages(other.entityTags_);
             }
           }
         }
@@ -12077,244 +12077,244 @@ public final class UserProfiles {
         return educationBuilder_;
       }
 
-      private java.util.List<com.blitzhere.BlitzMessage.EntityTags.EntityTag> expertiseTags_ =
+      private java.util.List<com.blitzhere.BlitzMessage.EntityTags.EntityTag> entityTags_ =
         java.util.Collections.emptyList();
-      private void ensureExpertiseTagsIsMutable() {
+      private void ensureEntityTagsIsMutable() {
         if (!((bitField0_ & 0x00002000) == 0x00002000)) {
-          expertiseTags_ = new java.util.ArrayList<com.blitzhere.BlitzMessage.EntityTags.EntityTag>(expertiseTags_);
+          entityTags_ = new java.util.ArrayList<com.blitzhere.BlitzMessage.EntityTags.EntityTag>(entityTags_);
           bitField0_ |= 0x00002000;
          }
       }
 
       private com.google.protobuf.RepeatedFieldBuilder<
-          com.blitzhere.BlitzMessage.EntityTags.EntityTag, com.blitzhere.BlitzMessage.EntityTags.EntityTag.Builder, com.blitzhere.BlitzMessage.EntityTags.EntityTagOrBuilder> expertiseTagsBuilder_;
+          com.blitzhere.BlitzMessage.EntityTags.EntityTag, com.blitzhere.BlitzMessage.EntityTags.EntityTag.Builder, com.blitzhere.BlitzMessage.EntityTags.EntityTagOrBuilder> entityTagsBuilder_;
 
       /**
-       * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
+       * <code>repeated .BlitzMessage.EntityTag entityTags = 14;</code>
        */
-      public java.util.List<com.blitzhere.BlitzMessage.EntityTags.EntityTag> getExpertiseTagsList() {
-        if (expertiseTagsBuilder_ == null) {
-          return java.util.Collections.unmodifiableList(expertiseTags_);
+      public java.util.List<com.blitzhere.BlitzMessage.EntityTags.EntityTag> getEntityTagsList() {
+        if (entityTagsBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(entityTags_);
         } else {
-          return expertiseTagsBuilder_.getMessageList();
+          return entityTagsBuilder_.getMessageList();
         }
       }
       /**
-       * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
+       * <code>repeated .BlitzMessage.EntityTag entityTags = 14;</code>
        */
-      public int getExpertiseTagsCount() {
-        if (expertiseTagsBuilder_ == null) {
-          return expertiseTags_.size();
+      public int getEntityTagsCount() {
+        if (entityTagsBuilder_ == null) {
+          return entityTags_.size();
         } else {
-          return expertiseTagsBuilder_.getCount();
+          return entityTagsBuilder_.getCount();
         }
       }
       /**
-       * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
+       * <code>repeated .BlitzMessage.EntityTag entityTags = 14;</code>
        */
-      public com.blitzhere.BlitzMessage.EntityTags.EntityTag getExpertiseTags(int index) {
-        if (expertiseTagsBuilder_ == null) {
-          return expertiseTags_.get(index);
+      public com.blitzhere.BlitzMessage.EntityTags.EntityTag getEntityTags(int index) {
+        if (entityTagsBuilder_ == null) {
+          return entityTags_.get(index);
         } else {
-          return expertiseTagsBuilder_.getMessage(index);
+          return entityTagsBuilder_.getMessage(index);
         }
       }
       /**
-       * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
+       * <code>repeated .BlitzMessage.EntityTag entityTags = 14;</code>
        */
-      public Builder setExpertiseTags(
+      public Builder setEntityTags(
           int index, com.blitzhere.BlitzMessage.EntityTags.EntityTag value) {
-        if (expertiseTagsBuilder_ == null) {
+        if (entityTagsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          ensureExpertiseTagsIsMutable();
-          expertiseTags_.set(index, value);
+          ensureEntityTagsIsMutable();
+          entityTags_.set(index, value);
           onChanged();
         } else {
-          expertiseTagsBuilder_.setMessage(index, value);
+          entityTagsBuilder_.setMessage(index, value);
         }
         return this;
       }
       /**
-       * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
+       * <code>repeated .BlitzMessage.EntityTag entityTags = 14;</code>
        */
-      public Builder setExpertiseTags(
+      public Builder setEntityTags(
           int index, com.blitzhere.BlitzMessage.EntityTags.EntityTag.Builder builderForValue) {
-        if (expertiseTagsBuilder_ == null) {
-          ensureExpertiseTagsIsMutable();
-          expertiseTags_.set(index, builderForValue.build());
+        if (entityTagsBuilder_ == null) {
+          ensureEntityTagsIsMutable();
+          entityTags_.set(index, builderForValue.build());
           onChanged();
         } else {
-          expertiseTagsBuilder_.setMessage(index, builderForValue.build());
+          entityTagsBuilder_.setMessage(index, builderForValue.build());
         }
         return this;
       }
       /**
-       * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
+       * <code>repeated .BlitzMessage.EntityTag entityTags = 14;</code>
        */
-      public Builder addExpertiseTags(com.blitzhere.BlitzMessage.EntityTags.EntityTag value) {
-        if (expertiseTagsBuilder_ == null) {
+      public Builder addEntityTags(com.blitzhere.BlitzMessage.EntityTags.EntityTag value) {
+        if (entityTagsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          ensureExpertiseTagsIsMutable();
-          expertiseTags_.add(value);
+          ensureEntityTagsIsMutable();
+          entityTags_.add(value);
           onChanged();
         } else {
-          expertiseTagsBuilder_.addMessage(value);
+          entityTagsBuilder_.addMessage(value);
         }
         return this;
       }
       /**
-       * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
+       * <code>repeated .BlitzMessage.EntityTag entityTags = 14;</code>
        */
-      public Builder addExpertiseTags(
+      public Builder addEntityTags(
           int index, com.blitzhere.BlitzMessage.EntityTags.EntityTag value) {
-        if (expertiseTagsBuilder_ == null) {
+        if (entityTagsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          ensureExpertiseTagsIsMutable();
-          expertiseTags_.add(index, value);
+          ensureEntityTagsIsMutable();
+          entityTags_.add(index, value);
           onChanged();
         } else {
-          expertiseTagsBuilder_.addMessage(index, value);
+          entityTagsBuilder_.addMessage(index, value);
         }
         return this;
       }
       /**
-       * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
+       * <code>repeated .BlitzMessage.EntityTag entityTags = 14;</code>
        */
-      public Builder addExpertiseTags(
+      public Builder addEntityTags(
           com.blitzhere.BlitzMessage.EntityTags.EntityTag.Builder builderForValue) {
-        if (expertiseTagsBuilder_ == null) {
-          ensureExpertiseTagsIsMutable();
-          expertiseTags_.add(builderForValue.build());
+        if (entityTagsBuilder_ == null) {
+          ensureEntityTagsIsMutable();
+          entityTags_.add(builderForValue.build());
           onChanged();
         } else {
-          expertiseTagsBuilder_.addMessage(builderForValue.build());
+          entityTagsBuilder_.addMessage(builderForValue.build());
         }
         return this;
       }
       /**
-       * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
+       * <code>repeated .BlitzMessage.EntityTag entityTags = 14;</code>
        */
-      public Builder addExpertiseTags(
+      public Builder addEntityTags(
           int index, com.blitzhere.BlitzMessage.EntityTags.EntityTag.Builder builderForValue) {
-        if (expertiseTagsBuilder_ == null) {
-          ensureExpertiseTagsIsMutable();
-          expertiseTags_.add(index, builderForValue.build());
+        if (entityTagsBuilder_ == null) {
+          ensureEntityTagsIsMutable();
+          entityTags_.add(index, builderForValue.build());
           onChanged();
         } else {
-          expertiseTagsBuilder_.addMessage(index, builderForValue.build());
+          entityTagsBuilder_.addMessage(index, builderForValue.build());
         }
         return this;
       }
       /**
-       * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
+       * <code>repeated .BlitzMessage.EntityTag entityTags = 14;</code>
        */
-      public Builder addAllExpertiseTags(
+      public Builder addAllEntityTags(
           java.lang.Iterable<? extends com.blitzhere.BlitzMessage.EntityTags.EntityTag> values) {
-        if (expertiseTagsBuilder_ == null) {
-          ensureExpertiseTagsIsMutable();
+        if (entityTagsBuilder_ == null) {
+          ensureEntityTagsIsMutable();
           com.google.protobuf.AbstractMessageLite.Builder.addAll(
-              values, expertiseTags_);
+              values, entityTags_);
           onChanged();
         } else {
-          expertiseTagsBuilder_.addAllMessages(values);
+          entityTagsBuilder_.addAllMessages(values);
         }
         return this;
       }
       /**
-       * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
+       * <code>repeated .BlitzMessage.EntityTag entityTags = 14;</code>
        */
-      public Builder clearExpertiseTags() {
-        if (expertiseTagsBuilder_ == null) {
-          expertiseTags_ = java.util.Collections.emptyList();
+      public Builder clearEntityTags() {
+        if (entityTagsBuilder_ == null) {
+          entityTags_ = java.util.Collections.emptyList();
           bitField0_ = (bitField0_ & ~0x00002000);
           onChanged();
         } else {
-          expertiseTagsBuilder_.clear();
+          entityTagsBuilder_.clear();
         }
         return this;
       }
       /**
-       * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
+       * <code>repeated .BlitzMessage.EntityTag entityTags = 14;</code>
        */
-      public Builder removeExpertiseTags(int index) {
-        if (expertiseTagsBuilder_ == null) {
-          ensureExpertiseTagsIsMutable();
-          expertiseTags_.remove(index);
+      public Builder removeEntityTags(int index) {
+        if (entityTagsBuilder_ == null) {
+          ensureEntityTagsIsMutable();
+          entityTags_.remove(index);
           onChanged();
         } else {
-          expertiseTagsBuilder_.remove(index);
+          entityTagsBuilder_.remove(index);
         }
         return this;
       }
       /**
-       * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
+       * <code>repeated .BlitzMessage.EntityTag entityTags = 14;</code>
        */
-      public com.blitzhere.BlitzMessage.EntityTags.EntityTag.Builder getExpertiseTagsBuilder(
+      public com.blitzhere.BlitzMessage.EntityTags.EntityTag.Builder getEntityTagsBuilder(
           int index) {
-        return getExpertiseTagsFieldBuilder().getBuilder(index);
+        return getEntityTagsFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
+       * <code>repeated .BlitzMessage.EntityTag entityTags = 14;</code>
        */
-      public com.blitzhere.BlitzMessage.EntityTags.EntityTagOrBuilder getExpertiseTagsOrBuilder(
+      public com.blitzhere.BlitzMessage.EntityTags.EntityTagOrBuilder getEntityTagsOrBuilder(
           int index) {
-        if (expertiseTagsBuilder_ == null) {
-          return expertiseTags_.get(index);  } else {
-          return expertiseTagsBuilder_.getMessageOrBuilder(index);
+        if (entityTagsBuilder_ == null) {
+          return entityTags_.get(index);  } else {
+          return entityTagsBuilder_.getMessageOrBuilder(index);
         }
       }
       /**
-       * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
+       * <code>repeated .BlitzMessage.EntityTag entityTags = 14;</code>
        */
       public java.util.List<? extends com.blitzhere.BlitzMessage.EntityTags.EntityTagOrBuilder> 
-           getExpertiseTagsOrBuilderList() {
-        if (expertiseTagsBuilder_ != null) {
-          return expertiseTagsBuilder_.getMessageOrBuilderList();
+           getEntityTagsOrBuilderList() {
+        if (entityTagsBuilder_ != null) {
+          return entityTagsBuilder_.getMessageOrBuilderList();
         } else {
-          return java.util.Collections.unmodifiableList(expertiseTags_);
+          return java.util.Collections.unmodifiableList(entityTags_);
         }
       }
       /**
-       * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
+       * <code>repeated .BlitzMessage.EntityTag entityTags = 14;</code>
        */
-      public com.blitzhere.BlitzMessage.EntityTags.EntityTag.Builder addExpertiseTagsBuilder() {
-        return getExpertiseTagsFieldBuilder().addBuilder(
+      public com.blitzhere.BlitzMessage.EntityTags.EntityTag.Builder addEntityTagsBuilder() {
+        return getEntityTagsFieldBuilder().addBuilder(
             com.blitzhere.BlitzMessage.EntityTags.EntityTag.getDefaultInstance());
       }
       /**
-       * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
+       * <code>repeated .BlitzMessage.EntityTag entityTags = 14;</code>
        */
-      public com.blitzhere.BlitzMessage.EntityTags.EntityTag.Builder addExpertiseTagsBuilder(
+      public com.blitzhere.BlitzMessage.EntityTags.EntityTag.Builder addEntityTagsBuilder(
           int index) {
-        return getExpertiseTagsFieldBuilder().addBuilder(
+        return getEntityTagsFieldBuilder().addBuilder(
             index, com.blitzhere.BlitzMessage.EntityTags.EntityTag.getDefaultInstance());
       }
       /**
-       * <code>repeated .BlitzMessage.EntityTag expertiseTags = 14;</code>
+       * <code>repeated .BlitzMessage.EntityTag entityTags = 14;</code>
        */
       public java.util.List<com.blitzhere.BlitzMessage.EntityTags.EntityTag.Builder> 
-           getExpertiseTagsBuilderList() {
-        return getExpertiseTagsFieldBuilder().getBuilderList();
+           getEntityTagsBuilderList() {
+        return getEntityTagsFieldBuilder().getBuilderList();
       }
       private com.google.protobuf.RepeatedFieldBuilder<
           com.blitzhere.BlitzMessage.EntityTags.EntityTag, com.blitzhere.BlitzMessage.EntityTags.EntityTag.Builder, com.blitzhere.BlitzMessage.EntityTags.EntityTagOrBuilder> 
-          getExpertiseTagsFieldBuilder() {
-        if (expertiseTagsBuilder_ == null) {
-          expertiseTagsBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+          getEntityTagsFieldBuilder() {
+        if (entityTagsBuilder_ == null) {
+          entityTagsBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
               com.blitzhere.BlitzMessage.EntityTags.EntityTag, com.blitzhere.BlitzMessage.EntityTags.EntityTag.Builder, com.blitzhere.BlitzMessage.EntityTags.EntityTagOrBuilder>(
-                  expertiseTags_,
+                  entityTags_,
                   ((bitField0_ & 0x00002000) == 0x00002000),
                   getParentForChildren(),
                   isClean());
-          expertiseTags_ = null;
+          entityTags_ = null;
         }
-        return expertiseTagsBuilder_;
+        return entityTagsBuilder_;
       }
 
       private com.google.protobuf.LazyStringList interestTags_ = com.google.protobuf.LazyStringArrayList.EMPTY;
@@ -14279,31 +14279,109 @@ public final class UserProfiles {
 
     /**
      * <code>repeated string userIDs = 1;</code>
+     *
+     * <pre>
+     *  Fetch by userID:
+     * </pre>
      */
     com.google.protobuf.ProtocolStringList
         getUserIDsList();
     /**
      * <code>repeated string userIDs = 1;</code>
+     *
+     * <pre>
+     *  Fetch by userID:
+     * </pre>
      */
     int getUserIDsCount();
     /**
      * <code>repeated string userIDs = 1;</code>
+     *
+     * <pre>
+     *  Fetch by userID:
+     * </pre>
      */
     java.lang.String getUserIDs(int index);
     /**
      * <code>repeated string userIDs = 1;</code>
+     *
+     * <pre>
+     *  Fetch by userID:
+     * </pre>
      */
     com.google.protobuf.ByteString
         getUserIDsBytes(int index);
 
     /**
      * <code>optional bool fetchDemoProfiles = 2;</code>
+     *
+     * <pre>
+     *  Fetch some demo profiles:
+     * </pre>
      */
     boolean hasFetchDemoProfiles();
     /**
      * <code>optional bool fetchDemoProfiles = 2;</code>
+     *
+     * <pre>
+     *  Fetch some demo profiles:
+     * </pre>
      */
     boolean getFetchDemoProfiles();
+
+    /**
+     * <code>optional string entityTag = 3;</code>
+     *
+     * <pre>
+     *  Fetch by tag:
+     * </pre>
+     */
+    boolean hasEntityTag();
+    /**
+     * <code>optional string entityTag = 3;</code>
+     *
+     * <pre>
+     *  Fetch by tag:
+     * </pre>
+     */
+    java.lang.String getEntityTag();
+    /**
+     * <code>optional string entityTag = 3;</code>
+     *
+     * <pre>
+     *  Fetch by tag:
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getEntityTagBytes();
+
+    /**
+     * <code>optional string entityUserID = 4;</code>
+     */
+    boolean hasEntityUserID();
+    /**
+     * <code>optional string entityUserID = 4;</code>
+     */
+    java.lang.String getEntityUserID();
+    /**
+     * <code>optional string entityUserID = 4;</code>
+     */
+    com.google.protobuf.ByteString
+        getEntityUserIDBytes();
+
+    /**
+     * <code>optional string entityID = 5;</code>
+     */
+    boolean hasEntityID();
+    /**
+     * <code>optional string entityID = 5;</code>
+     */
+    java.lang.String getEntityID();
+    /**
+     * <code>optional string entityID = 5;</code>
+     */
+    com.google.protobuf.ByteString
+        getEntityIDBytes();
   }
   /**
    * Protobuf type {@code BlitzMessage.UserProfileQuery}
@@ -14371,6 +14449,24 @@ public final class UserProfiles {
               fetchDemoProfiles_ = input.readBool();
               break;
             }
+            case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000002;
+              entityTag_ = bs;
+              break;
+            }
+            case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000004;
+              entityUserID_ = bs;
+              break;
+            }
+            case 42: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000008;
+              entityID_ = bs;
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -14418,6 +14514,10 @@ public final class UserProfiles {
     private com.google.protobuf.LazyStringList userIDs_;
     /**
      * <code>repeated string userIDs = 1;</code>
+     *
+     * <pre>
+     *  Fetch by userID:
+     * </pre>
      */
     public com.google.protobuf.ProtocolStringList
         getUserIDsList() {
@@ -14425,18 +14525,30 @@ public final class UserProfiles {
     }
     /**
      * <code>repeated string userIDs = 1;</code>
+     *
+     * <pre>
+     *  Fetch by userID:
+     * </pre>
      */
     public int getUserIDsCount() {
       return userIDs_.size();
     }
     /**
      * <code>repeated string userIDs = 1;</code>
+     *
+     * <pre>
+     *  Fetch by userID:
+     * </pre>
      */
     public java.lang.String getUserIDs(int index) {
       return userIDs_.get(index);
     }
     /**
      * <code>repeated string userIDs = 1;</code>
+     *
+     * <pre>
+     *  Fetch by userID:
+     * </pre>
      */
     public com.google.protobuf.ByteString
         getUserIDsBytes(int index) {
@@ -14447,20 +14559,169 @@ public final class UserProfiles {
     private boolean fetchDemoProfiles_;
     /**
      * <code>optional bool fetchDemoProfiles = 2;</code>
+     *
+     * <pre>
+     *  Fetch some demo profiles:
+     * </pre>
      */
     public boolean hasFetchDemoProfiles() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     /**
      * <code>optional bool fetchDemoProfiles = 2;</code>
+     *
+     * <pre>
+     *  Fetch some demo profiles:
+     * </pre>
      */
     public boolean getFetchDemoProfiles() {
       return fetchDemoProfiles_;
     }
 
+    public static final int ENTITYTAG_FIELD_NUMBER = 3;
+    private java.lang.Object entityTag_;
+    /**
+     * <code>optional string entityTag = 3;</code>
+     *
+     * <pre>
+     *  Fetch by tag:
+     * </pre>
+     */
+    public boolean hasEntityTag() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional string entityTag = 3;</code>
+     *
+     * <pre>
+     *  Fetch by tag:
+     * </pre>
+     */
+    public java.lang.String getEntityTag() {
+      java.lang.Object ref = entityTag_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          entityTag_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string entityTag = 3;</code>
+     *
+     * <pre>
+     *  Fetch by tag:
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getEntityTagBytes() {
+      java.lang.Object ref = entityTag_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        entityTag_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int ENTITYUSERID_FIELD_NUMBER = 4;
+    private java.lang.Object entityUserID_;
+    /**
+     * <code>optional string entityUserID = 4;</code>
+     */
+    public boolean hasEntityUserID() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional string entityUserID = 4;</code>
+     */
+    public java.lang.String getEntityUserID() {
+      java.lang.Object ref = entityUserID_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          entityUserID_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string entityUserID = 4;</code>
+     */
+    public com.google.protobuf.ByteString
+        getEntityUserIDBytes() {
+      java.lang.Object ref = entityUserID_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        entityUserID_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int ENTITYID_FIELD_NUMBER = 5;
+    private java.lang.Object entityID_;
+    /**
+     * <code>optional string entityID = 5;</code>
+     */
+    public boolean hasEntityID() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional string entityID = 5;</code>
+     */
+    public java.lang.String getEntityID() {
+      java.lang.Object ref = entityID_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          entityID_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string entityID = 5;</code>
+     */
+    public com.google.protobuf.ByteString
+        getEntityIDBytes() {
+      java.lang.Object ref = entityID_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        entityID_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private void initFields() {
       userIDs_ = com.google.protobuf.LazyStringArrayList.EMPTY;
       fetchDemoProfiles_ = false;
+      entityTag_ = "";
+      entityUserID_ = "";
+      entityID_ = "";
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -14480,6 +14741,15 @@ public final class UserProfiles {
       }
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         output.writeBool(2, fetchDemoProfiles_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeBytes(3, getEntityTagBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeBytes(4, getEntityUserIDBytes());
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeBytes(5, getEntityIDBytes());
       }
       getUnknownFields().writeTo(output);
     }
@@ -14502,6 +14772,18 @@ public final class UserProfiles {
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBoolSize(2, fetchDemoProfiles_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(3, getEntityTagBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(4, getEntityUserIDBytes());
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(5, getEntityIDBytes());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -14624,6 +14906,12 @@ public final class UserProfiles {
         bitField0_ = (bitField0_ & ~0x00000001);
         fetchDemoProfiles_ = false;
         bitField0_ = (bitField0_ & ~0x00000002);
+        entityTag_ = "";
+        bitField0_ = (bitField0_ & ~0x00000004);
+        entityUserID_ = "";
+        bitField0_ = (bitField0_ & ~0x00000008);
+        entityID_ = "";
+        bitField0_ = (bitField0_ & ~0x00000010);
         return this;
       }
 
@@ -14661,6 +14949,18 @@ public final class UserProfiles {
           to_bitField0_ |= 0x00000001;
         }
         result.fetchDemoProfiles_ = fetchDemoProfiles_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.entityTag_ = entityTag_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.entityUserID_ = entityUserID_;
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.entityID_ = entityID_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -14689,6 +14989,21 @@ public final class UserProfiles {
         }
         if (other.hasFetchDemoProfiles()) {
           setFetchDemoProfiles(other.getFetchDemoProfiles());
+        }
+        if (other.hasEntityTag()) {
+          bitField0_ |= 0x00000004;
+          entityTag_ = other.entityTag_;
+          onChanged();
+        }
+        if (other.hasEntityUserID()) {
+          bitField0_ |= 0x00000008;
+          entityUserID_ = other.entityUserID_;
+          onChanged();
+        }
+        if (other.hasEntityID()) {
+          bitField0_ |= 0x00000010;
+          entityID_ = other.entityID_;
+          onChanged();
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -14726,6 +15041,10 @@ public final class UserProfiles {
       }
       /**
        * <code>repeated string userIDs = 1;</code>
+       *
+       * <pre>
+       *  Fetch by userID:
+       * </pre>
        */
       public com.google.protobuf.ProtocolStringList
           getUserIDsList() {
@@ -14733,18 +15052,30 @@ public final class UserProfiles {
       }
       /**
        * <code>repeated string userIDs = 1;</code>
+       *
+       * <pre>
+       *  Fetch by userID:
+       * </pre>
        */
       public int getUserIDsCount() {
         return userIDs_.size();
       }
       /**
        * <code>repeated string userIDs = 1;</code>
+       *
+       * <pre>
+       *  Fetch by userID:
+       * </pre>
        */
       public java.lang.String getUserIDs(int index) {
         return userIDs_.get(index);
       }
       /**
        * <code>repeated string userIDs = 1;</code>
+       *
+       * <pre>
+       *  Fetch by userID:
+       * </pre>
        */
       public com.google.protobuf.ByteString
           getUserIDsBytes(int index) {
@@ -14752,6 +15083,10 @@ public final class UserProfiles {
       }
       /**
        * <code>repeated string userIDs = 1;</code>
+       *
+       * <pre>
+       *  Fetch by userID:
+       * </pre>
        */
       public Builder setUserIDs(
           int index, java.lang.String value) {
@@ -14765,6 +15100,10 @@ public final class UserProfiles {
       }
       /**
        * <code>repeated string userIDs = 1;</code>
+       *
+       * <pre>
+       *  Fetch by userID:
+       * </pre>
        */
       public Builder addUserIDs(
           java.lang.String value) {
@@ -14778,6 +15117,10 @@ public final class UserProfiles {
       }
       /**
        * <code>repeated string userIDs = 1;</code>
+       *
+       * <pre>
+       *  Fetch by userID:
+       * </pre>
        */
       public Builder addAllUserIDs(
           java.lang.Iterable<java.lang.String> values) {
@@ -14789,6 +15132,10 @@ public final class UserProfiles {
       }
       /**
        * <code>repeated string userIDs = 1;</code>
+       *
+       * <pre>
+       *  Fetch by userID:
+       * </pre>
        */
       public Builder clearUserIDs() {
         userIDs_ = com.google.protobuf.LazyStringArrayList.EMPTY;
@@ -14798,6 +15145,10 @@ public final class UserProfiles {
       }
       /**
        * <code>repeated string userIDs = 1;</code>
+       *
+       * <pre>
+       *  Fetch by userID:
+       * </pre>
        */
       public Builder addUserIDsBytes(
           com.google.protobuf.ByteString value) {
@@ -14813,18 +15164,30 @@ public final class UserProfiles {
       private boolean fetchDemoProfiles_ ;
       /**
        * <code>optional bool fetchDemoProfiles = 2;</code>
+       *
+       * <pre>
+       *  Fetch some demo profiles:
+       * </pre>
        */
       public boolean hasFetchDemoProfiles() {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
       /**
        * <code>optional bool fetchDemoProfiles = 2;</code>
+       *
+       * <pre>
+       *  Fetch some demo profiles:
+       * </pre>
        */
       public boolean getFetchDemoProfiles() {
         return fetchDemoProfiles_;
       }
       /**
        * <code>optional bool fetchDemoProfiles = 2;</code>
+       *
+       * <pre>
+       *  Fetch some demo profiles:
+       * </pre>
        */
       public Builder setFetchDemoProfiles(boolean value) {
         bitField0_ |= 0x00000002;
@@ -14834,10 +15197,266 @@ public final class UserProfiles {
       }
       /**
        * <code>optional bool fetchDemoProfiles = 2;</code>
+       *
+       * <pre>
+       *  Fetch some demo profiles:
+       * </pre>
        */
       public Builder clearFetchDemoProfiles() {
         bitField0_ = (bitField0_ & ~0x00000002);
         fetchDemoProfiles_ = false;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object entityTag_ = "";
+      /**
+       * <code>optional string entityTag = 3;</code>
+       *
+       * <pre>
+       *  Fetch by tag:
+       * </pre>
+       */
+      public boolean hasEntityTag() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional string entityTag = 3;</code>
+       *
+       * <pre>
+       *  Fetch by tag:
+       * </pre>
+       */
+      public java.lang.String getEntityTag() {
+        java.lang.Object ref = entityTag_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            entityTag_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string entityTag = 3;</code>
+       *
+       * <pre>
+       *  Fetch by tag:
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getEntityTagBytes() {
+        java.lang.Object ref = entityTag_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          entityTag_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string entityTag = 3;</code>
+       *
+       * <pre>
+       *  Fetch by tag:
+       * </pre>
+       */
+      public Builder setEntityTag(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        entityTag_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string entityTag = 3;</code>
+       *
+       * <pre>
+       *  Fetch by tag:
+       * </pre>
+       */
+      public Builder clearEntityTag() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        entityTag_ = getDefaultInstance().getEntityTag();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string entityTag = 3;</code>
+       *
+       * <pre>
+       *  Fetch by tag:
+       * </pre>
+       */
+      public Builder setEntityTagBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        entityTag_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object entityUserID_ = "";
+      /**
+       * <code>optional string entityUserID = 4;</code>
+       */
+      public boolean hasEntityUserID() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional string entityUserID = 4;</code>
+       */
+      public java.lang.String getEntityUserID() {
+        java.lang.Object ref = entityUserID_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            entityUserID_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string entityUserID = 4;</code>
+       */
+      public com.google.protobuf.ByteString
+          getEntityUserIDBytes() {
+        java.lang.Object ref = entityUserID_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          entityUserID_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string entityUserID = 4;</code>
+       */
+      public Builder setEntityUserID(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+        entityUserID_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string entityUserID = 4;</code>
+       */
+      public Builder clearEntityUserID() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        entityUserID_ = getDefaultInstance().getEntityUserID();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string entityUserID = 4;</code>
+       */
+      public Builder setEntityUserIDBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+        entityUserID_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object entityID_ = "";
+      /**
+       * <code>optional string entityID = 5;</code>
+       */
+      public boolean hasEntityID() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      /**
+       * <code>optional string entityID = 5;</code>
+       */
+      public java.lang.String getEntityID() {
+        java.lang.Object ref = entityID_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            entityID_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string entityID = 5;</code>
+       */
+      public com.google.protobuf.ByteString
+          getEntityIDBytes() {
+        java.lang.Object ref = entityID_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          entityID_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string entityID = 5;</code>
+       */
+      public Builder setEntityID(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000010;
+        entityID_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string entityID = 5;</code>
+       */
+      public Builder clearEntityID() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        entityID_ = getDefaultInstance().getEntityID();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string entityID = 5;</code>
+       */
+      public Builder setEntityIDBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000010;
+        entityID_ = value;
         onChanged();
         return this;
       }
@@ -16672,7 +17291,7 @@ public final class UserProfiles {
       "(\0132\027.BlitzMessage.Timestamp\022\026\n\016conversat" +
       "ionID\030\004 \001(\t\022\022\n\nresponsive\030\005 \001(\001\022\020\n\010outgo" +
       "ing\030\006 \001(\001\022\023\n\013recommended\030\007 \001(\001\022\022\n\nreview" +
-      "Text\030\010 \001(\t\022\014\n\004tags\030\t \003(\t\"\254\006\n\013UserProfile" +
+      "Text\030\010 \001(\t\022\014\n\004tags\030\t \003(\t\"\251\006\n\013UserProfile" +
       "\022\016\n\006userID\030\001 \001(\t\022,\n\nuserStatus\030\002 \001(\0162\030.B" +
       "litzMessage.UserStatus\022-\n\014creationDate\030\003",
       " \001(\0132\027.BlitzMessage.Timestamp\022)\n\010lastSee" +
@@ -16686,34 +17305,35 @@ public final class UserProfiles {
       "lineEmployment\030\013 \001(\0132\030.BlitzMessage.Empl" +
       "oyment\022,\n\nemployment\030\014 \003(\0132\030.BlitzMessag",
       "e.Employment\022*\n\teducation\030\r \003(\0132\027.BlitzM" +
-      "essage.Education\022.\n\rexpertiseTags\030\016 \003(\0132" +
-      "\027.BlitzMessage.EntityTag\022\024\n\014interestTags" +
-      "\030\017 \003(\t\022\031\n\021backgroundSummary\030\020 \001(\t\022\023\n\013rat" +
-      "ingCount\030\021 \001(\005\022\030\n\020ratingResponsive\030\022 \001(\001" +
-      "\022\026\n\016ratingOutgoing\030\023 \001(\001\022\031\n\021ratingRecomm" +
-      "ended\030\024 \001(\001\022\027\n\017responseSeconds\030\025 \001(\001\022)\n\007" +
-      "reviews\030\026 \003(\0132\030.BlitzMessage.UserReview\"" +
-      "9\n\013ImageUpload\022*\n\timageData\030\001 \003(\0132\027.Blit" +
-      "zMessage.ImageData\"@\n\021UserProfileUpdate\022",
-      "+\n\010profiles\030\001 \003(\0132\031.BlitzMessage.UserPro" +
-      "file\">\n\020UserProfileQuery\022\017\n\007userIDs\030\001 \003(" +
-      "\t\022\031\n\021fetchDemoProfiles\030\002 \001(\010\"\246\001\n\023Confirm" +
-      "ationRequest\022.\n\013contactInfo\030\001 \001(\0132\031.Blit" +
-      "zMessage.ContactInfo\022.\n\013userProfile\030\002 \001(" +
-      "\0132\031.BlitzMessage.UserProfile\022\030\n\020confirma" +
-      "tionCode\030\003 \001(\t\022\025\n\rinviterUserID\030\004 \001(\t\"F\n" +
-      "\027ProfilesFromContactInfo\022+\n\010profiles\030\001 \003" +
-      "(\0132\031.BlitzMessage.UserProfile*Z\n\013Contact" +
-      "Type\022\r\n\tCTUnknown\020\000\022\016\n\nCTPhoneSMS\020\001\022\013\n\007C",
-      "TEmail\020\002\022\n\n\006CTChat\020\003\022\023\n\017CTSocialService\020" +
-      "\004*j\n\nUserStatus\022\r\n\tUSUnknown\020\000\022\r\n\tUSBloc" +
-      "ked\020\001\022\r\n\tUSInvited\020\002\022\014\n\010USActive\020\003\022\020\n\014US" +
-      "Confirming\020\004\022\017\n\013USConfirmed\020\005*:\n\006Gender\022" +
-      "\014\n\010GUnknown\020\000\022\013\n\007GFemale\020\001\022\t\n\005GMale\020\002\022\n\n" +
-      "\006GOther\020\003*F\n\014ImageContent\022\r\n\tICUnknown\020\000" +
-      "\022\021\n\rICUserProfile\020\001\022\024\n\020ICUserBackground\020" +
-      "\002B/\n\032com.blitzhere.BlitzMessage\210\001\001\322>\002\n\000\322" +
-      ">\003\022\001B\322>\002\030\001"
+      "essage.Education\022+\n\nentityTags\030\016 \003(\0132\027.B" +
+      "litzMessage.EntityTag\022\024\n\014interestTags\030\017 " +
+      "\003(\t\022\031\n\021backgroundSummary\030\020 \001(\t\022\023\n\013rating" +
+      "Count\030\021 \001(\005\022\030\n\020ratingResponsive\030\022 \001(\001\022\026\n" +
+      "\016ratingOutgoing\030\023 \001(\001\022\031\n\021ratingRecommend" +
+      "ed\030\024 \001(\001\022\027\n\017responseSeconds\030\025 \001(\001\022)\n\007rev" +
+      "iews\030\026 \003(\0132\030.BlitzMessage.UserReview\"9\n\013" +
+      "ImageUpload\022*\n\timageData\030\001 \003(\0132\027.BlitzMe" +
+      "ssage.ImageData\"@\n\021UserProfileUpdate\022+\n\010",
+      "profiles\030\001 \003(\0132\031.BlitzMessage.UserProfil" +
+      "e\"y\n\020UserProfileQuery\022\017\n\007userIDs\030\001 \003(\t\022\031" +
+      "\n\021fetchDemoProfiles\030\002 \001(\010\022\021\n\tentityTag\030\003" +
+      " \001(\t\022\024\n\014entityUserID\030\004 \001(\t\022\020\n\010entityID\030\005" +
+      " \001(\t\"\246\001\n\023ConfirmationRequest\022.\n\013contactI" +
+      "nfo\030\001 \001(\0132\031.BlitzMessage.ContactInfo\022.\n\013" +
+      "userProfile\030\002 \001(\0132\031.BlitzMessage.UserPro" +
+      "file\022\030\n\020confirmationCode\030\003 \001(\t\022\025\n\rinvite" +
+      "rUserID\030\004 \001(\t\"F\n\027ProfilesFromContactInfo" +
+      "\022+\n\010profiles\030\001 \003(\0132\031.BlitzMessage.UserPr",
+      "ofile*Z\n\013ContactType\022\r\n\tCTUnknown\020\000\022\016\n\nC" +
+      "TPhoneSMS\020\001\022\013\n\007CTEmail\020\002\022\n\n\006CTChat\020\003\022\023\n\017" +
+      "CTSocialService\020\004*j\n\nUserStatus\022\r\n\tUSUnk" +
+      "nown\020\000\022\r\n\tUSBlocked\020\001\022\r\n\tUSInvited\020\002\022\014\n\010" +
+      "USActive\020\003\022\020\n\014USConfirming\020\004\022\017\n\013USConfir" +
+      "med\020\005*:\n\006Gender\022\014\n\010GUnknown\020\000\022\013\n\007GFemale" +
+      "\020\001\022\t\n\005GMale\020\002\022\n\n\006GOther\020\003*F\n\014ImageConten" +
+      "t\022\r\n\tICUnknown\020\000\022\021\n\rICUserProfile\020\001\022\024\n\020I" +
+      "CUserBackground\020\002B/\n\032com.blitzhere.Blitz" +
+      "Message\210\001\001\322>\002\n\000\322>\003\022\001B\322>\002\030\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -16771,7 +17391,7 @@ public final class UserProfiles {
     internal_static_BlitzMessage_UserProfile_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_BlitzMessage_UserProfile_descriptor,
-        new java.lang.String[] { "UserID", "UserStatus", "CreationDate", "LastSeen", "Name", "Gender", "Birthday", "Images", "SocialIdentities", "ContactInfo", "HeadlineEmployment", "Employment", "Education", "ExpertiseTags", "InterestTags", "BackgroundSummary", "RatingCount", "RatingResponsive", "RatingOutgoing", "RatingRecommended", "ResponseSeconds", "Reviews", });
+        new java.lang.String[] { "UserID", "UserStatus", "CreationDate", "LastSeen", "Name", "Gender", "Birthday", "Images", "SocialIdentities", "ContactInfo", "HeadlineEmployment", "Employment", "Education", "EntityTags", "InterestTags", "BackgroundSummary", "RatingCount", "RatingResponsive", "RatingOutgoing", "RatingRecommended", "ResponseSeconds", "Reviews", });
     internal_static_BlitzMessage_ImageUpload_descriptor =
       getDescriptor().getMessageTypes().get(7);
     internal_static_BlitzMessage_ImageUpload_fieldAccessorTable = new
@@ -16789,7 +17409,7 @@ public final class UserProfiles {
     internal_static_BlitzMessage_UserProfileQuery_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_BlitzMessage_UserProfileQuery_descriptor,
-        new java.lang.String[] { "UserIDs", "FetchDemoProfiles", });
+        new java.lang.String[] { "UserIDs", "FetchDemoProfiles", "EntityTag", "EntityUserID", "EntityID", });
     internal_static_BlitzMessage_ConfirmationRequest_descriptor =
       getDescriptor().getMessageTypes().get(10);
     internal_static_BlitzMessage_ConfirmationRequest_fieldAccessorTable = new

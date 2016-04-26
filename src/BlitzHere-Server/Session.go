@@ -335,12 +335,12 @@ func UpdateSession(ipAddress string,
         Log.Debugf("Checking new user for invite...")
         invite = InviteRequestForDevice(request.DeviceInfo)
         if invite != nil {
-            profile := ProfileForUserID(*invite.FriendID)
+            profile := ProfileForUserID(session, *invite.FriendID)
             if profile == nil {
                 invite = nil
             } else {
                 request.Profile = profile
-                senderProfile := ProfileForUserID(*invite.UserID)
+                senderProfile := ProfileForUserID(session, *invite.UserID)
                 if senderProfile != nil {
                     invite.Profiles = [] *BlitzMessage.UserProfile { senderProfile }
                 }
@@ -358,7 +358,7 @@ func UpdateSession(ipAddress string,
         request.DeviceInfo.AdvertisingUID,
         request.DeviceInfo.DeviceUDID)
 
-    profile := ExistingProfileFromIdentities(identities)
+    profile := ExistingProfileFromIdentities(session, identities)
     if profile == nil { profile = request.Profile }
 
     if userID != *profile.UserID {
@@ -450,7 +450,7 @@ func UpdateSession(ipAddress string,
     session.Device = *request.DeviceInfo
     //session.AppOptions = AppOptionsForSession(session)
 
-    profile = ProfileForUserID(userID)
+    profile = ProfileForUserID(session, userID)
 
     sessionResponse := &BlitzMessage.SessionResponse {
         UserID:             &userID,

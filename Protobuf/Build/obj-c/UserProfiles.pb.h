@@ -804,7 +804,7 @@ NSString *NSStringFromBImageContent(BImageContent value);
 #define UserProfile_headlineEmployment @"headlineEmployment"
 #define UserProfile_employment @"employment"
 #define UserProfile_education @"education"
-#define UserProfile_expertiseTags @"expertiseTags"
+#define UserProfile_entityTags @"entityTags"
 #define UserProfile_interestTags @"interestTags"
 #define UserProfile_backgroundSummary @"backgroundSummary"
 #define UserProfile_ratingCount @"ratingCount"
@@ -849,7 +849,7 @@ NSString *NSStringFromBImageContent(BImageContent value);
   NSMutableArray * contactInfoArray;
   NSMutableArray * employmentArray;
   NSMutableArray * educationArray;
-  NSMutableArray * expertiseTagsArray;
+  NSMutableArray * entityTagsArray;
   NSMutableArray * reviewsArray;
 }
 - (BOOL) hasUserID;
@@ -879,7 +879,7 @@ NSString *NSStringFromBImageContent(BImageContent value);
 @property (readonly, strong) BEmployment* headlineEmployment;
 @property (readonly, strong) NSArray * employment;
 @property (readonly, strong) NSArray * education;
-@property (readonly, strong) NSArray * expertiseTags;
+@property (readonly, strong) NSArray * entityTags;
 @property (readonly, strong) NSArray * interestTags;
 @property (readonly, strong) NSString* backgroundSummary;
 @property (readonly) SInt32 ratingCount;
@@ -893,7 +893,7 @@ NSString *NSStringFromBImageContent(BImageContent value);
 - (BContactInfo*)contactInfoAtIndex:(NSUInteger)index;
 - (BEmployment*)employmentAtIndex:(NSUInteger)index;
 - (BEducation*)educationAtIndex:(NSUInteger)index;
-- (BEntityTag*)expertiseTagsAtIndex:(NSUInteger)index;
+- (BEntityTag*)entityTagsAtIndex:(NSUInteger)index;
 - (NSString*)interestTagsAtIndex:(NSUInteger)index;
 - (BUserReview*)reviewsAtIndex:(NSUInteger)index;
 
@@ -1010,11 +1010,11 @@ NSString *NSStringFromBImageContent(BImageContent value);
 - (BUserProfileBuilder *)setEducationArray:(NSArray *)array;
 - (BUserProfileBuilder *)clearEducation;
 
-- (NSMutableArray *)expertiseTags;
-- (BEntityTag*)expertiseTagsAtIndex:(NSUInteger)index;
-- (BUserProfileBuilder *)addExpertiseTags:(BEntityTag*)value;
-- (BUserProfileBuilder *)setExpertiseTagsArray:(NSArray *)array;
-- (BUserProfileBuilder *)clearExpertiseTags;
+- (NSMutableArray *)entityTags;
+- (BEntityTag*)entityTagsAtIndex:(NSUInteger)index;
+- (BUserProfileBuilder *)addEntityTags:(BEntityTag*)value;
+- (BUserProfileBuilder *)setEntityTagsArray:(NSArray *)array;
+- (BUserProfileBuilder *)clearEntityTags;
 
 - (NSMutableArray *)interestTags;
 - (NSString*)interestTagsAtIndex:(NSUInteger)index;
@@ -1161,15 +1161,30 @@ NSString *NSStringFromBImageContent(BImageContent value);
 
 #define UserProfileQuery_userIDs @"userIDs"
 #define UserProfileQuery_fetchDemoProfiles @"fetchDemoProfiles"
+#define UserProfileQuery_entityTag @"entityTag"
+#define UserProfileQuery_entityUserID @"entityUserID"
+#define UserProfileQuery_entityID @"entityID"
 @interface BUserProfileQuery : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
   BOOL hasFetchDemoProfiles_:1;
+  BOOL hasEntityTag_:1;
+  BOOL hasEntityUserID_:1;
+  BOOL hasEntityID_:1;
   BOOL fetchDemoProfiles_:1;
+  NSString* entityTag;
+  NSString* entityUserID;
+  NSString* entityID;
   NSMutableArray * userIDsArray;
 }
 - (BOOL) hasFetchDemoProfiles;
+- (BOOL) hasEntityTag;
+- (BOOL) hasEntityUserID;
+- (BOOL) hasEntityID;
 @property (readonly, strong) NSArray * userIDs;
 - (BOOL) fetchDemoProfiles;
+@property (readonly, strong) NSString* entityTag;
+@property (readonly, strong) NSString* entityUserID;
+@property (readonly, strong) NSString* entityID;
 - (NSString*)userIDsAtIndex:(NSUInteger)index;
 
 + (instancetype) defaultInstance;
@@ -1217,6 +1232,21 @@ NSString *NSStringFromBImageContent(BImageContent value);
 - (BOOL) fetchDemoProfiles;
 - (BUserProfileQueryBuilder*) setFetchDemoProfiles:(BOOL) value;
 - (BUserProfileQueryBuilder*) clearFetchDemoProfiles;
+
+- (BOOL) hasEntityTag;
+- (NSString*) entityTag;
+- (BUserProfileQueryBuilder*) setEntityTag:(NSString*) value;
+- (BUserProfileQueryBuilder*) clearEntityTag;
+
+- (BOOL) hasEntityUserID;
+- (NSString*) entityUserID;
+- (BUserProfileQueryBuilder*) setEntityUserID:(NSString*) value;
+- (BUserProfileQueryBuilder*) clearEntityUserID;
+
+- (BOOL) hasEntityID;
+- (NSString*) entityID;
+- (BUserProfileQueryBuilder*) setEntityID:(NSString*) value;
+- (BUserProfileQueryBuilder*) clearEntityID;
 @end
 
 #define ConfirmationRequest_contactInfo @"contactInfo"

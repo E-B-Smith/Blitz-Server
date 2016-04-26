@@ -3191,7 +3191,7 @@ static BUserReview* defaultBUserReviewInstance = nil;
 @property (strong) BEmployment* headlineEmployment;
 @property (strong) NSMutableArray * employmentArray;
 @property (strong) NSMutableArray * educationArray;
-@property (strong) NSMutableArray * expertiseTagsArray;
+@property (strong) NSMutableArray * entityTagsArray;
 @property (strong) NSMutableArray * interestTagsArray;
 @property (strong) NSString* backgroundSummary;
 @property SInt32 ratingCount;
@@ -3270,8 +3270,8 @@ static BUserReview* defaultBUserReviewInstance = nil;
 @dynamic employment;
 @synthesize educationArray;
 @dynamic education;
-@synthesize expertiseTagsArray;
-@dynamic expertiseTags;
+@synthesize entityTagsArray;
+@dynamic entityTags;
 @synthesize interestTagsArray;
 @dynamic interestTags;
 - (BOOL) hasBackgroundSummary {
@@ -3379,11 +3379,11 @@ static BUserProfile* defaultBUserProfileInstance = nil;
 - (BEducation*)educationAtIndex:(NSUInteger)index {
   return [educationArray objectAtIndex:index];
 }
-- (NSArray *)expertiseTags {
-  return expertiseTagsArray;
+- (NSArray *)entityTags {
+  return entityTagsArray;
 }
-- (BEntityTag*)expertiseTagsAtIndex:(NSUInteger)index {
-  return [expertiseTagsArray objectAtIndex:index];
+- (BEntityTag*)entityTagsAtIndex:(NSUInteger)index {
+  return [entityTagsArray objectAtIndex:index];
 }
 - (NSArray *)interestTags {
   return interestTagsArray;
@@ -3508,7 +3508,7 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   [self.educationArray enumerateObjectsUsingBlock:^(BEducation *element, NSUInteger idx, BOOL *stop) {
     [output writeMessage:13 value:element];
   }];
-  [self.expertiseTagsArray enumerateObjectsUsingBlock:^(BEntityTag *element, NSUInteger idx, BOOL *stop) {
+  [self.entityTagsArray enumerateObjectsUsingBlock:^(BEntityTag *element, NSUInteger idx, BOOL *stop) {
     [output writeMessage:14 value:element];
   }];
   [self.interestTagsArray enumerateObjectsUsingBlock:^(NSString *element, NSUInteger idx, BOOL *stop) {
@@ -3583,7 +3583,7 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   [self.educationArray enumerateObjectsUsingBlock:^(BEducation *element, NSUInteger idx, BOOL *stop) {
     size_ += computeMessageSize(13, element);
   }];
-  [self.expertiseTagsArray enumerateObjectsUsingBlock:^(BEntityTag *element, NSUInteger idx, BOOL *stop) {
+  [self.entityTagsArray enumerateObjectsUsingBlock:^(BEntityTag *element, NSUInteger idx, BOOL *stop) {
     size_ += computeMessageSize(14, element);
   }];
   {
@@ -3717,8 +3717,8 @@ static BUserProfile* defaultBUserProfileInstance = nil;
                      withIndent:[NSString stringWithFormat:@"%@  ", indent]];
     [output appendFormat:@"%@}\n", indent];
   }];
-  [self.expertiseTagsArray enumerateObjectsUsingBlock:^(BEntityTag *element, NSUInteger idx, BOOL *stop) {
-    [output appendFormat:@"%@%@ {\n", indent, @"expertiseTags"];
+  [self.entityTagsArray enumerateObjectsUsingBlock:^(BEntityTag *element, NSUInteger idx, BOOL *stop) {
+    [output appendFormat:@"%@%@ {\n", indent, @"entityTags"];
     [element writeDescriptionTo:output
                      withIndent:[NSString stringWithFormat:@"%@  ", indent]];
     [output appendFormat:@"%@}\n", indent];
@@ -3810,10 +3810,10 @@ static BUserProfile* defaultBUserProfileInstance = nil;
     [element storeInDictionary:elementDictionary];
     [dictionary setObject:[NSDictionary dictionaryWithDictionary:elementDictionary] forKey:@"education"];
   }
-  for (BEntityTag* element in self.expertiseTagsArray) {
+  for (BEntityTag* element in self.entityTagsArray) {
     NSMutableDictionary *elementDictionary = [NSMutableDictionary dictionary];
     [element storeInDictionary:elementDictionary];
-    [dictionary setObject:[NSDictionary dictionaryWithDictionary:elementDictionary] forKey:@"expertiseTags"];
+    [dictionary setObject:[NSDictionary dictionaryWithDictionary:elementDictionary] forKey:@"entityTags"];
   }
   [dictionary setObject:self.interestTags forKey: @"interestTags"];
   if (self.hasBackgroundSummary) {
@@ -3871,7 +3871,7 @@ static BUserProfile* defaultBUserProfileInstance = nil;
       (!self.hasHeadlineEmployment || [self.headlineEmployment isEqual:otherMessage.headlineEmployment]) &&
       [self.employmentArray isEqualToArray:otherMessage.employmentArray] &&
       [self.educationArray isEqualToArray:otherMessage.educationArray] &&
-      [self.expertiseTagsArray isEqualToArray:otherMessage.expertiseTagsArray] &&
+      [self.entityTagsArray isEqualToArray:otherMessage.entityTagsArray] &&
       [self.interestTagsArray isEqualToArray:otherMessage.interestTagsArray] &&
       self.hasBackgroundSummary == otherMessage.hasBackgroundSummary &&
       (!self.hasBackgroundSummary || [self.backgroundSummary isEqual:otherMessage.backgroundSummary]) &&
@@ -3929,7 +3929,7 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   [self.educationArray enumerateObjectsUsingBlock:^(BEducation *element, NSUInteger idx, BOOL *stop) {
     hashCode = hashCode * 31 + [element hash];
   }];
-  [self.expertiseTagsArray enumerateObjectsUsingBlock:^(BEntityTag *element, NSUInteger idx, BOOL *stop) {
+  [self.entityTagsArray enumerateObjectsUsingBlock:^(BEntityTag *element, NSUInteger idx, BOOL *stop) {
     hashCode = hashCode * 31 + [element hash];
   }];
   [self.interestTagsArray enumerateObjectsUsingBlock:^(NSString *element, NSUInteger idx, BOOL *stop) {
@@ -4058,11 +4058,11 @@ static BUserProfile* defaultBUserProfileInstance = nil;
       [resultUserProfile.educationArray addObjectsFromArray:other.educationArray];
     }
   }
-  if (other.expertiseTagsArray.count > 0) {
-    if (resultUserProfile.expertiseTagsArray == nil) {
-      resultUserProfile.expertiseTagsArray = [[NSMutableArray alloc] initWithArray:other.expertiseTagsArray];
+  if (other.entityTagsArray.count > 0) {
+    if (resultUserProfile.entityTagsArray == nil) {
+      resultUserProfile.entityTagsArray = [[NSMutableArray alloc] initWithArray:other.entityTagsArray];
     } else {
-      [resultUserProfile.expertiseTagsArray addObjectsFromArray:other.expertiseTagsArray];
+      [resultUserProfile.entityTagsArray addObjectsFromArray:other.entityTagsArray];
     }
   }
   if (other.interestTagsArray.count > 0) {
@@ -4213,7 +4213,7 @@ static BUserProfile* defaultBUserProfileInstance = nil;
       case 114: {
         BEntityTagBuilder* subBuilder = [BEntityTag builder];
         [input readMessage:subBuilder extensionRegistry:extensionRegistry];
-        [self addExpertiseTags:[subBuilder buildPartial]];
+        [self addEntityTags:[subBuilder buildPartial]];
         break;
       }
       case 122: {
@@ -4542,25 +4542,25 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   resultUserProfile.educationArray = nil;
   return self;
 }
-- (NSMutableArray *)expertiseTags {
-  return resultUserProfile.expertiseTagsArray;
+- (NSMutableArray *)entityTags {
+  return resultUserProfile.entityTagsArray;
 }
-- (BEntityTag*)expertiseTagsAtIndex:(NSUInteger)index {
-  return [resultUserProfile expertiseTagsAtIndex:index];
+- (BEntityTag*)entityTagsAtIndex:(NSUInteger)index {
+  return [resultUserProfile entityTagsAtIndex:index];
 }
-- (BUserProfileBuilder *)addExpertiseTags:(BEntityTag*)value {
-  if (resultUserProfile.expertiseTagsArray == nil) {
-    resultUserProfile.expertiseTagsArray = [[NSMutableArray alloc]init];
+- (BUserProfileBuilder *)addEntityTags:(BEntityTag*)value {
+  if (resultUserProfile.entityTagsArray == nil) {
+    resultUserProfile.entityTagsArray = [[NSMutableArray alloc]init];
   }
-  [resultUserProfile.expertiseTagsArray addObject:value];
+  [resultUserProfile.entityTagsArray addObject:value];
   return self;
 }
-- (BUserProfileBuilder *)setExpertiseTagsArray:(NSArray *)array {
-  resultUserProfile.expertiseTagsArray = [[NSMutableArray alloc]initWithArray:array];
+- (BUserProfileBuilder *)setEntityTagsArray:(NSArray *)array {
+  resultUserProfile.entityTagsArray = [[NSMutableArray alloc]initWithArray:array];
   return self;
 }
-- (BUserProfileBuilder *)clearExpertiseTags {
-  resultUserProfile.expertiseTagsArray = nil;
+- (BUserProfileBuilder *)clearEntityTags {
+  resultUserProfile.entityTagsArray = nil;
   return self;
 }
 - (NSMutableArray *)interestTags {
@@ -5164,6 +5164,9 @@ static BUserProfileUpdate* defaultBUserProfileUpdateInstance = nil;
 @interface BUserProfileQuery ()
 @property (strong) NSMutableArray * userIDsArray;
 @property BOOL fetchDemoProfiles;
+@property (strong) NSString* entityTag;
+@property (strong) NSString* entityUserID;
+@property (strong) NSString* entityID;
 @end
 
 @implementation BUserProfileQuery
@@ -5182,9 +5185,33 @@ static BUserProfileUpdate* defaultBUserProfileUpdateInstance = nil;
 - (void) setFetchDemoProfiles:(BOOL) _value_ {
   fetchDemoProfiles_ = !!_value_;
 }
+- (BOOL) hasEntityTag {
+  return !!hasEntityTag_;
+}
+- (void) setHasEntityTag:(BOOL) _value_ {
+  hasEntityTag_ = !!_value_;
+}
+@synthesize entityTag;
+- (BOOL) hasEntityUserID {
+  return !!hasEntityUserID_;
+}
+- (void) setHasEntityUserID:(BOOL) _value_ {
+  hasEntityUserID_ = !!_value_;
+}
+@synthesize entityUserID;
+- (BOOL) hasEntityID {
+  return !!hasEntityID_;
+}
+- (void) setHasEntityID:(BOOL) _value_ {
+  hasEntityID_ = !!_value_;
+}
+@synthesize entityID;
 - (instancetype) init {
   if ((self = [super init])) {
     self.fetchDemoProfiles = NO;
+    self.entityTag = @"";
+    self.entityUserID = @"";
+    self.entityID = @"";
   }
   return self;
 }
@@ -5216,6 +5243,15 @@ static BUserProfileQuery* defaultBUserProfileQueryInstance = nil;
   if (self.hasFetchDemoProfiles) {
     [output writeBool:2 value:self.fetchDemoProfiles];
   }
+  if (self.hasEntityTag) {
+    [output writeString:3 value:self.entityTag];
+  }
+  if (self.hasEntityUserID) {
+    [output writeString:4 value:self.entityUserID];
+  }
+  if (self.hasEntityID) {
+    [output writeString:5 value:self.entityID];
+  }
   [self.unknownFields writeToCodedOutputStream:output];
 }
 - (SInt32) serializedSize {
@@ -5236,6 +5272,15 @@ static BUserProfileQuery* defaultBUserProfileQueryInstance = nil;
   }
   if (self.hasFetchDemoProfiles) {
     size_ += computeBoolSize(2, self.fetchDemoProfiles);
+  }
+  if (self.hasEntityTag) {
+    size_ += computeStringSize(3, self.entityTag);
+  }
+  if (self.hasEntityUserID) {
+    size_ += computeStringSize(4, self.entityUserID);
+  }
+  if (self.hasEntityID) {
+    size_ += computeStringSize(5, self.entityID);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -5278,12 +5323,30 @@ static BUserProfileQuery* defaultBUserProfileQueryInstance = nil;
   if (self.hasFetchDemoProfiles) {
     [output appendFormat:@"%@%@: %@\n", indent, @"fetchDemoProfiles", [NSNumber numberWithBool:self.fetchDemoProfiles]];
   }
+  if (self.hasEntityTag) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"entityTag", self.entityTag];
+  }
+  if (self.hasEntityUserID) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"entityUserID", self.entityUserID];
+  }
+  if (self.hasEntityID) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"entityID", self.entityID];
+  }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (void) storeInDictionary:(NSMutableDictionary *)dictionary {
   [dictionary setObject:self.userIDs forKey: @"userIDs"];
   if (self.hasFetchDemoProfiles) {
     [dictionary setObject: [NSNumber numberWithBool:self.fetchDemoProfiles] forKey: @"fetchDemoProfiles"];
+  }
+  if (self.hasEntityTag) {
+    [dictionary setObject: self.entityTag forKey: @"entityTag"];
+  }
+  if (self.hasEntityUserID) {
+    [dictionary setObject: self.entityUserID forKey: @"entityUserID"];
+  }
+  if (self.hasEntityID) {
+    [dictionary setObject: self.entityID forKey: @"entityID"];
   }
   [self.unknownFields storeInDictionary:dictionary];
 }
@@ -5299,6 +5362,12 @@ static BUserProfileQuery* defaultBUserProfileQueryInstance = nil;
       [self.userIDsArray isEqualToArray:otherMessage.userIDsArray] &&
       self.hasFetchDemoProfiles == otherMessage.hasFetchDemoProfiles &&
       (!self.hasFetchDemoProfiles || self.fetchDemoProfiles == otherMessage.fetchDemoProfiles) &&
+      self.hasEntityTag == otherMessage.hasEntityTag &&
+      (!self.hasEntityTag || [self.entityTag isEqual:otherMessage.entityTag]) &&
+      self.hasEntityUserID == otherMessage.hasEntityUserID &&
+      (!self.hasEntityUserID || [self.entityUserID isEqual:otherMessage.entityUserID]) &&
+      self.hasEntityID == otherMessage.hasEntityID &&
+      (!self.hasEntityID || [self.entityID isEqual:otherMessage.entityID]) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
@@ -5308,6 +5377,15 @@ static BUserProfileQuery* defaultBUserProfileQueryInstance = nil;
   }];
   if (self.hasFetchDemoProfiles) {
     hashCode = hashCode * 31 + [[NSNumber numberWithBool:self.fetchDemoProfiles] hash];
+  }
+  if (self.hasEntityTag) {
+    hashCode = hashCode * 31 + [self.entityTag hash];
+  }
+  if (self.hasEntityUserID) {
+    hashCode = hashCode * 31 + [self.entityUserID hash];
+  }
+  if (self.hasEntityID) {
+    hashCode = hashCode * 31 + [self.entityID hash];
   }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
@@ -5362,6 +5440,15 @@ static BUserProfileQuery* defaultBUserProfileQueryInstance = nil;
   if (other.hasFetchDemoProfiles) {
     [self setFetchDemoProfiles:other.fetchDemoProfiles];
   }
+  if (other.hasEntityTag) {
+    [self setEntityTag:other.entityTag];
+  }
+  if (other.hasEntityUserID) {
+    [self setEntityUserID:other.entityUserID];
+  }
+  if (other.hasEntityID) {
+    [self setEntityID:other.entityID];
+  }
   [self mergeUnknownFields:other.unknownFields];
   return self;
 }
@@ -5389,6 +5476,18 @@ static BUserProfileQuery* defaultBUserProfileQueryInstance = nil;
       }
       case 16: {
         [self setFetchDemoProfiles:[input readBool]];
+        break;
+      }
+      case 26: {
+        [self setEntityTag:[input readString]];
+        break;
+      }
+      case 34: {
+        [self setEntityUserID:[input readString]];
+        break;
+      }
+      case 42: {
+        [self setEntityID:[input readString]];
         break;
       }
     }
@@ -5429,6 +5528,54 @@ static BUserProfileQuery* defaultBUserProfileQueryInstance = nil;
 - (BUserProfileQueryBuilder*) clearFetchDemoProfiles {
   resultUserProfileQuery.hasFetchDemoProfiles = NO;
   resultUserProfileQuery.fetchDemoProfiles = NO;
+  return self;
+}
+- (BOOL) hasEntityTag {
+  return resultUserProfileQuery.hasEntityTag;
+}
+- (NSString*) entityTag {
+  return resultUserProfileQuery.entityTag;
+}
+- (BUserProfileQueryBuilder*) setEntityTag:(NSString*) value {
+  resultUserProfileQuery.hasEntityTag = YES;
+  resultUserProfileQuery.entityTag = value;
+  return self;
+}
+- (BUserProfileQueryBuilder*) clearEntityTag {
+  resultUserProfileQuery.hasEntityTag = NO;
+  resultUserProfileQuery.entityTag = @"";
+  return self;
+}
+- (BOOL) hasEntityUserID {
+  return resultUserProfileQuery.hasEntityUserID;
+}
+- (NSString*) entityUserID {
+  return resultUserProfileQuery.entityUserID;
+}
+- (BUserProfileQueryBuilder*) setEntityUserID:(NSString*) value {
+  resultUserProfileQuery.hasEntityUserID = YES;
+  resultUserProfileQuery.entityUserID = value;
+  return self;
+}
+- (BUserProfileQueryBuilder*) clearEntityUserID {
+  resultUserProfileQuery.hasEntityUserID = NO;
+  resultUserProfileQuery.entityUserID = @"";
+  return self;
+}
+- (BOOL) hasEntityID {
+  return resultUserProfileQuery.hasEntityID;
+}
+- (NSString*) entityID {
+  return resultUserProfileQuery.entityID;
+}
+- (BUserProfileQueryBuilder*) setEntityID:(NSString*) value {
+  resultUserProfileQuery.hasEntityID = YES;
+  resultUserProfileQuery.entityID = value;
+  return self;
+}
+- (BUserProfileQueryBuilder*) clearEntityID {
+  resultUserProfileQuery.hasEntityID = NO;
+  resultUserProfileQuery.entityID = @"";
   return self;
 }
 @end

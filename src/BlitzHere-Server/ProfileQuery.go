@@ -7,6 +7,7 @@ package main
 
 
 import (
+    "fmt"
     "database/sql"
     "github.com/lib/pq"
     "github.com/golang/protobuf/proto"
@@ -257,7 +258,7 @@ func NameForUserID(userID string) (string, error) {
 //----------------------------------------------------------------------------------------
 
 
-func ProfileForUserID(userID string) *BlitzMessage.UserProfile {
+func ProfileForUserID(session *Session, userID string) *BlitzMessage.UserProfile {
     Log.Infof("ProfileForUserId (%T) %s.", userID, userID)
 
     rows, error := config.DB.Query(
@@ -325,7 +326,7 @@ func ProfileForUserID(userID string) *BlitzMessage.UserProfile {
     profile.Images        = ImagesForUserID(userID)
     profile.SocialIdentities = SocialIdentitiesWithUserID(userID)
     profile.ContactInfo   = ContactInfoForUserID(userID)
-    profile.ExpertiseTags = GetEntityTagsWithUserID(userID, userID, BlitzMessage.EntityType_ETUser)
+    profile.EntityTags    = GetEntityTagsWithUserID(session.UserID, userID, BlitzMessage.EntityType_ETUser)
     profile.Education     = EducationForUserID(userID)
     profile.Employment    = EmploymentForUserID(userID)
 
@@ -345,14 +346,107 @@ func ProfileForUserID(userID string) *BlitzMessage.UserProfile {
 }
 
 
-func QueryProfiles(session *Session, profileQuery *BlitzMessage.UserProfileQuery,
+func QueryProfilesByEntity(session *Session, query *BlitzMessage.UserProfileQuery,
         ) *BlitzMessage.ServerResponse {
     Log.LogFunctionName()
 
+    queryString := "select entityID from EntityTagTable where entityType = $1 "
+    paramArray := make([]string, 0)
+
+    if query.EntityID != nil && len(*query.EntityID) > 0 {
+
+        queryString = "select userID from EntityTagTable where entityType = $1 "
+        queryString += fmt.Sprintf(" and entityID = $%d ", len(paramArray) + 2)
+        paramArray = append(paramArray, *query.EntityID)
+
+    }
+
+    if query.EntityTag != nil && len(*query.EntityTag) > 0 {
+        queryString += fmt.Sprintf(" and entityTag = $%d ", len(paramArray) + 2)
+        paramArray = append(paramArray, *query.EntityTag)
+    }
+
+    if query.EntityUserID != nil && len(*query.EntityUserID) > 0 {
+        queryString += fmt.Sprintf(" and userID = $%d ", len(paramArray) + 2)
+        paramArray = append(paramArray, *query.EntityUserID)
+    }
+
+    queryString += ";"
+
+    var error error
+    var rows *sql.Rows
+
+    switch len(paramArray) {
+    case 1:
+        rows, error = config.DB.Query(
+            queryString,
+            BlitzMessage.EntityType_ETUser,
+            paramArray[0],
+        )
+
+    case 2:
+        rows, error = config.DB.Query(
+            queryString,
+            BlitzMessage.EntityType_ETUser,
+            paramArray[0],
+            paramArray[1],
+        )
+
+    case 3:
+        rows, error = config.DB.Query(
+            queryString,
+            BlitzMessage.EntityType_ETUser,
+            paramArray[0],
+            paramArray[1],
+            paramArray[2],
+        )
+
+    }
+    if error != nil {
+        Log.LogError(error)
+        return ServerResponseForError(BlitzMessage.ResponseCode_RCServerError, error)
+    }
+    defer rows.Close()
+
+    var profileUpdate BlitzMessage.UserProfileUpdate
+
+    for rows.Next() {
+        var userID string
+        error = rows.Scan(&userID)
+        if error != nil {
+            Log.LogError(error)
+        } else {
+            profile := ProfileForUserID(session, userID)
+            if profile != nil {
+                profileUpdate.Profiles = append(profileUpdate.Profiles, profile)
+            }
+        }
+    }
+
+    code := BlitzMessage.ResponseCode_RCSuccess
+    response := &BlitzMessage.ServerResponse {
+        ResponseCode:       &code,
+        ResponseType:       &BlitzMessage.ResponseType { UserProfileUpdate: &profileUpdate },
+    }
+
+    return response
+}
+
+
+func QueryProfiles(session *Session, query *BlitzMessage.UserProfileQuery,
+        ) *BlitzMessage.ServerResponse {
+    Log.LogFunctionName()
+
+    if  query.EntityTag != nil ||
+        query.EntityUserID != nil ||
+        query.EntityID != nil {
+        return QueryProfilesByEntity(session, query)
+    }
+
     var profileList []string
 
-    if profileQuery.FetchDemoProfiles != nil &&
-       *profileQuery.FetchDemoProfiles {
+    if query.FetchDemoProfiles != nil &&
+       *query.FetchDemoProfiles {
         profileList = make([]string, 0, 10)
         rows, error := config.DB.Query(
             `select userID from UserTable
@@ -375,12 +469,12 @@ func QueryProfiles(session *Session, profileQuery *BlitzMessage.UserProfileQuery
             }
         }
     } else {
-        profileList = profileQuery.UserIDs
+        profileList = query.UserIDs
     }
 
     var profileUpdate BlitzMessage.UserProfileUpdate
     for _, userID := range profileList {
-        profile := ProfileForUserID(userID)
+        profile := ProfileForUserID(session, userID)
         if profile != nil {
             profileUpdate.Profiles = append(profileUpdate.Profiles, profile)
         }

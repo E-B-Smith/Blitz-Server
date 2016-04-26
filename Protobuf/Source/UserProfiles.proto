@@ -137,7 +137,7 @@ message UserProfile {
 
   repeated Employment   employment    = 12;
   repeated Education    education     = 13;
-  repeated EntityTag    expertiseTags = 14;
+  repeated EntityTag    entityTags    = 14;
   repeated string       interestTags  = 15;
   optional string       backgroundSummary = 16;
 
@@ -162,8 +162,16 @@ message UserProfileUpdate {
 
 
 message UserProfileQuery {
+  //  Fetch by userID:
   repeated string userIDs           = 1;
+
+  //  Fetch some demo profiles:
   optional bool   fetchDemoProfiles = 2;
+
+  //  Fetch by tag:
+  optional string entityTag         = 3;
+  optional string entityUserID      = 4;
+  optional string entityID          = 5;
 }
 
 

@@ -193,7 +193,7 @@ func UpdateProfile(profile *BlitzMessage.UserProfile) error {
         InsertEducation(profile.UserID, education)
     }
 
-    SetEntityTagsWithUserID(*profile.UserID, *profile.UserID, BlitzMessage.EntityType_ETUser, profile.ExpertiseTags)
+    SetEntityTagsWithUserID(*profile.UserID, *profile.UserID, BlitzMessage.EntityType_ETUser, profile.EntityTags)
 
     row := config.DB.QueryRow("select UpdateSearchIndexForUserID($1);", profile.UserID)
     var resultstring string

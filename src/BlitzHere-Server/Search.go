@@ -143,7 +143,7 @@ func UserSearchRequest(session *Session, query *BlitzMessage.UserSearchRequest,
         if error != nil || ! userID.Valid {
             Log.LogError(error)
         } else {
-            userprofile := ProfileForUserID(userID.String)
+            userprofile := ProfileForUserID(session, userID.String)
             if userprofile != nil { profiles = append(profiles, userprofile) }
         }
     }

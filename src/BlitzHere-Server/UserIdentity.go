@@ -109,7 +109,7 @@ func UpdateUserIdentitesFromProfile(profile *BlitzMessage.UserProfile) {
 }
 
 
-func ExistingProfileFromIdentities(identities []string) *BlitzMessage.UserProfile {
+func ExistingProfileFromIdentities(session *Session, identities []string) *BlitzMessage.UserProfile {
     Log.LogFunctionName()
 
     if len(identities) == 0 { return nil }
@@ -149,7 +149,7 @@ func ExistingProfileFromIdentities(identities []string) *BlitzMessage.UserProfil
             return nil
         }
         rowCount++
-        profile = ProfileForUserID(userID)
+        profile = ProfileForUserID(session, userID)
         if profile != nil {
             Log.Debugf("Found row count %d: %s.", rowCount, *profile.UserID);
             return profile;
@@ -167,7 +167,7 @@ func ExistingProfileFromIdentities(identities []string) *BlitzMessage.UserProfil
 //----------------------------------------------------------------------------------------
 
 
-func ProfilesFromContactInfo(profilesIn []*BlitzMessage.UserProfile) []*BlitzMessage.UserProfile {
+func ProfilesFromContactInfo(session *Session, profilesIn []*BlitzMessage.UserProfile) []*BlitzMessage.UserProfile {
     Log.LogFunctionName()
 
     profileMap := make(map[string]*BlitzMessage.UserProfile)
@@ -195,7 +195,7 @@ func ProfilesFromContactInfo(profilesIn []*BlitzMessage.UserProfile) []*BlitzMes
                     Log.LogError(error)
                     continue
                 }
-                memberProfile := ProfileForUserID(userID)
+                memberProfile := ProfileForUserID(session, userID)
                 if memberProfile != nil {
                     profileMap[*memberProfile.UserID] = memberProfile
                     rowCount++
@@ -233,7 +233,7 @@ func ProfilesFromContactInfoRequest(
     Log.LogFunctionName()
 
     profileUpdate := BlitzMessage.UserProfileUpdate { }
-    profileUpdate.Profiles = ProfilesFromContactInfo(profilesFromContactInfo.Profiles)
+    profileUpdate.Profiles = ProfilesFromContactInfo(session, profilesFromContactInfo.Profiles)
 
     code := BlitzMessage.ResponseCode_RCSuccess
     response := &BlitzMessage.ServerResponse {

@@ -225,7 +225,7 @@ func UpdateFeedPost(session *Session, feedPostUpdate *BlitzMessage.FeedPostUpdat
             Log.Debugf("Try to send a notification to the original poster:")
             parentPost := FeedPostForPostID(session.UserID, *feedPostUpdate.FeedPost.ParentID)
             if  parentPost != nil {
-                replyPoster := ProfileForUserID(session.UserID)
+                replyPoster := ProfileForUserID(session, session.UserID)
                 name := "Someone"
                 if  replyPoster != nil &&
                     replyPoster.Name != nil &&
