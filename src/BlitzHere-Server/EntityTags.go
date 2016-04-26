@@ -60,6 +60,38 @@ func SetEntityTags(userID, entityID string, entityType BlitzMessage.EntityType t
 */
 
 
+func GetUserIDArrayForEntity(entityType BlitzMessage.EntityType, entityID string, entityTag string) []string {
+    Log.LogFunctionName()
+
+    resultArray := make([]string, 0, 10)
+
+    rows, error := config.DB.Query(
+        `select distinct userID from EntityTagTable
+            where entityType = $1
+              and entityTag  = $2
+              and entityID   = $3;`,
+        entityType,
+        entityTag,
+        entityID,
+    )
+    if error != nil {
+        Log.LogError(error)
+        return resultArray
+    }
+    defer rows.Close()
+
+    var userID string
+    for rows.Next() {
+        error = rows.Scan(&userID)
+        if error == nil {
+            resultArray = append(resultArray, userID)
+        }
+    }
+
+    return resultArray
+}
+
+
 func SetEntityTagsWithUserID(userID, entityID string, entityType BlitzMessage.EntityType, tags []*BlitzMessage.EntityTag) {
     Log.LogFunctionName()
 

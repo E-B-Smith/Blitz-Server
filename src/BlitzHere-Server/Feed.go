@@ -201,7 +201,9 @@ func UpdateFeedPost(session *Session, feedPostUpdate *BlitzMessage.FeedPostUpdat
         return ServerResponseForError(BlitzMessage.ResponseCode_RCNotAuthorized, errors.New("Not authorized"))
     }
 
-    if feedPostUpdate.UpdateVerb == nil {
+    if  feedPostUpdate.UpdateVerb == nil ||
+        feedPostUpdate.FeedPost.PostID == nil ||
+        feedPostUpdate.FeedPost.HeadlineText == nil {
         return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, nil)
     }
 
@@ -223,18 +225,13 @@ func UpdateFeedPost(session *Session, feedPostUpdate *BlitzMessage.FeedPostUpdat
 
         if  feedPostUpdate.FeedPost.ParentID != nil {
             Log.Debugf("Try to send a notification to the original poster:")
+            actionURL := fmt.Sprintf("%s?action=showpost&postid=%s",
+                config.AppLinkURL, *feedPostUpdate.FeedPost.ParentID)
             parentPost := FeedPostForPostID(session.UserID, *feedPostUpdate.FeedPost.ParentID)
             if  parentPost != nil {
-                replyPoster := ProfileForUserID(session, session.UserID)
-                name := "Someone"
-                if  replyPoster != nil &&
-                    replyPoster.Name != nil &&
-                    len(*replyPoster.Name) > 0 {
-                    name = *replyPoster.Name
-                }
+                name, _ := NameForUserID(session.UserID)
+                if len(name) == 0 { name = "Someone" }
                 message := fmt.Sprintf("%s responded to your post.", name)
-                actionURL := fmt.Sprintf("%s?action=showpost&postid=%s",
-                    config.AppLinkURL, *feedPostUpdate.FeedPost.ParentID)
                 SendUserMessage(BlitzMessage.Default_Globals_SystemUserID,
                     [] string { *parentPost.UserID },
                     message,
@@ -243,6 +240,32 @@ func UpdateFeedPost(session *Session, feedPostUpdate *BlitzMessage.FeedPostUpdat
                     actionURL,
                 )
             }
+        }
+
+        //  Send a notification to the user's followers --
+
+        followingUsers := GetUserIDArrayForEntity(
+            BlitzMessage.EntityType_ETUser,
+            *feedPostUpdate.FeedPost.UserID,
+            ".followed",
+        )
+        postID := *feedPostUpdate.FeedPost.PostID
+        if  feedPostUpdate.FeedPost.ParentID != nil {
+            postID = *feedPostUpdate.FeedPost.ParentID
+        }
+        actionURL := fmt.Sprintf("%s?action=showpost&postid=%s",
+            config.AppLinkURL, postID)
+
+        name, _ := NameForUserID(*feedPostUpdate.FeedPost.UserID)
+        if len(followingUsers) > 0 && len(name) > 0 {
+            message := *feedPostUpdate.FeedPost.HeadlineText
+            SendUserMessage(*feedPostUpdate.FeedPost.UserID,
+                followingUsers,
+                message,
+                BlitzMessage.UserMessageType_MTNotification,
+                "AppIcon",
+                actionURL,
+            )
         }
 
         return ServerResponseForCode(BlitzMessage.ResponseCode_RCSuccess, nil)
