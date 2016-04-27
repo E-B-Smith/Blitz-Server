@@ -211,6 +211,7 @@ func UpdateFeedPost(session *Session, feedPostUpdate *BlitzMessage.FeedPostUpdat
        *feedPostUpdate.UpdateVerb == BlitzMessage.UpdateVerb_UVUpdate {
         error := WriteFeedPost(feedPostUpdate.FeedPost)
         if error != nil {
+            Log.LogError(error)
             return ServerResponseForError(BlitzMessage.ResponseCode_RCServerError, error)
         }
 
