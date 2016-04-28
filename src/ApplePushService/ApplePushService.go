@@ -31,9 +31,10 @@ type Notification struct {
     MessageText     string
 
     //  Optional fields --
+    //
+    //  Common Keys are 'sound', 'badge', 'content-available', etc.
 
-    SoundName       string
-    OptionalKeys    map[string]string   //  Other keys are 'badge', 'content-available', etc.
+    OptionalKeys    map[string]string
 
     //  Book-keeping fields --
 

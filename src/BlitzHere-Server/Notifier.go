@@ -43,6 +43,22 @@ select distinct on (1)
 */
 
 
+func UnreadCountForUserID(userID string) int64 {
+    Log.LogFunctionName()
+    row := config.DB.QueryRow(
+        `select count(*) from usermessagetable
+            where recipientid = $1
+              and readdate is null
+              and conversationid is not null;`,
+        userID,
+    )
+    var count int64
+    error := row.Scan(&count)
+    if error != nil { Log.LogError(error) }
+    return count
+}
+
+
 func notifyTask() {
     //  If the user has an outstanding message send a notification.
 
@@ -127,8 +143,7 @@ func notifyTask() {
             ServiceType:    serviceType,
             DeviceToken:    notificationToken,
             MessageText:    messageText,
-            SoundName:      "NewMessage.caf",
-            OptionalKeys:   map[string]string {},
+            OptionalKeys:   map[string]string { "sound": "NewMessage.caf"},
         }
         if len(conversationID.String) > 0 {
             notification.OptionalKeys["conversationID"] = conversationID.String
@@ -139,6 +154,8 @@ func notifyTask() {
         if actionURL.Valid && len(actionURL.String) > 0 {
             notification.OptionalKeys["url"] = actionURL.String
         }
+        badgeCount := UnreadCountForUserID(recipientID)
+        notification.OptionalKeys["badge"] = fmt.Sprintf("%d", badgeCount)
 
         error = PushNotificationService.Send(&notification)
         if error != nil {

@@ -13,7 +13,6 @@ import (
     "errors"
     "strings"
     "encoding/hex"
-    "encoding/json"
     "encoding/base64"
     "encoding/binary"
     "violent.blue/GoKit/Log"
@@ -68,6 +67,7 @@ func AddAPNItem(buffer *bytes.Buffer, itemID uint8, item interface{}) {
 func EncodeNotification(notification *Notification) ([]byte, error) {
     Log.LogFunctionName()
 
+    var error error
     if  notification.BundleID == "" {
         return nil, errors.New("Missing bundle ID")
     }
@@ -76,34 +76,26 @@ func EncodeNotification(notification *Notification) ([]byte, error) {
         return nil, errors.New("Missing device token")
     }
 
-    payloadvalues := make(map[string]string)
+    var payload string
     for key, val := range notification.OptionalKeys {
-        payloadvalues[key] = val
+        switch key {
+        case "content-available", "badge":
+            payload += fmt.Sprintf(`"%s": %s,`, key, val)
+        default:
+            payload += fmt.Sprintf(`"%s": %q,`, key, val)
+        }
     }
     message := strings.TrimSpace(notification.MessageText);
     if len(message) > 0 {
-        payloadvalues["alert"] = message
+        payload += fmt.Sprintf(`"alert": %q,`, message)
     }
 
-    if _, ok := payloadvalues["sound"]; !ok {
-        if notification.SoundName == "" {
-            payloadvalues["sound"] = "default"
-        } else {
-            payloadvalues["sound"] = notification.SoundName
-        }
-    }
-
-    if len(payloadvalues) == 0 {
+    if len(payload) == 0 {
         return nil, errors.New("Error: Empty message")
     }
 
-    apsmap := make(map[string](map[string]string))
-    apsmap["aps"] = payloadvalues
-
-    var error error
-    var payload []byte
-    payload, error = json.Marshal(apsmap)
-    Log.Debugf("Payload: %s.", string(payload))
+    payload = `{"aps":{` + strings.TrimRight(payload, ",") + `}}`
+    Log.Debugf("Payload: %s.", payload)
 
     var tokenBytes []byte
     tokenBytes, error = hex.DecodeString(notification.DeviceToken)
@@ -120,11 +112,10 @@ func EncodeNotification(notification *Notification) ([]byte, error) {
     }
 
     buffer := new(bytes.Buffer)
-
     binary.Write(buffer, binary.BigEndian, uint8(2))            //  Command
     binary.Write(buffer, binary.BigEndian, uint32(0))           //  Frame length.  Fix up later.
     AddAPNItem(buffer, 1, tokenBytes)
-    AddAPNItem(buffer, 2, payload)
+    AddAPNItem(buffer, 2, []byte(payload))
     AddAPNItem(buffer, 3, uint32(messageID))
     AddAPNItem(buffer, 4, uint32(epochExpire))
     AddAPNItem(buffer, 5, uint8(10))                            //  Priority
