@@ -81,6 +81,7 @@ func notifyTask() {
             UserMessageTable.actionURL,
             UserMessageTable.conversationID,
             UserMessageTable.senderID,
+            UserMessageTable.messageID,
             DeviceTable.appID,
             DeviceTable.notificationToken,
             DeviceTable.appIsReleaseVersion
@@ -106,6 +107,7 @@ func notifyTask() {
             actionURL       sql.NullString
             conversationID  sql.NullString
             senderID        sql.NullString
+            messageID        sql.NullString
             appID           string
             notificationToken string
             appIsReleaseVersion bool
@@ -118,6 +120,7 @@ func notifyTask() {
             &actionURL,
             &conversationID,
             &senderID,
+            &messageID,
             &appID,
             &notificationToken,
             &appIsReleaseVersion,
@@ -153,6 +156,9 @@ func notifyTask() {
         }
         if actionURL.Valid && len(actionURL.String) > 0 {
             notification.OptionalKeys["url"] = actionURL.String
+        }
+        if messageID.Valid && len(messageID.String) > 0 {
+            notification.OptionalKeys["messageID"] = messageID.String
         }
         badgeCount := UnreadCountForUserID(recipientID)
         notification.OptionalKeys["badge"] = fmt.Sprintf("%d", badgeCount)
