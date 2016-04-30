@@ -48,6 +48,7 @@ func UnreadCountForUserID(userID string) int64 {
     row := config.DB.QueryRow(
         `select count(*) from usermessagetable
             where recipientid = $1
+              and senderID <> $1
               and readdate is null
               and conversationid is not null;`,
         userID,
