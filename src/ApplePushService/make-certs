@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-openssl pkcs12 -in Certificates.p12 -out Certificates.pem -nodes
+openssl pkcs12 -in "$1" -out Certificates.pem -nodes
 csplit -k Certificates.pem '/Bag Attribute/' '{1000}' || true
 
 for file in xx*; do

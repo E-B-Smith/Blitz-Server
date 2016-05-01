@@ -19,6 +19,7 @@ bTail=false
 bForceStart=false
 AllServers=(
     "BlitzLabs-Server"              10003
+    "BlitzHere-Server"              10005
 #   "Status-Server"                 10009
 )
 

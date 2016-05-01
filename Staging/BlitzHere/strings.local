@@ -1,7 +1,7 @@
 
-#   HappyPulse localization file
+#   BlitzHere localization file
 
-kLinkErrorRedirectURL       = "http://beinghappy.io/";
-kConfirmConfirmedWelcome    = "Confirmed. Welcome to HappyPulse.";
+kLinkErrorRedirectURL       = "https://blitzhere.com/blitzhere/";
+kConfirmConfirmedWelcome    = "Confirmed. Welcome to Xprt.";
 kConfirmConfirmingContact   = "Confirming contact info...";
 kConfirmAppURL              = "%s/?action=confirm&message=%s&code=%s&contact=%s";

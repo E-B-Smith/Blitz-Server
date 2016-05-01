@@ -1,7 +1,7 @@
 
 #   BlitzLabs localization file
 
-kLinkErrorRedirectURL       = "https://shimmering.blue/blitzlabs/";
-kConfirmConfirmedWelcome    = "Confirmed. Welcome to BlitzLabs.";
+kLinkErrorRedirectURL       = "https://blitzhere.com/blitzlabs/";
+kConfirmConfirmedWelcome    = "Confirmed. Welcome to XprtLabs.";
 kConfirmConfirmingContact   = "Confirming contact info...";
 kConfirmAppURL              = "%s/?action=confirm&message=%s&code=%s&contact=%s";

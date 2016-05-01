@@ -26,26 +26,35 @@ psql postgres -U postgres -X --pset pager=off  -v ON_ERROR_STOP=1 <<DATABASE
 --
 --  E.B.Smith  -  March 2016
 
-create extension if not exists "uuid-ossp";
-create extension if not exists adminpack;
-create extension if not exists pg_trgm;
 
 drop schema if exists ${database}Schema cascade;
 drop database if exists ${database};
 drop user if exists ${database};
 
 
+create extension if not exists "uuid-ossp";
+create extension if not exists adminpack;
+create extension if not exists pg_trgm;
+
+
 create user ${database}
-   with createdb login password '${databaselower}';
+   with createdb login password '${databaselower}' superuser;
 
 create database ${database}
    with encoding 'UTF8' owner ${database};
+
+create extension if not exists pg_trgm with schema ${database}Schema;
+
+create user ${database}
+   with nosuperuser;
+
 
 \connect  $databaselower  $databaselower
 
 create schema ${database}Schema authorization ${database};
 alter user ${database} set search_path to ${database}Schema, public;
 \connect  $databaselower  $databaselower
+
 
 \include_relative CommonSchema.sql
 
