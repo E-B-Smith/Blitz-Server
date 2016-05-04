@@ -32,6 +32,9 @@
 package jsonpb
 
 import (
+	"bytes"
+	"encoding/json"
+	"io"
 	"reflect"
 	"testing"
 
@@ -39,6 +42,7 @@ import (
 
 	pb "github.com/golang/protobuf/jsonpb/jsonpb_test_proto"
 	proto3pb "github.com/golang/protobuf/proto/proto3_proto"
+	anypb "github.com/golang/protobuf/ptypes/any"
 	durpb "github.com/golang/protobuf/ptypes/duration"
 	stpb "github.com/golang/protobuf/ptypes/struct"
 	tspb "github.com/golang/protobuf/ptypes/timestamp"
@@ -296,6 +300,18 @@ var marshalingTests = []struct {
 		&pb.Widget{Color: pb.Widget_BLUE.Enum()}, colorPrettyJSON},
 	{"unknown enum value object", marshalerAllOptions,
 		&pb.Widget{Color: pb.Widget_Color(1000).Enum(), RColor: []pb.Widget_Color{pb.Widget_RED}}, colorListPrettyJSON},
+	{"repeated proto3 enum", Marshaler{},
+		&proto3pb.Message{RFunny: []proto3pb.Message_Humour{
+			proto3pb.Message_PUNS,
+			proto3pb.Message_SLAPSTICK,
+		}},
+		`{"rFunny":["PUNS","SLAPSTICK"]}`},
+	{"repeated proto3 enum as int", Marshaler{EnumsAsInts: true},
+		&proto3pb.Message{RFunny: []proto3pb.Message_Humour{
+			proto3pb.Message_PUNS,
+			proto3pb.Message_SLAPSTICK,
+		}},
+		`{"rFunny":[1,2]}`},
 	{"empty value", marshaler, &pb.Simple3{}, `{}`},
 	{"empty value emitted", Marshaler{EmitDefaults: true}, &pb.Simple3{}, `{"dub":0}`},
 	{"map<int64, int32>", marshaler, &pb.Mappy{Nummy: map[int64]int32{1: 2, 3: 4}}, `{"nummy":{"1":2,"3":4}}`},
@@ -310,6 +326,9 @@ var marshalingTests = []struct {
 	{"map<int64, string>", marshaler, &pb.Mappy{Buggy: map[int64]string{1234: "yup"}},
 		`{"buggy":{"1234":"yup"}}`},
 	{"map<bool, bool>", marshaler, &pb.Mappy{Booly: map[bool]bool{false: true}}, `{"booly":{"false":true}}`},
+	// TODO: This is broken.
+	//{"map<string, enum>", marshaler, &pb.Mappy{Enumy: map[string]pb.Numeral{"XIV": pb.Numeral_ROMAN}}, `{"enumy":{"XIV":"ROMAN"}`},
+	{"map<string, enum as int>", Marshaler{EnumsAsInts: true}, &pb.Mappy{Enumy: map[string]pb.Numeral{"XIV": pb.Numeral_ROMAN}}, `{"enumy":{"XIV":2}}`},
 	{"proto2 map<int64, string>", marshaler, &pb.Maps{MInt64Str: map[int64]string{213: "cat"}},
 		`{"mInt64Str":{"213":"cat"}}`},
 	{"proto2 map<bool, Object>", marshaler,
@@ -321,6 +340,21 @@ var marshalingTests = []struct {
 		`{"o_int32":4}`},
 	{"proto2 extension", marshaler, realNumber, realNumberJSON},
 
+	{"Any with message", marshaler, &pb.KnownTypes{An: &anypb.Any{
+		TypeUrl: "something.example.com/jsonpb.Simple",
+		Value: []byte{
+			// &pb.Simple{OBool:true}
+			1 << 3, 1,
+		},
+	}}, `{"an":{"@type":"something.example.com/jsonpb.Simple","oBool":true}}`},
+	{"Any with WKT", marshaler, &pb.KnownTypes{An: &anypb.Any{
+		TypeUrl: "type.googleapis.com/google.protobuf.Duration",
+		Value: []byte{
+			// &durpb.Duration{Seconds: 1, Nanos: 212000000 }
+			1 << 3, 1, // seconds
+			2 << 3, 0x80, 0xba, 0x8b, 0x65, // nanos
+		},
+	}}, `{"an":{"@type":"type.googleapis.com/google.protobuf.Duration","value":"1.212s"}}`},
 	{"Duration", marshaler, &pb.KnownTypes{Dur: &durpb.Duration{Seconds: 3}}, `{"dur":"3.000s"}`},
 	{"Struct", marshaler, &pb.KnownTypes{St: &stpb.Struct{
 		Fields: map[string]*stpb.Value{
@@ -370,12 +404,32 @@ var unmarshalingTests = []struct {
 	{"unknown enum value object",
 		"{\n  \"color\": 1000,\n  \"r_color\": [\n    \"RED\"\n  ]\n}",
 		&pb.Widget{Color: pb.Widget_Color(1000).Enum(), RColor: []pb.Widget_Color{pb.Widget_RED}}},
+	{"repeated proto3 enum", `{"rFunny":["PUNS","SLAPSTICK"]}`,
+		&proto3pb.Message{RFunny: []proto3pb.Message_Humour{
+			proto3pb.Message_PUNS,
+			proto3pb.Message_SLAPSTICK,
+		}}},
+	{"repeated proto3 enum as int", `{"rFunny":[1,2]}`,
+		&proto3pb.Message{RFunny: []proto3pb.Message_Humour{
+			proto3pb.Message_PUNS,
+			proto3pb.Message_SLAPSTICK,
+		}}},
+	{"repeated proto3 enum as mix of strings and ints", `{"rFunny":["PUNS",2]}`,
+		&proto3pb.Message{RFunny: []proto3pb.Message_Humour{
+			proto3pb.Message_PUNS,
+			proto3pb.Message_SLAPSTICK,
+		}}},
 	{"unquoted int64 object", `{"oInt64":-314}`, &pb.Simple{OInt64: proto.Int64(-314)}},
 	{"unquoted uint64 object", `{"oUint64":123}`, &pb.Simple{OUint64: proto.Uint64(123)}},
 	{"map<int64, int32>", `{"nummy":{"1":2,"3":4}}`, &pb.Mappy{Nummy: map[int64]int32{1: 2, 3: 4}}},
 	{"map<string, string>", `{"strry":{"\"one\"":"two","three":"four"}}`, &pb.Mappy{Strry: map[string]string{`"one"`: "two", "three": "four"}}},
 	{"map<int32, Object>", `{"objjy":{"1":{"dub":1}}}`, &pb.Mappy{Objjy: map[int32]*pb.Simple3{1: &pb.Simple3{Dub: 1}}}},
+	// TODO: This is broken.
+	//{"map<string, enum>", `{"enumy":{"XIV":"ROMAN"}`, &pb.Mappy{Enumy: map[string]pb.Numeral{"XIV": pb.Numeral_ROMAN}}},
+	{"map<string, enum as int>", `{"enumy":{"XIV":2}}`, &pb.Mappy{Enumy: map[string]pb.Numeral{"XIV": pb.Numeral_ROMAN}}},
 	{"oneof", `{"salary":31000}`, &pb.MsgWithOneof{Union: &pb.MsgWithOneof_Salary{31000}}},
+	{"oneof spec name", `{"country":"Australia"}`, &pb.MsgWithOneof{Union: &pb.MsgWithOneof_Country{"Australia"}}},
+	{"oneof orig_name", `{"Country":"Australia"}`, &pb.MsgWithOneof{Union: &pb.MsgWithOneof_Country{"Australia"}}},
 	{"orig_name input", `{"o_bool":true}`, &pb.Simple{OBool: proto.Bool(true)}},
 	{"camelName input", `{"oBool":true}`, &pb.Simple{OBool: proto.Bool(true)}},
 
@@ -412,6 +466,42 @@ func TestUnmarshaling(t *testing.T) {
 		if string(exp) != string(act) {
 			t.Errorf("%s: got [%s] want [%s]", tt.desc, act, exp)
 		}
+	}
+}
+
+func TestUnmarshalNext(t *testing.T) {
+	// We only need to check against a few, not all of them.
+	tests := unmarshalingTests[:5]
+
+	// Create a buffer with many concatenated JSON objects.
+	var b bytes.Buffer
+	for _, tt := range tests {
+		b.WriteString(tt.json)
+	}
+
+	dec := json.NewDecoder(&b)
+	for _, tt := range tests {
+		// Make a new instance of the type of our expected object.
+		p := reflect.New(reflect.TypeOf(tt.pb).Elem()).Interface().(proto.Message)
+
+		err := UnmarshalNext(dec, p)
+		if err != nil {
+			t.Errorf("%s: %v", tt.desc, err)
+			continue
+		}
+
+		// For easier diffs, compare text strings of the protos.
+		exp := proto.MarshalTextString(tt.pb)
+		act := proto.MarshalTextString(p)
+		if string(exp) != string(act) {
+			t.Errorf("%s: got [%s] want [%s]", tt.desc, act, exp)
+		}
+	}
+
+	p := &pb.Simple{}
+	err := UnmarshalNext(dec, p)
+	if err != io.EOF {
+		t.Errorf("eof: got %v, expected io.EOF", err)
 	}
 }
 
