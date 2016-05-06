@@ -5662,6 +5662,19 @@ public final class Server {
      * <code>optional .BlitzMessage.UpdateConversationStatus updateConversationStatus = 21;</code>
      */
     com.blitzhere.BlitzMessage.UserMessages.UpdateConversationStatusOrBuilder getUpdateConversationStatusOrBuilder();
+
+    /**
+     * <code>optional .BlitzMessage.UserCardInfo userCardInfo = 22;</code>
+     */
+    boolean hasUserCardInfo();
+    /**
+     * <code>optional .BlitzMessage.UserCardInfo userCardInfo = 22;</code>
+     */
+    com.blitzhere.BlitzMessage.Payments.UserCardInfo getUserCardInfo();
+    /**
+     * <code>optional .BlitzMessage.UserCardInfo userCardInfo = 22;</code>
+     */
+    com.blitzhere.BlitzMessage.Payments.UserCardInfoOrBuilder getUserCardInfoOrBuilder();
   }
   /**
    * Protobuf type {@code BlitzMessage.RequestType}
@@ -5986,6 +5999,19 @@ public final class Server {
                 updateConversationStatus_ = subBuilder.buildPartial();
               }
               bitField0_ |= 0x00100000;
+              break;
+            }
+            case 178: {
+              com.blitzhere.BlitzMessage.Payments.UserCardInfo.Builder subBuilder = null;
+              if (((bitField0_ & 0x00200000) == 0x00200000)) {
+                subBuilder = userCardInfo_.toBuilder();
+              }
+              userCardInfo_ = input.readMessage(com.blitzhere.BlitzMessage.Payments.UserCardInfo.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(userCardInfo_);
+                userCardInfo_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00200000;
               break;
             }
           }
@@ -6469,6 +6495,27 @@ public final class Server {
       return updateConversationStatus_;
     }
 
+    public static final int USERCARDINFO_FIELD_NUMBER = 22;
+    private com.blitzhere.BlitzMessage.Payments.UserCardInfo userCardInfo_;
+    /**
+     * <code>optional .BlitzMessage.UserCardInfo userCardInfo = 22;</code>
+     */
+    public boolean hasUserCardInfo() {
+      return ((bitField0_ & 0x00200000) == 0x00200000);
+    }
+    /**
+     * <code>optional .BlitzMessage.UserCardInfo userCardInfo = 22;</code>
+     */
+    public com.blitzhere.BlitzMessage.Payments.UserCardInfo getUserCardInfo() {
+      return userCardInfo_;
+    }
+    /**
+     * <code>optional .BlitzMessage.UserCardInfo userCardInfo = 22;</code>
+     */
+    public com.blitzhere.BlitzMessage.Payments.UserCardInfoOrBuilder getUserCardInfoOrBuilder() {
+      return userCardInfo_;
+    }
+
     private void initFields() {
       sessionRequest_ = com.blitzhere.BlitzMessage.Server.SessionRequest.getDefaultInstance();
       userEventBatch_ = com.blitzhere.BlitzMessage.UserEvents.UserEventBatch.getDefaultInstance();
@@ -6491,6 +6538,7 @@ public final class Server {
       fetchConversations_ = com.blitzhere.BlitzMessage.UserMessages.FetchConversations.getDefaultInstance();
       userReview_ = com.blitzhere.BlitzMessage.UserProfiles.UserReview.getDefaultInstance();
       updateConversationStatus_ = com.blitzhere.BlitzMessage.UserMessages.UpdateConversationStatus.getDefaultInstance();
+      userCardInfo_ = com.blitzhere.BlitzMessage.Payments.UserCardInfo.getDefaultInstance();
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -6640,6 +6688,9 @@ public final class Server {
       if (((bitField0_ & 0x00100000) == 0x00100000)) {
         output.writeMessage(21, updateConversationStatus_);
       }
+      if (((bitField0_ & 0x00200000) == 0x00200000)) {
+        output.writeMessage(22, userCardInfo_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -6732,6 +6783,10 @@ public final class Server {
       if (((bitField0_ & 0x00100000) == 0x00100000)) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(21, updateConversationStatus_);
+      }
+      if (((bitField0_ & 0x00200000) == 0x00200000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(22, userCardInfo_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -6863,6 +6918,7 @@ public final class Server {
           getFetchConversationsFieldBuilder();
           getUserReviewFieldBuilder();
           getUpdateConversationStatusFieldBuilder();
+          getUserCardInfoFieldBuilder();
         }
       }
       private static Builder create() {
@@ -6997,6 +7053,12 @@ public final class Server {
           updateConversationStatusBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00100000);
+        if (userCardInfoBuilder_ == null) {
+          userCardInfo_ = com.blitzhere.BlitzMessage.Payments.UserCardInfo.getDefaultInstance();
+        } else {
+          userCardInfoBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00200000);
         return this;
       }
 
@@ -7193,6 +7255,14 @@ public final class Server {
         } else {
           result.updateConversationStatus_ = updateConversationStatusBuilder_.build();
         }
+        if (((from_bitField0_ & 0x00200000) == 0x00200000)) {
+          to_bitField0_ |= 0x00200000;
+        }
+        if (userCardInfoBuilder_ == null) {
+          result.userCardInfo_ = userCardInfo_;
+        } else {
+          result.userCardInfo_ = userCardInfoBuilder_.build();
+        }
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -7271,6 +7341,9 @@ public final class Server {
         }
         if (other.hasUpdateConversationStatus()) {
           mergeUpdateConversationStatus(other.getUpdateConversationStatus());
+        }
+        if (other.hasUserCardInfo()) {
+          mergeUserCardInfo(other.getUserCardInfo());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -9807,6 +9880,122 @@ public final class Server {
         return updateConversationStatusBuilder_;
       }
 
+      private com.blitzhere.BlitzMessage.Payments.UserCardInfo userCardInfo_ = com.blitzhere.BlitzMessage.Payments.UserCardInfo.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          com.blitzhere.BlitzMessage.Payments.UserCardInfo, com.blitzhere.BlitzMessage.Payments.UserCardInfo.Builder, com.blitzhere.BlitzMessage.Payments.UserCardInfoOrBuilder> userCardInfoBuilder_;
+      /**
+       * <code>optional .BlitzMessage.UserCardInfo userCardInfo = 22;</code>
+       */
+      public boolean hasUserCardInfo() {
+        return ((bitField0_ & 0x00200000) == 0x00200000);
+      }
+      /**
+       * <code>optional .BlitzMessage.UserCardInfo userCardInfo = 22;</code>
+       */
+      public com.blitzhere.BlitzMessage.Payments.UserCardInfo getUserCardInfo() {
+        if (userCardInfoBuilder_ == null) {
+          return userCardInfo_;
+        } else {
+          return userCardInfoBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .BlitzMessage.UserCardInfo userCardInfo = 22;</code>
+       */
+      public Builder setUserCardInfo(com.blitzhere.BlitzMessage.Payments.UserCardInfo value) {
+        if (userCardInfoBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          userCardInfo_ = value;
+          onChanged();
+        } else {
+          userCardInfoBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00200000;
+        return this;
+      }
+      /**
+       * <code>optional .BlitzMessage.UserCardInfo userCardInfo = 22;</code>
+       */
+      public Builder setUserCardInfo(
+          com.blitzhere.BlitzMessage.Payments.UserCardInfo.Builder builderForValue) {
+        if (userCardInfoBuilder_ == null) {
+          userCardInfo_ = builderForValue.build();
+          onChanged();
+        } else {
+          userCardInfoBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00200000;
+        return this;
+      }
+      /**
+       * <code>optional .BlitzMessage.UserCardInfo userCardInfo = 22;</code>
+       */
+      public Builder mergeUserCardInfo(com.blitzhere.BlitzMessage.Payments.UserCardInfo value) {
+        if (userCardInfoBuilder_ == null) {
+          if (((bitField0_ & 0x00200000) == 0x00200000) &&
+              userCardInfo_ != com.blitzhere.BlitzMessage.Payments.UserCardInfo.getDefaultInstance()) {
+            userCardInfo_ =
+              com.blitzhere.BlitzMessage.Payments.UserCardInfo.newBuilder(userCardInfo_).mergeFrom(value).buildPartial();
+          } else {
+            userCardInfo_ = value;
+          }
+          onChanged();
+        } else {
+          userCardInfoBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00200000;
+        return this;
+      }
+      /**
+       * <code>optional .BlitzMessage.UserCardInfo userCardInfo = 22;</code>
+       */
+      public Builder clearUserCardInfo() {
+        if (userCardInfoBuilder_ == null) {
+          userCardInfo_ = com.blitzhere.BlitzMessage.Payments.UserCardInfo.getDefaultInstance();
+          onChanged();
+        } else {
+          userCardInfoBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00200000);
+        return this;
+      }
+      /**
+       * <code>optional .BlitzMessage.UserCardInfo userCardInfo = 22;</code>
+       */
+      public com.blitzhere.BlitzMessage.Payments.UserCardInfo.Builder getUserCardInfoBuilder() {
+        bitField0_ |= 0x00200000;
+        onChanged();
+        return getUserCardInfoFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .BlitzMessage.UserCardInfo userCardInfo = 22;</code>
+       */
+      public com.blitzhere.BlitzMessage.Payments.UserCardInfoOrBuilder getUserCardInfoOrBuilder() {
+        if (userCardInfoBuilder_ != null) {
+          return userCardInfoBuilder_.getMessageOrBuilder();
+        } else {
+          return userCardInfo_;
+        }
+      }
+      /**
+       * <code>optional .BlitzMessage.UserCardInfo userCardInfo = 22;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          com.blitzhere.BlitzMessage.Payments.UserCardInfo, com.blitzhere.BlitzMessage.Payments.UserCardInfo.Builder, com.blitzhere.BlitzMessage.Payments.UserCardInfoOrBuilder> 
+          getUserCardInfoFieldBuilder() {
+        if (userCardInfoBuilder_ == null) {
+          userCardInfoBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.blitzhere.BlitzMessage.Payments.UserCardInfo, com.blitzhere.BlitzMessage.Payments.UserCardInfo.Builder, com.blitzhere.BlitzMessage.Payments.UserCardInfoOrBuilder>(
+                  getUserCardInfo(),
+                  getParentForChildren(),
+                  isClean());
+          userCardInfo_ = null;
+        }
+        return userCardInfoBuilder_;
+      }
+
       // @@protoc_insertion_point(builder_scope:BlitzMessage.RequestType)
     }
 
@@ -10693,6 +10882,19 @@ public final class Server {
      * <code>optional .BlitzMessage.FetchConversations fetchConversations = 15;</code>
      */
     com.blitzhere.BlitzMessage.UserMessages.FetchConversationsOrBuilder getFetchConversationsOrBuilder();
+
+    /**
+     * <code>optional .BlitzMessage.UserCardInfo userCardInfo = 16;</code>
+     */
+    boolean hasUserCardInfo();
+    /**
+     * <code>optional .BlitzMessage.UserCardInfo userCardInfo = 16;</code>
+     */
+    com.blitzhere.BlitzMessage.Payments.UserCardInfo getUserCardInfo();
+    /**
+     * <code>optional .BlitzMessage.UserCardInfo userCardInfo = 16;</code>
+     */
+    com.blitzhere.BlitzMessage.Payments.UserCardInfoOrBuilder getUserCardInfoOrBuilder();
   }
   /**
    * Protobuf type {@code BlitzMessage.ResponseType}
@@ -10939,6 +11141,19 @@ public final class Server {
                 fetchConversations_ = subBuilder.buildPartial();
               }
               bitField0_ |= 0x00004000;
+              break;
+            }
+            case 130: {
+              com.blitzhere.BlitzMessage.Payments.UserCardInfo.Builder subBuilder = null;
+              if (((bitField0_ & 0x00008000) == 0x00008000)) {
+                subBuilder = userCardInfo_.toBuilder();
+              }
+              userCardInfo_ = input.readMessage(com.blitzhere.BlitzMessage.Payments.UserCardInfo.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(userCardInfo_);
+                userCardInfo_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00008000;
               break;
             }
           }
@@ -11296,6 +11511,27 @@ public final class Server {
       return fetchConversations_;
     }
 
+    public static final int USERCARDINFO_FIELD_NUMBER = 16;
+    private com.blitzhere.BlitzMessage.Payments.UserCardInfo userCardInfo_;
+    /**
+     * <code>optional .BlitzMessage.UserCardInfo userCardInfo = 16;</code>
+     */
+    public boolean hasUserCardInfo() {
+      return ((bitField0_ & 0x00008000) == 0x00008000);
+    }
+    /**
+     * <code>optional .BlitzMessage.UserCardInfo userCardInfo = 16;</code>
+     */
+    public com.blitzhere.BlitzMessage.Payments.UserCardInfo getUserCardInfo() {
+      return userCardInfo_;
+    }
+    /**
+     * <code>optional .BlitzMessage.UserCardInfo userCardInfo = 16;</code>
+     */
+    public com.blitzhere.BlitzMessage.Payments.UserCardInfoOrBuilder getUserCardInfoOrBuilder() {
+      return userCardInfo_;
+    }
+
     private void initFields() {
       sessionResponse_ = com.blitzhere.BlitzMessage.Server.SessionResponse.getDefaultInstance();
       userEventBatchResponse_ = com.blitzhere.BlitzMessage.UserEvents.UserEventBatchResponse.getDefaultInstance();
@@ -11312,6 +11548,7 @@ public final class Server {
       userSearchResponse_ = com.blitzhere.BlitzMessage.Search.UserSearchResponse.getDefaultInstance();
       conversationResponse_ = com.blitzhere.BlitzMessage.UserMessages.ConversationResponse.getDefaultInstance();
       fetchConversations_ = com.blitzhere.BlitzMessage.UserMessages.FetchConversations.getDefaultInstance();
+      userCardInfo_ = com.blitzhere.BlitzMessage.Payments.UserCardInfo.getDefaultInstance();
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -11443,6 +11680,9 @@ public final class Server {
       if (((bitField0_ & 0x00004000) == 0x00004000)) {
         output.writeMessage(15, fetchConversations_);
       }
+      if (((bitField0_ & 0x00008000) == 0x00008000)) {
+        output.writeMessage(16, userCardInfo_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -11511,6 +11751,10 @@ public final class Server {
       if (((bitField0_ & 0x00004000) == 0x00004000)) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(15, fetchConversations_);
+      }
+      if (((bitField0_ & 0x00008000) == 0x00008000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(16, userCardInfo_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -11636,6 +11880,7 @@ public final class Server {
           getUserSearchResponseFieldBuilder();
           getConversationResponseFieldBuilder();
           getFetchConversationsFieldBuilder();
+          getUserCardInfoFieldBuilder();
         }
       }
       private static Builder create() {
@@ -11734,6 +11979,12 @@ public final class Server {
           fetchConversationsBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00004000);
+        if (userCardInfoBuilder_ == null) {
+          userCardInfo_ = com.blitzhere.BlitzMessage.Payments.UserCardInfo.getDefaultInstance();
+        } else {
+          userCardInfoBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00008000);
         return this;
       }
 
@@ -11882,6 +12133,14 @@ public final class Server {
         } else {
           result.fetchConversations_ = fetchConversationsBuilder_.build();
         }
+        if (((from_bitField0_ & 0x00008000) == 0x00008000)) {
+          to_bitField0_ |= 0x00008000;
+        }
+        if (userCardInfoBuilder_ == null) {
+          result.userCardInfo_ = userCardInfo_;
+        } else {
+          result.userCardInfo_ = userCardInfoBuilder_.build();
+        }
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -11942,6 +12201,9 @@ public final class Server {
         }
         if (other.hasFetchConversations()) {
           mergeFetchConversations(other.getFetchConversations());
+        }
+        if (other.hasUserCardInfo()) {
+          mergeUserCardInfo(other.getUserCardInfo());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -13782,6 +14044,122 @@ public final class Server {
         return fetchConversationsBuilder_;
       }
 
+      private com.blitzhere.BlitzMessage.Payments.UserCardInfo userCardInfo_ = com.blitzhere.BlitzMessage.Payments.UserCardInfo.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          com.blitzhere.BlitzMessage.Payments.UserCardInfo, com.blitzhere.BlitzMessage.Payments.UserCardInfo.Builder, com.blitzhere.BlitzMessage.Payments.UserCardInfoOrBuilder> userCardInfoBuilder_;
+      /**
+       * <code>optional .BlitzMessage.UserCardInfo userCardInfo = 16;</code>
+       */
+      public boolean hasUserCardInfo() {
+        return ((bitField0_ & 0x00008000) == 0x00008000);
+      }
+      /**
+       * <code>optional .BlitzMessage.UserCardInfo userCardInfo = 16;</code>
+       */
+      public com.blitzhere.BlitzMessage.Payments.UserCardInfo getUserCardInfo() {
+        if (userCardInfoBuilder_ == null) {
+          return userCardInfo_;
+        } else {
+          return userCardInfoBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .BlitzMessage.UserCardInfo userCardInfo = 16;</code>
+       */
+      public Builder setUserCardInfo(com.blitzhere.BlitzMessage.Payments.UserCardInfo value) {
+        if (userCardInfoBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          userCardInfo_ = value;
+          onChanged();
+        } else {
+          userCardInfoBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00008000;
+        return this;
+      }
+      /**
+       * <code>optional .BlitzMessage.UserCardInfo userCardInfo = 16;</code>
+       */
+      public Builder setUserCardInfo(
+          com.blitzhere.BlitzMessage.Payments.UserCardInfo.Builder builderForValue) {
+        if (userCardInfoBuilder_ == null) {
+          userCardInfo_ = builderForValue.build();
+          onChanged();
+        } else {
+          userCardInfoBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00008000;
+        return this;
+      }
+      /**
+       * <code>optional .BlitzMessage.UserCardInfo userCardInfo = 16;</code>
+       */
+      public Builder mergeUserCardInfo(com.blitzhere.BlitzMessage.Payments.UserCardInfo value) {
+        if (userCardInfoBuilder_ == null) {
+          if (((bitField0_ & 0x00008000) == 0x00008000) &&
+              userCardInfo_ != com.blitzhere.BlitzMessage.Payments.UserCardInfo.getDefaultInstance()) {
+            userCardInfo_ =
+              com.blitzhere.BlitzMessage.Payments.UserCardInfo.newBuilder(userCardInfo_).mergeFrom(value).buildPartial();
+          } else {
+            userCardInfo_ = value;
+          }
+          onChanged();
+        } else {
+          userCardInfoBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00008000;
+        return this;
+      }
+      /**
+       * <code>optional .BlitzMessage.UserCardInfo userCardInfo = 16;</code>
+       */
+      public Builder clearUserCardInfo() {
+        if (userCardInfoBuilder_ == null) {
+          userCardInfo_ = com.blitzhere.BlitzMessage.Payments.UserCardInfo.getDefaultInstance();
+          onChanged();
+        } else {
+          userCardInfoBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00008000);
+        return this;
+      }
+      /**
+       * <code>optional .BlitzMessage.UserCardInfo userCardInfo = 16;</code>
+       */
+      public com.blitzhere.BlitzMessage.Payments.UserCardInfo.Builder getUserCardInfoBuilder() {
+        bitField0_ |= 0x00008000;
+        onChanged();
+        return getUserCardInfoFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .BlitzMessage.UserCardInfo userCardInfo = 16;</code>
+       */
+      public com.blitzhere.BlitzMessage.Payments.UserCardInfoOrBuilder getUserCardInfoOrBuilder() {
+        if (userCardInfoBuilder_ != null) {
+          return userCardInfoBuilder_.getMessageOrBuilder();
+        } else {
+          return userCardInfo_;
+        }
+      }
+      /**
+       * <code>optional .BlitzMessage.UserCardInfo userCardInfo = 16;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          com.blitzhere.BlitzMessage.Payments.UserCardInfo, com.blitzhere.BlitzMessage.Payments.UserCardInfo.Builder, com.blitzhere.BlitzMessage.Payments.UserCardInfoOrBuilder> 
+          getUserCardInfoFieldBuilder() {
+        if (userCardInfoBuilder_ == null) {
+          userCardInfoBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.blitzhere.BlitzMessage.Payments.UserCardInfo, com.blitzhere.BlitzMessage.Payments.UserCardInfo.Builder, com.blitzhere.BlitzMessage.Payments.UserCardInfoOrBuilder>(
+                  getUserCardInfo(),
+                  getParentForChildren(),
+                  isClean());
+          userCardInfo_ = null;
+        }
+        return userCardInfoBuilder_;
+      }
+
       // @@protoc_insertion_point(builder_scope:BlitzMessage.ResponseType)
     }
 
@@ -14622,94 +15000,96 @@ public final class Server {
   static {
     java.lang.String[] descriptorData = {
       "\n\014Server.proto\022\014BlitzMessage\032\033objectivec" +
-      "-descriptor.proto\032\013Types.proto\032\020EntityTa" +
-      "gs.proto\032\nFeed.proto\032\014Device.proto\032\014Sear" +
-      "ch.proto\032\rFriends.proto\032\020UserEvents.prot" +
-      "o\032\022UserMessages.proto\032\022UserProfiles.prot" +
-      "o\"!\n\014DebugMessage\022\021\n\tdebugText\030\001 \003(\t\"\313\001\n" +
-      "\016SessionRequest\022(\n\010location\030\001 \001(\0132\026.Blit" +
-      "zMessage.Location\022,\n\ndeviceInfo\030\002 \001(\0132\030." +
-      "BlitzMessage.DeviceInfo\022*\n\007profile\030\003 \001(\013" +
-      "2\031.BlitzMessage.UserProfile\0225\n\024lastAppDa",
-      "taResetDate\030\004 \001(\0132\027.BlitzMessage.Timesta" +
-      "mp\"\025\n\023BlitzHereAppOptions\"I\n\nAppOptions\022" +
-      ";\n\020blitzHereOptions\030\001 \001(\0132!.BlitzMessage" +
-      ".BlitzHereAppOptions\"\254\002\n\017SessionResponse" +
-      "\022\016\n\006userID\030\001 \001(\t\022\024\n\014sessionToken\030\002 \001(\t\022\021" +
-      "\n\tserverURL\030\003 \001(\t\022/\n\014userMessages\030\004 \003(\0132" +
-      "\031.BlitzMessage.UserMessage\022.\n\013userProfil" +
-      "e\030\005 \001(\0132\031.BlitzMessage.UserProfile\022\027\n\017re" +
-      "setAllAppData\030\006 \001(\010\0228\n\rinviteRequest\030\007 \001" +
-      "(\0132!.BlitzMessage.AcceptInviteRequest\022,\n",
-      "\nappOptions\030\010 \001(\0132\030.BlitzMessage.AppOpti" +
-      "ons\"\035\n\013PushConnect\022\016\n\006userID\030\001 \001(\t\"\020\n\016Pu" +
-      "shDisconnect\"\340\t\n\013RequestType\0224\n\016sessionR" +
-      "equest\030\001 \001(\0132\034.BlitzMessage.SessionReque" +
-      "st\0224\n\016userEventBatch\030\002 \001(\0132\034.BlitzMessag" +
-      "e.UserEventBatch\022:\n\021userProfileUpdate\030\003 " +
-      "\001(\0132\037.BlitzMessage.UserProfileUpdate\0228\n\020" +
-      "userProfileQuery\030\004 \001(\0132\036.BlitzMessage.Us" +
-      "erProfileQuery\022>\n\023confirmationRequest\030\005 " +
-      "\001(\0132!.BlitzMessage.ConfirmationRequest\022;",
-      "\n\022messageSendRequest\030\006 \001(\0132\037.BlitzMessag" +
-      "e.UserMessageUpdate\022<\n\023messageFetchReque" +
-      "st\030\007 \001(\0132\037.BlitzMessage.UserMessageUpdat" +
-      "e\0220\n\014debugMessage\030\010 \001(\0132\032.BlitzMessage.D" +
-      "ebugMessage\022.\n\013imageUpload\030\t \001(\0132\031.Blitz" +
-      "Message.ImageUpload\022>\n\023acceptInviteReque" +
-      "st\030\n \001(\0132!.BlitzMessage.AcceptInviteRequ" +
-      "est\022@\n\024feedPostFetchRequest\030\013 \001(\0132\".Blit" +
-      "zMessage.FeedPostFetchRequest\022B\n\025feedPos" +
-      "tUpdateRequest\030\014 \001(\0132#.BlitzMessage.Feed",
-      "PostUpdateRequest\022>\n\023autocompleteRequest" +
-      "\030\r \001(\0132!.BlitzMessage.AutocompleteReques" +
-      "t\0224\n\017entityTagUpdate\030\016 \001(\0132\033.BlitzMessag" +
-      "e.EntityTagList\022:\n\021userSearchRequest\030\017 \001" +
-      "(\0132\037.BlitzMessage.UserSearchRequest\022.\n\013p" +
-      "ushConnect\030\020 \001(\0132\031.BlitzMessage.PushConn" +
-      "ect\0224\n\016pushDisconnect\030\021 \001(\0132\034.BlitzMessa" +
-      "ge.PushDisconnect\022>\n\023conversationRequest" +
-      "\030\022 \001(\0132!.BlitzMessage.ConversationReques" +
-      "t\022<\n\022fetchConversations\030\023 \001(\0132 .BlitzMes",
-      "sage.FetchConversations\022,\n\nuserReview\030\024 " +
-      "\001(\0132\030.BlitzMessage.UserReview\022H\n\030updateC" +
-      "onversationStatus\030\025 \001(\0132&.BlitzMessage.U" +
-      "pdateConversationStatus\"U\n\rServerRequest" +
-      "\022\024\n\014sessionToken\030\001 \001(\t\022.\n\013requestType\030\002 " +
-      "\001(\0132\031.BlitzMessage.RequestType\"\261\007\n\014Respo" +
-      "nseType\0226\n\017sessionResponse\030\001 \001(\0132\035.Blitz" +
-      "Message.SessionResponse\022D\n\026userEventBatc" +
-      "hResponse\030\002 \001(\0132$.BlitzMessage.UserEvent" +
-      "BatchResponse\022:\n\021userProfileUpdate\030\003 \001(\013",
-      "2\037.BlitzMessage.UserProfileUpdate\0228\n\020use" +
-      "rProfileQuery\030\004 \001(\0132\036.BlitzMessage.UserP" +
-      "rofileQuery\022>\n\023confirmationRequest\030\005 \001(\013" +
-      "2!.BlitzMessage.ConfirmationRequest\022:\n\021u" +
-      "serMessageUpdate\030\006 \001(\0132\037.BlitzMessage.Us" +
-      "erMessageUpdate\0220\n\014debugMessage\030\007 \001(\0132\032." +
-      "BlitzMessage.DebugMessage\0223\n\020imageUpload" +
-      "Reply\030\010 \001(\0132\031.BlitzMessage.ImageUpload\022@" +
-      "\n\024acceptInviteResponse\030\t \001(\0132\".BlitzMess" +
-      "age.AcceptInviteResponse\022B\n\025feedPostFetc",
-      "hResponse\030\n \001(\0132#.BlitzMessage.FeedPostF" +
-      "etchResponse\022D\n\026feedPostUpdateResponse\030\013" +
-      " \001(\0132$.BlitzMessage.FeedPostUpdateRespon" +
-      "se\022@\n\024autocompleteResponse\030\014 \001(\0132\".Blitz" +
-      "Message.AutocompleteResponse\022<\n\022userSear" +
-      "chResponse\030\r \001(\0132 .BlitzMessage.UserSear" +
-      "chResponse\022@\n\024conversationResponse\030\016 \001(\013" +
-      "2\".BlitzMessage.ConversationResponse\022<\n\022" +
-      "fetchConversations\030\017 \001(\0132 .BlitzMessage." +
-      "FetchConversations\"\215\001\n\016ServerResponse\0220\n",
-      "\014responseCode\030\001 \001(\0162\032.BlitzMessage.Respo" +
-      "nseCode\022\027\n\017responseMessage\030\002 \001(\t\0220\n\014resp" +
-      "onseType\030\003 \001(\0132\032.BlitzMessage.ResponseTy" +
-      "pe*\226\001\n\014ResponseCode\022\r\n\tRCSuccess\020\001\022\022\n\016RC" +
-      "InputCorrupt\020\002\022\022\n\016RCInputInvalid\020\003\022\023\n\017RC" +
-      "ServerWarning\020\004\022\021\n\rRCServerError\020\005\022\023\n\017RC" +
-      "NotAuthorized\020\006\022\022\n\016RCClientTooOld\020\007B/\n\032c" +
-      "om.blitzhere.BlitzMessage\210\001\001\322>\002\n\000\322>\003\022\001B\322" +
-      ">\002\030\001"
+      "-descriptor.proto\032\013Types.proto\032\014Device.p" +
+      "roto\032\020EntityTags.proto\032\nFeed.proto\032\rFrie" +
+      "nds.proto\032\016Payments.proto\032\014Search.proto\032" +
+      "\020UserEvents.proto\032\022UserMessages.proto\032\022U" +
+      "serProfiles.proto\"!\n\014DebugMessage\022\021\n\tdeb" +
+      "ugText\030\001 \003(\t\"\313\001\n\016SessionRequest\022(\n\010locat" +
+      "ion\030\001 \001(\0132\026.BlitzMessage.Location\022,\n\ndev" +
+      "iceInfo\030\002 \001(\0132\030.BlitzMessage.DeviceInfo\022" +
+      "*\n\007profile\030\003 \001(\0132\031.BlitzMessage.UserProf",
+      "ile\0225\n\024lastAppDataResetDate\030\004 \001(\0132\027.Blit" +
+      "zMessage.Timestamp\"\025\n\023BlitzHereAppOption" +
+      "s\"I\n\nAppOptions\022;\n\020blitzHereOptions\030\001 \001(" +
+      "\0132!.BlitzMessage.BlitzHereAppOptions\"\254\002\n" +
+      "\017SessionResponse\022\016\n\006userID\030\001 \001(\t\022\024\n\014sess" +
+      "ionToken\030\002 \001(\t\022\021\n\tserverURL\030\003 \001(\t\022/\n\014use" +
+      "rMessages\030\004 \003(\0132\031.BlitzMessage.UserMessa" +
+      "ge\022.\n\013userProfile\030\005 \001(\0132\031.BlitzMessage.U" +
+      "serProfile\022\027\n\017resetAllAppData\030\006 \001(\010\0228\n\ri" +
+      "nviteRequest\030\007 \001(\0132!.BlitzMessage.Accept",
+      "InviteRequest\022,\n\nappOptions\030\010 \001(\0132\030.Blit" +
+      "zMessage.AppOptions\"\035\n\013PushConnect\022\016\n\006us" +
+      "erID\030\001 \001(\t\"\020\n\016PushDisconnect\"\222\n\n\013Request" +
+      "Type\0224\n\016sessionRequest\030\001 \001(\0132\034.BlitzMess" +
+      "age.SessionRequest\0224\n\016userEventBatch\030\002 \001" +
+      "(\0132\034.BlitzMessage.UserEventBatch\022:\n\021user" +
+      "ProfileUpdate\030\003 \001(\0132\037.BlitzMessage.UserP" +
+      "rofileUpdate\0228\n\020userProfileQuery\030\004 \001(\0132\036" +
+      ".BlitzMessage.UserProfileQuery\022>\n\023confir" +
+      "mationRequest\030\005 \001(\0132!.BlitzMessage.Confi",
+      "rmationRequest\022;\n\022messageSendRequest\030\006 \001" +
+      "(\0132\037.BlitzMessage.UserMessageUpdate\022<\n\023m" +
+      "essageFetchRequest\030\007 \001(\0132\037.BlitzMessage." +
+      "UserMessageUpdate\0220\n\014debugMessage\030\010 \001(\0132" +
+      "\032.BlitzMessage.DebugMessage\022.\n\013imageUplo" +
+      "ad\030\t \001(\0132\031.BlitzMessage.ImageUpload\022>\n\023a" +
+      "cceptInviteRequest\030\n \001(\0132!.BlitzMessage." +
+      "AcceptInviteRequest\022@\n\024feedPostFetchRequ" +
+      "est\030\013 \001(\0132\".BlitzMessage.FeedPostFetchRe" +
+      "quest\022B\n\025feedPostUpdateRequest\030\014 \001(\0132#.B",
+      "litzMessage.FeedPostUpdateRequest\022>\n\023aut" +
+      "ocompleteRequest\030\r \001(\0132!.BlitzMessage.Au" +
+      "tocompleteRequest\0224\n\017entityTagUpdate\030\016 \001" +
+      "(\0132\033.BlitzMessage.EntityTagList\022:\n\021userS" +
+      "earchRequest\030\017 \001(\0132\037.BlitzMessage.UserSe" +
+      "archRequest\022.\n\013pushConnect\030\020 \001(\0132\031.Blitz" +
+      "Message.PushConnect\0224\n\016pushDisconnect\030\021 " +
+      "\001(\0132\034.BlitzMessage.PushDisconnect\022>\n\023con" +
+      "versationRequest\030\022 \001(\0132!.BlitzMessage.Co" +
+      "nversationRequest\022<\n\022fetchConversations\030",
+      "\023 \001(\0132 .BlitzMessage.FetchConversations\022" +
+      ",\n\nuserReview\030\024 \001(\0132\030.BlitzMessage.UserR" +
+      "eview\022H\n\030updateConversationStatus\030\025 \001(\0132" +
+      "&.BlitzMessage.UpdateConversationStatus\022" +
+      "0\n\014userCardInfo\030\026 \001(\0132\032.BlitzMessage.Use" +
+      "rCardInfo\"U\n\rServerRequest\022\024\n\014sessionTok" +
+      "en\030\001 \001(\t\022.\n\013requestType\030\002 \001(\0132\031.BlitzMes" +
+      "sage.RequestType\"\343\007\n\014ResponseType\0226\n\017ses" +
+      "sionResponse\030\001 \001(\0132\035.BlitzMessage.Sessio" +
+      "nResponse\022D\n\026userEventBatchResponse\030\002 \001(",
+      "\0132$.BlitzMessage.UserEventBatchResponse\022" +
+      ":\n\021userProfileUpdate\030\003 \001(\0132\037.BlitzMessag" +
+      "e.UserProfileUpdate\0228\n\020userProfileQuery\030" +
+      "\004 \001(\0132\036.BlitzMessage.UserProfileQuery\022>\n" +
+      "\023confirmationRequest\030\005 \001(\0132!.BlitzMessag" +
+      "e.ConfirmationRequest\022:\n\021userMessageUpda" +
+      "te\030\006 \001(\0132\037.BlitzMessage.UserMessageUpdat" +
+      "e\0220\n\014debugMessage\030\007 \001(\0132\032.BlitzMessage.D" +
+      "ebugMessage\0223\n\020imageUploadReply\030\010 \001(\0132\031." +
+      "BlitzMessage.ImageUpload\022@\n\024acceptInvite",
+      "Response\030\t \001(\0132\".BlitzMessage.AcceptInvi" +
+      "teResponse\022B\n\025feedPostFetchResponse\030\n \001(" +
+      "\0132#.BlitzMessage.FeedPostFetchResponse\022D" +
+      "\n\026feedPostUpdateResponse\030\013 \001(\0132$.BlitzMe" +
+      "ssage.FeedPostUpdateResponse\022@\n\024autocomp" +
+      "leteResponse\030\014 \001(\0132\".BlitzMessage.Autoco" +
+      "mpleteResponse\022<\n\022userSearchResponse\030\r \001" +
+      "(\0132 .BlitzMessage.UserSearchResponse\022@\n\024" +
+      "conversationResponse\030\016 \001(\0132\".BlitzMessag" +
+      "e.ConversationResponse\022<\n\022fetchConversat",
+      "ions\030\017 \001(\0132 .BlitzMessage.FetchConversat" +
+      "ions\0220\n\014userCardInfo\030\020 \001(\0132\032.BlitzMessag" +
+      "e.UserCardInfo\"\215\001\n\016ServerResponse\0220\n\014res" +
+      "ponseCode\030\001 \001(\0162\032.BlitzMessage.ResponseC" +
+      "ode\022\027\n\017responseMessage\030\002 \001(\t\0220\n\014response" +
+      "Type\030\003 \001(\0132\032.BlitzMessage.ResponseType*\226" +
+      "\001\n\014ResponseCode\022\r\n\tRCSuccess\020\001\022\022\n\016RCInpu" +
+      "tCorrupt\020\002\022\022\n\016RCInputInvalid\020\003\022\023\n\017RCServ" +
+      "erWarning\020\004\022\021\n\rRCServerError\020\005\022\023\n\017RCNotA" +
+      "uthorized\020\006\022\022\n\016RCClientTooOld\020\007B/\n\032com.b",
+      "litzhere.BlitzMessage\210\001\001\322>\002\n\000\322>\003\022\001B\322>\002\030\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -14724,11 +15104,12 @@ public final class Server {
         new com.google.protobuf.Descriptors.FileDescriptor[] {
           google.protobuf.ObjectivecDescriptor.getDescriptor(),
           com.blitzhere.BlitzMessage.Types.getDescriptor(),
+          com.blitzhere.BlitzMessage.Device.getDescriptor(),
           com.blitzhere.BlitzMessage.EntityTags.getDescriptor(),
           com.blitzhere.BlitzMessage.Feed.getDescriptor(),
-          com.blitzhere.BlitzMessage.Device.getDescriptor(),
-          com.blitzhere.BlitzMessage.Search.getDescriptor(),
           com.blitzhere.BlitzMessage.Friends.getDescriptor(),
+          com.blitzhere.BlitzMessage.Payments.getDescriptor(),
+          com.blitzhere.BlitzMessage.Search.getDescriptor(),
           com.blitzhere.BlitzMessage.UserEvents.getDescriptor(),
           com.blitzhere.BlitzMessage.UserMessages.getDescriptor(),
           com.blitzhere.BlitzMessage.UserProfiles.getDescriptor(),
@@ -14780,7 +15161,7 @@ public final class Server {
     internal_static_BlitzMessage_RequestType_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_BlitzMessage_RequestType_descriptor,
-        new java.lang.String[] { "SessionRequest", "UserEventBatch", "UserProfileUpdate", "UserProfileQuery", "ConfirmationRequest", "MessageSendRequest", "MessageFetchRequest", "DebugMessage", "ImageUpload", "AcceptInviteRequest", "FeedPostFetchRequest", "FeedPostUpdateRequest", "AutocompleteRequest", "EntityTagUpdate", "UserSearchRequest", "PushConnect", "PushDisconnect", "ConversationRequest", "FetchConversations", "UserReview", "UpdateConversationStatus", });
+        new java.lang.String[] { "SessionRequest", "UserEventBatch", "UserProfileUpdate", "UserProfileQuery", "ConfirmationRequest", "MessageSendRequest", "MessageFetchRequest", "DebugMessage", "ImageUpload", "AcceptInviteRequest", "FeedPostFetchRequest", "FeedPostUpdateRequest", "AutocompleteRequest", "EntityTagUpdate", "UserSearchRequest", "PushConnect", "PushDisconnect", "ConversationRequest", "FetchConversations", "UserReview", "UpdateConversationStatus", "UserCardInfo", });
     internal_static_BlitzMessage_ServerRequest_descriptor =
       getDescriptor().getMessageTypes().get(8);
     internal_static_BlitzMessage_ServerRequest_fieldAccessorTable = new
@@ -14792,7 +15173,7 @@ public final class Server {
     internal_static_BlitzMessage_ResponseType_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_BlitzMessage_ResponseType_descriptor,
-        new java.lang.String[] { "SessionResponse", "UserEventBatchResponse", "UserProfileUpdate", "UserProfileQuery", "ConfirmationRequest", "UserMessageUpdate", "DebugMessage", "ImageUploadReply", "AcceptInviteResponse", "FeedPostFetchResponse", "FeedPostUpdateResponse", "AutocompleteResponse", "UserSearchResponse", "ConversationResponse", "FetchConversations", });
+        new java.lang.String[] { "SessionResponse", "UserEventBatchResponse", "UserProfileUpdate", "UserProfileQuery", "ConfirmationRequest", "UserMessageUpdate", "DebugMessage", "ImageUploadReply", "AcceptInviteResponse", "FeedPostFetchResponse", "FeedPostUpdateResponse", "AutocompleteResponse", "UserSearchResponse", "ConversationResponse", "FetchConversations", "UserCardInfo", });
     internal_static_BlitzMessage_ServerResponse_descriptor =
       getDescriptor().getMessageTypes().get(10);
     internal_static_BlitzMessage_ServerResponse_fieldAccessorTable = new
@@ -14806,11 +15187,12 @@ public final class Server {
         .internalUpdateFileDescriptor(descriptor, registry);
     google.protobuf.ObjectivecDescriptor.getDescriptor();
     com.blitzhere.BlitzMessage.Types.getDescriptor();
+    com.blitzhere.BlitzMessage.Device.getDescriptor();
     com.blitzhere.BlitzMessage.EntityTags.getDescriptor();
     com.blitzhere.BlitzMessage.Feed.getDescriptor();
-    com.blitzhere.BlitzMessage.Device.getDescriptor();
-    com.blitzhere.BlitzMessage.Search.getDescriptor();
     com.blitzhere.BlitzMessage.Friends.getDescriptor();
+    com.blitzhere.BlitzMessage.Payments.getDescriptor();
+    com.blitzhere.BlitzMessage.Search.getDescriptor();
     com.blitzhere.BlitzMessage.UserEvents.getDescriptor();
     com.blitzhere.BlitzMessage.UserMessages.getDescriptor();
     com.blitzhere.BlitzMessage.UserProfiles.getDescriptor();

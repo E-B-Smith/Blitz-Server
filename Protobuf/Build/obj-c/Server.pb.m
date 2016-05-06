@@ -15,11 +15,12 @@ static PBExtensionRegistry* extensionRegistry = nil;
     [self registerAllExtensions:registry];
     [ObjectivecDescriptorRoot registerAllExtensions:registry];
     [BTypesRoot registerAllExtensions:registry];
+    [BDeviceRoot registerAllExtensions:registry];
     [BEntityTagsRoot registerAllExtensions:registry];
     [BFeedRoot registerAllExtensions:registry];
-    [BDeviceRoot registerAllExtensions:registry];
-    [BSearchRoot registerAllExtensions:registry];
     [BFriendsRoot registerAllExtensions:registry];
+    [BPaymentsRoot registerAllExtensions:registry];
+    [BSearchRoot registerAllExtensions:registry];
     [BUserEventsRoot registerAllExtensions:registry];
     [BUserMessagesRoot registerAllExtensions:registry];
     [BUserProfilesRoot registerAllExtensions:registry];
@@ -2173,6 +2174,7 @@ static BPushDisconnect* defaultBPushDisconnectInstance = nil;
 @property (strong) BFetchConversations* fetchConversations;
 @property (strong) BUserReview* userReview;
 @property (strong) BUpdateConversationStatus* updateConversationStatus;
+@property (strong) BUserCardInfo* userCardInfo;
 @end
 
 @implementation BRequestType
@@ -2324,6 +2326,13 @@ static BPushDisconnect* defaultBPushDisconnectInstance = nil;
   hasUpdateConversationStatus_ = !!_value_;
 }
 @synthesize updateConversationStatus;
+- (BOOL) hasUserCardInfo {
+  return !!hasUserCardInfo_;
+}
+- (void) setHasUserCardInfo:(BOOL) _value_ {
+  hasUserCardInfo_ = !!_value_;
+}
+@synthesize userCardInfo;
 - (instancetype) init {
   if ((self = [super init])) {
     self.sessionRequest = [BSessionRequest defaultInstance];
@@ -2347,6 +2356,7 @@ static BPushDisconnect* defaultBPushDisconnectInstance = nil;
     self.fetchConversations = [BFetchConversations defaultInstance];
     self.userReview = [BUserReview defaultInstance];
     self.updateConversationStatus = [BUpdateConversationStatus defaultInstance];
+    self.userCardInfo = [BUserCardInfo defaultInstance];
   }
   return self;
 }
@@ -2489,6 +2499,9 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   if (self.hasUpdateConversationStatus) {
     [output writeMessage:21 value:self.updateConversationStatus];
   }
+  if (self.hasUserCardInfo) {
+    [output writeMessage:22 value:self.userCardInfo];
+  }
   [self.unknownFields writeToCodedOutputStream:output];
 }
 - (SInt32) serializedSize {
@@ -2560,6 +2573,9 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   }
   if (self.hasUpdateConversationStatus) {
     size_ += computeMessageSize(21, self.updateConversationStatus);
+  }
+  if (self.hasUserCardInfo) {
+    size_ += computeMessageSize(22, self.userCardInfo);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -2722,6 +2738,12 @@ static BRequestType* defaultBRequestTypeInstance = nil;
                          withIndent:[NSString stringWithFormat:@"%@  ", indent]];
     [output appendFormat:@"%@}\n", indent];
   }
+  if (self.hasUserCardInfo) {
+    [output appendFormat:@"%@%@ {\n", indent, @"userCardInfo"];
+    [self.userCardInfo writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (void) storeInDictionary:(NSMutableDictionary *)dictionary {
@@ -2830,6 +2852,11 @@ static BRequestType* defaultBRequestTypeInstance = nil;
    [self.updateConversationStatus storeInDictionary:messageDictionary];
    [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"updateConversationStatus"];
   }
+  if (self.hasUserCardInfo) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.userCardInfo storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"userCardInfo"];
+  }
   [self.unknownFields storeInDictionary:dictionary];
 }
 - (BOOL) isEqual:(id)other {
@@ -2883,6 +2910,8 @@ static BRequestType* defaultBRequestTypeInstance = nil;
       (!self.hasUserReview || [self.userReview isEqual:otherMessage.userReview]) &&
       self.hasUpdateConversationStatus == otherMessage.hasUpdateConversationStatus &&
       (!self.hasUpdateConversationStatus || [self.updateConversationStatus isEqual:otherMessage.updateConversationStatus]) &&
+      self.hasUserCardInfo == otherMessage.hasUserCardInfo &&
+      (!self.hasUserCardInfo || [self.userCardInfo isEqual:otherMessage.userCardInfo]) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
@@ -2949,6 +2978,9 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   }
   if (self.hasUpdateConversationStatus) {
     hashCode = hashCode * 31 + [self.updateConversationStatus hash];
+  }
+  if (self.hasUserCardInfo) {
+    hashCode = hashCode * 31 + [self.userCardInfo hash];
   }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
@@ -3055,6 +3087,9 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   }
   if (other.hasUpdateConversationStatus) {
     [self mergeUpdateConversationStatus:other.updateConversationStatus];
+  }
+  if (other.hasUserCardInfo) {
+    [self mergeUserCardInfo:other.userCardInfo];
   }
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -3264,6 +3299,15 @@ static BRequestType* defaultBRequestTypeInstance = nil;
         }
         [input readMessage:subBuilder extensionRegistry:extensionRegistry];
         [self setUpdateConversationStatus:[subBuilder buildPartial]];
+        break;
+      }
+      case 178: {
+        BUserCardInfoBuilder* subBuilder = [BUserCardInfo builder];
+        if (self.hasUserCardInfo) {
+          [subBuilder mergeFrom:self.userCardInfo];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setUserCardInfo:[subBuilder buildPartial]];
         break;
       }
     }
@@ -3899,6 +3943,36 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   resultRequestType.updateConversationStatus = [BUpdateConversationStatus defaultInstance];
   return self;
 }
+- (BOOL) hasUserCardInfo {
+  return resultRequestType.hasUserCardInfo;
+}
+- (BUserCardInfo*) userCardInfo {
+  return resultRequestType.userCardInfo;
+}
+- (BRequestTypeBuilder*) setUserCardInfo:(BUserCardInfo*) value {
+  resultRequestType.hasUserCardInfo = YES;
+  resultRequestType.userCardInfo = value;
+  return self;
+}
+- (BRequestTypeBuilder*) setUserCardInfoBuilder:(BUserCardInfoBuilder*) builderForValue {
+  return [self setUserCardInfo:[builderForValue build]];
+}
+- (BRequestTypeBuilder*) mergeUserCardInfo:(BUserCardInfo*) value {
+  if (resultRequestType.hasUserCardInfo &&
+      resultRequestType.userCardInfo != [BUserCardInfo defaultInstance]) {
+    resultRequestType.userCardInfo =
+      [[[BUserCardInfo builderWithPrototype:resultRequestType.userCardInfo] mergeFrom:value] buildPartial];
+  } else {
+    resultRequestType.userCardInfo = value;
+  }
+  resultRequestType.hasUserCardInfo = YES;
+  return self;
+}
+- (BRequestTypeBuilder*) clearUserCardInfo {
+  resultRequestType.hasUserCardInfo = NO;
+  resultRequestType.userCardInfo = [BUserCardInfo defaultInstance];
+  return self;
+}
 @end
 
 @interface BServerRequest ()
@@ -4201,6 +4275,7 @@ static BServerRequest* defaultBServerRequestInstance = nil;
 @property (strong) BUserSearchResponse* userSearchResponse;
 @property (strong) BConversationResponse* conversationResponse;
 @property (strong) BFetchConversations* fetchConversations;
+@property (strong) BUserCardInfo* userCardInfo;
 @end
 
 @implementation BResponseType
@@ -4310,6 +4385,13 @@ static BServerRequest* defaultBServerRequestInstance = nil;
   hasFetchConversations_ = !!_value_;
 }
 @synthesize fetchConversations;
+- (BOOL) hasUserCardInfo {
+  return !!hasUserCardInfo_;
+}
+- (void) setHasUserCardInfo:(BOOL) _value_ {
+  hasUserCardInfo_ = !!_value_;
+}
+@synthesize userCardInfo;
 - (instancetype) init {
   if ((self = [super init])) {
     self.sessionResponse = [BSessionResponse defaultInstance];
@@ -4327,6 +4409,7 @@ static BServerRequest* defaultBServerRequestInstance = nil;
     self.userSearchResponse = [BUserSearchResponse defaultInstance];
     self.conversationResponse = [BConversationResponse defaultInstance];
     self.fetchConversations = [BFetchConversations defaultInstance];
+    self.userCardInfo = [BUserCardInfo defaultInstance];
   }
   return self;
 }
@@ -4451,6 +4534,9 @@ static BResponseType* defaultBResponseTypeInstance = nil;
   if (self.hasFetchConversations) {
     [output writeMessage:15 value:self.fetchConversations];
   }
+  if (self.hasUserCardInfo) {
+    [output writeMessage:16 value:self.userCardInfo];
+  }
   [self.unknownFields writeToCodedOutputStream:output];
 }
 - (SInt32) serializedSize {
@@ -4504,6 +4590,9 @@ static BResponseType* defaultBResponseTypeInstance = nil;
   }
   if (self.hasFetchConversations) {
     size_ += computeMessageSize(15, self.fetchConversations);
+  }
+  if (self.hasUserCardInfo) {
+    size_ += computeMessageSize(16, self.userCardInfo);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -4630,6 +4719,12 @@ static BResponseType* defaultBResponseTypeInstance = nil;
                          withIndent:[NSString stringWithFormat:@"%@  ", indent]];
     [output appendFormat:@"%@}\n", indent];
   }
+  if (self.hasUserCardInfo) {
+    [output appendFormat:@"%@%@ {\n", indent, @"userCardInfo"];
+    [self.userCardInfo writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (void) storeInDictionary:(NSMutableDictionary *)dictionary {
@@ -4708,6 +4803,11 @@ static BResponseType* defaultBResponseTypeInstance = nil;
    [self.fetchConversations storeInDictionary:messageDictionary];
    [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"fetchConversations"];
   }
+  if (self.hasUserCardInfo) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.userCardInfo storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"userCardInfo"];
+  }
   [self.unknownFields storeInDictionary:dictionary];
 }
 - (BOOL) isEqual:(id)other {
@@ -4749,6 +4849,8 @@ static BResponseType* defaultBResponseTypeInstance = nil;
       (!self.hasConversationResponse || [self.conversationResponse isEqual:otherMessage.conversationResponse]) &&
       self.hasFetchConversations == otherMessage.hasFetchConversations &&
       (!self.hasFetchConversations || [self.fetchConversations isEqual:otherMessage.fetchConversations]) &&
+      self.hasUserCardInfo == otherMessage.hasUserCardInfo &&
+      (!self.hasUserCardInfo || [self.userCardInfo isEqual:otherMessage.userCardInfo]) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
@@ -4797,6 +4899,9 @@ static BResponseType* defaultBResponseTypeInstance = nil;
   }
   if (self.hasFetchConversations) {
     hashCode = hashCode * 31 + [self.fetchConversations hash];
+  }
+  if (self.hasUserCardInfo) {
+    hashCode = hashCode * 31 + [self.userCardInfo hash];
   }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
@@ -4885,6 +4990,9 @@ static BResponseType* defaultBResponseTypeInstance = nil;
   }
   if (other.hasFetchConversations) {
     [self mergeFetchConversations:other.fetchConversations];
+  }
+  if (other.hasUserCardInfo) {
+    [self mergeUserCardInfo:other.userCardInfo];
   }
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -5040,6 +5148,15 @@ static BResponseType* defaultBResponseTypeInstance = nil;
         }
         [input readMessage:subBuilder extensionRegistry:extensionRegistry];
         [self setFetchConversations:[subBuilder buildPartial]];
+        break;
+      }
+      case 130: {
+        BUserCardInfoBuilder* subBuilder = [BUserCardInfo builder];
+        if (self.hasUserCardInfo) {
+          [subBuilder mergeFrom:self.userCardInfo];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setUserCardInfo:[subBuilder buildPartial]];
         break;
       }
     }
@@ -5493,6 +5610,36 @@ static BResponseType* defaultBResponseTypeInstance = nil;
 - (BResponseTypeBuilder*) clearFetchConversations {
   resultResponseType.hasFetchConversations = NO;
   resultResponseType.fetchConversations = [BFetchConversations defaultInstance];
+  return self;
+}
+- (BOOL) hasUserCardInfo {
+  return resultResponseType.hasUserCardInfo;
+}
+- (BUserCardInfo*) userCardInfo {
+  return resultResponseType.userCardInfo;
+}
+- (BResponseTypeBuilder*) setUserCardInfo:(BUserCardInfo*) value {
+  resultResponseType.hasUserCardInfo = YES;
+  resultResponseType.userCardInfo = value;
+  return self;
+}
+- (BResponseTypeBuilder*) setUserCardInfoBuilder:(BUserCardInfoBuilder*) builderForValue {
+  return [self setUserCardInfo:[builderForValue build]];
+}
+- (BResponseTypeBuilder*) mergeUserCardInfo:(BUserCardInfo*) value {
+  if (resultResponseType.hasUserCardInfo &&
+      resultResponseType.userCardInfo != [BUserCardInfo defaultInstance]) {
+    resultResponseType.userCardInfo =
+      [[[BUserCardInfo builderWithPrototype:resultResponseType.userCardInfo] mergeFrom:value] buildPartial];
+  } else {
+    resultResponseType.userCardInfo = value;
+  }
+  resultResponseType.hasUserCardInfo = YES;
+  return self;
+}
+- (BResponseTypeBuilder*) clearUserCardInfo {
+  resultResponseType.hasUserCardInfo = NO;
+  resultResponseType.userCardInfo = [BUserCardInfo defaultInstance];
   return self;
 }
 @end

@@ -65,7 +65,7 @@ func UploadImage(session *Session, imageUpload *BlitzMessage.ImageUpload,
             session.UserID,
             imageData.Crc32,
         )
-        error = pgsql.RowUpdateError(result, error)
+        error = pgsql.ResultError(result, error)
         if error != nil { Log.LogError(error) }
         return ServerResponseForError(BlitzMessage.ResponseCode_RCSuccess, nil)
     }

@@ -99,7 +99,7 @@ func WriteReview(session *Session, review *BlitzMessage.UserReview,
         pgsql.NullStringFromStringArray(review.Tags),
     )
 
-    error = pgsql.RowUpdateError(result, error)
+    error = pgsql.ResultError(result, error)
     if error != nil {
         return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
     }

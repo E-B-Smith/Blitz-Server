@@ -11,11 +11,12 @@ option (google.protobuf.objectivec_file_options).relax_camel_case = true;
 
 
 import "Types.proto";
+import "Device.proto";
 import "EntityTags.proto";
 import "Feed.proto";
-import "Device.proto";
-import "Search.proto";
 import "Friends.proto";
+import "Payments.proto";
+import "Search.proto";
 import "UserEvents.proto";
 import "UserMessages.proto";
 import "UserProfiles.proto";
@@ -107,6 +108,7 @@ message RequestType {
   optional FetchConversations       fetchConversations  = 19;
   optional UserReview               userReview          = 20;
   optional UpdateConversationStatus updateConversationStatus = 21;
+  optional UserCardInfo             userCardInfo        = 22;
 }
 
 
@@ -143,6 +145,7 @@ message ResponseType {
   optional UserSearchResponse     userSearchResponse      = 13;
   optional ConversationResponse   conversationResponse    = 14;
   optional FetchConversations     fetchConversations      = 15;
+  optional UserCardInfo           userCardInfo            = 16;
 }
 
 

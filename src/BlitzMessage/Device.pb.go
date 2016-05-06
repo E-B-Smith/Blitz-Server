@@ -10,6 +10,7 @@ It is generated from these files:
 	EntityTags.proto
 	Feed.proto
 	Friends.proto
+	Payments.proto
 	Search.proto
 	Server.proto
 	Types.proto
@@ -31,6 +32,9 @@ It has these top-level messages:
 	FriendRequest
 	AcceptInviteRequest
 	AcceptInviteResponse
+	CardInfo
+	UserCardInfo
+	Payment
 	AutocompleteRequest
 	AutocompleteResponse
 	UserSearchRequest

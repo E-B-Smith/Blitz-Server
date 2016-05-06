@@ -3,11 +3,12 @@
 #import <ProtocolBuffers/ProtocolBuffers.h>
 
 #import "Types.pb.h"
+#import "Device.pb.h"
 #import "EntityTags.pb.h"
 #import "Feed.pb.h"
-#import "Device.pb.h"
-#import "Search.pb.h"
 #import "Friends.pb.h"
+#import "Payments.pb.h"
+#import "Search.pb.h"
 #import "UserEvents.pb.h"
 #import "UserMessages.pb.h"
 #import "UserProfiles.pb.h"
@@ -25,6 +26,8 @@
 @class BAutocompleteResponseBuilder;
 @class BBlitzHereAppOptions;
 @class BBlitzHereAppOptionsBuilder;
+@class BCardInfo;
+@class BCardInfoBuilder;
 @class BConfirmationRequest;
 @class BConfirmationRequestBuilder;
 @class BContactInfo;
@@ -81,6 +84,8 @@
 @class BKeyValueBuilder;
 @class BLocation;
 @class BLocationBuilder;
+@class BPayment;
+@class BPaymentBuilder;
 @class BProfilesFromContactInfo;
 @class BProfilesFromContactInfoBuilder;
 @class BPushConnect;
@@ -109,6 +114,8 @@
 @class BTimestampBuilder;
 @class BUpdateConversationStatus;
 @class BUpdateConversationStatusBuilder;
+@class BUserCardInfo;
+@class BUserCardInfoBuilder;
 @class BUserEvent;
 @class BUserEventBatch;
 @class BUserEventBatchBuilder;
@@ -668,6 +675,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 #define RequestType_fetchConversations @"fetchConversations"
 #define RequestType_userReview @"userReview"
 #define RequestType_updateConversationStatus @"updateConversationStatus"
+#define RequestType_userCardInfo @"userCardInfo"
 @interface BRequestType : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
   BOOL hasSessionRequest_:1;
@@ -691,6 +699,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
   BOOL hasFetchConversations_:1;
   BOOL hasUserReview_:1;
   BOOL hasUpdateConversationStatus_:1;
+  BOOL hasUserCardInfo_:1;
   BSessionRequest* sessionRequest;
   BUserEventBatch* userEventBatch;
   BUserProfileUpdate* userProfileUpdate;
@@ -712,6 +721,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
   BFetchConversations* fetchConversations;
   BUserReview* userReview;
   BUpdateConversationStatus* updateConversationStatus;
+  BUserCardInfo* userCardInfo;
 }
 - (BOOL) hasSessionRequest;
 - (BOOL) hasUserEventBatch;
@@ -734,6 +744,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BOOL) hasFetchConversations;
 - (BOOL) hasUserReview;
 - (BOOL) hasUpdateConversationStatus;
+- (BOOL) hasUserCardInfo;
 @property (readonly, strong) BSessionRequest* sessionRequest;
 @property (readonly, strong) BUserEventBatch* userEventBatch;
 @property (readonly, strong) BUserProfileUpdate* userProfileUpdate;
@@ -755,6 +766,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 @property (readonly, strong) BFetchConversations* fetchConversations;
 @property (readonly, strong) BUserReview* userReview;
 @property (readonly, strong) BUpdateConversationStatus* updateConversationStatus;
+@property (readonly, strong) BUserCardInfo* userCardInfo;
 
 + (instancetype) defaultInstance;
 - (instancetype) defaultInstance;
@@ -937,6 +949,13 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BRequestTypeBuilder*) setUpdateConversationStatusBuilder:(BUpdateConversationStatusBuilder*) builderForValue;
 - (BRequestTypeBuilder*) mergeUpdateConversationStatus:(BUpdateConversationStatus*) value;
 - (BRequestTypeBuilder*) clearUpdateConversationStatus;
+
+- (BOOL) hasUserCardInfo;
+- (BUserCardInfo*) userCardInfo;
+- (BRequestTypeBuilder*) setUserCardInfo:(BUserCardInfo*) value;
+- (BRequestTypeBuilder*) setUserCardInfoBuilder:(BUserCardInfoBuilder*) builderForValue;
+- (BRequestTypeBuilder*) mergeUserCardInfo:(BUserCardInfo*) value;
+- (BRequestTypeBuilder*) clearUserCardInfo;
 @end
 
 #define ServerRequest_sessionToken @"sessionToken"
@@ -1016,6 +1035,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 #define ResponseType_userSearchResponse @"userSearchResponse"
 #define ResponseType_conversationResponse @"conversationResponse"
 #define ResponseType_fetchConversations @"fetchConversations"
+#define ResponseType_userCardInfo @"userCardInfo"
 @interface BResponseType : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
   BOOL hasSessionResponse_:1;
@@ -1033,6 +1053,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
   BOOL hasUserSearchResponse_:1;
   BOOL hasConversationResponse_:1;
   BOOL hasFetchConversations_:1;
+  BOOL hasUserCardInfo_:1;
   BSessionResponse* sessionResponse;
   BUserEventBatchResponse* userEventBatchResponse;
   BUserProfileUpdate* userProfileUpdate;
@@ -1048,6 +1069,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
   BUserSearchResponse* userSearchResponse;
   BConversationResponse* conversationResponse;
   BFetchConversations* fetchConversations;
+  BUserCardInfo* userCardInfo;
 }
 - (BOOL) hasSessionResponse;
 - (BOOL) hasUserEventBatchResponse;
@@ -1064,6 +1086,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BOOL) hasUserSearchResponse;
 - (BOOL) hasConversationResponse;
 - (BOOL) hasFetchConversations;
+- (BOOL) hasUserCardInfo;
 @property (readonly, strong) BSessionResponse* sessionResponse;
 @property (readonly, strong) BUserEventBatchResponse* userEventBatchResponse;
 @property (readonly, strong) BUserProfileUpdate* userProfileUpdate;
@@ -1079,6 +1102,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 @property (readonly, strong) BUserSearchResponse* userSearchResponse;
 @property (readonly, strong) BConversationResponse* conversationResponse;
 @property (readonly, strong) BFetchConversations* fetchConversations;
+@property (readonly, strong) BUserCardInfo* userCardInfo;
 
 + (instancetype) defaultInstance;
 - (instancetype) defaultInstance;
@@ -1219,6 +1243,13 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BResponseTypeBuilder*) setFetchConversationsBuilder:(BFetchConversationsBuilder*) builderForValue;
 - (BResponseTypeBuilder*) mergeFetchConversations:(BFetchConversations*) value;
 - (BResponseTypeBuilder*) clearFetchConversations;
+
+- (BOOL) hasUserCardInfo;
+- (BUserCardInfo*) userCardInfo;
+- (BResponseTypeBuilder*) setUserCardInfo:(BUserCardInfo*) value;
+- (BResponseTypeBuilder*) setUserCardInfoBuilder:(BUserCardInfoBuilder*) builderForValue;
+- (BResponseTypeBuilder*) mergeUserCardInfo:(BUserCardInfo*) value;
+- (BResponseTypeBuilder*) clearUserCardInfo;
 @end
 
 #define ServerResponse_responseCode @"responseCode"

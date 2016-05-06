@@ -71,7 +71,7 @@ func WriteFeedPost(feedPost *BlitzMessage.FeedPost) error {
             feedPost.PostID,
         )
 
-    error = pgsql.RowUpdateError(result, error)
+    error = pgsql.ResultError(result, error)
     if error != nil {
         Log.LogError(error)
         return error
@@ -276,7 +276,7 @@ func UpdateFeedPost(session *Session, feedPostUpdate *BlitzMessage.FeedPostUpdat
         result, error := config.DB.Exec(
             `update FeedPostTable set postStatus = $1 where postID = $2;`,
                 BlitzMessage.FeedPostStatus_FPSDeleted, feedPostUpdate.FeedPost.PostID)
-        error = pgsql.RowUpdateError(result, error)
+        error = pgsql.ResultError(result, error)
         if error != nil {
             return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
         }

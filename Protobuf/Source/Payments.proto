@@ -1,0 +1,67 @@
+syntax = "proto2";
+package BlitzMessage;
+
+option java_package = "com.blitzhere.BlitzMessage";
+option java_generic_services = true;
+
+import "objectivec-descriptor.proto";
+option (google.protobuf.objectivec_file_options).package = "";
+option (google.protobuf.objectivec_file_options).class_prefix = "B";
+option (google.protobuf.objectivec_file_options).relax_camel_case = true;
+
+
+import "Types.proto";
+//----------------------------------------------------------------------------------------
+//
+//                                                                                Payments
+//
+//----------------------------------------------------------------------------------------
+
+
+enum CardStatus {
+    CSUnknown   = 0;
+    CSDefault   = 1;
+    CSStandard  = 2;
+    CSDeleted   = 3;
+}
+
+
+message CardInfo {
+  optional CardStatus   cardStatus      = 1;
+  optional string       cardHolderName  = 2;
+  optional string       memoText        = 3;
+  optional string       brand           = 4;
+  optional string       last4           = 5;
+  optional int32        expireMonth     = 6;
+  optional int32        expireYear      = 7;
+  optional string       token           = 8;
+}
+
+
+message UserCardInfo {
+  optional string         userID        = 1;
+  repeated CardInfo       cardInfo      = 2;
+}
+
+
+enum PaymentStatus {
+    PSUnknown       = 0;
+    PSNotAuthorized = 1;
+    PSAccepted      = 2;
+}
+
+
+message Payment {
+  optional string       payerID         = 1;
+  optional string       payeeID         = 2;
+  optional string       conversationID  = 3;
+  optional Timestamp    timestamp       = 4;
+  optional PaymentStatus paymentStatus  = 5;
+  optional string       token           = 6;
+  optional string       memoText        = 7;
+  optional string       amount          = 8;
+  optional string       currency        = 9;
+}
+
+
+

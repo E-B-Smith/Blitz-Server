@@ -61,6 +61,7 @@ compile: \
     src/BlitzMessage/EntityTags.pb.go \
     src/BlitzMessage/Feed.pb.go \
     src/BlitzMessage/Friends.pb.go \
+    src/BlitzMessage/Payments.pb.go \
     src/BlitzMessage/Search.pb.go \
     src/BlitzMessage/Server.pb.go \
     src/BlitzMessage/Types.pb.go \
@@ -104,6 +105,7 @@ src/BlitzMessage/Device.pb.go \
 src/BlitzMessage/EntityTags.pb.go \
 src/BlitzMessage/Feed.pb.go \
 src/BlitzMessage/Friends.pb.go \
+src/BlitzMessage/Payments.pb.go \
 src/BlitzMessage/Search.pb.go \
 src/BlitzMessage/Server.pb.go \
 src/BlitzMessage/Types.pb.go \
@@ -114,6 +116,7 @@ src/BlitzMessage/UserProfiles.pb.go : \
     Protobuf/Source/EntityTags.proto \
     Protobuf/Source/Feed.proto \
     Protobuf/Source/Friends.proto \
+    Protobuf/Source/Payments.proto \
     Protobuf/Source/Search.proto \
     Protobuf/Source/Server.proto \
     Protobuf/Source/Types.proto \

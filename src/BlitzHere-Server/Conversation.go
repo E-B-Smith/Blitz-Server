@@ -42,7 +42,7 @@ func WriteConversation(conv *BlitzMessage.Conversation) error {
     )
     Log.Debugf("Conversation Create status: %v.", error)
 
-    error = pgsql.RowUpdateError(result, error)
+    error = pgsql.ResultError(result, error)
     if error != nil {
         Log.LogError(error)
         return error
@@ -64,7 +64,7 @@ func WriteConversation(conv *BlitzMessage.Conversation) error {
                 on conflict do nothing;`,
             conv.ConversationID,
             memberID)
-        error = pgsql.RowUpdateError(result, error)
+        error = pgsql.ResultError(result, error)
         if error != nil { Log.LogError(error) }
     }
 
