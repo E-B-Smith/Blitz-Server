@@ -34,7 +34,7 @@ It has these top-level messages:
 	AcceptInviteResponse
 	CardInfo
 	UserCardInfo
-	Payment
+	Charge
 	AutocompleteRequest
 	AutocompleteResponse
 	UserSearchRequest

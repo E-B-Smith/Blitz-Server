@@ -28,6 +28,8 @@
 @class BBlitzHereAppOptionsBuilder;
 @class BCardInfo;
 @class BCardInfoBuilder;
+@class BCharge;
+@class BChargeBuilder;
 @class BConfirmationRequest;
 @class BConfirmationRequestBuilder;
 @class BContactInfo;
@@ -84,8 +86,6 @@
 @class BKeyValueBuilder;
 @class BLocation;
 @class BLocationBuilder;
-@class BPayment;
-@class BPaymentBuilder;
 @class BProfilesFromContactInfo;
 @class BProfilesFromContactInfoBuilder;
 @class BPushConnect;

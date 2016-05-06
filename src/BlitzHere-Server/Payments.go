@@ -29,8 +29,8 @@ func UpdateCard(userID string, card *BlitzMessage.CardInfo) error {
     Log.LogFunctionName()
 
     result, error := config.DB.Exec(
-        `insert into CardTable
-            (userID
+        `insert into CardTable (
+             userID
             ,cardStatus
             ,cardHolderName
             ,memoText
@@ -38,18 +38,20 @@ func UpdateCard(userID string, card *BlitzMessage.CardInfo) error {
             ,last4
             ,expireMonth
             ,expireYear
-            ,token) = ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+            ,token
+        ) values ($1, $2, $3, $4, $5, $6, $7, $8, $9)
         on conflict (userID, brand, last4)
-        update CardTable set
-            (cardStatus
+        update CardTable set (
+             cardStatus
             ,cardHolderName
             ,memoText
             ,expireMonth
             ,expireYear
-            ,token) values ($2, $3, $4, $7, $8, $9)
-                where userID = $1
-                  and brand  = $5
-                  and last4  = $6;`,
+            ,token
+        ) = ($2, $3, $4, $7, $8, $9)
+            where userID = $1
+              and brand  = $5
+              and last4  = $6;`,
             userID,
             card.CardStatus,
             card.CardHolderName,
@@ -205,29 +207,27 @@ func UpdateCards(session *Session, cardUpdate *BlitzMessage.UserCardInfo) *Blitz
 //----------------------------------------------------------------------------------------
 
 
-func Transact(session *Session, payment *BlitzMessage.Payment) *BlitzMessage.ServerResponse {
+func Transact(session *Session, charge *BlitzMessage.Charge) *BlitzMessage.ServerResponse {
     Log.LogFunctionName()
 
     result, error := config.DB.Exec(
-        `insert into PaymentTable (
+        `insert into ChargeTable (
             payerID,
             payeeID,
             conversationID,
             timestamp,
             paymentStatus,
-            token,
             memoText,
             amount,
             currency
         ) values ($1, $2, $3, $4, $5, $6, $7, $8, $9);`,
-        payment.PayerID,
-        payment.PayeeID,
-        payment.ConversationID,
-        payment.Timestamp,
-        payment.PaymentStatus,
-        payment.Token,
-        payment.MemoText,
-        payment.Amount,
+        charge.PayerID,
+        charge.PayeeID,
+        charge.ConversationID,
+        charge.Timestamp,
+        charge.ChargeStatus,
+        charge.MemoText,
+        charge.Amount,
         "usd",
     )
     error = pgsql.ResultError(result, error)

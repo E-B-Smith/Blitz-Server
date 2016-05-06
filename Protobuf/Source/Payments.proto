@@ -44,23 +44,25 @@ message UserCardInfo {
 }
 
 
-enum PaymentStatus {
-    PSUnknown       = 0;
-    PSNotAuthorized = 1;
-    PSAccepted      = 2;
+enum ChargeStatus {
+    ChargeUnknown   = 0;
+    CSDeclined      = 1;
+    CSPreauthorized = 2;
+    CSCharged       = 3;
 }
 
 
-message Payment {
-  optional string       payerID         = 1;
-  optional string       payeeID         = 2;
-  optional string       conversationID  = 3;
-  optional Timestamp    timestamp       = 4;
-  optional PaymentStatus paymentStatus  = 5;
-  optional string       token           = 6;
+message Charge {
+  optional string       chargeID        = 1;
+  optional Timestamp    timestamp       = 2;
+  optional ChargeStatus chargeStatus    = 3;
+  optional string       payerID         = 4;
+  optional string       payeeID         = 5;
+  optional string       conversationID  = 6;
   optional string       memoText        = 7;
   optional string       amount          = 8;
   optional string       currency        = 9;
+  optional string       processorReason = 10;
 }
 
 
