@@ -33,6 +33,7 @@ import (
     "violent.blue/GoKit/Util"
     "violent.blue/GoKit/ServerUtil"
     "github.com/golang/protobuf/proto"
+    "github.com/stripe/stripe-go"
     "golang.org/x/net/websocket"
     "ApplePushService"
     "MessagePusher"
@@ -40,8 +41,14 @@ import (
 )
 
 
+type BlitzConfiguration struct {
+    ServerUtil.Configuration
+    StripeKey                   string
+}
+
+
 var (
-    config                      ServerUtil.Configuration
+    config                      BlitzConfiguration
     PushNotificationService     ApplePushService.Service
     globalMessagePusher         *MessagePusher.MessagePusher
 )
@@ -323,6 +330,9 @@ func DispatchServiceRequests(writer http.ResponseWriter, httpRequest *http.Reque
     case *BlitzMessage.UpdateConversationStatus:
         response = UpdateConversationStatus(session, requestMessageType)
 
+    case *BlitzMessage.Charge:
+        response = ChargeRequest(session, requestMessageType)
+
     default:
         error = fmt.Errorf("Unrecognized request '%+v'", request)
         response = ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
@@ -334,88 +344,6 @@ func DispatchServiceRequests(writer http.ResponseWriter, httpRequest *http.Reque
 
     WriteResponse(writer, response, messageFormat)
 }
-
-/*
-    friendUpdate := clientRequest.GetFriendUpdate()
-    if friendUpdate != nil {
-        UpdateFriends(writer, session, friendUpdate)
-        return
-    }
-    friendRequest := clientRequest.GetFriendRequest()
-    if friendRequest != nil {
-        FriendRequest(writer, session, friendRequest)
-        return
-    }
-    messageSendRequest := clientRequest.GetMessageSendRequest()
-    if messageSendRequest != nil {
-        SendMessages(writer, userID, messageSendRequest)
-        return
-    }
-    messageFetchRequest := clientRequest.GetMessageFetchRequest()
-    if messageFetchRequest != nil {
-        FetchMessages(writer, userID, messageFetchRequest)
-        return
-    }
-    debugRequest := clientRequest.GetDebugMessage()
-    if debugRequest != nil {
-        SaveDebugMessages(writer, userID, debugRequest)
-        return
-    }
-    storyFetchRequest := clientRequest.GetStoryFetchRequest()
-    if storyFetchRequest != nil {
-        FetchStories(writer, userID, storyFetchRequest)
-        return
-    }
-    imageUpload := clientRequest.GetImageUpload()
-    if imageUpload != nil {
-        UploadImage(writer, userID, imageUpload)
-        return
-    }
-    acceptInviteRequest := clientRequest.GetAcceptInviteRequest()
-    if acceptInviteRequest != nil {
-        AcceptInviteRequest(writer, session, acceptInviteRequest)
-        return
-    }
-    profilesFromContactInfo := clientRequest.GetProfilesFromContactInfo()
-    if profilesFromContactInfo != nil {
-        ProfilesFromContactInfoRequest(writer, session, profilesFromContactInfo)
-        return
-    }
-    sendPulse := clientRequest.GetSendNewPulseBeat()
-    if sendPulse != nil {
-        SendNewPulseBeat(writer, session, sendPulse)
-        return
-    }
-    scorePulseBeat := clientRequest.GetScorePulseBeat()
-    if scorePulseBeat != nil {
-        ScorePulseBeatRequest(writer, session, scorePulseBeat)
-        return
-    }
-    pulsesForUser := clientRequest.GetPulsesForUser()
-    if pulsesForUser != nil {
-        GetPulsesForUser(writer, session, pulsesForUser)
-        return
-    }
-    pulseStatusUpdate := clientRequest.GetPulseStatusUpdate()
-    if pulseStatusUpdate != nil {
-        UpdatePulseStatus(writer, session, pulseStatusUpdate)
-        return
-    }
-    fetchScoresRequest := clientRequest.GetFetchScoresRequest()
-    if fetchScoresRequest != nil {
-        FetchScoresRequest(writer, session, fetchScoresRequest)
-        return
-    }
-    validatePulseRequest := clientRequest.GetValidatePulseRequest()
-    if validatePulseRequest != nil {
-        ValidatePulseRequest(writer, session, validatePulseRequest)
-        return
-    }
-    updateScoreRequest := clientRequest.GetScoreUpdate()
-    if updateScoreRequest != nil {
-        UpdateScoresRequest(writer, session, updateScoreRequest)
-    }
-*/
 
 
 //----------------------------------------------------------------------------------------
@@ -501,11 +429,16 @@ func Server() (returnValue int) {
         flag.Usage()
         return 0
     }
+    if flagVerbose {
+        config.LogLevel = Log.LogLevelDebug
+    }
+    config.LogLevel = Log.LogLevelDebug
     if (flagVersion) {
         fmt.Fprintf(os.Stdout, "Version %s compiled %s.\n", ServerUtil.CompileVersion(), ServerUtil.CompileTime())
         return 0
     }
     if len(flagConfigFilename) > 0 {
+        Log.Debugf("config: %+v.", config)
         error = config.ParseConfigFileNamed(flagConfigFilename)
         if error != nil {
             Log.Errorf("Error: %v.", error)
@@ -524,10 +457,17 @@ func Server() (returnValue int) {
         config.LogLevel = Log.LogLevelDebug
     }
 
+    //  Check the configuration --
+
+    config.StripeKey = "sk_test_MOcjUJm7UBHhZKLRwYk27TBC"
+    if len(config.StripeKey) == 0 {
+        Log.Errorf("No Stripe key found.")
+        return 1
+    }
+    stripe.Key = config.StripeKey
+
+
     //  Start --
-
-    //  Apply configuration paramaters --
-
 
     //  Add a start time to the database --
 

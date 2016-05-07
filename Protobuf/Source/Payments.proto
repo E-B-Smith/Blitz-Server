@@ -20,9 +20,8 @@ import "Types.proto";
 
 enum CardStatus {
     CSUnknown   = 0;
-    CSDefault   = 1;
-    CSStandard  = 2;
-    CSDeleted   = 3;
+    CSStandard  = 1;
+    CSDeleted   = 2;
 }
 
 
@@ -45,10 +44,11 @@ message UserCardInfo {
 
 
 enum ChargeStatus {
-    ChargeUnknown   = 0;
-    CSDeclined      = 1;
-    CSPreauthorized = 2;
-    CSCharged       = 3;
+    CSChargeUnknown = 0;
+    CSChargeRequest = 1;
+    CSDeclined      = 2;
+    CSPreauthorized = 3;
+    CSCharged       = 4;
 }
 
 
@@ -62,8 +62,7 @@ message Charge {
   optional string       memoText        = 7;
   optional string       amount          = 8;
   optional string       currency        = 9;
-  optional string       processorReason = 10;
+  optional string       chargeToken     = 10;
+  optional string       processorReason = 11;
 }
-
-
 

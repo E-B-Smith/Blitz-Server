@@ -1000,6 +1000,47 @@ function UpdateSearchIndexForUserID(indexID text) returns void as
     language plpgsql;
 
 
+------------------------------------------------------------------------------------------
+--
+--                                                                         Cards & Charges
+--
+------------------------------------------------------------------------------------------
+
+
+create table CardTable
+    (
+     userID         text        not null
+    ,brand          text        not null
+    ,last4          text        not null
+    ,cardStatus     smallint
+    ,cardHolderName text
+    ,memoText       text
+    ,expireMonth    smallint
+    ,expireYear     smallint
+    ,token          text
+    );
+create unique index CardTableUniqueIndex on CardTable(userID, brand, last4);
+
+
+create table ChargeTable
+    (
+     chargeID           uuid        unique not null primary key
+    ,timestamp          timestamptz not null
+    ,chargeStatus       smallint    not null
+
+    ,payerID            UserID      not null
+    ,payeeID            UserID      not null
+    ,conversationID     uuid        not null
+
+    ,memoText           text        not null
+    ,amount             numeric(12, 4) not null
+    ,currency           text        not null
+    ,chargeToken        text
+
+    ,processorReason    text
+    ,processorChargeID  text
+    );
+
 
 ------------------------------------------------------------------------------------------
 --

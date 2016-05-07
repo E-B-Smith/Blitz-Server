@@ -2175,6 +2175,7 @@ static BPushDisconnect* defaultBPushDisconnectInstance = nil;
 @property (strong) BUserReview* userReview;
 @property (strong) BUpdateConversationStatus* updateConversationStatus;
 @property (strong) BUserCardInfo* userCardInfo;
+@property (strong) BCharge* chargeRequest;
 @end
 
 @implementation BRequestType
@@ -2333,6 +2334,13 @@ static BPushDisconnect* defaultBPushDisconnectInstance = nil;
   hasUserCardInfo_ = !!_value_;
 }
 @synthesize userCardInfo;
+- (BOOL) hasChargeRequest {
+  return !!hasChargeRequest_;
+}
+- (void) setHasChargeRequest:(BOOL) _value_ {
+  hasChargeRequest_ = !!_value_;
+}
+@synthesize chargeRequest;
 - (instancetype) init {
   if ((self = [super init])) {
     self.sessionRequest = [BSessionRequest defaultInstance];
@@ -2357,6 +2365,7 @@ static BPushDisconnect* defaultBPushDisconnectInstance = nil;
     self.userReview = [BUserReview defaultInstance];
     self.updateConversationStatus = [BUpdateConversationStatus defaultInstance];
     self.userCardInfo = [BUserCardInfo defaultInstance];
+    self.chargeRequest = [BCharge defaultInstance];
   }
   return self;
 }
@@ -2433,6 +2442,11 @@ static BRequestType* defaultBRequestTypeInstance = nil;
       return NO;
     }
   }
+  if (self.hasChargeRequest) {
+    if (!self.chargeRequest.isInitialized) {
+      return NO;
+    }
+  }
   return YES;
 }
 - (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
@@ -2501,6 +2515,9 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   }
   if (self.hasUserCardInfo) {
     [output writeMessage:22 value:self.userCardInfo];
+  }
+  if (self.hasChargeRequest) {
+    [output writeMessage:23 value:self.chargeRequest];
   }
   [self.unknownFields writeToCodedOutputStream:output];
 }
@@ -2576,6 +2593,9 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   }
   if (self.hasUserCardInfo) {
     size_ += computeMessageSize(22, self.userCardInfo);
+  }
+  if (self.hasChargeRequest) {
+    size_ += computeMessageSize(23, self.chargeRequest);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -2744,6 +2764,12 @@ static BRequestType* defaultBRequestTypeInstance = nil;
                          withIndent:[NSString stringWithFormat:@"%@  ", indent]];
     [output appendFormat:@"%@}\n", indent];
   }
+  if (self.hasChargeRequest) {
+    [output appendFormat:@"%@%@ {\n", indent, @"chargeRequest"];
+    [self.chargeRequest writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (void) storeInDictionary:(NSMutableDictionary *)dictionary {
@@ -2857,6 +2883,11 @@ static BRequestType* defaultBRequestTypeInstance = nil;
    [self.userCardInfo storeInDictionary:messageDictionary];
    [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"userCardInfo"];
   }
+  if (self.hasChargeRequest) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.chargeRequest storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"chargeRequest"];
+  }
   [self.unknownFields storeInDictionary:dictionary];
 }
 - (BOOL) isEqual:(id)other {
@@ -2912,6 +2943,8 @@ static BRequestType* defaultBRequestTypeInstance = nil;
       (!self.hasUpdateConversationStatus || [self.updateConversationStatus isEqual:otherMessage.updateConversationStatus]) &&
       self.hasUserCardInfo == otherMessage.hasUserCardInfo &&
       (!self.hasUserCardInfo || [self.userCardInfo isEqual:otherMessage.userCardInfo]) &&
+      self.hasChargeRequest == otherMessage.hasChargeRequest &&
+      (!self.hasChargeRequest || [self.chargeRequest isEqual:otherMessage.chargeRequest]) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
@@ -2981,6 +3014,9 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   }
   if (self.hasUserCardInfo) {
     hashCode = hashCode * 31 + [self.userCardInfo hash];
+  }
+  if (self.hasChargeRequest) {
+    hashCode = hashCode * 31 + [self.chargeRequest hash];
   }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
@@ -3090,6 +3126,9 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   }
   if (other.hasUserCardInfo) {
     [self mergeUserCardInfo:other.userCardInfo];
+  }
+  if (other.hasChargeRequest) {
+    [self mergeChargeRequest:other.chargeRequest];
   }
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -3308,6 +3347,15 @@ static BRequestType* defaultBRequestTypeInstance = nil;
         }
         [input readMessage:subBuilder extensionRegistry:extensionRegistry];
         [self setUserCardInfo:[subBuilder buildPartial]];
+        break;
+      }
+      case 186: {
+        BChargeBuilder* subBuilder = [BCharge builder];
+        if (self.hasChargeRequest) {
+          [subBuilder mergeFrom:self.chargeRequest];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setChargeRequest:[subBuilder buildPartial]];
         break;
       }
     }
@@ -3973,6 +4021,36 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   resultRequestType.userCardInfo = [BUserCardInfo defaultInstance];
   return self;
 }
+- (BOOL) hasChargeRequest {
+  return resultRequestType.hasChargeRequest;
+}
+- (BCharge*) chargeRequest {
+  return resultRequestType.chargeRequest;
+}
+- (BRequestTypeBuilder*) setChargeRequest:(BCharge*) value {
+  resultRequestType.hasChargeRequest = YES;
+  resultRequestType.chargeRequest = value;
+  return self;
+}
+- (BRequestTypeBuilder*) setChargeRequestBuilder:(BChargeBuilder*) builderForValue {
+  return [self setChargeRequest:[builderForValue build]];
+}
+- (BRequestTypeBuilder*) mergeChargeRequest:(BCharge*) value {
+  if (resultRequestType.hasChargeRequest &&
+      resultRequestType.chargeRequest != [BCharge defaultInstance]) {
+    resultRequestType.chargeRequest =
+      [[[BCharge builderWithPrototype:resultRequestType.chargeRequest] mergeFrom:value] buildPartial];
+  } else {
+    resultRequestType.chargeRequest = value;
+  }
+  resultRequestType.hasChargeRequest = YES;
+  return self;
+}
+- (BRequestTypeBuilder*) clearChargeRequest {
+  resultRequestType.hasChargeRequest = NO;
+  resultRequestType.chargeRequest = [BCharge defaultInstance];
+  return self;
+}
 @end
 
 @interface BServerRequest ()
@@ -4276,6 +4354,7 @@ static BServerRequest* defaultBServerRequestInstance = nil;
 @property (strong) BConversationResponse* conversationResponse;
 @property (strong) BFetchConversations* fetchConversations;
 @property (strong) BUserCardInfo* userCardInfo;
+@property (strong) BCharge* chargeResponse;
 @end
 
 @implementation BResponseType
@@ -4392,6 +4471,13 @@ static BServerRequest* defaultBServerRequestInstance = nil;
   hasUserCardInfo_ = !!_value_;
 }
 @synthesize userCardInfo;
+- (BOOL) hasChargeResponse {
+  return !!hasChargeResponse_;
+}
+- (void) setHasChargeResponse:(BOOL) _value_ {
+  hasChargeResponse_ = !!_value_;
+}
+@synthesize chargeResponse;
 - (instancetype) init {
   if ((self = [super init])) {
     self.sessionResponse = [BSessionResponse defaultInstance];
@@ -4410,6 +4496,7 @@ static BServerRequest* defaultBServerRequestInstance = nil;
     self.conversationResponse = [BConversationResponse defaultInstance];
     self.fetchConversations = [BFetchConversations defaultInstance];
     self.userCardInfo = [BUserCardInfo defaultInstance];
+    self.chargeResponse = [BCharge defaultInstance];
   }
   return self;
 }
@@ -4486,6 +4573,11 @@ static BResponseType* defaultBResponseTypeInstance = nil;
       return NO;
     }
   }
+  if (self.hasChargeResponse) {
+    if (!self.chargeResponse.isInitialized) {
+      return NO;
+    }
+  }
   return YES;
 }
 - (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
@@ -4536,6 +4628,9 @@ static BResponseType* defaultBResponseTypeInstance = nil;
   }
   if (self.hasUserCardInfo) {
     [output writeMessage:16 value:self.userCardInfo];
+  }
+  if (self.hasChargeResponse) {
+    [output writeMessage:17 value:self.chargeResponse];
   }
   [self.unknownFields writeToCodedOutputStream:output];
 }
@@ -4593,6 +4688,9 @@ static BResponseType* defaultBResponseTypeInstance = nil;
   }
   if (self.hasUserCardInfo) {
     size_ += computeMessageSize(16, self.userCardInfo);
+  }
+  if (self.hasChargeResponse) {
+    size_ += computeMessageSize(17, self.chargeResponse);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -4725,6 +4823,12 @@ static BResponseType* defaultBResponseTypeInstance = nil;
                          withIndent:[NSString stringWithFormat:@"%@  ", indent]];
     [output appendFormat:@"%@}\n", indent];
   }
+  if (self.hasChargeResponse) {
+    [output appendFormat:@"%@%@ {\n", indent, @"chargeResponse"];
+    [self.chargeResponse writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (void) storeInDictionary:(NSMutableDictionary *)dictionary {
@@ -4808,6 +4912,11 @@ static BResponseType* defaultBResponseTypeInstance = nil;
    [self.userCardInfo storeInDictionary:messageDictionary];
    [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"userCardInfo"];
   }
+  if (self.hasChargeResponse) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.chargeResponse storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"chargeResponse"];
+  }
   [self.unknownFields storeInDictionary:dictionary];
 }
 - (BOOL) isEqual:(id)other {
@@ -4851,6 +4960,8 @@ static BResponseType* defaultBResponseTypeInstance = nil;
       (!self.hasFetchConversations || [self.fetchConversations isEqual:otherMessage.fetchConversations]) &&
       self.hasUserCardInfo == otherMessage.hasUserCardInfo &&
       (!self.hasUserCardInfo || [self.userCardInfo isEqual:otherMessage.userCardInfo]) &&
+      self.hasChargeResponse == otherMessage.hasChargeResponse &&
+      (!self.hasChargeResponse || [self.chargeResponse isEqual:otherMessage.chargeResponse]) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
@@ -4902,6 +5013,9 @@ static BResponseType* defaultBResponseTypeInstance = nil;
   }
   if (self.hasUserCardInfo) {
     hashCode = hashCode * 31 + [self.userCardInfo hash];
+  }
+  if (self.hasChargeResponse) {
+    hashCode = hashCode * 31 + [self.chargeResponse hash];
   }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
@@ -4993,6 +5107,9 @@ static BResponseType* defaultBResponseTypeInstance = nil;
   }
   if (other.hasUserCardInfo) {
     [self mergeUserCardInfo:other.userCardInfo];
+  }
+  if (other.hasChargeResponse) {
+    [self mergeChargeResponse:other.chargeResponse];
   }
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -5157,6 +5274,15 @@ static BResponseType* defaultBResponseTypeInstance = nil;
         }
         [input readMessage:subBuilder extensionRegistry:extensionRegistry];
         [self setUserCardInfo:[subBuilder buildPartial]];
+        break;
+      }
+      case 138: {
+        BChargeBuilder* subBuilder = [BCharge builder];
+        if (self.hasChargeResponse) {
+          [subBuilder mergeFrom:self.chargeResponse];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setChargeResponse:[subBuilder buildPartial]];
         break;
       }
     }
@@ -5640,6 +5766,36 @@ static BResponseType* defaultBResponseTypeInstance = nil;
 - (BResponseTypeBuilder*) clearUserCardInfo {
   resultResponseType.hasUserCardInfo = NO;
   resultResponseType.userCardInfo = [BUserCardInfo defaultInstance];
+  return self;
+}
+- (BOOL) hasChargeResponse {
+  return resultResponseType.hasChargeResponse;
+}
+- (BCharge*) chargeResponse {
+  return resultResponseType.chargeResponse;
+}
+- (BResponseTypeBuilder*) setChargeResponse:(BCharge*) value {
+  resultResponseType.hasChargeResponse = YES;
+  resultResponseType.chargeResponse = value;
+  return self;
+}
+- (BResponseTypeBuilder*) setChargeResponseBuilder:(BChargeBuilder*) builderForValue {
+  return [self setChargeResponse:[builderForValue build]];
+}
+- (BResponseTypeBuilder*) mergeChargeResponse:(BCharge*) value {
+  if (resultResponseType.hasChargeResponse &&
+      resultResponseType.chargeResponse != [BCharge defaultInstance]) {
+    resultResponseType.chargeResponse =
+      [[[BCharge builderWithPrototype:resultResponseType.chargeResponse] mergeFrom:value] buildPartial];
+  } else {
+    resultResponseType.chargeResponse = value;
+  }
+  resultResponseType.hasChargeResponse = YES;
+  return self;
+}
+- (BResponseTypeBuilder*) clearChargeResponse {
+  resultResponseType.hasChargeResponse = NO;
+  resultResponseType.chargeResponse = [BCharge defaultInstance];
   return self;
 }
 @end

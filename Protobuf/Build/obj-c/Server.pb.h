@@ -676,6 +676,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 #define RequestType_userReview @"userReview"
 #define RequestType_updateConversationStatus @"updateConversationStatus"
 #define RequestType_userCardInfo @"userCardInfo"
+#define RequestType_chargeRequest @"chargeRequest"
 @interface BRequestType : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
   BOOL hasSessionRequest_:1;
@@ -700,6 +701,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
   BOOL hasUserReview_:1;
   BOOL hasUpdateConversationStatus_:1;
   BOOL hasUserCardInfo_:1;
+  BOOL hasChargeRequest_:1;
   BSessionRequest* sessionRequest;
   BUserEventBatch* userEventBatch;
   BUserProfileUpdate* userProfileUpdate;
@@ -722,6 +724,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
   BUserReview* userReview;
   BUpdateConversationStatus* updateConversationStatus;
   BUserCardInfo* userCardInfo;
+  BCharge* chargeRequest;
 }
 - (BOOL) hasSessionRequest;
 - (BOOL) hasUserEventBatch;
@@ -745,6 +748,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BOOL) hasUserReview;
 - (BOOL) hasUpdateConversationStatus;
 - (BOOL) hasUserCardInfo;
+- (BOOL) hasChargeRequest;
 @property (readonly, strong) BSessionRequest* sessionRequest;
 @property (readonly, strong) BUserEventBatch* userEventBatch;
 @property (readonly, strong) BUserProfileUpdate* userProfileUpdate;
@@ -767,6 +771,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 @property (readonly, strong) BUserReview* userReview;
 @property (readonly, strong) BUpdateConversationStatus* updateConversationStatus;
 @property (readonly, strong) BUserCardInfo* userCardInfo;
+@property (readonly, strong) BCharge* chargeRequest;
 
 + (instancetype) defaultInstance;
 - (instancetype) defaultInstance;
@@ -956,6 +961,13 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BRequestTypeBuilder*) setUserCardInfoBuilder:(BUserCardInfoBuilder*) builderForValue;
 - (BRequestTypeBuilder*) mergeUserCardInfo:(BUserCardInfo*) value;
 - (BRequestTypeBuilder*) clearUserCardInfo;
+
+- (BOOL) hasChargeRequest;
+- (BCharge*) chargeRequest;
+- (BRequestTypeBuilder*) setChargeRequest:(BCharge*) value;
+- (BRequestTypeBuilder*) setChargeRequestBuilder:(BChargeBuilder*) builderForValue;
+- (BRequestTypeBuilder*) mergeChargeRequest:(BCharge*) value;
+- (BRequestTypeBuilder*) clearChargeRequest;
 @end
 
 #define ServerRequest_sessionToken @"sessionToken"
@@ -1036,6 +1048,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 #define ResponseType_conversationResponse @"conversationResponse"
 #define ResponseType_fetchConversations @"fetchConversations"
 #define ResponseType_userCardInfo @"userCardInfo"
+#define ResponseType_chargeResponse @"chargeResponse"
 @interface BResponseType : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
   BOOL hasSessionResponse_:1;
@@ -1054,6 +1067,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
   BOOL hasConversationResponse_:1;
   BOOL hasFetchConversations_:1;
   BOOL hasUserCardInfo_:1;
+  BOOL hasChargeResponse_:1;
   BSessionResponse* sessionResponse;
   BUserEventBatchResponse* userEventBatchResponse;
   BUserProfileUpdate* userProfileUpdate;
@@ -1070,6 +1084,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
   BConversationResponse* conversationResponse;
   BFetchConversations* fetchConversations;
   BUserCardInfo* userCardInfo;
+  BCharge* chargeResponse;
 }
 - (BOOL) hasSessionResponse;
 - (BOOL) hasUserEventBatchResponse;
@@ -1087,6 +1102,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BOOL) hasConversationResponse;
 - (BOOL) hasFetchConversations;
 - (BOOL) hasUserCardInfo;
+- (BOOL) hasChargeResponse;
 @property (readonly, strong) BSessionResponse* sessionResponse;
 @property (readonly, strong) BUserEventBatchResponse* userEventBatchResponse;
 @property (readonly, strong) BUserProfileUpdate* userProfileUpdate;
@@ -1103,6 +1119,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 @property (readonly, strong) BConversationResponse* conversationResponse;
 @property (readonly, strong) BFetchConversations* fetchConversations;
 @property (readonly, strong) BUserCardInfo* userCardInfo;
+@property (readonly, strong) BCharge* chargeResponse;
 
 + (instancetype) defaultInstance;
 - (instancetype) defaultInstance;
@@ -1250,6 +1267,13 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BResponseTypeBuilder*) setUserCardInfoBuilder:(BUserCardInfoBuilder*) builderForValue;
 - (BResponseTypeBuilder*) mergeUserCardInfo:(BUserCardInfo*) value;
 - (BResponseTypeBuilder*) clearUserCardInfo;
+
+- (BOOL) hasChargeResponse;
+- (BCharge*) chargeResponse;
+- (BResponseTypeBuilder*) setChargeResponse:(BCharge*) value;
+- (BResponseTypeBuilder*) setChargeResponseBuilder:(BChargeBuilder*) builderForValue;
+- (BResponseTypeBuilder*) mergeChargeResponse:(BCharge*) value;
+- (BResponseTypeBuilder*) clearChargeResponse;
 @end
 
 #define ServerResponse_responseCode @"responseCode"

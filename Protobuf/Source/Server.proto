@@ -109,6 +109,7 @@ message RequestType {
   optional UserReview               userReview          = 20;
   optional UpdateConversationStatus updateConversationStatus = 21;
   optional UserCardInfo             userCardInfo        = 22;
+  optional Charge                   chargeRequest       = 23;
 }
 
 
@@ -146,6 +147,7 @@ message ResponseType {
   optional ConversationResponse   conversationResponse    = 14;
   optional FetchConversations     fetchConversations      = 15;
   optional UserCardInfo           userCardInfo            = 16;
+  optional Charge                 chargeResponse          = 17;
 }
 
 

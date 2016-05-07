@@ -16,8 +16,9 @@ package main
 
 import (
     "fmt"
-//    "time"
-//    "database/sql"
+    "strconv"
+    "github.com/stripe/stripe-go"
+    "github.com/stripe/stripe-go/charge"
     "github.com/golang/protobuf/proto"
     "violent.blue/GoKit/Log"
     "violent.blue/GoKit/pgsql"
@@ -176,7 +177,7 @@ func UpdateCards(session *Session, cardUpdate *BlitzMessage.UserCardInfo) *Blitz
         if cardInfo.CardStatus != nil {
 
             switch *cardInfo.CardStatus {
-            case BlitzMessage.CardStatus_CSDefault, BlitzMessage.CardStatus_CSStandard:
+            case BlitzMessage.CardStatus_CSStandard:
                 error = UpdateCard(session.UserID, cardInfo)
 
             case BlitzMessage.CardStatus_CSDeleted:
@@ -202,38 +203,106 @@ func UpdateCards(session *Session, cardUpdate *BlitzMessage.UserCardInfo) *Blitz
 
 //----------------------------------------------------------------------------------------
 //
-//                                                                                Transact
+//                                                                           ChargeRequest
 //
 //----------------------------------------------------------------------------------------
 
 
-func Transact(session *Session, charge *BlitzMessage.Charge) *BlitzMessage.ServerResponse {
+func ChargeRequest(session *Session, chargeReq *BlitzMessage.Charge) *BlitzMessage.ServerResponse {
     Log.LogFunctionName()
+
+    var amountI int = 0
+    if chargeReq.Amount != nil {
+        amountF, _ := strconv.ParseFloat(*chargeReq.Amount, 64)
+        amountI = int(amountF * 100)
+    }
+
+    if (chargeReq.ChargeStatus == nil ||
+        *chargeReq.ChargeStatus != BlitzMessage.ChargeStatus_CSChargeRequest ||
+        chargeReq.ChargeToken == nil || len(*chargeReq.ChargeToken) == 0 ||
+        chargeReq.ChargeToken == nil ||
+        amountI < 0) {
+        return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, nil)
+    }
 
     result, error := config.DB.Exec(
         `insert into ChargeTable (
+            chargeID,
+            timestamp,
+            chargeStatus,
             payerID,
             payeeID,
             conversationID,
-            timestamp,
-            paymentStatus,
             memoText,
             amount,
-            currency
-        ) values ($1, $2, $3, $4, $5, $6, $7, $8, $9);`,
-        charge.PayerID,
-        charge.PayeeID,
-        charge.ConversationID,
-        charge.Timestamp,
-        charge.ChargeStatus,
-        charge.MemoText,
-        charge.Amount,
-        "usd",
+            currency,
+            chargeToken
+        ) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10);`,
+        chargeReq.ChargeID,
+        BlitzMessage.NullTimeFromTimestamp(chargeReq.Timestamp),
+        chargeReq.ChargeStatus,
+        chargeReq.PayerID,
+        chargeReq.PayeeID,
+        chargeReq.ConversationID,
+        chargeReq.MemoText,
+        chargeReq.Amount,
+        chargeReq.Currency,
+        chargeReq.ChargeToken,
     )
     error = pgsql.ResultError(result, error)
-    if error != nil  { Log.LogError(error) }
+    if error != nil  {
+        Log.LogError(error)
+        return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
+    }
 
-    return ServerResponseForError(BlitzMessage.ResponseCode_RCSuccess, nil)
+    stripeReason := "Charged"
+    stripeChargeID := ""
+    chargeReq.ChargeStatus = BlitzMessage.ChargeStatus(BlitzMessage.ChargeStatus_CSCharged).Enum()
+
+
+    //  Charge stripe --
+
+    chargeParams := &stripe.ChargeParams{
+      Amount: uint64(amountI),
+      Currency: "usd",
+    }
+    if chargeReq.MemoText != nil {
+        chargeParams.Desc = *chargeReq.MemoText
+    }
+
+    chargeParams.SetSource(chargeReq.ChargeToken)
+    stripeCharge, stripeError := charge.New(chargeParams)
+    if stripeError != nil {
+        Log.LogError(stripeError)
+        chargeReq.ChargeStatus = BlitzMessage.ChargeStatus(BlitzMessage.ChargeStatus_CSDeclined).Enum()
+        stripeReason = stripeError.Error()
+    } else {
+        stripeChargeID = stripeCharge.ID
+    }
+
+    chargeReq.ProcessorReason = &stripeReason
+
+    result, error = config.DB.Exec(
+        `update ChargeTable set (
+            chargeStatus,
+            processorReason,
+            processorChargeID) = ($1, $2, $3)
+        where chargeID = $4;`,
+        chargeReq.ChargeStatus,
+        stripeReason,
+        stripeChargeID,
+        chargeReq.ChargeID,
+    )
+    error = pgsql.ResultError(result, error)
+    if error != nil {
+        Log.LogError(error)
+        return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
+    }
+
+    response := &BlitzMessage.ServerResponse {
+        ResponseCode:        BlitzMessage.ResponseCode(BlitzMessage.ResponseCode_RCSuccess).Enum(),
+        ResponseType:       &BlitzMessage.ResponseType { ChargeResponse: chargeReq },
+    }
+    return response
 }
-
 
