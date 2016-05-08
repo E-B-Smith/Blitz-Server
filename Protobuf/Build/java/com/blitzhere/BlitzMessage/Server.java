@@ -41,6 +41,10 @@ public final class Server {
      * <code>RCClientTooOld = 7;</code>
      */
     RCClientTooOld(6, 7),
+    /**
+     * <code>RCPaymentError = 8;</code>
+     */
+    RCPaymentError(7, 8),
     ;
 
     /**
@@ -71,6 +75,10 @@ public final class Server {
      * <code>RCClientTooOld = 7;</code>
      */
     public static final int RCClientTooOld_VALUE = 7;
+    /**
+     * <code>RCPaymentError = 8;</code>
+     */
+    public static final int RCPaymentError_VALUE = 8;
 
 
     public final int getNumber() { return value; }
@@ -84,6 +92,7 @@ public final class Server {
         case 5: return RCServerError;
         case 6: return RCNotAuthorized;
         case 7: return RCClientTooOld;
+        case 8: return RCPaymentError;
         default: return null;
       }
     }
@@ -15489,12 +15498,12 @@ public final class Server {
       "onse\0220\n\014responseCode\030\001 \001(\0162\032.BlitzMessag" +
       "e.ResponseCode\022\027\n\017responseMessage\030\002 \001(\t\022" +
       "0\n\014responseType\030\003 \001(\0132\032.BlitzMessage.Res" +
-      "ponseType*\226\001\n\014ResponseCode\022\r\n\tRCSuccess\020" +
+      "ponseType*\252\001\n\014ResponseCode\022\r\n\tRCSuccess\020" +
       "\001\022\022\n\016RCInputCorrupt\020\002\022\022\n\016RCInputInvalid\020",
       "\003\022\023\n\017RCServerWarning\020\004\022\021\n\rRCServerError\020" +
       "\005\022\023\n\017RCNotAuthorized\020\006\022\022\n\016RCClientTooOld" +
-      "\020\007B/\n\032com.blitzhere.BlitzMessage\210\001\001\322>\002\n\000" +
-      "\322>\003\022\001B\322>\002\030\001"
+      "\020\007\022\022\n\016RCPaymentError\020\010B/\n\032com.blitzhere." +
+      "BlitzMessage\210\001\001\322>\002\n\000\322>\003\022\001B\322>\002\030\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {

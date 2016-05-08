@@ -196,6 +196,7 @@ typedef NS_ENUM(SInt32, BResponseCode) {
   BResponseCodeRCServerError = 5,
   BResponseCodeRCNotAuthorized = 6,
   BResponseCodeRCClientTooOld = 7,
+  BResponseCodeRCPaymentError = 8,
 };
 
 BOOL BResponseCodeIsValidValue(BResponseCode value);

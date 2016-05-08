@@ -17,13 +17,67 @@ package main
 import (
     "fmt"
     "strconv"
+    "database/sql"
     "github.com/stripe/stripe-go"
     "github.com/stripe/stripe-go/charge"
+    "github.com/stripe/stripe-go/customer"
     "github.com/golang/protobuf/proto"
     "violent.blue/GoKit/Log"
     "violent.blue/GoKit/pgsql"
     "BlitzMessage"
 )
+
+
+func StripeCustomerIDFromUserIDToken(userID, token string) (string, error) {
+    Log.LogFunctionName()
+
+    row := config.DB.QueryRow(
+        `select processorID, name,
+            from UserTable where userID = $1;`,
+        userID)
+
+    var processorID, name sql.NullString
+    error := row.Scan(&processorID, &name)
+    if error != nil {
+        Log.LogError(error)
+        return "", error
+    }
+
+    if processorID.Valid && len(processorID.String) > 0 {
+        return processorID.String, nil
+    }
+
+    customerParams := &stripe.CustomerParams {}
+    customerParams.Desc = name.String
+    customerParams.Meta = map[string]string {"UserID": userID}
+    customerParams.SetSource(token)
+    newCust, error := customer.New(customerParams)
+    if error != nil {
+        Log.LogError(error)
+        return "", error
+    }
+    Log.Debugf("Cust: %+v.", newCust)
+    defaultCard := newCust.DefaultSource
+
+    result, error := config.DB.Exec(
+        `updare UserTable set (
+            processorID,
+            defaultCard
+        ) = ($1, $2)
+            where userID = $3;`,
+        processorID,
+        defaultCard,
+        userID,
+    )
+    error = pgsql.ResultError(result, error)
+    if error != nil {
+        Log.LogError(error)
+        return "", error
+    }
+
+    return processorID.String, nil
+}
+
 
 
 func UpdateCard(userID string, card *BlitzMessage.CardInfo) error {
@@ -219,10 +273,18 @@ func ChargeRequest(session *Session, chargeReq *BlitzMessage.Charge) *BlitzMessa
 
     if (chargeReq.ChargeStatus == nil ||
         *chargeReq.ChargeStatus != BlitzMessage.ChargeStatus_CSChargeRequest ||
+        chargeReq.PayerID == nil || len(*chargeReq.PayerID) == 0 ||
         chargeReq.ChargeToken == nil || len(*chargeReq.ChargeToken) == 0 ||
         chargeReq.ChargeToken == nil ||
         amountI < 0) {
         return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, nil)
+    }
+
+    //  Get the Stripe customerID --
+
+    stripeCID, error := StripeCustomerIDFromUserIDToken(*chargeReq.PayerID, *chargeReq.ChargeToken)
+    if error != nil {
+        return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
     }
 
     result, error := config.DB.Exec(
@@ -258,24 +320,29 @@ func ChargeRequest(session *Session, chargeReq *BlitzMessage.Charge) *BlitzMessa
     stripeReason := "Charged"
     stripeChargeID := ""
     chargeReq.ChargeStatus = BlitzMessage.ChargeStatus(BlitzMessage.ChargeStatus_CSCharged).Enum()
-
+    responseCode := BlitzMessage.ResponseCode_RCSuccess
 
     //  Charge stripe --
 
     chargeParams := &stripe.ChargeParams{
-      Amount: uint64(amountI),
-      Currency: "usd",
+      Amount:           uint64(amountI),
+      Currency:         "usd",
+      Customer:         stripeCID,
+      //IdempotencyKey:   chargeReq.ChargeID,
     }
     if chargeReq.MemoText != nil {
         chargeParams.Desc = *chargeReq.MemoText
     }
 
-    chargeParams.SetSource(chargeReq.ChargeToken)
+    error = chargeParams.SetSource(stripeCID)
+    if error != nil { Log.LogError(error) }
+    Log.Debugf("Charge params: %+v", *chargeParams)
     stripeCharge, stripeError := charge.New(chargeParams)
     if stripeError != nil {
         Log.LogError(stripeError)
         chargeReq.ChargeStatus = BlitzMessage.ChargeStatus(BlitzMessage.ChargeStatus_CSDeclined).Enum()
         stripeReason = stripeError.Error()
+        responseCode = BlitzMessage.ResponseCode_RCPaymentError
     } else {
         stripeChargeID = stripeCharge.ID
     }
@@ -296,11 +363,11 @@ func ChargeRequest(session *Session, chargeReq *BlitzMessage.Charge) *BlitzMessa
     error = pgsql.ResultError(result, error)
     if error != nil {
         Log.LogError(error)
-        return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
+        return ServerResponseForError(BlitzMessage.ResponseCode_RCServerError, error)
     }
 
     response := &BlitzMessage.ServerResponse {
-        ResponseCode:        BlitzMessage.ResponseCode(BlitzMessage.ResponseCode_RCSuccess).Enum(),
+        ResponseCode:       &responseCode,
         ResponseType:       &BlitzMessage.ResponseType { ChargeResponse: chargeReq },
     }
     return response

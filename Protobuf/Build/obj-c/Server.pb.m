@@ -40,6 +40,7 @@ BOOL BResponseCodeIsValidValue(BResponseCode value) {
     case BResponseCodeRCServerError:
     case BResponseCodeRCNotAuthorized:
     case BResponseCodeRCClientTooOld:
+    case BResponseCodeRCPaymentError:
       return YES;
     default:
       return NO;
@@ -61,6 +62,8 @@ NSString *NSStringFromBResponseCode(BResponseCode value) {
       return @"BResponseCodeRCNotAuthorized";
     case BResponseCodeRCClientTooOld:
       return @"BResponseCodeRCClientTooOld";
+    case BResponseCodeRCPaymentError:
+      return @"BResponseCodeRCPaymentError";
     default:
       return nil;
   }

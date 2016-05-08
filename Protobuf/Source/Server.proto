@@ -127,6 +127,7 @@ enum ResponseCode {
   RCServerError   = 5;
   RCNotAuthorized = 6;
   RCClientTooOld  = 7;
+  RCPaymentError  = 8;
 }
 
 
