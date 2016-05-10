@@ -16,9 +16,11 @@ package main
 
 import (
     "fmt"
+    "strings"
     "strconv"
     "database/sql"
     "github.com/stripe/stripe-go"
+    "github.com/stripe/stripe-go/card"
     "github.com/stripe/stripe-go/charge"
     "github.com/stripe/stripe-go/customer"
     "github.com/golang/protobuf/proto"
@@ -28,15 +30,33 @@ import (
 )
 
 
-func StripeCustomerIDFromUserIDToken(userID, token string) (string, error) {
+func StripeCIDFromUserID(userID string) (string, error) {
+    row := config.DB.QueryRow(
+        `select processorID from UserTable where userID = $1;`,
+        userID,
+    )
+    var stripeCID sql.NullString
+    error := row.Scan(&stripeCID)
+    if error != nil {
+        Log.LogError(error)
+        return "", error
+    }
+    if ! stripeCID.Valid {
+        return "", fmt.Errorf("Not found")
+    }
+    return stripeCID.String, nil
+}
+
+
+func CreateStripeCIDFromUserIDToken(userID, token string) (string, error) {
     Log.LogFunctionName()
 
     row := config.DB.QueryRow(
-        `select processorID, name,
+        `select processorID, name
             from UserTable where userID = $1;`,
         userID)
 
-    var processorID, name sql.NullString
+    var processorID, name, defaultCard sql.NullString
     error := row.Scan(&processorID, &name)
     if error != nil {
         Log.LogError(error)
@@ -50,17 +70,24 @@ func StripeCustomerIDFromUserIDToken(userID, token string) (string, error) {
     customerParams := &stripe.CustomerParams {}
     customerParams.Desc = name.String
     customerParams.Meta = map[string]string {"UserID": userID}
-    customerParams.SetSource(token)
+    if len(token) > 0 {
+        customerParams.SetSource(token)
+    }
     newCust, error := customer.New(customerParams)
     if error != nil {
         Log.LogError(error)
         return "", error
     }
     Log.Debugf("Cust: %+v.", newCust)
-    defaultCard := newCust.DefaultSource
+    processorID.Valid  = true
+    processorID.String = newCust.ID
+    if newCust.DefaultSource != nil {
+        defaultCard.Valid = true
+        defaultCard.String = newCust.DefaultSource.ID
+    }
 
     result, error := config.DB.Exec(
-        `updare UserTable set (
+        `update UserTable set (
             processorID,
             defaultCard
         ) = ($1, $2)
@@ -79,131 +106,98 @@ func StripeCustomerIDFromUserIDToken(userID, token string) (string, error) {
 }
 
 
-
-func UpdateCard(userID string, card *BlitzMessage.CardInfo) error {
+func UpdateCardForStripeCID(stripeCID string, cardInfo *BlitzMessage.CardInfo) error {
     Log.LogFunctionName()
 
-    result, error := config.DB.Exec(
-        `insert into CardTable (
-             userID
-            ,cardStatus
-            ,cardHolderName
-            ,memoText
-            ,brand
-            ,last4
-            ,expireMonth
-            ,expireYear
-            ,token
-        ) values ($1, $2, $3, $4, $5, $6, $7, $8, $9)
-        on conflict (userID, brand, last4)
-        update CardTable set (
-             cardStatus
-            ,cardHolderName
-            ,memoText
-            ,expireMonth
-            ,expireYear
-            ,token
-        ) = ($2, $3, $4, $7, $8, $9)
-            where userID = $1
-              and brand  = $5
-              and last4  = $6;`,
-            userID,
-            card.CardStatus,
-            card.CardHolderName,
-            card.MemoText,
-            card.Brand,
-            card.Last4,
-            card.ExpireMonth,
-            card.ExpireYear,
-            card.Token,
-    )
-    error = pgsql.ResultError(result, error)
-    if error != nil { Log.LogError(error) }
-    return error
-}
+    var error error
+    var cardParams stripe.CardParams
+    cardParams.Customer = stripeCID
+    cardParams.Name     = StringFromStringPtr(cardInfo.CardHolderName)
+    if cardInfo.ExpireMonth != nil {
+        cardParams.Month = strconv.Itoa(int(*cardInfo.ExpireMonth))
+    }
+    if cardInfo.ExpireYear != nil {
+        cardParams.Year = strconv.Itoa(int(*cardInfo.ExpireYear))
+    }
+    memoText := ""
+    if cardInfo.MemoText != nil {
+        memoText = *cardInfo.MemoText
+    }
+    cardParams.Meta = map[string]string { "MemoText": memoText }
 
+    if cardInfo.Token == nil {
+        return fmt.Errorf("No token")
+    }
+    if strings.HasPrefix(*cardInfo.Token, "tok") {
 
-func DeleteCard(userID string, card *BlitzMessage.CardInfo) error {
-    Log.LogFunctionName()
+        //  Add a new card --
 
-    result, error := config.DB.Exec(
-        `delete from CardTable
-            where userID = $1
-              and brand  = $2
-              and last4  = $3;`,
-        userID,
-        card.Brand,
-        card.Last4,
-    )
-    error = pgsql.ResultError(result, error)
-    if error != nil { Log.LogError(error) }
+        var newCard *stripe.Card
+        newCardParams := stripe.CardParams{
+            Customer:   stripeCID,
+            Token:      *cardInfo.Token,
+        }
+        newCard, error = card.New(&newCardParams)
+        if error != nil {
+            Log.LogError(error)
+            cardInfo.Token = nil
+        } else {
+            cardInfo.Token = &newCard.ID
+        }
+
+    }
+
+    if error == nil {
+        //  Update a card --
+        _, error = card.Update(*cardInfo.Token, &cardParams)
+        if error != nil {
+            Log.LogError(error)
+        }
+    }
 
     return error
 }
 
 
-func CardsForUserID(userID string) []*BlitzMessage.CardInfo {
+func DeleteCardForStripeCID(stripeCID string, cardInfo *BlitzMessage.CardInfo) error {
+    Log.LogFunctionName()
+    cardParams := &stripe.CardParams {
+        Customer:   stripeCID,
+    }
+    _, error := card.Del(*cardInfo.Token, cardParams)
+    if error != nil {
+        Log.LogError(error)
+    }
+    return nil
+}
+
+
+func CardsForStripeCID(stripeCID string) []*BlitzMessage.CardInfo {
     Log.LogFunctionName()
 
     result := make([]*BlitzMessage.CardInfo, 0)
 
-    rows, error := config.DB.Query(
-        `select
-             cardStatus
-            ,cardHolderName
-            ,memoText
-            ,brand
-            ,last4
-            ,expireMonth
-            ,expireYear
-            ,token
-        from CardTable
-        where userID = $1;`,
-        userID,
-    )
-    if error != nil {
-        Log.LogError(error)
-        return result
-    }
-    defer rows.Close()
+    params := &stripe.CardListParams { Customer: stripeCID }
+    iter := card.List(params)
+    for iter.Next() {
 
+        stripeCard := iter.Card()
 
-    for rows.Next() {
-        var (
-            cardStatus          int32
-            cardHolderName      string
-            memoText            string
-            brand               string
-            last4               string
-            expireMonth         int32
-            expireYear          int32
-            token               string
-        )
-
-        error = rows.Scan(
-            &cardStatus,
-            &cardHolderName,
-            &memoText,
-            &brand,
-            &last4,
-            &expireMonth,
-            &expireYear,
-            &token,
-        )
-        if error != nil {
-            Log.LogError(error)
-            continue
+        last4 := stripeCard.LastFour
+        if len(last4) == 0 || last4 == "0000" {
+            last4 = stripeCard.DynLastFour
         }
+        memoText := stripeCard.Meta["MemoText"]
 
         card := BlitzMessage.CardInfo {
-            CardStatus:         BlitzMessage.CardStatus(cardStatus).Enum(),
-            CardHolderName:     proto.String(cardHolderName),
+            CardStatus:         BlitzMessage.CardStatus(BlitzMessage.CardStatus_CSStandard).Enum(),
+            CardHolderName:     proto.String(stripeCard.Name),
             MemoText:           proto.String(memoText),
-            Brand:              proto.String(brand),
+            Brand:              proto.String(string(stripeCard.Brand)),
             Last4:              proto.String(last4),
-            ExpireMonth:        proto.Int32(expireMonth),
-            ExpireYear:         proto.Int32(expireYear),
-            Token:              proto.String(token),
+            ExpireMonth:        proto.Int32(int32(stripeCard.Month)),
+            ExpireYear:         proto.Int32(int32(stripeCard.Year)),
+            Token:              proto.String(stripeCard.ID),
         }
 
         result = append(result, &card)
@@ -223,7 +217,15 @@ func CardsForUserID(userID string) []*BlitzMessage.CardInfo {
 func UpdateCards(session *Session, cardUpdate *BlitzMessage.UserCardInfo) *BlitzMessage.ServerResponse {
     Log.LogFunctionName()
 
-    var error error
+    stripeCID, error := StripeCIDFromUserID(session.UserID)
+    if error != nil {
+        //  Create a customer --
+        stripeCID, error = CreateStripeCIDFromUserIDToken(session.UserID, "")
+        if error != nil {
+            return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, nil)
+        }
+    }
+
     for _, cardInfo := range cardUpdate.CardInfo {
 
         error = fmt.Errorf("Invalid card status")
@@ -232,10 +234,10 @@ func UpdateCards(session *Session, cardUpdate *BlitzMessage.UserCardInfo) *Blitz
 
             switch *cardInfo.CardStatus {
             case BlitzMessage.CardStatus_CSStandard:
-                error = UpdateCard(session.UserID, cardInfo)
+                error = UpdateCardForStripeCID(stripeCID, cardInfo)
 
             case BlitzMessage.CardStatus_CSDeleted:
-                error = DeleteCard(session.UserID, cardInfo)
+                error = DeleteCardForStripeCID(stripeCID, cardInfo)
             }
         }
 
@@ -245,7 +247,7 @@ func UpdateCards(session *Session, cardUpdate *BlitzMessage.UserCardInfo) *Blitz
     }
 
     updatedInfo := BlitzMessage.UserCardInfo {
-        CardInfo:    CardsForUserID(session.UserID),
+        CardInfo:    CardsForStripeCID(stripeCID),
     }
     response := &BlitzMessage.ServerResponse {
         ResponseCode:        BlitzMessage.ResponseCode(BlitzMessage.ResponseCode_RCSuccess).Enum(),
@@ -282,9 +284,24 @@ func ChargeRequest(session *Session, chargeReq *BlitzMessage.Charge) *BlitzMessa
 
     //  Get the Stripe customerID --
 
-    stripeCID, error := StripeCustomerIDFromUserIDToken(*chargeReq.PayerID, *chargeReq.ChargeToken)
+    stripeCID, error := StripeCIDFromUserID(*chargeReq.PayerID)//, *chargeReq.ChargeToken)
     if error != nil {
         return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
+    }
+
+    if strings.HasPrefix(*chargeReq.ChargeToken, "tok") {
+        //  Add a new card --
+        var newCard *stripe.Card
+        newCardParams := stripe.CardParams{
+            Customer:   stripeCID,
+            Token:      *chargeReq.ChargeToken,
+        }
+        newCard, error = card.New(&newCardParams)
+        if error != nil {
+            Log.LogError(error)
+            return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
+        }
+        chargeReq.ChargeToken = &newCard.ID
     }
 
     result, error := config.DB.Exec(
@@ -328,14 +345,15 @@ func ChargeRequest(session *Session, chargeReq *BlitzMessage.Charge) *BlitzMessa
       Amount:           uint64(amountI),
       Currency:         "usd",
       Customer:         stripeCID,
-      //IdempotencyKey:   chargeReq.ChargeID,
     }
     if chargeReq.MemoText != nil {
         chargeParams.Desc = *chargeReq.MemoText
     }
 
-    error = chargeParams.SetSource(stripeCID)
-    if error != nil { Log.LogError(error) }
+    //  We're charging the customer rather than the card. Not Needed:
+    // error = chargeParams.SetSource(stripeCID)
+    // if error != nil { Log.LogError(error) }
+
     Log.Debugf("Charge params: %+v", *chargeParams)
     stripeCharge, stripeError := charge.New(chargeParams)
     if stripeError != nil {

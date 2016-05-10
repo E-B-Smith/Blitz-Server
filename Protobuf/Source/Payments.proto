@@ -25,6 +25,13 @@ enum CardStatus {
 }
 
 
+enum ChargeTokenType {
+  CTTApplePay     = 0;
+  CTTStripeToken  = 1;
+  CTTCardToken    = 2;
+}
+
+
 message CardInfo {
   optional CardStatus   cardStatus      = 1;
   optional string       cardHolderName  = 2;
@@ -44,11 +51,11 @@ message UserCardInfo {
 
 
 enum ChargeStatus {
-    CSChargeUnknown = 0;
-    CSChargeRequest = 1;
-    CSDeclined      = 2;
-    CSPreauthorized = 3;
-    CSCharged       = 4;
+  CSChargeUnknown = 0;
+  CSChargeRequest = 1;
+  CSDeclined      = 2;
+  CSPreauthorized = 3;
+  CSCharged       = 4;
 }
 
 
@@ -62,7 +69,8 @@ message Charge {
   optional string       memoText        = 7;
   optional string       amount          = 8;
   optional string       currency        = 9;
-  optional string       chargeToken     = 10;
-  optional string       processorReason = 11;
+  optional ChargeTokenType tokenType    = 10;
+  optional string       chargeToken     = 11;
+  optional string       processorReason = 12;
 }
 
