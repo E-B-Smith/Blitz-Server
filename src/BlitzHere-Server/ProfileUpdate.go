@@ -162,14 +162,18 @@ func UpdateProfile(profile *BlitzMessage.UserProfile) error {
             ,gender
             ,birthday
             ,backgroundSummary
-            ,interestTags) = ($1, $2, $3, $4, $5)
-                where userID = $6;`,
+            ,interestTags
+            ,stripeAccount
+        ) = ($1, $2, $3, $4, $5, $6)
+                where userID = $7;`,
         profile.Name,
         profile.Gender,
         BlitzMessage.NullTimeFromTimestamp(profile.Birthday),
         profile.BackgroundSummary,
         pgsql.NullStringFromStringArray(profile.InterestTags),
-        profile.UserID)
+        profile.StripeAccount,
+        profile.UserID,
+    )
     if error != nil {
         Log.Errorf("Error updating profile %s: %+v", *profile.UserID, error)
         return error

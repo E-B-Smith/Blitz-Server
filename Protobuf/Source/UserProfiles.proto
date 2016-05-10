@@ -149,6 +149,11 @@ message UserProfile {
   optional double       ratingRecommended = 20;
   optional double       responseSeconds   = 21;
   repeated UserReview   reviews           = 22;
+
+  //  Expert fields --
+
+  optional bool         isExpert          = 23;
+  optional string       stripeAccount     = 24;
 }
 
 

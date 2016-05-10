@@ -47,7 +47,6 @@ message SessionRequest {
 
 
 message BlitzHereAppOptions {
-  //  None now...
 }
 
 message AppOptions {

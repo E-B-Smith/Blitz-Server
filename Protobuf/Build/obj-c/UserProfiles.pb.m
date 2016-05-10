@@ -3200,6 +3200,8 @@ static BUserReview* defaultBUserReviewInstance = nil;
 @property Float64 ratingRecommended;
 @property Float64 responseSeconds;
 @property (strong) NSMutableArray * reviewsArray;
+@property BOOL isExpert;
+@property (strong) NSString* stripeAccount;
 @end
 
 @implementation BUserProfile
@@ -3318,6 +3320,25 @@ static BUserReview* defaultBUserReviewInstance = nil;
 @synthesize responseSeconds;
 @synthesize reviewsArray;
 @dynamic reviews;
+- (BOOL) hasIsExpert {
+  return !!hasIsExpert_;
+}
+- (void) setHasIsExpert:(BOOL) _value_ {
+  hasIsExpert_ = !!_value_;
+}
+- (BOOL) isExpert {
+  return !!isExpert_;
+}
+- (void) setIsExpert:(BOOL) _value_ {
+  isExpert_ = !!_value_;
+}
+- (BOOL) hasStripeAccount {
+  return !!hasStripeAccount_;
+}
+- (void) setHasStripeAccount:(BOOL) _value_ {
+  hasStripeAccount_ = !!_value_;
+}
+@synthesize stripeAccount;
 - (instancetype) init {
   if ((self = [super init])) {
     self.userID = @"";
@@ -3334,6 +3355,8 @@ static BUserReview* defaultBUserReviewInstance = nil;
     self.ratingOutgoing = 0;
     self.ratingRecommended = 0;
     self.responseSeconds = 0;
+    self.isExpert = NO;
+    self.stripeAccount = @"";
   }
   return self;
 }
@@ -3535,6 +3558,12 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   [self.reviewsArray enumerateObjectsUsingBlock:^(BUserReview *element, NSUInteger idx, BOOL *stop) {
     [output writeMessage:22 value:element];
   }];
+  if (self.hasIsExpert) {
+    [output writeBool:23 value:self.isExpert];
+  }
+  if (self.hasStripeAccount) {
+    [output writeString:24 value:self.stripeAccount];
+  }
   [self.unknownFields writeToCodedOutputStream:output];
 }
 - (SInt32) serializedSize {
@@ -3616,6 +3645,12 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   [self.reviewsArray enumerateObjectsUsingBlock:^(BUserReview *element, NSUInteger idx, BOOL *stop) {
     size_ += computeMessageSize(22, element);
   }];
+  if (self.hasIsExpert) {
+    size_ += computeBoolSize(23, self.isExpert);
+  }
+  if (self.hasStripeAccount) {
+    size_ += computeStringSize(24, self.stripeAccount);
+  }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
   return size_;
@@ -3750,6 +3785,12 @@ static BUserProfile* defaultBUserProfileInstance = nil;
                      withIndent:[NSString stringWithFormat:@"%@  ", indent]];
     [output appendFormat:@"%@}\n", indent];
   }];
+  if (self.hasIsExpert) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"isExpert", [NSNumber numberWithBool:self.isExpert]];
+  }
+  if (self.hasStripeAccount) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"stripeAccount", self.stripeAccount];
+  }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (void) storeInDictionary:(NSMutableDictionary *)dictionary {
@@ -3839,6 +3880,12 @@ static BUserProfile* defaultBUserProfileInstance = nil;
     [element storeInDictionary:elementDictionary];
     [dictionary setObject:[NSDictionary dictionaryWithDictionary:elementDictionary] forKey:@"reviews"];
   }
+  if (self.hasIsExpert) {
+    [dictionary setObject: [NSNumber numberWithBool:self.isExpert] forKey: @"isExpert"];
+  }
+  if (self.hasStripeAccount) {
+    [dictionary setObject: self.stripeAccount forKey: @"stripeAccount"];
+  }
   [self.unknownFields storeInDictionary:dictionary];
 }
 - (BOOL) isEqual:(id)other {
@@ -3886,6 +3933,10 @@ static BUserProfile* defaultBUserProfileInstance = nil;
       self.hasResponseSeconds == otherMessage.hasResponseSeconds &&
       (!self.hasResponseSeconds || self.responseSeconds == otherMessage.responseSeconds) &&
       [self.reviewsArray isEqualToArray:otherMessage.reviewsArray] &&
+      self.hasIsExpert == otherMessage.hasIsExpert &&
+      (!self.hasIsExpert || self.isExpert == otherMessage.isExpert) &&
+      self.hasStripeAccount == otherMessage.hasStripeAccount &&
+      (!self.hasStripeAccount || [self.stripeAccount isEqual:otherMessage.stripeAccount]) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
@@ -3956,6 +4007,12 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   [self.reviewsArray enumerateObjectsUsingBlock:^(BUserReview *element, NSUInteger idx, BOOL *stop) {
     hashCode = hashCode * 31 + [element hash];
   }];
+  if (self.hasIsExpert) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithBool:self.isExpert] hash];
+  }
+  if (self.hasStripeAccount) {
+    hashCode = hashCode * 31 + [self.stripeAccount hash];
+  }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
 }
@@ -4096,6 +4153,12 @@ static BUserProfile* defaultBUserProfileInstance = nil;
     } else {
       [resultUserProfile.reviewsArray addObjectsFromArray:other.reviewsArray];
     }
+  }
+  if (other.hasIsExpert) {
+    [self setIsExpert:other.isExpert];
+  }
+  if (other.hasStripeAccount) {
+    [self setStripeAccount:other.stripeAccount];
   }
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -4248,6 +4311,14 @@ static BUserProfile* defaultBUserProfileInstance = nil;
         BUserReviewBuilder* subBuilder = [BUserReview builder];
         [input readMessage:subBuilder extensionRegistry:extensionRegistry];
         [self addReviews:[subBuilder buildPartial]];
+        break;
+      }
+      case 184: {
+        [self setIsExpert:[input readBool]];
+        break;
+      }
+      case 194: {
+        [self setStripeAccount:[input readString]];
         break;
       }
     }
@@ -4699,6 +4770,38 @@ static BUserProfile* defaultBUserProfileInstance = nil;
 }
 - (BUserProfileBuilder *)clearReviews {
   resultUserProfile.reviewsArray = nil;
+  return self;
+}
+- (BOOL) hasIsExpert {
+  return resultUserProfile.hasIsExpert;
+}
+- (BOOL) isExpert {
+  return resultUserProfile.isExpert;
+}
+- (BUserProfileBuilder*) setIsExpert:(BOOL) value {
+  resultUserProfile.hasIsExpert = YES;
+  resultUserProfile.isExpert = value;
+  return self;
+}
+- (BUserProfileBuilder*) clearIsExpert {
+  resultUserProfile.hasIsExpert = NO;
+  resultUserProfile.isExpert = NO;
+  return self;
+}
+- (BOOL) hasStripeAccount {
+  return resultUserProfile.hasStripeAccount;
+}
+- (NSString*) stripeAccount {
+  return resultUserProfile.stripeAccount;
+}
+- (BUserProfileBuilder*) setStripeAccount:(NSString*) value {
+  resultUserProfile.hasStripeAccount = YES;
+  resultUserProfile.stripeAccount = value;
+  return self;
+}
+- (BUserProfileBuilder*) clearStripeAccount {
+  resultUserProfile.hasStripeAccount = NO;
+  resultUserProfile.stripeAccount = @"";
   return self;
 }
 @end

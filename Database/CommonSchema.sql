@@ -69,6 +69,9 @@ create table UserTable
     ,backgroundSummary  text
     ,interestTags       text[]
 
+    ,isExpert           boolean
+    ,stripeAccount      text
+
     ,search             tsvector
     );
 create index UserSearchIndex on UserTable using gin(search);
@@ -1005,21 +1008,6 @@ function UpdateSearchIndexForUserID(indexID text) returns void as
 --                                                                         Cards & Charges
 --
 ------------------------------------------------------------------------------------------
-
-
-create table CardTable
-    (
-     userID         text        not null
-    ,brand          text        not null
-    ,last4          text        not null
-    ,cardStatus     smallint
-    ,cardHolderName text
-    ,memoText       text
-    ,expireMonth    smallint
-    ,expireYear     smallint
-    ,token          text
-    );
-create unique index CardTableUniqueIndex on CardTable(userID, brand, last4);
 
 
 create table ChargeTable

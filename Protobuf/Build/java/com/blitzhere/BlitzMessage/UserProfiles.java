@@ -8311,6 +8311,29 @@ public final class UserProfiles {
      */
     com.blitzhere.BlitzMessage.UserProfiles.UserReviewOrBuilder getReviewsOrBuilder(
         int index);
+
+    /**
+     * <code>optional bool isExpert = 23;</code>
+     */
+    boolean hasIsExpert();
+    /**
+     * <code>optional bool isExpert = 23;</code>
+     */
+    boolean getIsExpert();
+
+    /**
+     * <code>optional string stripeAccount = 24;</code>
+     */
+    boolean hasStripeAccount();
+    /**
+     * <code>optional string stripeAccount = 24;</code>
+     */
+    java.lang.String getStripeAccount();
+    /**
+     * <code>optional string stripeAccount = 24;</code>
+     */
+    com.google.protobuf.ByteString
+        getStripeAccountBytes();
   }
   /**
    * Protobuf type {@code BlitzMessage.UserProfile}
@@ -8544,6 +8567,17 @@ public final class UserProfiles {
                 mutable_bitField0_ |= 0x00200000;
               }
               reviews_.add(input.readMessage(com.blitzhere.BlitzMessage.UserProfiles.UserReview.PARSER, extensionRegistry));
+              break;
+            }
+            case 184: {
+              bitField0_ |= 0x00004000;
+              isExpert_ = input.readBool();
+              break;
+            }
+            case 194: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00008000;
+              stripeAccount_ = bs;
               break;
             }
           }
@@ -9199,6 +9233,63 @@ public final class UserProfiles {
       return reviews_.get(index);
     }
 
+    public static final int ISEXPERT_FIELD_NUMBER = 23;
+    private boolean isExpert_;
+    /**
+     * <code>optional bool isExpert = 23;</code>
+     */
+    public boolean hasIsExpert() {
+      return ((bitField0_ & 0x00004000) == 0x00004000);
+    }
+    /**
+     * <code>optional bool isExpert = 23;</code>
+     */
+    public boolean getIsExpert() {
+      return isExpert_;
+    }
+
+    public static final int STRIPEACCOUNT_FIELD_NUMBER = 24;
+    private java.lang.Object stripeAccount_;
+    /**
+     * <code>optional string stripeAccount = 24;</code>
+     */
+    public boolean hasStripeAccount() {
+      return ((bitField0_ & 0x00008000) == 0x00008000);
+    }
+    /**
+     * <code>optional string stripeAccount = 24;</code>
+     */
+    public java.lang.String getStripeAccount() {
+      java.lang.Object ref = stripeAccount_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          stripeAccount_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string stripeAccount = 24;</code>
+     */
+    public com.google.protobuf.ByteString
+        getStripeAccountBytes() {
+      java.lang.Object ref = stripeAccount_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        stripeAccount_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private void initFields() {
       userID_ = "";
       userStatus_ = com.blitzhere.BlitzMessage.UserProfiles.UserStatus.USUnknown;
@@ -9222,6 +9313,8 @@ public final class UserProfiles {
       ratingRecommended_ = 0D;
       responseSeconds_ = 0D;
       reviews_ = java.util.Collections.emptyList();
+      isExpert_ = false;
+      stripeAccount_ = "";
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -9362,6 +9455,12 @@ public final class UserProfiles {
       for (int i = 0; i < reviews_.size(); i++) {
         output.writeMessage(22, reviews_.get(i));
       }
+      if (((bitField0_ & 0x00004000) == 0x00004000)) {
+        output.writeBool(23, isExpert_);
+      }
+      if (((bitField0_ & 0x00008000) == 0x00008000)) {
+        output.writeBytes(24, getStripeAccountBytes());
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -9463,6 +9562,14 @@ public final class UserProfiles {
       for (int i = 0; i < reviews_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(22, reviews_.get(i));
+      }
+      if (((bitField0_ & 0x00004000) == 0x00004000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(23, isExpert_);
+      }
+      if (((bitField0_ & 0x00008000) == 0x00008000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(24, getStripeAccountBytes());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -9680,6 +9787,10 @@ public final class UserProfiles {
         } else {
           reviewsBuilder_.clear();
         }
+        isExpert_ = false;
+        bitField0_ = (bitField0_ & ~0x00400000);
+        stripeAccount_ = "";
+        bitField0_ = (bitField0_ & ~0x00800000);
         return this;
       }
 
@@ -9848,6 +9959,14 @@ public final class UserProfiles {
         } else {
           result.reviews_ = reviewsBuilder_.build();
         }
+        if (((from_bitField0_ & 0x00400000) == 0x00400000)) {
+          to_bitField0_ |= 0x00004000;
+        }
+        result.isExpert_ = isExpert_;
+        if (((from_bitField0_ & 0x00800000) == 0x00800000)) {
+          to_bitField0_ |= 0x00008000;
+        }
+        result.stripeAccount_ = stripeAccount_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -10103,6 +10222,14 @@ public final class UserProfiles {
               reviewsBuilder_.addAllMessages(other.reviews_);
             }
           }
+        }
+        if (other.hasIsExpert()) {
+          setIsExpert(other.getIsExpert());
+        }
+        if (other.hasStripeAccount()) {
+          bitField0_ |= 0x00800000;
+          stripeAccount_ = other.stripeAccount_;
+          onChanged();
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -12884,6 +13011,114 @@ public final class UserProfiles {
           reviews_ = null;
         }
         return reviewsBuilder_;
+      }
+
+      private boolean isExpert_ ;
+      /**
+       * <code>optional bool isExpert = 23;</code>
+       */
+      public boolean hasIsExpert() {
+        return ((bitField0_ & 0x00400000) == 0x00400000);
+      }
+      /**
+       * <code>optional bool isExpert = 23;</code>
+       */
+      public boolean getIsExpert() {
+        return isExpert_;
+      }
+      /**
+       * <code>optional bool isExpert = 23;</code>
+       */
+      public Builder setIsExpert(boolean value) {
+        bitField0_ |= 0x00400000;
+        isExpert_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool isExpert = 23;</code>
+       */
+      public Builder clearIsExpert() {
+        bitField0_ = (bitField0_ & ~0x00400000);
+        isExpert_ = false;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object stripeAccount_ = "";
+      /**
+       * <code>optional string stripeAccount = 24;</code>
+       */
+      public boolean hasStripeAccount() {
+        return ((bitField0_ & 0x00800000) == 0x00800000);
+      }
+      /**
+       * <code>optional string stripeAccount = 24;</code>
+       */
+      public java.lang.String getStripeAccount() {
+        java.lang.Object ref = stripeAccount_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            stripeAccount_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string stripeAccount = 24;</code>
+       */
+      public com.google.protobuf.ByteString
+          getStripeAccountBytes() {
+        java.lang.Object ref = stripeAccount_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          stripeAccount_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string stripeAccount = 24;</code>
+       */
+      public Builder setStripeAccount(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00800000;
+        stripeAccount_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string stripeAccount = 24;</code>
+       */
+      public Builder clearStripeAccount() {
+        bitField0_ = (bitField0_ & ~0x00800000);
+        stripeAccount_ = getDefaultInstance().getStripeAccount();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string stripeAccount = 24;</code>
+       */
+      public Builder setStripeAccountBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00800000;
+        stripeAccount_ = value;
+        onChanged();
+        return this;
       }
 
       // @@protoc_insertion_point(builder_scope:BlitzMessage.UserProfile)
@@ -17291,7 +17526,7 @@ public final class UserProfiles {
       "(\0132\027.BlitzMessage.Timestamp\022\026\n\016conversat" +
       "ionID\030\004 \001(\t\022\022\n\nresponsive\030\005 \001(\001\022\020\n\010outgo" +
       "ing\030\006 \001(\001\022\023\n\013recommended\030\007 \001(\001\022\022\n\nreview" +
-      "Text\030\010 \001(\t\022\014\n\004tags\030\t \003(\t\"\251\006\n\013UserProfile" +
+      "Text\030\010 \001(\t\022\014\n\004tags\030\t \003(\t\"\322\006\n\013UserProfile" +
       "\022\016\n\006userID\030\001 \001(\t\022,\n\nuserStatus\030\002 \001(\0162\030.B" +
       "litzMessage.UserStatus\022-\n\014creationDate\030\003",
       " \001(\0132\027.BlitzMessage.Timestamp\022)\n\010lastSee" +
@@ -17311,29 +17546,30 @@ public final class UserProfiles {
       "Count\030\021 \001(\005\022\030\n\020ratingResponsive\030\022 \001(\001\022\026\n" +
       "\016ratingOutgoing\030\023 \001(\001\022\031\n\021ratingRecommend" +
       "ed\030\024 \001(\001\022\027\n\017responseSeconds\030\025 \001(\001\022)\n\007rev" +
-      "iews\030\026 \003(\0132\030.BlitzMessage.UserReview\"9\n\013" +
-      "ImageUpload\022*\n\timageData\030\001 \003(\0132\027.BlitzMe" +
-      "ssage.ImageData\"@\n\021UserProfileUpdate\022+\n\010",
-      "profiles\030\001 \003(\0132\031.BlitzMessage.UserProfil" +
-      "e\"y\n\020UserProfileQuery\022\017\n\007userIDs\030\001 \003(\t\022\031" +
-      "\n\021fetchDemoProfiles\030\002 \001(\010\022\021\n\tentityTag\030\003" +
-      " \001(\t\022\024\n\014entityUserID\030\004 \001(\t\022\020\n\010entityID\030\005" +
-      " \001(\t\"\246\001\n\023ConfirmationRequest\022.\n\013contactI" +
-      "nfo\030\001 \001(\0132\031.BlitzMessage.ContactInfo\022.\n\013" +
-      "userProfile\030\002 \001(\0132\031.BlitzMessage.UserPro" +
-      "file\022\030\n\020confirmationCode\030\003 \001(\t\022\025\n\rinvite" +
-      "rUserID\030\004 \001(\t\"F\n\027ProfilesFromContactInfo" +
-      "\022+\n\010profiles\030\001 \003(\0132\031.BlitzMessage.UserPr",
-      "ofile*Z\n\013ContactType\022\r\n\tCTUnknown\020\000\022\016\n\nC" +
-      "TPhoneSMS\020\001\022\013\n\007CTEmail\020\002\022\n\n\006CTChat\020\003\022\023\n\017" +
-      "CTSocialService\020\004*j\n\nUserStatus\022\r\n\tUSUnk" +
-      "nown\020\000\022\r\n\tUSBlocked\020\001\022\r\n\tUSInvited\020\002\022\014\n\010" +
-      "USActive\020\003\022\020\n\014USConfirming\020\004\022\017\n\013USConfir" +
-      "med\020\005*:\n\006Gender\022\014\n\010GUnknown\020\000\022\013\n\007GFemale" +
-      "\020\001\022\t\n\005GMale\020\002\022\n\n\006GOther\020\003*F\n\014ImageConten" +
-      "t\022\r\n\tICUnknown\020\000\022\021\n\rICUserProfile\020\001\022\024\n\020I" +
-      "CUserBackground\020\002B/\n\032com.blitzhere.Blitz" +
-      "Message\210\001\001\322>\002\n\000\322>\003\022\001B\322>\002\030\001"
+      "iews\030\026 \003(\0132\030.BlitzMessage.UserReview\022\020\n\010" +
+      "isExpert\030\027 \001(\010\022\025\n\rstripeAccount\030\030 \001(\t\"9\n" +
+      "\013ImageUpload\022*\n\timageData\030\001 \003(\0132\027.BlitzM",
+      "essage.ImageData\"@\n\021UserProfileUpdate\022+\n" +
+      "\010profiles\030\001 \003(\0132\031.BlitzMessage.UserProfi" +
+      "le\"y\n\020UserProfileQuery\022\017\n\007userIDs\030\001 \003(\t\022" +
+      "\031\n\021fetchDemoProfiles\030\002 \001(\010\022\021\n\tentityTag\030" +
+      "\003 \001(\t\022\024\n\014entityUserID\030\004 \001(\t\022\020\n\010entityID\030" +
+      "\005 \001(\t\"\246\001\n\023ConfirmationRequest\022.\n\013contact" +
+      "Info\030\001 \001(\0132\031.BlitzMessage.ContactInfo\022.\n" +
+      "\013userProfile\030\002 \001(\0132\031.BlitzMessage.UserPr" +
+      "ofile\022\030\n\020confirmationCode\030\003 \001(\t\022\025\n\rinvit" +
+      "erUserID\030\004 \001(\t\"F\n\027ProfilesFromContactInf",
+      "o\022+\n\010profiles\030\001 \003(\0132\031.BlitzMessage.UserP" +
+      "rofile*Z\n\013ContactType\022\r\n\tCTUnknown\020\000\022\016\n\n" +
+      "CTPhoneSMS\020\001\022\013\n\007CTEmail\020\002\022\n\n\006CTChat\020\003\022\023\n" +
+      "\017CTSocialService\020\004*j\n\nUserStatus\022\r\n\tUSUn" +
+      "known\020\000\022\r\n\tUSBlocked\020\001\022\r\n\tUSInvited\020\002\022\014\n" +
+      "\010USActive\020\003\022\020\n\014USConfirming\020\004\022\017\n\013USConfi" +
+      "rmed\020\005*:\n\006Gender\022\014\n\010GUnknown\020\000\022\013\n\007GFemal" +
+      "e\020\001\022\t\n\005GMale\020\002\022\n\n\006GOther\020\003*F\n\014ImageConte" +
+      "nt\022\r\n\tICUnknown\020\000\022\021\n\rICUserProfile\020\001\022\024\n\020" +
+      "ICUserBackground\020\002B/\n\032com.blitzhere.Blit",
+      "zMessage\210\001\001\322>\002\n\000\322>\003\022\001B\322>\002\030\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -17391,7 +17627,7 @@ public final class UserProfiles {
     internal_static_BlitzMessage_UserProfile_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_BlitzMessage_UserProfile_descriptor,
-        new java.lang.String[] { "UserID", "UserStatus", "CreationDate", "LastSeen", "Name", "Gender", "Birthday", "Images", "SocialIdentities", "ContactInfo", "HeadlineEmployment", "Employment", "Education", "EntityTags", "InterestTags", "BackgroundSummary", "RatingCount", "RatingResponsive", "RatingOutgoing", "RatingRecommended", "ResponseSeconds", "Reviews", });
+        new java.lang.String[] { "UserID", "UserStatus", "CreationDate", "LastSeen", "Name", "Gender", "Birthday", "Images", "SocialIdentities", "ContactInfo", "HeadlineEmployment", "Employment", "Education", "EntityTags", "InterestTags", "BackgroundSummary", "RatingCount", "RatingResponsive", "RatingOutgoing", "RatingRecommended", "ResponseSeconds", "Reviews", "IsExpert", "StripeAccount", });
     internal_static_BlitzMessage_ImageUpload_descriptor =
       getDescriptor().getMessageTypes().get(7);
     internal_static_BlitzMessage_ImageUpload_fieldAccessorTable = new

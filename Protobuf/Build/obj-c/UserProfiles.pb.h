@@ -813,8 +813,11 @@ NSString *NSStringFromBImageContent(BImageContent value);
 #define UserProfile_ratingRecommended @"ratingRecommended"
 #define UserProfile_responseSeconds @"responseSeconds"
 #define UserProfile_reviews @"reviews"
+#define UserProfile_isExpert @"isExpert"
+#define UserProfile_stripeAccount @"stripeAccount"
 @interface BUserProfile : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
+  BOOL hasIsExpert_:1;
   BOOL hasRatingResponsive_:1;
   BOOL hasRatingOutgoing_:1;
   BOOL hasRatingRecommended_:1;
@@ -823,12 +826,14 @@ NSString *NSStringFromBImageContent(BImageContent value);
   BOOL hasUserID_:1;
   BOOL hasName_:1;
   BOOL hasBackgroundSummary_:1;
+  BOOL hasStripeAccount_:1;
   BOOL hasCreationDate_:1;
   BOOL hasLastSeen_:1;
   BOOL hasBirthday_:1;
   BOOL hasHeadlineEmployment_:1;
   BOOL hasUserStatus_:1;
   BOOL hasGender_:1;
+  BOOL isExpert_:1;
   Float64 ratingResponsive;
   Float64 ratingOutgoing;
   Float64 ratingRecommended;
@@ -837,6 +842,7 @@ NSString *NSStringFromBImageContent(BImageContent value);
   NSString* userID;
   NSString* name;
   NSString* backgroundSummary;
+  NSString* stripeAccount;
   BTimestamp* creationDate;
   BTimestamp* lastSeen;
   BTimestamp* birthday;
@@ -866,6 +872,8 @@ NSString *NSStringFromBImageContent(BImageContent value);
 - (BOOL) hasRatingOutgoing;
 - (BOOL) hasRatingRecommended;
 - (BOOL) hasResponseSeconds;
+- (BOOL) hasIsExpert;
+- (BOOL) hasStripeAccount;
 @property (readonly, strong) NSString* userID;
 @property (readonly) BUserStatus userStatus;
 @property (readonly, strong) BTimestamp* creationDate;
@@ -888,6 +896,8 @@ NSString *NSStringFromBImageContent(BImageContent value);
 @property (readonly) Float64 ratingRecommended;
 @property (readonly) Float64 responseSeconds;
 @property (readonly, strong) NSArray * reviews;
+- (BOOL) isExpert;
+@property (readonly, strong) NSString* stripeAccount;
 - (BImageData*)imagesAtIndex:(NSUInteger)index;
 - (BSocialIdentity*)socialIdentitiesAtIndex:(NSUInteger)index;
 - (BContactInfo*)contactInfoAtIndex:(NSUInteger)index;
@@ -1057,6 +1067,16 @@ NSString *NSStringFromBImageContent(BImageContent value);
 - (BUserProfileBuilder *)addReviews:(BUserReview*)value;
 - (BUserProfileBuilder *)setReviewsArray:(NSArray *)array;
 - (BUserProfileBuilder *)clearReviews;
+
+- (BOOL) hasIsExpert;
+- (BOOL) isExpert;
+- (BUserProfileBuilder*) setIsExpert:(BOOL) value;
+- (BUserProfileBuilder*) clearIsExpert;
+
+- (BOOL) hasStripeAccount;
+- (NSString*) stripeAccount;
+- (BUserProfileBuilder*) setStripeAccount:(NSString*) value;
+- (BUserProfileBuilder*) clearStripeAccount;
 @end
 
 #define ImageUpload_imageData @"imageData"

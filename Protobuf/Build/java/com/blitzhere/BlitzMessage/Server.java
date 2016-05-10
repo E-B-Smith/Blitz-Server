@@ -1748,10 +1748,6 @@ public final class Server {
   }
   /**
    * Protobuf type {@code BlitzMessage.BlitzHereAppOptions}
-   *
-   * <pre>
-   *  None now...
-   * </pre>
    */
   public static final class BlitzHereAppOptions extends
       com.google.protobuf.GeneratedMessage implements
@@ -1944,10 +1940,6 @@ public final class Server {
     }
     /**
      * Protobuf type {@code BlitzMessage.BlitzHereAppOptions}
-     *
-     * <pre>
-     *  None now...
-     * </pre>
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements

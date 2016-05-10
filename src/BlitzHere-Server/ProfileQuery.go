@@ -272,6 +272,8 @@ func ProfileForUserID(session *Session, userID string) *BlitzMessage.UserProfile
             ,birthday
             ,backgroundSummary
             ,interestTags
+            ,isExpert
+            ,stripeAccount
         from UserTable where userID = $1;`, userID)
     defer pgsql.CloseRows(rows)
 
@@ -295,6 +297,8 @@ func ProfileForUserID(session *Session, userID string) *BlitzMessage.UserProfile
         birthday        pq.NullTime
         background      sql.NullString
         interestTags    sql.NullString
+        isExpert        sql.NullBool
+        stripeAccount   sql.NullString
     )
     error = rows.Scan(
         &profileID,
@@ -306,6 +310,8 @@ func ProfileForUserID(session *Session, userID string) *BlitzMessage.UserProfile
         &birthday,
         &background,
         &interestTags,
+        &isExpert,
+        &stripeAccount,
     )
     if error != nil {
         Log.Errorf("Error scanning row: %v.", error)
@@ -329,6 +335,9 @@ func ProfileForUserID(session *Session, userID string) *BlitzMessage.UserProfile
     profile.EntityTags    = GetEntityTagsWithUserID(session.UserID, userID, BlitzMessage.EntityType_ETUser)
     profile.Education     = EducationForUserID(userID)
     profile.Employment    = EmploymentForUserID(userID)
+
+    profile.IsExpert      = proto.Bool(isExpert.Bool)
+    profile.StripeAccount = proto.String(stripeAccount.String)
 
     //  Fix up th 'headline' employment --
 
