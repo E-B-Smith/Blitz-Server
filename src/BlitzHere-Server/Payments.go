@@ -346,6 +346,12 @@ func ChargeRequest(session *Session, chargeReq *BlitzMessage.Charge) *BlitzMessa
       Currency:         "usd",
       Customer:         stripeCID,
     }
+    error = chargeParams.SetSource(*chargeReq.ChargeToken)
+    if error != nil {
+        Log.LogError(error)
+        return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
+    }
+
     if chargeReq.MemoText != nil {
         chargeParams.Desc = *chargeReq.MemoText
     }
