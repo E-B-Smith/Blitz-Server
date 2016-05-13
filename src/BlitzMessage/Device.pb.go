@@ -9,7 +9,6 @@ It is generated from these files:
 	Device.proto
 	EntityTags.proto
 	Feed.proto
-	Friends.proto
 	Payments.proto
 	Search.proto
 	Server.proto
@@ -27,11 +26,6 @@ It has these top-level messages:
 	FeedPostUpdateResponse
 	FeedPostFetchRequest
 	FeedPostFetchResponse
-	Friend
-	FriendUpdate
-	FriendRequest
-	AcceptInviteRequest
-	AcceptInviteResponse
 	CardInfo
 	UserCardInfo
 	Charge
@@ -82,6 +76,8 @@ It has these top-level messages:
 	UserProfileQuery
 	ConfirmationRequest
 	ProfilesFromContactInfo
+	FriendUpdate
+	UserInvite
 */
 package BlitzMessage
 

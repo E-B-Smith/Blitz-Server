@@ -336,6 +336,9 @@ func DispatchServiceRequests(writer http.ResponseWriter, httpRequest *http.Reque
     case *BlitzMessage.UserCardInfo:
         response = UpdateCards(session, requestMessageType)
 
+    case *BlitzMessage.FriendUpdate:
+        response = SendFriendRequest(session, requestMessageType)
+
     default:
         error = fmt.Errorf("Unrecognized request '%+v'", request)
         response = ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
@@ -441,8 +444,7 @@ func Server() (returnValue int) {
         return 0
     }
     if len(flagConfigFilename) > 0 {
-        Log.Debugf("config: %+v.", config)
-        error = config.ParseConfigFileNamed(flagConfigFilename)
+        error = ServerUtil.ParseConfigFileNamed(&config, flagConfigFilename)
         if error != nil {
             Log.Errorf("Error: %v.", error)
             return 1
@@ -462,7 +464,6 @@ func Server() (returnValue int) {
 
     //  Check the configuration --
 
-    config.StripeKey = "sk_test_MOcjUJm7UBHhZKLRwYk27TBC"
     if len(config.StripeKey) == 0 {
         Log.Errorf("No Stripe key found.")
         return 1

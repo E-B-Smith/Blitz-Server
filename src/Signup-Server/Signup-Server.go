@@ -480,7 +480,7 @@ func SignupServer() int {
             return 1
         }
         defer flagInputFile.Close()
-        error = config.ParseConfigFile(flagInputFile)
+        error = ServerUtil.ParseConfigFile(&config, flagInputFile)
         if error != nil {
             Log.Errorf("Error: %v.", error)
             return 1

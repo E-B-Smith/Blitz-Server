@@ -26,7 +26,7 @@ func (serverInfo *ServerInfo) LoadConfiguration() error {
     filename := filepath.Dir(flagInputFilename)
     filename  = filepath.Join(filename, serverInfo.ConfigFilename)
     Log.Debugf("Loading config from file '%s'.", filename)
-    error := serverInfo.Config.ParseConfigFileNamed(filename)
+    error := ServerUtil.ParseConfigFileNamed(&serverInfo.Config, filename)
     if error != nil {
         Log.Warningf("Can't open '%s': %v.", filename, error)
     }

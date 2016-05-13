@@ -133,6 +133,38 @@ NSString *NSStringFromBImageContent(BImageContent value) {
   }
 }
 
+BOOL BFriendStatusIsValidValue(BFriendStatus value) {
+  switch (value) {
+    case BFriendStatusFSUnknown:
+    case BFriendStatusFSDidAsk:
+    case BFriendStatusFSIgnored:
+    case BFriendStatusFSAccepted:
+    case BFriendStatusFSWasAsked:
+    case BFriendStatusFSFriends:
+      return YES;
+    default:
+      return NO;
+  }
+}
+NSString *NSStringFromBFriendStatus(BFriendStatus value) {
+  switch (value) {
+    case BFriendStatusFSUnknown:
+      return @"BFriendStatusFSUnknown";
+    case BFriendStatusFSDidAsk:
+      return @"BFriendStatusFSDidAsk";
+    case BFriendStatusFSIgnored:
+      return @"BFriendStatusFSIgnored";
+    case BFriendStatusFSAccepted:
+      return @"BFriendStatusFSAccepted";
+    case BFriendStatusFSWasAsked:
+      return @"BFriendStatusFSWasAsked";
+    case BFriendStatusFSFriends:
+      return @"BFriendStatusFSFriends";
+    default:
+      return nil;
+  }
+}
+
 @interface BSocialIdentity ()
 @property (strong) NSString* socialService;
 @property (strong) NSString* socialID;
@@ -5267,9 +5299,10 @@ static BUserProfileUpdate* defaultBUserProfileUpdateInstance = nil;
 @interface BUserProfileQuery ()
 @property (strong) NSMutableArray * userIDsArray;
 @property BOOL fetchDemoProfiles;
-@property (strong) NSString* entityTag;
+@property (strong) NSString* entityTagDeprecated;
 @property (strong) NSString* entityUserID;
 @property (strong) NSString* entityID;
+@property (strong) NSMutableArray * entityTagsArray;
 @end
 
 @implementation BUserProfileQuery
@@ -5288,13 +5321,13 @@ static BUserProfileUpdate* defaultBUserProfileUpdateInstance = nil;
 - (void) setFetchDemoProfiles:(BOOL) _value_ {
   fetchDemoProfiles_ = !!_value_;
 }
-- (BOOL) hasEntityTag {
-  return !!hasEntityTag_;
+- (BOOL) hasEntityTagDeprecated {
+  return !!hasEntityTagDeprecated_;
 }
-- (void) setHasEntityTag:(BOOL) _value_ {
-  hasEntityTag_ = !!_value_;
+- (void) setHasEntityTagDeprecated:(BOOL) _value_ {
+  hasEntityTagDeprecated_ = !!_value_;
 }
-@synthesize entityTag;
+@synthesize entityTagDeprecated;
 - (BOOL) hasEntityUserID {
   return !!hasEntityUserID_;
 }
@@ -5309,10 +5342,12 @@ static BUserProfileUpdate* defaultBUserProfileUpdateInstance = nil;
   hasEntityID_ = !!_value_;
 }
 @synthesize entityID;
+@synthesize entityTagsArray;
+@dynamic entityTags;
 - (instancetype) init {
   if ((self = [super init])) {
     self.fetchDemoProfiles = NO;
-    self.entityTag = @"";
+    self.entityTagDeprecated = @"";
     self.entityUserID = @"";
     self.entityID = @"";
   }
@@ -5336,6 +5371,12 @@ static BUserProfileQuery* defaultBUserProfileQueryInstance = nil;
 - (NSString*)userIDsAtIndex:(NSUInteger)index {
   return [userIDsArray objectAtIndex:index];
 }
+- (NSArray *)entityTags {
+  return entityTagsArray;
+}
+- (NSString*)entityTagsAtIndex:(NSUInteger)index {
+  return [entityTagsArray objectAtIndex:index];
+}
 - (BOOL) isInitialized {
   return YES;
 }
@@ -5346,8 +5387,8 @@ static BUserProfileQuery* defaultBUserProfileQueryInstance = nil;
   if (self.hasFetchDemoProfiles) {
     [output writeBool:2 value:self.fetchDemoProfiles];
   }
-  if (self.hasEntityTag) {
-    [output writeString:3 value:self.entityTag];
+  if (self.hasEntityTagDeprecated) {
+    [output writeString:3 value:self.entityTagDeprecated];
   }
   if (self.hasEntityUserID) {
     [output writeString:4 value:self.entityUserID];
@@ -5355,6 +5396,9 @@ static BUserProfileQuery* defaultBUserProfileQueryInstance = nil;
   if (self.hasEntityID) {
     [output writeString:5 value:self.entityID];
   }
+  [self.entityTagsArray enumerateObjectsUsingBlock:^(NSString *element, NSUInteger idx, BOOL *stop) {
+    [output writeString:6 value:element];
+  }];
   [self.unknownFields writeToCodedOutputStream:output];
 }
 - (SInt32) serializedSize {
@@ -5376,14 +5420,23 @@ static BUserProfileQuery* defaultBUserProfileQueryInstance = nil;
   if (self.hasFetchDemoProfiles) {
     size_ += computeBoolSize(2, self.fetchDemoProfiles);
   }
-  if (self.hasEntityTag) {
-    size_ += computeStringSize(3, self.entityTag);
+  if (self.hasEntityTagDeprecated) {
+    size_ += computeStringSize(3, self.entityTagDeprecated);
   }
   if (self.hasEntityUserID) {
     size_ += computeStringSize(4, self.entityUserID);
   }
   if (self.hasEntityID) {
     size_ += computeStringSize(5, self.entityID);
+  }
+  {
+    __block SInt32 dataSize = 0;
+    const NSUInteger count = self.entityTagsArray.count;
+    [self.entityTagsArray enumerateObjectsUsingBlock:^(NSString *element, NSUInteger idx, BOOL *stop) {
+      dataSize += computeStringSizeNoTag(element);
+    }];
+    size_ += dataSize;
+    size_ += (SInt32)(1 * count);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -5426,8 +5479,8 @@ static BUserProfileQuery* defaultBUserProfileQueryInstance = nil;
   if (self.hasFetchDemoProfiles) {
     [output appendFormat:@"%@%@: %@\n", indent, @"fetchDemoProfiles", [NSNumber numberWithBool:self.fetchDemoProfiles]];
   }
-  if (self.hasEntityTag) {
-    [output appendFormat:@"%@%@: %@\n", indent, @"entityTag", self.entityTag];
+  if (self.hasEntityTagDeprecated) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"entityTagDeprecated", self.entityTagDeprecated];
   }
   if (self.hasEntityUserID) {
     [output appendFormat:@"%@%@: %@\n", indent, @"entityUserID", self.entityUserID];
@@ -5435,6 +5488,9 @@ static BUserProfileQuery* defaultBUserProfileQueryInstance = nil;
   if (self.hasEntityID) {
     [output appendFormat:@"%@%@: %@\n", indent, @"entityID", self.entityID];
   }
+  [self.entityTagsArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"entityTags", obj];
+  }];
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (void) storeInDictionary:(NSMutableDictionary *)dictionary {
@@ -5442,8 +5498,8 @@ static BUserProfileQuery* defaultBUserProfileQueryInstance = nil;
   if (self.hasFetchDemoProfiles) {
     [dictionary setObject: [NSNumber numberWithBool:self.fetchDemoProfiles] forKey: @"fetchDemoProfiles"];
   }
-  if (self.hasEntityTag) {
-    [dictionary setObject: self.entityTag forKey: @"entityTag"];
+  if (self.hasEntityTagDeprecated) {
+    [dictionary setObject: self.entityTagDeprecated forKey: @"entityTagDeprecated"];
   }
   if (self.hasEntityUserID) {
     [dictionary setObject: self.entityUserID forKey: @"entityUserID"];
@@ -5451,6 +5507,7 @@ static BUserProfileQuery* defaultBUserProfileQueryInstance = nil;
   if (self.hasEntityID) {
     [dictionary setObject: self.entityID forKey: @"entityID"];
   }
+  [dictionary setObject:self.entityTags forKey: @"entityTags"];
   [self.unknownFields storeInDictionary:dictionary];
 }
 - (BOOL) isEqual:(id)other {
@@ -5465,12 +5522,13 @@ static BUserProfileQuery* defaultBUserProfileQueryInstance = nil;
       [self.userIDsArray isEqualToArray:otherMessage.userIDsArray] &&
       self.hasFetchDemoProfiles == otherMessage.hasFetchDemoProfiles &&
       (!self.hasFetchDemoProfiles || self.fetchDemoProfiles == otherMessage.fetchDemoProfiles) &&
-      self.hasEntityTag == otherMessage.hasEntityTag &&
-      (!self.hasEntityTag || [self.entityTag isEqual:otherMessage.entityTag]) &&
+      self.hasEntityTagDeprecated == otherMessage.hasEntityTagDeprecated &&
+      (!self.hasEntityTagDeprecated || [self.entityTagDeprecated isEqual:otherMessage.entityTagDeprecated]) &&
       self.hasEntityUserID == otherMessage.hasEntityUserID &&
       (!self.hasEntityUserID || [self.entityUserID isEqual:otherMessage.entityUserID]) &&
       self.hasEntityID == otherMessage.hasEntityID &&
       (!self.hasEntityID || [self.entityID isEqual:otherMessage.entityID]) &&
+      [self.entityTagsArray isEqualToArray:otherMessage.entityTagsArray] &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
@@ -5481,8 +5539,8 @@ static BUserProfileQuery* defaultBUserProfileQueryInstance = nil;
   if (self.hasFetchDemoProfiles) {
     hashCode = hashCode * 31 + [[NSNumber numberWithBool:self.fetchDemoProfiles] hash];
   }
-  if (self.hasEntityTag) {
-    hashCode = hashCode * 31 + [self.entityTag hash];
+  if (self.hasEntityTagDeprecated) {
+    hashCode = hashCode * 31 + [self.entityTagDeprecated hash];
   }
   if (self.hasEntityUserID) {
     hashCode = hashCode * 31 + [self.entityUserID hash];
@@ -5490,6 +5548,9 @@ static BUserProfileQuery* defaultBUserProfileQueryInstance = nil;
   if (self.hasEntityID) {
     hashCode = hashCode * 31 + [self.entityID hash];
   }
+  [self.entityTagsArray enumerateObjectsUsingBlock:^(NSString *element, NSUInteger idx, BOOL *stop) {
+    hashCode = hashCode * 31 + [element hash];
+  }];
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
 }
@@ -5543,14 +5604,21 @@ static BUserProfileQuery* defaultBUserProfileQueryInstance = nil;
   if (other.hasFetchDemoProfiles) {
     [self setFetchDemoProfiles:other.fetchDemoProfiles];
   }
-  if (other.hasEntityTag) {
-    [self setEntityTag:other.entityTag];
+  if (other.hasEntityTagDeprecated) {
+    [self setEntityTagDeprecated:other.entityTagDeprecated];
   }
   if (other.hasEntityUserID) {
     [self setEntityUserID:other.entityUserID];
   }
   if (other.hasEntityID) {
     [self setEntityID:other.entityID];
+  }
+  if (other.entityTagsArray.count > 0) {
+    if (resultUserProfileQuery.entityTagsArray == nil) {
+      resultUserProfileQuery.entityTagsArray = [[NSMutableArray alloc] initWithArray:other.entityTagsArray];
+    } else {
+      [resultUserProfileQuery.entityTagsArray addObjectsFromArray:other.entityTagsArray];
+    }
   }
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -5582,7 +5650,7 @@ static BUserProfileQuery* defaultBUserProfileQueryInstance = nil;
         break;
       }
       case 26: {
-        [self setEntityTag:[input readString]];
+        [self setEntityTagDeprecated:[input readString]];
         break;
       }
       case 34: {
@@ -5591,6 +5659,10 @@ static BUserProfileQuery* defaultBUserProfileQueryInstance = nil;
       }
       case 42: {
         [self setEntityID:[input readString]];
+        break;
+      }
+      case 50: {
+        [self addEntityTags:[input readString]];
         break;
       }
     }
@@ -5633,20 +5705,20 @@ static BUserProfileQuery* defaultBUserProfileQueryInstance = nil;
   resultUserProfileQuery.fetchDemoProfiles = NO;
   return self;
 }
-- (BOOL) hasEntityTag {
-  return resultUserProfileQuery.hasEntityTag;
+- (BOOL) hasEntityTagDeprecated {
+  return resultUserProfileQuery.hasEntityTagDeprecated;
 }
-- (NSString*) entityTag {
-  return resultUserProfileQuery.entityTag;
+- (NSString*) entityTagDeprecated {
+  return resultUserProfileQuery.entityTagDeprecated;
 }
-- (BUserProfileQueryBuilder*) setEntityTag:(NSString*) value {
-  resultUserProfileQuery.hasEntityTag = YES;
-  resultUserProfileQuery.entityTag = value;
+- (BUserProfileQueryBuilder*) setEntityTagDeprecated:(NSString*) value {
+  resultUserProfileQuery.hasEntityTagDeprecated = YES;
+  resultUserProfileQuery.entityTagDeprecated = value;
   return self;
 }
-- (BUserProfileQueryBuilder*) clearEntityTag {
-  resultUserProfileQuery.hasEntityTag = NO;
-  resultUserProfileQuery.entityTag = @"";
+- (BUserProfileQueryBuilder*) clearEntityTagDeprecated {
+  resultUserProfileQuery.hasEntityTagDeprecated = NO;
+  resultUserProfileQuery.entityTagDeprecated = @"";
   return self;
 }
 - (BOOL) hasEntityUserID {
@@ -5679,6 +5751,27 @@ static BUserProfileQuery* defaultBUserProfileQueryInstance = nil;
 - (BUserProfileQueryBuilder*) clearEntityID {
   resultUserProfileQuery.hasEntityID = NO;
   resultUserProfileQuery.entityID = @"";
+  return self;
+}
+- (NSMutableArray *)entityTags {
+  return resultUserProfileQuery.entityTagsArray;
+}
+- (NSString*)entityTagsAtIndex:(NSUInteger)index {
+  return [resultUserProfileQuery entityTagsAtIndex:index];
+}
+- (BUserProfileQueryBuilder *)addEntityTags:(NSString*)value {
+  if (resultUserProfileQuery.entityTagsArray == nil) {
+    resultUserProfileQuery.entityTagsArray = [[NSMutableArray alloc]init];
+  }
+  [resultUserProfileQuery.entityTagsArray addObject:value];
+  return self;
+}
+- (BUserProfileQueryBuilder *)setEntityTagsArray:(NSArray *)array {
+  resultUserProfileQuery.entityTagsArray = [[NSMutableArray alloc] initWithArray:array];
+  return self;
+}
+- (BUserProfileQueryBuilder *)clearEntityTags {
+  resultUserProfileQuery.entityTagsArray = nil;
   return self;
 }
 @end
@@ -6319,6 +6412,841 @@ static BProfilesFromContactInfo* defaultBProfilesFromContactInfoInstance = nil;
 }
 - (BProfilesFromContactInfoBuilder *)clearProfiles {
   resultProfilesFromContactInfo.profilesArray = nil;
+  return self;
+}
+@end
+
+@interface BFriendUpdate ()
+@property BFriendStatus friendStatus;
+@property (strong) NSString* friendID;
+@property (strong) NSMutableArray * profilesArray;
+@end
+
+@implementation BFriendUpdate
+
+- (BOOL) hasFriendStatus {
+  return !!hasFriendStatus_;
+}
+- (void) setHasFriendStatus:(BOOL) _value_ {
+  hasFriendStatus_ = !!_value_;
+}
+@synthesize friendStatus;
+- (BOOL) hasFriendID {
+  return !!hasFriendID_;
+}
+- (void) setHasFriendID:(BOOL) _value_ {
+  hasFriendID_ = !!_value_;
+}
+@synthesize friendID;
+@synthesize profilesArray;
+@dynamic profiles;
+- (instancetype) init {
+  if ((self = [super init])) {
+    self.friendStatus = BFriendStatusFSUnknown;
+    self.friendID = @"";
+  }
+  return self;
+}
+static BFriendUpdate* defaultBFriendUpdateInstance = nil;
++ (void) initialize {
+  if (self == [BFriendUpdate class]) {
+    defaultBFriendUpdateInstance = [[BFriendUpdate alloc] init];
+  }
+}
++ (instancetype) defaultInstance {
+  return defaultBFriendUpdateInstance;
+}
+- (instancetype) defaultInstance {
+  return defaultBFriendUpdateInstance;
+}
+- (NSArray *)profiles {
+  return profilesArray;
+}
+- (BUserProfile*)profilesAtIndex:(NSUInteger)index {
+  return [profilesArray objectAtIndex:index];
+}
+- (BOOL) isInitialized {
+  __block BOOL isInitprofiles = YES;
+   [self.profiles enumerateObjectsUsingBlock:^(BUserProfile *element, NSUInteger idx, BOOL *stop) {
+    if (!element.isInitialized) {
+      isInitprofiles = NO;
+      *stop = YES;
+    }
+  }];
+  if (!isInitprofiles) return isInitprofiles;
+  return YES;
+}
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
+  if (self.hasFriendStatus) {
+    [output writeEnum:1 value:self.friendStatus];
+  }
+  if (self.hasFriendID) {
+    [output writeString:2 value:self.friendID];
+  }
+  [self.profilesArray enumerateObjectsUsingBlock:^(BUserProfile *element, NSUInteger idx, BOOL *stop) {
+    [output writeMessage:3 value:element];
+  }];
+  [self.unknownFields writeToCodedOutputStream:output];
+}
+- (SInt32) serializedSize {
+  __block SInt32 size_ = memoizedSerializedSize;
+  if (size_ != -1) {
+    return size_;
+  }
+
+  size_ = 0;
+  if (self.hasFriendStatus) {
+    size_ += computeEnumSize(1, self.friendStatus);
+  }
+  if (self.hasFriendID) {
+    size_ += computeStringSize(2, self.friendID);
+  }
+  [self.profilesArray enumerateObjectsUsingBlock:^(BUserProfile *element, NSUInteger idx, BOOL *stop) {
+    size_ += computeMessageSize(3, element);
+  }];
+  size_ += self.unknownFields.serializedSize;
+  memoizedSerializedSize = size_;
+  return size_;
+}
++ (BFriendUpdate*) parseFromData:(NSData*) data {
+  return (BFriendUpdate*)[[[BFriendUpdate builder] mergeFromData:data] build];
+}
++ (BFriendUpdate*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BFriendUpdate*)[[[BFriendUpdate builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
+}
++ (BFriendUpdate*) parseFromInputStream:(NSInputStream*) input {
+  return (BFriendUpdate*)[[[BFriendUpdate builder] mergeFromInputStream:input] build];
+}
++ (BFriendUpdate*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BFriendUpdate*)[[[BFriendUpdate builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (BFriendUpdate*) parseFromCodedInputStream:(PBCodedInputStream*) input {
+  return (BFriendUpdate*)[[[BFriendUpdate builder] mergeFromCodedInputStream:input] build];
+}
++ (BFriendUpdate*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BFriendUpdate*)[[[BFriendUpdate builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (BFriendUpdateBuilder*) builder {
+  return [[BFriendUpdateBuilder alloc] init];
+}
++ (BFriendUpdateBuilder*) builderWithPrototype:(BFriendUpdate*) prototype {
+  return [[BFriendUpdate builder] mergeFrom:prototype];
+}
+- (BFriendUpdateBuilder*) builder {
+  return [BFriendUpdate builder];
+}
+- (BFriendUpdateBuilder*) toBuilder {
+  return [BFriendUpdate builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  if (self.hasFriendStatus) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"friendStatus", NSStringFromBFriendStatus(self.friendStatus)];
+  }
+  if (self.hasFriendID) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"friendID", self.friendID];
+  }
+  [self.profilesArray enumerateObjectsUsingBlock:^(BUserProfile *element, NSUInteger idx, BOOL *stop) {
+    [output appendFormat:@"%@%@ {\n", indent, @"profiles"];
+    [element writeDescriptionTo:output
+                     withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }];
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (void) storeInDictionary:(NSMutableDictionary *)dictionary {
+  if (self.hasFriendStatus) {
+    [dictionary setObject: @(self.friendStatus) forKey: @"friendStatus"];
+  }
+  if (self.hasFriendID) {
+    [dictionary setObject: self.friendID forKey: @"friendID"];
+  }
+  for (BUserProfile* element in self.profilesArray) {
+    NSMutableDictionary *elementDictionary = [NSMutableDictionary dictionary];
+    [element storeInDictionary:elementDictionary];
+    [dictionary setObject:[NSDictionary dictionaryWithDictionary:elementDictionary] forKey:@"profiles"];
+  }
+  [self.unknownFields storeInDictionary:dictionary];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[BFriendUpdate class]]) {
+    return NO;
+  }
+  BFriendUpdate *otherMessage = other;
+  return
+      self.hasFriendStatus == otherMessage.hasFriendStatus &&
+      (!self.hasFriendStatus || self.friendStatus == otherMessage.friendStatus) &&
+      self.hasFriendID == otherMessage.hasFriendID &&
+      (!self.hasFriendID || [self.friendID isEqual:otherMessage.friendID]) &&
+      [self.profilesArray isEqualToArray:otherMessage.profilesArray] &&
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  __block NSUInteger hashCode = 7;
+  if (self.hasFriendStatus) {
+    hashCode = hashCode * 31 + self.friendStatus;
+  }
+  if (self.hasFriendID) {
+    hashCode = hashCode * 31 + [self.friendID hash];
+  }
+  [self.profilesArray enumerateObjectsUsingBlock:^(BUserProfile *element, NSUInteger idx, BOOL *stop) {
+    hashCode = hashCode * 31 + [element hash];
+  }];
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
+}
+@end
+
+@interface BFriendUpdateBuilder()
+@property (strong) BFriendUpdate* resultFriendUpdate;
+@end
+
+@implementation BFriendUpdateBuilder
+@synthesize resultFriendUpdate;
+- (instancetype) init {
+  if ((self = [super init])) {
+    self.resultFriendUpdate = [[BFriendUpdate alloc] init];
+  }
+  return self;
+}
+- (PBGeneratedMessage*) internalGetResult {
+  return resultFriendUpdate;
+}
+- (BFriendUpdateBuilder*) clear {
+  self.resultFriendUpdate = [[BFriendUpdate alloc] init];
+  return self;
+}
+- (BFriendUpdateBuilder*) clone {
+  return [BFriendUpdate builderWithPrototype:resultFriendUpdate];
+}
+- (BFriendUpdate*) defaultInstance {
+  return [BFriendUpdate defaultInstance];
+}
+- (BFriendUpdate*) build {
+  [self checkInitialized];
+  return [self buildPartial];
+}
+- (BFriendUpdate*) buildPartial {
+  BFriendUpdate* returnMe = resultFriendUpdate;
+  self.resultFriendUpdate = nil;
+  return returnMe;
+}
+- (BFriendUpdateBuilder*) mergeFrom:(BFriendUpdate*) other {
+  if (other == [BFriendUpdate defaultInstance]) {
+    return self;
+  }
+  if (other.hasFriendStatus) {
+    [self setFriendStatus:other.friendStatus];
+  }
+  if (other.hasFriendID) {
+    [self setFriendID:other.friendID];
+  }
+  if (other.profilesArray.count > 0) {
+    if (resultFriendUpdate.profilesArray == nil) {
+      resultFriendUpdate.profilesArray = [[NSMutableArray alloc] initWithArray:other.profilesArray];
+    } else {
+      [resultFriendUpdate.profilesArray addObjectsFromArray:other.profilesArray];
+    }
+  }
+  [self mergeUnknownFields:other.unknownFields];
+  return self;
+}
+- (BFriendUpdateBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
+  return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
+}
+- (BFriendUpdateBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  PBUnknownFieldSetBuilder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
+  while (YES) {
+    SInt32 tag = [input readTag];
+    switch (tag) {
+      case 0:
+        [self setUnknownFields:[unknownFields build]];
+        return self;
+      default: {
+        if (![self parseUnknownField:input unknownFields:unknownFields extensionRegistry:extensionRegistry tag:tag]) {
+          [self setUnknownFields:[unknownFields build]];
+          return self;
+        }
+        break;
+      }
+      case 8: {
+        BFriendStatus value = (BFriendStatus)[input readEnum];
+        if (BFriendStatusIsValidValue(value)) {
+          [self setFriendStatus:value];
+        } else {
+          [unknownFields mergeVarintField:1 value:value];
+        }
+        break;
+      }
+      case 18: {
+        [self setFriendID:[input readString]];
+        break;
+      }
+      case 26: {
+        BUserProfileBuilder* subBuilder = [BUserProfile builder];
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self addProfiles:[subBuilder buildPartial]];
+        break;
+      }
+    }
+  }
+}
+- (BOOL) hasFriendStatus {
+  return resultFriendUpdate.hasFriendStatus;
+}
+- (BFriendStatus) friendStatus {
+  return resultFriendUpdate.friendStatus;
+}
+- (BFriendUpdateBuilder*) setFriendStatus:(BFriendStatus) value {
+  resultFriendUpdate.hasFriendStatus = YES;
+  resultFriendUpdate.friendStatus = value;
+  return self;
+}
+- (BFriendUpdateBuilder*) clearFriendStatus {
+  resultFriendUpdate.hasFriendStatus = NO;
+  resultFriendUpdate.friendStatus = BFriendStatusFSUnknown;
+  return self;
+}
+- (BOOL) hasFriendID {
+  return resultFriendUpdate.hasFriendID;
+}
+- (NSString*) friendID {
+  return resultFriendUpdate.friendID;
+}
+- (BFriendUpdateBuilder*) setFriendID:(NSString*) value {
+  resultFriendUpdate.hasFriendID = YES;
+  resultFriendUpdate.friendID = value;
+  return self;
+}
+- (BFriendUpdateBuilder*) clearFriendID {
+  resultFriendUpdate.hasFriendID = NO;
+  resultFriendUpdate.friendID = @"";
+  return self;
+}
+- (NSMutableArray *)profiles {
+  return resultFriendUpdate.profilesArray;
+}
+- (BUserProfile*)profilesAtIndex:(NSUInteger)index {
+  return [resultFriendUpdate profilesAtIndex:index];
+}
+- (BFriendUpdateBuilder *)addProfiles:(BUserProfile*)value {
+  if (resultFriendUpdate.profilesArray == nil) {
+    resultFriendUpdate.profilesArray = [[NSMutableArray alloc]init];
+  }
+  [resultFriendUpdate.profilesArray addObject:value];
+  return self;
+}
+- (BFriendUpdateBuilder *)setProfilesArray:(NSArray *)array {
+  resultFriendUpdate.profilesArray = [[NSMutableArray alloc]initWithArray:array];
+  return self;
+}
+- (BFriendUpdateBuilder *)clearProfiles {
+  resultFriendUpdate.profilesArray = nil;
+  return self;
+}
+@end
+
+@interface BUserInvite ()
+@property (strong) NSString* userID;
+@property (strong) NSString* friendID;
+@property (strong) NSString* message;
+@property (strong) BContactInfo* contactInfo;
+@property (strong) NSMutableArray * profilesArray;
+@property (strong) NSString* confirmationCode;
+@end
+
+@implementation BUserInvite
+
+- (BOOL) hasUserID {
+  return !!hasUserID_;
+}
+- (void) setHasUserID:(BOOL) _value_ {
+  hasUserID_ = !!_value_;
+}
+@synthesize userID;
+- (BOOL) hasFriendID {
+  return !!hasFriendID_;
+}
+- (void) setHasFriendID:(BOOL) _value_ {
+  hasFriendID_ = !!_value_;
+}
+@synthesize friendID;
+- (BOOL) hasMessage {
+  return !!hasMessage_;
+}
+- (void) setHasMessage:(BOOL) _value_ {
+  hasMessage_ = !!_value_;
+}
+@synthesize message;
+- (BOOL) hasContactInfo {
+  return !!hasContactInfo_;
+}
+- (void) setHasContactInfo:(BOOL) _value_ {
+  hasContactInfo_ = !!_value_;
+}
+@synthesize contactInfo;
+@synthesize profilesArray;
+@dynamic profiles;
+- (BOOL) hasConfirmationCode {
+  return !!hasConfirmationCode_;
+}
+- (void) setHasConfirmationCode:(BOOL) _value_ {
+  hasConfirmationCode_ = !!_value_;
+}
+@synthesize confirmationCode;
+- (instancetype) init {
+  if ((self = [super init])) {
+    self.userID = @"";
+    self.friendID = @"";
+    self.message = @"";
+    self.contactInfo = [BContactInfo defaultInstance];
+    self.confirmationCode = @"";
+  }
+  return self;
+}
+static BUserInvite* defaultBUserInviteInstance = nil;
++ (void) initialize {
+  if (self == [BUserInvite class]) {
+    defaultBUserInviteInstance = [[BUserInvite alloc] init];
+  }
+}
++ (instancetype) defaultInstance {
+  return defaultBUserInviteInstance;
+}
+- (instancetype) defaultInstance {
+  return defaultBUserInviteInstance;
+}
+- (NSArray *)profiles {
+  return profilesArray;
+}
+- (BUserProfile*)profilesAtIndex:(NSUInteger)index {
+  return [profilesArray objectAtIndex:index];
+}
+- (BOOL) isInitialized {
+  if (self.hasContactInfo) {
+    if (!self.contactInfo.isInitialized) {
+      return NO;
+    }
+  }
+  __block BOOL isInitprofiles = YES;
+   [self.profiles enumerateObjectsUsingBlock:^(BUserProfile *element, NSUInteger idx, BOOL *stop) {
+    if (!element.isInitialized) {
+      isInitprofiles = NO;
+      *stop = YES;
+    }
+  }];
+  if (!isInitprofiles) return isInitprofiles;
+  return YES;
+}
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
+  if (self.hasUserID) {
+    [output writeString:1 value:self.userID];
+  }
+  if (self.hasFriendID) {
+    [output writeString:2 value:self.friendID];
+  }
+  if (self.hasMessage) {
+    [output writeString:3 value:self.message];
+  }
+  if (self.hasContactInfo) {
+    [output writeMessage:4 value:self.contactInfo];
+  }
+  [self.profilesArray enumerateObjectsUsingBlock:^(BUserProfile *element, NSUInteger idx, BOOL *stop) {
+    [output writeMessage:5 value:element];
+  }];
+  if (self.hasConfirmationCode) {
+    [output writeString:6 value:self.confirmationCode];
+  }
+  [self.unknownFields writeToCodedOutputStream:output];
+}
+- (SInt32) serializedSize {
+  __block SInt32 size_ = memoizedSerializedSize;
+  if (size_ != -1) {
+    return size_;
+  }
+
+  size_ = 0;
+  if (self.hasUserID) {
+    size_ += computeStringSize(1, self.userID);
+  }
+  if (self.hasFriendID) {
+    size_ += computeStringSize(2, self.friendID);
+  }
+  if (self.hasMessage) {
+    size_ += computeStringSize(3, self.message);
+  }
+  if (self.hasContactInfo) {
+    size_ += computeMessageSize(4, self.contactInfo);
+  }
+  [self.profilesArray enumerateObjectsUsingBlock:^(BUserProfile *element, NSUInteger idx, BOOL *stop) {
+    size_ += computeMessageSize(5, element);
+  }];
+  if (self.hasConfirmationCode) {
+    size_ += computeStringSize(6, self.confirmationCode);
+  }
+  size_ += self.unknownFields.serializedSize;
+  memoizedSerializedSize = size_;
+  return size_;
+}
++ (BUserInvite*) parseFromData:(NSData*) data {
+  return (BUserInvite*)[[[BUserInvite builder] mergeFromData:data] build];
+}
++ (BUserInvite*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BUserInvite*)[[[BUserInvite builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
+}
++ (BUserInvite*) parseFromInputStream:(NSInputStream*) input {
+  return (BUserInvite*)[[[BUserInvite builder] mergeFromInputStream:input] build];
+}
++ (BUserInvite*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BUserInvite*)[[[BUserInvite builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (BUserInvite*) parseFromCodedInputStream:(PBCodedInputStream*) input {
+  return (BUserInvite*)[[[BUserInvite builder] mergeFromCodedInputStream:input] build];
+}
++ (BUserInvite*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BUserInvite*)[[[BUserInvite builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (BUserInviteBuilder*) builder {
+  return [[BUserInviteBuilder alloc] init];
+}
++ (BUserInviteBuilder*) builderWithPrototype:(BUserInvite*) prototype {
+  return [[BUserInvite builder] mergeFrom:prototype];
+}
+- (BUserInviteBuilder*) builder {
+  return [BUserInvite builder];
+}
+- (BUserInviteBuilder*) toBuilder {
+  return [BUserInvite builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  if (self.hasUserID) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"userID", self.userID];
+  }
+  if (self.hasFriendID) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"friendID", self.friendID];
+  }
+  if (self.hasMessage) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"message", self.message];
+  }
+  if (self.hasContactInfo) {
+    [output appendFormat:@"%@%@ {\n", indent, @"contactInfo"];
+    [self.contactInfo writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
+  [self.profilesArray enumerateObjectsUsingBlock:^(BUserProfile *element, NSUInteger idx, BOOL *stop) {
+    [output appendFormat:@"%@%@ {\n", indent, @"profiles"];
+    [element writeDescriptionTo:output
+                     withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }];
+  if (self.hasConfirmationCode) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"confirmationCode", self.confirmationCode];
+  }
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (void) storeInDictionary:(NSMutableDictionary *)dictionary {
+  if (self.hasUserID) {
+    [dictionary setObject: self.userID forKey: @"userID"];
+  }
+  if (self.hasFriendID) {
+    [dictionary setObject: self.friendID forKey: @"friendID"];
+  }
+  if (self.hasMessage) {
+    [dictionary setObject: self.message forKey: @"message"];
+  }
+  if (self.hasContactInfo) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.contactInfo storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"contactInfo"];
+  }
+  for (BUserProfile* element in self.profilesArray) {
+    NSMutableDictionary *elementDictionary = [NSMutableDictionary dictionary];
+    [element storeInDictionary:elementDictionary];
+    [dictionary setObject:[NSDictionary dictionaryWithDictionary:elementDictionary] forKey:@"profiles"];
+  }
+  if (self.hasConfirmationCode) {
+    [dictionary setObject: self.confirmationCode forKey: @"confirmationCode"];
+  }
+  [self.unknownFields storeInDictionary:dictionary];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[BUserInvite class]]) {
+    return NO;
+  }
+  BUserInvite *otherMessage = other;
+  return
+      self.hasUserID == otherMessage.hasUserID &&
+      (!self.hasUserID || [self.userID isEqual:otherMessage.userID]) &&
+      self.hasFriendID == otherMessage.hasFriendID &&
+      (!self.hasFriendID || [self.friendID isEqual:otherMessage.friendID]) &&
+      self.hasMessage == otherMessage.hasMessage &&
+      (!self.hasMessage || [self.message isEqual:otherMessage.message]) &&
+      self.hasContactInfo == otherMessage.hasContactInfo &&
+      (!self.hasContactInfo || [self.contactInfo isEqual:otherMessage.contactInfo]) &&
+      [self.profilesArray isEqualToArray:otherMessage.profilesArray] &&
+      self.hasConfirmationCode == otherMessage.hasConfirmationCode &&
+      (!self.hasConfirmationCode || [self.confirmationCode isEqual:otherMessage.confirmationCode]) &&
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  __block NSUInteger hashCode = 7;
+  if (self.hasUserID) {
+    hashCode = hashCode * 31 + [self.userID hash];
+  }
+  if (self.hasFriendID) {
+    hashCode = hashCode * 31 + [self.friendID hash];
+  }
+  if (self.hasMessage) {
+    hashCode = hashCode * 31 + [self.message hash];
+  }
+  if (self.hasContactInfo) {
+    hashCode = hashCode * 31 + [self.contactInfo hash];
+  }
+  [self.profilesArray enumerateObjectsUsingBlock:^(BUserProfile *element, NSUInteger idx, BOOL *stop) {
+    hashCode = hashCode * 31 + [element hash];
+  }];
+  if (self.hasConfirmationCode) {
+    hashCode = hashCode * 31 + [self.confirmationCode hash];
+  }
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
+}
+@end
+
+@interface BUserInviteBuilder()
+@property (strong) BUserInvite* resultUserInvite;
+@end
+
+@implementation BUserInviteBuilder
+@synthesize resultUserInvite;
+- (instancetype) init {
+  if ((self = [super init])) {
+    self.resultUserInvite = [[BUserInvite alloc] init];
+  }
+  return self;
+}
+- (PBGeneratedMessage*) internalGetResult {
+  return resultUserInvite;
+}
+- (BUserInviteBuilder*) clear {
+  self.resultUserInvite = [[BUserInvite alloc] init];
+  return self;
+}
+- (BUserInviteBuilder*) clone {
+  return [BUserInvite builderWithPrototype:resultUserInvite];
+}
+- (BUserInvite*) defaultInstance {
+  return [BUserInvite defaultInstance];
+}
+- (BUserInvite*) build {
+  [self checkInitialized];
+  return [self buildPartial];
+}
+- (BUserInvite*) buildPartial {
+  BUserInvite* returnMe = resultUserInvite;
+  self.resultUserInvite = nil;
+  return returnMe;
+}
+- (BUserInviteBuilder*) mergeFrom:(BUserInvite*) other {
+  if (other == [BUserInvite defaultInstance]) {
+    return self;
+  }
+  if (other.hasUserID) {
+    [self setUserID:other.userID];
+  }
+  if (other.hasFriendID) {
+    [self setFriendID:other.friendID];
+  }
+  if (other.hasMessage) {
+    [self setMessage:other.message];
+  }
+  if (other.hasContactInfo) {
+    [self mergeContactInfo:other.contactInfo];
+  }
+  if (other.profilesArray.count > 0) {
+    if (resultUserInvite.profilesArray == nil) {
+      resultUserInvite.profilesArray = [[NSMutableArray alloc] initWithArray:other.profilesArray];
+    } else {
+      [resultUserInvite.profilesArray addObjectsFromArray:other.profilesArray];
+    }
+  }
+  if (other.hasConfirmationCode) {
+    [self setConfirmationCode:other.confirmationCode];
+  }
+  [self mergeUnknownFields:other.unknownFields];
+  return self;
+}
+- (BUserInviteBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
+  return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
+}
+- (BUserInviteBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  PBUnknownFieldSetBuilder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
+  while (YES) {
+    SInt32 tag = [input readTag];
+    switch (tag) {
+      case 0:
+        [self setUnknownFields:[unknownFields build]];
+        return self;
+      default: {
+        if (![self parseUnknownField:input unknownFields:unknownFields extensionRegistry:extensionRegistry tag:tag]) {
+          [self setUnknownFields:[unknownFields build]];
+          return self;
+        }
+        break;
+      }
+      case 10: {
+        [self setUserID:[input readString]];
+        break;
+      }
+      case 18: {
+        [self setFriendID:[input readString]];
+        break;
+      }
+      case 26: {
+        [self setMessage:[input readString]];
+        break;
+      }
+      case 34: {
+        BContactInfoBuilder* subBuilder = [BContactInfo builder];
+        if (self.hasContactInfo) {
+          [subBuilder mergeFrom:self.contactInfo];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setContactInfo:[subBuilder buildPartial]];
+        break;
+      }
+      case 42: {
+        BUserProfileBuilder* subBuilder = [BUserProfile builder];
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self addProfiles:[subBuilder buildPartial]];
+        break;
+      }
+      case 50: {
+        [self setConfirmationCode:[input readString]];
+        break;
+      }
+    }
+  }
+}
+- (BOOL) hasUserID {
+  return resultUserInvite.hasUserID;
+}
+- (NSString*) userID {
+  return resultUserInvite.userID;
+}
+- (BUserInviteBuilder*) setUserID:(NSString*) value {
+  resultUserInvite.hasUserID = YES;
+  resultUserInvite.userID = value;
+  return self;
+}
+- (BUserInviteBuilder*) clearUserID {
+  resultUserInvite.hasUserID = NO;
+  resultUserInvite.userID = @"";
+  return self;
+}
+- (BOOL) hasFriendID {
+  return resultUserInvite.hasFriendID;
+}
+- (NSString*) friendID {
+  return resultUserInvite.friendID;
+}
+- (BUserInviteBuilder*) setFriendID:(NSString*) value {
+  resultUserInvite.hasFriendID = YES;
+  resultUserInvite.friendID = value;
+  return self;
+}
+- (BUserInviteBuilder*) clearFriendID {
+  resultUserInvite.hasFriendID = NO;
+  resultUserInvite.friendID = @"";
+  return self;
+}
+- (BOOL) hasMessage {
+  return resultUserInvite.hasMessage;
+}
+- (NSString*) message {
+  return resultUserInvite.message;
+}
+- (BUserInviteBuilder*) setMessage:(NSString*) value {
+  resultUserInvite.hasMessage = YES;
+  resultUserInvite.message = value;
+  return self;
+}
+- (BUserInviteBuilder*) clearMessage {
+  resultUserInvite.hasMessage = NO;
+  resultUserInvite.message = @"";
+  return self;
+}
+- (BOOL) hasContactInfo {
+  return resultUserInvite.hasContactInfo;
+}
+- (BContactInfo*) contactInfo {
+  return resultUserInvite.contactInfo;
+}
+- (BUserInviteBuilder*) setContactInfo:(BContactInfo*) value {
+  resultUserInvite.hasContactInfo = YES;
+  resultUserInvite.contactInfo = value;
+  return self;
+}
+- (BUserInviteBuilder*) setContactInfoBuilder:(BContactInfoBuilder*) builderForValue {
+  return [self setContactInfo:[builderForValue build]];
+}
+- (BUserInviteBuilder*) mergeContactInfo:(BContactInfo*) value {
+  if (resultUserInvite.hasContactInfo &&
+      resultUserInvite.contactInfo != [BContactInfo defaultInstance]) {
+    resultUserInvite.contactInfo =
+      [[[BContactInfo builderWithPrototype:resultUserInvite.contactInfo] mergeFrom:value] buildPartial];
+  } else {
+    resultUserInvite.contactInfo = value;
+  }
+  resultUserInvite.hasContactInfo = YES;
+  return self;
+}
+- (BUserInviteBuilder*) clearContactInfo {
+  resultUserInvite.hasContactInfo = NO;
+  resultUserInvite.contactInfo = [BContactInfo defaultInstance];
+  return self;
+}
+- (NSMutableArray *)profiles {
+  return resultUserInvite.profilesArray;
+}
+- (BUserProfile*)profilesAtIndex:(NSUInteger)index {
+  return [resultUserInvite profilesAtIndex:index];
+}
+- (BUserInviteBuilder *)addProfiles:(BUserProfile*)value {
+  if (resultUserInvite.profilesArray == nil) {
+    resultUserInvite.profilesArray = [[NSMutableArray alloc]init];
+  }
+  [resultUserInvite.profilesArray addObject:value];
+  return self;
+}
+- (BUserInviteBuilder *)setProfilesArray:(NSArray *)array {
+  resultUserInvite.profilesArray = [[NSMutableArray alloc]initWithArray:array];
+  return self;
+}
+- (BUserInviteBuilder *)clearProfiles {
+  resultUserInvite.profilesArray = nil;
+  return self;
+}
+- (BOOL) hasConfirmationCode {
+  return resultUserInvite.hasConfirmationCode;
+}
+- (NSString*) confirmationCode {
+  return resultUserInvite.confirmationCode;
+}
+- (BUserInviteBuilder*) setConfirmationCode:(NSString*) value {
+  resultUserInvite.hasConfirmationCode = YES;
+  resultUserInvite.confirmationCode = value;
+  return self;
+}
+- (BUserInviteBuilder*) clearConfirmationCode {
+  resultUserInvite.hasConfirmationCode = NO;
+  resultUserInvite.confirmationCode = @"";
   return self;
 }
 @end

@@ -6,7 +6,6 @@
 #import "Device.pb.h"
 #import "EntityTags.pb.h"
 #import "Feed.pb.h"
-#import "Friends.pb.h"
 #import "Payments.pb.h"
 #import "Search.pb.h"
 #import "UserEvents.pb.h"
@@ -14,10 +13,6 @@
 #import "UserProfiles.pb.h"
 // @@protoc_insertion_point(imports)
 
-@class BAcceptInviteRequest;
-@class BAcceptInviteRequestBuilder;
-@class BAcceptInviteResponse;
-@class BAcceptInviteResponseBuilder;
 @class BAppOptions;
 @class BAppOptionsBuilder;
 @class BAutocompleteRequest;
@@ -70,10 +65,6 @@
 @class BFeedPostUpdateResponseBuilder;
 @class BFetchConversations;
 @class BFetchConversationsBuilder;
-@class BFriend;
-@class BFriendBuilder;
-@class BFriendRequest;
-@class BFriendRequestBuilder;
 @class BFriendUpdate;
 @class BFriendUpdateBuilder;
 @class BGlobals;
@@ -122,6 +113,8 @@
 @class BUserEventBatchResponse;
 @class BUserEventBatchResponseBuilder;
 @class BUserEventBuilder;
+@class BUserInvite;
+@class BUserInviteBuilder;
 @class BUserMessage;
 @class BUserMessageBuilder;
 @class BUserMessageUpdate;
@@ -461,7 +454,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
   NSString* sessionToken;
   NSString* serverURL;
   BUserProfile* userProfile;
-  BAcceptInviteRequest* inviteRequest;
+  BUserInvite* inviteRequest;
   BAppOptions* appOptions;
   NSMutableArray * userMessagesArray;
 }
@@ -478,7 +471,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 @property (readonly, strong) NSArray * userMessages;
 @property (readonly, strong) BUserProfile* userProfile;
 - (BOOL) resetAllAppData;
-@property (readonly, strong) BAcceptInviteRequest* inviteRequest;
+@property (readonly, strong) BUserInvite* inviteRequest;
 @property (readonly, strong) BAppOptions* appOptions;
 - (BUserMessage*)userMessagesAtIndex:(NSUInteger)index;
 
@@ -551,10 +544,10 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BSessionResponseBuilder*) clearResetAllAppData;
 
 - (BOOL) hasInviteRequest;
-- (BAcceptInviteRequest*) inviteRequest;
-- (BSessionResponseBuilder*) setInviteRequest:(BAcceptInviteRequest*) value;
-- (BSessionResponseBuilder*) setInviteRequestBuilder:(BAcceptInviteRequestBuilder*) builderForValue;
-- (BSessionResponseBuilder*) mergeInviteRequest:(BAcceptInviteRequest*) value;
+- (BUserInvite*) inviteRequest;
+- (BSessionResponseBuilder*) setInviteRequest:(BUserInvite*) value;
+- (BSessionResponseBuilder*) setInviteRequestBuilder:(BUserInviteBuilder*) builderForValue;
+- (BSessionResponseBuilder*) mergeInviteRequest:(BUserInvite*) value;
 - (BSessionResponseBuilder*) clearInviteRequest;
 
 - (BOOL) hasAppOptions;
@@ -678,6 +671,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 #define RequestType_updateConversationStatus @"updateConversationStatus"
 #define RequestType_userCardInfo @"userCardInfo"
 #define RequestType_chargeRequest @"chargeRequest"
+#define RequestType_friendRequest @"friendRequest"
 @interface BRequestType : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
   BOOL hasSessionRequest_:1;
@@ -703,6 +697,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
   BOOL hasUpdateConversationStatus_:1;
   BOOL hasUserCardInfo_:1;
   BOOL hasChargeRequest_:1;
+  BOOL hasFriendRequest_:1;
   BSessionRequest* sessionRequest;
   BUserEventBatch* userEventBatch;
   BUserProfileUpdate* userProfileUpdate;
@@ -712,7 +707,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
   BUserMessageUpdate* messageFetchRequest;
   BDebugMessage* debugMessage;
   BImageUpload* imageUpload;
-  BAcceptInviteRequest* acceptInviteRequest;
+  BUserInvite* acceptInviteRequest;
   BFeedPostFetchRequest* feedPostFetchRequest;
   BFeedPostUpdateRequest* feedPostUpdateRequest;
   BAutocompleteRequest* autocompleteRequest;
@@ -726,6 +721,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
   BUpdateConversationStatus* updateConversationStatus;
   BUserCardInfo* userCardInfo;
   BCharge* chargeRequest;
+  BFriendUpdate* friendRequest;
 }
 - (BOOL) hasSessionRequest;
 - (BOOL) hasUserEventBatch;
@@ -750,6 +746,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BOOL) hasUpdateConversationStatus;
 - (BOOL) hasUserCardInfo;
 - (BOOL) hasChargeRequest;
+- (BOOL) hasFriendRequest;
 @property (readonly, strong) BSessionRequest* sessionRequest;
 @property (readonly, strong) BUserEventBatch* userEventBatch;
 @property (readonly, strong) BUserProfileUpdate* userProfileUpdate;
@@ -759,7 +756,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 @property (readonly, strong) BUserMessageUpdate* messageFetchRequest;
 @property (readonly, strong) BDebugMessage* debugMessage;
 @property (readonly, strong) BImageUpload* imageUpload;
-@property (readonly, strong) BAcceptInviteRequest* acceptInviteRequest;
+@property (readonly, strong) BUserInvite* acceptInviteRequest;
 @property (readonly, strong) BFeedPostFetchRequest* feedPostFetchRequest;
 @property (readonly, strong) BFeedPostUpdateRequest* feedPostUpdateRequest;
 @property (readonly, strong) BAutocompleteRequest* autocompleteRequest;
@@ -773,6 +770,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 @property (readonly, strong) BUpdateConversationStatus* updateConversationStatus;
 @property (readonly, strong) BUserCardInfo* userCardInfo;
 @property (readonly, strong) BCharge* chargeRequest;
+@property (readonly, strong) BFriendUpdate* friendRequest;
 
 + (instancetype) defaultInstance;
 - (instancetype) defaultInstance;
@@ -873,10 +871,10 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BRequestTypeBuilder*) clearImageUpload;
 
 - (BOOL) hasAcceptInviteRequest;
-- (BAcceptInviteRequest*) acceptInviteRequest;
-- (BRequestTypeBuilder*) setAcceptInviteRequest:(BAcceptInviteRequest*) value;
-- (BRequestTypeBuilder*) setAcceptInviteRequestBuilder:(BAcceptInviteRequestBuilder*) builderForValue;
-- (BRequestTypeBuilder*) mergeAcceptInviteRequest:(BAcceptInviteRequest*) value;
+- (BUserInvite*) acceptInviteRequest;
+- (BRequestTypeBuilder*) setAcceptInviteRequest:(BUserInvite*) value;
+- (BRequestTypeBuilder*) setAcceptInviteRequestBuilder:(BUserInviteBuilder*) builderForValue;
+- (BRequestTypeBuilder*) mergeAcceptInviteRequest:(BUserInvite*) value;
 - (BRequestTypeBuilder*) clearAcceptInviteRequest;
 
 - (BOOL) hasFeedPostFetchRequest;
@@ -969,6 +967,13 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BRequestTypeBuilder*) setChargeRequestBuilder:(BChargeBuilder*) builderForValue;
 - (BRequestTypeBuilder*) mergeChargeRequest:(BCharge*) value;
 - (BRequestTypeBuilder*) clearChargeRequest;
+
+- (BOOL) hasFriendRequest;
+- (BFriendUpdate*) friendRequest;
+- (BRequestTypeBuilder*) setFriendRequest:(BFriendUpdate*) value;
+- (BRequestTypeBuilder*) setFriendRequestBuilder:(BFriendUpdateBuilder*) builderForValue;
+- (BRequestTypeBuilder*) mergeFriendRequest:(BFriendUpdate*) value;
+- (BRequestTypeBuilder*) clearFriendRequest;
 @end
 
 #define ServerRequest_sessionToken @"sessionToken"
@@ -1050,6 +1055,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 #define ResponseType_fetchConversations @"fetchConversations"
 #define ResponseType_userCardInfo @"userCardInfo"
 #define ResponseType_chargeResponse @"chargeResponse"
+#define ResponseType_friendResponse @"friendResponse"
 @interface BResponseType : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
   BOOL hasSessionResponse_:1;
@@ -1069,6 +1075,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
   BOOL hasFetchConversations_:1;
   BOOL hasUserCardInfo_:1;
   BOOL hasChargeResponse_:1;
+  BOOL hasFriendResponse_:1;
   BSessionResponse* sessionResponse;
   BUserEventBatchResponse* userEventBatchResponse;
   BUserProfileUpdate* userProfileUpdate;
@@ -1077,7 +1084,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
   BUserMessageUpdate* userMessageUpdate;
   BDebugMessage* debugMessage;
   BImageUpload* imageUploadReply;
-  BAcceptInviteResponse* acceptInviteResponse;
+  BUserInvite* acceptInviteResponse;
   BFeedPostFetchResponse* feedPostFetchResponse;
   BFeedPostUpdateResponse* feedPostUpdateResponse;
   BAutocompleteResponse* autocompleteResponse;
@@ -1086,6 +1093,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
   BFetchConversations* fetchConversations;
   BUserCardInfo* userCardInfo;
   BCharge* chargeResponse;
+  BFriendUpdate* friendResponse;
 }
 - (BOOL) hasSessionResponse;
 - (BOOL) hasUserEventBatchResponse;
@@ -1104,6 +1112,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BOOL) hasFetchConversations;
 - (BOOL) hasUserCardInfo;
 - (BOOL) hasChargeResponse;
+- (BOOL) hasFriendResponse;
 @property (readonly, strong) BSessionResponse* sessionResponse;
 @property (readonly, strong) BUserEventBatchResponse* userEventBatchResponse;
 @property (readonly, strong) BUserProfileUpdate* userProfileUpdate;
@@ -1112,7 +1121,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 @property (readonly, strong) BUserMessageUpdate* userMessageUpdate;
 @property (readonly, strong) BDebugMessage* debugMessage;
 @property (readonly, strong) BImageUpload* imageUploadReply;
-@property (readonly, strong) BAcceptInviteResponse* acceptInviteResponse;
+@property (readonly, strong) BUserInvite* acceptInviteResponse;
 @property (readonly, strong) BFeedPostFetchResponse* feedPostFetchResponse;
 @property (readonly, strong) BFeedPostUpdateResponse* feedPostUpdateResponse;
 @property (readonly, strong) BAutocompleteResponse* autocompleteResponse;
@@ -1121,6 +1130,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 @property (readonly, strong) BFetchConversations* fetchConversations;
 @property (readonly, strong) BUserCardInfo* userCardInfo;
 @property (readonly, strong) BCharge* chargeResponse;
+@property (readonly, strong) BFriendUpdate* friendResponse;
 
 + (instancetype) defaultInstance;
 - (instancetype) defaultInstance;
@@ -1214,10 +1224,10 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BResponseTypeBuilder*) clearImageUploadReply;
 
 - (BOOL) hasAcceptInviteResponse;
-- (BAcceptInviteResponse*) acceptInviteResponse;
-- (BResponseTypeBuilder*) setAcceptInviteResponse:(BAcceptInviteResponse*) value;
-- (BResponseTypeBuilder*) setAcceptInviteResponseBuilder:(BAcceptInviteResponseBuilder*) builderForValue;
-- (BResponseTypeBuilder*) mergeAcceptInviteResponse:(BAcceptInviteResponse*) value;
+- (BUserInvite*) acceptInviteResponse;
+- (BResponseTypeBuilder*) setAcceptInviteResponse:(BUserInvite*) value;
+- (BResponseTypeBuilder*) setAcceptInviteResponseBuilder:(BUserInviteBuilder*) builderForValue;
+- (BResponseTypeBuilder*) mergeAcceptInviteResponse:(BUserInvite*) value;
 - (BResponseTypeBuilder*) clearAcceptInviteResponse;
 
 - (BOOL) hasFeedPostFetchResponse;
@@ -1275,6 +1285,13 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BResponseTypeBuilder*) setChargeResponseBuilder:(BChargeBuilder*) builderForValue;
 - (BResponseTypeBuilder*) mergeChargeResponse:(BCharge*) value;
 - (BResponseTypeBuilder*) clearChargeResponse;
+
+- (BOOL) hasFriendResponse;
+- (BFriendUpdate*) friendResponse;
+- (BResponseTypeBuilder*) setFriendResponse:(BFriendUpdate*) value;
+- (BResponseTypeBuilder*) setFriendResponseBuilder:(BFriendUpdateBuilder*) builderForValue;
+- (BResponseTypeBuilder*) mergeFriendResponse:(BFriendUpdate*) value;
+- (BResponseTypeBuilder*) clearFriendResponse;
 @end
 
 #define ServerResponse_responseCode @"responseCode"

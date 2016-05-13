@@ -8,6 +8,7 @@ package main
 
 import (
     "fmt"
+    "strings"
     "database/sql"
     "github.com/lib/pq"
     "github.com/golang/protobuf/proto"
@@ -253,6 +254,17 @@ func NameForUserID(userID string) (string, error) {
     return name.String, error
 }
 
+
+func PrettyNameForUserID(userID string) string {
+    name, _ := NameForUserID(userID)
+    name = strings.TrimSpace(name)
+    if len(name) == 0 {
+        name = "Someone"
+    }
+    return name
+}
+
+
 //----------------------------------------------------------------------------------------
 //                                                                        ProfileForUserID
 //----------------------------------------------------------------------------------------
@@ -339,7 +351,7 @@ func ProfileForUserID(session *Session, userID string) *BlitzMessage.UserProfile
     profile.IsExpert      = proto.Bool(isExpert.Bool)
     profile.StripeAccount = proto.String(stripeAccount.String)
 
-    //  Fix up th 'headline' employment --
+    //  Fix up the 'headline' employment --
 
     for index, emp := range profile.Employment {
         if emp.IsHeadlineItem != nil && *emp.IsHeadlineItem {
@@ -359,20 +371,21 @@ func QueryProfilesByEntity(session *Session, query *BlitzMessage.UserProfileQuer
         ) *BlitzMessage.ServerResponse {
     Log.LogFunctionName()
 
-    queryString := "select entityID from EntityTagTable where entityType = $1 "
+    queryString := "select distinct entityID from EntityTagTable where entityType = $1 "
     paramArray := make([]string, 0)
 
     if query.EntityID != nil && len(*query.EntityID) > 0 {
 
-        queryString = "select userID from EntityTagTable where entityType = $1 "
+        queryString = "select distinct userID from EntityTagTable where entityType = $1 "
         queryString += fmt.Sprintf(" and entityID = $%d ", len(paramArray) + 2)
         paramArray = append(paramArray, *query.EntityID)
 
     }
 
-    if query.EntityTag != nil && len(*query.EntityTag) > 0 {
-        queryString += fmt.Sprintf(" and entityTag = $%d ", len(paramArray) + 2)
-        paramArray = append(paramArray, *query.EntityTag)
+    if len(query.EntityTags) > 0 {
+        queryString += fmt.Sprintf(" and entityTag = any ($%d) ", len(paramArray) + 2)
+        nullstring := pgsql.NullStringFromStringArray(query.EntityTags)
+        paramArray = append(paramArray, nullstring.String)
     }
 
     if query.EntityUserID != nil && len(*query.EntityUserID) > 0 {
@@ -446,7 +459,7 @@ func QueryProfiles(session *Session, query *BlitzMessage.UserProfileQuery,
         ) *BlitzMessage.ServerResponse {
     Log.LogFunctionName()
 
-    if  query.EntityTag != nil ||
+    if  len(query.EntityTags) > 0 ||
         query.EntityUserID != nil ||
         query.EntityID != nil {
         return QueryProfilesByEntity(session, query)

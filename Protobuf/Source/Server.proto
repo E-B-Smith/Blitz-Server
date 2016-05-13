@@ -14,7 +14,6 @@ import "Types.proto";
 import "Device.proto";
 import "EntityTags.proto";
 import "Feed.proto";
-import "Friends.proto";
 import "Payments.proto";
 import "Search.proto";
 import "UserEvents.proto";
@@ -61,7 +60,7 @@ message SessionResponse {
   repeated UserMessage        userMessages    = 4;    //  New messages for the user.
   optional UserProfile        userProfile     = 5;    //  The updated profile for the user.
   optional bool               resetAllAppData = 6;    //  The client should clear all data.
-  optional AcceptInviteRequest inviteRequest  = 7;
+  optional UserInvite         inviteRequest   = 7;
   optional AppOptions         appOptions      = 8;
 }
 
@@ -95,7 +94,7 @@ message RequestType {
   optional UserMessageUpdate        messageFetchRequest = 7;
   optional DebugMessage             debugMessage        = 8;
   optional ImageUpload              imageUpload         = 9;
-  optional AcceptInviteRequest      acceptInviteRequest = 10;
+  optional UserInvite               acceptInviteRequest = 10;
   optional FeedPostFetchRequest     feedPostFetchRequest  = 11;
   optional FeedPostUpdateRequest    feedPostUpdateRequest = 12;
   optional AutocompleteRequest      autocompleteRequest = 13;
@@ -109,6 +108,7 @@ message RequestType {
   optional UpdateConversationStatus updateConversationStatus = 21;
   optional UserCardInfo             userCardInfo        = 22;
   optional Charge                   chargeRequest       = 23;
+  optional FriendUpdate             friendRequest       = 24;
 }
 
 
@@ -139,7 +139,7 @@ message ResponseType {
   optional UserMessageUpdate      userMessageUpdate       = 6;
   optional DebugMessage           debugMessage            = 7;
   optional ImageUpload            imageUploadReply        = 8;
-  optional AcceptInviteResponse   acceptInviteResponse    = 9;
+  optional UserInvite             acceptInviteResponse    = 9;
   optional FeedPostFetchResponse  feedPostFetchResponse   = 10;
   optional FeedPostUpdateResponse feedPostUpdateResponse  = 11;
   optional AutocompleteResponse   autocompleteResponse    = 12;
@@ -148,6 +148,7 @@ message ResponseType {
   optional FetchConversations     fetchConversations      = 15;
   optional UserCardInfo           userCardInfo            = 16;
   optional Charge                 chargeResponse          = 17;
+  optional FriendUpdate           friendResponse          = 18;
 }
 
 

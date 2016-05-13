@@ -253,7 +253,7 @@ func CompareTime(a, b time.Time) int {
 }
 
 
-func AcceptInviteRequest(session *Session, invite *BlitzMessage.AcceptInviteRequest,
+func AcceptInviteRequest(session *Session, invite *BlitzMessage.UserInvite,
         ) *BlitzMessage.ServerResponse {
     //
     //  AcceptInvite
@@ -315,24 +315,10 @@ func AcceptInviteRequest(session *Session, invite *BlitzMessage.AcceptInviteRequ
     var profiles []*BlitzMessage.UserProfile = make([]*BlitzMessage.UserProfile, 0, 10)
     profiles = append(profiles, currentProfile)
 
-/*
-    eDebug -- Fix up.
-
-    friends := FriendsForUserID(resultProfileID)
-    for _, friend := range friends {
-        profile := ProfileForUserID(*friend.FriendID)
-        if profile != nil {
-            profiles = append(profiles, profile)
-        }
-    }
-*/
-    var friends = []*BlitzMessage.Friend {}
-
-    inviteResponse := BlitzMessage.AcceptInviteResponse {
+    inviteResponse := BlitzMessage.UserInvite {
         UserID:     &resultProfileID,
         FriendID:   invite.FriendID,
         Message:    invite.Message,
-        Friends:    friends,
         Profiles:   profiles,
     }
 

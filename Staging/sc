@@ -60,7 +60,7 @@ function doserverstuff() {
         else
             echo "Killing $servername."
             (kill -TERM $pid || true)
-            sleep 1
+            sleep 2
         fi
     fi
 

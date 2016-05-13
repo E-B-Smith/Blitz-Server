@@ -24,6 +24,8 @@
 @class BEntityTagBuilder;
 @class BEntityTagList;
 @class BEntityTagListBuilder;
+@class BFriendUpdate;
+@class BFriendUpdateBuilder;
 @class BGlobals;
 @class BGlobalsBuilder;
 @class BImageData;
@@ -44,6 +46,8 @@
 @class BTimespanBuilder;
 @class BTimestamp;
 @class BTimestampBuilder;
+@class BUserInvite;
+@class BUserInviteBuilder;
 @class BUserProfile;
 @class BUserProfileBuilder;
 @class BUserProfileQuery;
@@ -143,6 +147,18 @@ typedef NS_ENUM(SInt32, BImageContent) {
 
 BOOL BImageContentIsValidValue(BImageContent value);
 NSString *NSStringFromBImageContent(BImageContent value);
+
+typedef NS_ENUM(SInt32, BFriendStatus) {
+  BFriendStatusFSUnknown = 0,
+  BFriendStatusFSDidAsk = 1,
+  BFriendStatusFSIgnored = 2,
+  BFriendStatusFSAccepted = 3,
+  BFriendStatusFSWasAsked = 4,
+  BFriendStatusFSFriends = 5,
+};
+
+BOOL BFriendStatusIsValidValue(BFriendStatus value);
+NSString *NSStringFromBFriendStatus(BFriendStatus value);
 
 
 @interface BUserProfilesRoot : NSObject {
@@ -1181,31 +1197,35 @@ NSString *NSStringFromBImageContent(BImageContent value);
 
 #define UserProfileQuery_userIDs @"userIDs"
 #define UserProfileQuery_fetchDemoProfiles @"fetchDemoProfiles"
-#define UserProfileQuery_entityTag @"entityTag"
+#define UserProfileQuery_entityTag_deprecated @"entityTagDeprecated"
 #define UserProfileQuery_entityUserID @"entityUserID"
 #define UserProfileQuery_entityID @"entityID"
+#define UserProfileQuery_entityTags @"entityTags"
 @interface BUserProfileQuery : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
   BOOL hasFetchDemoProfiles_:1;
-  BOOL hasEntityTag_:1;
+  BOOL hasEntityTagDeprecated_:1;
   BOOL hasEntityUserID_:1;
   BOOL hasEntityID_:1;
   BOOL fetchDemoProfiles_:1;
-  NSString* entityTag;
+  NSString* entityTagDeprecated;
   NSString* entityUserID;
   NSString* entityID;
   NSMutableArray * userIDsArray;
+  NSMutableArray * entityTagsArray;
 }
 - (BOOL) hasFetchDemoProfiles;
-- (BOOL) hasEntityTag;
+- (BOOL) hasEntityTagDeprecated;
 - (BOOL) hasEntityUserID;
 - (BOOL) hasEntityID;
 @property (readonly, strong) NSArray * userIDs;
 - (BOOL) fetchDemoProfiles;
-@property (readonly, strong) NSString* entityTag;
+@property (readonly, strong) NSString* entityTagDeprecated;
 @property (readonly, strong) NSString* entityUserID;
 @property (readonly, strong) NSString* entityID;
+@property (readonly, strong) NSArray * entityTags;
 - (NSString*)userIDsAtIndex:(NSUInteger)index;
+- (NSString*)entityTagsAtIndex:(NSUInteger)index;
 
 + (instancetype) defaultInstance;
 - (instancetype) defaultInstance;
@@ -1253,10 +1273,10 @@ NSString *NSStringFromBImageContent(BImageContent value);
 - (BUserProfileQueryBuilder*) setFetchDemoProfiles:(BOOL) value;
 - (BUserProfileQueryBuilder*) clearFetchDemoProfiles;
 
-- (BOOL) hasEntityTag;
-- (NSString*) entityTag;
-- (BUserProfileQueryBuilder*) setEntityTag:(NSString*) value;
-- (BUserProfileQueryBuilder*) clearEntityTag;
+- (BOOL) hasEntityTagDeprecated;
+- (NSString*) entityTagDeprecated;
+- (BUserProfileQueryBuilder*) setEntityTagDeprecated:(NSString*) value;
+- (BUserProfileQueryBuilder*) clearEntityTagDeprecated;
 
 - (BOOL) hasEntityUserID;
 - (NSString*) entityUserID;
@@ -1267,6 +1287,12 @@ NSString *NSStringFromBImageContent(BImageContent value);
 - (NSString*) entityID;
 - (BUserProfileQueryBuilder*) setEntityID:(NSString*) value;
 - (BUserProfileQueryBuilder*) clearEntityID;
+
+- (NSMutableArray *)entityTags;
+- (NSString*)entityTagsAtIndex:(NSUInteger)index;
+- (BUserProfileQueryBuilder *)addEntityTags:(NSString*)value;
+- (BUserProfileQueryBuilder *)setEntityTagsArray:(NSArray *)array;
+- (BUserProfileQueryBuilder *)clearEntityTags;
 @end
 
 #define ConfirmationRequest_contactInfo @"contactInfo"
@@ -1401,6 +1427,178 @@ NSString *NSStringFromBImageContent(BImageContent value);
 - (BProfilesFromContactInfoBuilder *)addProfiles:(BUserProfile*)value;
 - (BProfilesFromContactInfoBuilder *)setProfilesArray:(NSArray *)array;
 - (BProfilesFromContactInfoBuilder *)clearProfiles;
+@end
+
+#define FriendUpdate_friendStatus @"friendStatus"
+#define FriendUpdate_friendID @"friendID"
+#define FriendUpdate_profiles @"profiles"
+@interface BFriendUpdate : PBGeneratedMessage<GeneratedMessageProtocol> {
+@private
+  BOOL hasFriendID_:1;
+  BOOL hasFriendStatus_:1;
+  NSString* friendID;
+  BFriendStatus friendStatus;
+  NSMutableArray * profilesArray;
+}
+- (BOOL) hasFriendStatus;
+- (BOOL) hasFriendID;
+@property (readonly) BFriendStatus friendStatus;
+@property (readonly, strong) NSString* friendID;
+@property (readonly, strong) NSArray * profiles;
+- (BUserProfile*)profilesAtIndex:(NSUInteger)index;
+
++ (instancetype) defaultInstance;
+- (instancetype) defaultInstance;
+
+- (BOOL) isInitialized;
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
+- (BFriendUpdateBuilder*) builder;
++ (BFriendUpdateBuilder*) builder;
++ (BFriendUpdateBuilder*) builderWithPrototype:(BFriendUpdate*) prototype;
+- (BFriendUpdateBuilder*) toBuilder;
+
++ (BFriendUpdate*) parseFromData:(NSData*) data;
++ (BFriendUpdate*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (BFriendUpdate*) parseFromInputStream:(NSInputStream*) input;
++ (BFriendUpdate*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (BFriendUpdate*) parseFromCodedInputStream:(PBCodedInputStream*) input;
++ (BFriendUpdate*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+@end
+
+@interface BFriendUpdateBuilder : PBGeneratedMessageBuilder {
+@private
+  BFriendUpdate* resultFriendUpdate;
+}
+
+- (BFriendUpdate*) defaultInstance;
+
+- (BFriendUpdateBuilder*) clear;
+- (BFriendUpdateBuilder*) clone;
+
+- (BFriendUpdate*) build;
+- (BFriendUpdate*) buildPartial;
+
+- (BFriendUpdateBuilder*) mergeFrom:(BFriendUpdate*) other;
+- (BFriendUpdateBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
+- (BFriendUpdateBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+
+- (BOOL) hasFriendStatus;
+- (BFriendStatus) friendStatus;
+- (BFriendUpdateBuilder*) setFriendStatus:(BFriendStatus) value;
+- (BFriendUpdateBuilder*) clearFriendStatus;
+
+- (BOOL) hasFriendID;
+- (NSString*) friendID;
+- (BFriendUpdateBuilder*) setFriendID:(NSString*) value;
+- (BFriendUpdateBuilder*) clearFriendID;
+
+- (NSMutableArray *)profiles;
+- (BUserProfile*)profilesAtIndex:(NSUInteger)index;
+- (BFriendUpdateBuilder *)addProfiles:(BUserProfile*)value;
+- (BFriendUpdateBuilder *)setProfilesArray:(NSArray *)array;
+- (BFriendUpdateBuilder *)clearProfiles;
+@end
+
+#define UserInvite_userID @"userID"
+#define UserInvite_friendID @"friendID"
+#define UserInvite_message @"message"
+#define UserInvite_contactInfo @"contactInfo"
+#define UserInvite_profiles @"profiles"
+#define UserInvite_confirmationCode @"confirmationCode"
+@interface BUserInvite : PBGeneratedMessage<GeneratedMessageProtocol> {
+@private
+  BOOL hasUserID_:1;
+  BOOL hasFriendID_:1;
+  BOOL hasMessage_:1;
+  BOOL hasConfirmationCode_:1;
+  BOOL hasContactInfo_:1;
+  NSString* userID;
+  NSString* friendID;
+  NSString* message;
+  NSString* confirmationCode;
+  BContactInfo* contactInfo;
+  NSMutableArray * profilesArray;
+}
+- (BOOL) hasUserID;
+- (BOOL) hasFriendID;
+- (BOOL) hasMessage;
+- (BOOL) hasContactInfo;
+- (BOOL) hasConfirmationCode;
+@property (readonly, strong) NSString* userID;
+@property (readonly, strong) NSString* friendID;
+@property (readonly, strong) NSString* message;
+@property (readonly, strong) BContactInfo* contactInfo;
+@property (readonly, strong) NSArray * profiles;
+@property (readonly, strong) NSString* confirmationCode;
+- (BUserProfile*)profilesAtIndex:(NSUInteger)index;
+
++ (instancetype) defaultInstance;
+- (instancetype) defaultInstance;
+
+- (BOOL) isInitialized;
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
+- (BUserInviteBuilder*) builder;
++ (BUserInviteBuilder*) builder;
++ (BUserInviteBuilder*) builderWithPrototype:(BUserInvite*) prototype;
+- (BUserInviteBuilder*) toBuilder;
+
++ (BUserInvite*) parseFromData:(NSData*) data;
++ (BUserInvite*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (BUserInvite*) parseFromInputStream:(NSInputStream*) input;
++ (BUserInvite*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (BUserInvite*) parseFromCodedInputStream:(PBCodedInputStream*) input;
++ (BUserInvite*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+@end
+
+@interface BUserInviteBuilder : PBGeneratedMessageBuilder {
+@private
+  BUserInvite* resultUserInvite;
+}
+
+- (BUserInvite*) defaultInstance;
+
+- (BUserInviteBuilder*) clear;
+- (BUserInviteBuilder*) clone;
+
+- (BUserInvite*) build;
+- (BUserInvite*) buildPartial;
+
+- (BUserInviteBuilder*) mergeFrom:(BUserInvite*) other;
+- (BUserInviteBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
+- (BUserInviteBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+
+- (BOOL) hasUserID;
+- (NSString*) userID;
+- (BUserInviteBuilder*) setUserID:(NSString*) value;
+- (BUserInviteBuilder*) clearUserID;
+
+- (BOOL) hasFriendID;
+- (NSString*) friendID;
+- (BUserInviteBuilder*) setFriendID:(NSString*) value;
+- (BUserInviteBuilder*) clearFriendID;
+
+- (BOOL) hasMessage;
+- (NSString*) message;
+- (BUserInviteBuilder*) setMessage:(NSString*) value;
+- (BUserInviteBuilder*) clearMessage;
+
+- (BOOL) hasContactInfo;
+- (BContactInfo*) contactInfo;
+- (BUserInviteBuilder*) setContactInfo:(BContactInfo*) value;
+- (BUserInviteBuilder*) setContactInfoBuilder:(BContactInfoBuilder*) builderForValue;
+- (BUserInviteBuilder*) mergeContactInfo:(BContactInfo*) value;
+- (BUserInviteBuilder*) clearContactInfo;
+
+- (NSMutableArray *)profiles;
+- (BUserProfile*)profilesAtIndex:(NSUInteger)index;
+- (BUserInviteBuilder *)addProfiles:(BUserProfile*)value;
+- (BUserInviteBuilder *)setProfilesArray:(NSArray *)array;
+- (BUserInviteBuilder *)clearProfiles;
+
+- (BOOL) hasConfirmationCode;
+- (NSString*) confirmationCode;
+- (BUserInviteBuilder*) setConfirmationCode:(NSString*) value;
+- (BUserInviteBuilder*) clearConfirmationCode;
 @end
 
 

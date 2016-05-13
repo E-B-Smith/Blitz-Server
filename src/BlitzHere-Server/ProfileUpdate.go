@@ -253,7 +253,6 @@ func UpdateProfiles(session *Session, profiles *BlitzMessage.UserProfileUpdate,
 }
 
 
-
 //----------------------------------------------------------------------------------------
 //
 //                                                             MergeProfileIDIntoProfileID

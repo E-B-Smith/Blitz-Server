@@ -174,9 +174,10 @@ message UserProfileQuery {
   optional bool   fetchDemoProfiles = 2;
 
   //  Fetch by tag:
-  optional string entityTag         = 3;
+  optional string entityTag_deprecated = 3;
   optional string entityUserID      = 4;
   optional string entityID          = 5;
+  repeated string entityTags        = 6;
 }
 
 
@@ -190,6 +191,34 @@ message ConfirmationRequest {
 
 message ProfilesFromContactInfo {
   repeated UserProfile profiles = 1;
+}
+
+
+enum FriendStatus {
+  FSUnknown   = 0;
+  FSDidAsk    = 1;
+  FSIgnored   = 2;
+  FSAccepted  = 3;
+
+  FSWasAsked  = 4;
+  FSFriends   = 5;
+}
+
+
+message FriendUpdate {
+  optional FriendStatus friendStatus = 1;
+  optional string       friendID     = 2;
+  repeated UserProfile  profiles     = 3;
+}
+
+
+message UserInvite {
+  optional string       userID      = 1;
+  optional string       friendID    = 2;
+  optional string       message     = 3;
+  optional ContactInfo  contactInfo = 4;
+  repeated UserProfile  profiles    = 5;
+  optional string       confirmationCode = 6;
 }
 
 

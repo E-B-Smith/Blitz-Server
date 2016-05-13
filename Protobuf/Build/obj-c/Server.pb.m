@@ -18,7 +18,6 @@ static PBExtensionRegistry* extensionRegistry = nil;
     [BDeviceRoot registerAllExtensions:registry];
     [BEntityTagsRoot registerAllExtensions:registry];
     [BFeedRoot registerAllExtensions:registry];
-    [BFriendsRoot registerAllExtensions:registry];
     [BPaymentsRoot registerAllExtensions:registry];
     [BSearchRoot registerAllExtensions:registry];
     [BUserEventsRoot registerAllExtensions:registry];
@@ -1140,7 +1139,7 @@ static BAppOptions* defaultBAppOptionsInstance = nil;
 @property (strong) NSMutableArray * userMessagesArray;
 @property (strong) BUserProfile* userProfile;
 @property BOOL resetAllAppData;
-@property (strong) BAcceptInviteRequest* inviteRequest;
+@property (strong) BUserInvite* inviteRequest;
 @property (strong) BAppOptions* appOptions;
 @end
 
@@ -1209,7 +1208,7 @@ static BAppOptions* defaultBAppOptionsInstance = nil;
     self.serverURL = @"";
     self.userProfile = [BUserProfile defaultInstance];
     self.resetAllAppData = NO;
-    self.inviteRequest = [BAcceptInviteRequest defaultInstance];
+    self.inviteRequest = [BUserInvite defaultInstance];
     self.appOptions = [BAppOptions defaultInstance];
   }
   return self;
@@ -1595,7 +1594,7 @@ static BSessionResponse* defaultBSessionResponseInstance = nil;
         break;
       }
       case 58: {
-        BAcceptInviteRequestBuilder* subBuilder = [BAcceptInviteRequest builder];
+        BUserInviteBuilder* subBuilder = [BUserInvite builder];
         if (self.hasInviteRequest) {
           [subBuilder mergeFrom:self.inviteRequest];
         }
@@ -1733,22 +1732,22 @@ static BSessionResponse* defaultBSessionResponseInstance = nil;
 - (BOOL) hasInviteRequest {
   return resultSessionResponse.hasInviteRequest;
 }
-- (BAcceptInviteRequest*) inviteRequest {
+- (BUserInvite*) inviteRequest {
   return resultSessionResponse.inviteRequest;
 }
-- (BSessionResponseBuilder*) setInviteRequest:(BAcceptInviteRequest*) value {
+- (BSessionResponseBuilder*) setInviteRequest:(BUserInvite*) value {
   resultSessionResponse.hasInviteRequest = YES;
   resultSessionResponse.inviteRequest = value;
   return self;
 }
-- (BSessionResponseBuilder*) setInviteRequestBuilder:(BAcceptInviteRequestBuilder*) builderForValue {
+- (BSessionResponseBuilder*) setInviteRequestBuilder:(BUserInviteBuilder*) builderForValue {
   return [self setInviteRequest:[builderForValue build]];
 }
-- (BSessionResponseBuilder*) mergeInviteRequest:(BAcceptInviteRequest*) value {
+- (BSessionResponseBuilder*) mergeInviteRequest:(BUserInvite*) value {
   if (resultSessionResponse.hasInviteRequest &&
-      resultSessionResponse.inviteRequest != [BAcceptInviteRequest defaultInstance]) {
+      resultSessionResponse.inviteRequest != [BUserInvite defaultInstance]) {
     resultSessionResponse.inviteRequest =
-      [[[BAcceptInviteRequest builderWithPrototype:resultSessionResponse.inviteRequest] mergeFrom:value] buildPartial];
+      [[[BUserInvite builderWithPrototype:resultSessionResponse.inviteRequest] mergeFrom:value] buildPartial];
   } else {
     resultSessionResponse.inviteRequest = value;
   }
@@ -1757,7 +1756,7 @@ static BSessionResponse* defaultBSessionResponseInstance = nil;
 }
 - (BSessionResponseBuilder*) clearInviteRequest {
   resultSessionResponse.hasInviteRequest = NO;
-  resultSessionResponse.inviteRequest = [BAcceptInviteRequest defaultInstance];
+  resultSessionResponse.inviteRequest = [BUserInvite defaultInstance];
   return self;
 }
 - (BOOL) hasAppOptions {
@@ -2165,7 +2164,7 @@ static BPushDisconnect* defaultBPushDisconnectInstance = nil;
 @property (strong) BUserMessageUpdate* messageFetchRequest;
 @property (strong) BDebugMessage* debugMessage;
 @property (strong) BImageUpload* imageUpload;
-@property (strong) BAcceptInviteRequest* acceptInviteRequest;
+@property (strong) BUserInvite* acceptInviteRequest;
 @property (strong) BFeedPostFetchRequest* feedPostFetchRequest;
 @property (strong) BFeedPostUpdateRequest* feedPostUpdateRequest;
 @property (strong) BAutocompleteRequest* autocompleteRequest;
@@ -2179,6 +2178,7 @@ static BPushDisconnect* defaultBPushDisconnectInstance = nil;
 @property (strong) BUpdateConversationStatus* updateConversationStatus;
 @property (strong) BUserCardInfo* userCardInfo;
 @property (strong) BCharge* chargeRequest;
+@property (strong) BFriendUpdate* friendRequest;
 @end
 
 @implementation BRequestType
@@ -2344,6 +2344,13 @@ static BPushDisconnect* defaultBPushDisconnectInstance = nil;
   hasChargeRequest_ = !!_value_;
 }
 @synthesize chargeRequest;
+- (BOOL) hasFriendRequest {
+  return !!hasFriendRequest_;
+}
+- (void) setHasFriendRequest:(BOOL) _value_ {
+  hasFriendRequest_ = !!_value_;
+}
+@synthesize friendRequest;
 - (instancetype) init {
   if ((self = [super init])) {
     self.sessionRequest = [BSessionRequest defaultInstance];
@@ -2355,7 +2362,7 @@ static BPushDisconnect* defaultBPushDisconnectInstance = nil;
     self.messageFetchRequest = [BUserMessageUpdate defaultInstance];
     self.debugMessage = [BDebugMessage defaultInstance];
     self.imageUpload = [BImageUpload defaultInstance];
-    self.acceptInviteRequest = [BAcceptInviteRequest defaultInstance];
+    self.acceptInviteRequest = [BUserInvite defaultInstance];
     self.feedPostFetchRequest = [BFeedPostFetchRequest defaultInstance];
     self.feedPostUpdateRequest = [BFeedPostUpdateRequest defaultInstance];
     self.autocompleteRequest = [BAutocompleteRequest defaultInstance];
@@ -2369,6 +2376,7 @@ static BPushDisconnect* defaultBPushDisconnectInstance = nil;
     self.updateConversationStatus = [BUpdateConversationStatus defaultInstance];
     self.userCardInfo = [BUserCardInfo defaultInstance];
     self.chargeRequest = [BCharge defaultInstance];
+    self.friendRequest = [BFriendUpdate defaultInstance];
   }
   return self;
 }
@@ -2450,6 +2458,11 @@ static BRequestType* defaultBRequestTypeInstance = nil;
       return NO;
     }
   }
+  if (self.hasFriendRequest) {
+    if (!self.friendRequest.isInitialized) {
+      return NO;
+    }
+  }
   return YES;
 }
 - (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
@@ -2521,6 +2534,9 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   }
   if (self.hasChargeRequest) {
     [output writeMessage:23 value:self.chargeRequest];
+  }
+  if (self.hasFriendRequest) {
+    [output writeMessage:24 value:self.friendRequest];
   }
   [self.unknownFields writeToCodedOutputStream:output];
 }
@@ -2599,6 +2615,9 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   }
   if (self.hasChargeRequest) {
     size_ += computeMessageSize(23, self.chargeRequest);
+  }
+  if (self.hasFriendRequest) {
+    size_ += computeMessageSize(24, self.friendRequest);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -2773,6 +2792,12 @@ static BRequestType* defaultBRequestTypeInstance = nil;
                          withIndent:[NSString stringWithFormat:@"%@  ", indent]];
     [output appendFormat:@"%@}\n", indent];
   }
+  if (self.hasFriendRequest) {
+    [output appendFormat:@"%@%@ {\n", indent, @"friendRequest"];
+    [self.friendRequest writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (void) storeInDictionary:(NSMutableDictionary *)dictionary {
@@ -2891,6 +2916,11 @@ static BRequestType* defaultBRequestTypeInstance = nil;
    [self.chargeRequest storeInDictionary:messageDictionary];
    [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"chargeRequest"];
   }
+  if (self.hasFriendRequest) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.friendRequest storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"friendRequest"];
+  }
   [self.unknownFields storeInDictionary:dictionary];
 }
 - (BOOL) isEqual:(id)other {
@@ -2948,6 +2978,8 @@ static BRequestType* defaultBRequestTypeInstance = nil;
       (!self.hasUserCardInfo || [self.userCardInfo isEqual:otherMessage.userCardInfo]) &&
       self.hasChargeRequest == otherMessage.hasChargeRequest &&
       (!self.hasChargeRequest || [self.chargeRequest isEqual:otherMessage.chargeRequest]) &&
+      self.hasFriendRequest == otherMessage.hasFriendRequest &&
+      (!self.hasFriendRequest || [self.friendRequest isEqual:otherMessage.friendRequest]) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
@@ -3020,6 +3052,9 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   }
   if (self.hasChargeRequest) {
     hashCode = hashCode * 31 + [self.chargeRequest hash];
+  }
+  if (self.hasFriendRequest) {
+    hashCode = hashCode * 31 + [self.friendRequest hash];
   }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
@@ -3133,6 +3168,9 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   if (other.hasChargeRequest) {
     [self mergeChargeRequest:other.chargeRequest];
   }
+  if (other.hasFriendRequest) {
+    [self mergeFriendRequest:other.friendRequest];
+  }
   [self mergeUnknownFields:other.unknownFields];
   return self;
 }
@@ -3236,7 +3274,7 @@ static BRequestType* defaultBRequestTypeInstance = nil;
         break;
       }
       case 82: {
-        BAcceptInviteRequestBuilder* subBuilder = [BAcceptInviteRequest builder];
+        BUserInviteBuilder* subBuilder = [BUserInvite builder];
         if (self.hasAcceptInviteRequest) {
           [subBuilder mergeFrom:self.acceptInviteRequest];
         }
@@ -3359,6 +3397,15 @@ static BRequestType* defaultBRequestTypeInstance = nil;
         }
         [input readMessage:subBuilder extensionRegistry:extensionRegistry];
         [self setChargeRequest:[subBuilder buildPartial]];
+        break;
+      }
+      case 194: {
+        BFriendUpdateBuilder* subBuilder = [BFriendUpdate builder];
+        if (self.hasFriendRequest) {
+          [subBuilder mergeFrom:self.friendRequest];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setFriendRequest:[subBuilder buildPartial]];
         break;
       }
     }
@@ -3637,22 +3684,22 @@ static BRequestType* defaultBRequestTypeInstance = nil;
 - (BOOL) hasAcceptInviteRequest {
   return resultRequestType.hasAcceptInviteRequest;
 }
-- (BAcceptInviteRequest*) acceptInviteRequest {
+- (BUserInvite*) acceptInviteRequest {
   return resultRequestType.acceptInviteRequest;
 }
-- (BRequestTypeBuilder*) setAcceptInviteRequest:(BAcceptInviteRequest*) value {
+- (BRequestTypeBuilder*) setAcceptInviteRequest:(BUserInvite*) value {
   resultRequestType.hasAcceptInviteRequest = YES;
   resultRequestType.acceptInviteRequest = value;
   return self;
 }
-- (BRequestTypeBuilder*) setAcceptInviteRequestBuilder:(BAcceptInviteRequestBuilder*) builderForValue {
+- (BRequestTypeBuilder*) setAcceptInviteRequestBuilder:(BUserInviteBuilder*) builderForValue {
   return [self setAcceptInviteRequest:[builderForValue build]];
 }
-- (BRequestTypeBuilder*) mergeAcceptInviteRequest:(BAcceptInviteRequest*) value {
+- (BRequestTypeBuilder*) mergeAcceptInviteRequest:(BUserInvite*) value {
   if (resultRequestType.hasAcceptInviteRequest &&
-      resultRequestType.acceptInviteRequest != [BAcceptInviteRequest defaultInstance]) {
+      resultRequestType.acceptInviteRequest != [BUserInvite defaultInstance]) {
     resultRequestType.acceptInviteRequest =
-      [[[BAcceptInviteRequest builderWithPrototype:resultRequestType.acceptInviteRequest] mergeFrom:value] buildPartial];
+      [[[BUserInvite builderWithPrototype:resultRequestType.acceptInviteRequest] mergeFrom:value] buildPartial];
   } else {
     resultRequestType.acceptInviteRequest = value;
   }
@@ -3661,7 +3708,7 @@ static BRequestType* defaultBRequestTypeInstance = nil;
 }
 - (BRequestTypeBuilder*) clearAcceptInviteRequest {
   resultRequestType.hasAcceptInviteRequest = NO;
-  resultRequestType.acceptInviteRequest = [BAcceptInviteRequest defaultInstance];
+  resultRequestType.acceptInviteRequest = [BUserInvite defaultInstance];
   return self;
 }
 - (BOOL) hasFeedPostFetchRequest {
@@ -4054,6 +4101,36 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   resultRequestType.chargeRequest = [BCharge defaultInstance];
   return self;
 }
+- (BOOL) hasFriendRequest {
+  return resultRequestType.hasFriendRequest;
+}
+- (BFriendUpdate*) friendRequest {
+  return resultRequestType.friendRequest;
+}
+- (BRequestTypeBuilder*) setFriendRequest:(BFriendUpdate*) value {
+  resultRequestType.hasFriendRequest = YES;
+  resultRequestType.friendRequest = value;
+  return self;
+}
+- (BRequestTypeBuilder*) setFriendRequestBuilder:(BFriendUpdateBuilder*) builderForValue {
+  return [self setFriendRequest:[builderForValue build]];
+}
+- (BRequestTypeBuilder*) mergeFriendRequest:(BFriendUpdate*) value {
+  if (resultRequestType.hasFriendRequest &&
+      resultRequestType.friendRequest != [BFriendUpdate defaultInstance]) {
+    resultRequestType.friendRequest =
+      [[[BFriendUpdate builderWithPrototype:resultRequestType.friendRequest] mergeFrom:value] buildPartial];
+  } else {
+    resultRequestType.friendRequest = value;
+  }
+  resultRequestType.hasFriendRequest = YES;
+  return self;
+}
+- (BRequestTypeBuilder*) clearFriendRequest {
+  resultRequestType.hasFriendRequest = NO;
+  resultRequestType.friendRequest = [BFriendUpdate defaultInstance];
+  return self;
+}
 @end
 
 @interface BServerRequest ()
@@ -4349,7 +4426,7 @@ static BServerRequest* defaultBServerRequestInstance = nil;
 @property (strong) BUserMessageUpdate* userMessageUpdate;
 @property (strong) BDebugMessage* debugMessage;
 @property (strong) BImageUpload* imageUploadReply;
-@property (strong) BAcceptInviteResponse* acceptInviteResponse;
+@property (strong) BUserInvite* acceptInviteResponse;
 @property (strong) BFeedPostFetchResponse* feedPostFetchResponse;
 @property (strong) BFeedPostUpdateResponse* feedPostUpdateResponse;
 @property (strong) BAutocompleteResponse* autocompleteResponse;
@@ -4358,6 +4435,7 @@ static BServerRequest* defaultBServerRequestInstance = nil;
 @property (strong) BFetchConversations* fetchConversations;
 @property (strong) BUserCardInfo* userCardInfo;
 @property (strong) BCharge* chargeResponse;
+@property (strong) BFriendUpdate* friendResponse;
 @end
 
 @implementation BResponseType
@@ -4481,6 +4559,13 @@ static BServerRequest* defaultBServerRequestInstance = nil;
   hasChargeResponse_ = !!_value_;
 }
 @synthesize chargeResponse;
+- (BOOL) hasFriendResponse {
+  return !!hasFriendResponse_;
+}
+- (void) setHasFriendResponse:(BOOL) _value_ {
+  hasFriendResponse_ = !!_value_;
+}
+@synthesize friendResponse;
 - (instancetype) init {
   if ((self = [super init])) {
     self.sessionResponse = [BSessionResponse defaultInstance];
@@ -4491,7 +4576,7 @@ static BServerRequest* defaultBServerRequestInstance = nil;
     self.userMessageUpdate = [BUserMessageUpdate defaultInstance];
     self.debugMessage = [BDebugMessage defaultInstance];
     self.imageUploadReply = [BImageUpload defaultInstance];
-    self.acceptInviteResponse = [BAcceptInviteResponse defaultInstance];
+    self.acceptInviteResponse = [BUserInvite defaultInstance];
     self.feedPostFetchResponse = [BFeedPostFetchResponse defaultInstance];
     self.feedPostUpdateResponse = [BFeedPostUpdateResponse defaultInstance];
     self.autocompleteResponse = [BAutocompleteResponse defaultInstance];
@@ -4500,6 +4585,7 @@ static BServerRequest* defaultBServerRequestInstance = nil;
     self.fetchConversations = [BFetchConversations defaultInstance];
     self.userCardInfo = [BUserCardInfo defaultInstance];
     self.chargeResponse = [BCharge defaultInstance];
+    self.friendResponse = [BFriendUpdate defaultInstance];
   }
   return self;
 }
@@ -4581,6 +4667,11 @@ static BResponseType* defaultBResponseTypeInstance = nil;
       return NO;
     }
   }
+  if (self.hasFriendResponse) {
+    if (!self.friendResponse.isInitialized) {
+      return NO;
+    }
+  }
   return YES;
 }
 - (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
@@ -4634,6 +4725,9 @@ static BResponseType* defaultBResponseTypeInstance = nil;
   }
   if (self.hasChargeResponse) {
     [output writeMessage:17 value:self.chargeResponse];
+  }
+  if (self.hasFriendResponse) {
+    [output writeMessage:18 value:self.friendResponse];
   }
   [self.unknownFields writeToCodedOutputStream:output];
 }
@@ -4694,6 +4788,9 @@ static BResponseType* defaultBResponseTypeInstance = nil;
   }
   if (self.hasChargeResponse) {
     size_ += computeMessageSize(17, self.chargeResponse);
+  }
+  if (self.hasFriendResponse) {
+    size_ += computeMessageSize(18, self.friendResponse);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -4832,6 +4929,12 @@ static BResponseType* defaultBResponseTypeInstance = nil;
                          withIndent:[NSString stringWithFormat:@"%@  ", indent]];
     [output appendFormat:@"%@}\n", indent];
   }
+  if (self.hasFriendResponse) {
+    [output appendFormat:@"%@%@ {\n", indent, @"friendResponse"];
+    [self.friendResponse writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (void) storeInDictionary:(NSMutableDictionary *)dictionary {
@@ -4920,6 +5023,11 @@ static BResponseType* defaultBResponseTypeInstance = nil;
    [self.chargeResponse storeInDictionary:messageDictionary];
    [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"chargeResponse"];
   }
+  if (self.hasFriendResponse) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.friendResponse storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"friendResponse"];
+  }
   [self.unknownFields storeInDictionary:dictionary];
 }
 - (BOOL) isEqual:(id)other {
@@ -4965,6 +5073,8 @@ static BResponseType* defaultBResponseTypeInstance = nil;
       (!self.hasUserCardInfo || [self.userCardInfo isEqual:otherMessage.userCardInfo]) &&
       self.hasChargeResponse == otherMessage.hasChargeResponse &&
       (!self.hasChargeResponse || [self.chargeResponse isEqual:otherMessage.chargeResponse]) &&
+      self.hasFriendResponse == otherMessage.hasFriendResponse &&
+      (!self.hasFriendResponse || [self.friendResponse isEqual:otherMessage.friendResponse]) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
@@ -5019,6 +5129,9 @@ static BResponseType* defaultBResponseTypeInstance = nil;
   }
   if (self.hasChargeResponse) {
     hashCode = hashCode * 31 + [self.chargeResponse hash];
+  }
+  if (self.hasFriendResponse) {
+    hashCode = hashCode * 31 + [self.friendResponse hash];
   }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
@@ -5114,6 +5227,9 @@ static BResponseType* defaultBResponseTypeInstance = nil;
   if (other.hasChargeResponse) {
     [self mergeChargeResponse:other.chargeResponse];
   }
+  if (other.hasFriendResponse) {
+    [self mergeFriendResponse:other.friendResponse];
+  }
   [self mergeUnknownFields:other.unknownFields];
   return self;
 }
@@ -5208,7 +5324,7 @@ static BResponseType* defaultBResponseTypeInstance = nil;
         break;
       }
       case 74: {
-        BAcceptInviteResponseBuilder* subBuilder = [BAcceptInviteResponse builder];
+        BUserInviteBuilder* subBuilder = [BUserInvite builder];
         if (self.hasAcceptInviteResponse) {
           [subBuilder mergeFrom:self.acceptInviteResponse];
         }
@@ -5286,6 +5402,15 @@ static BResponseType* defaultBResponseTypeInstance = nil;
         }
         [input readMessage:subBuilder extensionRegistry:extensionRegistry];
         [self setChargeResponse:[subBuilder buildPartial]];
+        break;
+      }
+      case 146: {
+        BFriendUpdateBuilder* subBuilder = [BFriendUpdate builder];
+        if (self.hasFriendResponse) {
+          [subBuilder mergeFrom:self.friendResponse];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setFriendResponse:[subBuilder buildPartial]];
         break;
       }
     }
@@ -5534,22 +5659,22 @@ static BResponseType* defaultBResponseTypeInstance = nil;
 - (BOOL) hasAcceptInviteResponse {
   return resultResponseType.hasAcceptInviteResponse;
 }
-- (BAcceptInviteResponse*) acceptInviteResponse {
+- (BUserInvite*) acceptInviteResponse {
   return resultResponseType.acceptInviteResponse;
 }
-- (BResponseTypeBuilder*) setAcceptInviteResponse:(BAcceptInviteResponse*) value {
+- (BResponseTypeBuilder*) setAcceptInviteResponse:(BUserInvite*) value {
   resultResponseType.hasAcceptInviteResponse = YES;
   resultResponseType.acceptInviteResponse = value;
   return self;
 }
-- (BResponseTypeBuilder*) setAcceptInviteResponseBuilder:(BAcceptInviteResponseBuilder*) builderForValue {
+- (BResponseTypeBuilder*) setAcceptInviteResponseBuilder:(BUserInviteBuilder*) builderForValue {
   return [self setAcceptInviteResponse:[builderForValue build]];
 }
-- (BResponseTypeBuilder*) mergeAcceptInviteResponse:(BAcceptInviteResponse*) value {
+- (BResponseTypeBuilder*) mergeAcceptInviteResponse:(BUserInvite*) value {
   if (resultResponseType.hasAcceptInviteResponse &&
-      resultResponseType.acceptInviteResponse != [BAcceptInviteResponse defaultInstance]) {
+      resultResponseType.acceptInviteResponse != [BUserInvite defaultInstance]) {
     resultResponseType.acceptInviteResponse =
-      [[[BAcceptInviteResponse builderWithPrototype:resultResponseType.acceptInviteResponse] mergeFrom:value] buildPartial];
+      [[[BUserInvite builderWithPrototype:resultResponseType.acceptInviteResponse] mergeFrom:value] buildPartial];
   } else {
     resultResponseType.acceptInviteResponse = value;
   }
@@ -5558,7 +5683,7 @@ static BResponseType* defaultBResponseTypeInstance = nil;
 }
 - (BResponseTypeBuilder*) clearAcceptInviteResponse {
   resultResponseType.hasAcceptInviteResponse = NO;
-  resultResponseType.acceptInviteResponse = [BAcceptInviteResponse defaultInstance];
+  resultResponseType.acceptInviteResponse = [BUserInvite defaultInstance];
   return self;
 }
 - (BOOL) hasFeedPostFetchResponse {
@@ -5799,6 +5924,36 @@ static BResponseType* defaultBResponseTypeInstance = nil;
 - (BResponseTypeBuilder*) clearChargeResponse {
   resultResponseType.hasChargeResponse = NO;
   resultResponseType.chargeResponse = [BCharge defaultInstance];
+  return self;
+}
+- (BOOL) hasFriendResponse {
+  return resultResponseType.hasFriendResponse;
+}
+- (BFriendUpdate*) friendResponse {
+  return resultResponseType.friendResponse;
+}
+- (BResponseTypeBuilder*) setFriendResponse:(BFriendUpdate*) value {
+  resultResponseType.hasFriendResponse = YES;
+  resultResponseType.friendResponse = value;
+  return self;
+}
+- (BResponseTypeBuilder*) setFriendResponseBuilder:(BFriendUpdateBuilder*) builderForValue {
+  return [self setFriendResponse:[builderForValue build]];
+}
+- (BResponseTypeBuilder*) mergeFriendResponse:(BFriendUpdate*) value {
+  if (resultResponseType.hasFriendResponse &&
+      resultResponseType.friendResponse != [BFriendUpdate defaultInstance]) {
+    resultResponseType.friendResponse =
+      [[[BFriendUpdate builderWithPrototype:resultResponseType.friendResponse] mergeFrom:value] buildPartial];
+  } else {
+    resultResponseType.friendResponse = value;
+  }
+  resultResponseType.hasFriendResponse = YES;
+  return self;
+}
+- (BResponseTypeBuilder*) clearFriendResponse {
+  resultResponseType.hasFriendResponse = NO;
+  resultResponseType.friendResponse = [BFriendUpdate defaultInstance];
   return self;
 }
 @end

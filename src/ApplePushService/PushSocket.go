@@ -42,12 +42,16 @@ func (pushSocket *PushSocket) ReadFeedback() error {
     socketName := pushSocket.Status.ServiceName
     pemdata := Resource.ResourceBytesNamed(socketName+".pem")
     if pemdata == nil {
-        return fmt.Errorf("Fatal: PEM for '%s' not found", socketName)
+        Log.Errorf("Fatal: PEM for '%s' not found", socketName)
+        return fmt.Errorf("Resource missing")
     }
+    Log.Debugf("Loaded %d bytes for %s.", len(*pemdata), socketName+".pem")
     keydata := Resource.ResourceBytesNamed(socketName+".key")
     if keydata == nil {
-        return fmt.Errorf("Fatal: Key for '%s' not found", socketName)
+        Log.Errorf("Fatal: Key for '%s' not found", socketName)
+        return fmt.Errorf("Resource missing")
     }
+    Log.Debugf("Loaded %d bytes for %s.", len(*keydata), socketName+".key")
     certificate, error := tls.X509KeyPair(*pemdata, *keydata)
     if error != nil {
         Log.LogError(error)
@@ -130,12 +134,16 @@ func (pushSocket *PushSocket) Open() error {
     socketName := pushSocket.Status.ServiceName
     pemdata := Resource.ResourceBytesNamed(socketName+".pem")
     if pemdata == nil {
-        return fmt.Errorf("Fatal: PEM for '%s' not found", socketName)
+        Log.Errorf("Fatal: PEM for '%s' not found", socketName)
+        return fmt.Errorf("Resource missing")
     }
+    Log.Debugf("Loaded %d bytes for %s.", len(*pemdata), socketName+".pem")
     keydata := Resource.ResourceBytesNamed(socketName+".key")
     if keydata == nil {
-        return fmt.Errorf("Fatal: Key for '%s' not found", socketName)
+        Log.Errorf("Fatal: Key for '%s' not found", socketName)
+        return fmt.Errorf("Resource missing")
     }
+    Log.Debugf("Loaded %d bytes for %s.", len(*keydata), socketName+".key")
     certificate, error := tls.X509KeyPair(*pemdata, *keydata)
     if error != nil {
         Log.LogError(error)

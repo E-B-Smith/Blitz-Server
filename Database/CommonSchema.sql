@@ -247,38 +247,6 @@ function StringFromUserStatus(userStatus UserStatus) returns text as
     returns null on null input;
 
 
-create domain FriendStatus as smallint;
-
-create function StringFromFriendStatus(friendStatus FriendStatus) returns text as
-    $$
-    declare
-        statusString text[] := array
-          [ 'FriendStatusUnknown',
-            'FriendStatusInviter',
-            'FriendStatusInvitee',
-            'FriendStatusIgnored',
-            'FriendStatusAccepted',
-            'FriendStatusCircleDeprecated' ];
-    begin
-    if friendStatus is null then return null; end if;
-    return statusString[friendStatus+1];
-    end;
-    $$
-    language plpgsql immutable
-    returns null on null input;
-
-
-create table FriendTable
-    (
-     userID             UserID not null
-    ,friendID           UserID not null
-    ,friendStatus       FriendStatus not null check (friendStatus > 0)
-    ,isInCircle         boolean not null default false
-    );
-create unique index FriendUniqueIndex on FriendTable(userID, friendID);
-create index FriendIndex on FriendTable(friendID);
-
-
 create table UserIdentityTable
     (
      userID         UserID not null
@@ -629,8 +597,6 @@ create or replace function EraseUserID(eraseID UserID) returns text as
         return null;
         end if;
     delete from DeviceTable where userID = eraseID;
-    delete from FriendTable where userID = eraseID;
-    delete from FriendTable where friendID = eraseID;
     delete from ImageTable where userID = eraseID;
     delete from MessageTable where senderID = eraseID;
     delete from MessageTable where recipientID = eraseID;
@@ -703,30 +669,6 @@ create or replace function MergeUserIDIntoUserID(oldID UserID, newID UserID) ret
         and (select 1 from usereventtable
             where usereventtable.userid = newID
               and usereventtable.timestamp = merge.timestamp) is null;
-
-    --  FriendTable
-
-    with recursive merge as (
-        select userid, friendid from FriendTable where userid = oldID
-    )
-    update FriendTable set (userid) = (newID)
-        from merge where FriendTable.userid = merge.userid
-                     and FriendTable.friendid = merge.friendid
-        and (select 1 from FriendTable
-            where FriendTable.userid = newID
-              and FriendTable.friendid = merge.friendid) is null;
-
-    --
-
-    with recursive merge as (
-        select userid, friendid from FriendTable where friendid = oldID
-    )
-    update FriendTable set (friendid) = (newID)
-        from merge where FriendTable.userid = merge.userid
-                     and FriendTable.friendid = merge.friendid
-        and (select 1 from FriendTable
-            where FriendTable.userid = merge.userid
-              and FriendTable.friendid = newID) is null;
 
     --  UserIdentityTable
 

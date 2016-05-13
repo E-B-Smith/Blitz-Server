@@ -28,6 +28,14 @@ enum UserMessageStatus {
 }
 
 
+enum ConversationType {
+  CTUnknownX      = 0;
+  CTConversation  = 1;
+  CTFeedPost      = 2;
+  CTNotification  = 3;
+}
+
+
 message Conversation {
   optional string             conversationID  = 1;
   optional string             initiatorUserID = 2;
@@ -41,8 +49,9 @@ message Conversation {
   repeated string             memberIDs       = 10;
   optional Timestamp          closedDate      = 11;
   optional string             headlineText    = 12;
-  optional string             lastActivityUserID = 13;
-  optional string             lastActionURL   = 14;
+  optional string             lastActivityUserID  = 13;
+  optional string             lastActionURL       = 14;
+  optional ConversationType   conversationType    = 15;
 }
 
 
@@ -75,7 +84,7 @@ enum UserMessageType {
   MTSystem       = 1;
   MTConversation = 2;
   MTNotification = 3;
-  MTFeedPost     = 4;
+  MTActionNotification = 4;
 }
 
 

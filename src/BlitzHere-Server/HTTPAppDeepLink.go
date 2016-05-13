@@ -218,7 +218,7 @@ func HTTPAppDeepLink(writer http.ResponseWriter, httpRequest *http.Request) {
 
     //  Save the signature & deeplink for later --
 
-    invite := BlitzMessage.AcceptInviteRequest {
+    invite := BlitzMessage.UserInvite {
         UserID:     StringPtrFromString(senderID),
         FriendID:   StringPtrFromString(userID),
         Message:    StringPtrFromString(message),
@@ -257,7 +257,7 @@ func HTTPAppDeepLink(writer http.ResponseWriter, httpRequest *http.Request) {
 //----------------------------------------------------------------------------------------
 
 
-func InviteRequestForDevice(device *BlitzMessage.DeviceInfo) *BlitzMessage.AcceptInviteRequest {
+func InviteRequestForDevice(device *BlitzMessage.DeviceInfo) *BlitzMessage.UserInvite {
     Log.LogFunctionName()
     Log.Debugf("Getting invite for: %+v.", device)
 
@@ -307,7 +307,7 @@ func InviteRequestForDevice(device *BlitzMessage.DeviceInfo) *BlitzMessage.Accep
         error = rows.Scan(&inviteData, &creationDate, &deviceRPM)
         if error != nil { Log.LogError(error); continue; }
 
-        invite := BlitzMessage.AcceptInviteRequest{}
+        invite := BlitzMessage.UserInvite {}
         error = proto.Unmarshal(inviteData, &invite)
         if error != nil { Log.LogError(error); continue; }
         if invite.FriendID == nil { continue; }

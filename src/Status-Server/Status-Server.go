@@ -242,7 +242,7 @@ func StatsServer() int {
 
     flagInputFilename, error = filepath.Abs(flagInputFilename)
     if len(flagInputFilename) > 0 {
-        error = config.ParseConfigFileNamed(flagInputFilename)
+        error = ServerUtil.ParseConfigFileNamed(&config, flagInputFilename)
         if error != nil {
             return 1
         }

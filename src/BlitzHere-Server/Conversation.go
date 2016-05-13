@@ -21,6 +21,7 @@ import (
     "violent.blue/GoKit/Log"
     "violent.blue/GoKit/Util"
     "violent.blue/GoKit/pgsql"
+    "github.com/golang/protobuf/proto"
     "BlitzMessage"
 )
 
@@ -166,6 +167,8 @@ func ReadUserConversation(userID string, conversationID string) (*BlitzMessage.C
     error = row.Scan(&lastMessage, &lastActivity, &lastUserID, &lastActionURL)
     if error != nil { Log.LogError(error) }
 
+    conversationType := BlitzMessage.ConversationType_CTConversation
+
     var conv BlitzMessage.Conversation
     conv.ConversationID     =   &conversationID
     conv.InitiatorUserID    =   &initiatorUserID.String
@@ -176,6 +179,7 @@ func ReadUserConversation(userID string, conversationID string) (*BlitzMessage.C
     conv.LastMessage        =   &lastMessage.String
     conv.LastActivityDate   =   BlitzMessage.TimestampPtrFromNullTime(lastActivity)
     conv.ClosedDate         =   BlitzMessage.TimestampPtrFromNullTime(closedDate)
+    conv.ConversationType   =   &conversationType
 
     if parentFeedPostID.Valid {
         conv.ParentFeedPostID = &parentFeedPostID.String
@@ -289,7 +293,7 @@ func StartConversation(session *Session, req *BlitzMessage.ConversationRequest) 
 
 
 //----------------------------------------------------------------------------------------
-//                                                                      FetchConversations
+//                                                           FetchFeedPostsAsConversations
 //----------------------------------------------------------------------------------------
 
 
@@ -339,6 +343,8 @@ func FetchFeedPostsAsConversations(userID string) []*BlitzMessage.Conversation {
     }
     defer rows.Close()
 
+    conversationType := BlitzMessage.ConversationType_CTFeedPost
+
     for rows.Next() {
         var (
             postID      sql.NullString
@@ -376,6 +382,7 @@ func FetchFeedPostsAsConversations(userID string) []*BlitzMessage.Conversation {
         conv.LastMessage        =   &replyText.String
         conv.MessageCount       =   Int32PtrFromNullInt64(replyCount)
         conv.HeadlineText       =   &headline.String
+        conv.ConversationType   =   &conversationType
 
         if replyDate.Valid {
             conv.LastActivityDate = BlitzMessage.TimestampPtrFromNullTime(replyDate)
@@ -395,12 +402,100 @@ func FetchFeedPostsAsConversations(userID string) []*BlitzMessage.Conversation {
 }
 
 
+//----------------------------------------------------------------------------------------
+//                                                       FetchNotificationsAsConversations
+//----------------------------------------------------------------------------------------
+
+
+func FetchNotificationsAsConversations(userID string) []*BlitzMessage.Conversation {
+    Log.LogFunctionName()
+
+    ary := make([]*BlitzMessage.Conversation, 0, 20)
+
+    rows, error := config.DB.Query(
+        `select
+            messageID,
+            senderID,
+            recipientID,
+            messageStatus,
+            creationDate,
+            readDate,
+            messageText,
+            actionURL
+        from UserMessageTable
+        where recipientID = $1
+          and messageType = $2;`,
+        userID,
+        BlitzMessage.UserMessageType_MTActionNotification,
+    )
+    if error != nil {
+        Log.LogError(error)
+        return ary
+    }
+    defer rows.Close()
+
+    conversationType := BlitzMessage.ConversationType_CTNotification
+
+    for rows.Next() {
+        var (
+            messageID           sql.NullString
+            senderID            sql.NullString
+            recipientID         sql.NullString
+            status              sql.NullInt64
+            creationDate        pq.NullTime
+            readDate            pq.NullTime
+            lastMessage         sql.NullString
+            lastActionURL       sql.NullString
+        )
+
+        error = rows.Scan(
+            &messageID,
+            &senderID,
+            &recipientID,
+            &status,
+            &creationDate,
+            &readDate,
+            &lastMessage,
+            &lastActionURL,
+        )
+
+        var unreadCount int32 = 1
+        if readDate.Valid {
+            unreadCount = 0
+        }
+
+        var conv BlitzMessage.Conversation
+        conv.ConversationID     =   &messageID.String
+        conv.InitiatorUserID    =   &senderID.String
+        conv.Status             =   BlitzMessage.UserMessageStatus(status.Int64).Enum()
+        conv.CreationDate       =   BlitzMessage.TimestampPtrFromNullTime(creationDate)
+        conv.MessageCount       =   proto.Int32(1)
+        conv.UnreadCount        =   proto.Int32(unreadCount)
+        conv.LastMessage        =   &lastMessage.String
+        conv.LastActivityDate   =   BlitzMessage.TimestampPtrFromNullTime(creationDate)
+        conv.LastActionURL      =   &lastActionURL.String
+        conv.ClosedDate         =   BlitzMessage.TimestampPtrFromNullTime(readDate)
+        conv.MemberIDs          =   []string { senderID.String, recipientID.String }
+        conv.ConversationType   =   &conversationType
+
+        ary = append(ary, &conv)
+    }
+    return ary
+}
+
+
+//----------------------------------------------------------------------------------------
+//                                                                      FetchConversations
+//----------------------------------------------------------------------------------------
+
+
 func FetchConversations(session *Session, req *BlitzMessage.FetchConversations) *BlitzMessage.ServerResponse {
     Log.LogFunctionName()
 
     rows, error := config.DB.Query(
         `select conversationID from ConversationMemberTable where memberID = $1;`,
-        session.UserID)
+        session.UserID,
+    )
     if error != nil {
         return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
     }
@@ -421,6 +516,7 @@ func FetchConversations(session *Session, req *BlitzMessage.FetchConversations) 
     }
 
     convos = append(convos, FetchFeedPostsAsConversations(session.UserID)...)
+    convos = append(convos, FetchNotificationsAsConversations(session.UserID)...)
 
     response := BlitzMessage.FetchConversations { Conversations: convos }
     serverResponse := &BlitzMessage.ServerResponse {

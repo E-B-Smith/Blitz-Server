@@ -49,7 +49,7 @@ func (x *CardStatus) UnmarshalJSON(data []byte) error {
 	*x = CardStatus(value)
 	return nil
 }
-func (CardStatus) EnumDescriptor() ([]byte, []int) { return fileDescriptor4, []int{0} }
+func (CardStatus) EnumDescriptor() ([]byte, []int) { return fileDescriptor3, []int{0} }
 
 type ChargeTokenType int32
 
@@ -86,7 +86,7 @@ func (x *ChargeTokenType) UnmarshalJSON(data []byte) error {
 	*x = ChargeTokenType(value)
 	return nil
 }
-func (ChargeTokenType) EnumDescriptor() ([]byte, []int) { return fileDescriptor4, []int{1} }
+func (ChargeTokenType) EnumDescriptor() ([]byte, []int) { return fileDescriptor3, []int{1} }
 
 type ChargeStatus int32
 
@@ -129,7 +129,7 @@ func (x *ChargeStatus) UnmarshalJSON(data []byte) error {
 	*x = ChargeStatus(value)
 	return nil
 }
-func (ChargeStatus) EnumDescriptor() ([]byte, []int) { return fileDescriptor4, []int{2} }
+func (ChargeStatus) EnumDescriptor() ([]byte, []int) { return fileDescriptor3, []int{2} }
 
 type CardInfo struct {
 	CardStatus       *CardStatus `protobuf:"varint,1,opt,name=cardStatus,enum=BlitzMessage.CardStatus" json:"cardStatus,omitempty"`
@@ -146,7 +146,7 @@ type CardInfo struct {
 func (m *CardInfo) Reset()                    { *m = CardInfo{} }
 func (m *CardInfo) String() string            { return proto.CompactTextString(m) }
 func (*CardInfo) ProtoMessage()               {}
-func (*CardInfo) Descriptor() ([]byte, []int) { return fileDescriptor4, []int{0} }
+func (*CardInfo) Descriptor() ([]byte, []int) { return fileDescriptor3, []int{0} }
 
 func (m *CardInfo) GetCardStatus() CardStatus {
 	if m != nil && m.CardStatus != nil {
@@ -213,7 +213,7 @@ type UserCardInfo struct {
 func (m *UserCardInfo) Reset()                    { *m = UserCardInfo{} }
 func (m *UserCardInfo) String() string            { return proto.CompactTextString(m) }
 func (*UserCardInfo) ProtoMessage()               {}
-func (*UserCardInfo) Descriptor() ([]byte, []int) { return fileDescriptor4, []int{1} }
+func (*UserCardInfo) Descriptor() ([]byte, []int) { return fileDescriptor3, []int{1} }
 
 func (m *UserCardInfo) GetUserID() string {
 	if m != nil && m.UserID != nil {
@@ -248,7 +248,7 @@ type Charge struct {
 func (m *Charge) Reset()                    { *m = Charge{} }
 func (m *Charge) String() string            { return proto.CompactTextString(m) }
 func (*Charge) ProtoMessage()               {}
-func (*Charge) Descriptor() ([]byte, []int) { return fileDescriptor4, []int{2} }
+func (*Charge) Descriptor() ([]byte, []int) { return fileDescriptor3, []int{2} }
 
 func (m *Charge) GetChargeID() string {
 	if m != nil && m.ChargeID != nil {
@@ -343,7 +343,7 @@ func init() {
 	proto.RegisterEnum("BlitzMessage.ChargeStatus", ChargeStatus_name, ChargeStatus_value)
 }
 
-var fileDescriptor4 = []byte{
+var fileDescriptor3 = []byte{
 	// 558 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x09, 0x6e, 0x88, 0x02, 0xff, 0x6c, 0x92, 0xcf, 0x4e, 0xdb, 0x40,
 	0x10, 0xc6, 0x71, 0x02, 0x21, 0x19, 0x87, 0xc4, 0x32, 0x12, 0xac, 0x52, 0x55, 0xaa, 0x38, 0xa1,

@@ -27,6 +27,8 @@
 @class BEntityTagBuilder;
 @class BEntityTagList;
 @class BEntityTagListBuilder;
+@class BFriendUpdate;
+@class BFriendUpdateBuilder;
 @class BGlobals;
 @class BGlobalsBuilder;
 @class BImageData;
@@ -47,6 +49,8 @@
 @class BTimespanBuilder;
 @class BTimestamp;
 @class BTimestampBuilder;
+@class BUserInvite;
+@class BUserInviteBuilder;
 @class BUserProfile;
 @class BUserProfileBuilder;
 @class BUserProfileQuery;
