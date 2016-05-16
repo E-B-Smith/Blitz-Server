@@ -622,13 +622,13 @@ public final class Feed {
     boolean getAreMoreReplies();
 
     /**
-     * <code>optional int32 totalReplyCount = 18;</code>
+     * <code>optional int32 totalVoteCount = 18;</code>
      */
-    boolean hasTotalReplyCount();
+    boolean hasTotalVoteCount();
     /**
-     * <code>optional int32 totalReplyCount = 18;</code>
+     * <code>optional int32 totalVoteCount = 18;</code>
      */
-    int getTotalReplyCount();
+    int getTotalVoteCount();
   }
   /**
    * Protobuf type {@code BlitzMessage.FeedPost}
@@ -803,7 +803,7 @@ public final class Feed {
             }
             case 144: {
               bitField0_ |= 0x00004000;
-              totalReplyCount_ = input.readInt32();
+              totalVoteCount_ = input.readInt32();
               break;
             }
           }
@@ -1299,19 +1299,19 @@ public final class Feed {
       return areMoreReplies_;
     }
 
-    public static final int TOTALREPLYCOUNT_FIELD_NUMBER = 18;
-    private int totalReplyCount_;
+    public static final int TOTALVOTECOUNT_FIELD_NUMBER = 18;
+    private int totalVoteCount_;
     /**
-     * <code>optional int32 totalReplyCount = 18;</code>
+     * <code>optional int32 totalVoteCount = 18;</code>
      */
-    public boolean hasTotalReplyCount() {
+    public boolean hasTotalVoteCount() {
       return ((bitField0_ & 0x00004000) == 0x00004000);
     }
     /**
-     * <code>optional int32 totalReplyCount = 18;</code>
+     * <code>optional int32 totalVoteCount = 18;</code>
      */
-    public int getTotalReplyCount() {
-      return totalReplyCount_;
+    public int getTotalVoteCount() {
+      return totalVoteCount_;
     }
 
     private void initFields() {
@@ -1331,7 +1331,7 @@ public final class Feed {
       mayChooseMulitpleReplies_ = false;
       surveyAnswerSequence_ = 0;
       areMoreReplies_ = false;
-      totalReplyCount_ = 0;
+      totalVoteCount_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -1413,7 +1413,7 @@ public final class Feed {
         output.writeBool(17, areMoreReplies_);
       }
       if (((bitField0_ & 0x00004000) == 0x00004000)) {
-        output.writeInt32(18, totalReplyCount_);
+        output.writeInt32(18, totalVoteCount_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -1490,7 +1490,7 @@ public final class Feed {
       }
       if (((bitField0_ & 0x00004000) == 0x00004000)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(18, totalReplyCount_);
+          .computeInt32Size(18, totalVoteCount_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -1661,7 +1661,7 @@ public final class Feed {
         bitField0_ = (bitField0_ & ~0x00004000);
         areMoreReplies_ = false;
         bitField0_ = (bitField0_ & ~0x00008000);
-        totalReplyCount_ = 0;
+        totalVoteCount_ = 0;
         bitField0_ = (bitField0_ & ~0x00010000);
         return this;
       }
@@ -1776,7 +1776,7 @@ public final class Feed {
         if (((from_bitField0_ & 0x00010000) == 0x00010000)) {
           to_bitField0_ |= 0x00004000;
         }
-        result.totalReplyCount_ = totalReplyCount_;
+        result.totalVoteCount_ = totalVoteCount_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -1897,8 +1897,8 @@ public final class Feed {
         if (other.hasAreMoreReplies()) {
           setAreMoreReplies(other.getAreMoreReplies());
         }
-        if (other.hasTotalReplyCount()) {
-          setTotalReplyCount(other.getTotalReplyCount());
+        if (other.hasTotalVoteCount()) {
+          setTotalVoteCount(other.getTotalVoteCount());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -3339,34 +3339,34 @@ public final class Feed {
         return this;
       }
 
-      private int totalReplyCount_ ;
+      private int totalVoteCount_ ;
       /**
-       * <code>optional int32 totalReplyCount = 18;</code>
+       * <code>optional int32 totalVoteCount = 18;</code>
        */
-      public boolean hasTotalReplyCount() {
+      public boolean hasTotalVoteCount() {
         return ((bitField0_ & 0x00010000) == 0x00010000);
       }
       /**
-       * <code>optional int32 totalReplyCount = 18;</code>
+       * <code>optional int32 totalVoteCount = 18;</code>
        */
-      public int getTotalReplyCount() {
-        return totalReplyCount_;
+      public int getTotalVoteCount() {
+        return totalVoteCount_;
       }
       /**
-       * <code>optional int32 totalReplyCount = 18;</code>
+       * <code>optional int32 totalVoteCount = 18;</code>
        */
-      public Builder setTotalReplyCount(int value) {
+      public Builder setTotalVoteCount(int value) {
         bitField0_ |= 0x00010000;
-        totalReplyCount_ = value;
+        totalVoteCount_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional int32 totalReplyCount = 18;</code>
+       * <code>optional int32 totalVoteCount = 18;</code>
        */
-      public Builder clearTotalReplyCount() {
+      public Builder clearTotalVoteCount() {
         bitField0_ = (bitField0_ & ~0x00010000);
-        totalReplyCount_ = 0;
+        totalVoteCount_ = 0;
         onChanged();
         return this;
       }
@@ -6109,7 +6109,7 @@ public final class Feed {
     java.lang.String[] descriptorData = {
       "\n\nFeed.proto\022\014BlitzMessage\032\033objectivec-d" +
       "escriptor.proto\032\013Types.proto\032\020EntityTags" +
-      ".proto\"\226\004\n\010FeedPost\022\016\n\006postID\030\001 \001(\t\022\020\n\010p" +
+      ".proto\"\225\004\n\010FeedPost\022\016\n\006postID\030\001 \001(\t\022\020\n\010p" +
       "arentID\030\002 \001(\t\022,\n\010postType\030\003 \001(\0162\032.BlitzM" +
       "essage.FeedPostType\022.\n\tpostScope\030\004 \001(\0162\033" +
       ".BlitzMessage.FeedPostScope\022\016\n\006userID\030\005 " +
@@ -6121,27 +6121,27 @@ public final class Feed {
       "ntityTag\022\'\n\007replies\030\r \003(\0132\026.BlitzMessage" +
       ".FeedPost\022\023\n\013mayAddReply\030\016 \001(\010\022 \n\030mayCho" +
       "oseMulitpleReplies\030\017 \001(\010\022\034\n\024surveyAnswer" +
-      "Sequence\030\020 \001(\005\022\026\n\016areMoreReplies\030\021 \001(\010\022\027" +
-      "\n\017totalReplyCount\030\022 \001(\005\"o\n\025FeedPostUpdat" +
-      "eRequest\022,\n\nupdateVerb\030\001 \001(\0162\030.BlitzMess" +
-      "age.UpdateVerb\022(\n\010feedPost\030\002 \001(\0132\026.Blitz" +
-      "Message.FeedPost\"B\n\026FeedPostUpdateRespon" +
-      "se\022(\n\010feedPost\030\001 \001(\0132\026.BlitzMessage.Feed",
-      "Post\"\202\001\n\024FeedPostFetchRequest\022(\n\010timespa" +
-      "n\030\001 \001(\0132\026.BlitzMessage.Timespan\022.\n\tfeedS" +
-      "cope\030\002 \001(\0162\033.BlitzMessage.FeedPostScope\022" +
-      "\020\n\010parentID\030\003 \001(\t\"B\n\025FeedPostFetchRespon" +
-      "se\022)\n\tfeedPosts\030\001 \003(\0132\026.BlitzMessage.Fee" +
-      "dPost*v\n\014FeedPostType\022\r\n\tFPUnknown\020\000\022\027\n\023" +
-      "FPOpenEndedQuestion\020\001\022\024\n\020FPOpenEndedRepl" +
-      "y\020\002\022\024\n\020FPSurveyQuestion\020\003\022\022\n\016FPSurveyAns" +
-      "wer\020\004*V\n\rFeedPostScope\022\022\n\016FPScopeUnknown" +
-      "\020\000\022\027\n\023FPScopeLocalNetwork\020\001\022\030\n\024FPScopeGl",
-      "obalNetwork\020\002*?\n\016FeedPostStatus\022\016\n\nFPSUn" +
-      "known\020\000\022\r\n\tFPSActive\020\001\022\016\n\nFPSDeleted\020\002*6" +
-      "\n\nUpdateVerb\022\014\n\010UVCreate\020\001\022\014\n\010UVUpdate\020\002" +
-      "\022\014\n\010UVDelete\020\003B/\n\032com.blitzhere.BlitzMes" +
-      "sage\210\001\001\322>\002\n\000\322>\003\022\001B\322>\002\030\001"
+      "Sequence\030\020 \001(\005\022\026\n\016areMoreReplies\030\021 \001(\010\022\026" +
+      "\n\016totalVoteCount\030\022 \001(\005\"o\n\025FeedPostUpdate" +
+      "Request\022,\n\nupdateVerb\030\001 \001(\0162\030.BlitzMessa" +
+      "ge.UpdateVerb\022(\n\010feedPost\030\002 \001(\0132\026.BlitzM" +
+      "essage.FeedPost\"B\n\026FeedPostUpdateRespons" +
+      "e\022(\n\010feedPost\030\001 \001(\0132\026.BlitzMessage.FeedP",
+      "ost\"\202\001\n\024FeedPostFetchRequest\022(\n\010timespan" +
+      "\030\001 \001(\0132\026.BlitzMessage.Timespan\022.\n\tfeedSc" +
+      "ope\030\002 \001(\0162\033.BlitzMessage.FeedPostScope\022\020" +
+      "\n\010parentID\030\003 \001(\t\"B\n\025FeedPostFetchRespons" +
+      "e\022)\n\tfeedPosts\030\001 \003(\0132\026.BlitzMessage.Feed" +
+      "Post*v\n\014FeedPostType\022\r\n\tFPUnknown\020\000\022\027\n\023F" +
+      "POpenEndedQuestion\020\001\022\024\n\020FPOpenEndedReply" +
+      "\020\002\022\024\n\020FPSurveyQuestion\020\003\022\022\n\016FPSurveyAnsw" +
+      "er\020\004*V\n\rFeedPostScope\022\022\n\016FPScopeUnknown\020" +
+      "\000\022\027\n\023FPScopeLocalNetwork\020\001\022\030\n\024FPScopeGlo",
+      "balNetwork\020\002*?\n\016FeedPostStatus\022\016\n\nFPSUnk" +
+      "nown\020\000\022\r\n\tFPSActive\020\001\022\016\n\nFPSDeleted\020\002*6\n" +
+      "\nUpdateVerb\022\014\n\010UVCreate\020\001\022\014\n\010UVUpdate\020\002\022" +
+      "\014\n\010UVDelete\020\003B/\n\032com.blitzhere.BlitzMess" +
+      "age\210\001\001\322>\002\n\000\322>\003\022\001B\322>\002\030\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -6163,7 +6163,7 @@ public final class Feed {
     internal_static_BlitzMessage_FeedPost_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_BlitzMessage_FeedPost_descriptor,
-        new java.lang.String[] { "PostID", "ParentID", "PostType", "PostScope", "UserID", "AnonymousPost", "Timestamp", "TimespanActive", "HeadlineText", "BodyText", "PostTags", "Replies", "MayAddReply", "MayChooseMulitpleReplies", "SurveyAnswerSequence", "AreMoreReplies", "TotalReplyCount", });
+        new java.lang.String[] { "PostID", "ParentID", "PostType", "PostScope", "UserID", "AnonymousPost", "Timestamp", "TimespanActive", "HeadlineText", "BodyText", "PostTags", "Replies", "MayAddReply", "MayChooseMulitpleReplies", "SurveyAnswerSequence", "AreMoreReplies", "TotalVoteCount", });
     internal_static_BlitzMessage_FeedPostUpdateRequest_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_BlitzMessage_FeedPostUpdateRequest_fieldAccessorTable = new
