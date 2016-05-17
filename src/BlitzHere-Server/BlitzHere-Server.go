@@ -339,6 +339,9 @@ func DispatchServiceRequests(writer http.ResponseWriter, httpRequest *http.Reque
     case *BlitzMessage.FriendUpdate:
         response = SendFriendRequest(session, requestMessageType)
 
+    case *BlitzMessage.SearchCategories:
+        response = FetchSearchCategories(session, requestMessageType)
+
     default:
         error = fmt.Errorf("Unrecognized request '%+v'", request)
         response = ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)

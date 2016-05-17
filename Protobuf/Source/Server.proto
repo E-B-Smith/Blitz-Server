@@ -109,6 +109,7 @@ message RequestType {
   optional UserCardInfo             userCardInfo        = 22;
   optional Charge                   chargeRequest       = 23;
   optional FriendUpdate             friendRequest       = 24;
+  optional SearchCategories         searchCategories    = 25;
 }
 
 
@@ -149,6 +150,7 @@ message ResponseType {
   optional UserCardInfo           userCardInfo            = 16;
   optional Charge                 chargeResponse          = 17;
   optional FriendUpdate           friendResponse          = 18;
+  optional SearchCategories       searchCategories        = 19;
 }
 
 

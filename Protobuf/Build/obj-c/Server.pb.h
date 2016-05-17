@@ -676,6 +676,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 #define RequestType_userCardInfo @"userCardInfo"
 #define RequestType_chargeRequest @"chargeRequest"
 #define RequestType_friendRequest @"friendRequest"
+#define RequestType_searchCategories @"searchCategories"
 @interface BRequestType : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
   BOOL hasSessionRequest_:1;
@@ -702,6 +703,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
   BOOL hasUserCardInfo_:1;
   BOOL hasChargeRequest_:1;
   BOOL hasFriendRequest_:1;
+  BOOL hasSearchCategories_:1;
   BSessionRequest* sessionRequest;
   BUserEventBatch* userEventBatch;
   BUserProfileUpdate* userProfileUpdate;
@@ -726,6 +728,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
   BUserCardInfo* userCardInfo;
   BCharge* chargeRequest;
   BFriendUpdate* friendRequest;
+  BSearchCategories* searchCategories;
 }
 - (BOOL) hasSessionRequest;
 - (BOOL) hasUserEventBatch;
@@ -751,6 +754,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BOOL) hasUserCardInfo;
 - (BOOL) hasChargeRequest;
 - (BOOL) hasFriendRequest;
+- (BOOL) hasSearchCategories;
 @property (readonly, strong) BSessionRequest* sessionRequest;
 @property (readonly, strong) BUserEventBatch* userEventBatch;
 @property (readonly, strong) BUserProfileUpdate* userProfileUpdate;
@@ -775,6 +779,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 @property (readonly, strong) BUserCardInfo* userCardInfo;
 @property (readonly, strong) BCharge* chargeRequest;
 @property (readonly, strong) BFriendUpdate* friendRequest;
+@property (readonly, strong) BSearchCategories* searchCategories;
 
 + (instancetype) defaultInstance;
 - (instancetype) defaultInstance;
@@ -978,6 +983,13 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BRequestTypeBuilder*) setFriendRequestBuilder:(BFriendUpdateBuilder*) builderForValue;
 - (BRequestTypeBuilder*) mergeFriendRequest:(BFriendUpdate*) value;
 - (BRequestTypeBuilder*) clearFriendRequest;
+
+- (BOOL) hasSearchCategories;
+- (BSearchCategories*) searchCategories;
+- (BRequestTypeBuilder*) setSearchCategories:(BSearchCategories*) value;
+- (BRequestTypeBuilder*) setSearchCategoriesBuilder:(BSearchCategoriesBuilder*) builderForValue;
+- (BRequestTypeBuilder*) mergeSearchCategories:(BSearchCategories*) value;
+- (BRequestTypeBuilder*) clearSearchCategories;
 @end
 
 #define ServerRequest_sessionToken @"sessionToken"
@@ -1060,6 +1072,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 #define ResponseType_userCardInfo @"userCardInfo"
 #define ResponseType_chargeResponse @"chargeResponse"
 #define ResponseType_friendResponse @"friendResponse"
+#define ResponseType_searchCategories @"searchCategories"
 @interface BResponseType : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
   BOOL hasSessionResponse_:1;
@@ -1080,6 +1093,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
   BOOL hasUserCardInfo_:1;
   BOOL hasChargeResponse_:1;
   BOOL hasFriendResponse_:1;
+  BOOL hasSearchCategories_:1;
   BSessionResponse* sessionResponse;
   BUserEventBatchResponse* userEventBatchResponse;
   BUserProfileUpdate* userProfileUpdate;
@@ -1098,6 +1112,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
   BUserCardInfo* userCardInfo;
   BCharge* chargeResponse;
   BFriendUpdate* friendResponse;
+  BSearchCategories* searchCategories;
 }
 - (BOOL) hasSessionResponse;
 - (BOOL) hasUserEventBatchResponse;
@@ -1117,6 +1132,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BOOL) hasUserCardInfo;
 - (BOOL) hasChargeResponse;
 - (BOOL) hasFriendResponse;
+- (BOOL) hasSearchCategories;
 @property (readonly, strong) BSessionResponse* sessionResponse;
 @property (readonly, strong) BUserEventBatchResponse* userEventBatchResponse;
 @property (readonly, strong) BUserProfileUpdate* userProfileUpdate;
@@ -1135,6 +1151,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 @property (readonly, strong) BUserCardInfo* userCardInfo;
 @property (readonly, strong) BCharge* chargeResponse;
 @property (readonly, strong) BFriendUpdate* friendResponse;
+@property (readonly, strong) BSearchCategories* searchCategories;
 
 + (instancetype) defaultInstance;
 - (instancetype) defaultInstance;
@@ -1296,6 +1313,13 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BResponseTypeBuilder*) setFriendResponseBuilder:(BFriendUpdateBuilder*) builderForValue;
 - (BResponseTypeBuilder*) mergeFriendResponse:(BFriendUpdate*) value;
 - (BResponseTypeBuilder*) clearFriendResponse;
+
+- (BOOL) hasSearchCategories;
+- (BSearchCategories*) searchCategories;
+- (BResponseTypeBuilder*) setSearchCategories:(BSearchCategories*) value;
+- (BResponseTypeBuilder*) setSearchCategoriesBuilder:(BSearchCategoriesBuilder*) builderForValue;
+- (BResponseTypeBuilder*) mergeSearchCategories:(BSearchCategories*) value;
+- (BResponseTypeBuilder*) clearSearchCategories;
 @end
 
 #define ServerResponse_responseCode @"responseCode"

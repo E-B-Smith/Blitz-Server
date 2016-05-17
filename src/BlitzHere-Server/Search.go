@@ -168,8 +168,60 @@ func UserSearchRequest(session *Session, query *BlitzMessage.UserSearchRequest,
 //----------------------------------------------------------------------------------------
 
 
-func FetchSearchCategories(session *Session, query *BlitzMessage.UserSearchRequest,
+func FetchSearchCategories(session *Session, query *BlitzMessage.SearchCategories,
         ) *BlitzMessage.ServerResponse {
     Log.LogFunctionName()
+
+    rows, error := config.DB.Query(
+        `select
+            parent,
+            item,
+            isLeaf,
+            descriptionText
+        from CategoryTable;`,
+    )
+    if error != nil {
+        return ServerResponseForError(BlitzMessage.ResponseCode_RCServerError, error)
+    }
+    defer rows.Close()
+
+    catArray := make([]*BlitzMessage.SearchCategory, 0, 20)
+
+    for rows.Next() {
+        var (
+            parent          sql.NullString
+            item            sql.NullString
+            isLeaf          sql.NullBool
+            descriptionText sql.NullString
+        )
+        error = rows.Scan(
+            &parent,
+            &item,
+            &isLeaf,
+            &descriptionText,
+        )
+        if error != nil {
+            Log.LogError(error)
+            continue
+        }
+        cat := &BlitzMessage.SearchCategory {
+            Parent:             &parent.String,
+            Item:               &item.String,
+            IsLeaf:             &isLeaf.Bool,
+            DescriptionText:    &descriptionText.String,
+        }
+        catArray = append(catArray, cat)
+    }
+
+    Log.Debugf("Returning %d categories.", len(catArray))
+    searchCategories := BlitzMessage.SearchCategories {
+        Categories: catArray,
+    }
+
+    response := &BlitzMessage.ServerResponse {
+        ResponseCode:       BlitzMessage.ResponseCodePtr(BlitzMessage.ResponseCode_RCSuccess),
+        ResponseType:       &BlitzMessage.ResponseType { SearchCategories: &searchCategories },
+    }
+    return response
 }
 

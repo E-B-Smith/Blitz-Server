@@ -997,7 +997,8 @@ create unique index CategoryIndex on
 ------------------------------------------------------------------------------------------
 
 
-create function pretty_size(sz bigint) returns text as
+create or replace
+function pretty_size(sz bigint) returns text as
     $$
     begin
     return pg_size_pretty(sz);
@@ -1007,7 +1008,8 @@ create function pretty_size(sz bigint) returns text as
     returns null on null input;
 
 
-create function pretty_int(sz bigint) returns text as
+create or replace
+function pretty_int(sz bigint) returns text as
     $$
     begin
     return to_char(sz, 'FM999,999,999,999,999');
@@ -1017,7 +1019,8 @@ create function pretty_int(sz bigint) returns text as
     returns null on null input;
 
 
-create or replace function pretty_float(fl double precision) returns text as
+create or replace
+function pretty_float(fl double precision) returns text as
     $$
     begin
     return to_char(fl, 'FM999,999,999,999,999.000');
@@ -1025,4 +1028,17 @@ create or replace function pretty_float(fl double precision) returns text as
     $$
     language plpgsql immutable
     returns null on null input;
+
+
+create or replace
+function trimwhitespace(s text) returns text as
+    $$
+    begin
+    return regexp_replace(regexp_replace(s, '^\s+', ''), '\s+$', '');
+    end;
+    $$
+    language plpgsql
+    immutable
+    returns null on null input;
+
 

@@ -1,6 +1,14 @@
-//  BlitzServer  -  Track Blitz users.
+
+
+//----------------------------------------------------------------------------------------
 //
-//  E.B.Smith  -  November, 2014
+//                                                      BlitzHere-Server : LinkShortner.go
+//                                                                Shorten http/https links
+//
+//                                                               E.B. Smith, October, 2015
+//                        -©- Copyright © 2015-2016 Edward Smith, all rights reserved. -©-
+//
+//----------------------------------------------------------------------------------------
 
 
 package main

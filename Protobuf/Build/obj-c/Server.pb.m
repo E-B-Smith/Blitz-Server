@@ -2179,6 +2179,7 @@ static BPushDisconnect* defaultBPushDisconnectInstance = nil;
 @property (strong) BUserCardInfo* userCardInfo;
 @property (strong) BCharge* chargeRequest;
 @property (strong) BFriendUpdate* friendRequest;
+@property (strong) BSearchCategories* searchCategories;
 @end
 
 @implementation BRequestType
@@ -2351,6 +2352,13 @@ static BPushDisconnect* defaultBPushDisconnectInstance = nil;
   hasFriendRequest_ = !!_value_;
 }
 @synthesize friendRequest;
+- (BOOL) hasSearchCategories {
+  return !!hasSearchCategories_;
+}
+- (void) setHasSearchCategories:(BOOL) _value_ {
+  hasSearchCategories_ = !!_value_;
+}
+@synthesize searchCategories;
 - (instancetype) init {
   if ((self = [super init])) {
     self.sessionRequest = [BSessionRequest defaultInstance];
@@ -2377,6 +2385,7 @@ static BPushDisconnect* defaultBPushDisconnectInstance = nil;
     self.userCardInfo = [BUserCardInfo defaultInstance];
     self.chargeRequest = [BCharge defaultInstance];
     self.friendRequest = [BFriendUpdate defaultInstance];
+    self.searchCategories = [BSearchCategories defaultInstance];
   }
   return self;
 }
@@ -2538,6 +2547,9 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   if (self.hasFriendRequest) {
     [output writeMessage:24 value:self.friendRequest];
   }
+  if (self.hasSearchCategories) {
+    [output writeMessage:25 value:self.searchCategories];
+  }
   [self.unknownFields writeToCodedOutputStream:output];
 }
 - (SInt32) serializedSize {
@@ -2618,6 +2630,9 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   }
   if (self.hasFriendRequest) {
     size_ += computeMessageSize(24, self.friendRequest);
+  }
+  if (self.hasSearchCategories) {
+    size_ += computeMessageSize(25, self.searchCategories);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -2798,6 +2813,12 @@ static BRequestType* defaultBRequestTypeInstance = nil;
                          withIndent:[NSString stringWithFormat:@"%@  ", indent]];
     [output appendFormat:@"%@}\n", indent];
   }
+  if (self.hasSearchCategories) {
+    [output appendFormat:@"%@%@ {\n", indent, @"searchCategories"];
+    [self.searchCategories writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (void) storeInDictionary:(NSMutableDictionary *)dictionary {
@@ -2921,6 +2942,11 @@ static BRequestType* defaultBRequestTypeInstance = nil;
    [self.friendRequest storeInDictionary:messageDictionary];
    [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"friendRequest"];
   }
+  if (self.hasSearchCategories) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.searchCategories storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"searchCategories"];
+  }
   [self.unknownFields storeInDictionary:dictionary];
 }
 - (BOOL) isEqual:(id)other {
@@ -2980,6 +3006,8 @@ static BRequestType* defaultBRequestTypeInstance = nil;
       (!self.hasChargeRequest || [self.chargeRequest isEqual:otherMessage.chargeRequest]) &&
       self.hasFriendRequest == otherMessage.hasFriendRequest &&
       (!self.hasFriendRequest || [self.friendRequest isEqual:otherMessage.friendRequest]) &&
+      self.hasSearchCategories == otherMessage.hasSearchCategories &&
+      (!self.hasSearchCategories || [self.searchCategories isEqual:otherMessage.searchCategories]) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
@@ -3055,6 +3083,9 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   }
   if (self.hasFriendRequest) {
     hashCode = hashCode * 31 + [self.friendRequest hash];
+  }
+  if (self.hasSearchCategories) {
+    hashCode = hashCode * 31 + [self.searchCategories hash];
   }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
@@ -3170,6 +3201,9 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   }
   if (other.hasFriendRequest) {
     [self mergeFriendRequest:other.friendRequest];
+  }
+  if (other.hasSearchCategories) {
+    [self mergeSearchCategories:other.searchCategories];
   }
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -3406,6 +3440,15 @@ static BRequestType* defaultBRequestTypeInstance = nil;
         }
         [input readMessage:subBuilder extensionRegistry:extensionRegistry];
         [self setFriendRequest:[subBuilder buildPartial]];
+        break;
+      }
+      case 202: {
+        BSearchCategoriesBuilder* subBuilder = [BSearchCategories builder];
+        if (self.hasSearchCategories) {
+          [subBuilder mergeFrom:self.searchCategories];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setSearchCategories:[subBuilder buildPartial]];
         break;
       }
     }
@@ -4131,6 +4174,36 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   resultRequestType.friendRequest = [BFriendUpdate defaultInstance];
   return self;
 }
+- (BOOL) hasSearchCategories {
+  return resultRequestType.hasSearchCategories;
+}
+- (BSearchCategories*) searchCategories {
+  return resultRequestType.searchCategories;
+}
+- (BRequestTypeBuilder*) setSearchCategories:(BSearchCategories*) value {
+  resultRequestType.hasSearchCategories = YES;
+  resultRequestType.searchCategories = value;
+  return self;
+}
+- (BRequestTypeBuilder*) setSearchCategoriesBuilder:(BSearchCategoriesBuilder*) builderForValue {
+  return [self setSearchCategories:[builderForValue build]];
+}
+- (BRequestTypeBuilder*) mergeSearchCategories:(BSearchCategories*) value {
+  if (resultRequestType.hasSearchCategories &&
+      resultRequestType.searchCategories != [BSearchCategories defaultInstance]) {
+    resultRequestType.searchCategories =
+      [[[BSearchCategories builderWithPrototype:resultRequestType.searchCategories] mergeFrom:value] buildPartial];
+  } else {
+    resultRequestType.searchCategories = value;
+  }
+  resultRequestType.hasSearchCategories = YES;
+  return self;
+}
+- (BRequestTypeBuilder*) clearSearchCategories {
+  resultRequestType.hasSearchCategories = NO;
+  resultRequestType.searchCategories = [BSearchCategories defaultInstance];
+  return self;
+}
 @end
 
 @interface BServerRequest ()
@@ -4436,6 +4509,7 @@ static BServerRequest* defaultBServerRequestInstance = nil;
 @property (strong) BUserCardInfo* userCardInfo;
 @property (strong) BCharge* chargeResponse;
 @property (strong) BFriendUpdate* friendResponse;
+@property (strong) BSearchCategories* searchCategories;
 @end
 
 @implementation BResponseType
@@ -4566,6 +4640,13 @@ static BServerRequest* defaultBServerRequestInstance = nil;
   hasFriendResponse_ = !!_value_;
 }
 @synthesize friendResponse;
+- (BOOL) hasSearchCategories {
+  return !!hasSearchCategories_;
+}
+- (void) setHasSearchCategories:(BOOL) _value_ {
+  hasSearchCategories_ = !!_value_;
+}
+@synthesize searchCategories;
 - (instancetype) init {
   if ((self = [super init])) {
     self.sessionResponse = [BSessionResponse defaultInstance];
@@ -4586,6 +4667,7 @@ static BServerRequest* defaultBServerRequestInstance = nil;
     self.userCardInfo = [BUserCardInfo defaultInstance];
     self.chargeResponse = [BCharge defaultInstance];
     self.friendResponse = [BFriendUpdate defaultInstance];
+    self.searchCategories = [BSearchCategories defaultInstance];
   }
   return self;
 }
@@ -4729,6 +4811,9 @@ static BResponseType* defaultBResponseTypeInstance = nil;
   if (self.hasFriendResponse) {
     [output writeMessage:18 value:self.friendResponse];
   }
+  if (self.hasSearchCategories) {
+    [output writeMessage:19 value:self.searchCategories];
+  }
   [self.unknownFields writeToCodedOutputStream:output];
 }
 - (SInt32) serializedSize {
@@ -4791,6 +4876,9 @@ static BResponseType* defaultBResponseTypeInstance = nil;
   }
   if (self.hasFriendResponse) {
     size_ += computeMessageSize(18, self.friendResponse);
+  }
+  if (self.hasSearchCategories) {
+    size_ += computeMessageSize(19, self.searchCategories);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -4935,6 +5023,12 @@ static BResponseType* defaultBResponseTypeInstance = nil;
                          withIndent:[NSString stringWithFormat:@"%@  ", indent]];
     [output appendFormat:@"%@}\n", indent];
   }
+  if (self.hasSearchCategories) {
+    [output appendFormat:@"%@%@ {\n", indent, @"searchCategories"];
+    [self.searchCategories writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (void) storeInDictionary:(NSMutableDictionary *)dictionary {
@@ -5028,6 +5122,11 @@ static BResponseType* defaultBResponseTypeInstance = nil;
    [self.friendResponse storeInDictionary:messageDictionary];
    [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"friendResponse"];
   }
+  if (self.hasSearchCategories) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.searchCategories storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"searchCategories"];
+  }
   [self.unknownFields storeInDictionary:dictionary];
 }
 - (BOOL) isEqual:(id)other {
@@ -5075,6 +5174,8 @@ static BResponseType* defaultBResponseTypeInstance = nil;
       (!self.hasChargeResponse || [self.chargeResponse isEqual:otherMessage.chargeResponse]) &&
       self.hasFriendResponse == otherMessage.hasFriendResponse &&
       (!self.hasFriendResponse || [self.friendResponse isEqual:otherMessage.friendResponse]) &&
+      self.hasSearchCategories == otherMessage.hasSearchCategories &&
+      (!self.hasSearchCategories || [self.searchCategories isEqual:otherMessage.searchCategories]) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
@@ -5132,6 +5233,9 @@ static BResponseType* defaultBResponseTypeInstance = nil;
   }
   if (self.hasFriendResponse) {
     hashCode = hashCode * 31 + [self.friendResponse hash];
+  }
+  if (self.hasSearchCategories) {
+    hashCode = hashCode * 31 + [self.searchCategories hash];
   }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
@@ -5229,6 +5333,9 @@ static BResponseType* defaultBResponseTypeInstance = nil;
   }
   if (other.hasFriendResponse) {
     [self mergeFriendResponse:other.friendResponse];
+  }
+  if (other.hasSearchCategories) {
+    [self mergeSearchCategories:other.searchCategories];
   }
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -5411,6 +5518,15 @@ static BResponseType* defaultBResponseTypeInstance = nil;
         }
         [input readMessage:subBuilder extensionRegistry:extensionRegistry];
         [self setFriendResponse:[subBuilder buildPartial]];
+        break;
+      }
+      case 154: {
+        BSearchCategoriesBuilder* subBuilder = [BSearchCategories builder];
+        if (self.hasSearchCategories) {
+          [subBuilder mergeFrom:self.searchCategories];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setSearchCategories:[subBuilder buildPartial]];
         break;
       }
     }
@@ -5954,6 +6070,36 @@ static BResponseType* defaultBResponseTypeInstance = nil;
 - (BResponseTypeBuilder*) clearFriendResponse {
   resultResponseType.hasFriendResponse = NO;
   resultResponseType.friendResponse = [BFriendUpdate defaultInstance];
+  return self;
+}
+- (BOOL) hasSearchCategories {
+  return resultResponseType.hasSearchCategories;
+}
+- (BSearchCategories*) searchCategories {
+  return resultResponseType.searchCategories;
+}
+- (BResponseTypeBuilder*) setSearchCategories:(BSearchCategories*) value {
+  resultResponseType.hasSearchCategories = YES;
+  resultResponseType.searchCategories = value;
+  return self;
+}
+- (BResponseTypeBuilder*) setSearchCategoriesBuilder:(BSearchCategoriesBuilder*) builderForValue {
+  return [self setSearchCategories:[builderForValue build]];
+}
+- (BResponseTypeBuilder*) mergeSearchCategories:(BSearchCategories*) value {
+  if (resultResponseType.hasSearchCategories &&
+      resultResponseType.searchCategories != [BSearchCategories defaultInstance]) {
+    resultResponseType.searchCategories =
+      [[[BSearchCategories builderWithPrototype:resultResponseType.searchCategories] mergeFrom:value] buildPartial];
+  } else {
+    resultResponseType.searchCategories = value;
+  }
+  resultResponseType.hasSearchCategories = YES;
+  return self;
+}
+- (BResponseTypeBuilder*) clearSearchCategories {
+  resultResponseType.hasSearchCategories = NO;
+  resultResponseType.searchCategories = [BSearchCategories defaultInstance];
   return self;
 }
 @end
