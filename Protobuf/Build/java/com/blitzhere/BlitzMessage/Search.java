@@ -2645,6 +2645,1550 @@ public final class Search {
     // @@protoc_insertion_point(class_scope:BlitzMessage.UserSearchResponse)
   }
 
+  public interface SearchCategoryOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:BlitzMessage.SearchCategory)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional string item = 1;</code>
+     */
+    boolean hasItem();
+    /**
+     * <code>optional string item = 1;</code>
+     */
+    java.lang.String getItem();
+    /**
+     * <code>optional string item = 1;</code>
+     */
+    com.google.protobuf.ByteString
+        getItemBytes();
+
+    /**
+     * <code>optional string parent = 2;</code>
+     */
+    boolean hasParent();
+    /**
+     * <code>optional string parent = 2;</code>
+     */
+    java.lang.String getParent();
+    /**
+     * <code>optional string parent = 2;</code>
+     */
+    com.google.protobuf.ByteString
+        getParentBytes();
+
+    /**
+     * <code>optional bool isLeaf = 3;</code>
+     */
+    boolean hasIsLeaf();
+    /**
+     * <code>optional bool isLeaf = 3;</code>
+     */
+    boolean getIsLeaf();
+
+    /**
+     * <code>optional string descriptionText = 4;</code>
+     */
+    boolean hasDescriptionText();
+    /**
+     * <code>optional string descriptionText = 4;</code>
+     */
+    java.lang.String getDescriptionText();
+    /**
+     * <code>optional string descriptionText = 4;</code>
+     */
+    com.google.protobuf.ByteString
+        getDescriptionTextBytes();
+  }
+  /**
+   * Protobuf type {@code BlitzMessage.SearchCategory}
+   */
+  public static final class SearchCategory extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:BlitzMessage.SearchCategory)
+      SearchCategoryOrBuilder {
+    // Use SearchCategory.newBuilder() to construct.
+    private SearchCategory(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private SearchCategory(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final SearchCategory defaultInstance;
+    public static SearchCategory getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public SearchCategory getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private SearchCategory(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000001;
+              item_ = bs;
+              break;
+            }
+            case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000002;
+              parent_ = bs;
+              break;
+            }
+            case 24: {
+              bitField0_ |= 0x00000004;
+              isLeaf_ = input.readBool();
+              break;
+            }
+            case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000008;
+              descriptionText_ = bs;
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.blitzhere.BlitzMessage.Search.internal_static_BlitzMessage_SearchCategory_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.blitzhere.BlitzMessage.Search.internal_static_BlitzMessage_SearchCategory_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.blitzhere.BlitzMessage.Search.SearchCategory.class, com.blitzhere.BlitzMessage.Search.SearchCategory.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<SearchCategory> PARSER =
+        new com.google.protobuf.AbstractParser<SearchCategory>() {
+      public SearchCategory parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new SearchCategory(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<SearchCategory> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int ITEM_FIELD_NUMBER = 1;
+    private java.lang.Object item_;
+    /**
+     * <code>optional string item = 1;</code>
+     */
+    public boolean hasItem() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional string item = 1;</code>
+     */
+    public java.lang.String getItem() {
+      java.lang.Object ref = item_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          item_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string item = 1;</code>
+     */
+    public com.google.protobuf.ByteString
+        getItemBytes() {
+      java.lang.Object ref = item_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        item_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int PARENT_FIELD_NUMBER = 2;
+    private java.lang.Object parent_;
+    /**
+     * <code>optional string parent = 2;</code>
+     */
+    public boolean hasParent() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional string parent = 2;</code>
+     */
+    public java.lang.String getParent() {
+      java.lang.Object ref = parent_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          parent_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string parent = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getParentBytes() {
+      java.lang.Object ref = parent_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        parent_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int ISLEAF_FIELD_NUMBER = 3;
+    private boolean isLeaf_;
+    /**
+     * <code>optional bool isLeaf = 3;</code>
+     */
+    public boolean hasIsLeaf() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional bool isLeaf = 3;</code>
+     */
+    public boolean getIsLeaf() {
+      return isLeaf_;
+    }
+
+    public static final int DESCRIPTIONTEXT_FIELD_NUMBER = 4;
+    private java.lang.Object descriptionText_;
+    /**
+     * <code>optional string descriptionText = 4;</code>
+     */
+    public boolean hasDescriptionText() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional string descriptionText = 4;</code>
+     */
+    public java.lang.String getDescriptionText() {
+      java.lang.Object ref = descriptionText_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          descriptionText_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string descriptionText = 4;</code>
+     */
+    public com.google.protobuf.ByteString
+        getDescriptionTextBytes() {
+      java.lang.Object ref = descriptionText_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        descriptionText_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private void initFields() {
+      item_ = "";
+      parent_ = "";
+      isLeaf_ = false;
+      descriptionText_ = "";
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeBytes(1, getItemBytes());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeBytes(2, getParentBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeBool(3, isLeaf_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeBytes(4, getDescriptionTextBytes());
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(1, getItemBytes());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, getParentBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(3, isLeaf_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(4, getDescriptionTextBytes());
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.blitzhere.BlitzMessage.Search.SearchCategory parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.blitzhere.BlitzMessage.Search.SearchCategory parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.blitzhere.BlitzMessage.Search.SearchCategory parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.blitzhere.BlitzMessage.Search.SearchCategory parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.blitzhere.BlitzMessage.Search.SearchCategory parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.blitzhere.BlitzMessage.Search.SearchCategory parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.blitzhere.BlitzMessage.Search.SearchCategory parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.blitzhere.BlitzMessage.Search.SearchCategory parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.blitzhere.BlitzMessage.Search.SearchCategory parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.blitzhere.BlitzMessage.Search.SearchCategory parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.blitzhere.BlitzMessage.Search.SearchCategory prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code BlitzMessage.SearchCategory}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:BlitzMessage.SearchCategory)
+        com.blitzhere.BlitzMessage.Search.SearchCategoryOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.blitzhere.BlitzMessage.Search.internal_static_BlitzMessage_SearchCategory_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.blitzhere.BlitzMessage.Search.internal_static_BlitzMessage_SearchCategory_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.blitzhere.BlitzMessage.Search.SearchCategory.class, com.blitzhere.BlitzMessage.Search.SearchCategory.Builder.class);
+      }
+
+      // Construct using com.blitzhere.BlitzMessage.Search.SearchCategory.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        item_ = "";
+        bitField0_ = (bitField0_ & ~0x00000001);
+        parent_ = "";
+        bitField0_ = (bitField0_ & ~0x00000002);
+        isLeaf_ = false;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        descriptionText_ = "";
+        bitField0_ = (bitField0_ & ~0x00000008);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.blitzhere.BlitzMessage.Search.internal_static_BlitzMessage_SearchCategory_descriptor;
+      }
+
+      public com.blitzhere.BlitzMessage.Search.SearchCategory getDefaultInstanceForType() {
+        return com.blitzhere.BlitzMessage.Search.SearchCategory.getDefaultInstance();
+      }
+
+      public com.blitzhere.BlitzMessage.Search.SearchCategory build() {
+        com.blitzhere.BlitzMessage.Search.SearchCategory result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.blitzhere.BlitzMessage.Search.SearchCategory buildPartial() {
+        com.blitzhere.BlitzMessage.Search.SearchCategory result = new com.blitzhere.BlitzMessage.Search.SearchCategory(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.item_ = item_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.parent_ = parent_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.isLeaf_ = isLeaf_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.descriptionText_ = descriptionText_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.blitzhere.BlitzMessage.Search.SearchCategory) {
+          return mergeFrom((com.blitzhere.BlitzMessage.Search.SearchCategory)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.blitzhere.BlitzMessage.Search.SearchCategory other) {
+        if (other == com.blitzhere.BlitzMessage.Search.SearchCategory.getDefaultInstance()) return this;
+        if (other.hasItem()) {
+          bitField0_ |= 0x00000001;
+          item_ = other.item_;
+          onChanged();
+        }
+        if (other.hasParent()) {
+          bitField0_ |= 0x00000002;
+          parent_ = other.parent_;
+          onChanged();
+        }
+        if (other.hasIsLeaf()) {
+          setIsLeaf(other.getIsLeaf());
+        }
+        if (other.hasDescriptionText()) {
+          bitField0_ |= 0x00000008;
+          descriptionText_ = other.descriptionText_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.blitzhere.BlitzMessage.Search.SearchCategory parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.blitzhere.BlitzMessage.Search.SearchCategory) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private java.lang.Object item_ = "";
+      /**
+       * <code>optional string item = 1;</code>
+       */
+      public boolean hasItem() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional string item = 1;</code>
+       */
+      public java.lang.String getItem() {
+        java.lang.Object ref = item_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            item_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string item = 1;</code>
+       */
+      public com.google.protobuf.ByteString
+          getItemBytes() {
+        java.lang.Object ref = item_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          item_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string item = 1;</code>
+       */
+      public Builder setItem(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        item_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string item = 1;</code>
+       */
+      public Builder clearItem() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        item_ = getDefaultInstance().getItem();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string item = 1;</code>
+       */
+      public Builder setItemBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        item_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object parent_ = "";
+      /**
+       * <code>optional string parent = 2;</code>
+       */
+      public boolean hasParent() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional string parent = 2;</code>
+       */
+      public java.lang.String getParent() {
+        java.lang.Object ref = parent_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            parent_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string parent = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getParentBytes() {
+        java.lang.Object ref = parent_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          parent_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string parent = 2;</code>
+       */
+      public Builder setParent(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        parent_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string parent = 2;</code>
+       */
+      public Builder clearParent() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        parent_ = getDefaultInstance().getParent();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string parent = 2;</code>
+       */
+      public Builder setParentBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        parent_ = value;
+        onChanged();
+        return this;
+      }
+
+      private boolean isLeaf_ ;
+      /**
+       * <code>optional bool isLeaf = 3;</code>
+       */
+      public boolean hasIsLeaf() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional bool isLeaf = 3;</code>
+       */
+      public boolean getIsLeaf() {
+        return isLeaf_;
+      }
+      /**
+       * <code>optional bool isLeaf = 3;</code>
+       */
+      public Builder setIsLeaf(boolean value) {
+        bitField0_ |= 0x00000004;
+        isLeaf_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool isLeaf = 3;</code>
+       */
+      public Builder clearIsLeaf() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        isLeaf_ = false;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object descriptionText_ = "";
+      /**
+       * <code>optional string descriptionText = 4;</code>
+       */
+      public boolean hasDescriptionText() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional string descriptionText = 4;</code>
+       */
+      public java.lang.String getDescriptionText() {
+        java.lang.Object ref = descriptionText_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            descriptionText_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string descriptionText = 4;</code>
+       */
+      public com.google.protobuf.ByteString
+          getDescriptionTextBytes() {
+        java.lang.Object ref = descriptionText_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          descriptionText_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string descriptionText = 4;</code>
+       */
+      public Builder setDescriptionText(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+        descriptionText_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string descriptionText = 4;</code>
+       */
+      public Builder clearDescriptionText() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        descriptionText_ = getDefaultInstance().getDescriptionText();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string descriptionText = 4;</code>
+       */
+      public Builder setDescriptionTextBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+        descriptionText_ = value;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:BlitzMessage.SearchCategory)
+    }
+
+    static {
+      defaultInstance = new SearchCategory(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:BlitzMessage.SearchCategory)
+  }
+
+  public interface SearchCategoriesOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:BlitzMessage.SearchCategories)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>repeated .BlitzMessage.SearchCategory categories = 1;</code>
+     */
+    java.util.List<com.blitzhere.BlitzMessage.Search.SearchCategory> 
+        getCategoriesList();
+    /**
+     * <code>repeated .BlitzMessage.SearchCategory categories = 1;</code>
+     */
+    com.blitzhere.BlitzMessage.Search.SearchCategory getCategories(int index);
+    /**
+     * <code>repeated .BlitzMessage.SearchCategory categories = 1;</code>
+     */
+    int getCategoriesCount();
+    /**
+     * <code>repeated .BlitzMessage.SearchCategory categories = 1;</code>
+     */
+    java.util.List<? extends com.blitzhere.BlitzMessage.Search.SearchCategoryOrBuilder> 
+        getCategoriesOrBuilderList();
+    /**
+     * <code>repeated .BlitzMessage.SearchCategory categories = 1;</code>
+     */
+    com.blitzhere.BlitzMessage.Search.SearchCategoryOrBuilder getCategoriesOrBuilder(
+        int index);
+  }
+  /**
+   * Protobuf type {@code BlitzMessage.SearchCategories}
+   */
+  public static final class SearchCategories extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:BlitzMessage.SearchCategories)
+      SearchCategoriesOrBuilder {
+    // Use SearchCategories.newBuilder() to construct.
+    private SearchCategories(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private SearchCategories(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final SearchCategories defaultInstance;
+    public static SearchCategories getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public SearchCategories getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private SearchCategories(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              if (!((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
+                categories_ = new java.util.ArrayList<com.blitzhere.BlitzMessage.Search.SearchCategory>();
+                mutable_bitField0_ |= 0x00000001;
+              }
+              categories_.add(input.readMessage(com.blitzhere.BlitzMessage.Search.SearchCategory.PARSER, extensionRegistry));
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        if (((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
+          categories_ = java.util.Collections.unmodifiableList(categories_);
+        }
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.blitzhere.BlitzMessage.Search.internal_static_BlitzMessage_SearchCategories_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.blitzhere.BlitzMessage.Search.internal_static_BlitzMessage_SearchCategories_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.blitzhere.BlitzMessage.Search.SearchCategories.class, com.blitzhere.BlitzMessage.Search.SearchCategories.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<SearchCategories> PARSER =
+        new com.google.protobuf.AbstractParser<SearchCategories>() {
+      public SearchCategories parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new SearchCategories(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<SearchCategories> getParserForType() {
+      return PARSER;
+    }
+
+    public static final int CATEGORIES_FIELD_NUMBER = 1;
+    private java.util.List<com.blitzhere.BlitzMessage.Search.SearchCategory> categories_;
+    /**
+     * <code>repeated .BlitzMessage.SearchCategory categories = 1;</code>
+     */
+    public java.util.List<com.blitzhere.BlitzMessage.Search.SearchCategory> getCategoriesList() {
+      return categories_;
+    }
+    /**
+     * <code>repeated .BlitzMessage.SearchCategory categories = 1;</code>
+     */
+    public java.util.List<? extends com.blitzhere.BlitzMessage.Search.SearchCategoryOrBuilder> 
+        getCategoriesOrBuilderList() {
+      return categories_;
+    }
+    /**
+     * <code>repeated .BlitzMessage.SearchCategory categories = 1;</code>
+     */
+    public int getCategoriesCount() {
+      return categories_.size();
+    }
+    /**
+     * <code>repeated .BlitzMessage.SearchCategory categories = 1;</code>
+     */
+    public com.blitzhere.BlitzMessage.Search.SearchCategory getCategories(int index) {
+      return categories_.get(index);
+    }
+    /**
+     * <code>repeated .BlitzMessage.SearchCategory categories = 1;</code>
+     */
+    public com.blitzhere.BlitzMessage.Search.SearchCategoryOrBuilder getCategoriesOrBuilder(
+        int index) {
+      return categories_.get(index);
+    }
+
+    private void initFields() {
+      categories_ = java.util.Collections.emptyList();
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      for (int i = 0; i < categories_.size(); i++) {
+        output.writeMessage(1, categories_.get(i));
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      for (int i = 0; i < categories_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(1, categories_.get(i));
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.blitzhere.BlitzMessage.Search.SearchCategories parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.blitzhere.BlitzMessage.Search.SearchCategories parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.blitzhere.BlitzMessage.Search.SearchCategories parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.blitzhere.BlitzMessage.Search.SearchCategories parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.blitzhere.BlitzMessage.Search.SearchCategories parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.blitzhere.BlitzMessage.Search.SearchCategories parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.blitzhere.BlitzMessage.Search.SearchCategories parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.blitzhere.BlitzMessage.Search.SearchCategories parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.blitzhere.BlitzMessage.Search.SearchCategories parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.blitzhere.BlitzMessage.Search.SearchCategories parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.blitzhere.BlitzMessage.Search.SearchCategories prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code BlitzMessage.SearchCategories}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:BlitzMessage.SearchCategories)
+        com.blitzhere.BlitzMessage.Search.SearchCategoriesOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.blitzhere.BlitzMessage.Search.internal_static_BlitzMessage_SearchCategories_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.blitzhere.BlitzMessage.Search.internal_static_BlitzMessage_SearchCategories_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.blitzhere.BlitzMessage.Search.SearchCategories.class, com.blitzhere.BlitzMessage.Search.SearchCategories.Builder.class);
+      }
+
+      // Construct using com.blitzhere.BlitzMessage.Search.SearchCategories.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getCategoriesFieldBuilder();
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        if (categoriesBuilder_ == null) {
+          categories_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+        } else {
+          categoriesBuilder_.clear();
+        }
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.blitzhere.BlitzMessage.Search.internal_static_BlitzMessage_SearchCategories_descriptor;
+      }
+
+      public com.blitzhere.BlitzMessage.Search.SearchCategories getDefaultInstanceForType() {
+        return com.blitzhere.BlitzMessage.Search.SearchCategories.getDefaultInstance();
+      }
+
+      public com.blitzhere.BlitzMessage.Search.SearchCategories build() {
+        com.blitzhere.BlitzMessage.Search.SearchCategories result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.blitzhere.BlitzMessage.Search.SearchCategories buildPartial() {
+        com.blitzhere.BlitzMessage.Search.SearchCategories result = new com.blitzhere.BlitzMessage.Search.SearchCategories(this);
+        int from_bitField0_ = bitField0_;
+        if (categoriesBuilder_ == null) {
+          if (((bitField0_ & 0x00000001) == 0x00000001)) {
+            categories_ = java.util.Collections.unmodifiableList(categories_);
+            bitField0_ = (bitField0_ & ~0x00000001);
+          }
+          result.categories_ = categories_;
+        } else {
+          result.categories_ = categoriesBuilder_.build();
+        }
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.blitzhere.BlitzMessage.Search.SearchCategories) {
+          return mergeFrom((com.blitzhere.BlitzMessage.Search.SearchCategories)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.blitzhere.BlitzMessage.Search.SearchCategories other) {
+        if (other == com.blitzhere.BlitzMessage.Search.SearchCategories.getDefaultInstance()) return this;
+        if (categoriesBuilder_ == null) {
+          if (!other.categories_.isEmpty()) {
+            if (categories_.isEmpty()) {
+              categories_ = other.categories_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+            } else {
+              ensureCategoriesIsMutable();
+              categories_.addAll(other.categories_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.categories_.isEmpty()) {
+            if (categoriesBuilder_.isEmpty()) {
+              categoriesBuilder_.dispose();
+              categoriesBuilder_ = null;
+              categories_ = other.categories_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+              categoriesBuilder_ = 
+                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                   getCategoriesFieldBuilder() : null;
+            } else {
+              categoriesBuilder_.addAllMessages(other.categories_);
+            }
+          }
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.blitzhere.BlitzMessage.Search.SearchCategories parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.blitzhere.BlitzMessage.Search.SearchCategories) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private java.util.List<com.blitzhere.BlitzMessage.Search.SearchCategory> categories_ =
+        java.util.Collections.emptyList();
+      private void ensureCategoriesIsMutable() {
+        if (!((bitField0_ & 0x00000001) == 0x00000001)) {
+          categories_ = new java.util.ArrayList<com.blitzhere.BlitzMessage.Search.SearchCategory>(categories_);
+          bitField0_ |= 0x00000001;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.blitzhere.BlitzMessage.Search.SearchCategory, com.blitzhere.BlitzMessage.Search.SearchCategory.Builder, com.blitzhere.BlitzMessage.Search.SearchCategoryOrBuilder> categoriesBuilder_;
+
+      /**
+       * <code>repeated .BlitzMessage.SearchCategory categories = 1;</code>
+       */
+      public java.util.List<com.blitzhere.BlitzMessage.Search.SearchCategory> getCategoriesList() {
+        if (categoriesBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(categories_);
+        } else {
+          return categoriesBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .BlitzMessage.SearchCategory categories = 1;</code>
+       */
+      public int getCategoriesCount() {
+        if (categoriesBuilder_ == null) {
+          return categories_.size();
+        } else {
+          return categoriesBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .BlitzMessage.SearchCategory categories = 1;</code>
+       */
+      public com.blitzhere.BlitzMessage.Search.SearchCategory getCategories(int index) {
+        if (categoriesBuilder_ == null) {
+          return categories_.get(index);
+        } else {
+          return categoriesBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .BlitzMessage.SearchCategory categories = 1;</code>
+       */
+      public Builder setCategories(
+          int index, com.blitzhere.BlitzMessage.Search.SearchCategory value) {
+        if (categoriesBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureCategoriesIsMutable();
+          categories_.set(index, value);
+          onChanged();
+        } else {
+          categoriesBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .BlitzMessage.SearchCategory categories = 1;</code>
+       */
+      public Builder setCategories(
+          int index, com.blitzhere.BlitzMessage.Search.SearchCategory.Builder builderForValue) {
+        if (categoriesBuilder_ == null) {
+          ensureCategoriesIsMutable();
+          categories_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          categoriesBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .BlitzMessage.SearchCategory categories = 1;</code>
+       */
+      public Builder addCategories(com.blitzhere.BlitzMessage.Search.SearchCategory value) {
+        if (categoriesBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureCategoriesIsMutable();
+          categories_.add(value);
+          onChanged();
+        } else {
+          categoriesBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .BlitzMessage.SearchCategory categories = 1;</code>
+       */
+      public Builder addCategories(
+          int index, com.blitzhere.BlitzMessage.Search.SearchCategory value) {
+        if (categoriesBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureCategoriesIsMutable();
+          categories_.add(index, value);
+          onChanged();
+        } else {
+          categoriesBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .BlitzMessage.SearchCategory categories = 1;</code>
+       */
+      public Builder addCategories(
+          com.blitzhere.BlitzMessage.Search.SearchCategory.Builder builderForValue) {
+        if (categoriesBuilder_ == null) {
+          ensureCategoriesIsMutable();
+          categories_.add(builderForValue.build());
+          onChanged();
+        } else {
+          categoriesBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .BlitzMessage.SearchCategory categories = 1;</code>
+       */
+      public Builder addCategories(
+          int index, com.blitzhere.BlitzMessage.Search.SearchCategory.Builder builderForValue) {
+        if (categoriesBuilder_ == null) {
+          ensureCategoriesIsMutable();
+          categories_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          categoriesBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .BlitzMessage.SearchCategory categories = 1;</code>
+       */
+      public Builder addAllCategories(
+          java.lang.Iterable<? extends com.blitzhere.BlitzMessage.Search.SearchCategory> values) {
+        if (categoriesBuilder_ == null) {
+          ensureCategoriesIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, categories_);
+          onChanged();
+        } else {
+          categoriesBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .BlitzMessage.SearchCategory categories = 1;</code>
+       */
+      public Builder clearCategories() {
+        if (categoriesBuilder_ == null) {
+          categories_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+          onChanged();
+        } else {
+          categoriesBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .BlitzMessage.SearchCategory categories = 1;</code>
+       */
+      public Builder removeCategories(int index) {
+        if (categoriesBuilder_ == null) {
+          ensureCategoriesIsMutable();
+          categories_.remove(index);
+          onChanged();
+        } else {
+          categoriesBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .BlitzMessage.SearchCategory categories = 1;</code>
+       */
+      public com.blitzhere.BlitzMessage.Search.SearchCategory.Builder getCategoriesBuilder(
+          int index) {
+        return getCategoriesFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .BlitzMessage.SearchCategory categories = 1;</code>
+       */
+      public com.blitzhere.BlitzMessage.Search.SearchCategoryOrBuilder getCategoriesOrBuilder(
+          int index) {
+        if (categoriesBuilder_ == null) {
+          return categories_.get(index);  } else {
+          return categoriesBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .BlitzMessage.SearchCategory categories = 1;</code>
+       */
+      public java.util.List<? extends com.blitzhere.BlitzMessage.Search.SearchCategoryOrBuilder> 
+           getCategoriesOrBuilderList() {
+        if (categoriesBuilder_ != null) {
+          return categoriesBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(categories_);
+        }
+      }
+      /**
+       * <code>repeated .BlitzMessage.SearchCategory categories = 1;</code>
+       */
+      public com.blitzhere.BlitzMessage.Search.SearchCategory.Builder addCategoriesBuilder() {
+        return getCategoriesFieldBuilder().addBuilder(
+            com.blitzhere.BlitzMessage.Search.SearchCategory.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .BlitzMessage.SearchCategory categories = 1;</code>
+       */
+      public com.blitzhere.BlitzMessage.Search.SearchCategory.Builder addCategoriesBuilder(
+          int index) {
+        return getCategoriesFieldBuilder().addBuilder(
+            index, com.blitzhere.BlitzMessage.Search.SearchCategory.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .BlitzMessage.SearchCategory categories = 1;</code>
+       */
+      public java.util.List<com.blitzhere.BlitzMessage.Search.SearchCategory.Builder> 
+           getCategoriesBuilderList() {
+        return getCategoriesFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.blitzhere.BlitzMessage.Search.SearchCategory, com.blitzhere.BlitzMessage.Search.SearchCategory.Builder, com.blitzhere.BlitzMessage.Search.SearchCategoryOrBuilder> 
+          getCategoriesFieldBuilder() {
+        if (categoriesBuilder_ == null) {
+          categoriesBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+              com.blitzhere.BlitzMessage.Search.SearchCategory, com.blitzhere.BlitzMessage.Search.SearchCategory.Builder, com.blitzhere.BlitzMessage.Search.SearchCategoryOrBuilder>(
+                  categories_,
+                  ((bitField0_ & 0x00000001) == 0x00000001),
+                  getParentForChildren(),
+                  isClean());
+          categories_ = null;
+        }
+        return categoriesBuilder_;
+      }
+
+      // @@protoc_insertion_point(builder_scope:BlitzMessage.SearchCategories)
+    }
+
+    static {
+      defaultInstance = new SearchCategories(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:BlitzMessage.SearchCategories)
+  }
+
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_BlitzMessage_AutocompleteRequest_descriptor;
   private static
@@ -2665,6 +4209,16 @@ public final class Search {
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_BlitzMessage_UserSearchResponse_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_BlitzMessage_SearchCategory_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_BlitzMessage_SearchCategory_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_BlitzMessage_SearchCategories_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_BlitzMessage_SearchCategories_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -2682,10 +4236,14 @@ public final class Search {
       "\022\023\n\013suggestions\030\002 \003(\t\"\"\n\021UserSearchReque" +
       "st\022\r\n\005query\030\001 \001(\t\"P\n\022UserSearchResponse\022" +
       "\r\n\005query\030\001 \001(\t\022+\n\010profiles\030\002 \003(\0132\031.Blitz" +
-      "Message.UserProfile*8\n\nSearchType\022\017\n\013STS" +
-      "earchAll\020\000\022\013\n\007STUsers\020\001\022\014\n\010STTopics\020\002B/\n",
-      "\032com.blitzhere.BlitzMessage\210\001\001\322>\002\n\000\322>\003\022\001" +
-      "B\322>\002\030\001"
+      "Message.UserProfile\"W\n\016SearchCategory\022\014\n" +
+      "\004item\030\001 \001(\t\022\016\n\006parent\030\002 \001(\t\022\016\n\006isLeaf\030\003 ",
+      "\001(\010\022\027\n\017descriptionText\030\004 \001(\t\"D\n\020SearchCa" +
+      "tegories\0220\n\ncategories\030\001 \003(\0132\034.BlitzMess" +
+      "age.SearchCategory*8\n\nSearchType\022\017\n\013STSe" +
+      "archAll\020\000\022\013\n\007STUsers\020\001\022\014\n\010STTopics\020\002B/\n\032" +
+      "com.blitzhere.BlitzMessage\210\001\001\322>\002\n\000\322>\003\022\001B" +
+      "\322>\002\030\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -2725,6 +4283,18 @@ public final class Search {
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_BlitzMessage_UserSearchResponse_descriptor,
         new java.lang.String[] { "Query", "Profiles", });
+    internal_static_BlitzMessage_SearchCategory_descriptor =
+      getDescriptor().getMessageTypes().get(4);
+    internal_static_BlitzMessage_SearchCategory_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_BlitzMessage_SearchCategory_descriptor,
+        new java.lang.String[] { "Item", "Parent", "IsLeaf", "DescriptionText", });
+    internal_static_BlitzMessage_SearchCategories_descriptor =
+      getDescriptor().getMessageTypes().get(5);
+    internal_static_BlitzMessage_SearchCategories_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_BlitzMessage_SearchCategories_descriptor,
+        new java.lang.String[] { "Categories", });
     com.google.protobuf.ExtensionRegistry registry =
         com.google.protobuf.ExtensionRegistry.newInstance();
     registry.add(google.protobuf.ObjectivecDescriptor.objectivecFileOptions);

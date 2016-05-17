@@ -33,6 +33,8 @@ It has these top-level messages:
 	AutocompleteResponse
 	UserSearchRequest
 	UserSearchResponse
+	SearchCategory
+	SearchCategories
 	DebugMessage
 	SessionRequest
 	BlitzHereAppOptions

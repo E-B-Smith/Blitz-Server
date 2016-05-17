@@ -41,6 +41,10 @@
 @class BLocationBuilder;
 @class BProfilesFromContactInfo;
 @class BProfilesFromContactInfoBuilder;
+@class BSearchCategories;
+@class BSearchCategoriesBuilder;
+@class BSearchCategory;
+@class BSearchCategoryBuilder;
 @class BSize;
 @class BSizeBuilder;
 @class BSocialIdentity;
@@ -357,6 +361,136 @@ NSString *NSStringFromBSearchType(BSearchType value);
 - (BUserSearchResponseBuilder *)addProfiles:(BUserProfile*)value;
 - (BUserSearchResponseBuilder *)setProfilesArray:(NSArray *)array;
 - (BUserSearchResponseBuilder *)clearProfiles;
+@end
+
+#define SearchCategory_item @"item"
+#define SearchCategory_parent @"parent"
+#define SearchCategory_isLeaf @"isLeaf"
+#define SearchCategory_descriptionText @"descriptionText"
+@interface BSearchCategory : PBGeneratedMessage<GeneratedMessageProtocol> {
+@private
+  BOOL hasIsLeaf_:1;
+  BOOL hasItem_:1;
+  BOOL hasParent_:1;
+  BOOL hasDescriptionText_:1;
+  BOOL isLeaf_:1;
+  NSString* item;
+  NSString* parent;
+  NSString* descriptionText;
+}
+- (BOOL) hasItem;
+- (BOOL) hasParent;
+- (BOOL) hasIsLeaf;
+- (BOOL) hasDescriptionText;
+@property (readonly, strong) NSString* item;
+@property (readonly, strong) NSString* parent;
+- (BOOL) isLeaf;
+@property (readonly, strong) NSString* descriptionText;
+
++ (instancetype) defaultInstance;
+- (instancetype) defaultInstance;
+
+- (BOOL) isInitialized;
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
+- (BSearchCategoryBuilder*) builder;
++ (BSearchCategoryBuilder*) builder;
++ (BSearchCategoryBuilder*) builderWithPrototype:(BSearchCategory*) prototype;
+- (BSearchCategoryBuilder*) toBuilder;
+
++ (BSearchCategory*) parseFromData:(NSData*) data;
++ (BSearchCategory*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (BSearchCategory*) parseFromInputStream:(NSInputStream*) input;
++ (BSearchCategory*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (BSearchCategory*) parseFromCodedInputStream:(PBCodedInputStream*) input;
++ (BSearchCategory*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+@end
+
+@interface BSearchCategoryBuilder : PBGeneratedMessageBuilder {
+@private
+  BSearchCategory* resultSearchCategory;
+}
+
+- (BSearchCategory*) defaultInstance;
+
+- (BSearchCategoryBuilder*) clear;
+- (BSearchCategoryBuilder*) clone;
+
+- (BSearchCategory*) build;
+- (BSearchCategory*) buildPartial;
+
+- (BSearchCategoryBuilder*) mergeFrom:(BSearchCategory*) other;
+- (BSearchCategoryBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
+- (BSearchCategoryBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+
+- (BOOL) hasItem;
+- (NSString*) item;
+- (BSearchCategoryBuilder*) setItem:(NSString*) value;
+- (BSearchCategoryBuilder*) clearItem;
+
+- (BOOL) hasParent;
+- (NSString*) parent;
+- (BSearchCategoryBuilder*) setParent:(NSString*) value;
+- (BSearchCategoryBuilder*) clearParent;
+
+- (BOOL) hasIsLeaf;
+- (BOOL) isLeaf;
+- (BSearchCategoryBuilder*) setIsLeaf:(BOOL) value;
+- (BSearchCategoryBuilder*) clearIsLeaf;
+
+- (BOOL) hasDescriptionText;
+- (NSString*) descriptionText;
+- (BSearchCategoryBuilder*) setDescriptionText:(NSString*) value;
+- (BSearchCategoryBuilder*) clearDescriptionText;
+@end
+
+#define SearchCategories_categories @"categories"
+@interface BSearchCategories : PBGeneratedMessage<GeneratedMessageProtocol> {
+@private
+  NSMutableArray * categoriesArray;
+}
+@property (readonly, strong) NSArray * categories;
+- (BSearchCategory*)categoriesAtIndex:(NSUInteger)index;
+
++ (instancetype) defaultInstance;
+- (instancetype) defaultInstance;
+
+- (BOOL) isInitialized;
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
+- (BSearchCategoriesBuilder*) builder;
++ (BSearchCategoriesBuilder*) builder;
++ (BSearchCategoriesBuilder*) builderWithPrototype:(BSearchCategories*) prototype;
+- (BSearchCategoriesBuilder*) toBuilder;
+
++ (BSearchCategories*) parseFromData:(NSData*) data;
++ (BSearchCategories*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (BSearchCategories*) parseFromInputStream:(NSInputStream*) input;
++ (BSearchCategories*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (BSearchCategories*) parseFromCodedInputStream:(PBCodedInputStream*) input;
++ (BSearchCategories*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+@end
+
+@interface BSearchCategoriesBuilder : PBGeneratedMessageBuilder {
+@private
+  BSearchCategories* resultSearchCategories;
+}
+
+- (BSearchCategories*) defaultInstance;
+
+- (BSearchCategoriesBuilder*) clear;
+- (BSearchCategoriesBuilder*) clone;
+
+- (BSearchCategories*) build;
+- (BSearchCategories*) buildPartial;
+
+- (BSearchCategoriesBuilder*) mergeFrom:(BSearchCategories*) other;
+- (BSearchCategoriesBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
+- (BSearchCategoriesBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+
+- (NSMutableArray *)categories;
+- (BSearchCategory*)categoriesAtIndex:(NSUInteger)index;
+- (BSearchCategoriesBuilder *)addCategories:(BSearchCategory*)value;
+- (BSearchCategoriesBuilder *)setCategoriesArray:(NSArray *)array;
+- (BSearchCategoriesBuilder *)clearCategories;
 @end
 
 

@@ -87,6 +87,10 @@
 @class BRequestTypeBuilder;
 @class BResponseType;
 @class BResponseTypeBuilder;
+@class BSearchCategories;
+@class BSearchCategoriesBuilder;
+@class BSearchCategory;
+@class BSearchCategoryBuilder;
 @class BServerRequest;
 @class BServerRequestBuilder;
 @class BServerResponse;

@@ -1056,5 +1056,584 @@ static BUserSearchResponse* defaultBUserSearchResponseInstance = nil;
 }
 @end
 
+@interface BSearchCategory ()
+@property (strong) NSString* item;
+@property (strong) NSString* parent;
+@property BOOL isLeaf;
+@property (strong) NSString* descriptionText;
+@end
+
+@implementation BSearchCategory
+
+- (BOOL) hasItem {
+  return !!hasItem_;
+}
+- (void) setHasItem:(BOOL) _value_ {
+  hasItem_ = !!_value_;
+}
+@synthesize item;
+- (BOOL) hasParent {
+  return !!hasParent_;
+}
+- (void) setHasParent:(BOOL) _value_ {
+  hasParent_ = !!_value_;
+}
+@synthesize parent;
+- (BOOL) hasIsLeaf {
+  return !!hasIsLeaf_;
+}
+- (void) setHasIsLeaf:(BOOL) _value_ {
+  hasIsLeaf_ = !!_value_;
+}
+- (BOOL) isLeaf {
+  return !!isLeaf_;
+}
+- (void) setIsLeaf:(BOOL) _value_ {
+  isLeaf_ = !!_value_;
+}
+- (BOOL) hasDescriptionText {
+  return !!hasDescriptionText_;
+}
+- (void) setHasDescriptionText:(BOOL) _value_ {
+  hasDescriptionText_ = !!_value_;
+}
+@synthesize descriptionText;
+- (instancetype) init {
+  if ((self = [super init])) {
+    self.item = @"";
+    self.parent = @"";
+    self.isLeaf = NO;
+    self.descriptionText = @"";
+  }
+  return self;
+}
+static BSearchCategory* defaultBSearchCategoryInstance = nil;
++ (void) initialize {
+  if (self == [BSearchCategory class]) {
+    defaultBSearchCategoryInstance = [[BSearchCategory alloc] init];
+  }
+}
++ (instancetype) defaultInstance {
+  return defaultBSearchCategoryInstance;
+}
+- (instancetype) defaultInstance {
+  return defaultBSearchCategoryInstance;
+}
+- (BOOL) isInitialized {
+  return YES;
+}
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
+  if (self.hasItem) {
+    [output writeString:1 value:self.item];
+  }
+  if (self.hasParent) {
+    [output writeString:2 value:self.parent];
+  }
+  if (self.hasIsLeaf) {
+    [output writeBool:3 value:self.isLeaf];
+  }
+  if (self.hasDescriptionText) {
+    [output writeString:4 value:self.descriptionText];
+  }
+  [self.unknownFields writeToCodedOutputStream:output];
+}
+- (SInt32) serializedSize {
+  __block SInt32 size_ = memoizedSerializedSize;
+  if (size_ != -1) {
+    return size_;
+  }
+
+  size_ = 0;
+  if (self.hasItem) {
+    size_ += computeStringSize(1, self.item);
+  }
+  if (self.hasParent) {
+    size_ += computeStringSize(2, self.parent);
+  }
+  if (self.hasIsLeaf) {
+    size_ += computeBoolSize(3, self.isLeaf);
+  }
+  if (self.hasDescriptionText) {
+    size_ += computeStringSize(4, self.descriptionText);
+  }
+  size_ += self.unknownFields.serializedSize;
+  memoizedSerializedSize = size_;
+  return size_;
+}
++ (BSearchCategory*) parseFromData:(NSData*) data {
+  return (BSearchCategory*)[[[BSearchCategory builder] mergeFromData:data] build];
+}
++ (BSearchCategory*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BSearchCategory*)[[[BSearchCategory builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
+}
++ (BSearchCategory*) parseFromInputStream:(NSInputStream*) input {
+  return (BSearchCategory*)[[[BSearchCategory builder] mergeFromInputStream:input] build];
+}
++ (BSearchCategory*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BSearchCategory*)[[[BSearchCategory builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (BSearchCategory*) parseFromCodedInputStream:(PBCodedInputStream*) input {
+  return (BSearchCategory*)[[[BSearchCategory builder] mergeFromCodedInputStream:input] build];
+}
++ (BSearchCategory*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BSearchCategory*)[[[BSearchCategory builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (BSearchCategoryBuilder*) builder {
+  return [[BSearchCategoryBuilder alloc] init];
+}
++ (BSearchCategoryBuilder*) builderWithPrototype:(BSearchCategory*) prototype {
+  return [[BSearchCategory builder] mergeFrom:prototype];
+}
+- (BSearchCategoryBuilder*) builder {
+  return [BSearchCategory builder];
+}
+- (BSearchCategoryBuilder*) toBuilder {
+  return [BSearchCategory builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  if (self.hasItem) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"item", self.item];
+  }
+  if (self.hasParent) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"parent", self.parent];
+  }
+  if (self.hasIsLeaf) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"isLeaf", [NSNumber numberWithBool:self.isLeaf]];
+  }
+  if (self.hasDescriptionText) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"descriptionText", self.descriptionText];
+  }
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (void) storeInDictionary:(NSMutableDictionary *)dictionary {
+  if (self.hasItem) {
+    [dictionary setObject: self.item forKey: @"item"];
+  }
+  if (self.hasParent) {
+    [dictionary setObject: self.parent forKey: @"parent"];
+  }
+  if (self.hasIsLeaf) {
+    [dictionary setObject: [NSNumber numberWithBool:self.isLeaf] forKey: @"isLeaf"];
+  }
+  if (self.hasDescriptionText) {
+    [dictionary setObject: self.descriptionText forKey: @"descriptionText"];
+  }
+  [self.unknownFields storeInDictionary:dictionary];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[BSearchCategory class]]) {
+    return NO;
+  }
+  BSearchCategory *otherMessage = other;
+  return
+      self.hasItem == otherMessage.hasItem &&
+      (!self.hasItem || [self.item isEqual:otherMessage.item]) &&
+      self.hasParent == otherMessage.hasParent &&
+      (!self.hasParent || [self.parent isEqual:otherMessage.parent]) &&
+      self.hasIsLeaf == otherMessage.hasIsLeaf &&
+      (!self.hasIsLeaf || self.isLeaf == otherMessage.isLeaf) &&
+      self.hasDescriptionText == otherMessage.hasDescriptionText &&
+      (!self.hasDescriptionText || [self.descriptionText isEqual:otherMessage.descriptionText]) &&
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  __block NSUInteger hashCode = 7;
+  if (self.hasItem) {
+    hashCode = hashCode * 31 + [self.item hash];
+  }
+  if (self.hasParent) {
+    hashCode = hashCode * 31 + [self.parent hash];
+  }
+  if (self.hasIsLeaf) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithBool:self.isLeaf] hash];
+  }
+  if (self.hasDescriptionText) {
+    hashCode = hashCode * 31 + [self.descriptionText hash];
+  }
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
+}
+@end
+
+@interface BSearchCategoryBuilder()
+@property (strong) BSearchCategory* resultSearchCategory;
+@end
+
+@implementation BSearchCategoryBuilder
+@synthesize resultSearchCategory;
+- (instancetype) init {
+  if ((self = [super init])) {
+    self.resultSearchCategory = [[BSearchCategory alloc] init];
+  }
+  return self;
+}
+- (PBGeneratedMessage*) internalGetResult {
+  return resultSearchCategory;
+}
+- (BSearchCategoryBuilder*) clear {
+  self.resultSearchCategory = [[BSearchCategory alloc] init];
+  return self;
+}
+- (BSearchCategoryBuilder*) clone {
+  return [BSearchCategory builderWithPrototype:resultSearchCategory];
+}
+- (BSearchCategory*) defaultInstance {
+  return [BSearchCategory defaultInstance];
+}
+- (BSearchCategory*) build {
+  [self checkInitialized];
+  return [self buildPartial];
+}
+- (BSearchCategory*) buildPartial {
+  BSearchCategory* returnMe = resultSearchCategory;
+  self.resultSearchCategory = nil;
+  return returnMe;
+}
+- (BSearchCategoryBuilder*) mergeFrom:(BSearchCategory*) other {
+  if (other == [BSearchCategory defaultInstance]) {
+    return self;
+  }
+  if (other.hasItem) {
+    [self setItem:other.item];
+  }
+  if (other.hasParent) {
+    [self setParent:other.parent];
+  }
+  if (other.hasIsLeaf) {
+    [self setIsLeaf:other.isLeaf];
+  }
+  if (other.hasDescriptionText) {
+    [self setDescriptionText:other.descriptionText];
+  }
+  [self mergeUnknownFields:other.unknownFields];
+  return self;
+}
+- (BSearchCategoryBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
+  return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
+}
+- (BSearchCategoryBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  PBUnknownFieldSetBuilder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
+  while (YES) {
+    SInt32 tag = [input readTag];
+    switch (tag) {
+      case 0:
+        [self setUnknownFields:[unknownFields build]];
+        return self;
+      default: {
+        if (![self parseUnknownField:input unknownFields:unknownFields extensionRegistry:extensionRegistry tag:tag]) {
+          [self setUnknownFields:[unknownFields build]];
+          return self;
+        }
+        break;
+      }
+      case 10: {
+        [self setItem:[input readString]];
+        break;
+      }
+      case 18: {
+        [self setParent:[input readString]];
+        break;
+      }
+      case 24: {
+        [self setIsLeaf:[input readBool]];
+        break;
+      }
+      case 34: {
+        [self setDescriptionText:[input readString]];
+        break;
+      }
+    }
+  }
+}
+- (BOOL) hasItem {
+  return resultSearchCategory.hasItem;
+}
+- (NSString*) item {
+  return resultSearchCategory.item;
+}
+- (BSearchCategoryBuilder*) setItem:(NSString*) value {
+  resultSearchCategory.hasItem = YES;
+  resultSearchCategory.item = value;
+  return self;
+}
+- (BSearchCategoryBuilder*) clearItem {
+  resultSearchCategory.hasItem = NO;
+  resultSearchCategory.item = @"";
+  return self;
+}
+- (BOOL) hasParent {
+  return resultSearchCategory.hasParent;
+}
+- (NSString*) parent {
+  return resultSearchCategory.parent;
+}
+- (BSearchCategoryBuilder*) setParent:(NSString*) value {
+  resultSearchCategory.hasParent = YES;
+  resultSearchCategory.parent = value;
+  return self;
+}
+- (BSearchCategoryBuilder*) clearParent {
+  resultSearchCategory.hasParent = NO;
+  resultSearchCategory.parent = @"";
+  return self;
+}
+- (BOOL) hasIsLeaf {
+  return resultSearchCategory.hasIsLeaf;
+}
+- (BOOL) isLeaf {
+  return resultSearchCategory.isLeaf;
+}
+- (BSearchCategoryBuilder*) setIsLeaf:(BOOL) value {
+  resultSearchCategory.hasIsLeaf = YES;
+  resultSearchCategory.isLeaf = value;
+  return self;
+}
+- (BSearchCategoryBuilder*) clearIsLeaf {
+  resultSearchCategory.hasIsLeaf = NO;
+  resultSearchCategory.isLeaf = NO;
+  return self;
+}
+- (BOOL) hasDescriptionText {
+  return resultSearchCategory.hasDescriptionText;
+}
+- (NSString*) descriptionText {
+  return resultSearchCategory.descriptionText;
+}
+- (BSearchCategoryBuilder*) setDescriptionText:(NSString*) value {
+  resultSearchCategory.hasDescriptionText = YES;
+  resultSearchCategory.descriptionText = value;
+  return self;
+}
+- (BSearchCategoryBuilder*) clearDescriptionText {
+  resultSearchCategory.hasDescriptionText = NO;
+  resultSearchCategory.descriptionText = @"";
+  return self;
+}
+@end
+
+@interface BSearchCategories ()
+@property (strong) NSMutableArray * categoriesArray;
+@end
+
+@implementation BSearchCategories
+
+@synthesize categoriesArray;
+@dynamic categories;
+- (instancetype) init {
+  if ((self = [super init])) {
+  }
+  return self;
+}
+static BSearchCategories* defaultBSearchCategoriesInstance = nil;
++ (void) initialize {
+  if (self == [BSearchCategories class]) {
+    defaultBSearchCategoriesInstance = [[BSearchCategories alloc] init];
+  }
+}
++ (instancetype) defaultInstance {
+  return defaultBSearchCategoriesInstance;
+}
+- (instancetype) defaultInstance {
+  return defaultBSearchCategoriesInstance;
+}
+- (NSArray *)categories {
+  return categoriesArray;
+}
+- (BSearchCategory*)categoriesAtIndex:(NSUInteger)index {
+  return [categoriesArray objectAtIndex:index];
+}
+- (BOOL) isInitialized {
+  return YES;
+}
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
+  [self.categoriesArray enumerateObjectsUsingBlock:^(BSearchCategory *element, NSUInteger idx, BOOL *stop) {
+    [output writeMessage:1 value:element];
+  }];
+  [self.unknownFields writeToCodedOutputStream:output];
+}
+- (SInt32) serializedSize {
+  __block SInt32 size_ = memoizedSerializedSize;
+  if (size_ != -1) {
+    return size_;
+  }
+
+  size_ = 0;
+  [self.categoriesArray enumerateObjectsUsingBlock:^(BSearchCategory *element, NSUInteger idx, BOOL *stop) {
+    size_ += computeMessageSize(1, element);
+  }];
+  size_ += self.unknownFields.serializedSize;
+  memoizedSerializedSize = size_;
+  return size_;
+}
++ (BSearchCategories*) parseFromData:(NSData*) data {
+  return (BSearchCategories*)[[[BSearchCategories builder] mergeFromData:data] build];
+}
++ (BSearchCategories*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BSearchCategories*)[[[BSearchCategories builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
+}
++ (BSearchCategories*) parseFromInputStream:(NSInputStream*) input {
+  return (BSearchCategories*)[[[BSearchCategories builder] mergeFromInputStream:input] build];
+}
++ (BSearchCategories*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BSearchCategories*)[[[BSearchCategories builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (BSearchCategories*) parseFromCodedInputStream:(PBCodedInputStream*) input {
+  return (BSearchCategories*)[[[BSearchCategories builder] mergeFromCodedInputStream:input] build];
+}
++ (BSearchCategories*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BSearchCategories*)[[[BSearchCategories builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (BSearchCategoriesBuilder*) builder {
+  return [[BSearchCategoriesBuilder alloc] init];
+}
++ (BSearchCategoriesBuilder*) builderWithPrototype:(BSearchCategories*) prototype {
+  return [[BSearchCategories builder] mergeFrom:prototype];
+}
+- (BSearchCategoriesBuilder*) builder {
+  return [BSearchCategories builder];
+}
+- (BSearchCategoriesBuilder*) toBuilder {
+  return [BSearchCategories builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  [self.categoriesArray enumerateObjectsUsingBlock:^(BSearchCategory *element, NSUInteger idx, BOOL *stop) {
+    [output appendFormat:@"%@%@ {\n", indent, @"categories"];
+    [element writeDescriptionTo:output
+                     withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }];
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (void) storeInDictionary:(NSMutableDictionary *)dictionary {
+  for (BSearchCategory* element in self.categoriesArray) {
+    NSMutableDictionary *elementDictionary = [NSMutableDictionary dictionary];
+    [element storeInDictionary:elementDictionary];
+    [dictionary setObject:[NSDictionary dictionaryWithDictionary:elementDictionary] forKey:@"categories"];
+  }
+  [self.unknownFields storeInDictionary:dictionary];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[BSearchCategories class]]) {
+    return NO;
+  }
+  BSearchCategories *otherMessage = other;
+  return
+      [self.categoriesArray isEqualToArray:otherMessage.categoriesArray] &&
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  __block NSUInteger hashCode = 7;
+  [self.categoriesArray enumerateObjectsUsingBlock:^(BSearchCategory *element, NSUInteger idx, BOOL *stop) {
+    hashCode = hashCode * 31 + [element hash];
+  }];
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
+}
+@end
+
+@interface BSearchCategoriesBuilder()
+@property (strong) BSearchCategories* resultSearchCategories;
+@end
+
+@implementation BSearchCategoriesBuilder
+@synthesize resultSearchCategories;
+- (instancetype) init {
+  if ((self = [super init])) {
+    self.resultSearchCategories = [[BSearchCategories alloc] init];
+  }
+  return self;
+}
+- (PBGeneratedMessage*) internalGetResult {
+  return resultSearchCategories;
+}
+- (BSearchCategoriesBuilder*) clear {
+  self.resultSearchCategories = [[BSearchCategories alloc] init];
+  return self;
+}
+- (BSearchCategoriesBuilder*) clone {
+  return [BSearchCategories builderWithPrototype:resultSearchCategories];
+}
+- (BSearchCategories*) defaultInstance {
+  return [BSearchCategories defaultInstance];
+}
+- (BSearchCategories*) build {
+  [self checkInitialized];
+  return [self buildPartial];
+}
+- (BSearchCategories*) buildPartial {
+  BSearchCategories* returnMe = resultSearchCategories;
+  self.resultSearchCategories = nil;
+  return returnMe;
+}
+- (BSearchCategoriesBuilder*) mergeFrom:(BSearchCategories*) other {
+  if (other == [BSearchCategories defaultInstance]) {
+    return self;
+  }
+  if (other.categoriesArray.count > 0) {
+    if (resultSearchCategories.categoriesArray == nil) {
+      resultSearchCategories.categoriesArray = [[NSMutableArray alloc] initWithArray:other.categoriesArray];
+    } else {
+      [resultSearchCategories.categoriesArray addObjectsFromArray:other.categoriesArray];
+    }
+  }
+  [self mergeUnknownFields:other.unknownFields];
+  return self;
+}
+- (BSearchCategoriesBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
+  return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
+}
+- (BSearchCategoriesBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  PBUnknownFieldSetBuilder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
+  while (YES) {
+    SInt32 tag = [input readTag];
+    switch (tag) {
+      case 0:
+        [self setUnknownFields:[unknownFields build]];
+        return self;
+      default: {
+        if (![self parseUnknownField:input unknownFields:unknownFields extensionRegistry:extensionRegistry tag:tag]) {
+          [self setUnknownFields:[unknownFields build]];
+          return self;
+        }
+        break;
+      }
+      case 10: {
+        BSearchCategoryBuilder* subBuilder = [BSearchCategory builder];
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self addCategories:[subBuilder buildPartial]];
+        break;
+      }
+    }
+  }
+}
+- (NSMutableArray *)categories {
+  return resultSearchCategories.categoriesArray;
+}
+- (BSearchCategory*)categoriesAtIndex:(NSUInteger)index {
+  return [resultSearchCategories categoriesAtIndex:index];
+}
+- (BSearchCategoriesBuilder *)addCategories:(BSearchCategory*)value {
+  if (resultSearchCategories.categoriesArray == nil) {
+    resultSearchCategories.categoriesArray = [[NSMutableArray alloc]init];
+  }
+  [resultSearchCategories.categoriesArray addObject:value];
+  return self;
+}
+- (BSearchCategoriesBuilder *)setCategoriesArray:(NSArray *)array {
+  resultSearchCategories.categoriesArray = [[NSMutableArray alloc]initWithArray:array];
+  return self;
+}
+- (BSearchCategoriesBuilder *)clearCategories {
+  resultSearchCategories.categoriesArray = nil;
+  return self;
+}
+@end
+
 
 // @@protoc_insertion_point(global_scope)
