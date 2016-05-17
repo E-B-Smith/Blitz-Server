@@ -981,8 +981,10 @@ create table ChargeTable
 
 create table CategoryTable
     (
-     item           text
-    ,parent         text
+     item           text        not null
+    ,parent         text        not null
+    ,description    text
+    ,isLeaf         boolean     not null
     );
 create unique index CategoryIndex on
     CategoryTable(item, parent);

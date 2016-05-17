@@ -47,3 +47,15 @@ message UserSearchResponse {
     repeated UserProfile    profiles = 2;
 }
 
+
+message SearchCategory {
+  optional string item            = 1;
+  optional string parent          = 2;
+  optional bool   isLeaf          = 3;
+  optional string descriptionText = 4;
+}
+
+
+message SearchCategories {
+  repeated SearchCategory categories  = 1;
+}
