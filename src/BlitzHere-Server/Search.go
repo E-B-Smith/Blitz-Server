@@ -161,3 +161,15 @@ func UserSearchRequest(session *Session, query *BlitzMessage.UserSearchRequest,
 }
 
 
+//----------------------------------------------------------------------------------------
+//
+//                                                                           SearchRequest
+//
+//----------------------------------------------------------------------------------------
+
+
+func FetchSearchCategories(session *Session, query *BlitzMessage.UserSearchRequest,
+        ) *BlitzMessage.ServerResponse {
+    Log.LogFunctionName()
+}
+
