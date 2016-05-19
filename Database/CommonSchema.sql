@@ -71,6 +71,7 @@ create table UserTable
 
     ,isExpert           boolean
     ,stripeAccount      text
+    ,isFree             boolean
 
     ,search             tsvector
     );

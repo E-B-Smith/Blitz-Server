@@ -286,6 +286,7 @@ func ProfileForUserID(session *Session, userID string) *BlitzMessage.UserProfile
             ,interestTags
             ,isExpert
             ,stripeAccount
+            ,isFree
         from UserTable where userID = $1;`, userID)
     defer pgsql.CloseRows(rows)
 
@@ -311,6 +312,7 @@ func ProfileForUserID(session *Session, userID string) *BlitzMessage.UserProfile
         interestTags    sql.NullString
         isExpert        sql.NullBool
         stripeAccount   sql.NullString
+        isFree          sql.NullBool
     )
     error = rows.Scan(
         &profileID,
@@ -324,6 +326,7 @@ func ProfileForUserID(session *Session, userID string) *BlitzMessage.UserProfile
         &interestTags,
         &isExpert,
         &stripeAccount,
+        &isFree,
     )
     if error != nil {
         Log.Errorf("Error scanning row: %v.", error)
@@ -350,6 +353,11 @@ func ProfileForUserID(session *Session, userID string) *BlitzMessage.UserProfile
 
     profile.IsExpert      = proto.Bool(isExpert.Bool)
     profile.StripeAccount = proto.String(stripeAccount.String)
+    if config.ServiceIsFree {
+        profile.IsFree = proto.Bool(true)
+    } else {
+        profile.IsFree = proto.Bool(isFree.Bool)
+    }
 
     //  Fix up the 'headline' employment --
 

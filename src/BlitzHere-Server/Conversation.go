@@ -558,6 +558,15 @@ func UpdateConversationStatus(session *Session, updateStatus *BlitzMessage.Updat
         return ServerResponseForError(BlitzMessage.ResponseCode_RCServerError, error)
     }
 
-    return ServerResponseForError(BlitzMessage.ResponseCode_RCSuccess, nil)
+    conversation, _ := ReadUserConversation(session.UserID, *updateStatus.ConversationID)
+    response := BlitzMessage.ConversationResponse {
+        Conversation:   conversation,
+    }
+    serverResponse := &BlitzMessage.ServerResponse {
+        ResponseCode:       BlitzMessage.ResponseCode(BlitzMessage.ResponseCode_RCSuccess).Enum(),
+        ResponseType:       &BlitzMessage.ResponseType { ConversationResponse: &response },
+    }
+
+    return serverResponse
 }
 

@@ -8452,6 +8452,15 @@ public final class UserProfiles {
      */
     com.google.protobuf.ByteString
         getStripeAccountBytes();
+
+    /**
+     * <code>optional bool isFree = 25;</code>
+     */
+    boolean hasIsFree();
+    /**
+     * <code>optional bool isFree = 25;</code>
+     */
+    boolean getIsFree();
   }
   /**
    * Protobuf type {@code BlitzMessage.UserProfile}
@@ -8696,6 +8705,11 @@ public final class UserProfiles {
               com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00008000;
               stripeAccount_ = bs;
+              break;
+            }
+            case 200: {
+              bitField0_ |= 0x00010000;
+              isFree_ = input.readBool();
               break;
             }
           }
@@ -9408,6 +9422,21 @@ public final class UserProfiles {
       }
     }
 
+    public static final int ISFREE_FIELD_NUMBER = 25;
+    private boolean isFree_;
+    /**
+     * <code>optional bool isFree = 25;</code>
+     */
+    public boolean hasIsFree() {
+      return ((bitField0_ & 0x00010000) == 0x00010000);
+    }
+    /**
+     * <code>optional bool isFree = 25;</code>
+     */
+    public boolean getIsFree() {
+      return isFree_;
+    }
+
     private void initFields() {
       userID_ = "";
       userStatus_ = com.blitzhere.BlitzMessage.UserProfiles.UserStatus.USUnknown;
@@ -9433,6 +9462,7 @@ public final class UserProfiles {
       reviews_ = java.util.Collections.emptyList();
       isExpert_ = false;
       stripeAccount_ = "";
+      isFree_ = false;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -9579,6 +9609,9 @@ public final class UserProfiles {
       if (((bitField0_ & 0x00008000) == 0x00008000)) {
         output.writeBytes(24, getStripeAccountBytes());
       }
+      if (((bitField0_ & 0x00010000) == 0x00010000)) {
+        output.writeBool(25, isFree_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -9688,6 +9721,10 @@ public final class UserProfiles {
       if (((bitField0_ & 0x00008000) == 0x00008000)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(24, getStripeAccountBytes());
+      }
+      if (((bitField0_ & 0x00010000) == 0x00010000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(25, isFree_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -9909,6 +9946,8 @@ public final class UserProfiles {
         bitField0_ = (bitField0_ & ~0x00400000);
         stripeAccount_ = "";
         bitField0_ = (bitField0_ & ~0x00800000);
+        isFree_ = false;
+        bitField0_ = (bitField0_ & ~0x01000000);
         return this;
       }
 
@@ -10085,6 +10124,10 @@ public final class UserProfiles {
           to_bitField0_ |= 0x00008000;
         }
         result.stripeAccount_ = stripeAccount_;
+        if (((from_bitField0_ & 0x01000000) == 0x01000000)) {
+          to_bitField0_ |= 0x00010000;
+        }
+        result.isFree_ = isFree_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -10348,6 +10391,9 @@ public final class UserProfiles {
           bitField0_ |= 0x00800000;
           stripeAccount_ = other.stripeAccount_;
           onChanged();
+        }
+        if (other.hasIsFree()) {
+          setIsFree(other.getIsFree());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -13235,6 +13281,38 @@ public final class UserProfiles {
   }
   bitField0_ |= 0x00800000;
         stripeAccount_ = value;
+        onChanged();
+        return this;
+      }
+
+      private boolean isFree_ ;
+      /**
+       * <code>optional bool isFree = 25;</code>
+       */
+      public boolean hasIsFree() {
+        return ((bitField0_ & 0x01000000) == 0x01000000);
+      }
+      /**
+       * <code>optional bool isFree = 25;</code>
+       */
+      public boolean getIsFree() {
+        return isFree_;
+      }
+      /**
+       * <code>optional bool isFree = 25;</code>
+       */
+      public Builder setIsFree(boolean value) {
+        bitField0_ |= 0x01000000;
+        isFree_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool isFree = 25;</code>
+       */
+      public Builder clearIsFree() {
+        bitField0_ = (bitField0_ & ~0x01000000);
+        isFree_ = false;
         onChanged();
         return this;
       }
@@ -20292,7 +20370,7 @@ public final class UserProfiles {
       "(\0132\027.BlitzMessage.Timestamp\022\026\n\016conversat" +
       "ionID\030\004 \001(\t\022\022\n\nresponsive\030\005 \001(\001\022\020\n\010outgo" +
       "ing\030\006 \001(\001\022\023\n\013recommended\030\007 \001(\001\022\022\n\nreview" +
-      "Text\030\010 \001(\t\022\014\n\004tags\030\t \003(\t\"\322\006\n\013UserProfile" +
+      "Text\030\010 \001(\t\022\014\n\004tags\030\t \003(\t\"\342\006\n\013UserProfile" +
       "\022\016\n\006userID\030\001 \001(\t\022,\n\nuserStatus\030\002 \001(\0162\030.B" +
       "litzMessage.UserStatus\022-\n\014creationDate\030\003",
       " \001(\0132\027.BlitzMessage.Timestamp\022)\n\010lastSee" +
@@ -20313,40 +20391,41 @@ public final class UserProfiles {
       "\016ratingOutgoing\030\023 \001(\001\022\031\n\021ratingRecommend" +
       "ed\030\024 \001(\001\022\027\n\017responseSeconds\030\025 \001(\001\022)\n\007rev" +
       "iews\030\026 \003(\0132\030.BlitzMessage.UserReview\022\020\n\010" +
-      "isExpert\030\027 \001(\010\022\025\n\rstripeAccount\030\030 \001(\t\"9\n" +
-      "\013ImageUpload\022*\n\timageData\030\001 \003(\0132\027.BlitzM",
-      "essage.ImageData\"@\n\021UserProfileUpdate\022+\n" +
-      "\010profiles\030\001 \003(\0132\031.BlitzMessage.UserProfi" +
-      "le\"\230\001\n\020UserProfileQuery\022\017\n\007userIDs\030\001 \003(\t" +
-      "\022\031\n\021fetchDemoProfiles\030\002 \001(\010\022\034\n\024entityTag" +
-      "_deprecated\030\003 \001(\t\022\024\n\014entityUserID\030\004 \001(\t\022" +
-      "\020\n\010entityID\030\005 \001(\t\022\022\n\nentityTags\030\006 \003(\t\"\246\001" +
-      "\n\023ConfirmationRequest\022.\n\013contactInfo\030\001 \001" +
-      "(\0132\031.BlitzMessage.ContactInfo\022.\n\013userPro" +
-      "file\030\002 \001(\0132\031.BlitzMessage.UserProfile\022\030\n" +
-      "\020confirmationCode\030\003 \001(\t\022\025\n\rinviterUserID",
-      "\030\004 \001(\t\"F\n\027ProfilesFromContactInfo\022+\n\010pro" +
-      "files\030\001 \003(\0132\031.BlitzMessage.UserProfile\"\177" +
-      "\n\014FriendUpdate\0220\n\014friendStatus\030\001 \001(\0162\032.B" +
-      "litzMessage.FriendStatus\022\020\n\010friendID\030\002 \001" +
-      "(\t\022+\n\010profiles\030\003 \003(\0132\031.BlitzMessage.User" +
-      "Profile\"\266\001\n\nUserInvite\022\016\n\006userID\030\001 \001(\t\022\020" +
-      "\n\010friendID\030\002 \001(\t\022\017\n\007message\030\003 \001(\t\022.\n\013con" +
-      "tactInfo\030\004 \001(\0132\031.BlitzMessage.ContactInf" +
-      "o\022+\n\010profiles\030\005 \003(\0132\031.BlitzMessage.UserP" +
-      "rofile\022\030\n\020confirmationCode\030\006 \001(\t*Z\n\013Cont",
-      "actType\022\r\n\tCTUnknown\020\000\022\016\n\nCTPhoneSMS\020\001\022\013" +
-      "\n\007CTEmail\020\002\022\n\n\006CTChat\020\003\022\023\n\017CTSocialServi" +
-      "ce\020\004*j\n\nUserStatus\022\r\n\tUSUnknown\020\000\022\r\n\tUSB" +
-      "locked\020\001\022\r\n\tUSInvited\020\002\022\014\n\010USActive\020\003\022\020\n" +
-      "\014USConfirming\020\004\022\017\n\013USConfirmed\020\005*:\n\006Gend" +
-      "er\022\014\n\010GUnknown\020\000\022\013\n\007GFemale\020\001\022\t\n\005GMale\020\002" +
-      "\022\n\n\006GOther\020\003*F\n\014ImageContent\022\r\n\tICUnknow" +
-      "n\020\000\022\021\n\rICUserProfile\020\001\022\024\n\020ICUserBackgrou" +
-      "nd\020\002*i\n\014FriendStatus\022\r\n\tFSUnknown\020\000\022\014\n\010F" +
-      "SDidAsk\020\001\022\r\n\tFSIgnored\020\002\022\016\n\nFSAccepted\020\003",
-      "\022\016\n\nFSWasAsked\020\004\022\r\n\tFSFriends\020\005B/\n\032com.b" +
-      "litzhere.BlitzMessage\210\001\001\322>\002\n\000\322>\003\022\001B\322>\002\030\001"
+      "isExpert\030\027 \001(\010\022\025\n\rstripeAccount\030\030 \001(\t\022\016\n" +
+      "\006isFree\030\031 \001(\010\"9\n\013ImageUpload\022*\n\timageDat",
+      "a\030\001 \003(\0132\027.BlitzMessage.ImageData\"@\n\021User" +
+      "ProfileUpdate\022+\n\010profiles\030\001 \003(\0132\031.BlitzM" +
+      "essage.UserProfile\"\230\001\n\020UserProfileQuery\022" +
+      "\017\n\007userIDs\030\001 \003(\t\022\031\n\021fetchDemoProfiles\030\002 " +
+      "\001(\010\022\034\n\024entityTag_deprecated\030\003 \001(\t\022\024\n\014ent" +
+      "ityUserID\030\004 \001(\t\022\020\n\010entityID\030\005 \001(\t\022\022\n\nent" +
+      "ityTags\030\006 \003(\t\"\246\001\n\023ConfirmationRequest\022.\n" +
+      "\013contactInfo\030\001 \001(\0132\031.BlitzMessage.Contac" +
+      "tInfo\022.\n\013userProfile\030\002 \001(\0132\031.BlitzMessag" +
+      "e.UserProfile\022\030\n\020confirmationCode\030\003 \001(\t\022",
+      "\025\n\rinviterUserID\030\004 \001(\t\"F\n\027ProfilesFromCo" +
+      "ntactInfo\022+\n\010profiles\030\001 \003(\0132\031.BlitzMessa" +
+      "ge.UserProfile\"\177\n\014FriendUpdate\0220\n\014friend" +
+      "Status\030\001 \001(\0162\032.BlitzMessage.FriendStatus" +
+      "\022\020\n\010friendID\030\002 \001(\t\022+\n\010profiles\030\003 \003(\0132\031.B" +
+      "litzMessage.UserProfile\"\266\001\n\nUserInvite\022\016" +
+      "\n\006userID\030\001 \001(\t\022\020\n\010friendID\030\002 \001(\t\022\017\n\007mess" +
+      "age\030\003 \001(\t\022.\n\013contactInfo\030\004 \001(\0132\031.BlitzMe" +
+      "ssage.ContactInfo\022+\n\010profiles\030\005 \003(\0132\031.Bl" +
+      "itzMessage.UserProfile\022\030\n\020confirmationCo",
+      "de\030\006 \001(\t*Z\n\013ContactType\022\r\n\tCTUnknown\020\000\022\016" +
+      "\n\nCTPhoneSMS\020\001\022\013\n\007CTEmail\020\002\022\n\n\006CTChat\020\003\022" +
+      "\023\n\017CTSocialService\020\004*j\n\nUserStatus\022\r\n\tUS" +
+      "Unknown\020\000\022\r\n\tUSBlocked\020\001\022\r\n\tUSInvited\020\002\022" +
+      "\014\n\010USActive\020\003\022\020\n\014USConfirming\020\004\022\017\n\013USCon" +
+      "firmed\020\005*:\n\006Gender\022\014\n\010GUnknown\020\000\022\013\n\007GFem" +
+      "ale\020\001\022\t\n\005GMale\020\002\022\n\n\006GOther\020\003*F\n\014ImageCon" +
+      "tent\022\r\n\tICUnknown\020\000\022\021\n\rICUserProfile\020\001\022\024" +
+      "\n\020ICUserBackground\020\002*i\n\014FriendStatus\022\r\n\t" +
+      "FSUnknown\020\000\022\014\n\010FSDidAsk\020\001\022\r\n\tFSIgnored\020\002",
+      "\022\016\n\nFSAccepted\020\003\022\016\n\nFSWasAsked\020\004\022\r\n\tFSFr" +
+      "iends\020\005B/\n\032com.blitzhere.BlitzMessage\210\001\001" +
+      "\322>\002\n\000\322>\003\022\001B\322>\002\030\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -20404,7 +20483,7 @@ public final class UserProfiles {
     internal_static_BlitzMessage_UserProfile_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_BlitzMessage_UserProfile_descriptor,
-        new java.lang.String[] { "UserID", "UserStatus", "CreationDate", "LastSeen", "Name", "Gender", "Birthday", "Images", "SocialIdentities", "ContactInfo", "HeadlineEmployment", "Employment", "Education", "EntityTags", "InterestTags", "BackgroundSummary", "RatingCount", "RatingResponsive", "RatingOutgoing", "RatingRecommended", "ResponseSeconds", "Reviews", "IsExpert", "StripeAccount", });
+        new java.lang.String[] { "UserID", "UserStatus", "CreationDate", "LastSeen", "Name", "Gender", "Birthday", "Images", "SocialIdentities", "ContactInfo", "HeadlineEmployment", "Employment", "Education", "EntityTags", "InterestTags", "BackgroundSummary", "RatingCount", "RatingResponsive", "RatingOutgoing", "RatingRecommended", "ResponseSeconds", "Reviews", "IsExpert", "StripeAccount", "IsFree", });
     internal_static_BlitzMessage_ImageUpload_descriptor =
       getDescriptor().getMessageTypes().get(7);
     internal_static_BlitzMessage_ImageUpload_fieldAccessorTable = new

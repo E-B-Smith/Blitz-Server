@@ -831,9 +831,11 @@ NSString *NSStringFromBFriendStatus(BFriendStatus value);
 #define UserProfile_reviews @"reviews"
 #define UserProfile_isExpert @"isExpert"
 #define UserProfile_stripeAccount @"stripeAccount"
+#define UserProfile_isFree @"isFree"
 @interface BUserProfile : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
   BOOL hasIsExpert_:1;
+  BOOL hasIsFree_:1;
   BOOL hasRatingResponsive_:1;
   BOOL hasRatingOutgoing_:1;
   BOOL hasRatingRecommended_:1;
@@ -850,6 +852,7 @@ NSString *NSStringFromBFriendStatus(BFriendStatus value);
   BOOL hasUserStatus_:1;
   BOOL hasGender_:1;
   BOOL isExpert_:1;
+  BOOL isFree_:1;
   Float64 ratingResponsive;
   Float64 ratingOutgoing;
   Float64 ratingRecommended;
@@ -890,6 +893,7 @@ NSString *NSStringFromBFriendStatus(BFriendStatus value);
 - (BOOL) hasResponseSeconds;
 - (BOOL) hasIsExpert;
 - (BOOL) hasStripeAccount;
+- (BOOL) hasIsFree;
 @property (readonly, strong) NSString* userID;
 @property (readonly) BUserStatus userStatus;
 @property (readonly, strong) BTimestamp* creationDate;
@@ -914,6 +918,7 @@ NSString *NSStringFromBFriendStatus(BFriendStatus value);
 @property (readonly, strong) NSArray * reviews;
 - (BOOL) isExpert;
 @property (readonly, strong) NSString* stripeAccount;
+- (BOOL) isFree;
 - (BImageData*)imagesAtIndex:(NSUInteger)index;
 - (BSocialIdentity*)socialIdentitiesAtIndex:(NSUInteger)index;
 - (BContactInfo*)contactInfoAtIndex:(NSUInteger)index;
@@ -1093,6 +1098,11 @@ NSString *NSStringFromBFriendStatus(BFriendStatus value);
 - (NSString*) stripeAccount;
 - (BUserProfileBuilder*) setStripeAccount:(NSString*) value;
 - (BUserProfileBuilder*) clearStripeAccount;
+
+- (BOOL) hasIsFree;
+- (BOOL) isFree;
+- (BUserProfileBuilder*) setIsFree:(BOOL) value;
+- (BUserProfileBuilder*) clearIsFree;
 @end
 
 #define ImageUpload_imageData @"imageData"

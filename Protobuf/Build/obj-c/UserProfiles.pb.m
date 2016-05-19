@@ -3234,6 +3234,7 @@ static BUserReview* defaultBUserReviewInstance = nil;
 @property (strong) NSMutableArray * reviewsArray;
 @property BOOL isExpert;
 @property (strong) NSString* stripeAccount;
+@property BOOL isFree;
 @end
 
 @implementation BUserProfile
@@ -3371,6 +3372,18 @@ static BUserReview* defaultBUserReviewInstance = nil;
   hasStripeAccount_ = !!_value_;
 }
 @synthesize stripeAccount;
+- (BOOL) hasIsFree {
+  return !!hasIsFree_;
+}
+- (void) setHasIsFree:(BOOL) _value_ {
+  hasIsFree_ = !!_value_;
+}
+- (BOOL) isFree {
+  return !!isFree_;
+}
+- (void) setIsFree:(BOOL) _value_ {
+  isFree_ = !!_value_;
+}
 - (instancetype) init {
   if ((self = [super init])) {
     self.userID = @"";
@@ -3389,6 +3402,7 @@ static BUserReview* defaultBUserReviewInstance = nil;
     self.responseSeconds = 0;
     self.isExpert = NO;
     self.stripeAccount = @"";
+    self.isFree = NO;
   }
   return self;
 }
@@ -3596,6 +3610,9 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   if (self.hasStripeAccount) {
     [output writeString:24 value:self.stripeAccount];
   }
+  if (self.hasIsFree) {
+    [output writeBool:25 value:self.isFree];
+  }
   [self.unknownFields writeToCodedOutputStream:output];
 }
 - (SInt32) serializedSize {
@@ -3682,6 +3699,9 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   }
   if (self.hasStripeAccount) {
     size_ += computeStringSize(24, self.stripeAccount);
+  }
+  if (self.hasIsFree) {
+    size_ += computeBoolSize(25, self.isFree);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -3823,6 +3843,9 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   if (self.hasStripeAccount) {
     [output appendFormat:@"%@%@: %@\n", indent, @"stripeAccount", self.stripeAccount];
   }
+  if (self.hasIsFree) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"isFree", [NSNumber numberWithBool:self.isFree]];
+  }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (void) storeInDictionary:(NSMutableDictionary *)dictionary {
@@ -3918,6 +3941,9 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   if (self.hasStripeAccount) {
     [dictionary setObject: self.stripeAccount forKey: @"stripeAccount"];
   }
+  if (self.hasIsFree) {
+    [dictionary setObject: [NSNumber numberWithBool:self.isFree] forKey: @"isFree"];
+  }
   [self.unknownFields storeInDictionary:dictionary];
 }
 - (BOOL) isEqual:(id)other {
@@ -3969,6 +3995,8 @@ static BUserProfile* defaultBUserProfileInstance = nil;
       (!self.hasIsExpert || self.isExpert == otherMessage.isExpert) &&
       self.hasStripeAccount == otherMessage.hasStripeAccount &&
       (!self.hasStripeAccount || [self.stripeAccount isEqual:otherMessage.stripeAccount]) &&
+      self.hasIsFree == otherMessage.hasIsFree &&
+      (!self.hasIsFree || self.isFree == otherMessage.isFree) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
@@ -4044,6 +4072,9 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   }
   if (self.hasStripeAccount) {
     hashCode = hashCode * 31 + [self.stripeAccount hash];
+  }
+  if (self.hasIsFree) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithBool:self.isFree] hash];
   }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
@@ -4191,6 +4222,9 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   }
   if (other.hasStripeAccount) {
     [self setStripeAccount:other.stripeAccount];
+  }
+  if (other.hasIsFree) {
+    [self setIsFree:other.isFree];
   }
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -4351,6 +4385,10 @@ static BUserProfile* defaultBUserProfileInstance = nil;
       }
       case 194: {
         [self setStripeAccount:[input readString]];
+        break;
+      }
+      case 200: {
+        [self setIsFree:[input readBool]];
         break;
       }
     }
@@ -4834,6 +4872,22 @@ static BUserProfile* defaultBUserProfileInstance = nil;
 - (BUserProfileBuilder*) clearStripeAccount {
   resultUserProfile.hasStripeAccount = NO;
   resultUserProfile.stripeAccount = @"";
+  return self;
+}
+- (BOOL) hasIsFree {
+  return resultUserProfile.hasIsFree;
+}
+- (BOOL) isFree {
+  return resultUserProfile.isFree;
+}
+- (BUserProfileBuilder*) setIsFree:(BOOL) value {
+  resultUserProfile.hasIsFree = YES;
+  resultUserProfile.isFree = value;
+  return self;
+}
+- (BUserProfileBuilder*) clearIsFree {
+  resultUserProfile.hasIsFree = NO;
+  resultUserProfile.isFree = NO;
   return self;
 }
 @end

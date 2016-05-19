@@ -399,3 +399,36 @@ select
 ;
 
 
+with recursive tree(parent, item, isLeaf, parentlist) as (
+	select parent, item, isLeaf, array[ parent ]
+		from CategoryTable
+		where parent = 'root'
+union
+	select ct.parent, ct.item, ct.isLeaf, array_append(parentlist, ct.parent)
+		from CategoryTable as ct
+	inner join tree t
+	   on (ct.parent = t.item)
+)
+select parentlist, item, isLeaf, UserTable.name from tree
+	left join EntityTagTable on
+		(entityTag = item and entityType = 1 and entityID::text = userID::text)
+	join UserTable on UserTable.userID = EntityTagTable.userID
+	where isLeaf;
+
+select * from EntityTagTable
+	where userID = '24f1daba-3555-45d9-b19a-97ccc648fd0e'
+	  and EntityTagTable.entityID::text = EntityTagTable.userID::text
+	  and entityType = 1;
+
+with recursive tree(parent, item, isLeaf, parentlist) as (
+	select parent, item, isLeaf, array[ parent ]
+		from CategoryTable
+		where parent = 'root'
+union
+	select ct.parent, ct.item, ct.isLeaf, array_append(parentlist, ct.parent)
+		from CategoryTable as ct
+	inner join tree t
+	   on (ct.parent = t.item)
+)
+select parentlist, item, isLeaf from tree where isLeaf;
+

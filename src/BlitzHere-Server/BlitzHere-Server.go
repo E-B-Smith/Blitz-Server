@@ -44,6 +44,7 @@ import (
 type BlitzConfiguration struct {
     ServerUtil.Configuration
     StripeKey                   string
+    ServiceIsFree               bool
 }
 
 
