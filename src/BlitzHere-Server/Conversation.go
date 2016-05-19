@@ -539,21 +539,39 @@ func UpdateConversationStatus(session *Session, updateStatus *BlitzMessage.Updat
 
     if  updateStatus.ConversationID == nil ||
         updateStatus.Status == nil ||
+        updateStatus.ConversationType == nil ||
         *updateStatus.Status != BlitzMessage.UserMessageStatus_MSRead {
         return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, fmt.Errorf("Invalid input"))
     }
 
-    _, error := config.DB.Exec(
-        `update UserMessageTable set
-            messageStatus = $3,
-            readDate = transaction_timestamp()
-                where conversationID = $1
-                  and recipientID = $2
-                  and (messageStatus is null or messageStatus < $3);`,
-        updateStatus.ConversationID,
-        session.UserID,
-        updateStatus.Status,
-    )
+    var error error
+    switch (*updateStatus.ConversationType) {
+    case BlitzMessage.ConversationType_CTConversation:
+        _, error = config.DB.Exec(
+            `update UserMessageTable set
+                messageStatus = $3,
+                readDate = transaction_timestamp()
+                    where conversationID = $1
+                      and recipientID = $2
+                      and (messageStatus is null or messageStatus < $3);`,
+            updateStatus.ConversationID,
+            session.UserID,
+            updateStatus.Status,
+        )
+
+    case BlitzMessage.ConversationType_CTNotification:
+        _, error = config.DB.Exec(
+            `update UserMessageTable set
+                messageStatus = $3,
+                readDate = transaction_timestamp()
+                    where messageID = $1
+                      and recipientID = $2;`,
+            updateStatus.ConversationID,
+            session.UserID,
+            updateStatus.Status,
+        )
+    }
+
     if error != nil {
         return ServerResponseForError(BlitzMessage.ResponseCode_RCServerError, error)
     }
