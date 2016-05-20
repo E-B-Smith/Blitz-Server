@@ -542,47 +542,47 @@ public final class Feed {
         int index);
 
     /**
-     * <code>repeated .BlitzMessage.FeedPost replies = 13;</code>
+     * <code>repeated .BlitzMessage.FeedPost replies_deprecated = 13;</code>
      *
      * <pre>
      *  Top replies or survey choices.
      * </pre>
      */
     java.util.List<com.blitzhere.BlitzMessage.Feed.FeedPost> 
-        getRepliesList();
+        getRepliesDeprecatedList();
     /**
-     * <code>repeated .BlitzMessage.FeedPost replies = 13;</code>
+     * <code>repeated .BlitzMessage.FeedPost replies_deprecated = 13;</code>
      *
      * <pre>
      *  Top replies or survey choices.
      * </pre>
      */
-    com.blitzhere.BlitzMessage.Feed.FeedPost getReplies(int index);
+    com.blitzhere.BlitzMessage.Feed.FeedPost getRepliesDeprecated(int index);
     /**
-     * <code>repeated .BlitzMessage.FeedPost replies = 13;</code>
+     * <code>repeated .BlitzMessage.FeedPost replies_deprecated = 13;</code>
      *
      * <pre>
      *  Top replies or survey choices.
      * </pre>
      */
-    int getRepliesCount();
+    int getRepliesDeprecatedCount();
     /**
-     * <code>repeated .BlitzMessage.FeedPost replies = 13;</code>
+     * <code>repeated .BlitzMessage.FeedPost replies_deprecated = 13;</code>
      *
      * <pre>
      *  Top replies or survey choices.
      * </pre>
      */
     java.util.List<? extends com.blitzhere.BlitzMessage.Feed.FeedPostOrBuilder> 
-        getRepliesOrBuilderList();
+        getRepliesDeprecatedOrBuilderList();
     /**
-     * <code>repeated .BlitzMessage.FeedPost replies = 13;</code>
+     * <code>repeated .BlitzMessage.FeedPost replies_deprecated = 13;</code>
      *
      * <pre>
      *  Top replies or survey choices.
      * </pre>
      */
-    com.blitzhere.BlitzMessage.Feed.FeedPostOrBuilder getRepliesOrBuilder(
+    com.blitzhere.BlitzMessage.Feed.FeedPostOrBuilder getRepliesDeprecatedOrBuilder(
         int index);
 
     /**
@@ -775,10 +775,10 @@ public final class Feed {
             }
             case 106: {
               if (!((mutable_bitField0_ & 0x00000800) == 0x00000800)) {
-                replies_ = new java.util.ArrayList<com.blitzhere.BlitzMessage.Feed.FeedPost>();
+                repliesDeprecated_ = new java.util.ArrayList<com.blitzhere.BlitzMessage.Feed.FeedPost>();
                 mutable_bitField0_ |= 0x00000800;
               }
-              replies_.add(input.readMessage(com.blitzhere.BlitzMessage.Feed.FeedPost.PARSER, extensionRegistry));
+              repliesDeprecated_.add(input.readMessage(com.blitzhere.BlitzMessage.Feed.FeedPost.PARSER, extensionRegistry));
               break;
             }
             case 112: {
@@ -818,7 +818,7 @@ public final class Feed {
           postTags_ = java.util.Collections.unmodifiableList(postTags_);
         }
         if (((mutable_bitField0_ & 0x00000800) == 0x00000800)) {
-          replies_ = java.util.Collections.unmodifiableList(replies_);
+          repliesDeprecated_ = java.util.Collections.unmodifiableList(repliesDeprecated_);
         }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
@@ -1184,59 +1184,59 @@ public final class Feed {
       return postTags_.get(index);
     }
 
-    public static final int REPLIES_FIELD_NUMBER = 13;
-    private java.util.List<com.blitzhere.BlitzMessage.Feed.FeedPost> replies_;
+    public static final int REPLIES_DEPRECATED_FIELD_NUMBER = 13;
+    private java.util.List<com.blitzhere.BlitzMessage.Feed.FeedPost> repliesDeprecated_;
     /**
-     * <code>repeated .BlitzMessage.FeedPost replies = 13;</code>
+     * <code>repeated .BlitzMessage.FeedPost replies_deprecated = 13;</code>
      *
      * <pre>
      *  Top replies or survey choices.
      * </pre>
      */
-    public java.util.List<com.blitzhere.BlitzMessage.Feed.FeedPost> getRepliesList() {
-      return replies_;
+    public java.util.List<com.blitzhere.BlitzMessage.Feed.FeedPost> getRepliesDeprecatedList() {
+      return repliesDeprecated_;
     }
     /**
-     * <code>repeated .BlitzMessage.FeedPost replies = 13;</code>
+     * <code>repeated .BlitzMessage.FeedPost replies_deprecated = 13;</code>
      *
      * <pre>
      *  Top replies or survey choices.
      * </pre>
      */
     public java.util.List<? extends com.blitzhere.BlitzMessage.Feed.FeedPostOrBuilder> 
-        getRepliesOrBuilderList() {
-      return replies_;
+        getRepliesDeprecatedOrBuilderList() {
+      return repliesDeprecated_;
     }
     /**
-     * <code>repeated .BlitzMessage.FeedPost replies = 13;</code>
+     * <code>repeated .BlitzMessage.FeedPost replies_deprecated = 13;</code>
      *
      * <pre>
      *  Top replies or survey choices.
      * </pre>
      */
-    public int getRepliesCount() {
-      return replies_.size();
+    public int getRepliesDeprecatedCount() {
+      return repliesDeprecated_.size();
     }
     /**
-     * <code>repeated .BlitzMessage.FeedPost replies = 13;</code>
+     * <code>repeated .BlitzMessage.FeedPost replies_deprecated = 13;</code>
      *
      * <pre>
      *  Top replies or survey choices.
      * </pre>
      */
-    public com.blitzhere.BlitzMessage.Feed.FeedPost getReplies(int index) {
-      return replies_.get(index);
+    public com.blitzhere.BlitzMessage.Feed.FeedPost getRepliesDeprecated(int index) {
+      return repliesDeprecated_.get(index);
     }
     /**
-     * <code>repeated .BlitzMessage.FeedPost replies = 13;</code>
+     * <code>repeated .BlitzMessage.FeedPost replies_deprecated = 13;</code>
      *
      * <pre>
      *  Top replies or survey choices.
      * </pre>
      */
-    public com.blitzhere.BlitzMessage.Feed.FeedPostOrBuilder getRepliesOrBuilder(
+    public com.blitzhere.BlitzMessage.Feed.FeedPostOrBuilder getRepliesDeprecatedOrBuilder(
         int index) {
-      return replies_.get(index);
+      return repliesDeprecated_.get(index);
     }
 
     public static final int MAYADDREPLY_FIELD_NUMBER = 14;
@@ -1326,7 +1326,7 @@ public final class Feed {
       headlineText_ = "";
       bodyText_ = "";
       postTags_ = java.util.Collections.emptyList();
-      replies_ = java.util.Collections.emptyList();
+      repliesDeprecated_ = java.util.Collections.emptyList();
       mayAddReply_ = false;
       mayChooseMulitpleReplies_ = false;
       surveyAnswerSequence_ = 0;
@@ -1351,8 +1351,8 @@ public final class Feed {
           return false;
         }
       }
-      for (int i = 0; i < getRepliesCount(); i++) {
-        if (!getReplies(i).isInitialized()) {
+      for (int i = 0; i < getRepliesDeprecatedCount(); i++) {
+        if (!getRepliesDeprecated(i).isInitialized()) {
           memoizedIsInitialized = 0;
           return false;
         }
@@ -1397,8 +1397,8 @@ public final class Feed {
       for (int i = 0; i < postTags_.size(); i++) {
         output.writeMessage(12, postTags_.get(i));
       }
-      for (int i = 0; i < replies_.size(); i++) {
-        output.writeMessage(13, replies_.get(i));
+      for (int i = 0; i < repliesDeprecated_.size(); i++) {
+        output.writeMessage(13, repliesDeprecated_.get(i));
       }
       if (((bitField0_ & 0x00000400) == 0x00000400)) {
         output.writeBool(14, mayAddReply_);
@@ -1468,9 +1468,9 @@ public final class Feed {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(12, postTags_.get(i));
       }
-      for (int i = 0; i < replies_.size(); i++) {
+      for (int i = 0; i < repliesDeprecated_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(13, replies_.get(i));
+          .computeMessageSize(13, repliesDeprecated_.get(i));
       }
       if (((bitField0_ & 0x00000400) == 0x00000400)) {
         size += com.google.protobuf.CodedOutputStream
@@ -1604,7 +1604,7 @@ public final class Feed {
           getTimestampFieldBuilder();
           getTimespanActiveFieldBuilder();
           getPostTagsFieldBuilder();
-          getRepliesFieldBuilder();
+          getRepliesDeprecatedFieldBuilder();
         }
       }
       private static Builder create() {
@@ -1647,11 +1647,11 @@ public final class Feed {
         } else {
           postTagsBuilder_.clear();
         }
-        if (repliesBuilder_ == null) {
-          replies_ = java.util.Collections.emptyList();
+        if (repliesDeprecatedBuilder_ == null) {
+          repliesDeprecated_ = java.util.Collections.emptyList();
           bitField0_ = (bitField0_ & ~0x00000800);
         } else {
-          repliesBuilder_.clear();
+          repliesDeprecatedBuilder_.clear();
         }
         mayAddReply_ = false;
         bitField0_ = (bitField0_ & ~0x00001000);
@@ -1748,14 +1748,14 @@ public final class Feed {
         } else {
           result.postTags_ = postTagsBuilder_.build();
         }
-        if (repliesBuilder_ == null) {
+        if (repliesDeprecatedBuilder_ == null) {
           if (((bitField0_ & 0x00000800) == 0x00000800)) {
-            replies_ = java.util.Collections.unmodifiableList(replies_);
+            repliesDeprecated_ = java.util.Collections.unmodifiableList(repliesDeprecated_);
             bitField0_ = (bitField0_ & ~0x00000800);
           }
-          result.replies_ = replies_;
+          result.repliesDeprecated_ = repliesDeprecated_;
         } else {
-          result.replies_ = repliesBuilder_.build();
+          result.repliesDeprecated_ = repliesDeprecatedBuilder_.build();
         }
         if (((from_bitField0_ & 0x00001000) == 0x00001000)) {
           to_bitField0_ |= 0x00000400;
@@ -1859,29 +1859,29 @@ public final class Feed {
             }
           }
         }
-        if (repliesBuilder_ == null) {
-          if (!other.replies_.isEmpty()) {
-            if (replies_.isEmpty()) {
-              replies_ = other.replies_;
+        if (repliesDeprecatedBuilder_ == null) {
+          if (!other.repliesDeprecated_.isEmpty()) {
+            if (repliesDeprecated_.isEmpty()) {
+              repliesDeprecated_ = other.repliesDeprecated_;
               bitField0_ = (bitField0_ & ~0x00000800);
             } else {
-              ensureRepliesIsMutable();
-              replies_.addAll(other.replies_);
+              ensureRepliesDeprecatedIsMutable();
+              repliesDeprecated_.addAll(other.repliesDeprecated_);
             }
             onChanged();
           }
         } else {
-          if (!other.replies_.isEmpty()) {
-            if (repliesBuilder_.isEmpty()) {
-              repliesBuilder_.dispose();
-              repliesBuilder_ = null;
-              replies_ = other.replies_;
+          if (!other.repliesDeprecated_.isEmpty()) {
+            if (repliesDeprecatedBuilder_.isEmpty()) {
+              repliesDeprecatedBuilder_.dispose();
+              repliesDeprecatedBuilder_ = null;
+              repliesDeprecated_ = other.repliesDeprecated_;
               bitField0_ = (bitField0_ & ~0x00000800);
-              repliesBuilder_ = 
+              repliesDeprecatedBuilder_ = 
                 com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
-                   getRepliesFieldBuilder() : null;
+                   getRepliesDeprecatedFieldBuilder() : null;
             } else {
-              repliesBuilder_.addAllMessages(other.replies_);
+              repliesDeprecatedBuilder_.addAllMessages(other.repliesDeprecated_);
             }
           }
         }
@@ -1917,8 +1917,8 @@ public final class Feed {
             return false;
           }
         }
-        for (int i = 0; i < getRepliesCount(); i++) {
-          if (!getReplies(i).isInitialized()) {
+        for (int i = 0; i < getRepliesDeprecatedCount(); i++) {
+          if (!getRepliesDeprecated(i).isInitialized()) {
             
             return false;
           }
@@ -2899,316 +2899,316 @@ public final class Feed {
         return postTagsBuilder_;
       }
 
-      private java.util.List<com.blitzhere.BlitzMessage.Feed.FeedPost> replies_ =
+      private java.util.List<com.blitzhere.BlitzMessage.Feed.FeedPost> repliesDeprecated_ =
         java.util.Collections.emptyList();
-      private void ensureRepliesIsMutable() {
+      private void ensureRepliesDeprecatedIsMutable() {
         if (!((bitField0_ & 0x00000800) == 0x00000800)) {
-          replies_ = new java.util.ArrayList<com.blitzhere.BlitzMessage.Feed.FeedPost>(replies_);
+          repliesDeprecated_ = new java.util.ArrayList<com.blitzhere.BlitzMessage.Feed.FeedPost>(repliesDeprecated_);
           bitField0_ |= 0x00000800;
          }
       }
 
       private com.google.protobuf.RepeatedFieldBuilder<
-          com.blitzhere.BlitzMessage.Feed.FeedPost, com.blitzhere.BlitzMessage.Feed.FeedPost.Builder, com.blitzhere.BlitzMessage.Feed.FeedPostOrBuilder> repliesBuilder_;
+          com.blitzhere.BlitzMessage.Feed.FeedPost, com.blitzhere.BlitzMessage.Feed.FeedPost.Builder, com.blitzhere.BlitzMessage.Feed.FeedPostOrBuilder> repliesDeprecatedBuilder_;
 
       /**
-       * <code>repeated .BlitzMessage.FeedPost replies = 13;</code>
+       * <code>repeated .BlitzMessage.FeedPost replies_deprecated = 13;</code>
        *
        * <pre>
        *  Top replies or survey choices.
        * </pre>
        */
-      public java.util.List<com.blitzhere.BlitzMessage.Feed.FeedPost> getRepliesList() {
-        if (repliesBuilder_ == null) {
-          return java.util.Collections.unmodifiableList(replies_);
+      public java.util.List<com.blitzhere.BlitzMessage.Feed.FeedPost> getRepliesDeprecatedList() {
+        if (repliesDeprecatedBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(repliesDeprecated_);
         } else {
-          return repliesBuilder_.getMessageList();
+          return repliesDeprecatedBuilder_.getMessageList();
         }
       }
       /**
-       * <code>repeated .BlitzMessage.FeedPost replies = 13;</code>
+       * <code>repeated .BlitzMessage.FeedPost replies_deprecated = 13;</code>
        *
        * <pre>
        *  Top replies or survey choices.
        * </pre>
        */
-      public int getRepliesCount() {
-        if (repliesBuilder_ == null) {
-          return replies_.size();
+      public int getRepliesDeprecatedCount() {
+        if (repliesDeprecatedBuilder_ == null) {
+          return repliesDeprecated_.size();
         } else {
-          return repliesBuilder_.getCount();
+          return repliesDeprecatedBuilder_.getCount();
         }
       }
       /**
-       * <code>repeated .BlitzMessage.FeedPost replies = 13;</code>
+       * <code>repeated .BlitzMessage.FeedPost replies_deprecated = 13;</code>
        *
        * <pre>
        *  Top replies or survey choices.
        * </pre>
        */
-      public com.blitzhere.BlitzMessage.Feed.FeedPost getReplies(int index) {
-        if (repliesBuilder_ == null) {
-          return replies_.get(index);
+      public com.blitzhere.BlitzMessage.Feed.FeedPost getRepliesDeprecated(int index) {
+        if (repliesDeprecatedBuilder_ == null) {
+          return repliesDeprecated_.get(index);
         } else {
-          return repliesBuilder_.getMessage(index);
+          return repliesDeprecatedBuilder_.getMessage(index);
         }
       }
       /**
-       * <code>repeated .BlitzMessage.FeedPost replies = 13;</code>
+       * <code>repeated .BlitzMessage.FeedPost replies_deprecated = 13;</code>
        *
        * <pre>
        *  Top replies or survey choices.
        * </pre>
        */
-      public Builder setReplies(
+      public Builder setRepliesDeprecated(
           int index, com.blitzhere.BlitzMessage.Feed.FeedPost value) {
-        if (repliesBuilder_ == null) {
+        if (repliesDeprecatedBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          ensureRepliesIsMutable();
-          replies_.set(index, value);
+          ensureRepliesDeprecatedIsMutable();
+          repliesDeprecated_.set(index, value);
           onChanged();
         } else {
-          repliesBuilder_.setMessage(index, value);
+          repliesDeprecatedBuilder_.setMessage(index, value);
         }
         return this;
       }
       /**
-       * <code>repeated .BlitzMessage.FeedPost replies = 13;</code>
+       * <code>repeated .BlitzMessage.FeedPost replies_deprecated = 13;</code>
        *
        * <pre>
        *  Top replies or survey choices.
        * </pre>
        */
-      public Builder setReplies(
+      public Builder setRepliesDeprecated(
           int index, com.blitzhere.BlitzMessage.Feed.FeedPost.Builder builderForValue) {
-        if (repliesBuilder_ == null) {
-          ensureRepliesIsMutable();
-          replies_.set(index, builderForValue.build());
+        if (repliesDeprecatedBuilder_ == null) {
+          ensureRepliesDeprecatedIsMutable();
+          repliesDeprecated_.set(index, builderForValue.build());
           onChanged();
         } else {
-          repliesBuilder_.setMessage(index, builderForValue.build());
+          repliesDeprecatedBuilder_.setMessage(index, builderForValue.build());
         }
         return this;
       }
       /**
-       * <code>repeated .BlitzMessage.FeedPost replies = 13;</code>
+       * <code>repeated .BlitzMessage.FeedPost replies_deprecated = 13;</code>
        *
        * <pre>
        *  Top replies or survey choices.
        * </pre>
        */
-      public Builder addReplies(com.blitzhere.BlitzMessage.Feed.FeedPost value) {
-        if (repliesBuilder_ == null) {
+      public Builder addRepliesDeprecated(com.blitzhere.BlitzMessage.Feed.FeedPost value) {
+        if (repliesDeprecatedBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          ensureRepliesIsMutable();
-          replies_.add(value);
+          ensureRepliesDeprecatedIsMutable();
+          repliesDeprecated_.add(value);
           onChanged();
         } else {
-          repliesBuilder_.addMessage(value);
+          repliesDeprecatedBuilder_.addMessage(value);
         }
         return this;
       }
       /**
-       * <code>repeated .BlitzMessage.FeedPost replies = 13;</code>
+       * <code>repeated .BlitzMessage.FeedPost replies_deprecated = 13;</code>
        *
        * <pre>
        *  Top replies or survey choices.
        * </pre>
        */
-      public Builder addReplies(
+      public Builder addRepliesDeprecated(
           int index, com.blitzhere.BlitzMessage.Feed.FeedPost value) {
-        if (repliesBuilder_ == null) {
+        if (repliesDeprecatedBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          ensureRepliesIsMutable();
-          replies_.add(index, value);
+          ensureRepliesDeprecatedIsMutable();
+          repliesDeprecated_.add(index, value);
           onChanged();
         } else {
-          repliesBuilder_.addMessage(index, value);
+          repliesDeprecatedBuilder_.addMessage(index, value);
         }
         return this;
       }
       /**
-       * <code>repeated .BlitzMessage.FeedPost replies = 13;</code>
+       * <code>repeated .BlitzMessage.FeedPost replies_deprecated = 13;</code>
        *
        * <pre>
        *  Top replies or survey choices.
        * </pre>
        */
-      public Builder addReplies(
+      public Builder addRepliesDeprecated(
           com.blitzhere.BlitzMessage.Feed.FeedPost.Builder builderForValue) {
-        if (repliesBuilder_ == null) {
-          ensureRepliesIsMutable();
-          replies_.add(builderForValue.build());
+        if (repliesDeprecatedBuilder_ == null) {
+          ensureRepliesDeprecatedIsMutable();
+          repliesDeprecated_.add(builderForValue.build());
           onChanged();
         } else {
-          repliesBuilder_.addMessage(builderForValue.build());
+          repliesDeprecatedBuilder_.addMessage(builderForValue.build());
         }
         return this;
       }
       /**
-       * <code>repeated .BlitzMessage.FeedPost replies = 13;</code>
+       * <code>repeated .BlitzMessage.FeedPost replies_deprecated = 13;</code>
        *
        * <pre>
        *  Top replies or survey choices.
        * </pre>
        */
-      public Builder addReplies(
+      public Builder addRepliesDeprecated(
           int index, com.blitzhere.BlitzMessage.Feed.FeedPost.Builder builderForValue) {
-        if (repliesBuilder_ == null) {
-          ensureRepliesIsMutable();
-          replies_.add(index, builderForValue.build());
+        if (repliesDeprecatedBuilder_ == null) {
+          ensureRepliesDeprecatedIsMutable();
+          repliesDeprecated_.add(index, builderForValue.build());
           onChanged();
         } else {
-          repliesBuilder_.addMessage(index, builderForValue.build());
+          repliesDeprecatedBuilder_.addMessage(index, builderForValue.build());
         }
         return this;
       }
       /**
-       * <code>repeated .BlitzMessage.FeedPost replies = 13;</code>
+       * <code>repeated .BlitzMessage.FeedPost replies_deprecated = 13;</code>
        *
        * <pre>
        *  Top replies or survey choices.
        * </pre>
        */
-      public Builder addAllReplies(
+      public Builder addAllRepliesDeprecated(
           java.lang.Iterable<? extends com.blitzhere.BlitzMessage.Feed.FeedPost> values) {
-        if (repliesBuilder_ == null) {
-          ensureRepliesIsMutable();
+        if (repliesDeprecatedBuilder_ == null) {
+          ensureRepliesDeprecatedIsMutable();
           com.google.protobuf.AbstractMessageLite.Builder.addAll(
-              values, replies_);
+              values, repliesDeprecated_);
           onChanged();
         } else {
-          repliesBuilder_.addAllMessages(values);
+          repliesDeprecatedBuilder_.addAllMessages(values);
         }
         return this;
       }
       /**
-       * <code>repeated .BlitzMessage.FeedPost replies = 13;</code>
+       * <code>repeated .BlitzMessage.FeedPost replies_deprecated = 13;</code>
        *
        * <pre>
        *  Top replies or survey choices.
        * </pre>
        */
-      public Builder clearReplies() {
-        if (repliesBuilder_ == null) {
-          replies_ = java.util.Collections.emptyList();
+      public Builder clearRepliesDeprecated() {
+        if (repliesDeprecatedBuilder_ == null) {
+          repliesDeprecated_ = java.util.Collections.emptyList();
           bitField0_ = (bitField0_ & ~0x00000800);
           onChanged();
         } else {
-          repliesBuilder_.clear();
+          repliesDeprecatedBuilder_.clear();
         }
         return this;
       }
       /**
-       * <code>repeated .BlitzMessage.FeedPost replies = 13;</code>
+       * <code>repeated .BlitzMessage.FeedPost replies_deprecated = 13;</code>
        *
        * <pre>
        *  Top replies or survey choices.
        * </pre>
        */
-      public Builder removeReplies(int index) {
-        if (repliesBuilder_ == null) {
-          ensureRepliesIsMutable();
-          replies_.remove(index);
+      public Builder removeRepliesDeprecated(int index) {
+        if (repliesDeprecatedBuilder_ == null) {
+          ensureRepliesDeprecatedIsMutable();
+          repliesDeprecated_.remove(index);
           onChanged();
         } else {
-          repliesBuilder_.remove(index);
+          repliesDeprecatedBuilder_.remove(index);
         }
         return this;
       }
       /**
-       * <code>repeated .BlitzMessage.FeedPost replies = 13;</code>
+       * <code>repeated .BlitzMessage.FeedPost replies_deprecated = 13;</code>
        *
        * <pre>
        *  Top replies or survey choices.
        * </pre>
        */
-      public com.blitzhere.BlitzMessage.Feed.FeedPost.Builder getRepliesBuilder(
+      public com.blitzhere.BlitzMessage.Feed.FeedPost.Builder getRepliesDeprecatedBuilder(
           int index) {
-        return getRepliesFieldBuilder().getBuilder(index);
+        return getRepliesDeprecatedFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .BlitzMessage.FeedPost replies = 13;</code>
+       * <code>repeated .BlitzMessage.FeedPost replies_deprecated = 13;</code>
        *
        * <pre>
        *  Top replies or survey choices.
        * </pre>
        */
-      public com.blitzhere.BlitzMessage.Feed.FeedPostOrBuilder getRepliesOrBuilder(
+      public com.blitzhere.BlitzMessage.Feed.FeedPostOrBuilder getRepliesDeprecatedOrBuilder(
           int index) {
-        if (repliesBuilder_ == null) {
-          return replies_.get(index);  } else {
-          return repliesBuilder_.getMessageOrBuilder(index);
+        if (repliesDeprecatedBuilder_ == null) {
+          return repliesDeprecated_.get(index);  } else {
+          return repliesDeprecatedBuilder_.getMessageOrBuilder(index);
         }
       }
       /**
-       * <code>repeated .BlitzMessage.FeedPost replies = 13;</code>
+       * <code>repeated .BlitzMessage.FeedPost replies_deprecated = 13;</code>
        *
        * <pre>
        *  Top replies or survey choices.
        * </pre>
        */
       public java.util.List<? extends com.blitzhere.BlitzMessage.Feed.FeedPostOrBuilder> 
-           getRepliesOrBuilderList() {
-        if (repliesBuilder_ != null) {
-          return repliesBuilder_.getMessageOrBuilderList();
+           getRepliesDeprecatedOrBuilderList() {
+        if (repliesDeprecatedBuilder_ != null) {
+          return repliesDeprecatedBuilder_.getMessageOrBuilderList();
         } else {
-          return java.util.Collections.unmodifiableList(replies_);
+          return java.util.Collections.unmodifiableList(repliesDeprecated_);
         }
       }
       /**
-       * <code>repeated .BlitzMessage.FeedPost replies = 13;</code>
+       * <code>repeated .BlitzMessage.FeedPost replies_deprecated = 13;</code>
        *
        * <pre>
        *  Top replies or survey choices.
        * </pre>
        */
-      public com.blitzhere.BlitzMessage.Feed.FeedPost.Builder addRepliesBuilder() {
-        return getRepliesFieldBuilder().addBuilder(
+      public com.blitzhere.BlitzMessage.Feed.FeedPost.Builder addRepliesDeprecatedBuilder() {
+        return getRepliesDeprecatedFieldBuilder().addBuilder(
             com.blitzhere.BlitzMessage.Feed.FeedPost.getDefaultInstance());
       }
       /**
-       * <code>repeated .BlitzMessage.FeedPost replies = 13;</code>
+       * <code>repeated .BlitzMessage.FeedPost replies_deprecated = 13;</code>
        *
        * <pre>
        *  Top replies or survey choices.
        * </pre>
        */
-      public com.blitzhere.BlitzMessage.Feed.FeedPost.Builder addRepliesBuilder(
+      public com.blitzhere.BlitzMessage.Feed.FeedPost.Builder addRepliesDeprecatedBuilder(
           int index) {
-        return getRepliesFieldBuilder().addBuilder(
+        return getRepliesDeprecatedFieldBuilder().addBuilder(
             index, com.blitzhere.BlitzMessage.Feed.FeedPost.getDefaultInstance());
       }
       /**
-       * <code>repeated .BlitzMessage.FeedPost replies = 13;</code>
+       * <code>repeated .BlitzMessage.FeedPost replies_deprecated = 13;</code>
        *
        * <pre>
        *  Top replies or survey choices.
        * </pre>
        */
       public java.util.List<com.blitzhere.BlitzMessage.Feed.FeedPost.Builder> 
-           getRepliesBuilderList() {
-        return getRepliesFieldBuilder().getBuilderList();
+           getRepliesDeprecatedBuilderList() {
+        return getRepliesDeprecatedFieldBuilder().getBuilderList();
       }
       private com.google.protobuf.RepeatedFieldBuilder<
           com.blitzhere.BlitzMessage.Feed.FeedPost, com.blitzhere.BlitzMessage.Feed.FeedPost.Builder, com.blitzhere.BlitzMessage.Feed.FeedPostOrBuilder> 
-          getRepliesFieldBuilder() {
-        if (repliesBuilder_ == null) {
-          repliesBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+          getRepliesDeprecatedFieldBuilder() {
+        if (repliesDeprecatedBuilder_ == null) {
+          repliesDeprecatedBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
               com.blitzhere.BlitzMessage.Feed.FeedPost, com.blitzhere.BlitzMessage.Feed.FeedPost.Builder, com.blitzhere.BlitzMessage.Feed.FeedPostOrBuilder>(
-                  replies_,
+                  repliesDeprecated_,
                   ((bitField0_ & 0x00000800) == 0x00000800),
                   getParentForChildren(),
                   isClean());
-          replies_ = null;
+          repliesDeprecated_ = null;
         }
-        return repliesBuilder_;
+        return repliesDeprecatedBuilder_;
       }
 
       private boolean mayAddReply_ ;
@@ -3396,17 +3396,41 @@ public final class Feed {
     com.blitzhere.BlitzMessage.Feed.UpdateVerb getUpdateVerb();
 
     /**
-     * <code>optional .BlitzMessage.FeedPost feedPost = 2;</code>
+     * <code>optional .BlitzMessage.FeedPost feedPost_deprecated = 2;</code>
      */
-    boolean hasFeedPost();
+    boolean hasFeedPostDeprecated();
     /**
-     * <code>optional .BlitzMessage.FeedPost feedPost = 2;</code>
+     * <code>optional .BlitzMessage.FeedPost feedPost_deprecated = 2;</code>
      */
-    com.blitzhere.BlitzMessage.Feed.FeedPost getFeedPost();
+    com.blitzhere.BlitzMessage.Feed.FeedPost getFeedPostDeprecated();
     /**
-     * <code>optional .BlitzMessage.FeedPost feedPost = 2;</code>
+     * <code>optional .BlitzMessage.FeedPost feedPost_deprecated = 2;</code>
      */
-    com.blitzhere.BlitzMessage.Feed.FeedPostOrBuilder getFeedPostOrBuilder();
+    com.blitzhere.BlitzMessage.Feed.FeedPostOrBuilder getFeedPostDeprecatedOrBuilder();
+
+    /**
+     * <code>repeated .BlitzMessage.FeedPost feedPosts = 3;</code>
+     */
+    java.util.List<com.blitzhere.BlitzMessage.Feed.FeedPost> 
+        getFeedPostsList();
+    /**
+     * <code>repeated .BlitzMessage.FeedPost feedPosts = 3;</code>
+     */
+    com.blitzhere.BlitzMessage.Feed.FeedPost getFeedPosts(int index);
+    /**
+     * <code>repeated .BlitzMessage.FeedPost feedPosts = 3;</code>
+     */
+    int getFeedPostsCount();
+    /**
+     * <code>repeated .BlitzMessage.FeedPost feedPosts = 3;</code>
+     */
+    java.util.List<? extends com.blitzhere.BlitzMessage.Feed.FeedPostOrBuilder> 
+        getFeedPostsOrBuilderList();
+    /**
+     * <code>repeated .BlitzMessage.FeedPost feedPosts = 3;</code>
+     */
+    com.blitzhere.BlitzMessage.Feed.FeedPostOrBuilder getFeedPostsOrBuilder(
+        int index);
   }
   /**
    * Protobuf type {@code BlitzMessage.FeedPostUpdateRequest}
@@ -3474,14 +3498,22 @@ public final class Feed {
             case 18: {
               com.blitzhere.BlitzMessage.Feed.FeedPost.Builder subBuilder = null;
               if (((bitField0_ & 0x00000002) == 0x00000002)) {
-                subBuilder = feedPost_.toBuilder();
+                subBuilder = feedPostDeprecated_.toBuilder();
               }
-              feedPost_ = input.readMessage(com.blitzhere.BlitzMessage.Feed.FeedPost.PARSER, extensionRegistry);
+              feedPostDeprecated_ = input.readMessage(com.blitzhere.BlitzMessage.Feed.FeedPost.PARSER, extensionRegistry);
               if (subBuilder != null) {
-                subBuilder.mergeFrom(feedPost_);
-                feedPost_ = subBuilder.buildPartial();
+                subBuilder.mergeFrom(feedPostDeprecated_);
+                feedPostDeprecated_ = subBuilder.buildPartial();
               }
               bitField0_ |= 0x00000002;
+              break;
+            }
+            case 26: {
+              if (!((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
+                feedPosts_ = new java.util.ArrayList<com.blitzhere.BlitzMessage.Feed.FeedPost>();
+                mutable_bitField0_ |= 0x00000004;
+              }
+              feedPosts_.add(input.readMessage(com.blitzhere.BlitzMessage.Feed.FeedPost.PARSER, extensionRegistry));
               break;
             }
           }
@@ -3492,6 +3524,9 @@ public final class Feed {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e.getMessage()).setUnfinishedMessage(this);
       } finally {
+        if (((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
+          feedPosts_ = java.util.Collections.unmodifiableList(feedPosts_);
+        }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
@@ -3539,30 +3574,66 @@ public final class Feed {
       return updateVerb_;
     }
 
-    public static final int FEEDPOST_FIELD_NUMBER = 2;
-    private com.blitzhere.BlitzMessage.Feed.FeedPost feedPost_;
+    public static final int FEEDPOST_DEPRECATED_FIELD_NUMBER = 2;
+    private com.blitzhere.BlitzMessage.Feed.FeedPost feedPostDeprecated_;
     /**
-     * <code>optional .BlitzMessage.FeedPost feedPost = 2;</code>
+     * <code>optional .BlitzMessage.FeedPost feedPost_deprecated = 2;</code>
      */
-    public boolean hasFeedPost() {
+    public boolean hasFeedPostDeprecated() {
       return ((bitField0_ & 0x00000002) == 0x00000002);
     }
     /**
-     * <code>optional .BlitzMessage.FeedPost feedPost = 2;</code>
+     * <code>optional .BlitzMessage.FeedPost feedPost_deprecated = 2;</code>
      */
-    public com.blitzhere.BlitzMessage.Feed.FeedPost getFeedPost() {
-      return feedPost_;
+    public com.blitzhere.BlitzMessage.Feed.FeedPost getFeedPostDeprecated() {
+      return feedPostDeprecated_;
     }
     /**
-     * <code>optional .BlitzMessage.FeedPost feedPost = 2;</code>
+     * <code>optional .BlitzMessage.FeedPost feedPost_deprecated = 2;</code>
      */
-    public com.blitzhere.BlitzMessage.Feed.FeedPostOrBuilder getFeedPostOrBuilder() {
-      return feedPost_;
+    public com.blitzhere.BlitzMessage.Feed.FeedPostOrBuilder getFeedPostDeprecatedOrBuilder() {
+      return feedPostDeprecated_;
+    }
+
+    public static final int FEEDPOSTS_FIELD_NUMBER = 3;
+    private java.util.List<com.blitzhere.BlitzMessage.Feed.FeedPost> feedPosts_;
+    /**
+     * <code>repeated .BlitzMessage.FeedPost feedPosts = 3;</code>
+     */
+    public java.util.List<com.blitzhere.BlitzMessage.Feed.FeedPost> getFeedPostsList() {
+      return feedPosts_;
+    }
+    /**
+     * <code>repeated .BlitzMessage.FeedPost feedPosts = 3;</code>
+     */
+    public java.util.List<? extends com.blitzhere.BlitzMessage.Feed.FeedPostOrBuilder> 
+        getFeedPostsOrBuilderList() {
+      return feedPosts_;
+    }
+    /**
+     * <code>repeated .BlitzMessage.FeedPost feedPosts = 3;</code>
+     */
+    public int getFeedPostsCount() {
+      return feedPosts_.size();
+    }
+    /**
+     * <code>repeated .BlitzMessage.FeedPost feedPosts = 3;</code>
+     */
+    public com.blitzhere.BlitzMessage.Feed.FeedPost getFeedPosts(int index) {
+      return feedPosts_.get(index);
+    }
+    /**
+     * <code>repeated .BlitzMessage.FeedPost feedPosts = 3;</code>
+     */
+    public com.blitzhere.BlitzMessage.Feed.FeedPostOrBuilder getFeedPostsOrBuilder(
+        int index) {
+      return feedPosts_.get(index);
     }
 
     private void initFields() {
       updateVerb_ = com.blitzhere.BlitzMessage.Feed.UpdateVerb.UVCreate;
-      feedPost_ = com.blitzhere.BlitzMessage.Feed.FeedPost.getDefaultInstance();
+      feedPostDeprecated_ = com.blitzhere.BlitzMessage.Feed.FeedPost.getDefaultInstance();
+      feedPosts_ = java.util.Collections.emptyList();
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -3570,8 +3641,14 @@ public final class Feed {
       if (isInitialized == 1) return true;
       if (isInitialized == 0) return false;
 
-      if (hasFeedPost()) {
-        if (!getFeedPost().isInitialized()) {
+      if (hasFeedPostDeprecated()) {
+        if (!getFeedPostDeprecated().isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
+      for (int i = 0; i < getFeedPostsCount(); i++) {
+        if (!getFeedPosts(i).isInitialized()) {
           memoizedIsInitialized = 0;
           return false;
         }
@@ -3587,7 +3664,10 @@ public final class Feed {
         output.writeEnum(1, updateVerb_.getNumber());
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeMessage(2, feedPost_);
+        output.writeMessage(2, feedPostDeprecated_);
+      }
+      for (int i = 0; i < feedPosts_.size(); i++) {
+        output.writeMessage(3, feedPosts_.get(i));
       }
       getUnknownFields().writeTo(output);
     }
@@ -3604,7 +3684,11 @@ public final class Feed {
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(2, feedPost_);
+          .computeMessageSize(2, feedPostDeprecated_);
+      }
+      for (int i = 0; i < feedPosts_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(3, feedPosts_.get(i));
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -3715,7 +3799,8 @@ public final class Feed {
       }
       private void maybeForceBuilderInitialization() {
         if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-          getFeedPostFieldBuilder();
+          getFeedPostDeprecatedFieldBuilder();
+          getFeedPostsFieldBuilder();
         }
       }
       private static Builder create() {
@@ -3726,12 +3811,18 @@ public final class Feed {
         super.clear();
         updateVerb_ = com.blitzhere.BlitzMessage.Feed.UpdateVerb.UVCreate;
         bitField0_ = (bitField0_ & ~0x00000001);
-        if (feedPostBuilder_ == null) {
-          feedPost_ = com.blitzhere.BlitzMessage.Feed.FeedPost.getDefaultInstance();
+        if (feedPostDeprecatedBuilder_ == null) {
+          feedPostDeprecated_ = com.blitzhere.BlitzMessage.Feed.FeedPost.getDefaultInstance();
         } else {
-          feedPostBuilder_.clear();
+          feedPostDeprecatedBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000002);
+        if (feedPostsBuilder_ == null) {
+          feedPosts_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000004);
+        } else {
+          feedPostsBuilder_.clear();
+        }
         return this;
       }
 
@@ -3767,10 +3858,19 @@ public final class Feed {
         if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
           to_bitField0_ |= 0x00000002;
         }
-        if (feedPostBuilder_ == null) {
-          result.feedPost_ = feedPost_;
+        if (feedPostDeprecatedBuilder_ == null) {
+          result.feedPostDeprecated_ = feedPostDeprecated_;
         } else {
-          result.feedPost_ = feedPostBuilder_.build();
+          result.feedPostDeprecated_ = feedPostDeprecatedBuilder_.build();
+        }
+        if (feedPostsBuilder_ == null) {
+          if (((bitField0_ & 0x00000004) == 0x00000004)) {
+            feedPosts_ = java.util.Collections.unmodifiableList(feedPosts_);
+            bitField0_ = (bitField0_ & ~0x00000004);
+          }
+          result.feedPosts_ = feedPosts_;
+        } else {
+          result.feedPosts_ = feedPostsBuilder_.build();
         }
         result.bitField0_ = to_bitField0_;
         onBuilt();
@@ -3791,16 +3891,48 @@ public final class Feed {
         if (other.hasUpdateVerb()) {
           setUpdateVerb(other.getUpdateVerb());
         }
-        if (other.hasFeedPost()) {
-          mergeFeedPost(other.getFeedPost());
+        if (other.hasFeedPostDeprecated()) {
+          mergeFeedPostDeprecated(other.getFeedPostDeprecated());
+        }
+        if (feedPostsBuilder_ == null) {
+          if (!other.feedPosts_.isEmpty()) {
+            if (feedPosts_.isEmpty()) {
+              feedPosts_ = other.feedPosts_;
+              bitField0_ = (bitField0_ & ~0x00000004);
+            } else {
+              ensureFeedPostsIsMutable();
+              feedPosts_.addAll(other.feedPosts_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.feedPosts_.isEmpty()) {
+            if (feedPostsBuilder_.isEmpty()) {
+              feedPostsBuilder_.dispose();
+              feedPostsBuilder_ = null;
+              feedPosts_ = other.feedPosts_;
+              bitField0_ = (bitField0_ & ~0x00000004);
+              feedPostsBuilder_ = 
+                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                   getFeedPostsFieldBuilder() : null;
+            } else {
+              feedPostsBuilder_.addAllMessages(other.feedPosts_);
+            }
+          }
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
       }
 
       public final boolean isInitialized() {
-        if (hasFeedPost()) {
-          if (!getFeedPost().isInitialized()) {
+        if (hasFeedPostDeprecated()) {
+          if (!getFeedPostDeprecated().isInitialized()) {
+            
+            return false;
+          }
+        }
+        for (int i = 0; i < getFeedPostsCount(); i++) {
+          if (!getFeedPosts(i).isInitialized()) {
             
             return false;
           }
@@ -3862,120 +3994,360 @@ public final class Feed {
         return this;
       }
 
-      private com.blitzhere.BlitzMessage.Feed.FeedPost feedPost_ = com.blitzhere.BlitzMessage.Feed.FeedPost.getDefaultInstance();
+      private com.blitzhere.BlitzMessage.Feed.FeedPost feedPostDeprecated_ = com.blitzhere.BlitzMessage.Feed.FeedPost.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
-          com.blitzhere.BlitzMessage.Feed.FeedPost, com.blitzhere.BlitzMessage.Feed.FeedPost.Builder, com.blitzhere.BlitzMessage.Feed.FeedPostOrBuilder> feedPostBuilder_;
+          com.blitzhere.BlitzMessage.Feed.FeedPost, com.blitzhere.BlitzMessage.Feed.FeedPost.Builder, com.blitzhere.BlitzMessage.Feed.FeedPostOrBuilder> feedPostDeprecatedBuilder_;
       /**
-       * <code>optional .BlitzMessage.FeedPost feedPost = 2;</code>
+       * <code>optional .BlitzMessage.FeedPost feedPost_deprecated = 2;</code>
        */
-      public boolean hasFeedPost() {
+      public boolean hasFeedPostDeprecated() {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
       /**
-       * <code>optional .BlitzMessage.FeedPost feedPost = 2;</code>
+       * <code>optional .BlitzMessage.FeedPost feedPost_deprecated = 2;</code>
        */
-      public com.blitzhere.BlitzMessage.Feed.FeedPost getFeedPost() {
-        if (feedPostBuilder_ == null) {
-          return feedPost_;
+      public com.blitzhere.BlitzMessage.Feed.FeedPost getFeedPostDeprecated() {
+        if (feedPostDeprecatedBuilder_ == null) {
+          return feedPostDeprecated_;
         } else {
-          return feedPostBuilder_.getMessage();
+          return feedPostDeprecatedBuilder_.getMessage();
         }
       }
       /**
-       * <code>optional .BlitzMessage.FeedPost feedPost = 2;</code>
+       * <code>optional .BlitzMessage.FeedPost feedPost_deprecated = 2;</code>
        */
-      public Builder setFeedPost(com.blitzhere.BlitzMessage.Feed.FeedPost value) {
-        if (feedPostBuilder_ == null) {
+      public Builder setFeedPostDeprecated(com.blitzhere.BlitzMessage.Feed.FeedPost value) {
+        if (feedPostDeprecatedBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          feedPost_ = value;
+          feedPostDeprecated_ = value;
           onChanged();
         } else {
-          feedPostBuilder_.setMessage(value);
+          feedPostDeprecatedBuilder_.setMessage(value);
         }
         bitField0_ |= 0x00000002;
         return this;
       }
       /**
-       * <code>optional .BlitzMessage.FeedPost feedPost = 2;</code>
+       * <code>optional .BlitzMessage.FeedPost feedPost_deprecated = 2;</code>
        */
-      public Builder setFeedPost(
+      public Builder setFeedPostDeprecated(
           com.blitzhere.BlitzMessage.Feed.FeedPost.Builder builderForValue) {
-        if (feedPostBuilder_ == null) {
-          feedPost_ = builderForValue.build();
+        if (feedPostDeprecatedBuilder_ == null) {
+          feedPostDeprecated_ = builderForValue.build();
           onChanged();
         } else {
-          feedPostBuilder_.setMessage(builderForValue.build());
+          feedPostDeprecatedBuilder_.setMessage(builderForValue.build());
         }
         bitField0_ |= 0x00000002;
         return this;
       }
       /**
-       * <code>optional .BlitzMessage.FeedPost feedPost = 2;</code>
+       * <code>optional .BlitzMessage.FeedPost feedPost_deprecated = 2;</code>
        */
-      public Builder mergeFeedPost(com.blitzhere.BlitzMessage.Feed.FeedPost value) {
-        if (feedPostBuilder_ == null) {
+      public Builder mergeFeedPostDeprecated(com.blitzhere.BlitzMessage.Feed.FeedPost value) {
+        if (feedPostDeprecatedBuilder_ == null) {
           if (((bitField0_ & 0x00000002) == 0x00000002) &&
-              feedPost_ != com.blitzhere.BlitzMessage.Feed.FeedPost.getDefaultInstance()) {
-            feedPost_ =
-              com.blitzhere.BlitzMessage.Feed.FeedPost.newBuilder(feedPost_).mergeFrom(value).buildPartial();
+              feedPostDeprecated_ != com.blitzhere.BlitzMessage.Feed.FeedPost.getDefaultInstance()) {
+            feedPostDeprecated_ =
+              com.blitzhere.BlitzMessage.Feed.FeedPost.newBuilder(feedPostDeprecated_).mergeFrom(value).buildPartial();
           } else {
-            feedPost_ = value;
+            feedPostDeprecated_ = value;
           }
           onChanged();
         } else {
-          feedPostBuilder_.mergeFrom(value);
+          feedPostDeprecatedBuilder_.mergeFrom(value);
         }
         bitField0_ |= 0x00000002;
         return this;
       }
       /**
-       * <code>optional .BlitzMessage.FeedPost feedPost = 2;</code>
+       * <code>optional .BlitzMessage.FeedPost feedPost_deprecated = 2;</code>
        */
-      public Builder clearFeedPost() {
-        if (feedPostBuilder_ == null) {
-          feedPost_ = com.blitzhere.BlitzMessage.Feed.FeedPost.getDefaultInstance();
+      public Builder clearFeedPostDeprecated() {
+        if (feedPostDeprecatedBuilder_ == null) {
+          feedPostDeprecated_ = com.blitzhere.BlitzMessage.Feed.FeedPost.getDefaultInstance();
           onChanged();
         } else {
-          feedPostBuilder_.clear();
+          feedPostDeprecatedBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
       /**
-       * <code>optional .BlitzMessage.FeedPost feedPost = 2;</code>
+       * <code>optional .BlitzMessage.FeedPost feedPost_deprecated = 2;</code>
        */
-      public com.blitzhere.BlitzMessage.Feed.FeedPost.Builder getFeedPostBuilder() {
+      public com.blitzhere.BlitzMessage.Feed.FeedPost.Builder getFeedPostDeprecatedBuilder() {
         bitField0_ |= 0x00000002;
         onChanged();
-        return getFeedPostFieldBuilder().getBuilder();
+        return getFeedPostDeprecatedFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .BlitzMessage.FeedPost feedPost = 2;</code>
+       * <code>optional .BlitzMessage.FeedPost feedPost_deprecated = 2;</code>
        */
-      public com.blitzhere.BlitzMessage.Feed.FeedPostOrBuilder getFeedPostOrBuilder() {
-        if (feedPostBuilder_ != null) {
-          return feedPostBuilder_.getMessageOrBuilder();
+      public com.blitzhere.BlitzMessage.Feed.FeedPostOrBuilder getFeedPostDeprecatedOrBuilder() {
+        if (feedPostDeprecatedBuilder_ != null) {
+          return feedPostDeprecatedBuilder_.getMessageOrBuilder();
         } else {
-          return feedPost_;
+          return feedPostDeprecated_;
         }
       }
       /**
-       * <code>optional .BlitzMessage.FeedPost feedPost = 2;</code>
+       * <code>optional .BlitzMessage.FeedPost feedPost_deprecated = 2;</code>
        */
       private com.google.protobuf.SingleFieldBuilder<
           com.blitzhere.BlitzMessage.Feed.FeedPost, com.blitzhere.BlitzMessage.Feed.FeedPost.Builder, com.blitzhere.BlitzMessage.Feed.FeedPostOrBuilder> 
-          getFeedPostFieldBuilder() {
-        if (feedPostBuilder_ == null) {
-          feedPostBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+          getFeedPostDeprecatedFieldBuilder() {
+        if (feedPostDeprecatedBuilder_ == null) {
+          feedPostDeprecatedBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               com.blitzhere.BlitzMessage.Feed.FeedPost, com.blitzhere.BlitzMessage.Feed.FeedPost.Builder, com.blitzhere.BlitzMessage.Feed.FeedPostOrBuilder>(
-                  getFeedPost(),
+                  getFeedPostDeprecated(),
                   getParentForChildren(),
                   isClean());
-          feedPost_ = null;
+          feedPostDeprecated_ = null;
         }
-        return feedPostBuilder_;
+        return feedPostDeprecatedBuilder_;
+      }
+
+      private java.util.List<com.blitzhere.BlitzMessage.Feed.FeedPost> feedPosts_ =
+        java.util.Collections.emptyList();
+      private void ensureFeedPostsIsMutable() {
+        if (!((bitField0_ & 0x00000004) == 0x00000004)) {
+          feedPosts_ = new java.util.ArrayList<com.blitzhere.BlitzMessage.Feed.FeedPost>(feedPosts_);
+          bitField0_ |= 0x00000004;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.blitzhere.BlitzMessage.Feed.FeedPost, com.blitzhere.BlitzMessage.Feed.FeedPost.Builder, com.blitzhere.BlitzMessage.Feed.FeedPostOrBuilder> feedPostsBuilder_;
+
+      /**
+       * <code>repeated .BlitzMessage.FeedPost feedPosts = 3;</code>
+       */
+      public java.util.List<com.blitzhere.BlitzMessage.Feed.FeedPost> getFeedPostsList() {
+        if (feedPostsBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(feedPosts_);
+        } else {
+          return feedPostsBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .BlitzMessage.FeedPost feedPosts = 3;</code>
+       */
+      public int getFeedPostsCount() {
+        if (feedPostsBuilder_ == null) {
+          return feedPosts_.size();
+        } else {
+          return feedPostsBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .BlitzMessage.FeedPost feedPosts = 3;</code>
+       */
+      public com.blitzhere.BlitzMessage.Feed.FeedPost getFeedPosts(int index) {
+        if (feedPostsBuilder_ == null) {
+          return feedPosts_.get(index);
+        } else {
+          return feedPostsBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .BlitzMessage.FeedPost feedPosts = 3;</code>
+       */
+      public Builder setFeedPosts(
+          int index, com.blitzhere.BlitzMessage.Feed.FeedPost value) {
+        if (feedPostsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureFeedPostsIsMutable();
+          feedPosts_.set(index, value);
+          onChanged();
+        } else {
+          feedPostsBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .BlitzMessage.FeedPost feedPosts = 3;</code>
+       */
+      public Builder setFeedPosts(
+          int index, com.blitzhere.BlitzMessage.Feed.FeedPost.Builder builderForValue) {
+        if (feedPostsBuilder_ == null) {
+          ensureFeedPostsIsMutable();
+          feedPosts_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          feedPostsBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .BlitzMessage.FeedPost feedPosts = 3;</code>
+       */
+      public Builder addFeedPosts(com.blitzhere.BlitzMessage.Feed.FeedPost value) {
+        if (feedPostsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureFeedPostsIsMutable();
+          feedPosts_.add(value);
+          onChanged();
+        } else {
+          feedPostsBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .BlitzMessage.FeedPost feedPosts = 3;</code>
+       */
+      public Builder addFeedPosts(
+          int index, com.blitzhere.BlitzMessage.Feed.FeedPost value) {
+        if (feedPostsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureFeedPostsIsMutable();
+          feedPosts_.add(index, value);
+          onChanged();
+        } else {
+          feedPostsBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .BlitzMessage.FeedPost feedPosts = 3;</code>
+       */
+      public Builder addFeedPosts(
+          com.blitzhere.BlitzMessage.Feed.FeedPost.Builder builderForValue) {
+        if (feedPostsBuilder_ == null) {
+          ensureFeedPostsIsMutable();
+          feedPosts_.add(builderForValue.build());
+          onChanged();
+        } else {
+          feedPostsBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .BlitzMessage.FeedPost feedPosts = 3;</code>
+       */
+      public Builder addFeedPosts(
+          int index, com.blitzhere.BlitzMessage.Feed.FeedPost.Builder builderForValue) {
+        if (feedPostsBuilder_ == null) {
+          ensureFeedPostsIsMutable();
+          feedPosts_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          feedPostsBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .BlitzMessage.FeedPost feedPosts = 3;</code>
+       */
+      public Builder addAllFeedPosts(
+          java.lang.Iterable<? extends com.blitzhere.BlitzMessage.Feed.FeedPost> values) {
+        if (feedPostsBuilder_ == null) {
+          ensureFeedPostsIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, feedPosts_);
+          onChanged();
+        } else {
+          feedPostsBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .BlitzMessage.FeedPost feedPosts = 3;</code>
+       */
+      public Builder clearFeedPosts() {
+        if (feedPostsBuilder_ == null) {
+          feedPosts_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000004);
+          onChanged();
+        } else {
+          feedPostsBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .BlitzMessage.FeedPost feedPosts = 3;</code>
+       */
+      public Builder removeFeedPosts(int index) {
+        if (feedPostsBuilder_ == null) {
+          ensureFeedPostsIsMutable();
+          feedPosts_.remove(index);
+          onChanged();
+        } else {
+          feedPostsBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .BlitzMessage.FeedPost feedPosts = 3;</code>
+       */
+      public com.blitzhere.BlitzMessage.Feed.FeedPost.Builder getFeedPostsBuilder(
+          int index) {
+        return getFeedPostsFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .BlitzMessage.FeedPost feedPosts = 3;</code>
+       */
+      public com.blitzhere.BlitzMessage.Feed.FeedPostOrBuilder getFeedPostsOrBuilder(
+          int index) {
+        if (feedPostsBuilder_ == null) {
+          return feedPosts_.get(index);  } else {
+          return feedPostsBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .BlitzMessage.FeedPost feedPosts = 3;</code>
+       */
+      public java.util.List<? extends com.blitzhere.BlitzMessage.Feed.FeedPostOrBuilder> 
+           getFeedPostsOrBuilderList() {
+        if (feedPostsBuilder_ != null) {
+          return feedPostsBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(feedPosts_);
+        }
+      }
+      /**
+       * <code>repeated .BlitzMessage.FeedPost feedPosts = 3;</code>
+       */
+      public com.blitzhere.BlitzMessage.Feed.FeedPost.Builder addFeedPostsBuilder() {
+        return getFeedPostsFieldBuilder().addBuilder(
+            com.blitzhere.BlitzMessage.Feed.FeedPost.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .BlitzMessage.FeedPost feedPosts = 3;</code>
+       */
+      public com.blitzhere.BlitzMessage.Feed.FeedPost.Builder addFeedPostsBuilder(
+          int index) {
+        return getFeedPostsFieldBuilder().addBuilder(
+            index, com.blitzhere.BlitzMessage.Feed.FeedPost.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .BlitzMessage.FeedPost feedPosts = 3;</code>
+       */
+      public java.util.List<com.blitzhere.BlitzMessage.Feed.FeedPost.Builder> 
+           getFeedPostsBuilderList() {
+        return getFeedPostsFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.blitzhere.BlitzMessage.Feed.FeedPost, com.blitzhere.BlitzMessage.Feed.FeedPost.Builder, com.blitzhere.BlitzMessage.Feed.FeedPostOrBuilder> 
+          getFeedPostsFieldBuilder() {
+        if (feedPostsBuilder_ == null) {
+          feedPostsBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+              com.blitzhere.BlitzMessage.Feed.FeedPost, com.blitzhere.BlitzMessage.Feed.FeedPost.Builder, com.blitzhere.BlitzMessage.Feed.FeedPostOrBuilder>(
+                  feedPosts_,
+                  ((bitField0_ & 0x00000004) == 0x00000004),
+                  getParentForChildren(),
+                  isClean());
+          feedPosts_ = null;
+        }
+        return feedPostsBuilder_;
       }
 
       // @@protoc_insertion_point(builder_scope:BlitzMessage.FeedPostUpdateRequest)
@@ -6109,7 +6481,7 @@ public final class Feed {
     java.lang.String[] descriptorData = {
       "\n\nFeed.proto\022\014BlitzMessage\032\033objectivec-d" +
       "escriptor.proto\032\013Types.proto\032\020EntityTags" +
-      ".proto\"\225\004\n\010FeedPost\022\016\n\006postID\030\001 \001(\t\022\020\n\010p" +
+      ".proto\"\240\004\n\010FeedPost\022\016\n\006postID\030\001 \001(\t\022\020\n\010p" +
       "arentID\030\002 \001(\t\022,\n\010postType\030\003 \001(\0162\032.BlitzM" +
       "essage.FeedPostType\022.\n\tpostScope\030\004 \001(\0162\033" +
       ".BlitzMessage.FeedPostScope\022\016\n\006userID\030\005 " +
@@ -6118,30 +6490,32 @@ public final class Feed {
       "\016timespanActive\030\010 \001(\0132\026.BlitzMessage.Tim" +
       "espan\022\024\n\014headlineText\030\t \001(\t\022\020\n\010bodyText\030",
       "\n \001(\t\022)\n\010postTags\030\014 \003(\0132\027.BlitzMessage.E" +
-      "ntityTag\022\'\n\007replies\030\r \003(\0132\026.BlitzMessage" +
-      ".FeedPost\022\023\n\013mayAddReply\030\016 \001(\010\022 \n\030mayCho" +
-      "oseMulitpleReplies\030\017 \001(\010\022\034\n\024surveyAnswer" +
-      "Sequence\030\020 \001(\005\022\026\n\016areMoreReplies\030\021 \001(\010\022\026" +
-      "\n\016totalVoteCount\030\022 \001(\005\"o\n\025FeedPostUpdate" +
-      "Request\022,\n\nupdateVerb\030\001 \001(\0162\030.BlitzMessa" +
-      "ge.UpdateVerb\022(\n\010feedPost\030\002 \001(\0132\026.BlitzM" +
-      "essage.FeedPost\"B\n\026FeedPostUpdateRespons" +
-      "e\022(\n\010feedPost\030\001 \001(\0132\026.BlitzMessage.FeedP",
-      "ost\"\202\001\n\024FeedPostFetchRequest\022(\n\010timespan" +
-      "\030\001 \001(\0132\026.BlitzMessage.Timespan\022.\n\tfeedSc" +
-      "ope\030\002 \001(\0162\033.BlitzMessage.FeedPostScope\022\020" +
-      "\n\010parentID\030\003 \001(\t\"B\n\025FeedPostFetchRespons" +
-      "e\022)\n\tfeedPosts\030\001 \003(\0132\026.BlitzMessage.Feed" +
-      "Post*v\n\014FeedPostType\022\r\n\tFPUnknown\020\000\022\027\n\023F" +
-      "POpenEndedQuestion\020\001\022\024\n\020FPOpenEndedReply" +
-      "\020\002\022\024\n\020FPSurveyQuestion\020\003\022\022\n\016FPSurveyAnsw" +
-      "er\020\004*V\n\rFeedPostScope\022\022\n\016FPScopeUnknown\020" +
-      "\000\022\027\n\023FPScopeLocalNetwork\020\001\022\030\n\024FPScopeGlo",
-      "balNetwork\020\002*?\n\016FeedPostStatus\022\016\n\nFPSUnk" +
-      "nown\020\000\022\r\n\tFPSActive\020\001\022\016\n\nFPSDeleted\020\002*6\n" +
-      "\nUpdateVerb\022\014\n\010UVCreate\020\001\022\014\n\010UVUpdate\020\002\022" +
-      "\014\n\010UVDelete\020\003B/\n\032com.blitzhere.BlitzMess" +
-      "age\210\001\001\322>\002\n\000\322>\003\022\001B\322>\002\030\001"
+      "ntityTag\0222\n\022replies_deprecated\030\r \003(\0132\026.B" +
+      "litzMessage.FeedPost\022\023\n\013mayAddReply\030\016 \001(" +
+      "\010\022 \n\030mayChooseMulitpleReplies\030\017 \001(\010\022\034\n\024s" +
+      "urveyAnswerSequence\030\020 \001(\005\022\026\n\016areMoreRepl" +
+      "ies\030\021 \001(\010\022\026\n\016totalVoteCount\030\022 \001(\005\"\245\001\n\025Fe" +
+      "edPostUpdateRequest\022,\n\nupdateVerb\030\001 \001(\0162" +
+      "\030.BlitzMessage.UpdateVerb\0223\n\023feedPost_de" +
+      "precated\030\002 \001(\0132\026.BlitzMessage.FeedPost\022)" +
+      "\n\tfeedPosts\030\003 \003(\0132\026.BlitzMessage.FeedPos",
+      "t\"B\n\026FeedPostUpdateResponse\022(\n\010feedPost\030" +
+      "\001 \001(\0132\026.BlitzMessage.FeedPost\"\202\001\n\024FeedPo" +
+      "stFetchRequest\022(\n\010timespan\030\001 \001(\0132\026.Blitz" +
+      "Message.Timespan\022.\n\tfeedScope\030\002 \001(\0162\033.Bl" +
+      "itzMessage.FeedPostScope\022\020\n\010parentID\030\003 \001" +
+      "(\t\"B\n\025FeedPostFetchResponse\022)\n\tfeedPosts" +
+      "\030\001 \003(\0132\026.BlitzMessage.FeedPost*v\n\014FeedPo" +
+      "stType\022\r\n\tFPUnknown\020\000\022\027\n\023FPOpenEndedQues" +
+      "tion\020\001\022\024\n\020FPOpenEndedReply\020\002\022\024\n\020FPSurvey" +
+      "Question\020\003\022\022\n\016FPSurveyAnswer\020\004*V\n\rFeedPo",
+      "stScope\022\022\n\016FPScopeUnknown\020\000\022\027\n\023FPScopeLo" +
+      "calNetwork\020\001\022\030\n\024FPScopeGlobalNetwork\020\002*?" +
+      "\n\016FeedPostStatus\022\016\n\nFPSUnknown\020\000\022\r\n\tFPSA" +
+      "ctive\020\001\022\016\n\nFPSDeleted\020\002*6\n\nUpdateVerb\022\014\n" +
+      "\010UVCreate\020\001\022\014\n\010UVUpdate\020\002\022\014\n\010UVDelete\020\003B" +
+      "/\n\032com.blitzhere.BlitzMessage\210\001\001\322>\002\n\000\322>\003" +
+      "\022\001B\322>\002\030\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -6163,13 +6537,13 @@ public final class Feed {
     internal_static_BlitzMessage_FeedPost_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_BlitzMessage_FeedPost_descriptor,
-        new java.lang.String[] { "PostID", "ParentID", "PostType", "PostScope", "UserID", "AnonymousPost", "Timestamp", "TimespanActive", "HeadlineText", "BodyText", "PostTags", "Replies", "MayAddReply", "MayChooseMulitpleReplies", "SurveyAnswerSequence", "AreMoreReplies", "TotalVoteCount", });
+        new java.lang.String[] { "PostID", "ParentID", "PostType", "PostScope", "UserID", "AnonymousPost", "Timestamp", "TimespanActive", "HeadlineText", "BodyText", "PostTags", "RepliesDeprecated", "MayAddReply", "MayChooseMulitpleReplies", "SurveyAnswerSequence", "AreMoreReplies", "TotalVoteCount", });
     internal_static_BlitzMessage_FeedPostUpdateRequest_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_BlitzMessage_FeedPostUpdateRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_BlitzMessage_FeedPostUpdateRequest_descriptor,
-        new java.lang.String[] { "UpdateVerb", "FeedPost", });
+        new java.lang.String[] { "UpdateVerb", "FeedPostDeprecated", "FeedPosts", });
     internal_static_BlitzMessage_FeedPostUpdateResponse_descriptor =
       getDescriptor().getMessageTypes().get(2);
     internal_static_BlitzMessage_FeedPostUpdateResponse_fieldAccessorTable = new

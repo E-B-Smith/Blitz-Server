@@ -144,7 +144,7 @@ NSString *NSStringFromBUpdateVerb(BUpdateVerb value);
 #define FeedPost_headlineText @"headlineText"
 #define FeedPost_bodyText @"bodyText"
 #define FeedPost_postTags @"postTags"
-#define FeedPost_replies @"replies"
+#define FeedPost_replies_deprecated @"repliesDeprecated"
 #define FeedPost_mayAddReply @"mayAddReply"
 #define FeedPost_mayChooseMulitpleReplies @"mayChooseMulitpleReplies"
 #define FeedPost_surveyAnswerSequence @"surveyAnswerSequence"
@@ -183,7 +183,7 @@ NSString *NSStringFromBUpdateVerb(BUpdateVerb value);
   BFeedPostType postType;
   BFeedPostScope postScope;
   NSMutableArray * postTagsArray;
-  NSMutableArray * repliesArray;
+  NSMutableArray * repliesDeprecatedArray;
 }
 - (BOOL) hasPostID;
 - (BOOL) hasParentID;
@@ -211,14 +211,14 @@ NSString *NSStringFromBUpdateVerb(BUpdateVerb value);
 @property (readonly, strong) NSString* headlineText;
 @property (readonly, strong) NSString* bodyText;
 @property (readonly, strong) NSArray * postTags;
-@property (readonly, strong) NSArray * replies;
+@property (readonly, strong) NSArray * repliesDeprecated;
 - (BOOL) mayAddReply;
 - (BOOL) mayChooseMulitpleReplies;
 @property (readonly) SInt32 surveyAnswerSequence;
 - (BOOL) areMoreReplies;
 @property (readonly) SInt32 totalVoteCount;
 - (BEntityTag*)postTagsAtIndex:(NSUInteger)index;
-- (BFeedPost*)repliesAtIndex:(NSUInteger)index;
+- (BFeedPost*)repliesDeprecatedAtIndex:(NSUInteger)index;
 
 + (instancetype) defaultInstance;
 - (instancetype) defaultInstance;
@@ -315,11 +315,11 @@ NSString *NSStringFromBUpdateVerb(BUpdateVerb value);
 - (BFeedPostBuilder *)setPostTagsArray:(NSArray *)array;
 - (BFeedPostBuilder *)clearPostTags;
 
-- (NSMutableArray *)replies;
-- (BFeedPost*)repliesAtIndex:(NSUInteger)index;
-- (BFeedPostBuilder *)addReplies:(BFeedPost*)value;
-- (BFeedPostBuilder *)setRepliesArray:(NSArray *)array;
-- (BFeedPostBuilder *)clearReplies;
+- (NSMutableArray *)repliesDeprecated;
+- (BFeedPost*)repliesDeprecatedAtIndex:(NSUInteger)index;
+- (BFeedPostBuilder *)addRepliesDeprecated:(BFeedPost*)value;
+- (BFeedPostBuilder *)setRepliesDeprecatedArray:(NSArray *)array;
+- (BFeedPostBuilder *)clearRepliesDeprecated;
 
 - (BOOL) hasMayAddReply;
 - (BOOL) mayAddReply;
@@ -348,18 +348,22 @@ NSString *NSStringFromBUpdateVerb(BUpdateVerb value);
 @end
 
 #define FeedPostUpdateRequest_updateVerb @"updateVerb"
-#define FeedPostUpdateRequest_feedPost @"feedPost"
+#define FeedPostUpdateRequest_feedPost_deprecated @"feedPostDeprecated"
+#define FeedPostUpdateRequest_feedPosts @"feedPosts"
 @interface BFeedPostUpdateRequest : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
-  BOOL hasFeedPost_:1;
+  BOOL hasFeedPostDeprecated_:1;
   BOOL hasUpdateVerb_:1;
-  BFeedPost* feedPost;
+  BFeedPost* feedPostDeprecated;
   BUpdateVerb updateVerb;
+  NSMutableArray * feedPostsArray;
 }
 - (BOOL) hasUpdateVerb;
-- (BOOL) hasFeedPost;
+- (BOOL) hasFeedPostDeprecated;
 @property (readonly) BUpdateVerb updateVerb;
-@property (readonly, strong) BFeedPost* feedPost;
+@property (readonly, strong) BFeedPost* feedPostDeprecated;
+@property (readonly, strong) NSArray * feedPosts;
+- (BFeedPost*)feedPostsAtIndex:(NSUInteger)index;
 
 + (instancetype) defaultInstance;
 - (instancetype) defaultInstance;
@@ -401,12 +405,18 @@ NSString *NSStringFromBUpdateVerb(BUpdateVerb value);
 - (BFeedPostUpdateRequestBuilder*) setUpdateVerb:(BUpdateVerb) value;
 - (BFeedPostUpdateRequestBuilder*) clearUpdateVerb;
 
-- (BOOL) hasFeedPost;
-- (BFeedPost*) feedPost;
-- (BFeedPostUpdateRequestBuilder*) setFeedPost:(BFeedPost*) value;
-- (BFeedPostUpdateRequestBuilder*) setFeedPostBuilder:(BFeedPostBuilder*) builderForValue;
-- (BFeedPostUpdateRequestBuilder*) mergeFeedPost:(BFeedPost*) value;
-- (BFeedPostUpdateRequestBuilder*) clearFeedPost;
+- (BOOL) hasFeedPostDeprecated;
+- (BFeedPost*) feedPostDeprecated;
+- (BFeedPostUpdateRequestBuilder*) setFeedPostDeprecated:(BFeedPost*) value;
+- (BFeedPostUpdateRequestBuilder*) setFeedPostDeprecatedBuilder:(BFeedPostBuilder*) builderForValue;
+- (BFeedPostUpdateRequestBuilder*) mergeFeedPostDeprecated:(BFeedPost*) value;
+- (BFeedPostUpdateRequestBuilder*) clearFeedPostDeprecated;
+
+- (NSMutableArray *)feedPosts;
+- (BFeedPost*)feedPostsAtIndex:(NSUInteger)index;
+- (BFeedPostUpdateRequestBuilder *)addFeedPosts:(BFeedPost*)value;
+- (BFeedPostUpdateRequestBuilder *)setFeedPostsArray:(NSArray *)array;
+- (BFeedPostUpdateRequestBuilder *)clearFeedPosts;
 @end
 
 #define FeedPostUpdateResponse_feedPost @"feedPost"

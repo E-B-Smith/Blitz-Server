@@ -133,7 +133,7 @@ NSString *NSStringFromBUpdateVerb(BUpdateVerb value) {
 @property (strong) NSString* headlineText;
 @property (strong) NSString* bodyText;
 @property (strong) NSMutableArray * postTagsArray;
-@property (strong) NSMutableArray * repliesArray;
+@property (strong) NSMutableArray * repliesDeprecatedArray;
 @property BOOL mayAddReply;
 @property BOOL mayChooseMulitpleReplies;
 @property SInt32 surveyAnswerSequence;
@@ -220,8 +220,8 @@ NSString *NSStringFromBUpdateVerb(BUpdateVerb value) {
 @synthesize bodyText;
 @synthesize postTagsArray;
 @dynamic postTags;
-@synthesize repliesArray;
-@dynamic replies;
+@synthesize repliesDeprecatedArray;
+@dynamic repliesDeprecated;
 - (BOOL) hasMayAddReply {
   return !!hasMayAddReply_;
 }
@@ -310,11 +310,11 @@ static BFeedPost* defaultBFeedPostInstance = nil;
 - (BEntityTag*)postTagsAtIndex:(NSUInteger)index {
   return [postTagsArray objectAtIndex:index];
 }
-- (NSArray *)replies {
-  return repliesArray;
+- (NSArray *)repliesDeprecated {
+  return repliesDeprecatedArray;
 }
-- (BFeedPost*)repliesAtIndex:(NSUInteger)index {
-  return [repliesArray objectAtIndex:index];
+- (BFeedPost*)repliesDeprecatedAtIndex:(NSUInteger)index {
+  return [repliesDeprecatedArray objectAtIndex:index];
 }
 - (BOOL) isInitialized {
   if (self.hasTimestamp) {
@@ -327,14 +327,14 @@ static BFeedPost* defaultBFeedPostInstance = nil;
       return NO;
     }
   }
-  __block BOOL isInitreplies = YES;
-   [self.replies enumerateObjectsUsingBlock:^(BFeedPost *element, NSUInteger idx, BOOL *stop) {
+  __block BOOL isInitrepliesDeprecated = YES;
+   [self.repliesDeprecated enumerateObjectsUsingBlock:^(BFeedPost *element, NSUInteger idx, BOOL *stop) {
     if (!element.isInitialized) {
-      isInitreplies = NO;
+      isInitrepliesDeprecated = NO;
       *stop = YES;
     }
   }];
-  if (!isInitreplies) return isInitreplies;
+  if (!isInitrepliesDeprecated) return isInitrepliesDeprecated;
   return YES;
 }
 - (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
@@ -371,7 +371,7 @@ static BFeedPost* defaultBFeedPostInstance = nil;
   [self.postTagsArray enumerateObjectsUsingBlock:^(BEntityTag *element, NSUInteger idx, BOOL *stop) {
     [output writeMessage:12 value:element];
   }];
-  [self.repliesArray enumerateObjectsUsingBlock:^(BFeedPost *element, NSUInteger idx, BOOL *stop) {
+  [self.repliesDeprecatedArray enumerateObjectsUsingBlock:^(BFeedPost *element, NSUInteger idx, BOOL *stop) {
     [output writeMessage:13 value:element];
   }];
   if (self.hasMayAddReply) {
@@ -431,7 +431,7 @@ static BFeedPost* defaultBFeedPostInstance = nil;
   [self.postTagsArray enumerateObjectsUsingBlock:^(BEntityTag *element, NSUInteger idx, BOOL *stop) {
     size_ += computeMessageSize(12, element);
   }];
-  [self.repliesArray enumerateObjectsUsingBlock:^(BFeedPost *element, NSUInteger idx, BOOL *stop) {
+  [self.repliesDeprecatedArray enumerateObjectsUsingBlock:^(BFeedPost *element, NSUInteger idx, BOOL *stop) {
     size_ += computeMessageSize(13, element);
   }];
   if (self.hasMayAddReply) {
@@ -526,8 +526,8 @@ static BFeedPost* defaultBFeedPostInstance = nil;
                      withIndent:[NSString stringWithFormat:@"%@  ", indent]];
     [output appendFormat:@"%@}\n", indent];
   }];
-  [self.repliesArray enumerateObjectsUsingBlock:^(BFeedPost *element, NSUInteger idx, BOOL *stop) {
-    [output appendFormat:@"%@%@ {\n", indent, @"replies"];
+  [self.repliesDeprecatedArray enumerateObjectsUsingBlock:^(BFeedPost *element, NSUInteger idx, BOOL *stop) {
+    [output appendFormat:@"%@%@ {\n", indent, @"repliesDeprecated"];
     [element writeDescriptionTo:output
                      withIndent:[NSString stringWithFormat:@"%@  ", indent]];
     [output appendFormat:@"%@}\n", indent];
@@ -589,10 +589,10 @@ static BFeedPost* defaultBFeedPostInstance = nil;
     [element storeInDictionary:elementDictionary];
     [dictionary setObject:[NSDictionary dictionaryWithDictionary:elementDictionary] forKey:@"postTags"];
   }
-  for (BFeedPost* element in self.repliesArray) {
+  for (BFeedPost* element in self.repliesDeprecatedArray) {
     NSMutableDictionary *elementDictionary = [NSMutableDictionary dictionary];
     [element storeInDictionary:elementDictionary];
-    [dictionary setObject:[NSDictionary dictionaryWithDictionary:elementDictionary] forKey:@"replies"];
+    [dictionary setObject:[NSDictionary dictionaryWithDictionary:elementDictionary] forKey:@"repliesDeprecated"];
   }
   if (self.hasMayAddReply) {
     [dictionary setObject: [NSNumber numberWithBool:self.mayAddReply] forKey: @"mayAddReply"];
@@ -641,7 +641,7 @@ static BFeedPost* defaultBFeedPostInstance = nil;
       self.hasBodyText == otherMessage.hasBodyText &&
       (!self.hasBodyText || [self.bodyText isEqual:otherMessage.bodyText]) &&
       [self.postTagsArray isEqualToArray:otherMessage.postTagsArray] &&
-      [self.repliesArray isEqualToArray:otherMessage.repliesArray] &&
+      [self.repliesDeprecatedArray isEqualToArray:otherMessage.repliesDeprecatedArray] &&
       self.hasMayAddReply == otherMessage.hasMayAddReply &&
       (!self.hasMayAddReply || self.mayAddReply == otherMessage.mayAddReply) &&
       self.hasMayChooseMulitpleReplies == otherMessage.hasMayChooseMulitpleReplies &&
@@ -689,7 +689,7 @@ static BFeedPost* defaultBFeedPostInstance = nil;
   [self.postTagsArray enumerateObjectsUsingBlock:^(BEntityTag *element, NSUInteger idx, BOOL *stop) {
     hashCode = hashCode * 31 + [element hash];
   }];
-  [self.repliesArray enumerateObjectsUsingBlock:^(BFeedPost *element, NSUInteger idx, BOOL *stop) {
+  [self.repliesDeprecatedArray enumerateObjectsUsingBlock:^(BFeedPost *element, NSUInteger idx, BOOL *stop) {
     hashCode = hashCode * 31 + [element hash];
   }];
   if (self.hasMayAddReply) {
@@ -787,11 +787,11 @@ static BFeedPost* defaultBFeedPostInstance = nil;
       [resultFeedPost.postTagsArray addObjectsFromArray:other.postTagsArray];
     }
   }
-  if (other.repliesArray.count > 0) {
-    if (resultFeedPost.repliesArray == nil) {
-      resultFeedPost.repliesArray = [[NSMutableArray alloc] initWithArray:other.repliesArray];
+  if (other.repliesDeprecatedArray.count > 0) {
+    if (resultFeedPost.repliesDeprecatedArray == nil) {
+      resultFeedPost.repliesDeprecatedArray = [[NSMutableArray alloc] initWithArray:other.repliesDeprecatedArray];
     } else {
-      [resultFeedPost.repliesArray addObjectsFromArray:other.repliesArray];
+      [resultFeedPost.repliesDeprecatedArray addObjectsFromArray:other.repliesDeprecatedArray];
     }
   }
   if (other.hasMayAddReply) {
@@ -899,7 +899,7 @@ static BFeedPost* defaultBFeedPostInstance = nil;
       case 106: {
         BFeedPostBuilder* subBuilder = [BFeedPost builder];
         [input readMessage:subBuilder extensionRegistry:extensionRegistry];
-        [self addReplies:[subBuilder buildPartial]];
+        [self addRepliesDeprecated:[subBuilder buildPartial]];
         break;
       }
       case 112: {
@@ -1134,25 +1134,25 @@ static BFeedPost* defaultBFeedPostInstance = nil;
   resultFeedPost.postTagsArray = nil;
   return self;
 }
-- (NSMutableArray *)replies {
-  return resultFeedPost.repliesArray;
+- (NSMutableArray *)repliesDeprecated {
+  return resultFeedPost.repliesDeprecatedArray;
 }
-- (BFeedPost*)repliesAtIndex:(NSUInteger)index {
-  return [resultFeedPost repliesAtIndex:index];
+- (BFeedPost*)repliesDeprecatedAtIndex:(NSUInteger)index {
+  return [resultFeedPost repliesDeprecatedAtIndex:index];
 }
-- (BFeedPostBuilder *)addReplies:(BFeedPost*)value {
-  if (resultFeedPost.repliesArray == nil) {
-    resultFeedPost.repliesArray = [[NSMutableArray alloc]init];
+- (BFeedPostBuilder *)addRepliesDeprecated:(BFeedPost*)value {
+  if (resultFeedPost.repliesDeprecatedArray == nil) {
+    resultFeedPost.repliesDeprecatedArray = [[NSMutableArray alloc]init];
   }
-  [resultFeedPost.repliesArray addObject:value];
+  [resultFeedPost.repliesDeprecatedArray addObject:value];
   return self;
 }
-- (BFeedPostBuilder *)setRepliesArray:(NSArray *)array {
-  resultFeedPost.repliesArray = [[NSMutableArray alloc]initWithArray:array];
+- (BFeedPostBuilder *)setRepliesDeprecatedArray:(NSArray *)array {
+  resultFeedPost.repliesDeprecatedArray = [[NSMutableArray alloc]initWithArray:array];
   return self;
 }
-- (BFeedPostBuilder *)clearReplies {
-  resultFeedPost.repliesArray = nil;
+- (BFeedPostBuilder *)clearRepliesDeprecated {
+  resultFeedPost.repliesDeprecatedArray = nil;
   return self;
 }
 - (BOOL) hasMayAddReply {
@@ -1239,7 +1239,8 @@ static BFeedPost* defaultBFeedPostInstance = nil;
 
 @interface BFeedPostUpdateRequest ()
 @property BUpdateVerb updateVerb;
-@property (strong) BFeedPost* feedPost;
+@property (strong) BFeedPost* feedPostDeprecated;
+@property (strong) NSMutableArray * feedPostsArray;
 @end
 
 @implementation BFeedPostUpdateRequest
@@ -1251,17 +1252,19 @@ static BFeedPost* defaultBFeedPostInstance = nil;
   hasUpdateVerb_ = !!_value_;
 }
 @synthesize updateVerb;
-- (BOOL) hasFeedPost {
-  return !!hasFeedPost_;
+- (BOOL) hasFeedPostDeprecated {
+  return !!hasFeedPostDeprecated_;
 }
-- (void) setHasFeedPost:(BOOL) _value_ {
-  hasFeedPost_ = !!_value_;
+- (void) setHasFeedPostDeprecated:(BOOL) _value_ {
+  hasFeedPostDeprecated_ = !!_value_;
 }
-@synthesize feedPost;
+@synthesize feedPostDeprecated;
+@synthesize feedPostsArray;
+@dynamic feedPosts;
 - (instancetype) init {
   if ((self = [super init])) {
     self.updateVerb = BUpdateVerbUVCreate;
-    self.feedPost = [BFeedPost defaultInstance];
+    self.feedPostDeprecated = [BFeedPost defaultInstance];
   }
   return self;
 }
@@ -1277,21 +1280,38 @@ static BFeedPostUpdateRequest* defaultBFeedPostUpdateRequestInstance = nil;
 - (instancetype) defaultInstance {
   return defaultBFeedPostUpdateRequestInstance;
 }
+- (NSArray *)feedPosts {
+  return feedPostsArray;
+}
+- (BFeedPost*)feedPostsAtIndex:(NSUInteger)index {
+  return [feedPostsArray objectAtIndex:index];
+}
 - (BOOL) isInitialized {
-  if (self.hasFeedPost) {
-    if (!self.feedPost.isInitialized) {
+  if (self.hasFeedPostDeprecated) {
+    if (!self.feedPostDeprecated.isInitialized) {
       return NO;
     }
   }
+  __block BOOL isInitfeedPosts = YES;
+   [self.feedPosts enumerateObjectsUsingBlock:^(BFeedPost *element, NSUInteger idx, BOOL *stop) {
+    if (!element.isInitialized) {
+      isInitfeedPosts = NO;
+      *stop = YES;
+    }
+  }];
+  if (!isInitfeedPosts) return isInitfeedPosts;
   return YES;
 }
 - (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
   if (self.hasUpdateVerb) {
     [output writeEnum:1 value:self.updateVerb];
   }
-  if (self.hasFeedPost) {
-    [output writeMessage:2 value:self.feedPost];
+  if (self.hasFeedPostDeprecated) {
+    [output writeMessage:2 value:self.feedPostDeprecated];
   }
+  [self.feedPostsArray enumerateObjectsUsingBlock:^(BFeedPost *element, NSUInteger idx, BOOL *stop) {
+    [output writeMessage:3 value:element];
+  }];
   [self.unknownFields writeToCodedOutputStream:output];
 }
 - (SInt32) serializedSize {
@@ -1304,9 +1324,12 @@ static BFeedPostUpdateRequest* defaultBFeedPostUpdateRequestInstance = nil;
   if (self.hasUpdateVerb) {
     size_ += computeEnumSize(1, self.updateVerb);
   }
-  if (self.hasFeedPost) {
-    size_ += computeMessageSize(2, self.feedPost);
+  if (self.hasFeedPostDeprecated) {
+    size_ += computeMessageSize(2, self.feedPostDeprecated);
   }
+  [self.feedPostsArray enumerateObjectsUsingBlock:^(BFeedPost *element, NSUInteger idx, BOOL *stop) {
+    size_ += computeMessageSize(3, element);
+  }];
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
   return size_;
@@ -1345,22 +1368,33 @@ static BFeedPostUpdateRequest* defaultBFeedPostUpdateRequestInstance = nil;
   if (self.hasUpdateVerb) {
     [output appendFormat:@"%@%@: %@\n", indent, @"updateVerb", NSStringFromBUpdateVerb(self.updateVerb)];
   }
-  if (self.hasFeedPost) {
-    [output appendFormat:@"%@%@ {\n", indent, @"feedPost"];
-    [self.feedPost writeDescriptionTo:output
+  if (self.hasFeedPostDeprecated) {
+    [output appendFormat:@"%@%@ {\n", indent, @"feedPostDeprecated"];
+    [self.feedPostDeprecated writeDescriptionTo:output
                          withIndent:[NSString stringWithFormat:@"%@  ", indent]];
     [output appendFormat:@"%@}\n", indent];
   }
+  [self.feedPostsArray enumerateObjectsUsingBlock:^(BFeedPost *element, NSUInteger idx, BOOL *stop) {
+    [output appendFormat:@"%@%@ {\n", indent, @"feedPosts"];
+    [element writeDescriptionTo:output
+                     withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }];
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (void) storeInDictionary:(NSMutableDictionary *)dictionary {
   if (self.hasUpdateVerb) {
     [dictionary setObject: @(self.updateVerb) forKey: @"updateVerb"];
   }
-  if (self.hasFeedPost) {
+  if (self.hasFeedPostDeprecated) {
    NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
-   [self.feedPost storeInDictionary:messageDictionary];
-   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"feedPost"];
+   [self.feedPostDeprecated storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"feedPostDeprecated"];
+  }
+  for (BFeedPost* element in self.feedPostsArray) {
+    NSMutableDictionary *elementDictionary = [NSMutableDictionary dictionary];
+    [element storeInDictionary:elementDictionary];
+    [dictionary setObject:[NSDictionary dictionaryWithDictionary:elementDictionary] forKey:@"feedPosts"];
   }
   [self.unknownFields storeInDictionary:dictionary];
 }
@@ -1375,8 +1409,9 @@ static BFeedPostUpdateRequest* defaultBFeedPostUpdateRequestInstance = nil;
   return
       self.hasUpdateVerb == otherMessage.hasUpdateVerb &&
       (!self.hasUpdateVerb || self.updateVerb == otherMessage.updateVerb) &&
-      self.hasFeedPost == otherMessage.hasFeedPost &&
-      (!self.hasFeedPost || [self.feedPost isEqual:otherMessage.feedPost]) &&
+      self.hasFeedPostDeprecated == otherMessage.hasFeedPostDeprecated &&
+      (!self.hasFeedPostDeprecated || [self.feedPostDeprecated isEqual:otherMessage.feedPostDeprecated]) &&
+      [self.feedPostsArray isEqualToArray:otherMessage.feedPostsArray] &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
@@ -1384,9 +1419,12 @@ static BFeedPostUpdateRequest* defaultBFeedPostUpdateRequestInstance = nil;
   if (self.hasUpdateVerb) {
     hashCode = hashCode * 31 + self.updateVerb;
   }
-  if (self.hasFeedPost) {
-    hashCode = hashCode * 31 + [self.feedPost hash];
+  if (self.hasFeedPostDeprecated) {
+    hashCode = hashCode * 31 + [self.feedPostDeprecated hash];
   }
+  [self.feedPostsArray enumerateObjectsUsingBlock:^(BFeedPost *element, NSUInteger idx, BOOL *stop) {
+    hashCode = hashCode * 31 + [element hash];
+  }];
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
 }
@@ -1433,8 +1471,15 @@ static BFeedPostUpdateRequest* defaultBFeedPostUpdateRequestInstance = nil;
   if (other.hasUpdateVerb) {
     [self setUpdateVerb:other.updateVerb];
   }
-  if (other.hasFeedPost) {
-    [self mergeFeedPost:other.feedPost];
+  if (other.hasFeedPostDeprecated) {
+    [self mergeFeedPostDeprecated:other.feedPostDeprecated];
+  }
+  if (other.feedPostsArray.count > 0) {
+    if (resultFeedPostUpdateRequest.feedPostsArray == nil) {
+      resultFeedPostUpdateRequest.feedPostsArray = [[NSMutableArray alloc] initWithArray:other.feedPostsArray];
+    } else {
+      [resultFeedPostUpdateRequest.feedPostsArray addObjectsFromArray:other.feedPostsArray];
+    }
   }
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -1468,11 +1513,17 @@ static BFeedPostUpdateRequest* defaultBFeedPostUpdateRequestInstance = nil;
       }
       case 18: {
         BFeedPostBuilder* subBuilder = [BFeedPost builder];
-        if (self.hasFeedPost) {
-          [subBuilder mergeFrom:self.feedPost];
+        if (self.hasFeedPostDeprecated) {
+          [subBuilder mergeFrom:self.feedPostDeprecated];
         }
         [input readMessage:subBuilder extensionRegistry:extensionRegistry];
-        [self setFeedPost:[subBuilder buildPartial]];
+        [self setFeedPostDeprecated:[subBuilder buildPartial]];
+        break;
+      }
+      case 26: {
+        BFeedPostBuilder* subBuilder = [BFeedPost builder];
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self addFeedPosts:[subBuilder buildPartial]];
         break;
       }
     }
@@ -1494,34 +1545,55 @@ static BFeedPostUpdateRequest* defaultBFeedPostUpdateRequestInstance = nil;
   resultFeedPostUpdateRequest.updateVerb = BUpdateVerbUVCreate;
   return self;
 }
-- (BOOL) hasFeedPost {
-  return resultFeedPostUpdateRequest.hasFeedPost;
+- (BOOL) hasFeedPostDeprecated {
+  return resultFeedPostUpdateRequest.hasFeedPostDeprecated;
 }
-- (BFeedPost*) feedPost {
-  return resultFeedPostUpdateRequest.feedPost;
+- (BFeedPost*) feedPostDeprecated {
+  return resultFeedPostUpdateRequest.feedPostDeprecated;
 }
-- (BFeedPostUpdateRequestBuilder*) setFeedPost:(BFeedPost*) value {
-  resultFeedPostUpdateRequest.hasFeedPost = YES;
-  resultFeedPostUpdateRequest.feedPost = value;
+- (BFeedPostUpdateRequestBuilder*) setFeedPostDeprecated:(BFeedPost*) value {
+  resultFeedPostUpdateRequest.hasFeedPostDeprecated = YES;
+  resultFeedPostUpdateRequest.feedPostDeprecated = value;
   return self;
 }
-- (BFeedPostUpdateRequestBuilder*) setFeedPostBuilder:(BFeedPostBuilder*) builderForValue {
-  return [self setFeedPost:[builderForValue build]];
+- (BFeedPostUpdateRequestBuilder*) setFeedPostDeprecatedBuilder:(BFeedPostBuilder*) builderForValue {
+  return [self setFeedPostDeprecated:[builderForValue build]];
 }
-- (BFeedPostUpdateRequestBuilder*) mergeFeedPost:(BFeedPost*) value {
-  if (resultFeedPostUpdateRequest.hasFeedPost &&
-      resultFeedPostUpdateRequest.feedPost != [BFeedPost defaultInstance]) {
-    resultFeedPostUpdateRequest.feedPost =
-      [[[BFeedPost builderWithPrototype:resultFeedPostUpdateRequest.feedPost] mergeFrom:value] buildPartial];
+- (BFeedPostUpdateRequestBuilder*) mergeFeedPostDeprecated:(BFeedPost*) value {
+  if (resultFeedPostUpdateRequest.hasFeedPostDeprecated &&
+      resultFeedPostUpdateRequest.feedPostDeprecated != [BFeedPost defaultInstance]) {
+    resultFeedPostUpdateRequest.feedPostDeprecated =
+      [[[BFeedPost builderWithPrototype:resultFeedPostUpdateRequest.feedPostDeprecated] mergeFrom:value] buildPartial];
   } else {
-    resultFeedPostUpdateRequest.feedPost = value;
+    resultFeedPostUpdateRequest.feedPostDeprecated = value;
   }
-  resultFeedPostUpdateRequest.hasFeedPost = YES;
+  resultFeedPostUpdateRequest.hasFeedPostDeprecated = YES;
   return self;
 }
-- (BFeedPostUpdateRequestBuilder*) clearFeedPost {
-  resultFeedPostUpdateRequest.hasFeedPost = NO;
-  resultFeedPostUpdateRequest.feedPost = [BFeedPost defaultInstance];
+- (BFeedPostUpdateRequestBuilder*) clearFeedPostDeprecated {
+  resultFeedPostUpdateRequest.hasFeedPostDeprecated = NO;
+  resultFeedPostUpdateRequest.feedPostDeprecated = [BFeedPost defaultInstance];
+  return self;
+}
+- (NSMutableArray *)feedPosts {
+  return resultFeedPostUpdateRequest.feedPostsArray;
+}
+- (BFeedPost*)feedPostsAtIndex:(NSUInteger)index {
+  return [resultFeedPostUpdateRequest feedPostsAtIndex:index];
+}
+- (BFeedPostUpdateRequestBuilder *)addFeedPosts:(BFeedPost*)value {
+  if (resultFeedPostUpdateRequest.feedPostsArray == nil) {
+    resultFeedPostUpdateRequest.feedPostsArray = [[NSMutableArray alloc]init];
+  }
+  [resultFeedPostUpdateRequest.feedPostsArray addObject:value];
+  return self;
+}
+- (BFeedPostUpdateRequestBuilder *)setFeedPostsArray:(NSArray *)array {
+  resultFeedPostUpdateRequest.feedPostsArray = [[NSMutableArray alloc]initWithArray:array];
+  return self;
+}
+- (BFeedPostUpdateRequestBuilder *)clearFeedPosts {
+  resultFeedPostUpdateRequest.feedPostsArray = nil;
   return self;
 }
 @end

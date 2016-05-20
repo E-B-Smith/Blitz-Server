@@ -54,7 +54,7 @@ message FeedPost {
   optional string         headlineText    = 9;
   optional string         bodyText        = 10;
   repeated EntityTag      postTags        = 12;
-  repeated FeedPost       replies         = 13;   //  Top replies or survey choices.
+  repeated FeedPost       replies_deprecated = 13;   //  Top replies or survey choices.
   optional bool           mayAddReply     = 14;
   optional bool           mayChooseMulitpleReplies = 15;
   optional int32          surveyAnswerSequence = 16;
@@ -71,8 +71,9 @@ enum UpdateVerb {
 
 
 message FeedPostUpdateRequest {
-  optional UpdateVerb updateVerb = 1;
-  optional FeedPost   feedPost   = 2;
+  optional UpdateVerb updateVerb  = 1;
+  optional FeedPost   feedPost_deprecated = 2;
+  repeated FeedPost   feedPosts   = 3;
 }
 
 

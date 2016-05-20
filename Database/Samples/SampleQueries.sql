@@ -432,3 +432,11 @@ union
 )
 select parentlist, item, isLeaf from tree where isLeaf;
 
+select distinct et.entityTag, ct.item as "Category" from EntityTagTable et
+	left join CategoryTable ct on et.entityTag = ct.item
+	where ct.item is null
+	  and et.entityTag not like '.%'
+;
+
+
+
