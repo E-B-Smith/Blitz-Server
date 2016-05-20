@@ -188,11 +188,130 @@ func FeedPostForPostID(userID string, postID string) *BlitzMessage.FeedPost {
 
 
 //----------------------------------------------------------------------------------------
+//
 //                                                                          UpdateFeedPost
+//
 //----------------------------------------------------------------------------------------
 
 
-func UpdateFeedPost(session *Session, feedPostUpdate *BlitzMessage.FeedPostUpdateRequest,
+//------------------------------------------------------------------------- DeleteFeedPost
+
+
+func DeleteFeedPost(session *Session, string postID) error {
+    Log.LogFunctionName()
+
+    _, error := config.DB.Exec(
+        `update FeedPostTable set PostStatus = $1
+            where postID = $2
+              and userID = $3;`,
+        BlitzMessage.FeedPostStatus_FPSDeleted,
+        postID,
+        session.UserID,
+    )
+    return error
+}
+
+
+//------------------------------------------------------------------------- UpdateFeedPost
+
+
+func UpdateFeedPost(session *Session, feedPost BlitzMessage.FeedPost) error {
+    Log.LogFunctionName()
+
+    _, error := config.DB.Exec(
+        `update FeedPostTable set
+             postScope                  = $1
+            ,anonymousPost              = $2
+            ,timeActiveStart            = $3
+            ,timeActiveStop             = $4
+            ,headlineText               = $5
+            ,bodyText                   = $6
+            ,mayAddReply                = $7
+            ,mayChooseMulitpleReplies   = $8
+        where postID = $9
+          and userID = $10;`,
+        feedPost.FeedPostScope,
+        feedPost.AnonymousPost,
+        BlitzMessage.NullTimeFromTimespanStart(feedPost.TimespanActive),
+        BlitzMessage.NullTimeFromTimespanStop(feedPost.TimespanActive),
+        feedPost.HeadlineText,
+        feedPost.BodyText,
+        feedPost.MayAddReply,
+        feedPost.MayChooseMulitpleReplies,
+        feedPost.PostID,
+        session.UserID,
+    )
+}
+
+
+//------------------------------------------------------------------------- CreateFeedPost
+
+
+func CreateFeedPost(session *Session, feedPost BlitzMessage.FeedPost) error {
+    Log.LogFunctionName()
+
+    error := WriteFeedPost(feedPost)
+    if error != nil {
+        Log.LogError(error)
+        return error
+    }
+
+
+    //  Send a notification if it's a response --
+
+    if  feedPost.ParentID != nil {
+        Log.Debugf("Try to send a notification to the original poster:")
+        actionURL := fmt.Sprintf("%s?action=showpost&postid=%s",
+            config.AppLinkURL, *feedPostUpdate.FeedPost.ParentID)
+        parentPost := FeedPostForPostID(session.UserID, *feedPostUpdate.FeedPost.ParentID)
+        if  parentPost != nil {
+            name, _ := NameForUserID(session.UserID)
+            if len(name) == 0 { name = "Someone" }
+            message := fmt.Sprintf("%s responded to your post.", name)
+            SendUserMessage(*feedPostUpdate.FeedPost.UserID,
+                [] string { *parentPost.UserID },
+                message,
+                BlitzMessage.UserMessageType_MTNotification,
+                "AppIcon",
+                actionURL,
+            )
+        }
+    }
+
+    //  Send a notification to the user's followers --
+
+    followingUsers := GetUserIDArrayForEntity(
+        BlitzMessage.EntityType_ETUser,
+        *feedPost.UserID,
+        ".followed",
+    )
+    postID := *feedPost.PostID
+    if  feedPost.ParentID != nil {
+        postID = *feedPost.ParentID
+    }
+    actionURL := fmt.Sprintf("%s?action=showpost&postid=%s",
+        config.AppLinkURL, postID)
+
+    name, _ := NameForUserID(*feedPost.UserID)
+    if len(followingUsers) > 0 && len(name) > 0 {
+        message := *feedPost.HeadlineText
+        SendUserMessage(*feedPost.UserID,
+            followingUsers,
+            message,
+            BlitzMessage.UserMessageType_MTNotification,
+            "AppIcon",
+            actionURL,
+        )
+    }
+
+    return nil
+}
+
+
+//-------------------------------------------------------------------- UpdateFeedPostBatch
+
+
+func UpdateFeedPostBatch(session *Session, feedPostUpdate *BlitzMessage.FeedPostUpdateRequest,
     ) *BlitzMessage.ServerResponse {
     Log.LogFunctionName()
 
