@@ -197,7 +197,7 @@ func FeedPostForPostID(userID string, postID string) *BlitzMessage.FeedPost {
 //------------------------------------------------------------------------- DeleteFeedPost
 
 
-func DeleteFeedPost(session *Session, string postID) error {
+func DeleteFeedPost(session *Session, postID string) error {
     Log.LogFunctionName()
 
     _, error := config.DB.Exec(
@@ -215,8 +215,14 @@ func DeleteFeedPost(session *Session, string postID) error {
 //------------------------------------------------------------------------- UpdateFeedPost
 
 
-func UpdateFeedPost(session *Session, feedPost BlitzMessage.FeedPost) error {
+func UpdateFeedPost(session *Session, feedPost *BlitzMessage.FeedPost) error {
     Log.LogFunctionName()
+
+    if  feedPost == nil ||
+        feedPost.UserID == nil ||
+        session.UserID != *feedPost.UserID {
+        return errors.New("Not authorized")
+    }
 
     _, error := config.DB.Exec(
         `update FeedPostTable set
@@ -230,7 +236,7 @@ func UpdateFeedPost(session *Session, feedPost BlitzMessage.FeedPost) error {
             ,mayChooseMulitpleReplies   = $8
         where postID = $9
           and userID = $10;`,
-        feedPost.FeedPostScope,
+        feedPost.PostScope,
         feedPost.AnonymousPost,
         BlitzMessage.NullTimeFromTimespanStart(feedPost.TimespanActive),
         BlitzMessage.NullTimeFromTimespanStop(feedPost.TimespanActive),
@@ -241,14 +247,21 @@ func UpdateFeedPost(session *Session, feedPost BlitzMessage.FeedPost) error {
         feedPost.PostID,
         session.UserID,
     )
+    return error
 }
 
 
 //------------------------------------------------------------------------- CreateFeedPost
 
 
-func CreateFeedPost(session *Session, feedPost BlitzMessage.FeedPost) error {
+func CreateFeedPost(session *Session, feedPost *BlitzMessage.FeedPost) error {
     Log.LogFunctionName()
+
+    if  feedPost.UserID == nil ||
+        session.UserID != *feedPost.UserID ||
+        feedPost.HeadlineText == nil {
+        return errors.New("Not authorized")
+    }
 
     error := WriteFeedPost(feedPost)
     if error != nil {
@@ -256,19 +269,18 @@ func CreateFeedPost(session *Session, feedPost BlitzMessage.FeedPost) error {
         return error
     }
 
-
     //  Send a notification if it's a response --
 
     if  feedPost.ParentID != nil {
         Log.Debugf("Try to send a notification to the original poster:")
         actionURL := fmt.Sprintf("%s?action=showpost&postid=%s",
-            config.AppLinkURL, *feedPostUpdate.FeedPost.ParentID)
-        parentPost := FeedPostForPostID(session.UserID, *feedPostUpdate.FeedPost.ParentID)
+            config.AppLinkURL, *feedPost.ParentID)
+        parentPost := FeedPostForPostID(session.UserID, *feedPost.ParentID)
         if  parentPost != nil {
             name, _ := NameForUserID(session.UserID)
             if len(name) == 0 { name = "Someone" }
             message := fmt.Sprintf("%s responded to your post.", name)
-            SendUserMessage(*feedPostUpdate.FeedPost.UserID,
+            SendUserMessage(*feedPost.UserID,
                 [] string { *parentPost.UserID },
                 message,
                 BlitzMessage.UserMessageType_MTNotification,
@@ -315,95 +327,71 @@ func UpdateFeedPostBatch(session *Session, feedPostUpdate *BlitzMessage.FeedPost
     ) *BlitzMessage.ServerResponse {
     Log.LogFunctionName()
 
-    if feedPostUpdate.FeedPost.UserID == nil ||
-        session.UserID != *feedPostUpdate.FeedPost.UserID {
-        return ServerResponseForError(BlitzMessage.ResponseCode_RCNotAuthorized, errors.New("Not authorized"))
-    }
-
     if  feedPostUpdate.UpdateVerb == nil ||
-        feedPostUpdate.FeedPost.PostID == nil ||
-        feedPostUpdate.FeedPost.HeadlineText == nil {
+        len(feedPostUpdate.FeedPosts) == 0 {
         return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, nil)
     }
 
-    if *feedPostUpdate.UpdateVerb == BlitzMessage.UpdateVerb_UVCreate ||
-       *feedPostUpdate.UpdateVerb == BlitzMessage.UpdateVerb_UVUpdate {
-        error := WriteFeedPost(feedPostUpdate.FeedPost)
-        if error != nil {
-            Log.LogError(error)
-            return ServerResponseForError(BlitzMessage.ResponseCode_RCServerError, error)
-        }
+    var error error
+    switch *feedPostUpdate.UpdateVerb  {
 
-        //  If it's a survey question, write the responses --
+    case BlitzMessage.UpdateVerb_UVCreate:
 
-        for _, reply := range feedPostUpdate.FeedPost.Replies {
-            error := WriteFeedPost(reply)
-            if error != nil { Log.LogError(error) }
-        }
-
-        //  Send a notification if it's a response --
-
-        if  feedPostUpdate.FeedPost.ParentID != nil {
-            Log.Debugf("Try to send a notification to the original poster:")
-            actionURL := fmt.Sprintf("%s?action=showpost&postid=%s",
-                config.AppLinkURL, *feedPostUpdate.FeedPost.ParentID)
-            parentPost := FeedPostForPostID(session.UserID, *feedPostUpdate.FeedPost.ParentID)
-            if  parentPost != nil {
-                name, _ := NameForUserID(session.UserID)
-                if len(name) == 0 { name = "Someone" }
-                message := fmt.Sprintf("%s responded to your post.", name)
-                SendUserMessage(*feedPostUpdate.FeedPost.UserID,
-                    [] string { *parentPost.UserID },
-                    message,
-                    BlitzMessage.UserMessageType_MTNotification,
-                    "AppIcon",
-                    actionURL,
-                )
+        for _, feedPost := range feedPostUpdate.FeedPosts {
+            error = CreateFeedPost(session, feedPost)
+            if error != nil {
+                Log.LogError(error)
+                break
             }
         }
 
-        //  Send a notification to the user's followers --
+    case BlitzMessage.UpdateVerb_UVUpdate:
 
-        followingUsers := GetUserIDArrayForEntity(
-            BlitzMessage.EntityType_ETUser,
-            *feedPostUpdate.FeedPost.UserID,
-            ".followed",
-        )
-        postID := *feedPostUpdate.FeedPost.PostID
-        if  feedPostUpdate.FeedPost.ParentID != nil {
-            postID = *feedPostUpdate.FeedPost.ParentID
-        }
-        actionURL := fmt.Sprintf("%s?action=showpost&postid=%s",
-            config.AppLinkURL, postID)
-
-        name, _ := NameForUserID(*feedPostUpdate.FeedPost.UserID)
-        if len(followingUsers) > 0 && len(name) > 0 {
-            message := *feedPostUpdate.FeedPost.HeadlineText
-            SendUserMessage(*feedPostUpdate.FeedPost.UserID,
-                followingUsers,
-                message,
-                BlitzMessage.UserMessageType_MTNotification,
-                "AppIcon",
-                actionURL,
-            )
+        for _, feedPost := range feedPostUpdate.FeedPosts {
+            error = UpdateFeedPost(session, feedPost)
+            if error != nil {
+                Log.LogError(error)
+                break
+            }
         }
 
-        return ServerResponseForCode(BlitzMessage.ResponseCode_RCSuccess, nil)
+    case BlitzMessage.UpdateVerb_UVDelete:
+
+        for _, feedPost := range feedPostUpdate.FeedPosts {
+            error = DeleteFeedPost(session, *feedPost.PostID)
+            if error != nil {
+                Log.LogError(error)
+                break
+            }
+        }
+
+    default:
+        Log.Errorf("Invalid case: %d.", *feedPostUpdate.UpdateVerb)
+        error = errors.New("Invalid verb")
     }
 
-    if *feedPostUpdate.UpdateVerb == BlitzMessage.UpdateVerb_UVDelete {
-        result, error := config.DB.Exec(
-            `update FeedPostTable set postStatus = $1 where postID = $2;`,
-                BlitzMessage.FeedPostStatus_FPSDeleted, feedPostUpdate.FeedPost.PostID)
-        error = pgsql.ResultError(result, error)
-        if error != nil {
-            return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
-        }
-        return ServerResponseForCode(BlitzMessage.ResponseCode_RCSuccess, nil)
+    if error != nil {
+        return ServerResponseForError(BlitzMessage.ResponseCode_RCServerError, error)
     }
 
-    return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid,
-            fmt.Errorf("Unknown verb '%d'", feedPostUpdate.UpdateVerb))
+    //  Read & return the updated posts --
+
+    updateArray := make([]*BlitzMessage.FeedPost, 0, len(feedPostUpdate.FeedPosts))
+    for _, feedPost := range feedPostUpdate.FeedPosts {
+        updatedPost := FeedPostForPostID(session.UserID, *feedPost.PostID)
+        if updatedPost != nil {
+            updateArray = append(updateArray, updatedPost)
+        }
+    }
+
+    feedResponse := BlitzMessage.FeedPostResponse {
+        FeedPosts:      updateArray,
+    }
+    response := &BlitzMessage.ServerResponse {
+        ResponseCode:       BlitzMessage.ResponseCode(BlitzMessage.ResponseCode_RCSuccess).Enum(),
+        ResponseType:       &BlitzMessage.ResponseType { FeedPostResponse: &feedResponse },
+    }
+    return response
 }
 
 
@@ -550,37 +538,31 @@ func FetchFeedPosts(session *Session, fetchRequest *BlitzMessage.FeedPostFetchRe
     //  Now go back through the feed posts to update their responses:
 
     for _, feedPost := range feedPosts {
-        var limit int = 0
+
+        var limit int = 20
+        var replies []*BlitzMessage.FeedPost
 
         switch *feedPost.PostType {
 
         case BlitzMessage.FeedPostType_FPOpenEndedQuestion:
-            limit = 6
-            feedPost.Replies = FetchTopOpenRepliesForFeedPost(session.UserID, *feedPost.PostID, limit)
+            replies = FetchTopOpenRepliesForFeedPost(session.UserID, *feedPost.PostID, limit)
 
         case BlitzMessage.FeedPostType_FPSurveyQuestion:
-            limit = 10
-            feedPost.Replies = FetchTopSurveyRepliesForFeedPost(session.UserID, *feedPost.PostID, limit)
+            replies = FetchTopSurveyRepliesForFeedPost(session.UserID, *feedPost.PostID, limit)
 
         }
-
-        if len(feedPost.Replies) >= limit && len(feedPost.Replies) > 0 {
-            feedPost.AreMoreReplies = BoolPtr(true)
-            feedPost.Replies = feedPost.Replies[:len(feedPost.Replies)-1]
-        } else {
-            feedPost.AreMoreReplies = BoolPtr(false)
-        }
+        feedPosts = append(feedPosts, replies...)
 
     }
 
     Log.Debugf("Found %d feed posts.", len(feedPosts))
-    feedResponse := BlitzMessage.FeedPostFetchResponse {
+    feedResponse := BlitzMessage.FeedPostResponse {
         FeedPosts:      feedPosts,
     }
     code := BlitzMessage.ResponseCode_RCSuccess
     response := &BlitzMessage.ServerResponse {
         ResponseCode:       &code,
-        ResponseType:       &BlitzMessage.ResponseType { FeedPostFetchResponse: &feedResponse },
+        ResponseType:       &BlitzMessage.ResponseType { FeedPostResponse: &feedResponse },
     }
 
     return response

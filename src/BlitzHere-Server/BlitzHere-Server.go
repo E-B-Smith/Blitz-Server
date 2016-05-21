@@ -295,7 +295,7 @@ func DispatchServiceRequests(writer http.ResponseWriter, httpRequest *http.Reque
         response = UploadImage(session, requestMessageType)
 
     case *BlitzMessage.FeedPostUpdateRequest:
-        response = UpdateFeedPost(session, requestMessageType)
+        response = UpdateFeedPostBatch(session, requestMessageType)
 
     case *BlitzMessage.FeedPostFetchRequest:
         response = FetchFeedPosts(session, requestMessageType)

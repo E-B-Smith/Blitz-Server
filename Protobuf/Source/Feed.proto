@@ -77,11 +77,6 @@ message FeedPostUpdateRequest {
 }
 
 
-message FeedPostUpdateResponse {
-  optional FeedPost  feedPost = 1;
-}
-
-
 message FeedPostFetchRequest {
   optional Timespan       timespan  = 1;
   optional FeedPostScope  feedScope = 2;
@@ -89,7 +84,7 @@ message FeedPostFetchRequest {
 }
 
 
-message FeedPostFetchResponse {
+message FeedPostResponse {
   repeated FeedPost  feedPosts = 1;    //  Feed posts in 'top' order.
 }
 

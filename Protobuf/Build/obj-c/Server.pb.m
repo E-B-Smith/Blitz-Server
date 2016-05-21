@@ -4500,8 +4500,6 @@ static BServerRequest* defaultBServerRequestInstance = nil;
 @property (strong) BDebugMessage* debugMessage;
 @property (strong) BImageUpload* imageUploadReply;
 @property (strong) BUserInvite* acceptInviteResponse;
-@property (strong) BFeedPostFetchResponse* feedPostFetchResponse;
-@property (strong) BFeedPostUpdateResponse* feedPostUpdateResponse;
 @property (strong) BAutocompleteResponse* autocompleteResponse;
 @property (strong) BUserSearchResponse* userSearchResponse;
 @property (strong) BConversationResponse* conversationResponse;
@@ -4510,6 +4508,7 @@ static BServerRequest* defaultBServerRequestInstance = nil;
 @property (strong) BCharge* chargeResponse;
 @property (strong) BFriendUpdate* friendResponse;
 @property (strong) BSearchCategories* searchCategories;
+@property (strong) BFeedPostResponse* feedPostResponse;
 @end
 
 @implementation BResponseType
@@ -4577,20 +4576,6 @@ static BServerRequest* defaultBServerRequestInstance = nil;
   hasAcceptInviteResponse_ = !!_value_;
 }
 @synthesize acceptInviteResponse;
-- (BOOL) hasFeedPostFetchResponse {
-  return !!hasFeedPostFetchResponse_;
-}
-- (void) setHasFeedPostFetchResponse:(BOOL) _value_ {
-  hasFeedPostFetchResponse_ = !!_value_;
-}
-@synthesize feedPostFetchResponse;
-- (BOOL) hasFeedPostUpdateResponse {
-  return !!hasFeedPostUpdateResponse_;
-}
-- (void) setHasFeedPostUpdateResponse:(BOOL) _value_ {
-  hasFeedPostUpdateResponse_ = !!_value_;
-}
-@synthesize feedPostUpdateResponse;
 - (BOOL) hasAutocompleteResponse {
   return !!hasAutocompleteResponse_;
 }
@@ -4647,6 +4632,13 @@ static BServerRequest* defaultBServerRequestInstance = nil;
   hasSearchCategories_ = !!_value_;
 }
 @synthesize searchCategories;
+- (BOOL) hasFeedPostResponse {
+  return !!hasFeedPostResponse_;
+}
+- (void) setHasFeedPostResponse:(BOOL) _value_ {
+  hasFeedPostResponse_ = !!_value_;
+}
+@synthesize feedPostResponse;
 - (instancetype) init {
   if ((self = [super init])) {
     self.sessionResponse = [BSessionResponse defaultInstance];
@@ -4658,8 +4650,6 @@ static BServerRequest* defaultBServerRequestInstance = nil;
     self.debugMessage = [BDebugMessage defaultInstance];
     self.imageUploadReply = [BImageUpload defaultInstance];
     self.acceptInviteResponse = [BUserInvite defaultInstance];
-    self.feedPostFetchResponse = [BFeedPostFetchResponse defaultInstance];
-    self.feedPostUpdateResponse = [BFeedPostUpdateResponse defaultInstance];
     self.autocompleteResponse = [BAutocompleteResponse defaultInstance];
     self.userSearchResponse = [BUserSearchResponse defaultInstance];
     self.conversationResponse = [BConversationResponse defaultInstance];
@@ -4668,6 +4658,7 @@ static BServerRequest* defaultBServerRequestInstance = nil;
     self.chargeResponse = [BCharge defaultInstance];
     self.friendResponse = [BFriendUpdate defaultInstance];
     self.searchCategories = [BSearchCategories defaultInstance];
+    self.feedPostResponse = [BFeedPostResponse defaultInstance];
   }
   return self;
 }
@@ -4719,16 +4710,6 @@ static BResponseType* defaultBResponseTypeInstance = nil;
       return NO;
     }
   }
-  if (self.hasFeedPostFetchResponse) {
-    if (!self.feedPostFetchResponse.isInitialized) {
-      return NO;
-    }
-  }
-  if (self.hasFeedPostUpdateResponse) {
-    if (!self.feedPostUpdateResponse.isInitialized) {
-      return NO;
-    }
-  }
   if (self.hasUserSearchResponse) {
     if (!self.userSearchResponse.isInitialized) {
       return NO;
@@ -4751,6 +4732,11 @@ static BResponseType* defaultBResponseTypeInstance = nil;
   }
   if (self.hasFriendResponse) {
     if (!self.friendResponse.isInitialized) {
+      return NO;
+    }
+  }
+  if (self.hasFeedPostResponse) {
+    if (!self.feedPostResponse.isInitialized) {
       return NO;
     }
   }
@@ -4784,12 +4770,6 @@ static BResponseType* defaultBResponseTypeInstance = nil;
   if (self.hasAcceptInviteResponse) {
     [output writeMessage:9 value:self.acceptInviteResponse];
   }
-  if (self.hasFeedPostFetchResponse) {
-    [output writeMessage:10 value:self.feedPostFetchResponse];
-  }
-  if (self.hasFeedPostUpdateResponse) {
-    [output writeMessage:11 value:self.feedPostUpdateResponse];
-  }
   if (self.hasAutocompleteResponse) {
     [output writeMessage:12 value:self.autocompleteResponse];
   }
@@ -4813,6 +4793,9 @@ static BResponseType* defaultBResponseTypeInstance = nil;
   }
   if (self.hasSearchCategories) {
     [output writeMessage:19 value:self.searchCategories];
+  }
+  if (self.hasFeedPostResponse) {
+    [output writeMessage:20 value:self.feedPostResponse];
   }
   [self.unknownFields writeToCodedOutputStream:output];
 }
@@ -4850,12 +4833,6 @@ static BResponseType* defaultBResponseTypeInstance = nil;
   if (self.hasAcceptInviteResponse) {
     size_ += computeMessageSize(9, self.acceptInviteResponse);
   }
-  if (self.hasFeedPostFetchResponse) {
-    size_ += computeMessageSize(10, self.feedPostFetchResponse);
-  }
-  if (self.hasFeedPostUpdateResponse) {
-    size_ += computeMessageSize(11, self.feedPostUpdateResponse);
-  }
   if (self.hasAutocompleteResponse) {
     size_ += computeMessageSize(12, self.autocompleteResponse);
   }
@@ -4879,6 +4856,9 @@ static BResponseType* defaultBResponseTypeInstance = nil;
   }
   if (self.hasSearchCategories) {
     size_ += computeMessageSize(19, self.searchCategories);
+  }
+  if (self.hasFeedPostResponse) {
+    size_ += computeMessageSize(20, self.feedPostResponse);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -4969,18 +4949,6 @@ static BResponseType* defaultBResponseTypeInstance = nil;
                          withIndent:[NSString stringWithFormat:@"%@  ", indent]];
     [output appendFormat:@"%@}\n", indent];
   }
-  if (self.hasFeedPostFetchResponse) {
-    [output appendFormat:@"%@%@ {\n", indent, @"feedPostFetchResponse"];
-    [self.feedPostFetchResponse writeDescriptionTo:output
-                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
-    [output appendFormat:@"%@}\n", indent];
-  }
-  if (self.hasFeedPostUpdateResponse) {
-    [output appendFormat:@"%@%@ {\n", indent, @"feedPostUpdateResponse"];
-    [self.feedPostUpdateResponse writeDescriptionTo:output
-                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
-    [output appendFormat:@"%@}\n", indent];
-  }
   if (self.hasAutocompleteResponse) {
     [output appendFormat:@"%@%@ {\n", indent, @"autocompleteResponse"];
     [self.autocompleteResponse writeDescriptionTo:output
@@ -5026,6 +4994,12 @@ static BResponseType* defaultBResponseTypeInstance = nil;
   if (self.hasSearchCategories) {
     [output appendFormat:@"%@%@ {\n", indent, @"searchCategories"];
     [self.searchCategories writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
+  if (self.hasFeedPostResponse) {
+    [output appendFormat:@"%@%@ {\n", indent, @"feedPostResponse"];
+    [self.feedPostResponse writeDescriptionTo:output
                          withIndent:[NSString stringWithFormat:@"%@  ", indent]];
     [output appendFormat:@"%@}\n", indent];
   }
@@ -5077,16 +5051,6 @@ static BResponseType* defaultBResponseTypeInstance = nil;
    [self.acceptInviteResponse storeInDictionary:messageDictionary];
    [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"acceptInviteResponse"];
   }
-  if (self.hasFeedPostFetchResponse) {
-   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
-   [self.feedPostFetchResponse storeInDictionary:messageDictionary];
-   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"feedPostFetchResponse"];
-  }
-  if (self.hasFeedPostUpdateResponse) {
-   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
-   [self.feedPostUpdateResponse storeInDictionary:messageDictionary];
-   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"feedPostUpdateResponse"];
-  }
   if (self.hasAutocompleteResponse) {
    NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
    [self.autocompleteResponse storeInDictionary:messageDictionary];
@@ -5127,6 +5091,11 @@ static BResponseType* defaultBResponseTypeInstance = nil;
    [self.searchCategories storeInDictionary:messageDictionary];
    [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"searchCategories"];
   }
+  if (self.hasFeedPostResponse) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.feedPostResponse storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"feedPostResponse"];
+  }
   [self.unknownFields storeInDictionary:dictionary];
 }
 - (BOOL) isEqual:(id)other {
@@ -5156,10 +5125,6 @@ static BResponseType* defaultBResponseTypeInstance = nil;
       (!self.hasImageUploadReply || [self.imageUploadReply isEqual:otherMessage.imageUploadReply]) &&
       self.hasAcceptInviteResponse == otherMessage.hasAcceptInviteResponse &&
       (!self.hasAcceptInviteResponse || [self.acceptInviteResponse isEqual:otherMessage.acceptInviteResponse]) &&
-      self.hasFeedPostFetchResponse == otherMessage.hasFeedPostFetchResponse &&
-      (!self.hasFeedPostFetchResponse || [self.feedPostFetchResponse isEqual:otherMessage.feedPostFetchResponse]) &&
-      self.hasFeedPostUpdateResponse == otherMessage.hasFeedPostUpdateResponse &&
-      (!self.hasFeedPostUpdateResponse || [self.feedPostUpdateResponse isEqual:otherMessage.feedPostUpdateResponse]) &&
       self.hasAutocompleteResponse == otherMessage.hasAutocompleteResponse &&
       (!self.hasAutocompleteResponse || [self.autocompleteResponse isEqual:otherMessage.autocompleteResponse]) &&
       self.hasUserSearchResponse == otherMessage.hasUserSearchResponse &&
@@ -5176,6 +5141,8 @@ static BResponseType* defaultBResponseTypeInstance = nil;
       (!self.hasFriendResponse || [self.friendResponse isEqual:otherMessage.friendResponse]) &&
       self.hasSearchCategories == otherMessage.hasSearchCategories &&
       (!self.hasSearchCategories || [self.searchCategories isEqual:otherMessage.searchCategories]) &&
+      self.hasFeedPostResponse == otherMessage.hasFeedPostResponse &&
+      (!self.hasFeedPostResponse || [self.feedPostResponse isEqual:otherMessage.feedPostResponse]) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
@@ -5207,12 +5174,6 @@ static BResponseType* defaultBResponseTypeInstance = nil;
   if (self.hasAcceptInviteResponse) {
     hashCode = hashCode * 31 + [self.acceptInviteResponse hash];
   }
-  if (self.hasFeedPostFetchResponse) {
-    hashCode = hashCode * 31 + [self.feedPostFetchResponse hash];
-  }
-  if (self.hasFeedPostUpdateResponse) {
-    hashCode = hashCode * 31 + [self.feedPostUpdateResponse hash];
-  }
   if (self.hasAutocompleteResponse) {
     hashCode = hashCode * 31 + [self.autocompleteResponse hash];
   }
@@ -5236,6 +5197,9 @@ static BResponseType* defaultBResponseTypeInstance = nil;
   }
   if (self.hasSearchCategories) {
     hashCode = hashCode * 31 + [self.searchCategories hash];
+  }
+  if (self.hasFeedPostResponse) {
+    hashCode = hashCode * 31 + [self.feedPostResponse hash];
   }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
@@ -5307,12 +5271,6 @@ static BResponseType* defaultBResponseTypeInstance = nil;
   if (other.hasAcceptInviteResponse) {
     [self mergeAcceptInviteResponse:other.acceptInviteResponse];
   }
-  if (other.hasFeedPostFetchResponse) {
-    [self mergeFeedPostFetchResponse:other.feedPostFetchResponse];
-  }
-  if (other.hasFeedPostUpdateResponse) {
-    [self mergeFeedPostUpdateResponse:other.feedPostUpdateResponse];
-  }
   if (other.hasAutocompleteResponse) {
     [self mergeAutocompleteResponse:other.autocompleteResponse];
   }
@@ -5336,6 +5294,9 @@ static BResponseType* defaultBResponseTypeInstance = nil;
   }
   if (other.hasSearchCategories) {
     [self mergeSearchCategories:other.searchCategories];
+  }
+  if (other.hasFeedPostResponse) {
+    [self mergeFeedPostResponse:other.feedPostResponse];
   }
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -5439,24 +5400,6 @@ static BResponseType* defaultBResponseTypeInstance = nil;
         [self setAcceptInviteResponse:[subBuilder buildPartial]];
         break;
       }
-      case 82: {
-        BFeedPostFetchResponseBuilder* subBuilder = [BFeedPostFetchResponse builder];
-        if (self.hasFeedPostFetchResponse) {
-          [subBuilder mergeFrom:self.feedPostFetchResponse];
-        }
-        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
-        [self setFeedPostFetchResponse:[subBuilder buildPartial]];
-        break;
-      }
-      case 90: {
-        BFeedPostUpdateResponseBuilder* subBuilder = [BFeedPostUpdateResponse builder];
-        if (self.hasFeedPostUpdateResponse) {
-          [subBuilder mergeFrom:self.feedPostUpdateResponse];
-        }
-        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
-        [self setFeedPostUpdateResponse:[subBuilder buildPartial]];
-        break;
-      }
       case 98: {
         BAutocompleteResponseBuilder* subBuilder = [BAutocompleteResponse builder];
         if (self.hasAutocompleteResponse) {
@@ -5527,6 +5470,15 @@ static BResponseType* defaultBResponseTypeInstance = nil;
         }
         [input readMessage:subBuilder extensionRegistry:extensionRegistry];
         [self setSearchCategories:[subBuilder buildPartial]];
+        break;
+      }
+      case 162: {
+        BFeedPostResponseBuilder* subBuilder = [BFeedPostResponse builder];
+        if (self.hasFeedPostResponse) {
+          [subBuilder mergeFrom:self.feedPostResponse];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setFeedPostResponse:[subBuilder buildPartial]];
         break;
       }
     }
@@ -5802,66 +5754,6 @@ static BResponseType* defaultBResponseTypeInstance = nil;
   resultResponseType.acceptInviteResponse = [BUserInvite defaultInstance];
   return self;
 }
-- (BOOL) hasFeedPostFetchResponse {
-  return resultResponseType.hasFeedPostFetchResponse;
-}
-- (BFeedPostFetchResponse*) feedPostFetchResponse {
-  return resultResponseType.feedPostFetchResponse;
-}
-- (BResponseTypeBuilder*) setFeedPostFetchResponse:(BFeedPostFetchResponse*) value {
-  resultResponseType.hasFeedPostFetchResponse = YES;
-  resultResponseType.feedPostFetchResponse = value;
-  return self;
-}
-- (BResponseTypeBuilder*) setFeedPostFetchResponseBuilder:(BFeedPostFetchResponseBuilder*) builderForValue {
-  return [self setFeedPostFetchResponse:[builderForValue build]];
-}
-- (BResponseTypeBuilder*) mergeFeedPostFetchResponse:(BFeedPostFetchResponse*) value {
-  if (resultResponseType.hasFeedPostFetchResponse &&
-      resultResponseType.feedPostFetchResponse != [BFeedPostFetchResponse defaultInstance]) {
-    resultResponseType.feedPostFetchResponse =
-      [[[BFeedPostFetchResponse builderWithPrototype:resultResponseType.feedPostFetchResponse] mergeFrom:value] buildPartial];
-  } else {
-    resultResponseType.feedPostFetchResponse = value;
-  }
-  resultResponseType.hasFeedPostFetchResponse = YES;
-  return self;
-}
-- (BResponseTypeBuilder*) clearFeedPostFetchResponse {
-  resultResponseType.hasFeedPostFetchResponse = NO;
-  resultResponseType.feedPostFetchResponse = [BFeedPostFetchResponse defaultInstance];
-  return self;
-}
-- (BOOL) hasFeedPostUpdateResponse {
-  return resultResponseType.hasFeedPostUpdateResponse;
-}
-- (BFeedPostUpdateResponse*) feedPostUpdateResponse {
-  return resultResponseType.feedPostUpdateResponse;
-}
-- (BResponseTypeBuilder*) setFeedPostUpdateResponse:(BFeedPostUpdateResponse*) value {
-  resultResponseType.hasFeedPostUpdateResponse = YES;
-  resultResponseType.feedPostUpdateResponse = value;
-  return self;
-}
-- (BResponseTypeBuilder*) setFeedPostUpdateResponseBuilder:(BFeedPostUpdateResponseBuilder*) builderForValue {
-  return [self setFeedPostUpdateResponse:[builderForValue build]];
-}
-- (BResponseTypeBuilder*) mergeFeedPostUpdateResponse:(BFeedPostUpdateResponse*) value {
-  if (resultResponseType.hasFeedPostUpdateResponse &&
-      resultResponseType.feedPostUpdateResponse != [BFeedPostUpdateResponse defaultInstance]) {
-    resultResponseType.feedPostUpdateResponse =
-      [[[BFeedPostUpdateResponse builderWithPrototype:resultResponseType.feedPostUpdateResponse] mergeFrom:value] buildPartial];
-  } else {
-    resultResponseType.feedPostUpdateResponse = value;
-  }
-  resultResponseType.hasFeedPostUpdateResponse = YES;
-  return self;
-}
-- (BResponseTypeBuilder*) clearFeedPostUpdateResponse {
-  resultResponseType.hasFeedPostUpdateResponse = NO;
-  resultResponseType.feedPostUpdateResponse = [BFeedPostUpdateResponse defaultInstance];
-  return self;
-}
 - (BOOL) hasAutocompleteResponse {
   return resultResponseType.hasAutocompleteResponse;
 }
@@ -6100,6 +5992,36 @@ static BResponseType* defaultBResponseTypeInstance = nil;
 - (BResponseTypeBuilder*) clearSearchCategories {
   resultResponseType.hasSearchCategories = NO;
   resultResponseType.searchCategories = [BSearchCategories defaultInstance];
+  return self;
+}
+- (BOOL) hasFeedPostResponse {
+  return resultResponseType.hasFeedPostResponse;
+}
+- (BFeedPostResponse*) feedPostResponse {
+  return resultResponseType.feedPostResponse;
+}
+- (BResponseTypeBuilder*) setFeedPostResponse:(BFeedPostResponse*) value {
+  resultResponseType.hasFeedPostResponse = YES;
+  resultResponseType.feedPostResponse = value;
+  return self;
+}
+- (BResponseTypeBuilder*) setFeedPostResponseBuilder:(BFeedPostResponseBuilder*) builderForValue {
+  return [self setFeedPostResponse:[builderForValue build]];
+}
+- (BResponseTypeBuilder*) mergeFeedPostResponse:(BFeedPostResponse*) value {
+  if (resultResponseType.hasFeedPostResponse &&
+      resultResponseType.feedPostResponse != [BFeedPostResponse defaultInstance]) {
+    resultResponseType.feedPostResponse =
+      [[[BFeedPostResponse builderWithPrototype:resultResponseType.feedPostResponse] mergeFrom:value] buildPartial];
+  } else {
+    resultResponseType.feedPostResponse = value;
+  }
+  resultResponseType.hasFeedPostResponse = YES;
+  return self;
+}
+- (BResponseTypeBuilder*) clearFeedPostResponse {
+  resultResponseType.hasFeedPostResponse = NO;
+  resultResponseType.feedPostResponse = [BFeedPostResponse defaultInstance];
   return self;
 }
 @end

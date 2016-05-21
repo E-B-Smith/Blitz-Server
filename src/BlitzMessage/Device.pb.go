@@ -23,9 +23,8 @@ It has these top-level messages:
 	EntityTagList
 	FeedPost
 	FeedPostUpdateRequest
-	FeedPostUpdateResponse
 	FeedPostFetchRequest
-	FeedPostFetchResponse
+	FeedPostResponse
 	CardInfo
 	UserCardInfo
 	Charge

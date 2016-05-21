@@ -1598,241 +1598,6 @@ static BFeedPostUpdateRequest* defaultBFeedPostUpdateRequestInstance = nil;
 }
 @end
 
-@interface BFeedPostUpdateResponse ()
-@property (strong) BFeedPost* feedPost;
-@end
-
-@implementation BFeedPostUpdateResponse
-
-- (BOOL) hasFeedPost {
-  return !!hasFeedPost_;
-}
-- (void) setHasFeedPost:(BOOL) _value_ {
-  hasFeedPost_ = !!_value_;
-}
-@synthesize feedPost;
-- (instancetype) init {
-  if ((self = [super init])) {
-    self.feedPost = [BFeedPost defaultInstance];
-  }
-  return self;
-}
-static BFeedPostUpdateResponse* defaultBFeedPostUpdateResponseInstance = nil;
-+ (void) initialize {
-  if (self == [BFeedPostUpdateResponse class]) {
-    defaultBFeedPostUpdateResponseInstance = [[BFeedPostUpdateResponse alloc] init];
-  }
-}
-+ (instancetype) defaultInstance {
-  return defaultBFeedPostUpdateResponseInstance;
-}
-- (instancetype) defaultInstance {
-  return defaultBFeedPostUpdateResponseInstance;
-}
-- (BOOL) isInitialized {
-  if (self.hasFeedPost) {
-    if (!self.feedPost.isInitialized) {
-      return NO;
-    }
-  }
-  return YES;
-}
-- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
-  if (self.hasFeedPost) {
-    [output writeMessage:1 value:self.feedPost];
-  }
-  [self.unknownFields writeToCodedOutputStream:output];
-}
-- (SInt32) serializedSize {
-  __block SInt32 size_ = memoizedSerializedSize;
-  if (size_ != -1) {
-    return size_;
-  }
-
-  size_ = 0;
-  if (self.hasFeedPost) {
-    size_ += computeMessageSize(1, self.feedPost);
-  }
-  size_ += self.unknownFields.serializedSize;
-  memoizedSerializedSize = size_;
-  return size_;
-}
-+ (BFeedPostUpdateResponse*) parseFromData:(NSData*) data {
-  return (BFeedPostUpdateResponse*)[[[BFeedPostUpdateResponse builder] mergeFromData:data] build];
-}
-+ (BFeedPostUpdateResponse*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
-  return (BFeedPostUpdateResponse*)[[[BFeedPostUpdateResponse builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
-}
-+ (BFeedPostUpdateResponse*) parseFromInputStream:(NSInputStream*) input {
-  return (BFeedPostUpdateResponse*)[[[BFeedPostUpdateResponse builder] mergeFromInputStream:input] build];
-}
-+ (BFeedPostUpdateResponse*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
-  return (BFeedPostUpdateResponse*)[[[BFeedPostUpdateResponse builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
-}
-+ (BFeedPostUpdateResponse*) parseFromCodedInputStream:(PBCodedInputStream*) input {
-  return (BFeedPostUpdateResponse*)[[[BFeedPostUpdateResponse builder] mergeFromCodedInputStream:input] build];
-}
-+ (BFeedPostUpdateResponse*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
-  return (BFeedPostUpdateResponse*)[[[BFeedPostUpdateResponse builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
-}
-+ (BFeedPostUpdateResponseBuilder*) builder {
-  return [[BFeedPostUpdateResponseBuilder alloc] init];
-}
-+ (BFeedPostUpdateResponseBuilder*) builderWithPrototype:(BFeedPostUpdateResponse*) prototype {
-  return [[BFeedPostUpdateResponse builder] mergeFrom:prototype];
-}
-- (BFeedPostUpdateResponseBuilder*) builder {
-  return [BFeedPostUpdateResponse builder];
-}
-- (BFeedPostUpdateResponseBuilder*) toBuilder {
-  return [BFeedPostUpdateResponse builderWithPrototype:self];
-}
-- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
-  if (self.hasFeedPost) {
-    [output appendFormat:@"%@%@ {\n", indent, @"feedPost"];
-    [self.feedPost writeDescriptionTo:output
-                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
-    [output appendFormat:@"%@}\n", indent];
-  }
-  [self.unknownFields writeDescriptionTo:output withIndent:indent];
-}
-- (void) storeInDictionary:(NSMutableDictionary *)dictionary {
-  if (self.hasFeedPost) {
-   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
-   [self.feedPost storeInDictionary:messageDictionary];
-   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"feedPost"];
-  }
-  [self.unknownFields storeInDictionary:dictionary];
-}
-- (BOOL) isEqual:(id)other {
-  if (other == self) {
-    return YES;
-  }
-  if (![other isKindOfClass:[BFeedPostUpdateResponse class]]) {
-    return NO;
-  }
-  BFeedPostUpdateResponse *otherMessage = other;
-  return
-      self.hasFeedPost == otherMessage.hasFeedPost &&
-      (!self.hasFeedPost || [self.feedPost isEqual:otherMessage.feedPost]) &&
-      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
-}
-- (NSUInteger) hash {
-  __block NSUInteger hashCode = 7;
-  if (self.hasFeedPost) {
-    hashCode = hashCode * 31 + [self.feedPost hash];
-  }
-  hashCode = hashCode * 31 + [self.unknownFields hash];
-  return hashCode;
-}
-@end
-
-@interface BFeedPostUpdateResponseBuilder()
-@property (strong) BFeedPostUpdateResponse* resultFeedPostUpdateResponse;
-@end
-
-@implementation BFeedPostUpdateResponseBuilder
-@synthesize resultFeedPostUpdateResponse;
-- (instancetype) init {
-  if ((self = [super init])) {
-    self.resultFeedPostUpdateResponse = [[BFeedPostUpdateResponse alloc] init];
-  }
-  return self;
-}
-- (PBGeneratedMessage*) internalGetResult {
-  return resultFeedPostUpdateResponse;
-}
-- (BFeedPostUpdateResponseBuilder*) clear {
-  self.resultFeedPostUpdateResponse = [[BFeedPostUpdateResponse alloc] init];
-  return self;
-}
-- (BFeedPostUpdateResponseBuilder*) clone {
-  return [BFeedPostUpdateResponse builderWithPrototype:resultFeedPostUpdateResponse];
-}
-- (BFeedPostUpdateResponse*) defaultInstance {
-  return [BFeedPostUpdateResponse defaultInstance];
-}
-- (BFeedPostUpdateResponse*) build {
-  [self checkInitialized];
-  return [self buildPartial];
-}
-- (BFeedPostUpdateResponse*) buildPartial {
-  BFeedPostUpdateResponse* returnMe = resultFeedPostUpdateResponse;
-  self.resultFeedPostUpdateResponse = nil;
-  return returnMe;
-}
-- (BFeedPostUpdateResponseBuilder*) mergeFrom:(BFeedPostUpdateResponse*) other {
-  if (other == [BFeedPostUpdateResponse defaultInstance]) {
-    return self;
-  }
-  if (other.hasFeedPost) {
-    [self mergeFeedPost:other.feedPost];
-  }
-  [self mergeUnknownFields:other.unknownFields];
-  return self;
-}
-- (BFeedPostUpdateResponseBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
-  return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
-}
-- (BFeedPostUpdateResponseBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
-  PBUnknownFieldSetBuilder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
-  while (YES) {
-    SInt32 tag = [input readTag];
-    switch (tag) {
-      case 0:
-        [self setUnknownFields:[unknownFields build]];
-        return self;
-      default: {
-        if (![self parseUnknownField:input unknownFields:unknownFields extensionRegistry:extensionRegistry tag:tag]) {
-          [self setUnknownFields:[unknownFields build]];
-          return self;
-        }
-        break;
-      }
-      case 10: {
-        BFeedPostBuilder* subBuilder = [BFeedPost builder];
-        if (self.hasFeedPost) {
-          [subBuilder mergeFrom:self.feedPost];
-        }
-        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
-        [self setFeedPost:[subBuilder buildPartial]];
-        break;
-      }
-    }
-  }
-}
-- (BOOL) hasFeedPost {
-  return resultFeedPostUpdateResponse.hasFeedPost;
-}
-- (BFeedPost*) feedPost {
-  return resultFeedPostUpdateResponse.feedPost;
-}
-- (BFeedPostUpdateResponseBuilder*) setFeedPost:(BFeedPost*) value {
-  resultFeedPostUpdateResponse.hasFeedPost = YES;
-  resultFeedPostUpdateResponse.feedPost = value;
-  return self;
-}
-- (BFeedPostUpdateResponseBuilder*) setFeedPostBuilder:(BFeedPostBuilder*) builderForValue {
-  return [self setFeedPost:[builderForValue build]];
-}
-- (BFeedPostUpdateResponseBuilder*) mergeFeedPost:(BFeedPost*) value {
-  if (resultFeedPostUpdateResponse.hasFeedPost &&
-      resultFeedPostUpdateResponse.feedPost != [BFeedPost defaultInstance]) {
-    resultFeedPostUpdateResponse.feedPost =
-      [[[BFeedPost builderWithPrototype:resultFeedPostUpdateResponse.feedPost] mergeFrom:value] buildPartial];
-  } else {
-    resultFeedPostUpdateResponse.feedPost = value;
-  }
-  resultFeedPostUpdateResponse.hasFeedPost = YES;
-  return self;
-}
-- (BFeedPostUpdateResponseBuilder*) clearFeedPost {
-  resultFeedPostUpdateResponse.hasFeedPost = NO;
-  resultFeedPostUpdateResponse.feedPost = [BFeedPost defaultInstance];
-  return self;
-}
-@end
-
 @interface BFeedPostFetchRequest ()
 @property (strong) BTimespan* timespan;
 @property BFeedPostScope feedScope;
@@ -2171,11 +1936,11 @@ static BFeedPostFetchRequest* defaultBFeedPostFetchRequestInstance = nil;
 }
 @end
 
-@interface BFeedPostFetchResponse ()
+@interface BFeedPostResponse ()
 @property (strong) NSMutableArray * feedPostsArray;
 @end
 
-@implementation BFeedPostFetchResponse
+@implementation BFeedPostResponse
 
 @synthesize feedPostsArray;
 @dynamic feedPosts;
@@ -2184,17 +1949,17 @@ static BFeedPostFetchRequest* defaultBFeedPostFetchRequestInstance = nil;
   }
   return self;
 }
-static BFeedPostFetchResponse* defaultBFeedPostFetchResponseInstance = nil;
+static BFeedPostResponse* defaultBFeedPostResponseInstance = nil;
 + (void) initialize {
-  if (self == [BFeedPostFetchResponse class]) {
-    defaultBFeedPostFetchResponseInstance = [[BFeedPostFetchResponse alloc] init];
+  if (self == [BFeedPostResponse class]) {
+    defaultBFeedPostResponseInstance = [[BFeedPostResponse alloc] init];
   }
 }
 + (instancetype) defaultInstance {
-  return defaultBFeedPostFetchResponseInstance;
+  return defaultBFeedPostResponseInstance;
 }
 - (instancetype) defaultInstance {
-  return defaultBFeedPostFetchResponseInstance;
+  return defaultBFeedPostResponseInstance;
 }
 - (NSArray *)feedPosts {
   return feedPostsArray;
@@ -2233,35 +1998,35 @@ static BFeedPostFetchResponse* defaultBFeedPostFetchResponseInstance = nil;
   memoizedSerializedSize = size_;
   return size_;
 }
-+ (BFeedPostFetchResponse*) parseFromData:(NSData*) data {
-  return (BFeedPostFetchResponse*)[[[BFeedPostFetchResponse builder] mergeFromData:data] build];
++ (BFeedPostResponse*) parseFromData:(NSData*) data {
+  return (BFeedPostResponse*)[[[BFeedPostResponse builder] mergeFromData:data] build];
 }
-+ (BFeedPostFetchResponse*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
-  return (BFeedPostFetchResponse*)[[[BFeedPostFetchResponse builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
++ (BFeedPostResponse*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BFeedPostResponse*)[[[BFeedPostResponse builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
 }
-+ (BFeedPostFetchResponse*) parseFromInputStream:(NSInputStream*) input {
-  return (BFeedPostFetchResponse*)[[[BFeedPostFetchResponse builder] mergeFromInputStream:input] build];
++ (BFeedPostResponse*) parseFromInputStream:(NSInputStream*) input {
+  return (BFeedPostResponse*)[[[BFeedPostResponse builder] mergeFromInputStream:input] build];
 }
-+ (BFeedPostFetchResponse*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
-  return (BFeedPostFetchResponse*)[[[BFeedPostFetchResponse builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
++ (BFeedPostResponse*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BFeedPostResponse*)[[[BFeedPostResponse builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
 }
-+ (BFeedPostFetchResponse*) parseFromCodedInputStream:(PBCodedInputStream*) input {
-  return (BFeedPostFetchResponse*)[[[BFeedPostFetchResponse builder] mergeFromCodedInputStream:input] build];
++ (BFeedPostResponse*) parseFromCodedInputStream:(PBCodedInputStream*) input {
+  return (BFeedPostResponse*)[[[BFeedPostResponse builder] mergeFromCodedInputStream:input] build];
 }
-+ (BFeedPostFetchResponse*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
-  return (BFeedPostFetchResponse*)[[[BFeedPostFetchResponse builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
++ (BFeedPostResponse*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BFeedPostResponse*)[[[BFeedPostResponse builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
 }
-+ (BFeedPostFetchResponseBuilder*) builder {
-  return [[BFeedPostFetchResponseBuilder alloc] init];
++ (BFeedPostResponseBuilder*) builder {
+  return [[BFeedPostResponseBuilder alloc] init];
 }
-+ (BFeedPostFetchResponseBuilder*) builderWithPrototype:(BFeedPostFetchResponse*) prototype {
-  return [[BFeedPostFetchResponse builder] mergeFrom:prototype];
++ (BFeedPostResponseBuilder*) builderWithPrototype:(BFeedPostResponse*) prototype {
+  return [[BFeedPostResponse builder] mergeFrom:prototype];
 }
-- (BFeedPostFetchResponseBuilder*) builder {
-  return [BFeedPostFetchResponse builder];
+- (BFeedPostResponseBuilder*) builder {
+  return [BFeedPostResponse builder];
 }
-- (BFeedPostFetchResponseBuilder*) toBuilder {
-  return [BFeedPostFetchResponse builderWithPrototype:self];
+- (BFeedPostResponseBuilder*) toBuilder {
+  return [BFeedPostResponse builderWithPrototype:self];
 }
 - (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
   [self.feedPostsArray enumerateObjectsUsingBlock:^(BFeedPost *element, NSUInteger idx, BOOL *stop) {
@@ -2284,10 +2049,10 @@ static BFeedPostFetchResponse* defaultBFeedPostFetchResponseInstance = nil;
   if (other == self) {
     return YES;
   }
-  if (![other isKindOfClass:[BFeedPostFetchResponse class]]) {
+  if (![other isKindOfClass:[BFeedPostResponse class]]) {
     return NO;
   }
-  BFeedPostFetchResponse *otherMessage = other;
+  BFeedPostResponse *otherMessage = other;
   return
       [self.feedPostsArray isEqualToArray:otherMessage.feedPostsArray] &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
@@ -2302,58 +2067,58 @@ static BFeedPostFetchResponse* defaultBFeedPostFetchResponseInstance = nil;
 }
 @end
 
-@interface BFeedPostFetchResponseBuilder()
-@property (strong) BFeedPostFetchResponse* resultFeedPostFetchResponse;
+@interface BFeedPostResponseBuilder()
+@property (strong) BFeedPostResponse* resultFeedPostResponse;
 @end
 
-@implementation BFeedPostFetchResponseBuilder
-@synthesize resultFeedPostFetchResponse;
+@implementation BFeedPostResponseBuilder
+@synthesize resultFeedPostResponse;
 - (instancetype) init {
   if ((self = [super init])) {
-    self.resultFeedPostFetchResponse = [[BFeedPostFetchResponse alloc] init];
+    self.resultFeedPostResponse = [[BFeedPostResponse alloc] init];
   }
   return self;
 }
 - (PBGeneratedMessage*) internalGetResult {
-  return resultFeedPostFetchResponse;
+  return resultFeedPostResponse;
 }
-- (BFeedPostFetchResponseBuilder*) clear {
-  self.resultFeedPostFetchResponse = [[BFeedPostFetchResponse alloc] init];
+- (BFeedPostResponseBuilder*) clear {
+  self.resultFeedPostResponse = [[BFeedPostResponse alloc] init];
   return self;
 }
-- (BFeedPostFetchResponseBuilder*) clone {
-  return [BFeedPostFetchResponse builderWithPrototype:resultFeedPostFetchResponse];
+- (BFeedPostResponseBuilder*) clone {
+  return [BFeedPostResponse builderWithPrototype:resultFeedPostResponse];
 }
-- (BFeedPostFetchResponse*) defaultInstance {
-  return [BFeedPostFetchResponse defaultInstance];
+- (BFeedPostResponse*) defaultInstance {
+  return [BFeedPostResponse defaultInstance];
 }
-- (BFeedPostFetchResponse*) build {
+- (BFeedPostResponse*) build {
   [self checkInitialized];
   return [self buildPartial];
 }
-- (BFeedPostFetchResponse*) buildPartial {
-  BFeedPostFetchResponse* returnMe = resultFeedPostFetchResponse;
-  self.resultFeedPostFetchResponse = nil;
+- (BFeedPostResponse*) buildPartial {
+  BFeedPostResponse* returnMe = resultFeedPostResponse;
+  self.resultFeedPostResponse = nil;
   return returnMe;
 }
-- (BFeedPostFetchResponseBuilder*) mergeFrom:(BFeedPostFetchResponse*) other {
-  if (other == [BFeedPostFetchResponse defaultInstance]) {
+- (BFeedPostResponseBuilder*) mergeFrom:(BFeedPostResponse*) other {
+  if (other == [BFeedPostResponse defaultInstance]) {
     return self;
   }
   if (other.feedPostsArray.count > 0) {
-    if (resultFeedPostFetchResponse.feedPostsArray == nil) {
-      resultFeedPostFetchResponse.feedPostsArray = [[NSMutableArray alloc] initWithArray:other.feedPostsArray];
+    if (resultFeedPostResponse.feedPostsArray == nil) {
+      resultFeedPostResponse.feedPostsArray = [[NSMutableArray alloc] initWithArray:other.feedPostsArray];
     } else {
-      [resultFeedPostFetchResponse.feedPostsArray addObjectsFromArray:other.feedPostsArray];
+      [resultFeedPostResponse.feedPostsArray addObjectsFromArray:other.feedPostsArray];
     }
   }
   [self mergeUnknownFields:other.unknownFields];
   return self;
 }
-- (BFeedPostFetchResponseBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
+- (BFeedPostResponseBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
   return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
 }
-- (BFeedPostFetchResponseBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+- (BFeedPostResponseBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
   PBUnknownFieldSetBuilder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
   while (YES) {
     SInt32 tag = [input readTag];
@@ -2378,24 +2143,24 @@ static BFeedPostFetchResponse* defaultBFeedPostFetchResponseInstance = nil;
   }
 }
 - (NSMutableArray *)feedPosts {
-  return resultFeedPostFetchResponse.feedPostsArray;
+  return resultFeedPostResponse.feedPostsArray;
 }
 - (BFeedPost*)feedPostsAtIndex:(NSUInteger)index {
-  return [resultFeedPostFetchResponse feedPostsAtIndex:index];
+  return [resultFeedPostResponse feedPostsAtIndex:index];
 }
-- (BFeedPostFetchResponseBuilder *)addFeedPosts:(BFeedPost*)value {
-  if (resultFeedPostFetchResponse.feedPostsArray == nil) {
-    resultFeedPostFetchResponse.feedPostsArray = [[NSMutableArray alloc]init];
+- (BFeedPostResponseBuilder *)addFeedPosts:(BFeedPost*)value {
+  if (resultFeedPostResponse.feedPostsArray == nil) {
+    resultFeedPostResponse.feedPostsArray = [[NSMutableArray alloc]init];
   }
-  [resultFeedPostFetchResponse.feedPostsArray addObject:value];
+  [resultFeedPostResponse.feedPostsArray addObject:value];
   return self;
 }
-- (BFeedPostFetchResponseBuilder *)setFeedPostsArray:(NSArray *)array {
-  resultFeedPostFetchResponse.feedPostsArray = [[NSMutableArray alloc]initWithArray:array];
+- (BFeedPostResponseBuilder *)setFeedPostsArray:(NSArray *)array {
+  resultFeedPostResponse.feedPostsArray = [[NSMutableArray alloc]initWithArray:array];
   return self;
 }
-- (BFeedPostFetchResponseBuilder *)clearFeedPosts {
-  resultFeedPostFetchResponse.feedPostsArray = nil;
+- (BFeedPostResponseBuilder *)clearFeedPosts {
+  resultFeedPostResponse.feedPostsArray = nil;
   return self;
 }
 @end

@@ -57,12 +57,10 @@
 @class BFeedPostBuilder;
 @class BFeedPostFetchRequest;
 @class BFeedPostFetchRequestBuilder;
-@class BFeedPostFetchResponse;
-@class BFeedPostFetchResponseBuilder;
+@class BFeedPostResponse;
+@class BFeedPostResponseBuilder;
 @class BFeedPostUpdateRequest;
 @class BFeedPostUpdateRequestBuilder;
-@class BFeedPostUpdateResponse;
-@class BFeedPostUpdateResponseBuilder;
 @class BFetchConversations;
 @class BFetchConversationsBuilder;
 @class BFriendUpdate;
@@ -1063,8 +1061,6 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 #define ResponseType_debugMessage @"debugMessage"
 #define ResponseType_imageUploadReply @"imageUploadReply"
 #define ResponseType_acceptInviteResponse @"acceptInviteResponse"
-#define ResponseType_feedPostFetchResponse @"feedPostFetchResponse"
-#define ResponseType_feedPostUpdateResponse @"feedPostUpdateResponse"
 #define ResponseType_autocompleteResponse @"autocompleteResponse"
 #define ResponseType_userSearchResponse @"userSearchResponse"
 #define ResponseType_conversationResponse @"conversationResponse"
@@ -1073,6 +1069,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 #define ResponseType_chargeResponse @"chargeResponse"
 #define ResponseType_friendResponse @"friendResponse"
 #define ResponseType_searchCategories @"searchCategories"
+#define ResponseType_feedPostResponse @"feedPostResponse"
 @interface BResponseType : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
   BOOL hasSessionResponse_:1;
@@ -1084,8 +1081,6 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
   BOOL hasDebugMessage_:1;
   BOOL hasImageUploadReply_:1;
   BOOL hasAcceptInviteResponse_:1;
-  BOOL hasFeedPostFetchResponse_:1;
-  BOOL hasFeedPostUpdateResponse_:1;
   BOOL hasAutocompleteResponse_:1;
   BOOL hasUserSearchResponse_:1;
   BOOL hasConversationResponse_:1;
@@ -1094,6 +1089,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
   BOOL hasChargeResponse_:1;
   BOOL hasFriendResponse_:1;
   BOOL hasSearchCategories_:1;
+  BOOL hasFeedPostResponse_:1;
   BSessionResponse* sessionResponse;
   BUserEventBatchResponse* userEventBatchResponse;
   BUserProfileUpdate* userProfileUpdate;
@@ -1103,8 +1099,6 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
   BDebugMessage* debugMessage;
   BImageUpload* imageUploadReply;
   BUserInvite* acceptInviteResponse;
-  BFeedPostFetchResponse* feedPostFetchResponse;
-  BFeedPostUpdateResponse* feedPostUpdateResponse;
   BAutocompleteResponse* autocompleteResponse;
   BUserSearchResponse* userSearchResponse;
   BConversationResponse* conversationResponse;
@@ -1113,6 +1107,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
   BCharge* chargeResponse;
   BFriendUpdate* friendResponse;
   BSearchCategories* searchCategories;
+  BFeedPostResponse* feedPostResponse;
 }
 - (BOOL) hasSessionResponse;
 - (BOOL) hasUserEventBatchResponse;
@@ -1123,8 +1118,6 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BOOL) hasDebugMessage;
 - (BOOL) hasImageUploadReply;
 - (BOOL) hasAcceptInviteResponse;
-- (BOOL) hasFeedPostFetchResponse;
-- (BOOL) hasFeedPostUpdateResponse;
 - (BOOL) hasAutocompleteResponse;
 - (BOOL) hasUserSearchResponse;
 - (BOOL) hasConversationResponse;
@@ -1133,6 +1126,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BOOL) hasChargeResponse;
 - (BOOL) hasFriendResponse;
 - (BOOL) hasSearchCategories;
+- (BOOL) hasFeedPostResponse;
 @property (readonly, strong) BSessionResponse* sessionResponse;
 @property (readonly, strong) BUserEventBatchResponse* userEventBatchResponse;
 @property (readonly, strong) BUserProfileUpdate* userProfileUpdate;
@@ -1142,8 +1136,6 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 @property (readonly, strong) BDebugMessage* debugMessage;
 @property (readonly, strong) BImageUpload* imageUploadReply;
 @property (readonly, strong) BUserInvite* acceptInviteResponse;
-@property (readonly, strong) BFeedPostFetchResponse* feedPostFetchResponse;
-@property (readonly, strong) BFeedPostUpdateResponse* feedPostUpdateResponse;
 @property (readonly, strong) BAutocompleteResponse* autocompleteResponse;
 @property (readonly, strong) BUserSearchResponse* userSearchResponse;
 @property (readonly, strong) BConversationResponse* conversationResponse;
@@ -1152,6 +1144,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 @property (readonly, strong) BCharge* chargeResponse;
 @property (readonly, strong) BFriendUpdate* friendResponse;
 @property (readonly, strong) BSearchCategories* searchCategories;
+@property (readonly, strong) BFeedPostResponse* feedPostResponse;
 
 + (instancetype) defaultInstance;
 - (instancetype) defaultInstance;
@@ -1251,20 +1244,6 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BResponseTypeBuilder*) mergeAcceptInviteResponse:(BUserInvite*) value;
 - (BResponseTypeBuilder*) clearAcceptInviteResponse;
 
-- (BOOL) hasFeedPostFetchResponse;
-- (BFeedPostFetchResponse*) feedPostFetchResponse;
-- (BResponseTypeBuilder*) setFeedPostFetchResponse:(BFeedPostFetchResponse*) value;
-- (BResponseTypeBuilder*) setFeedPostFetchResponseBuilder:(BFeedPostFetchResponseBuilder*) builderForValue;
-- (BResponseTypeBuilder*) mergeFeedPostFetchResponse:(BFeedPostFetchResponse*) value;
-- (BResponseTypeBuilder*) clearFeedPostFetchResponse;
-
-- (BOOL) hasFeedPostUpdateResponse;
-- (BFeedPostUpdateResponse*) feedPostUpdateResponse;
-- (BResponseTypeBuilder*) setFeedPostUpdateResponse:(BFeedPostUpdateResponse*) value;
-- (BResponseTypeBuilder*) setFeedPostUpdateResponseBuilder:(BFeedPostUpdateResponseBuilder*) builderForValue;
-- (BResponseTypeBuilder*) mergeFeedPostUpdateResponse:(BFeedPostUpdateResponse*) value;
-- (BResponseTypeBuilder*) clearFeedPostUpdateResponse;
-
 - (BOOL) hasAutocompleteResponse;
 - (BAutocompleteResponse*) autocompleteResponse;
 - (BResponseTypeBuilder*) setAutocompleteResponse:(BAutocompleteResponse*) value;
@@ -1320,6 +1299,13 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BResponseTypeBuilder*) setSearchCategoriesBuilder:(BSearchCategoriesBuilder*) builderForValue;
 - (BResponseTypeBuilder*) mergeSearchCategories:(BSearchCategories*) value;
 - (BResponseTypeBuilder*) clearSearchCategories;
+
+- (BOOL) hasFeedPostResponse;
+- (BFeedPostResponse*) feedPostResponse;
+- (BResponseTypeBuilder*) setFeedPostResponse:(BFeedPostResponse*) value;
+- (BResponseTypeBuilder*) setFeedPostResponseBuilder:(BFeedPostResponseBuilder*) builderForValue;
+- (BResponseTypeBuilder*) mergeFeedPostResponse:(BFeedPostResponse*) value;
+- (BResponseTypeBuilder*) clearFeedPostResponse;
 @end
 
 #define ServerResponse_responseCode @"responseCode"

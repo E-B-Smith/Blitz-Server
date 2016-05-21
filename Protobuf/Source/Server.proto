@@ -141,8 +141,8 @@ message ResponseType {
   optional DebugMessage           debugMessage            = 7;
   optional ImageUpload            imageUploadReply        = 8;
   optional UserInvite             acceptInviteResponse    = 9;
-  optional FeedPostFetchResponse  feedPostFetchResponse   = 10;
-  optional FeedPostUpdateResponse feedPostUpdateResponse  = 11;
+//optional FeedPostFetchResponse  feedPostFetchResponse   = 10; Deprecated
+//optional FeedPostUpdateResponse feedPostUpdateResponse  = 11; Deprecated
   optional AutocompleteResponse   autocompleteResponse    = 12;
   optional UserSearchResponse     userSearchResponse      = 13;
   optional ConversationResponse   conversationResponse    = 14;
@@ -151,6 +151,7 @@ message ResponseType {
   optional Charge                 chargeResponse          = 17;
   optional FriendUpdate           friendResponse          = 18;
   optional SearchCategories       searchCategories        = 19;
+  optional FeedPostResponse       feedPostResponse        = 20;
 }
 
 
