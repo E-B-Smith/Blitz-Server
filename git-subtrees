@@ -39,7 +39,7 @@ subprojects=(
     "nopush"
 
 "src/github.com/stripe/stripe-go"
-    "ssh://git@github.com:stripe/stripe-go.git"
+    "ssh://git@github.com/stripe/stripe-go.git"
     "master"
     "nopush"
 )
