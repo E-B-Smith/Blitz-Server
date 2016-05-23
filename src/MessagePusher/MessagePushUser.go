@@ -16,6 +16,7 @@ package MessagePusher
 
 import (
     "sync"
+    "time"
     "golang.org/x/net/websocket"
     "violent.blue/GoKit/Log"
     "BlitzMessage"
@@ -34,6 +35,8 @@ type MessagePushUser struct {
     lock            sync.Mutex
     connection      *websocket.Conn
     writeChannel    chan *BlitzMessage.UserMessage
+    userID          string
+    LastMessageTime *time.Time
     Format          Format
 }
 
@@ -45,6 +48,12 @@ func NewMessagePushUser(connection *websocket.Conn) *MessagePushUser {
     user.writeChannel = make(chan *BlitzMessage.UserMessage)
     return user
 }
+
+
+func (user *MessagePushUser) UserID() string {
+    return user.userID
+}
+
 
 func (user *MessagePushUser) Disconnect() {
     Log.LogFunctionName()

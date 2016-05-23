@@ -55,6 +55,15 @@ func TimeFromTimestamp(timestamp *Timestamp) time.Time {
 }
 
 
+func TimePtrFromTimestamp(timestamp *Timestamp) *time.Time {
+    if timestamp == nil {
+        return nil
+    }
+    t := TimeFromTimestamp(timestamp)
+    return &t
+}
+
+
 func (timestamp *Timestamp) Time() time.Time {
     i, f := math.Modf(*timestamp.Epoch)
     var  sec int64 = int64(math.Floor(i))

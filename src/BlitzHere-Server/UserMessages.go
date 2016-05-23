@@ -17,7 +17,90 @@ import (
     "violent.blue/GoKit/Util"
     "github.com/golang/protobuf/proto"
     "BlitzMessage"
+    "MessagePusher"
 )
+
+
+//----------------------------------------------------------------------------------------
+//
+//                                                                 ScanUserMessageTableRow
+//
+//----------------------------------------------------------------------------------------
+
+
+const kScanUserMessageTableRow =
+`   messageID,
+    senderID,
+    recipientID,
+    creationDate,
+    notificationDate,
+    readDate,
+    messageType,
+    messageText,
+    actionIcon,
+    actionURL,
+    conversationID,
+    messageStatus
+`
+
+
+func ScanUserMessageTableRow(rows *sql.Rows) *BlitzMessage.UserMessage {
+    var (
+        messageID           string
+        senderID            string
+        recipientID         string
+        creationDate        pq.NullTime
+        notificationDate    pq.NullTime
+        readDate            pq.NullTime
+        messageType         int
+        messageText         sql.NullString
+        actionIcon          sql.NullString
+        actionURL           sql.NullString
+        conversationID      sql.NullString
+        messageStatus       sql.NullInt64
+    )
+    var error error
+    error = rows.Scan(
+        &messageID,
+        &senderID,
+        &recipientID,
+        &creationDate,
+        &notificationDate,
+        &readDate,
+        &messageType,
+        &messageText,
+        &actionIcon,
+        &actionURL,
+        &conversationID,
+        &messageStatus,
+    )
+    if error != nil {
+        Log.LogError(error)
+        return nil
+    }
+    mt := BlitzMessage.UserMessageType(messageType);
+    message := BlitzMessage.UserMessage {
+        MessageID:      &messageID,
+        SenderID:       &senderID,
+        Recipients:     []string{recipientID},
+        MessageType:    &mt,
+    }
+    if creationDate.Valid       { message.CreationDate = BlitzMessage.TimestampFromTime(creationDate.Time) }
+    if notificationDate.Valid   { message.NotificationDate = BlitzMessage.TimestampFromTime(notificationDate.Time) }
+    if readDate.Valid           { message.ReadDate = BlitzMessage.TimestampFromTime(readDate.Time) }
+    if messageText.Valid        { message.MessageText = &messageText.String }
+    if actionIcon.Valid         { message.ActionIcon = &actionIcon.String }
+    if actionURL.Valid          { message.ActionURL = &actionURL.String }
+    if conversationID.Valid     { message.ConversationID = &conversationID.String }
+
+    if  messageStatus.Valid {
+        message.MessageStatus = BlitzMessage.UserMessageStatus(messageStatus.Int64).Enum()
+    } else {
+        message.MessageStatus = BlitzMessage.UserMessageStatus(BlitzMessage.UserMessageStatus_MSNew).Enum()
+    }
+
+    return &message
+}
 
 
 //----------------------------------------------------------------------------------------
@@ -49,89 +132,30 @@ func UserMessageFetchRequest(session *Session, fetch *BlitzMessage.UserMessageUp
     warnings := 0
 
     rows, error := config.DB.Query(
-        `select
-            messageID,
-            senderID,
-            recipientID,
-            creationDate,
-            notificationDate,
-            readDate,
-            messageType,
-            messageText,
-            actionIcon,
-            actionURL,
-            conversationID,
-            messageStatus
-                from UserMessageTable
-                  where recipientID = $1
-                  and creationDate >  $2
-                  and creationDate <= $3
-                    order by creationDate;`,
-            session.UserID, startDate, stopDate)
-    defer func() { if rows != nil { rows.Close(); } }()
+        `select ` + kScanUserMessageTableRow +
+        `   from UserMessageTable
+            where recipientID = $1
+              and creationDate >  $2
+              and creationDate <= $3
+            order by creationDate;`,
+        session.UserID,
+        startDate,
+        stopDate,
+    )
     if error != nil {
         Log.LogError(error)
         return ServerResponseForError(BlitzMessage.ResponseCode_RCServerError, error)
     }
+    defer rows.Close()
 
     var messageArray []*BlitzMessage.UserMessage
     for rows.Next() {
-        var (
-            messageID           string
-            senderID            string
-            recipientID         string
-            creationDate        pq.NullTime
-            notificationDate    pq.NullTime
-            readDate            pq.NullTime
-            messageType         int
-            messageText         sql.NullString
-            actionIcon          sql.NullString
-            actionURL           sql.NullString
-            conversationID      sql.NullString
-            messageStatus       sql.NullInt64
-        )
-        error = rows.Scan(
-            &messageID,
-            &senderID,
-            &recipientID,
-            &creationDate,
-            &notificationDate,
-            &readDate,
-            &messageType,
-            &messageText,
-            &actionIcon,
-            &actionURL,
-            &conversationID,
-            &messageStatus,
-        )
-        if error != nil {
-            Log.LogError(error)
+        message := ScanUserMessageTableRow(rows)
+        if message == nil {
             warnings++
-            continue
-        }
-        mt := BlitzMessage.UserMessageType(messageType);
-        message := BlitzMessage.UserMessage {
-            MessageID:      &messageID,
-            SenderID:       &senderID,
-            Recipients:     []string{recipientID},
-            MessageType:    &mt,
-        }
-        if creationDate.Valid       { message.CreationDate = BlitzMessage.TimestampFromTime(creationDate.Time) }
-        if notificationDate.Valid   { message.NotificationDate = BlitzMessage.TimestampFromTime(notificationDate.Time) }
-        if readDate.Valid           { message.ReadDate = BlitzMessage.TimestampFromTime(readDate.Time) }
-        if messageText.Valid        { message.MessageText = &messageText.String }
-        if actionIcon.Valid         { message.ActionIcon = &actionIcon.String }
-        if actionURL.Valid          { message.ActionURL = &actionURL.String }
-        if conversationID.Valid     { message.ConversationID = &conversationID.String }
-
-        if  messageStatus.Valid {
-            message.MessageStatus = BlitzMessage.UserMessageStatus(messageStatus.Int64).Enum()
         } else {
-            message.MessageStatus = BlitzMessage.UserMessageStatus(BlitzMessage.UserMessageStatus_MSNew).Enum()
+            messageArray = append(messageArray, message)
         }
-
-
-        messageArray = append(messageArray, &message)
     }
 
     Log.Debugf("Found %d message (%d warnings) in range %v to %v.", len(messageArray), warnings, startDate, stopDate)
@@ -296,4 +320,51 @@ func UserMessageSendRequest(
 
     return response
 }
+
+
+//----------------------------------------------------------------------------------------
+//
+//                                                                  UserDidConnectToPusher
+//
+//----------------------------------------------------------------------------------------
+
+
+func UserDidConnectToPusher(
+        pusher *MessagePusher.MessagePusher,
+        user *MessagePusher.MessagePushUser,
+        ) {
+    Log.LogFunctionName()
+
+    if  user.LastMessageTime == nil {
+        return
+    }
+
+    rows, error := config.DB.Query(
+        `select ` + kScanUserMessageTableRow +
+        `   from UserMessageTable
+           where recipientID = $1
+             and creationDate > $2
+           order by creationDate
+           limit 50;`,
+        user.UserID(),
+        user.LastMessageTime,
+    )
+    if error != nil {
+        Log.LogError(error)
+        return
+    }
+    defer rows.Close()
+
+    var messageCount int = 0
+    for rows.Next() {
+        message := ScanUserMessageTableRow(rows)
+        if message != nil {
+            user.SendMessage(message)
+            messageCount++
+        }
+    }
+    Log.Debugf("Sent %d catchup messages.", messageCount)
+}
+
+
 

@@ -412,6 +412,13 @@ create index FeedPostTimestampIndex on FeedPostTable(timestamp desc);
 create index FeedReplyTable         on FeedPostTable(parentID);
 
 
+------------------------------------------------------------------------------------------
+--
+--                                                                          EntityTagTable
+--
+------------------------------------------------------------------------------------------
+
+
 create domain EntityType as smallint;
 
 

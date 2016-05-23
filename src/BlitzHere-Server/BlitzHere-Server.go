@@ -565,6 +565,7 @@ func Server() (returnValue int) {
     //  Push messages --
 
     globalMessagePusher = MessagePusher.NewMessagePusher()
+    globalMessagePusher.UserDidConnect = UserDidConnectToPusher
     http.Handle(config.ServicePrefix+"/push", websocket.Handler(PushMessageHandler))
 
 
