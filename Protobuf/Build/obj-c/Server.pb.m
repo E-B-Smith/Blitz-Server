@@ -1793,6 +1793,7 @@ static BSessionResponse* defaultBSessionResponseInstance = nil;
 
 @interface BPushConnect ()
 @property (strong) NSString* userID;
+@property (strong) BTimestamp* lastMessageTimestamp;
 @end
 
 @implementation BPushConnect
@@ -1804,9 +1805,17 @@ static BSessionResponse* defaultBSessionResponseInstance = nil;
   hasUserID_ = !!_value_;
 }
 @synthesize userID;
+- (BOOL) hasLastMessageTimestamp {
+  return !!hasLastMessageTimestamp_;
+}
+- (void) setHasLastMessageTimestamp:(BOOL) _value_ {
+  hasLastMessageTimestamp_ = !!_value_;
+}
+@synthesize lastMessageTimestamp;
 - (instancetype) init {
   if ((self = [super init])) {
     self.userID = @"";
+    self.lastMessageTimestamp = [BTimestamp defaultInstance];
   }
   return self;
 }
@@ -1823,11 +1832,19 @@ static BPushConnect* defaultBPushConnectInstance = nil;
   return defaultBPushConnectInstance;
 }
 - (BOOL) isInitialized {
+  if (self.hasLastMessageTimestamp) {
+    if (!self.lastMessageTimestamp.isInitialized) {
+      return NO;
+    }
+  }
   return YES;
 }
 - (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
   if (self.hasUserID) {
     [output writeString:1 value:self.userID];
+  }
+  if (self.hasLastMessageTimestamp) {
+    [output writeMessage:2 value:self.lastMessageTimestamp];
   }
   [self.unknownFields writeToCodedOutputStream:output];
 }
@@ -1840,6 +1857,9 @@ static BPushConnect* defaultBPushConnectInstance = nil;
   size_ = 0;
   if (self.hasUserID) {
     size_ += computeStringSize(1, self.userID);
+  }
+  if (self.hasLastMessageTimestamp) {
+    size_ += computeMessageSize(2, self.lastMessageTimestamp);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -1879,11 +1899,22 @@ static BPushConnect* defaultBPushConnectInstance = nil;
   if (self.hasUserID) {
     [output appendFormat:@"%@%@: %@\n", indent, @"userID", self.userID];
   }
+  if (self.hasLastMessageTimestamp) {
+    [output appendFormat:@"%@%@ {\n", indent, @"lastMessageTimestamp"];
+    [self.lastMessageTimestamp writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (void) storeInDictionary:(NSMutableDictionary *)dictionary {
   if (self.hasUserID) {
     [dictionary setObject: self.userID forKey: @"userID"];
+  }
+  if (self.hasLastMessageTimestamp) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.lastMessageTimestamp storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"lastMessageTimestamp"];
   }
   [self.unknownFields storeInDictionary:dictionary];
 }
@@ -1898,12 +1929,17 @@ static BPushConnect* defaultBPushConnectInstance = nil;
   return
       self.hasUserID == otherMessage.hasUserID &&
       (!self.hasUserID || [self.userID isEqual:otherMessage.userID]) &&
+      self.hasLastMessageTimestamp == otherMessage.hasLastMessageTimestamp &&
+      (!self.hasLastMessageTimestamp || [self.lastMessageTimestamp isEqual:otherMessage.lastMessageTimestamp]) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
   __block NSUInteger hashCode = 7;
   if (self.hasUserID) {
     hashCode = hashCode * 31 + [self.userID hash];
+  }
+  if (self.hasLastMessageTimestamp) {
+    hashCode = hashCode * 31 + [self.lastMessageTimestamp hash];
   }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
@@ -1951,6 +1987,9 @@ static BPushConnect* defaultBPushConnectInstance = nil;
   if (other.hasUserID) {
     [self setUserID:other.userID];
   }
+  if (other.hasLastMessageTimestamp) {
+    [self mergeLastMessageTimestamp:other.lastMessageTimestamp];
+  }
   [self mergeUnknownFields:other.unknownFields];
   return self;
 }
@@ -1976,6 +2015,15 @@ static BPushConnect* defaultBPushConnectInstance = nil;
         [self setUserID:[input readString]];
         break;
       }
+      case 18: {
+        BTimestampBuilder* subBuilder = [BTimestamp builder];
+        if (self.hasLastMessageTimestamp) {
+          [subBuilder mergeFrom:self.lastMessageTimestamp];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setLastMessageTimestamp:[subBuilder buildPartial]];
+        break;
+      }
     }
   }
 }
@@ -1993,6 +2041,36 @@ static BPushConnect* defaultBPushConnectInstance = nil;
 - (BPushConnectBuilder*) clearUserID {
   resultPushConnect.hasUserID = NO;
   resultPushConnect.userID = @"";
+  return self;
+}
+- (BOOL) hasLastMessageTimestamp {
+  return resultPushConnect.hasLastMessageTimestamp;
+}
+- (BTimestamp*) lastMessageTimestamp {
+  return resultPushConnect.lastMessageTimestamp;
+}
+- (BPushConnectBuilder*) setLastMessageTimestamp:(BTimestamp*) value {
+  resultPushConnect.hasLastMessageTimestamp = YES;
+  resultPushConnect.lastMessageTimestamp = value;
+  return self;
+}
+- (BPushConnectBuilder*) setLastMessageTimestampBuilder:(BTimestampBuilder*) builderForValue {
+  return [self setLastMessageTimestamp:[builderForValue build]];
+}
+- (BPushConnectBuilder*) mergeLastMessageTimestamp:(BTimestamp*) value {
+  if (resultPushConnect.hasLastMessageTimestamp &&
+      resultPushConnect.lastMessageTimestamp != [BTimestamp defaultInstance]) {
+    resultPushConnect.lastMessageTimestamp =
+      [[[BTimestamp builderWithPrototype:resultPushConnect.lastMessageTimestamp] mergeFrom:value] buildPartial];
+  } else {
+    resultPushConnect.lastMessageTimestamp = value;
+  }
+  resultPushConnect.hasLastMessageTimestamp = YES;
+  return self;
+}
+- (BPushConnectBuilder*) clearLastMessageTimestamp {
+  resultPushConnect.hasLastMessageTimestamp = NO;
+  resultPushConnect.lastMessageTimestamp = [BTimestamp defaultInstance];
   return self;
 }
 @end
@@ -2449,6 +2527,11 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   }
   if (self.hasFeedPostUpdateRequest) {
     if (!self.feedPostUpdateRequest.isInitialized) {
+      return NO;
+    }
+  }
+  if (self.hasPushConnect) {
+    if (!self.pushConnect.isInitialized) {
       return NO;
     }
   }

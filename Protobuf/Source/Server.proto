@@ -72,6 +72,7 @@ message SessionResponse {
 
 message PushConnect {
   optional string     userID = 1;
+  optional Timestamp  lastMessageTimestamp = 2;
 }
 
 

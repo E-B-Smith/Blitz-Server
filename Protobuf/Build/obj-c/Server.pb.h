@@ -561,13 +561,18 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 @end
 
 #define PushConnect_userID @"userID"
+#define PushConnect_lastMessageTimestamp @"lastMessageTimestamp"
 @interface BPushConnect : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
   BOOL hasUserID_:1;
+  BOOL hasLastMessageTimestamp_:1;
   NSString* userID;
+  BTimestamp* lastMessageTimestamp;
 }
 - (BOOL) hasUserID;
+- (BOOL) hasLastMessageTimestamp;
 @property (readonly, strong) NSString* userID;
+@property (readonly, strong) BTimestamp* lastMessageTimestamp;
 
 + (instancetype) defaultInstance;
 - (instancetype) defaultInstance;
@@ -608,6 +613,13 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (NSString*) userID;
 - (BPushConnectBuilder*) setUserID:(NSString*) value;
 - (BPushConnectBuilder*) clearUserID;
+
+- (BOOL) hasLastMessageTimestamp;
+- (BTimestamp*) lastMessageTimestamp;
+- (BPushConnectBuilder*) setLastMessageTimestamp:(BTimestamp*) value;
+- (BPushConnectBuilder*) setLastMessageTimestampBuilder:(BTimestampBuilder*) builderForValue;
+- (BPushConnectBuilder*) mergeLastMessageTimestamp:(BTimestamp*) value;
+- (BPushConnectBuilder*) clearLastMessageTimestamp;
 @end
 
 @interface BPushDisconnect : PBGeneratedMessage<GeneratedMessageProtocol> {

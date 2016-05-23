@@ -4615,6 +4615,19 @@ public final class Server {
      */
     com.google.protobuf.ByteString
         getUserIDBytes();
+
+    /**
+     * <code>optional .BlitzMessage.Timestamp lastMessageTimestamp = 2;</code>
+     */
+    boolean hasLastMessageTimestamp();
+    /**
+     * <code>optional .BlitzMessage.Timestamp lastMessageTimestamp = 2;</code>
+     */
+    com.blitzhere.BlitzMessage.Types.Timestamp getLastMessageTimestamp();
+    /**
+     * <code>optional .BlitzMessage.Timestamp lastMessageTimestamp = 2;</code>
+     */
+    com.blitzhere.BlitzMessage.Types.TimestampOrBuilder getLastMessageTimestampOrBuilder();
   }
   /**
    * Protobuf type {@code BlitzMessage.PushConnect}
@@ -4672,6 +4685,19 @@ public final class Server {
               com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000001;
               userID_ = bs;
+              break;
+            }
+            case 18: {
+              com.blitzhere.BlitzMessage.Types.Timestamp.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000002) == 0x00000002)) {
+                subBuilder = lastMessageTimestamp_.toBuilder();
+              }
+              lastMessageTimestamp_ = input.readMessage(com.blitzhere.BlitzMessage.Types.Timestamp.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(lastMessageTimestamp_);
+                lastMessageTimestamp_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000002;
               break;
             }
           }
@@ -4756,8 +4782,30 @@ public final class Server {
       }
     }
 
+    public static final int LASTMESSAGETIMESTAMP_FIELD_NUMBER = 2;
+    private com.blitzhere.BlitzMessage.Types.Timestamp lastMessageTimestamp_;
+    /**
+     * <code>optional .BlitzMessage.Timestamp lastMessageTimestamp = 2;</code>
+     */
+    public boolean hasLastMessageTimestamp() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional .BlitzMessage.Timestamp lastMessageTimestamp = 2;</code>
+     */
+    public com.blitzhere.BlitzMessage.Types.Timestamp getLastMessageTimestamp() {
+      return lastMessageTimestamp_;
+    }
+    /**
+     * <code>optional .BlitzMessage.Timestamp lastMessageTimestamp = 2;</code>
+     */
+    public com.blitzhere.BlitzMessage.Types.TimestampOrBuilder getLastMessageTimestampOrBuilder() {
+      return lastMessageTimestamp_;
+    }
+
     private void initFields() {
       userID_ = "";
+      lastMessageTimestamp_ = com.blitzhere.BlitzMessage.Types.Timestamp.getDefaultInstance();
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -4765,6 +4813,12 @@ public final class Server {
       if (isInitialized == 1) return true;
       if (isInitialized == 0) return false;
 
+      if (hasLastMessageTimestamp()) {
+        if (!getLastMessageTimestamp().isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
       memoizedIsInitialized = 1;
       return true;
     }
@@ -4774,6 +4828,9 @@ public final class Server {
       getSerializedSize();
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         output.writeBytes(1, getUserIDBytes());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeMessage(2, lastMessageTimestamp_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -4787,6 +4844,10 @@ public final class Server {
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(1, getUserIDBytes());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(2, lastMessageTimestamp_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -4897,6 +4958,7 @@ public final class Server {
       }
       private void maybeForceBuilderInitialization() {
         if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getLastMessageTimestampFieldBuilder();
         }
       }
       private static Builder create() {
@@ -4907,6 +4969,12 @@ public final class Server {
         super.clear();
         userID_ = "";
         bitField0_ = (bitField0_ & ~0x00000001);
+        if (lastMessageTimestampBuilder_ == null) {
+          lastMessageTimestamp_ = com.blitzhere.BlitzMessage.Types.Timestamp.getDefaultInstance();
+        } else {
+          lastMessageTimestampBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
 
@@ -4939,6 +5007,14 @@ public final class Server {
           to_bitField0_ |= 0x00000001;
         }
         result.userID_ = userID_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        if (lastMessageTimestampBuilder_ == null) {
+          result.lastMessageTimestamp_ = lastMessageTimestamp_;
+        } else {
+          result.lastMessageTimestamp_ = lastMessageTimestampBuilder_.build();
+        }
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -4960,11 +5036,20 @@ public final class Server {
           userID_ = other.userID_;
           onChanged();
         }
+        if (other.hasLastMessageTimestamp()) {
+          mergeLastMessageTimestamp(other.getLastMessageTimestamp());
+        }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
       }
 
       public final boolean isInitialized() {
+        if (hasLastMessageTimestamp()) {
+          if (!getLastMessageTimestamp().isInitialized()) {
+            
+            return false;
+          }
+        }
         return true;
       }
 
@@ -5061,6 +5146,122 @@ public final class Server {
         userID_ = value;
         onChanged();
         return this;
+      }
+
+      private com.blitzhere.BlitzMessage.Types.Timestamp lastMessageTimestamp_ = com.blitzhere.BlitzMessage.Types.Timestamp.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          com.blitzhere.BlitzMessage.Types.Timestamp, com.blitzhere.BlitzMessage.Types.Timestamp.Builder, com.blitzhere.BlitzMessage.Types.TimestampOrBuilder> lastMessageTimestampBuilder_;
+      /**
+       * <code>optional .BlitzMessage.Timestamp lastMessageTimestamp = 2;</code>
+       */
+      public boolean hasLastMessageTimestamp() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional .BlitzMessage.Timestamp lastMessageTimestamp = 2;</code>
+       */
+      public com.blitzhere.BlitzMessage.Types.Timestamp getLastMessageTimestamp() {
+        if (lastMessageTimestampBuilder_ == null) {
+          return lastMessageTimestamp_;
+        } else {
+          return lastMessageTimestampBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .BlitzMessage.Timestamp lastMessageTimestamp = 2;</code>
+       */
+      public Builder setLastMessageTimestamp(com.blitzhere.BlitzMessage.Types.Timestamp value) {
+        if (lastMessageTimestampBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          lastMessageTimestamp_ = value;
+          onChanged();
+        } else {
+          lastMessageTimestampBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000002;
+        return this;
+      }
+      /**
+       * <code>optional .BlitzMessage.Timestamp lastMessageTimestamp = 2;</code>
+       */
+      public Builder setLastMessageTimestamp(
+          com.blitzhere.BlitzMessage.Types.Timestamp.Builder builderForValue) {
+        if (lastMessageTimestampBuilder_ == null) {
+          lastMessageTimestamp_ = builderForValue.build();
+          onChanged();
+        } else {
+          lastMessageTimestampBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000002;
+        return this;
+      }
+      /**
+       * <code>optional .BlitzMessage.Timestamp lastMessageTimestamp = 2;</code>
+       */
+      public Builder mergeLastMessageTimestamp(com.blitzhere.BlitzMessage.Types.Timestamp value) {
+        if (lastMessageTimestampBuilder_ == null) {
+          if (((bitField0_ & 0x00000002) == 0x00000002) &&
+              lastMessageTimestamp_ != com.blitzhere.BlitzMessage.Types.Timestamp.getDefaultInstance()) {
+            lastMessageTimestamp_ =
+              com.blitzhere.BlitzMessage.Types.Timestamp.newBuilder(lastMessageTimestamp_).mergeFrom(value).buildPartial();
+          } else {
+            lastMessageTimestamp_ = value;
+          }
+          onChanged();
+        } else {
+          lastMessageTimestampBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000002;
+        return this;
+      }
+      /**
+       * <code>optional .BlitzMessage.Timestamp lastMessageTimestamp = 2;</code>
+       */
+      public Builder clearLastMessageTimestamp() {
+        if (lastMessageTimestampBuilder_ == null) {
+          lastMessageTimestamp_ = com.blitzhere.BlitzMessage.Types.Timestamp.getDefaultInstance();
+          onChanged();
+        } else {
+          lastMessageTimestampBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+      /**
+       * <code>optional .BlitzMessage.Timestamp lastMessageTimestamp = 2;</code>
+       */
+      public com.blitzhere.BlitzMessage.Types.Timestamp.Builder getLastMessageTimestampBuilder() {
+        bitField0_ |= 0x00000002;
+        onChanged();
+        return getLastMessageTimestampFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .BlitzMessage.Timestamp lastMessageTimestamp = 2;</code>
+       */
+      public com.blitzhere.BlitzMessage.Types.TimestampOrBuilder getLastMessageTimestampOrBuilder() {
+        if (lastMessageTimestampBuilder_ != null) {
+          return lastMessageTimestampBuilder_.getMessageOrBuilder();
+        } else {
+          return lastMessageTimestamp_;
+        }
+      }
+      /**
+       * <code>optional .BlitzMessage.Timestamp lastMessageTimestamp = 2;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          com.blitzhere.BlitzMessage.Types.Timestamp, com.blitzhere.BlitzMessage.Types.Timestamp.Builder, com.blitzhere.BlitzMessage.Types.TimestampOrBuilder> 
+          getLastMessageTimestampFieldBuilder() {
+        if (lastMessageTimestampBuilder_ == null) {
+          lastMessageTimestampBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.blitzhere.BlitzMessage.Types.Timestamp, com.blitzhere.BlitzMessage.Types.Timestamp.Builder, com.blitzhere.BlitzMessage.Types.TimestampOrBuilder>(
+                  getLastMessageTimestamp(),
+                  getParentForChildren(),
+                  isClean());
+          lastMessageTimestamp_ = null;
+        }
+        return lastMessageTimestampBuilder_;
       }
 
       // @@protoc_insertion_point(builder_scope:BlitzMessage.PushConnect)
@@ -6751,6 +6952,12 @@ public final class Server {
           return false;
         }
       }
+      if (hasPushConnect()) {
+        if (!getPushConnect().isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
       if (hasFetchConversations()) {
         if (!getFetchConversations().isInitialized()) {
           memoizedIsInitialized = 0;
@@ -7638,6 +7845,12 @@ public final class Server {
         }
         if (hasFeedPostUpdateRequest()) {
           if (!getFeedPostUpdateRequest().isInitialized()) {
+            
+            return false;
+          }
+        }
+        if (hasPushConnect()) {
+          if (!getPushConnect().isInitialized()) {
             
             return false;
           }
@@ -16076,83 +16289,84 @@ public final class Server {
       "le\030\005 \001(\0132\031.BlitzMessage.UserProfile\022\027\n\017r" +
       "esetAllAppData\030\006 \001(\010\022/\n\rinviteRequest\030\007 " +
       "\001(\0132\030.BlitzMessage.UserInvite\022,\n\nappOpti",
-      "ons\030\010 \001(\0132\030.BlitzMessage.AppOptions\"\035\n\013P" +
-      "ushConnect\022\016\n\006userID\030\001 \001(\t\"\020\n\016PushDiscon" +
-      "nect\"\243\013\n\013RequestType\0224\n\016sessionRequest\030\001" +
-      " \001(\0132\034.BlitzMessage.SessionRequest\0224\n\016us" +
-      "erEventBatch\030\002 \001(\0132\034.BlitzMessage.UserEv" +
-      "entBatch\022:\n\021userProfileUpdate\030\003 \001(\0132\037.Bl" +
-      "itzMessage.UserProfileUpdate\0228\n\020userProf" +
-      "ileQuery\030\004 \001(\0132\036.BlitzMessage.UserProfil" +
-      "eQuery\022>\n\023confirmationRequest\030\005 \001(\0132!.Bl" +
-      "itzMessage.ConfirmationRequest\022;\n\022messag",
-      "eSendRequest\030\006 \001(\0132\037.BlitzMessage.UserMe" +
-      "ssageUpdate\022<\n\023messageFetchRequest\030\007 \001(\013" +
-      "2\037.BlitzMessage.UserMessageUpdate\0220\n\014deb" +
-      "ugMessage\030\010 \001(\0132\032.BlitzMessage.DebugMess" +
-      "age\022.\n\013imageUpload\030\t \001(\0132\031.BlitzMessage." +
-      "ImageUpload\0225\n\023acceptInviteRequest\030\n \001(\013" +
-      "2\030.BlitzMessage.UserInvite\022@\n\024feedPostFe" +
-      "tchRequest\030\013 \001(\0132\".BlitzMessage.FeedPost" +
-      "FetchRequest\022B\n\025feedPostUpdateRequest\030\014 " +
-      "\001(\0132#.BlitzMessage.FeedPostUpdateRequest",
-      "\022>\n\023autocompleteRequest\030\r \001(\0132!.BlitzMes" +
-      "sage.AutocompleteRequest\0224\n\017entityTagUpd" +
-      "ate\030\016 \001(\0132\033.BlitzMessage.EntityTagList\022:" +
-      "\n\021userSearchRequest\030\017 \001(\0132\037.BlitzMessage" +
-      ".UserSearchRequest\022.\n\013pushConnect\030\020 \001(\0132" +
-      "\031.BlitzMessage.PushConnect\0224\n\016pushDiscon" +
-      "nect\030\021 \001(\0132\034.BlitzMessage.PushDisconnect" +
-      "\022>\n\023conversationRequest\030\022 \001(\0132!.BlitzMes" +
-      "sage.ConversationRequest\022<\n\022fetchConvers" +
-      "ations\030\023 \001(\0132 .BlitzMessage.FetchConvers",
-      "ations\022,\n\nuserReview\030\024 \001(\0132\030.BlitzMessag" +
-      "e.UserReview\022H\n\030updateConversationStatus" +
-      "\030\025 \001(\0132&.BlitzMessage.UpdateConversation" +
-      "Status\0220\n\014userCardInfo\030\026 \001(\0132\032.BlitzMess" +
-      "age.UserCardInfo\022+\n\rchargeRequest\030\027 \001(\0132" +
-      "\024.BlitzMessage.Charge\0221\n\rfriendRequest\030\030" +
-      " \001(\0132\032.BlitzMessage.FriendUpdate\0228\n\020sear" +
-      "chCategories\030\031 \001(\0132\036.BlitzMessage.Search" +
-      "Categories\"U\n\rServerRequest\022\024\n\014sessionTo" +
-      "ken\030\001 \001(\t\022.\n\013requestType\030\002 \001(\0132\031.BlitzMe",
-      "ssage.RequestType\"\245\010\n\014ResponseType\0226\n\017se" +
-      "ssionResponse\030\001 \001(\0132\035.BlitzMessage.Sessi" +
-      "onResponse\022D\n\026userEventBatchResponse\030\002 \001" +
-      "(\0132$.BlitzMessage.UserEventBatchResponse" +
-      "\022:\n\021userProfileUpdate\030\003 \001(\0132\037.BlitzMessa" +
-      "ge.UserProfileUpdate\0228\n\020userProfileQuery" +
-      "\030\004 \001(\0132\036.BlitzMessage.UserProfileQuery\022>" +
-      "\n\023confirmationRequest\030\005 \001(\0132!.BlitzMessa" +
-      "ge.ConfirmationRequest\022:\n\021userMessageUpd" +
-      "ate\030\006 \001(\0132\037.BlitzMessage.UserMessageUpda",
-      "te\0220\n\014debugMessage\030\007 \001(\0132\032.BlitzMessage." +
-      "DebugMessage\0223\n\020imageUploadReply\030\010 \001(\0132\031" +
-      ".BlitzMessage.ImageUpload\0226\n\024acceptInvit" +
-      "eResponse\030\t \001(\0132\030.BlitzMessage.UserInvit" +
-      "e\022@\n\024autocompleteResponse\030\014 \001(\0132\".BlitzM" +
-      "essage.AutocompleteResponse\022<\n\022userSearc" +
-      "hResponse\030\r \001(\0132 .BlitzMessage.UserSearc" +
-      "hResponse\022@\n\024conversationResponse\030\016 \001(\0132" +
-      "\".BlitzMessage.ConversationResponse\022<\n\022f" +
-      "etchConversations\030\017 \001(\0132 .BlitzMessage.F",
-      "etchConversations\0220\n\014userCardInfo\030\020 \001(\0132" +
-      "\032.BlitzMessage.UserCardInfo\022,\n\016chargeRes" +
-      "ponse\030\021 \001(\0132\024.BlitzMessage.Charge\0222\n\016fri" +
-      "endResponse\030\022 \001(\0132\032.BlitzMessage.FriendU" +
-      "pdate\0228\n\020searchCategories\030\023 \001(\0132\036.BlitzM" +
-      "essage.SearchCategories\0228\n\020feedPostRespo" +
-      "nse\030\024 \001(\0132\036.BlitzMessage.FeedPostRespons" +
-      "e\"\215\001\n\016ServerResponse\0220\n\014responseCode\030\001 \001" +
-      "(\0162\032.BlitzMessage.ResponseCode\022\027\n\017respon" +
-      "seMessage\030\002 \001(\t\0220\n\014responseType\030\003 \001(\0132\032.",
-      "BlitzMessage.ResponseType*\252\001\n\014ResponseCo" +
-      "de\022\r\n\tRCSuccess\020\001\022\022\n\016RCInputCorrupt\020\002\022\022\n" +
-      "\016RCInputInvalid\020\003\022\023\n\017RCServerWarning\020\004\022\021" +
-      "\n\rRCServerError\020\005\022\023\n\017RCNotAuthorized\020\006\022\022" +
-      "\n\016RCClientTooOld\020\007\022\022\n\016RCPaymentError\020\010B/" +
-      "\n\032com.blitzhere.BlitzMessage\210\001\001\322>\002\n\000\322>\003\022" +
-      "\001B\322>\002\030\001"
+      "ons\030\010 \001(\0132\030.BlitzMessage.AppOptions\"T\n\013P" +
+      "ushConnect\022\016\n\006userID\030\001 \001(\t\0225\n\024lastMessag" +
+      "eTimestamp\030\002 \001(\0132\027.BlitzMessage.Timestam" +
+      "p\"\020\n\016PushDisconnect\"\243\013\n\013RequestType\0224\n\016s" +
+      "essionRequest\030\001 \001(\0132\034.BlitzMessage.Sessi" +
+      "onRequest\0224\n\016userEventBatch\030\002 \001(\0132\034.Blit" +
+      "zMessage.UserEventBatch\022:\n\021userProfileUp" +
+      "date\030\003 \001(\0132\037.BlitzMessage.UserProfileUpd" +
+      "ate\0228\n\020userProfileQuery\030\004 \001(\0132\036.BlitzMes" +
+      "sage.UserProfileQuery\022>\n\023confirmationReq",
+      "uest\030\005 \001(\0132!.BlitzMessage.ConfirmationRe" +
+      "quest\022;\n\022messageSendRequest\030\006 \001(\0132\037.Blit" +
+      "zMessage.UserMessageUpdate\022<\n\023messageFet" +
+      "chRequest\030\007 \001(\0132\037.BlitzMessage.UserMessa" +
+      "geUpdate\0220\n\014debugMessage\030\010 \001(\0132\032.BlitzMe" +
+      "ssage.DebugMessage\022.\n\013imageUpload\030\t \001(\0132" +
+      "\031.BlitzMessage.ImageUpload\0225\n\023acceptInvi" +
+      "teRequest\030\n \001(\0132\030.BlitzMessage.UserInvit" +
+      "e\022@\n\024feedPostFetchRequest\030\013 \001(\0132\".BlitzM" +
+      "essage.FeedPostFetchRequest\022B\n\025feedPostU",
+      "pdateRequest\030\014 \001(\0132#.BlitzMessage.FeedPo" +
+      "stUpdateRequest\022>\n\023autocompleteRequest\030\r" +
+      " \001(\0132!.BlitzMessage.AutocompleteRequest\022" +
+      "4\n\017entityTagUpdate\030\016 \001(\0132\033.BlitzMessage." +
+      "EntityTagList\022:\n\021userSearchRequest\030\017 \001(\013" +
+      "2\037.BlitzMessage.UserSearchRequest\022.\n\013pus" +
+      "hConnect\030\020 \001(\0132\031.BlitzMessage.PushConnec" +
+      "t\0224\n\016pushDisconnect\030\021 \001(\0132\034.BlitzMessage" +
+      ".PushDisconnect\022>\n\023conversationRequest\030\022" +
+      " \001(\0132!.BlitzMessage.ConversationRequest\022",
+      "<\n\022fetchConversations\030\023 \001(\0132 .BlitzMessa" +
+      "ge.FetchConversations\022,\n\nuserReview\030\024 \001(" +
+      "\0132\030.BlitzMessage.UserReview\022H\n\030updateCon" +
+      "versationStatus\030\025 \001(\0132&.BlitzMessage.Upd" +
+      "ateConversationStatus\0220\n\014userCardInfo\030\026 " +
+      "\001(\0132\032.BlitzMessage.UserCardInfo\022+\n\rcharg" +
+      "eRequest\030\027 \001(\0132\024.BlitzMessage.Charge\0221\n\r" +
+      "friendRequest\030\030 \001(\0132\032.BlitzMessage.Frien" +
+      "dUpdate\0228\n\020searchCategories\030\031 \001(\0132\036.Blit" +
+      "zMessage.SearchCategories\"U\n\rServerReque",
+      "st\022\024\n\014sessionToken\030\001 \001(\t\022.\n\013requestType\030" +
+      "\002 \001(\0132\031.BlitzMessage.RequestType\"\245\010\n\014Res" +
+      "ponseType\0226\n\017sessionResponse\030\001 \001(\0132\035.Bli" +
+      "tzMessage.SessionResponse\022D\n\026userEventBa" +
+      "tchResponse\030\002 \001(\0132$.BlitzMessage.UserEve" +
+      "ntBatchResponse\022:\n\021userProfileUpdate\030\003 \001" +
+      "(\0132\037.BlitzMessage.UserProfileUpdate\0228\n\020u" +
+      "serProfileQuery\030\004 \001(\0132\036.BlitzMessage.Use" +
+      "rProfileQuery\022>\n\023confirmationRequest\030\005 \001" +
+      "(\0132!.BlitzMessage.ConfirmationRequest\022:\n",
+      "\021userMessageUpdate\030\006 \001(\0132\037.BlitzMessage." +
+      "UserMessageUpdate\0220\n\014debugMessage\030\007 \001(\0132" +
+      "\032.BlitzMessage.DebugMessage\0223\n\020imageUplo" +
+      "adReply\030\010 \001(\0132\031.BlitzMessage.ImageUpload" +
+      "\0226\n\024acceptInviteResponse\030\t \001(\0132\030.BlitzMe" +
+      "ssage.UserInvite\022@\n\024autocompleteResponse" +
+      "\030\014 \001(\0132\".BlitzMessage.AutocompleteRespon" +
+      "se\022<\n\022userSearchResponse\030\r \001(\0132 .BlitzMe" +
+      "ssage.UserSearchResponse\022@\n\024conversation" +
+      "Response\030\016 \001(\0132\".BlitzMessage.Conversati",
+      "onResponse\022<\n\022fetchConversations\030\017 \001(\0132 " +
+      ".BlitzMessage.FetchConversations\0220\n\014user" +
+      "CardInfo\030\020 \001(\0132\032.BlitzMessage.UserCardIn" +
+      "fo\022,\n\016chargeResponse\030\021 \001(\0132\024.BlitzMessag" +
+      "e.Charge\0222\n\016friendResponse\030\022 \001(\0132\032.Blitz" +
+      "Message.FriendUpdate\0228\n\020searchCategories" +
+      "\030\023 \001(\0132\036.BlitzMessage.SearchCategories\0228" +
+      "\n\020feedPostResponse\030\024 \001(\0132\036.BlitzMessage." +
+      "FeedPostResponse\"\215\001\n\016ServerResponse\0220\n\014r" +
+      "esponseCode\030\001 \001(\0162\032.BlitzMessage.Respons",
+      "eCode\022\027\n\017responseMessage\030\002 \001(\t\0220\n\014respon" +
+      "seType\030\003 \001(\0132\032.BlitzMessage.ResponseType" +
+      "*\252\001\n\014ResponseCode\022\r\n\tRCSuccess\020\001\022\022\n\016RCIn" +
+      "putCorrupt\020\002\022\022\n\016RCInputInvalid\020\003\022\023\n\017RCSe" +
+      "rverWarning\020\004\022\021\n\rRCServerError\020\005\022\023\n\017RCNo" +
+      "tAuthorized\020\006\022\022\n\016RCClientTooOld\020\007\022\022\n\016RCP" +
+      "aymentError\020\010B/\n\032com.blitzhere.BlitzMess" +
+      "age\210\001\001\322>\002\n\000\322>\003\022\001B\322>\002\030\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -16211,7 +16425,7 @@ public final class Server {
     internal_static_BlitzMessage_PushConnect_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_BlitzMessage_PushConnect_descriptor,
-        new java.lang.String[] { "UserID", });
+        new java.lang.String[] { "UserID", "LastMessageTimestamp", });
     internal_static_BlitzMessage_PushDisconnect_descriptor =
       getDescriptor().getMessageTypes().get(6);
     internal_static_BlitzMessage_PushDisconnect_fieldAccessorTable = new
