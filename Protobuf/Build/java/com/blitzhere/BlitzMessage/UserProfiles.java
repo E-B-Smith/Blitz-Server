@@ -8454,13 +8454,44 @@ public final class UserProfiles {
         getStripeAccountBytes();
 
     /**
-     * <code>optional bool isFree = 25;</code>
+     * <code>optional bool serviceIsFreeForUser = 25;</code>
      */
-    boolean hasIsFree();
+    boolean hasServiceIsFreeForUser();
     /**
-     * <code>optional bool isFree = 25;</code>
+     * <code>optional bool serviceIsFreeForUser = 25;</code>
      */
-    boolean getIsFree();
+    boolean getServiceIsFreeForUser();
+
+    /**
+     * <code>optional string chatFee = 26;</code>
+     */
+    boolean hasChatFee();
+    /**
+     * <code>optional string chatFee = 26;</code>
+     */
+    java.lang.String getChatFee();
+    /**
+     * <code>optional string chatFee = 26;</code>
+     */
+    com.google.protobuf.ByteString
+        getChatFeeBytes();
+
+    /**
+     * <code>optional int64 userInfo = 27;</code>
+     *
+     * <pre>
+     *  Ignored / not saved.
+     * </pre>
+     */
+    boolean hasUserInfo();
+    /**
+     * <code>optional int64 userInfo = 27;</code>
+     *
+     * <pre>
+     *  Ignored / not saved.
+     * </pre>
+     */
+    long getUserInfo();
   }
   /**
    * Protobuf type {@code BlitzMessage.UserProfile}
@@ -8709,7 +8740,18 @@ public final class UserProfiles {
             }
             case 200: {
               bitField0_ |= 0x00010000;
-              isFree_ = input.readBool();
+              serviceIsFreeForUser_ = input.readBool();
+              break;
+            }
+            case 210: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00020000;
+              chatFee_ = bs;
+              break;
+            }
+            case 216: {
+              bitField0_ |= 0x00040000;
+              userInfo_ = input.readInt64();
               break;
             }
           }
@@ -9422,19 +9464,84 @@ public final class UserProfiles {
       }
     }
 
-    public static final int ISFREE_FIELD_NUMBER = 25;
-    private boolean isFree_;
+    public static final int SERVICEISFREEFORUSER_FIELD_NUMBER = 25;
+    private boolean serviceIsFreeForUser_;
     /**
-     * <code>optional bool isFree = 25;</code>
+     * <code>optional bool serviceIsFreeForUser = 25;</code>
      */
-    public boolean hasIsFree() {
+    public boolean hasServiceIsFreeForUser() {
       return ((bitField0_ & 0x00010000) == 0x00010000);
     }
     /**
-     * <code>optional bool isFree = 25;</code>
+     * <code>optional bool serviceIsFreeForUser = 25;</code>
      */
-    public boolean getIsFree() {
-      return isFree_;
+    public boolean getServiceIsFreeForUser() {
+      return serviceIsFreeForUser_;
+    }
+
+    public static final int CHATFEE_FIELD_NUMBER = 26;
+    private java.lang.Object chatFee_;
+    /**
+     * <code>optional string chatFee = 26;</code>
+     */
+    public boolean hasChatFee() {
+      return ((bitField0_ & 0x00020000) == 0x00020000);
+    }
+    /**
+     * <code>optional string chatFee = 26;</code>
+     */
+    public java.lang.String getChatFee() {
+      java.lang.Object ref = chatFee_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          chatFee_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string chatFee = 26;</code>
+     */
+    public com.google.protobuf.ByteString
+        getChatFeeBytes() {
+      java.lang.Object ref = chatFee_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        chatFee_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int USERINFO_FIELD_NUMBER = 27;
+    private long userInfo_;
+    /**
+     * <code>optional int64 userInfo = 27;</code>
+     *
+     * <pre>
+     *  Ignored / not saved.
+     * </pre>
+     */
+    public boolean hasUserInfo() {
+      return ((bitField0_ & 0x00040000) == 0x00040000);
+    }
+    /**
+     * <code>optional int64 userInfo = 27;</code>
+     *
+     * <pre>
+     *  Ignored / not saved.
+     * </pre>
+     */
+    public long getUserInfo() {
+      return userInfo_;
     }
 
     private void initFields() {
@@ -9462,7 +9569,9 @@ public final class UserProfiles {
       reviews_ = java.util.Collections.emptyList();
       isExpert_ = false;
       stripeAccount_ = "";
-      isFree_ = false;
+      serviceIsFreeForUser_ = false;
+      chatFee_ = "";
+      userInfo_ = 0L;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -9610,7 +9719,13 @@ public final class UserProfiles {
         output.writeBytes(24, getStripeAccountBytes());
       }
       if (((bitField0_ & 0x00010000) == 0x00010000)) {
-        output.writeBool(25, isFree_);
+        output.writeBool(25, serviceIsFreeForUser_);
+      }
+      if (((bitField0_ & 0x00020000) == 0x00020000)) {
+        output.writeBytes(26, getChatFeeBytes());
+      }
+      if (((bitField0_ & 0x00040000) == 0x00040000)) {
+        output.writeInt64(27, userInfo_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -9724,7 +9839,15 @@ public final class UserProfiles {
       }
       if (((bitField0_ & 0x00010000) == 0x00010000)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBoolSize(25, isFree_);
+          .computeBoolSize(25, serviceIsFreeForUser_);
+      }
+      if (((bitField0_ & 0x00020000) == 0x00020000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(26, getChatFeeBytes());
+      }
+      if (((bitField0_ & 0x00040000) == 0x00040000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(27, userInfo_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -9946,8 +10069,12 @@ public final class UserProfiles {
         bitField0_ = (bitField0_ & ~0x00400000);
         stripeAccount_ = "";
         bitField0_ = (bitField0_ & ~0x00800000);
-        isFree_ = false;
+        serviceIsFreeForUser_ = false;
         bitField0_ = (bitField0_ & ~0x01000000);
+        chatFee_ = "";
+        bitField0_ = (bitField0_ & ~0x02000000);
+        userInfo_ = 0L;
+        bitField0_ = (bitField0_ & ~0x04000000);
         return this;
       }
 
@@ -10127,7 +10254,15 @@ public final class UserProfiles {
         if (((from_bitField0_ & 0x01000000) == 0x01000000)) {
           to_bitField0_ |= 0x00010000;
         }
-        result.isFree_ = isFree_;
+        result.serviceIsFreeForUser_ = serviceIsFreeForUser_;
+        if (((from_bitField0_ & 0x02000000) == 0x02000000)) {
+          to_bitField0_ |= 0x00020000;
+        }
+        result.chatFee_ = chatFee_;
+        if (((from_bitField0_ & 0x04000000) == 0x04000000)) {
+          to_bitField0_ |= 0x00040000;
+        }
+        result.userInfo_ = userInfo_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -10392,8 +10527,16 @@ public final class UserProfiles {
           stripeAccount_ = other.stripeAccount_;
           onChanged();
         }
-        if (other.hasIsFree()) {
-          setIsFree(other.getIsFree());
+        if (other.hasServiceIsFreeForUser()) {
+          setServiceIsFreeForUser(other.getServiceIsFreeForUser());
+        }
+        if (other.hasChatFee()) {
+          bitField0_ |= 0x02000000;
+          chatFee_ = other.chatFee_;
+          onChanged();
+        }
+        if (other.hasUserInfo()) {
+          setUserInfo(other.getUserInfo());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -13285,34 +13428,158 @@ public final class UserProfiles {
         return this;
       }
 
-      private boolean isFree_ ;
+      private boolean serviceIsFreeForUser_ ;
       /**
-       * <code>optional bool isFree = 25;</code>
+       * <code>optional bool serviceIsFreeForUser = 25;</code>
        */
-      public boolean hasIsFree() {
+      public boolean hasServiceIsFreeForUser() {
         return ((bitField0_ & 0x01000000) == 0x01000000);
       }
       /**
-       * <code>optional bool isFree = 25;</code>
+       * <code>optional bool serviceIsFreeForUser = 25;</code>
        */
-      public boolean getIsFree() {
-        return isFree_;
+      public boolean getServiceIsFreeForUser() {
+        return serviceIsFreeForUser_;
       }
       /**
-       * <code>optional bool isFree = 25;</code>
+       * <code>optional bool serviceIsFreeForUser = 25;</code>
        */
-      public Builder setIsFree(boolean value) {
+      public Builder setServiceIsFreeForUser(boolean value) {
         bitField0_ |= 0x01000000;
-        isFree_ = value;
+        serviceIsFreeForUser_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional bool isFree = 25;</code>
+       * <code>optional bool serviceIsFreeForUser = 25;</code>
        */
-      public Builder clearIsFree() {
+      public Builder clearServiceIsFreeForUser() {
         bitField0_ = (bitField0_ & ~0x01000000);
-        isFree_ = false;
+        serviceIsFreeForUser_ = false;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object chatFee_ = "";
+      /**
+       * <code>optional string chatFee = 26;</code>
+       */
+      public boolean hasChatFee() {
+        return ((bitField0_ & 0x02000000) == 0x02000000);
+      }
+      /**
+       * <code>optional string chatFee = 26;</code>
+       */
+      public java.lang.String getChatFee() {
+        java.lang.Object ref = chatFee_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            chatFee_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string chatFee = 26;</code>
+       */
+      public com.google.protobuf.ByteString
+          getChatFeeBytes() {
+        java.lang.Object ref = chatFee_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          chatFee_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string chatFee = 26;</code>
+       */
+      public Builder setChatFee(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x02000000;
+        chatFee_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string chatFee = 26;</code>
+       */
+      public Builder clearChatFee() {
+        bitField0_ = (bitField0_ & ~0x02000000);
+        chatFee_ = getDefaultInstance().getChatFee();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string chatFee = 26;</code>
+       */
+      public Builder setChatFeeBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x02000000;
+        chatFee_ = value;
+        onChanged();
+        return this;
+      }
+
+      private long userInfo_ ;
+      /**
+       * <code>optional int64 userInfo = 27;</code>
+       *
+       * <pre>
+       *  Ignored / not saved.
+       * </pre>
+       */
+      public boolean hasUserInfo() {
+        return ((bitField0_ & 0x04000000) == 0x04000000);
+      }
+      /**
+       * <code>optional int64 userInfo = 27;</code>
+       *
+       * <pre>
+       *  Ignored / not saved.
+       * </pre>
+       */
+      public long getUserInfo() {
+        return userInfo_;
+      }
+      /**
+       * <code>optional int64 userInfo = 27;</code>
+       *
+       * <pre>
+       *  Ignored / not saved.
+       * </pre>
+       */
+      public Builder setUserInfo(long value) {
+        bitField0_ |= 0x04000000;
+        userInfo_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int64 userInfo = 27;</code>
+       *
+       * <pre>
+       *  Ignored / not saved.
+       * </pre>
+       */
+      public Builder clearUserInfo() {
+        bitField0_ = (bitField0_ & ~0x04000000);
+        userInfo_ = 0L;
         onChanged();
         return this;
       }
@@ -20370,7 +20637,7 @@ public final class UserProfiles {
       "(\0132\027.BlitzMessage.Timestamp\022\026\n\016conversat" +
       "ionID\030\004 \001(\t\022\022\n\nresponsive\030\005 \001(\001\022\020\n\010outgo" +
       "ing\030\006 \001(\001\022\023\n\013recommended\030\007 \001(\001\022\022\n\nreview" +
-      "Text\030\010 \001(\t\022\014\n\004tags\030\t \003(\t\"\342\006\n\013UserProfile" +
+      "Text\030\010 \001(\t\022\014\n\004tags\030\t \003(\t\"\223\007\n\013UserProfile" +
       "\022\016\n\006userID\030\001 \001(\t\022,\n\nuserStatus\030\002 \001(\0162\030.B" +
       "litzMessage.UserStatus\022-\n\014creationDate\030\003",
       " \001(\0132\027.BlitzMessage.Timestamp\022)\n\010lastSee" +
@@ -20391,41 +20658,42 @@ public final class UserProfiles {
       "\016ratingOutgoing\030\023 \001(\001\022\031\n\021ratingRecommend" +
       "ed\030\024 \001(\001\022\027\n\017responseSeconds\030\025 \001(\001\022)\n\007rev" +
       "iews\030\026 \003(\0132\030.BlitzMessage.UserReview\022\020\n\010" +
-      "isExpert\030\027 \001(\010\022\025\n\rstripeAccount\030\030 \001(\t\022\016\n" +
-      "\006isFree\030\031 \001(\010\"9\n\013ImageUpload\022*\n\timageDat",
-      "a\030\001 \003(\0132\027.BlitzMessage.ImageData\"@\n\021User" +
-      "ProfileUpdate\022+\n\010profiles\030\001 \003(\0132\031.BlitzM" +
-      "essage.UserProfile\"\230\001\n\020UserProfileQuery\022" +
-      "\017\n\007userIDs\030\001 \003(\t\022\031\n\021fetchDemoProfiles\030\002 " +
-      "\001(\010\022\034\n\024entityTag_deprecated\030\003 \001(\t\022\024\n\014ent" +
-      "ityUserID\030\004 \001(\t\022\020\n\010entityID\030\005 \001(\t\022\022\n\nent" +
-      "ityTags\030\006 \003(\t\"\246\001\n\023ConfirmationRequest\022.\n" +
-      "\013contactInfo\030\001 \001(\0132\031.BlitzMessage.Contac" +
-      "tInfo\022.\n\013userProfile\030\002 \001(\0132\031.BlitzMessag" +
-      "e.UserProfile\022\030\n\020confirmationCode\030\003 \001(\t\022",
-      "\025\n\rinviterUserID\030\004 \001(\t\"F\n\027ProfilesFromCo" +
-      "ntactInfo\022+\n\010profiles\030\001 \003(\0132\031.BlitzMessa" +
-      "ge.UserProfile\"\177\n\014FriendUpdate\0220\n\014friend" +
-      "Status\030\001 \001(\0162\032.BlitzMessage.FriendStatus" +
-      "\022\020\n\010friendID\030\002 \001(\t\022+\n\010profiles\030\003 \003(\0132\031.B" +
-      "litzMessage.UserProfile\"\266\001\n\nUserInvite\022\016" +
-      "\n\006userID\030\001 \001(\t\022\020\n\010friendID\030\002 \001(\t\022\017\n\007mess" +
-      "age\030\003 \001(\t\022.\n\013contactInfo\030\004 \001(\0132\031.BlitzMe" +
-      "ssage.ContactInfo\022+\n\010profiles\030\005 \003(\0132\031.Bl" +
-      "itzMessage.UserProfile\022\030\n\020confirmationCo",
-      "de\030\006 \001(\t*Z\n\013ContactType\022\r\n\tCTUnknown\020\000\022\016" +
-      "\n\nCTPhoneSMS\020\001\022\013\n\007CTEmail\020\002\022\n\n\006CTChat\020\003\022" +
-      "\023\n\017CTSocialService\020\004*j\n\nUserStatus\022\r\n\tUS" +
-      "Unknown\020\000\022\r\n\tUSBlocked\020\001\022\r\n\tUSInvited\020\002\022" +
-      "\014\n\010USActive\020\003\022\020\n\014USConfirming\020\004\022\017\n\013USCon" +
-      "firmed\020\005*:\n\006Gender\022\014\n\010GUnknown\020\000\022\013\n\007GFem" +
-      "ale\020\001\022\t\n\005GMale\020\002\022\n\n\006GOther\020\003*F\n\014ImageCon" +
-      "tent\022\r\n\tICUnknown\020\000\022\021\n\rICUserProfile\020\001\022\024" +
-      "\n\020ICUserBackground\020\002*i\n\014FriendStatus\022\r\n\t" +
-      "FSUnknown\020\000\022\014\n\010FSDidAsk\020\001\022\r\n\tFSIgnored\020\002",
-      "\022\016\n\nFSAccepted\020\003\022\016\n\nFSWasAsked\020\004\022\r\n\tFSFr" +
-      "iends\020\005B/\n\032com.blitzhere.BlitzMessage\210\001\001" +
-      "\322>\002\n\000\322>\003\022\001B\322>\002\030\001"
+      "isExpert\030\027 \001(\010\022\025\n\rstripeAccount\030\030 \001(\t\022\034\n" +
+      "\024serviceIsFreeForUser\030\031 \001(\010\022\017\n\007chatFee\030\032",
+      " \001(\t\022\020\n\010userInfo\030\033 \001(\003\"9\n\013ImageUpload\022*\n" +
+      "\timageData\030\001 \003(\0132\027.BlitzMessage.ImageDat" +
+      "a\"@\n\021UserProfileUpdate\022+\n\010profiles\030\001 \003(\013" +
+      "2\031.BlitzMessage.UserProfile\"\230\001\n\020UserProf" +
+      "ileQuery\022\017\n\007userIDs\030\001 \003(\t\022\031\n\021fetchDemoPr" +
+      "ofiles\030\002 \001(\010\022\034\n\024entityTag_deprecated\030\003 \001" +
+      "(\t\022\024\n\014entityUserID\030\004 \001(\t\022\020\n\010entityID\030\005 \001" +
+      "(\t\022\022\n\nentityTags\030\006 \003(\t\"\246\001\n\023ConfirmationR" +
+      "equest\022.\n\013contactInfo\030\001 \001(\0132\031.BlitzMessa" +
+      "ge.ContactInfo\022.\n\013userProfile\030\002 \001(\0132\031.Bl",
+      "itzMessage.UserProfile\022\030\n\020confirmationCo" +
+      "de\030\003 \001(\t\022\025\n\rinviterUserID\030\004 \001(\t\"F\n\027Profi" +
+      "lesFromContactInfo\022+\n\010profiles\030\001 \003(\0132\031.B" +
+      "litzMessage.UserProfile\"\177\n\014FriendUpdate\022" +
+      "0\n\014friendStatus\030\001 \001(\0162\032.BlitzMessage.Fri" +
+      "endStatus\022\020\n\010friendID\030\002 \001(\t\022+\n\010profiles\030" +
+      "\003 \003(\0132\031.BlitzMessage.UserProfile\"\266\001\n\nUse" +
+      "rInvite\022\016\n\006userID\030\001 \001(\t\022\020\n\010friendID\030\002 \001(" +
+      "\t\022\017\n\007message\030\003 \001(\t\022.\n\013contactInfo\030\004 \001(\0132" +
+      "\031.BlitzMessage.ContactInfo\022+\n\010profiles\030\005",
+      " \003(\0132\031.BlitzMessage.UserProfile\022\030\n\020confi" +
+      "rmationCode\030\006 \001(\t*Z\n\013ContactType\022\r\n\tCTUn" +
+      "known\020\000\022\016\n\nCTPhoneSMS\020\001\022\013\n\007CTEmail\020\002\022\n\n\006" +
+      "CTChat\020\003\022\023\n\017CTSocialService\020\004*j\n\nUserSta" +
+      "tus\022\r\n\tUSUnknown\020\000\022\r\n\tUSBlocked\020\001\022\r\n\tUSI" +
+      "nvited\020\002\022\014\n\010USActive\020\003\022\020\n\014USConfirming\020\004" +
+      "\022\017\n\013USConfirmed\020\005*:\n\006Gender\022\014\n\010GUnknown\020" +
+      "\000\022\013\n\007GFemale\020\001\022\t\n\005GMale\020\002\022\n\n\006GOther\020\003*F\n" +
+      "\014ImageContent\022\r\n\tICUnknown\020\000\022\021\n\rICUserPr" +
+      "ofile\020\001\022\024\n\020ICUserBackground\020\002*i\n\014FriendS",
+      "tatus\022\r\n\tFSUnknown\020\000\022\014\n\010FSDidAsk\020\001\022\r\n\tFS" +
+      "Ignored\020\002\022\016\n\nFSAccepted\020\003\022\016\n\nFSWasAsked\020" +
+      "\004\022\r\n\tFSFriends\020\005B/\n\032com.blitzhere.BlitzM" +
+      "essage\210\001\001\322>\002\n\000\322>\003\022\001B\322>\002\030\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -20483,7 +20751,7 @@ public final class UserProfiles {
     internal_static_BlitzMessage_UserProfile_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_BlitzMessage_UserProfile_descriptor,
-        new java.lang.String[] { "UserID", "UserStatus", "CreationDate", "LastSeen", "Name", "Gender", "Birthday", "Images", "SocialIdentities", "ContactInfo", "HeadlineEmployment", "Employment", "Education", "EntityTags", "InterestTags", "BackgroundSummary", "RatingCount", "RatingResponsive", "RatingOutgoing", "RatingRecommended", "ResponseSeconds", "Reviews", "IsExpert", "StripeAccount", "IsFree", });
+        new java.lang.String[] { "UserID", "UserStatus", "CreationDate", "LastSeen", "Name", "Gender", "Birthday", "Images", "SocialIdentities", "ContactInfo", "HeadlineEmployment", "Employment", "Education", "EntityTags", "InterestTags", "BackgroundSummary", "RatingCount", "RatingResponsive", "RatingOutgoing", "RatingRecommended", "ResponseSeconds", "Reviews", "IsExpert", "StripeAccount", "ServiceIsFreeForUser", "ChatFee", "UserInfo", });
     internal_static_BlitzMessage_ImageUpload_descriptor =
       getDescriptor().getMessageTypes().get(7);
     internal_static_BlitzMessage_ImageUpload_fieldAccessorTable = new

@@ -25,13 +25,6 @@ enum CardStatus {
 }
 
 
-enum ChargeTokenType {
-  CTTApplePay     = 0;
-  CTTStripeToken  = 1;
-  CTTCardToken    = 2;
-}
-
-
 message CardInfo {
   optional CardStatus   cardStatus      = 1;
   optional string       cardHolderName  = 2;
@@ -59,18 +52,48 @@ enum ChargeStatus {
 }
 
 
+enum ChargeTokenType {
+  CTTUnkown       = 0;
+  CTTApplePay     = 1;
+  CTTStripeToken  = 2;
+  CTTCardToken    = 3;
+}
+
+
+enum PurchaseType {
+  PurchaseTypeUnknown = 0;
+  PTChatConversation  = 1;
+  PTFeedPost          = 2;
+}
+
+
 message Charge {
   optional string       chargeID        = 1;
   optional Timestamp    timestamp       = 2;
   optional ChargeStatus chargeStatus    = 3;
   optional string       payerID         = 4;
-  optional string       payeeID         = 5;
-  optional string       conversationID  = 6;
-  optional string       memoText        = 7;
-  optional string       amount          = 8;
-  optional string       currency        = 9;
-  optional ChargeTokenType tokenType    = 10;
-  optional string       chargeToken     = 11;
-  optional string       processorReason = 12;
+  optional string       payeeID_deprecated = 5;
+  optional PurchaseType purchaseType    = 6;
+  optional string       purchaseTypeID  = 7;  //  ConversationID, e.g.
+  optional string       memoText        = 8;
+  optional string       amount          = 9;
+  optional string       currency        = 10;
+  optional ChargeTokenType tokenType    = 11;
+  optional string       chargeToken     = 12;
+  optional string       processorReason = 13;
+}
+
+
+message PurchaseDescription {
+
+  //  Sent from client for purchase request:
+  optional PurchaseType purchaseType      = 1;
+  optional string       purchaseEntityID  = 2;  //  ConversationID, e.g.
+
+  //  Sent to client as purchase request response:
+  optional string       purchaseID        = 3;
+  optional string       memoText          = 4;
+  optional string       amount            = 5;
+  optional string       currency          = 6;
 }
 

@@ -196,7 +196,7 @@ var notifierChannel chan bool
 
 func notifier() {
     Log.LogFunctionName()
-    defer Log.Debugf("Exit Notifier")
+    defer Log.Debugf("=> Exit Notifier <=")
 
     var shouldContinue bool = true
     for shouldContinue {

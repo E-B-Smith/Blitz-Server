@@ -45,6 +45,10 @@ public final class Server {
      * <code>RCPaymentError = 8;</code>
      */
     RCPaymentError(7, 8),
+    /**
+     * <code>RCPurchaseRequired = 9;</code>
+     */
+    RCPurchaseRequired(8, 9),
     ;
 
     /**
@@ -79,6 +83,10 @@ public final class Server {
      * <code>RCPaymentError = 8;</code>
      */
     public static final int RCPaymentError_VALUE = 8;
+    /**
+     * <code>RCPurchaseRequired = 9;</code>
+     */
+    public static final int RCPurchaseRequired_VALUE = 9;
 
 
     public final int getNumber() { return value; }
@@ -93,6 +101,7 @@ public final class Server {
         case 6: return RCNotAuthorized;
         case 7: return RCClientTooOld;
         case 8: return RCPaymentError;
+        case 9: return RCPurchaseRequired;
         default: return null;
       }
     }
@@ -11741,6 +11750,19 @@ public final class Server {
      * <code>optional .BlitzMessage.FeedPostResponse feedPostResponse = 20;</code>
      */
     com.blitzhere.BlitzMessage.Feed.FeedPostResponseOrBuilder getFeedPostResponseOrBuilder();
+
+    /**
+     * <code>optional .BlitzMessage.PurchaseDescription purchaseDescription = 21;</code>
+     */
+    boolean hasPurchaseDescription();
+    /**
+     * <code>optional .BlitzMessage.PurchaseDescription purchaseDescription = 21;</code>
+     */
+    com.blitzhere.BlitzMessage.Payments.PurchaseDescription getPurchaseDescription();
+    /**
+     * <code>optional .BlitzMessage.PurchaseDescription purchaseDescription = 21;</code>
+     */
+    com.blitzhere.BlitzMessage.Payments.PurchaseDescriptionOrBuilder getPurchaseDescriptionOrBuilder();
   }
   /**
    * Protobuf type {@code BlitzMessage.ResponseType}
@@ -12026,6 +12048,19 @@ public final class Server {
                 feedPostResponse_ = subBuilder.buildPartial();
               }
               bitField0_ |= 0x00020000;
+              break;
+            }
+            case 170: {
+              com.blitzhere.BlitzMessage.Payments.PurchaseDescription.Builder subBuilder = null;
+              if (((bitField0_ & 0x00040000) == 0x00040000)) {
+                subBuilder = purchaseDescription_.toBuilder();
+              }
+              purchaseDescription_ = input.readMessage(com.blitzhere.BlitzMessage.Payments.PurchaseDescription.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(purchaseDescription_);
+                purchaseDescription_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00040000;
               break;
             }
           }
@@ -12461,6 +12496,27 @@ public final class Server {
       return feedPostResponse_;
     }
 
+    public static final int PURCHASEDESCRIPTION_FIELD_NUMBER = 21;
+    private com.blitzhere.BlitzMessage.Payments.PurchaseDescription purchaseDescription_;
+    /**
+     * <code>optional .BlitzMessage.PurchaseDescription purchaseDescription = 21;</code>
+     */
+    public boolean hasPurchaseDescription() {
+      return ((bitField0_ & 0x00040000) == 0x00040000);
+    }
+    /**
+     * <code>optional .BlitzMessage.PurchaseDescription purchaseDescription = 21;</code>
+     */
+    public com.blitzhere.BlitzMessage.Payments.PurchaseDescription getPurchaseDescription() {
+      return purchaseDescription_;
+    }
+    /**
+     * <code>optional .BlitzMessage.PurchaseDescription purchaseDescription = 21;</code>
+     */
+    public com.blitzhere.BlitzMessage.Payments.PurchaseDescriptionOrBuilder getPurchaseDescriptionOrBuilder() {
+      return purchaseDescription_;
+    }
+
     private void initFields() {
       sessionResponse_ = com.blitzhere.BlitzMessage.Server.SessionResponse.getDefaultInstance();
       userEventBatchResponse_ = com.blitzhere.BlitzMessage.UserEvents.UserEventBatchResponse.getDefaultInstance();
@@ -12480,6 +12536,7 @@ public final class Server {
       friendResponse_ = com.blitzhere.BlitzMessage.UserProfiles.FriendUpdate.getDefaultInstance();
       searchCategories_ = com.blitzhere.BlitzMessage.Search.SearchCategories.getDefaultInstance();
       feedPostResponse_ = com.blitzhere.BlitzMessage.Feed.FeedPostResponse.getDefaultInstance();
+      purchaseDescription_ = com.blitzhere.BlitzMessage.Payments.PurchaseDescription.getDefaultInstance();
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -12626,6 +12683,9 @@ public final class Server {
       if (((bitField0_ & 0x00020000) == 0x00020000)) {
         output.writeMessage(20, feedPostResponse_);
       }
+      if (((bitField0_ & 0x00040000) == 0x00040000)) {
+        output.writeMessage(21, purchaseDescription_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -12706,6 +12766,10 @@ public final class Server {
       if (((bitField0_ & 0x00020000) == 0x00020000)) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(20, feedPostResponse_);
+      }
+      if (((bitField0_ & 0x00040000) == 0x00040000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(21, purchaseDescription_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -12834,6 +12898,7 @@ public final class Server {
           getFriendResponseFieldBuilder();
           getSearchCategoriesFieldBuilder();
           getFeedPostResponseFieldBuilder();
+          getPurchaseDescriptionFieldBuilder();
         }
       }
       private static Builder create() {
@@ -12950,6 +13015,12 @@ public final class Server {
           feedPostResponseBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00020000);
+        if (purchaseDescriptionBuilder_ == null) {
+          purchaseDescription_ = com.blitzhere.BlitzMessage.Payments.PurchaseDescription.getDefaultInstance();
+        } else {
+          purchaseDescriptionBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00040000);
         return this;
       }
 
@@ -13122,6 +13193,14 @@ public final class Server {
         } else {
           result.feedPostResponse_ = feedPostResponseBuilder_.build();
         }
+        if (((from_bitField0_ & 0x00040000) == 0x00040000)) {
+          to_bitField0_ |= 0x00040000;
+        }
+        if (purchaseDescriptionBuilder_ == null) {
+          result.purchaseDescription_ = purchaseDescription_;
+        } else {
+          result.purchaseDescription_ = purchaseDescriptionBuilder_.build();
+        }
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -13191,6 +13270,9 @@ public final class Server {
         }
         if (other.hasFeedPostResponse()) {
           mergeFeedPostResponse(other.getFeedPostResponse());
+        }
+        if (other.hasPurchaseDescription()) {
+          mergePurchaseDescription(other.getPurchaseDescription());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -15430,6 +15512,122 @@ public final class Server {
         return feedPostResponseBuilder_;
       }
 
+      private com.blitzhere.BlitzMessage.Payments.PurchaseDescription purchaseDescription_ = com.blitzhere.BlitzMessage.Payments.PurchaseDescription.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          com.blitzhere.BlitzMessage.Payments.PurchaseDescription, com.blitzhere.BlitzMessage.Payments.PurchaseDescription.Builder, com.blitzhere.BlitzMessage.Payments.PurchaseDescriptionOrBuilder> purchaseDescriptionBuilder_;
+      /**
+       * <code>optional .BlitzMessage.PurchaseDescription purchaseDescription = 21;</code>
+       */
+      public boolean hasPurchaseDescription() {
+        return ((bitField0_ & 0x00040000) == 0x00040000);
+      }
+      /**
+       * <code>optional .BlitzMessage.PurchaseDescription purchaseDescription = 21;</code>
+       */
+      public com.blitzhere.BlitzMessage.Payments.PurchaseDescription getPurchaseDescription() {
+        if (purchaseDescriptionBuilder_ == null) {
+          return purchaseDescription_;
+        } else {
+          return purchaseDescriptionBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .BlitzMessage.PurchaseDescription purchaseDescription = 21;</code>
+       */
+      public Builder setPurchaseDescription(com.blitzhere.BlitzMessage.Payments.PurchaseDescription value) {
+        if (purchaseDescriptionBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          purchaseDescription_ = value;
+          onChanged();
+        } else {
+          purchaseDescriptionBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00040000;
+        return this;
+      }
+      /**
+       * <code>optional .BlitzMessage.PurchaseDescription purchaseDescription = 21;</code>
+       */
+      public Builder setPurchaseDescription(
+          com.blitzhere.BlitzMessage.Payments.PurchaseDescription.Builder builderForValue) {
+        if (purchaseDescriptionBuilder_ == null) {
+          purchaseDescription_ = builderForValue.build();
+          onChanged();
+        } else {
+          purchaseDescriptionBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00040000;
+        return this;
+      }
+      /**
+       * <code>optional .BlitzMessage.PurchaseDescription purchaseDescription = 21;</code>
+       */
+      public Builder mergePurchaseDescription(com.blitzhere.BlitzMessage.Payments.PurchaseDescription value) {
+        if (purchaseDescriptionBuilder_ == null) {
+          if (((bitField0_ & 0x00040000) == 0x00040000) &&
+              purchaseDescription_ != com.blitzhere.BlitzMessage.Payments.PurchaseDescription.getDefaultInstance()) {
+            purchaseDescription_ =
+              com.blitzhere.BlitzMessage.Payments.PurchaseDescription.newBuilder(purchaseDescription_).mergeFrom(value).buildPartial();
+          } else {
+            purchaseDescription_ = value;
+          }
+          onChanged();
+        } else {
+          purchaseDescriptionBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00040000;
+        return this;
+      }
+      /**
+       * <code>optional .BlitzMessage.PurchaseDescription purchaseDescription = 21;</code>
+       */
+      public Builder clearPurchaseDescription() {
+        if (purchaseDescriptionBuilder_ == null) {
+          purchaseDescription_ = com.blitzhere.BlitzMessage.Payments.PurchaseDescription.getDefaultInstance();
+          onChanged();
+        } else {
+          purchaseDescriptionBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00040000);
+        return this;
+      }
+      /**
+       * <code>optional .BlitzMessage.PurchaseDescription purchaseDescription = 21;</code>
+       */
+      public com.blitzhere.BlitzMessage.Payments.PurchaseDescription.Builder getPurchaseDescriptionBuilder() {
+        bitField0_ |= 0x00040000;
+        onChanged();
+        return getPurchaseDescriptionFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .BlitzMessage.PurchaseDescription purchaseDescription = 21;</code>
+       */
+      public com.blitzhere.BlitzMessage.Payments.PurchaseDescriptionOrBuilder getPurchaseDescriptionOrBuilder() {
+        if (purchaseDescriptionBuilder_ != null) {
+          return purchaseDescriptionBuilder_.getMessageOrBuilder();
+        } else {
+          return purchaseDescription_;
+        }
+      }
+      /**
+       * <code>optional .BlitzMessage.PurchaseDescription purchaseDescription = 21;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          com.blitzhere.BlitzMessage.Payments.PurchaseDescription, com.blitzhere.BlitzMessage.Payments.PurchaseDescription.Builder, com.blitzhere.BlitzMessage.Payments.PurchaseDescriptionOrBuilder> 
+          getPurchaseDescriptionFieldBuilder() {
+        if (purchaseDescriptionBuilder_ == null) {
+          purchaseDescriptionBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.blitzhere.BlitzMessage.Payments.PurchaseDescription, com.blitzhere.BlitzMessage.Payments.PurchaseDescription.Builder, com.blitzhere.BlitzMessage.Payments.PurchaseDescriptionOrBuilder>(
+                  getPurchaseDescription(),
+                  getParentForChildren(),
+                  isClean());
+          purchaseDescription_ = null;
+        }
+        return purchaseDescriptionBuilder_;
+      }
+
       // @@protoc_insertion_point(builder_scope:BlitzMessage.ResponseType)
     }
 
@@ -16330,7 +16528,7 @@ public final class Server {
       "dUpdate\0228\n\020searchCategories\030\031 \001(\0132\036.Blit" +
       "zMessage.SearchCategories\"U\n\rServerReque",
       "st\022\024\n\014sessionToken\030\001 \001(\t\022.\n\013requestType\030" +
-      "\002 \001(\0132\031.BlitzMessage.RequestType\"\245\010\n\014Res" +
+      "\002 \001(\0132\031.BlitzMessage.RequestType\"\345\010\n\014Res" +
       "ponseType\0226\n\017sessionResponse\030\001 \001(\0132\035.Bli" +
       "tzMessage.SessionResponse\022D\n\026userEventBa" +
       "tchResponse\030\002 \001(\0132$.BlitzMessage.UserEve" +
@@ -16357,16 +16555,18 @@ public final class Server {
       "Message.FriendUpdate\0228\n\020searchCategories" +
       "\030\023 \001(\0132\036.BlitzMessage.SearchCategories\0228" +
       "\n\020feedPostResponse\030\024 \001(\0132\036.BlitzMessage." +
-      "FeedPostResponse\"\215\001\n\016ServerResponse\0220\n\014r" +
-      "esponseCode\030\001 \001(\0162\032.BlitzMessage.Respons",
-      "eCode\022\027\n\017responseMessage\030\002 \001(\t\0220\n\014respon" +
-      "seType\030\003 \001(\0132\032.BlitzMessage.ResponseType" +
-      "*\252\001\n\014ResponseCode\022\r\n\tRCSuccess\020\001\022\022\n\016RCIn" +
-      "putCorrupt\020\002\022\022\n\016RCInputInvalid\020\003\022\023\n\017RCSe" +
-      "rverWarning\020\004\022\021\n\rRCServerError\020\005\022\023\n\017RCNo" +
-      "tAuthorized\020\006\022\022\n\016RCClientTooOld\020\007\022\022\n\016RCP" +
-      "aymentError\020\010B/\n\032com.blitzhere.BlitzMess" +
-      "age\210\001\001\322>\002\n\000\322>\003\022\001B\322>\002\030\001"
+      "FeedPostResponse\022>\n\023purchaseDescription\030" +
+      "\025 \001(\0132!.BlitzMessage.PurchaseDescription",
+      "\"\215\001\n\016ServerResponse\0220\n\014responseCode\030\001 \001(" +
+      "\0162\032.BlitzMessage.ResponseCode\022\027\n\017respons" +
+      "eMessage\030\002 \001(\t\0220\n\014responseType\030\003 \001(\0132\032.B" +
+      "litzMessage.ResponseType*\302\001\n\014ResponseCod" +
+      "e\022\r\n\tRCSuccess\020\001\022\022\n\016RCInputCorrupt\020\002\022\022\n\016" +
+      "RCInputInvalid\020\003\022\023\n\017RCServerWarning\020\004\022\021\n" +
+      "\rRCServerError\020\005\022\023\n\017RCNotAuthorized\020\006\022\022\n" +
+      "\016RCClientTooOld\020\007\022\022\n\016RCPaymentError\020\010\022\026\n" +
+      "\022RCPurchaseRequired\020\tB/\n\032com.blitzhere.B" +
+      "litzMessage\210\001\001\322>\002\n\000\322>\003\022\001B\322>\002\030\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -16449,7 +16649,7 @@ public final class Server {
     internal_static_BlitzMessage_ResponseType_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_BlitzMessage_ResponseType_descriptor,
-        new java.lang.String[] { "SessionResponse", "UserEventBatchResponse", "UserProfileUpdate", "UserProfileQuery", "ConfirmationRequest", "UserMessageUpdate", "DebugMessage", "ImageUploadReply", "AcceptInviteResponse", "AutocompleteResponse", "UserSearchResponse", "ConversationResponse", "FetchConversations", "UserCardInfo", "ChargeResponse", "FriendResponse", "SearchCategories", "FeedPostResponse", });
+        new java.lang.String[] { "SessionResponse", "UserEventBatchResponse", "UserProfileUpdate", "UserProfileQuery", "ConfirmationRequest", "UserMessageUpdate", "DebugMessage", "ImageUploadReply", "AcceptInviteResponse", "AutocompleteResponse", "UserSearchResponse", "ConversationResponse", "FetchConversations", "UserCardInfo", "ChargeResponse", "FriendResponse", "SearchCategories", "FeedPostResponse", "PurchaseDescription", });
     internal_static_BlitzMessage_ServerResponse_descriptor =
       getDescriptor().getMessageTypes().get(10);
     internal_static_BlitzMessage_ServerResponse_fieldAccessorTable = new

@@ -3234,7 +3234,9 @@ static BUserReview* defaultBUserReviewInstance = nil;
 @property (strong) NSMutableArray * reviewsArray;
 @property BOOL isExpert;
 @property (strong) NSString* stripeAccount;
-@property BOOL isFree;
+@property BOOL serviceIsFreeForUser;
+@property (strong) NSString* chatFee;
+@property SInt64 userInfo;
 @end
 
 @implementation BUserProfile
@@ -3372,18 +3374,32 @@ static BUserReview* defaultBUserReviewInstance = nil;
   hasStripeAccount_ = !!_value_;
 }
 @synthesize stripeAccount;
-- (BOOL) hasIsFree {
-  return !!hasIsFree_;
+- (BOOL) hasServiceIsFreeForUser {
+  return !!hasServiceIsFreeForUser_;
 }
-- (void) setHasIsFree:(BOOL) _value_ {
-  hasIsFree_ = !!_value_;
+- (void) setHasServiceIsFreeForUser:(BOOL) _value_ {
+  hasServiceIsFreeForUser_ = !!_value_;
 }
-- (BOOL) isFree {
-  return !!isFree_;
+- (BOOL) serviceIsFreeForUser {
+  return !!serviceIsFreeForUser_;
 }
-- (void) setIsFree:(BOOL) _value_ {
-  isFree_ = !!_value_;
+- (void) setServiceIsFreeForUser:(BOOL) _value_ {
+  serviceIsFreeForUser_ = !!_value_;
 }
+- (BOOL) hasChatFee {
+  return !!hasChatFee_;
+}
+- (void) setHasChatFee:(BOOL) _value_ {
+  hasChatFee_ = !!_value_;
+}
+@synthesize chatFee;
+- (BOOL) hasUserInfo {
+  return !!hasUserInfo_;
+}
+- (void) setHasUserInfo:(BOOL) _value_ {
+  hasUserInfo_ = !!_value_;
+}
+@synthesize userInfo;
 - (instancetype) init {
   if ((self = [super init])) {
     self.userID = @"";
@@ -3402,7 +3418,9 @@ static BUserReview* defaultBUserReviewInstance = nil;
     self.responseSeconds = 0;
     self.isExpert = NO;
     self.stripeAccount = @"";
-    self.isFree = NO;
+    self.serviceIsFreeForUser = NO;
+    self.chatFee = @"";
+    self.userInfo = 0L;
   }
   return self;
 }
@@ -3610,8 +3628,14 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   if (self.hasStripeAccount) {
     [output writeString:24 value:self.stripeAccount];
   }
-  if (self.hasIsFree) {
-    [output writeBool:25 value:self.isFree];
+  if (self.hasServiceIsFreeForUser) {
+    [output writeBool:25 value:self.serviceIsFreeForUser];
+  }
+  if (self.hasChatFee) {
+    [output writeString:26 value:self.chatFee];
+  }
+  if (self.hasUserInfo) {
+    [output writeInt64:27 value:self.userInfo];
   }
   [self.unknownFields writeToCodedOutputStream:output];
 }
@@ -3700,8 +3724,14 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   if (self.hasStripeAccount) {
     size_ += computeStringSize(24, self.stripeAccount);
   }
-  if (self.hasIsFree) {
-    size_ += computeBoolSize(25, self.isFree);
+  if (self.hasServiceIsFreeForUser) {
+    size_ += computeBoolSize(25, self.serviceIsFreeForUser);
+  }
+  if (self.hasChatFee) {
+    size_ += computeStringSize(26, self.chatFee);
+  }
+  if (self.hasUserInfo) {
+    size_ += computeInt64Size(27, self.userInfo);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -3843,8 +3873,14 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   if (self.hasStripeAccount) {
     [output appendFormat:@"%@%@: %@\n", indent, @"stripeAccount", self.stripeAccount];
   }
-  if (self.hasIsFree) {
-    [output appendFormat:@"%@%@: %@\n", indent, @"isFree", [NSNumber numberWithBool:self.isFree]];
+  if (self.hasServiceIsFreeForUser) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"serviceIsFreeForUser", [NSNumber numberWithBool:self.serviceIsFreeForUser]];
+  }
+  if (self.hasChatFee) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"chatFee", self.chatFee];
+  }
+  if (self.hasUserInfo) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"userInfo", [NSNumber numberWithLongLong:self.userInfo]];
   }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
@@ -3941,8 +3977,14 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   if (self.hasStripeAccount) {
     [dictionary setObject: self.stripeAccount forKey: @"stripeAccount"];
   }
-  if (self.hasIsFree) {
-    [dictionary setObject: [NSNumber numberWithBool:self.isFree] forKey: @"isFree"];
+  if (self.hasServiceIsFreeForUser) {
+    [dictionary setObject: [NSNumber numberWithBool:self.serviceIsFreeForUser] forKey: @"serviceIsFreeForUser"];
+  }
+  if (self.hasChatFee) {
+    [dictionary setObject: self.chatFee forKey: @"chatFee"];
+  }
+  if (self.hasUserInfo) {
+    [dictionary setObject: [NSNumber numberWithLongLong:self.userInfo] forKey: @"userInfo"];
   }
   [self.unknownFields storeInDictionary:dictionary];
 }
@@ -3995,8 +4037,12 @@ static BUserProfile* defaultBUserProfileInstance = nil;
       (!self.hasIsExpert || self.isExpert == otherMessage.isExpert) &&
       self.hasStripeAccount == otherMessage.hasStripeAccount &&
       (!self.hasStripeAccount || [self.stripeAccount isEqual:otherMessage.stripeAccount]) &&
-      self.hasIsFree == otherMessage.hasIsFree &&
-      (!self.hasIsFree || self.isFree == otherMessage.isFree) &&
+      self.hasServiceIsFreeForUser == otherMessage.hasServiceIsFreeForUser &&
+      (!self.hasServiceIsFreeForUser || self.serviceIsFreeForUser == otherMessage.serviceIsFreeForUser) &&
+      self.hasChatFee == otherMessage.hasChatFee &&
+      (!self.hasChatFee || [self.chatFee isEqual:otherMessage.chatFee]) &&
+      self.hasUserInfo == otherMessage.hasUserInfo &&
+      (!self.hasUserInfo || self.userInfo == otherMessage.userInfo) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
@@ -4073,8 +4119,14 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   if (self.hasStripeAccount) {
     hashCode = hashCode * 31 + [self.stripeAccount hash];
   }
-  if (self.hasIsFree) {
-    hashCode = hashCode * 31 + [[NSNumber numberWithBool:self.isFree] hash];
+  if (self.hasServiceIsFreeForUser) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithBool:self.serviceIsFreeForUser] hash];
+  }
+  if (self.hasChatFee) {
+    hashCode = hashCode * 31 + [self.chatFee hash];
+  }
+  if (self.hasUserInfo) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithLongLong:self.userInfo] hash];
   }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
@@ -4223,8 +4275,14 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   if (other.hasStripeAccount) {
     [self setStripeAccount:other.stripeAccount];
   }
-  if (other.hasIsFree) {
-    [self setIsFree:other.isFree];
+  if (other.hasServiceIsFreeForUser) {
+    [self setServiceIsFreeForUser:other.serviceIsFreeForUser];
+  }
+  if (other.hasChatFee) {
+    [self setChatFee:other.chatFee];
+  }
+  if (other.hasUserInfo) {
+    [self setUserInfo:other.userInfo];
   }
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -4388,7 +4446,15 @@ static BUserProfile* defaultBUserProfileInstance = nil;
         break;
       }
       case 200: {
-        [self setIsFree:[input readBool]];
+        [self setServiceIsFreeForUser:[input readBool]];
+        break;
+      }
+      case 210: {
+        [self setChatFee:[input readString]];
+        break;
+      }
+      case 216: {
+        [self setUserInfo:[input readInt64]];
         break;
       }
     }
@@ -4874,20 +4940,52 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   resultUserProfile.stripeAccount = @"";
   return self;
 }
-- (BOOL) hasIsFree {
-  return resultUserProfile.hasIsFree;
+- (BOOL) hasServiceIsFreeForUser {
+  return resultUserProfile.hasServiceIsFreeForUser;
 }
-- (BOOL) isFree {
-  return resultUserProfile.isFree;
+- (BOOL) serviceIsFreeForUser {
+  return resultUserProfile.serviceIsFreeForUser;
 }
-- (BUserProfileBuilder*) setIsFree:(BOOL) value {
-  resultUserProfile.hasIsFree = YES;
-  resultUserProfile.isFree = value;
+- (BUserProfileBuilder*) setServiceIsFreeForUser:(BOOL) value {
+  resultUserProfile.hasServiceIsFreeForUser = YES;
+  resultUserProfile.serviceIsFreeForUser = value;
   return self;
 }
-- (BUserProfileBuilder*) clearIsFree {
-  resultUserProfile.hasIsFree = NO;
-  resultUserProfile.isFree = NO;
+- (BUserProfileBuilder*) clearServiceIsFreeForUser {
+  resultUserProfile.hasServiceIsFreeForUser = NO;
+  resultUserProfile.serviceIsFreeForUser = NO;
+  return self;
+}
+- (BOOL) hasChatFee {
+  return resultUserProfile.hasChatFee;
+}
+- (NSString*) chatFee {
+  return resultUserProfile.chatFee;
+}
+- (BUserProfileBuilder*) setChatFee:(NSString*) value {
+  resultUserProfile.hasChatFee = YES;
+  resultUserProfile.chatFee = value;
+  return self;
+}
+- (BUserProfileBuilder*) clearChatFee {
+  resultUserProfile.hasChatFee = NO;
+  resultUserProfile.chatFee = @"";
+  return self;
+}
+- (BOOL) hasUserInfo {
+  return resultUserProfile.hasUserInfo;
+}
+- (SInt64) userInfo {
+  return resultUserProfile.userInfo;
+}
+- (BUserProfileBuilder*) setUserInfo:(SInt64) value {
+  resultUserProfile.hasUserInfo = YES;
+  resultUserProfile.userInfo = value;
+  return self;
+}
+- (BUserProfileBuilder*) clearUserInfo {
+  resultUserProfile.hasUserInfo = NO;
+  resultUserProfile.userInfo = 0L;
   return self;
 }
 @end

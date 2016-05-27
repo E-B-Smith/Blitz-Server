@@ -139,6 +139,9 @@ NSString *NSStringFromBUpdateVerb(BUpdateVerb value) {
 @property SInt32 surveyAnswerSequence;
 @property BOOL areMoreReplies;
 @property SInt32 totalVoteCount;
+@property (strong) NSString* amountPerReply;
+@property (strong) NSString* amountTotal;
+@property (strong) NSMutableArray * panelUserIDsArray;
 @end
 
 @implementation BFeedPost
@@ -272,6 +275,22 @@ NSString *NSStringFromBUpdateVerb(BUpdateVerb value) {
   hasTotalVoteCount_ = !!_value_;
 }
 @synthesize totalVoteCount;
+- (BOOL) hasAmountPerReply {
+  return !!hasAmountPerReply_;
+}
+- (void) setHasAmountPerReply:(BOOL) _value_ {
+  hasAmountPerReply_ = !!_value_;
+}
+@synthesize amountPerReply;
+- (BOOL) hasAmountTotal {
+  return !!hasAmountTotal_;
+}
+- (void) setHasAmountTotal:(BOOL) _value_ {
+  hasAmountTotal_ = !!_value_;
+}
+@synthesize amountTotal;
+@synthesize panelUserIDsArray;
+@dynamic panelUserIDs;
 - (instancetype) init {
   if ((self = [super init])) {
     self.postID = @"";
@@ -289,6 +308,8 @@ NSString *NSStringFromBUpdateVerb(BUpdateVerb value) {
     self.surveyAnswerSequence = 0;
     self.areMoreReplies = NO;
     self.totalVoteCount = 0;
+    self.amountPerReply = @"";
+    self.amountTotal = @"";
   }
   return self;
 }
@@ -315,6 +336,12 @@ static BFeedPost* defaultBFeedPostInstance = nil;
 }
 - (BFeedPost*)repliesDeprecatedAtIndex:(NSUInteger)index {
   return [repliesDeprecatedArray objectAtIndex:index];
+}
+- (NSArray *)panelUserIDs {
+  return panelUserIDsArray;
+}
+- (NSString*)panelUserIDsAtIndex:(NSUInteger)index {
+  return [panelUserIDsArray objectAtIndex:index];
 }
 - (BOOL) isInitialized {
   if (self.hasTimestamp) {
@@ -389,6 +416,15 @@ static BFeedPost* defaultBFeedPostInstance = nil;
   if (self.hasTotalVoteCount) {
     [output writeInt32:18 value:self.totalVoteCount];
   }
+  if (self.hasAmountPerReply) {
+    [output writeString:19 value:self.amountPerReply];
+  }
+  if (self.hasAmountTotal) {
+    [output writeString:20 value:self.amountTotal];
+  }
+  [self.panelUserIDsArray enumerateObjectsUsingBlock:^(NSString *element, NSUInteger idx, BOOL *stop) {
+    [output writeString:21 value:element];
+  }];
   [self.unknownFields writeToCodedOutputStream:output];
 }
 - (SInt32) serializedSize {
@@ -448,6 +484,21 @@ static BFeedPost* defaultBFeedPostInstance = nil;
   }
   if (self.hasTotalVoteCount) {
     size_ += computeInt32Size(18, self.totalVoteCount);
+  }
+  if (self.hasAmountPerReply) {
+    size_ += computeStringSize(19, self.amountPerReply);
+  }
+  if (self.hasAmountTotal) {
+    size_ += computeStringSize(20, self.amountTotal);
+  }
+  {
+    __block SInt32 dataSize = 0;
+    const NSUInteger count = self.panelUserIDsArray.count;
+    [self.panelUserIDsArray enumerateObjectsUsingBlock:^(NSString *element, NSUInteger idx, BOOL *stop) {
+      dataSize += computeStringSizeNoTag(element);
+    }];
+    size_ += dataSize;
+    size_ += (SInt32)(2 * count);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -547,6 +598,15 @@ static BFeedPost* defaultBFeedPostInstance = nil;
   if (self.hasTotalVoteCount) {
     [output appendFormat:@"%@%@: %@\n", indent, @"totalVoteCount", [NSNumber numberWithInteger:self.totalVoteCount]];
   }
+  if (self.hasAmountPerReply) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"amountPerReply", self.amountPerReply];
+  }
+  if (self.hasAmountTotal) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"amountTotal", self.amountTotal];
+  }
+  [self.panelUserIDsArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"panelUserIDs", obj];
+  }];
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (void) storeInDictionary:(NSMutableDictionary *)dictionary {
@@ -609,6 +669,13 @@ static BFeedPost* defaultBFeedPostInstance = nil;
   if (self.hasTotalVoteCount) {
     [dictionary setObject: [NSNumber numberWithInteger:self.totalVoteCount] forKey: @"totalVoteCount"];
   }
+  if (self.hasAmountPerReply) {
+    [dictionary setObject: self.amountPerReply forKey: @"amountPerReply"];
+  }
+  if (self.hasAmountTotal) {
+    [dictionary setObject: self.amountTotal forKey: @"amountTotal"];
+  }
+  [dictionary setObject:self.panelUserIDs forKey: @"panelUserIDs"];
   [self.unknownFields storeInDictionary:dictionary];
 }
 - (BOOL) isEqual:(id)other {
@@ -652,6 +719,11 @@ static BFeedPost* defaultBFeedPostInstance = nil;
       (!self.hasAreMoreReplies || self.areMoreReplies == otherMessage.areMoreReplies) &&
       self.hasTotalVoteCount == otherMessage.hasTotalVoteCount &&
       (!self.hasTotalVoteCount || self.totalVoteCount == otherMessage.totalVoteCount) &&
+      self.hasAmountPerReply == otherMessage.hasAmountPerReply &&
+      (!self.hasAmountPerReply || [self.amountPerReply isEqual:otherMessage.amountPerReply]) &&
+      self.hasAmountTotal == otherMessage.hasAmountTotal &&
+      (!self.hasAmountTotal || [self.amountTotal isEqual:otherMessage.amountTotal]) &&
+      [self.panelUserIDsArray isEqualToArray:otherMessage.panelUserIDsArray] &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
@@ -707,6 +779,15 @@ static BFeedPost* defaultBFeedPostInstance = nil;
   if (self.hasTotalVoteCount) {
     hashCode = hashCode * 31 + [[NSNumber numberWithInteger:self.totalVoteCount] hash];
   }
+  if (self.hasAmountPerReply) {
+    hashCode = hashCode * 31 + [self.amountPerReply hash];
+  }
+  if (self.hasAmountTotal) {
+    hashCode = hashCode * 31 + [self.amountTotal hash];
+  }
+  [self.panelUserIDsArray enumerateObjectsUsingBlock:^(NSString *element, NSUInteger idx, BOOL *stop) {
+    hashCode = hashCode * 31 + [element hash];
+  }];
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
 }
@@ -808,6 +889,19 @@ static BFeedPost* defaultBFeedPostInstance = nil;
   }
   if (other.hasTotalVoteCount) {
     [self setTotalVoteCount:other.totalVoteCount];
+  }
+  if (other.hasAmountPerReply) {
+    [self setAmountPerReply:other.amountPerReply];
+  }
+  if (other.hasAmountTotal) {
+    [self setAmountTotal:other.amountTotal];
+  }
+  if (other.panelUserIDsArray.count > 0) {
+    if (resultFeedPost.panelUserIDsArray == nil) {
+      resultFeedPost.panelUserIDsArray = [[NSMutableArray alloc] initWithArray:other.panelUserIDsArray];
+    } else {
+      [resultFeedPost.panelUserIDsArray addObjectsFromArray:other.panelUserIDsArray];
+    }
   }
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -920,6 +1014,18 @@ static BFeedPost* defaultBFeedPostInstance = nil;
       }
       case 144: {
         [self setTotalVoteCount:[input readInt32]];
+        break;
+      }
+      case 154: {
+        [self setAmountPerReply:[input readString]];
+        break;
+      }
+      case 162: {
+        [self setAmountTotal:[input readString]];
+        break;
+      }
+      case 170: {
+        [self addPanelUserIDs:[input readString]];
         break;
       }
     }
@@ -1233,6 +1339,59 @@ static BFeedPost* defaultBFeedPostInstance = nil;
 - (BFeedPostBuilder*) clearTotalVoteCount {
   resultFeedPost.hasTotalVoteCount = NO;
   resultFeedPost.totalVoteCount = 0;
+  return self;
+}
+- (BOOL) hasAmountPerReply {
+  return resultFeedPost.hasAmountPerReply;
+}
+- (NSString*) amountPerReply {
+  return resultFeedPost.amountPerReply;
+}
+- (BFeedPostBuilder*) setAmountPerReply:(NSString*) value {
+  resultFeedPost.hasAmountPerReply = YES;
+  resultFeedPost.amountPerReply = value;
+  return self;
+}
+- (BFeedPostBuilder*) clearAmountPerReply {
+  resultFeedPost.hasAmountPerReply = NO;
+  resultFeedPost.amountPerReply = @"";
+  return self;
+}
+- (BOOL) hasAmountTotal {
+  return resultFeedPost.hasAmountTotal;
+}
+- (NSString*) amountTotal {
+  return resultFeedPost.amountTotal;
+}
+- (BFeedPostBuilder*) setAmountTotal:(NSString*) value {
+  resultFeedPost.hasAmountTotal = YES;
+  resultFeedPost.amountTotal = value;
+  return self;
+}
+- (BFeedPostBuilder*) clearAmountTotal {
+  resultFeedPost.hasAmountTotal = NO;
+  resultFeedPost.amountTotal = @"";
+  return self;
+}
+- (NSMutableArray *)panelUserIDs {
+  return resultFeedPost.panelUserIDsArray;
+}
+- (NSString*)panelUserIDsAtIndex:(NSUInteger)index {
+  return [resultFeedPost panelUserIDsAtIndex:index];
+}
+- (BFeedPostBuilder *)addPanelUserIDs:(NSString*)value {
+  if (resultFeedPost.panelUserIDsArray == nil) {
+    resultFeedPost.panelUserIDsArray = [[NSMutableArray alloc]init];
+  }
+  [resultFeedPost.panelUserIDsArray addObject:value];
+  return self;
+}
+- (BFeedPostBuilder *)setPanelUserIDsArray:(NSArray *)array {
+  resultFeedPost.panelUserIDsArray = [[NSMutableArray alloc] initWithArray:array];
+  return self;
+}
+- (BFeedPostBuilder *)clearPanelUserIDs {
+  resultFeedPost.panelUserIDsArray = nil;
   return self;
 }
 @end

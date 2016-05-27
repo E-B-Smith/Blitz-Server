@@ -54,8 +54,10 @@ func WriteFeedPost(feedPost *BlitzMessage.FeedPost) error {
             bodyText,
             mayAddReply,
             mayChooseMulitpleReplies,
-            surveyAnswerSequence
-        ) = ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) where postID = $13;`,
+            surveyAnswerSequence,
+            amountPerReply,
+            amountTotal
+        ) = ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) where postID = $15;`,
             feedPost.ParentID,
             feedPost.PostType,
             feedPost.PostScope,
@@ -68,6 +70,8 @@ func WriteFeedPost(feedPost *BlitzMessage.FeedPost) error {
             feedPost.MayAddReply,
             feedPost.MayChooseMulitpleReplies,
             feedPost.SurveyAnswerSequence,
+            feedPost.AmountPerReply,
+            feedPost.AmountTotal,
             feedPost.PostID,
         )
 
@@ -88,20 +92,22 @@ func WriteFeedPost(feedPost *BlitzMessage.FeedPost) error {
 //----------------------------------------------------------------------------------------
 
 var kScanFeedRowString =
-`           postID,
-            parentID,
-            postType,
-            postScope,
-            userID,
-            anonymousPost,
-            timestamp,
-            timeActiveStart,
-            timeActiveStop,
-            headlineText,
-            bodyText,
-            mayAddReply,
-            mayChooseMulitpleReplies,
-            surveyAnswerSequence
+`   FeedPostTable.postID,
+    FeedPostTable.parentID,
+    FeedPostTable.postType,
+    FeedPostTable.postScope,
+    FeedPostTable.userID,
+    FeedPostTable.anonymousPost,
+    FeedPostTable.timestamp,
+    FeedPostTable.timeActiveStart,
+    FeedPostTable.timeActiveStop,
+    FeedPostTable.headlineText,
+    FeedPostTable.bodyText,
+    FeedPostTable.mayAddReply,
+    FeedPostTable.mayChooseMulitpleReplies,
+    FeedPostTable.surveyAnswerSequence,
+    FeedPostTable.amountPerReply,
+    FeedPostTable.amountTotal
 `
 
 
@@ -127,7 +133,9 @@ func ScanFeedPostRowForUserID(queryUserID string, row RowScanner) (*BlitzMessage
         bodyText        sql.NullString
         mayAddReply     sql.NullBool
         mayChooseMulitpleReplies    sql.NullBool
-        surveyAnswerSequence sql.NullInt64
+        surveyAnswerSequence        sql.NullInt64
+        amountPerReply  sql.NullString
+        amountTotal     sql.NullString
     )
     error := row.Scan(
         &postID,
@@ -143,7 +151,10 @@ func ScanFeedPostRowForUserID(queryUserID string, row RowScanner) (*BlitzMessage
         &bodyText,
         &mayAddReply,
         &mayChooseMulitpleReplies,
-        &surveyAnswerSequence)
+        &surveyAnswerSequence,
+        &amountPerReply,
+        &amountTotal,
+    )
     if error != nil {
         Log.LogError(error)
         return nil, error
@@ -163,6 +174,8 @@ func ScanFeedPostRowForUserID(queryUserID string, row RowScanner) (*BlitzMessage
         MayAddReply:        BoolPtrFromNullBool(mayAddReply),
         MayChooseMulitpleReplies:   BoolPtrFromNullBool(mayChooseMulitpleReplies),
         SurveyAnswerSequence:       Int32PtrFromNullInt64(surveyAnswerSequence),
+        AmountPerReply:     StringPtrFromNullString(amountPerReply),
+        AmountTotal:        StringPtrFromNullString(amountTotal),
     }
 
     feedPost.PostTags = GetEntityTagsWithUserID(queryUserID, *feedPost.PostID, BlitzMessage.EntityType_ETFeedPost)
@@ -268,6 +281,22 @@ func CreateFeedPost(session *Session, feedPost *BlitzMessage.FeedPost) error {
         Log.LogError(error)
         return error
     }
+
+    //  If there's a panel, update the tags --
+
+    for _, userID := range feedPost.PanelUserIDs {
+        _, error = config.DB.Exec(
+            `insert into EntityTagTable
+                (userID, entityID, entityType, entityTag)
+                values ($1, $2, $3, $4);`,
+            userID,
+            feedPost.PostID,
+            BlitzMessage.EntityType_ETFeedPost,
+            ".panel",
+        )
+        if error != nil  { Log.LogError(error) }
+    }
+    Log.Debugf("Added %d panel members.", len(feedPost.PanelUserIDs))
 
     //  Send a notification if it's a response --
 
@@ -376,6 +405,7 @@ func UpdateFeedPostBatch(session *Session, feedPostUpdate *BlitzMessage.FeedPost
 
     //  Read & return the updated posts --
 
+    Log.Debugf("Reading updated feed posts.")
     updateArray := make([]*BlitzMessage.FeedPost, 0, len(feedPostUpdate.FeedPosts))
     for _, feedPost := range feedPostUpdate.FeedPosts {
         updatedPost := FeedPostForPostID(session.UserID, *feedPost.PostID)
@@ -495,17 +525,41 @@ func FetchFeedPosts(session *Session, fetchRequest *BlitzMessage.FeedPostFetchRe
         }
     }
 
+    //  Get the global feed posts --
+
     if parentID == nil {
 
+        // rows, error = config.DB.Query(
+        //     `select ` + kScanFeedRowString +
+        //     `   from FeedPostTable
+        //         where postStatus = $1
+        //           and (parentID is null or parentID = postID)
+        //           and timeActiveStart <= current_timestamp
+        //           and timeActiveStop   > current_timestamp
+        //           and amountTotal is null
+        //         order by timestamp desc;`,
+        //     BlitzMessage.FeedPostStatus_FPSActive)
+
         rows, error = config.DB.Query(
-            `select ` + kScanFeedRowString +
+            `select `  + kScanFeedRowString +
             `   from FeedPostTable
-                where postStatus = $1
+                left join EntityTagTable  ett
+                    on (ett.userID = $1
+                      and ett.entityTag = '.panel'
+                      and ett.entityType = $2
+                      and ett.entityID = FeedPostTable.postID)
+                where postStatus = $3
                   and (parentID is null or parentID = postID)
                   and timeActiveStart <= current_timestamp
                   and timeActiveStop   > current_timestamp
+                  and (amountTotal is null
+                        or entityTag is not null
+                        or FeedPostTable.userID = $1)
                 order by timestamp desc;`,
-            BlitzMessage.FeedPostStatus_FPSActive)
+            session.UserID,
+            BlitzMessage.EntityType_ETFeedPost,
+            BlitzMessage.FeedPostStatus_FPSActive,
+        )
 
     } else {
 
@@ -516,7 +570,8 @@ func FetchFeedPosts(session *Session, fetchRequest *BlitzMessage.FeedPostFetchRe
                   and parentID = $2
                 order by timestamp desc;`,
             BlitzMessage.FeedPostStatus_FPSActive,
-            parentID)
+            parentID,
+        )
 
     }
 

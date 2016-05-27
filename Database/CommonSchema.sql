@@ -407,6 +407,8 @@ create table FeedPostTable
     ,mayAddReply                bool
     ,mayChooseMulitpleReplies   bool
     ,surveyAnswerSequence       int
+    ,amountPerReply             text
+    ,amountTotal                text
     );
 create index FeedPostTimestampIndex on FeedPostTable(timestamp desc);
 create index FeedReplyTable         on FeedPostTable(parentID);
@@ -967,8 +969,8 @@ create table ChargeTable
     ,chargeStatus       smallint    not null
 
     ,payerID            UserID      not null
-    ,payeeID            UserID      not null
-    ,conversationID     uuid        not null
+    ,puchaseType        smallint    not null
+    ,puchaseTypeID      uuid        not null
 
     ,memoText           text        not null
     ,amount             numeric(12, 4) not null

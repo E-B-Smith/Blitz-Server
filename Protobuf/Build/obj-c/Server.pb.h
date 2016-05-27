@@ -77,6 +77,8 @@
 @class BLocationBuilder;
 @class BProfilesFromContactInfo;
 @class BProfilesFromContactInfoBuilder;
+@class BPurchaseDescription;
+@class BPurchaseDescriptionBuilder;
 @class BPushConnect;
 @class BPushConnectBuilder;
 @class BPushDisconnect;
@@ -192,6 +194,7 @@ typedef NS_ENUM(SInt32, BResponseCode) {
   BResponseCodeRCNotAuthorized = 6,
   BResponseCodeRCClientTooOld = 7,
   BResponseCodeRCPaymentError = 8,
+  BResponseCodeRCPurchaseRequired = 9,
 };
 
 BOOL BResponseCodeIsValidValue(BResponseCode value);
@@ -1082,6 +1085,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 #define ResponseType_friendResponse @"friendResponse"
 #define ResponseType_searchCategories @"searchCategories"
 #define ResponseType_feedPostResponse @"feedPostResponse"
+#define ResponseType_purchaseDescription @"purchaseDescription"
 @interface BResponseType : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
   BOOL hasSessionResponse_:1;
@@ -1102,6 +1106,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
   BOOL hasFriendResponse_:1;
   BOOL hasSearchCategories_:1;
   BOOL hasFeedPostResponse_:1;
+  BOOL hasPurchaseDescription_:1;
   BSessionResponse* sessionResponse;
   BUserEventBatchResponse* userEventBatchResponse;
   BUserProfileUpdate* userProfileUpdate;
@@ -1120,6 +1125,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
   BFriendUpdate* friendResponse;
   BSearchCategories* searchCategories;
   BFeedPostResponse* feedPostResponse;
+  BPurchaseDescription* purchaseDescription;
 }
 - (BOOL) hasSessionResponse;
 - (BOOL) hasUserEventBatchResponse;
@@ -1139,6 +1145,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BOOL) hasFriendResponse;
 - (BOOL) hasSearchCategories;
 - (BOOL) hasFeedPostResponse;
+- (BOOL) hasPurchaseDescription;
 @property (readonly, strong) BSessionResponse* sessionResponse;
 @property (readonly, strong) BUserEventBatchResponse* userEventBatchResponse;
 @property (readonly, strong) BUserProfileUpdate* userProfileUpdate;
@@ -1157,6 +1164,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 @property (readonly, strong) BFriendUpdate* friendResponse;
 @property (readonly, strong) BSearchCategories* searchCategories;
 @property (readonly, strong) BFeedPostResponse* feedPostResponse;
+@property (readonly, strong) BPurchaseDescription* purchaseDescription;
 
 + (instancetype) defaultInstance;
 - (instancetype) defaultInstance;
@@ -1318,6 +1326,13 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BResponseTypeBuilder*) setFeedPostResponseBuilder:(BFeedPostResponseBuilder*) builderForValue;
 - (BResponseTypeBuilder*) mergeFeedPostResponse:(BFeedPostResponse*) value;
 - (BResponseTypeBuilder*) clearFeedPostResponse;
+
+- (BOOL) hasPurchaseDescription;
+- (BPurchaseDescription*) purchaseDescription;
+- (BResponseTypeBuilder*) setPurchaseDescription:(BPurchaseDescription*) value;
+- (BResponseTypeBuilder*) setPurchaseDescriptionBuilder:(BPurchaseDescriptionBuilder*) builderForValue;
+- (BResponseTypeBuilder*) mergePurchaseDescription:(BPurchaseDescription*) value;
+- (BResponseTypeBuilder*) clearPurchaseDescription;
 @end
 
 #define ServerResponse_responseCode @"responseCode"

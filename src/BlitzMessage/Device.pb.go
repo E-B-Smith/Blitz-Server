@@ -28,6 +28,7 @@ It has these top-level messages:
 	CardInfo
 	UserCardInfo
 	Charge
+	PurchaseDescription
 	AutocompleteRequest
 	AutocompleteResponse
 	UserSearchRequest

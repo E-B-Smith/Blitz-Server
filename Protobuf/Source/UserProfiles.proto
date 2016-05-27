@@ -154,7 +154,10 @@ message UserProfile {
 
   optional bool         isExpert          = 23;
   optional string       stripeAccount     = 24;
-  optional bool         isFree            = 25;
+  optional bool         serviceIsFreeForUser = 25;
+  optional string       chatFee           = 26;
+
+  optional int64        userInfo          = 27; //  Ignored / not saved.
 }
 
 

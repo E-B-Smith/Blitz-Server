@@ -40,6 +40,7 @@ BOOL BResponseCodeIsValidValue(BResponseCode value) {
     case BResponseCodeRCNotAuthorized:
     case BResponseCodeRCClientTooOld:
     case BResponseCodeRCPaymentError:
+    case BResponseCodeRCPurchaseRequired:
       return YES;
     default:
       return NO;
@@ -63,6 +64,8 @@ NSString *NSStringFromBResponseCode(BResponseCode value) {
       return @"BResponseCodeRCClientTooOld";
     case BResponseCodeRCPaymentError:
       return @"BResponseCodeRCPaymentError";
+    case BResponseCodeRCPurchaseRequired:
+      return @"BResponseCodeRCPurchaseRequired";
     default:
       return nil;
   }
@@ -4592,6 +4595,7 @@ static BServerRequest* defaultBServerRequestInstance = nil;
 @property (strong) BFriendUpdate* friendResponse;
 @property (strong) BSearchCategories* searchCategories;
 @property (strong) BFeedPostResponse* feedPostResponse;
+@property (strong) BPurchaseDescription* purchaseDescription;
 @end
 
 @implementation BResponseType
@@ -4722,6 +4726,13 @@ static BServerRequest* defaultBServerRequestInstance = nil;
   hasFeedPostResponse_ = !!_value_;
 }
 @synthesize feedPostResponse;
+- (BOOL) hasPurchaseDescription {
+  return !!hasPurchaseDescription_;
+}
+- (void) setHasPurchaseDescription:(BOOL) _value_ {
+  hasPurchaseDescription_ = !!_value_;
+}
+@synthesize purchaseDescription;
 - (instancetype) init {
   if ((self = [super init])) {
     self.sessionResponse = [BSessionResponse defaultInstance];
@@ -4742,6 +4753,7 @@ static BServerRequest* defaultBServerRequestInstance = nil;
     self.friendResponse = [BFriendUpdate defaultInstance];
     self.searchCategories = [BSearchCategories defaultInstance];
     self.feedPostResponse = [BFeedPostResponse defaultInstance];
+    self.purchaseDescription = [BPurchaseDescription defaultInstance];
   }
   return self;
 }
@@ -4880,6 +4892,9 @@ static BResponseType* defaultBResponseTypeInstance = nil;
   if (self.hasFeedPostResponse) {
     [output writeMessage:20 value:self.feedPostResponse];
   }
+  if (self.hasPurchaseDescription) {
+    [output writeMessage:21 value:self.purchaseDescription];
+  }
   [self.unknownFields writeToCodedOutputStream:output];
 }
 - (SInt32) serializedSize {
@@ -4942,6 +4957,9 @@ static BResponseType* defaultBResponseTypeInstance = nil;
   }
   if (self.hasFeedPostResponse) {
     size_ += computeMessageSize(20, self.feedPostResponse);
+  }
+  if (self.hasPurchaseDescription) {
+    size_ += computeMessageSize(21, self.purchaseDescription);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -5086,6 +5104,12 @@ static BResponseType* defaultBResponseTypeInstance = nil;
                          withIndent:[NSString stringWithFormat:@"%@  ", indent]];
     [output appendFormat:@"%@}\n", indent];
   }
+  if (self.hasPurchaseDescription) {
+    [output appendFormat:@"%@%@ {\n", indent, @"purchaseDescription"];
+    [self.purchaseDescription writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (void) storeInDictionary:(NSMutableDictionary *)dictionary {
@@ -5179,6 +5203,11 @@ static BResponseType* defaultBResponseTypeInstance = nil;
    [self.feedPostResponse storeInDictionary:messageDictionary];
    [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"feedPostResponse"];
   }
+  if (self.hasPurchaseDescription) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.purchaseDescription storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"purchaseDescription"];
+  }
   [self.unknownFields storeInDictionary:dictionary];
 }
 - (BOOL) isEqual:(id)other {
@@ -5226,6 +5255,8 @@ static BResponseType* defaultBResponseTypeInstance = nil;
       (!self.hasSearchCategories || [self.searchCategories isEqual:otherMessage.searchCategories]) &&
       self.hasFeedPostResponse == otherMessage.hasFeedPostResponse &&
       (!self.hasFeedPostResponse || [self.feedPostResponse isEqual:otherMessage.feedPostResponse]) &&
+      self.hasPurchaseDescription == otherMessage.hasPurchaseDescription &&
+      (!self.hasPurchaseDescription || [self.purchaseDescription isEqual:otherMessage.purchaseDescription]) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
@@ -5283,6 +5314,9 @@ static BResponseType* defaultBResponseTypeInstance = nil;
   }
   if (self.hasFeedPostResponse) {
     hashCode = hashCode * 31 + [self.feedPostResponse hash];
+  }
+  if (self.hasPurchaseDescription) {
+    hashCode = hashCode * 31 + [self.purchaseDescription hash];
   }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
@@ -5380,6 +5414,9 @@ static BResponseType* defaultBResponseTypeInstance = nil;
   }
   if (other.hasFeedPostResponse) {
     [self mergeFeedPostResponse:other.feedPostResponse];
+  }
+  if (other.hasPurchaseDescription) {
+    [self mergePurchaseDescription:other.purchaseDescription];
   }
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -5562,6 +5599,15 @@ static BResponseType* defaultBResponseTypeInstance = nil;
         }
         [input readMessage:subBuilder extensionRegistry:extensionRegistry];
         [self setFeedPostResponse:[subBuilder buildPartial]];
+        break;
+      }
+      case 170: {
+        BPurchaseDescriptionBuilder* subBuilder = [BPurchaseDescription builder];
+        if (self.hasPurchaseDescription) {
+          [subBuilder mergeFrom:self.purchaseDescription];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setPurchaseDescription:[subBuilder buildPartial]];
         break;
       }
     }
@@ -6105,6 +6151,36 @@ static BResponseType* defaultBResponseTypeInstance = nil;
 - (BResponseTypeBuilder*) clearFeedPostResponse {
   resultResponseType.hasFeedPostResponse = NO;
   resultResponseType.feedPostResponse = [BFeedPostResponse defaultInstance];
+  return self;
+}
+- (BOOL) hasPurchaseDescription {
+  return resultResponseType.hasPurchaseDescription;
+}
+- (BPurchaseDescription*) purchaseDescription {
+  return resultResponseType.purchaseDescription;
+}
+- (BResponseTypeBuilder*) setPurchaseDescription:(BPurchaseDescription*) value {
+  resultResponseType.hasPurchaseDescription = YES;
+  resultResponseType.purchaseDescription = value;
+  return self;
+}
+- (BResponseTypeBuilder*) setPurchaseDescriptionBuilder:(BPurchaseDescriptionBuilder*) builderForValue {
+  return [self setPurchaseDescription:[builderForValue build]];
+}
+- (BResponseTypeBuilder*) mergePurchaseDescription:(BPurchaseDescription*) value {
+  if (resultResponseType.hasPurchaseDescription &&
+      resultResponseType.purchaseDescription != [BPurchaseDescription defaultInstance]) {
+    resultResponseType.purchaseDescription =
+      [[[BPurchaseDescription builderWithPrototype:resultResponseType.purchaseDescription] mergeFrom:value] buildPartial];
+  } else {
+    resultResponseType.purchaseDescription = value;
+  }
+  resultResponseType.hasPurchaseDescription = YES;
+  return self;
+}
+- (BResponseTypeBuilder*) clearPurchaseDescription {
+  resultResponseType.hasPurchaseDescription = NO;
+  resultResponseType.purchaseDescription = [BPurchaseDescription defaultInstance];
   return self;
 }
 @end

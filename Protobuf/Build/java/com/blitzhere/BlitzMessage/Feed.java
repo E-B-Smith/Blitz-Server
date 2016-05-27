@@ -629,6 +629,53 @@ public final class Feed {
      * <code>optional int32 totalVoteCount = 18;</code>
      */
     int getTotalVoteCount();
+
+    /**
+     * <code>optional string amountPerReply = 19;</code>
+     */
+    boolean hasAmountPerReply();
+    /**
+     * <code>optional string amountPerReply = 19;</code>
+     */
+    java.lang.String getAmountPerReply();
+    /**
+     * <code>optional string amountPerReply = 19;</code>
+     */
+    com.google.protobuf.ByteString
+        getAmountPerReplyBytes();
+
+    /**
+     * <code>optional string amountTotal = 20;</code>
+     */
+    boolean hasAmountTotal();
+    /**
+     * <code>optional string amountTotal = 20;</code>
+     */
+    java.lang.String getAmountTotal();
+    /**
+     * <code>optional string amountTotal = 20;</code>
+     */
+    com.google.protobuf.ByteString
+        getAmountTotalBytes();
+
+    /**
+     * <code>repeated string panelUserIDs = 21;</code>
+     */
+    com.google.protobuf.ProtocolStringList
+        getPanelUserIDsList();
+    /**
+     * <code>repeated string panelUserIDs = 21;</code>
+     */
+    int getPanelUserIDsCount();
+    /**
+     * <code>repeated string panelUserIDs = 21;</code>
+     */
+    java.lang.String getPanelUserIDs(int index);
+    /**
+     * <code>repeated string panelUserIDs = 21;</code>
+     */
+    com.google.protobuf.ByteString
+        getPanelUserIDsBytes(int index);
   }
   /**
    * Protobuf type {@code BlitzMessage.FeedPost}
@@ -806,6 +853,27 @@ public final class Feed {
               totalVoteCount_ = input.readInt32();
               break;
             }
+            case 154: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00008000;
+              amountPerReply_ = bs;
+              break;
+            }
+            case 162: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00010000;
+              amountTotal_ = bs;
+              break;
+            }
+            case 170: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              if (!((mutable_bitField0_ & 0x00080000) == 0x00080000)) {
+                panelUserIDs_ = new com.google.protobuf.LazyStringArrayList();
+                mutable_bitField0_ |= 0x00080000;
+              }
+              panelUserIDs_.add(bs);
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -819,6 +887,9 @@ public final class Feed {
         }
         if (((mutable_bitField0_ & 0x00000800) == 0x00000800)) {
           repliesDeprecated_ = java.util.Collections.unmodifiableList(repliesDeprecated_);
+        }
+        if (((mutable_bitField0_ & 0x00080000) == 0x00080000)) {
+          panelUserIDs_ = panelUserIDs_.getUnmodifiableView();
         }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
@@ -1314,6 +1385,119 @@ public final class Feed {
       return totalVoteCount_;
     }
 
+    public static final int AMOUNTPERREPLY_FIELD_NUMBER = 19;
+    private java.lang.Object amountPerReply_;
+    /**
+     * <code>optional string amountPerReply = 19;</code>
+     */
+    public boolean hasAmountPerReply() {
+      return ((bitField0_ & 0x00008000) == 0x00008000);
+    }
+    /**
+     * <code>optional string amountPerReply = 19;</code>
+     */
+    public java.lang.String getAmountPerReply() {
+      java.lang.Object ref = amountPerReply_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          amountPerReply_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string amountPerReply = 19;</code>
+     */
+    public com.google.protobuf.ByteString
+        getAmountPerReplyBytes() {
+      java.lang.Object ref = amountPerReply_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        amountPerReply_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int AMOUNTTOTAL_FIELD_NUMBER = 20;
+    private java.lang.Object amountTotal_;
+    /**
+     * <code>optional string amountTotal = 20;</code>
+     */
+    public boolean hasAmountTotal() {
+      return ((bitField0_ & 0x00010000) == 0x00010000);
+    }
+    /**
+     * <code>optional string amountTotal = 20;</code>
+     */
+    public java.lang.String getAmountTotal() {
+      java.lang.Object ref = amountTotal_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          amountTotal_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string amountTotal = 20;</code>
+     */
+    public com.google.protobuf.ByteString
+        getAmountTotalBytes() {
+      java.lang.Object ref = amountTotal_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        amountTotal_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int PANELUSERIDS_FIELD_NUMBER = 21;
+    private com.google.protobuf.LazyStringList panelUserIDs_;
+    /**
+     * <code>repeated string panelUserIDs = 21;</code>
+     */
+    public com.google.protobuf.ProtocolStringList
+        getPanelUserIDsList() {
+      return panelUserIDs_;
+    }
+    /**
+     * <code>repeated string panelUserIDs = 21;</code>
+     */
+    public int getPanelUserIDsCount() {
+      return panelUserIDs_.size();
+    }
+    /**
+     * <code>repeated string panelUserIDs = 21;</code>
+     */
+    public java.lang.String getPanelUserIDs(int index) {
+      return panelUserIDs_.get(index);
+    }
+    /**
+     * <code>repeated string panelUserIDs = 21;</code>
+     */
+    public com.google.protobuf.ByteString
+        getPanelUserIDsBytes(int index) {
+      return panelUserIDs_.getByteString(index);
+    }
+
     private void initFields() {
       postID_ = "";
       parentID_ = "";
@@ -1332,6 +1516,9 @@ public final class Feed {
       surveyAnswerSequence_ = 0;
       areMoreReplies_ = false;
       totalVoteCount_ = 0;
+      amountPerReply_ = "";
+      amountTotal_ = "";
+      panelUserIDs_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -1415,6 +1602,15 @@ public final class Feed {
       if (((bitField0_ & 0x00004000) == 0x00004000)) {
         output.writeInt32(18, totalVoteCount_);
       }
+      if (((bitField0_ & 0x00008000) == 0x00008000)) {
+        output.writeBytes(19, getAmountPerReplyBytes());
+      }
+      if (((bitField0_ & 0x00010000) == 0x00010000)) {
+        output.writeBytes(20, getAmountTotalBytes());
+      }
+      for (int i = 0; i < panelUserIDs_.size(); i++) {
+        output.writeBytes(21, panelUserIDs_.getByteString(i));
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -1491,6 +1687,23 @@ public final class Feed {
       if (((bitField0_ & 0x00004000) == 0x00004000)) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(18, totalVoteCount_);
+      }
+      if (((bitField0_ & 0x00008000) == 0x00008000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(19, getAmountPerReplyBytes());
+      }
+      if (((bitField0_ & 0x00010000) == 0x00010000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(20, getAmountTotalBytes());
+      }
+      {
+        int dataSize = 0;
+        for (int i = 0; i < panelUserIDs_.size(); i++) {
+          dataSize += com.google.protobuf.CodedOutputStream
+            .computeBytesSizeNoTag(panelUserIDs_.getByteString(i));
+        }
+        size += dataSize;
+        size += 2 * getPanelUserIDsList().size();
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -1663,6 +1876,12 @@ public final class Feed {
         bitField0_ = (bitField0_ & ~0x00008000);
         totalVoteCount_ = 0;
         bitField0_ = (bitField0_ & ~0x00010000);
+        amountPerReply_ = "";
+        bitField0_ = (bitField0_ & ~0x00020000);
+        amountTotal_ = "";
+        bitField0_ = (bitField0_ & ~0x00040000);
+        panelUserIDs_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00080000);
         return this;
       }
 
@@ -1777,6 +1996,19 @@ public final class Feed {
           to_bitField0_ |= 0x00004000;
         }
         result.totalVoteCount_ = totalVoteCount_;
+        if (((from_bitField0_ & 0x00020000) == 0x00020000)) {
+          to_bitField0_ |= 0x00008000;
+        }
+        result.amountPerReply_ = amountPerReply_;
+        if (((from_bitField0_ & 0x00040000) == 0x00040000)) {
+          to_bitField0_ |= 0x00010000;
+        }
+        result.amountTotal_ = amountTotal_;
+        if (((bitField0_ & 0x00080000) == 0x00080000)) {
+          panelUserIDs_ = panelUserIDs_.getUnmodifiableView();
+          bitField0_ = (bitField0_ & ~0x00080000);
+        }
+        result.panelUserIDs_ = panelUserIDs_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -1899,6 +2131,26 @@ public final class Feed {
         }
         if (other.hasTotalVoteCount()) {
           setTotalVoteCount(other.getTotalVoteCount());
+        }
+        if (other.hasAmountPerReply()) {
+          bitField0_ |= 0x00020000;
+          amountPerReply_ = other.amountPerReply_;
+          onChanged();
+        }
+        if (other.hasAmountTotal()) {
+          bitField0_ |= 0x00040000;
+          amountTotal_ = other.amountTotal_;
+          onChanged();
+        }
+        if (!other.panelUserIDs_.isEmpty()) {
+          if (panelUserIDs_.isEmpty()) {
+            panelUserIDs_ = other.panelUserIDs_;
+            bitField0_ = (bitField0_ & ~0x00080000);
+          } else {
+            ensurePanelUserIDsIsMutable();
+            panelUserIDs_.addAll(other.panelUserIDs_);
+          }
+          onChanged();
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -3367,6 +3619,251 @@ public final class Feed {
       public Builder clearTotalVoteCount() {
         bitField0_ = (bitField0_ & ~0x00010000);
         totalVoteCount_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object amountPerReply_ = "";
+      /**
+       * <code>optional string amountPerReply = 19;</code>
+       */
+      public boolean hasAmountPerReply() {
+        return ((bitField0_ & 0x00020000) == 0x00020000);
+      }
+      /**
+       * <code>optional string amountPerReply = 19;</code>
+       */
+      public java.lang.String getAmountPerReply() {
+        java.lang.Object ref = amountPerReply_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            amountPerReply_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string amountPerReply = 19;</code>
+       */
+      public com.google.protobuf.ByteString
+          getAmountPerReplyBytes() {
+        java.lang.Object ref = amountPerReply_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          amountPerReply_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string amountPerReply = 19;</code>
+       */
+      public Builder setAmountPerReply(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00020000;
+        amountPerReply_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string amountPerReply = 19;</code>
+       */
+      public Builder clearAmountPerReply() {
+        bitField0_ = (bitField0_ & ~0x00020000);
+        amountPerReply_ = getDefaultInstance().getAmountPerReply();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string amountPerReply = 19;</code>
+       */
+      public Builder setAmountPerReplyBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00020000;
+        amountPerReply_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object amountTotal_ = "";
+      /**
+       * <code>optional string amountTotal = 20;</code>
+       */
+      public boolean hasAmountTotal() {
+        return ((bitField0_ & 0x00040000) == 0x00040000);
+      }
+      /**
+       * <code>optional string amountTotal = 20;</code>
+       */
+      public java.lang.String getAmountTotal() {
+        java.lang.Object ref = amountTotal_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            amountTotal_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string amountTotal = 20;</code>
+       */
+      public com.google.protobuf.ByteString
+          getAmountTotalBytes() {
+        java.lang.Object ref = amountTotal_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          amountTotal_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string amountTotal = 20;</code>
+       */
+      public Builder setAmountTotal(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00040000;
+        amountTotal_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string amountTotal = 20;</code>
+       */
+      public Builder clearAmountTotal() {
+        bitField0_ = (bitField0_ & ~0x00040000);
+        amountTotal_ = getDefaultInstance().getAmountTotal();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string amountTotal = 20;</code>
+       */
+      public Builder setAmountTotalBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00040000;
+        amountTotal_ = value;
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.LazyStringList panelUserIDs_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      private void ensurePanelUserIDsIsMutable() {
+        if (!((bitField0_ & 0x00080000) == 0x00080000)) {
+          panelUserIDs_ = new com.google.protobuf.LazyStringArrayList(panelUserIDs_);
+          bitField0_ |= 0x00080000;
+         }
+      }
+      /**
+       * <code>repeated string panelUserIDs = 21;</code>
+       */
+      public com.google.protobuf.ProtocolStringList
+          getPanelUserIDsList() {
+        return panelUserIDs_.getUnmodifiableView();
+      }
+      /**
+       * <code>repeated string panelUserIDs = 21;</code>
+       */
+      public int getPanelUserIDsCount() {
+        return panelUserIDs_.size();
+      }
+      /**
+       * <code>repeated string panelUserIDs = 21;</code>
+       */
+      public java.lang.String getPanelUserIDs(int index) {
+        return panelUserIDs_.get(index);
+      }
+      /**
+       * <code>repeated string panelUserIDs = 21;</code>
+       */
+      public com.google.protobuf.ByteString
+          getPanelUserIDsBytes(int index) {
+        return panelUserIDs_.getByteString(index);
+      }
+      /**
+       * <code>repeated string panelUserIDs = 21;</code>
+       */
+      public Builder setPanelUserIDs(
+          int index, java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensurePanelUserIDsIsMutable();
+        panelUserIDs_.set(index, value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string panelUserIDs = 21;</code>
+       */
+      public Builder addPanelUserIDs(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensurePanelUserIDsIsMutable();
+        panelUserIDs_.add(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string panelUserIDs = 21;</code>
+       */
+      public Builder addAllPanelUserIDs(
+          java.lang.Iterable<java.lang.String> values) {
+        ensurePanelUserIDsIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, panelUserIDs_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string panelUserIDs = 21;</code>
+       */
+      public Builder clearPanelUserIDs() {
+        panelUserIDs_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00080000);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string panelUserIDs = 21;</code>
+       */
+      public Builder addPanelUserIDsBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensurePanelUserIDsIsMutable();
+        panelUserIDs_.add(value);
         onChanged();
         return this;
       }
@@ -5956,7 +6453,7 @@ public final class Feed {
     java.lang.String[] descriptorData = {
       "\n\nFeed.proto\022\014BlitzMessage\032\033objectivec-d" +
       "escriptor.proto\032\013Types.proto\032\020EntityTags" +
-      ".proto\"\240\004\n\010FeedPost\022\016\n\006postID\030\001 \001(\t\022\020\n\010p" +
+      ".proto\"\343\004\n\010FeedPost\022\016\n\006postID\030\001 \001(\t\022\020\n\010p" +
       "arentID\030\002 \001(\t\022,\n\010postType\030\003 \001(\0162\032.BlitzM" +
       "essage.FeedPostType\022.\n\tpostScope\030\004 \001(\0162\033" +
       ".BlitzMessage.FeedPostScope\022\016\n\006userID\030\005 " +
@@ -5969,26 +6466,28 @@ public final class Feed {
       "litzMessage.FeedPost\022\023\n\013mayAddReply\030\016 \001(" +
       "\010\022 \n\030mayChooseMulitpleReplies\030\017 \001(\010\022\034\n\024s" +
       "urveyAnswerSequence\030\020 \001(\005\022\026\n\016areMoreRepl" +
-      "ies\030\021 \001(\010\022\026\n\016totalVoteCount\030\022 \001(\005\"\245\001\n\025Fe" +
-      "edPostUpdateRequest\022,\n\nupdateVerb\030\001 \001(\0162" +
-      "\030.BlitzMessage.UpdateVerb\0223\n\023feedPost_de" +
-      "precated\030\002 \001(\0132\026.BlitzMessage.FeedPost\022)" +
-      "\n\tfeedPosts\030\003 \003(\0132\026.BlitzMessage.FeedPos",
-      "t\"\202\001\n\024FeedPostFetchRequest\022(\n\010timespan\030\001" +
-      " \001(\0132\026.BlitzMessage.Timespan\022.\n\tfeedScop" +
-      "e\030\002 \001(\0162\033.BlitzMessage.FeedPostScope\022\020\n\010" +
-      "parentID\030\003 \001(\t\"=\n\020FeedPostResponse\022)\n\tfe" +
-      "edPosts\030\001 \003(\0132\026.BlitzMessage.FeedPost*v\n" +
-      "\014FeedPostType\022\r\n\tFPUnknown\020\000\022\027\n\023FPOpenEn" +
-      "dedQuestion\020\001\022\024\n\020FPOpenEndedReply\020\002\022\024\n\020F" +
-      "PSurveyQuestion\020\003\022\022\n\016FPSurveyAnswer\020\004*V\n" +
-      "\rFeedPostScope\022\022\n\016FPScopeUnknown\020\000\022\027\n\023FP" +
-      "ScopeLocalNetwork\020\001\022\030\n\024FPScopeGlobalNetw",
-      "ork\020\002*?\n\016FeedPostStatus\022\016\n\nFPSUnknown\020\000\022" +
-      "\r\n\tFPSActive\020\001\022\016\n\nFPSDeleted\020\002*6\n\nUpdate" +
-      "Verb\022\014\n\010UVCreate\020\001\022\014\n\010UVUpdate\020\002\022\014\n\010UVDe" +
-      "lete\020\003B/\n\032com.blitzhere.BlitzMessage\210\001\001\322" +
-      ">\002\n\000\322>\003\022\001B\322>\002\030\001"
+      "ies\030\021 \001(\010\022\026\n\016totalVoteCount\030\022 \001(\005\022\026\n\016amo" +
+      "untPerReply\030\023 \001(\t\022\023\n\013amountTotal\030\024 \001(\t\022\024" +
+      "\n\014panelUserIDs\030\025 \003(\t\"\245\001\n\025FeedPostUpdateR" +
+      "equest\022,\n\nupdateVerb\030\001 \001(\0162\030.BlitzMessag" +
+      "e.UpdateVerb\0223\n\023feedPost_deprecated\030\002 \001(",
+      "\0132\026.BlitzMessage.FeedPost\022)\n\tfeedPosts\030\003" +
+      " \003(\0132\026.BlitzMessage.FeedPost\"\202\001\n\024FeedPos" +
+      "tFetchRequest\022(\n\010timespan\030\001 \001(\0132\026.BlitzM" +
+      "essage.Timespan\022.\n\tfeedScope\030\002 \001(\0162\033.Bli" +
+      "tzMessage.FeedPostScope\022\020\n\010parentID\030\003 \001(" +
+      "\t\"=\n\020FeedPostResponse\022)\n\tfeedPosts\030\001 \003(\013" +
+      "2\026.BlitzMessage.FeedPost*v\n\014FeedPostType" +
+      "\022\r\n\tFPUnknown\020\000\022\027\n\023FPOpenEndedQuestion\020\001" +
+      "\022\024\n\020FPOpenEndedReply\020\002\022\024\n\020FPSurveyQuesti" +
+      "on\020\003\022\022\n\016FPSurveyAnswer\020\004*V\n\rFeedPostScop",
+      "e\022\022\n\016FPScopeUnknown\020\000\022\027\n\023FPScopeLocalNet" +
+      "work\020\001\022\030\n\024FPScopeGlobalNetwork\020\002*?\n\016Feed" +
+      "PostStatus\022\016\n\nFPSUnknown\020\000\022\r\n\tFPSActive\020" +
+      "\001\022\016\n\nFPSDeleted\020\002*6\n\nUpdateVerb\022\014\n\010UVCre" +
+      "ate\020\001\022\014\n\010UVUpdate\020\002\022\014\n\010UVDelete\020\003B/\n\032com" +
+      ".blitzhere.BlitzMessage\210\001\001\322>\002\n\000\322>\003\022\001B\322>\002" +
+      "\030\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -6010,7 +6509,7 @@ public final class Feed {
     internal_static_BlitzMessage_FeedPost_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_BlitzMessage_FeedPost_descriptor,
-        new java.lang.String[] { "PostID", "ParentID", "PostType", "PostScope", "UserID", "AnonymousPost", "Timestamp", "TimespanActive", "HeadlineText", "BodyText", "PostTags", "RepliesDeprecated", "MayAddReply", "MayChooseMulitpleReplies", "SurveyAnswerSequence", "AreMoreReplies", "TotalVoteCount", });
+        new java.lang.String[] { "PostID", "ParentID", "PostType", "PostScope", "UserID", "AnonymousPost", "Timestamp", "TimespanActive", "HeadlineText", "BodyText", "PostTags", "RepliesDeprecated", "MayAddReply", "MayChooseMulitpleReplies", "SurveyAnswerSequence", "AreMoreReplies", "TotalVoteCount", "AmountPerReply", "AmountTotal", "PanelUserIDs", });
     internal_static_BlitzMessage_FeedPostUpdateRequest_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_BlitzMessage_FeedPostUpdateRequest_fieldAccessorTable = new

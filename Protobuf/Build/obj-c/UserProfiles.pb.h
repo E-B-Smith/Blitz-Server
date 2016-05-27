@@ -831,20 +831,24 @@ NSString *NSStringFromBFriendStatus(BFriendStatus value);
 #define UserProfile_reviews @"reviews"
 #define UserProfile_isExpert @"isExpert"
 #define UserProfile_stripeAccount @"stripeAccount"
-#define UserProfile_isFree @"isFree"
+#define UserProfile_serviceIsFreeForUser @"serviceIsFreeForUser"
+#define UserProfile_chatFee @"chatFee"
+#define UserProfile_userInfo @"userInfo"
 @interface BUserProfile : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
   BOOL hasIsExpert_:1;
-  BOOL hasIsFree_:1;
+  BOOL hasServiceIsFreeForUser_:1;
   BOOL hasRatingResponsive_:1;
   BOOL hasRatingOutgoing_:1;
   BOOL hasRatingRecommended_:1;
   BOOL hasResponseSeconds_:1;
+  BOOL hasUserInfo_:1;
   BOOL hasRatingCount_:1;
   BOOL hasUserID_:1;
   BOOL hasName_:1;
   BOOL hasBackgroundSummary_:1;
   BOOL hasStripeAccount_:1;
+  BOOL hasChatFee_:1;
   BOOL hasCreationDate_:1;
   BOOL hasLastSeen_:1;
   BOOL hasBirthday_:1;
@@ -852,16 +856,18 @@ NSString *NSStringFromBFriendStatus(BFriendStatus value);
   BOOL hasUserStatus_:1;
   BOOL hasGender_:1;
   BOOL isExpert_:1;
-  BOOL isFree_:1;
+  BOOL serviceIsFreeForUser_:1;
   Float64 ratingResponsive;
   Float64 ratingOutgoing;
   Float64 ratingRecommended;
   Float64 responseSeconds;
+  SInt64 userInfo;
   SInt32 ratingCount;
   NSString* userID;
   NSString* name;
   NSString* backgroundSummary;
   NSString* stripeAccount;
+  NSString* chatFee;
   BTimestamp* creationDate;
   BTimestamp* lastSeen;
   BTimestamp* birthday;
@@ -893,7 +899,9 @@ NSString *NSStringFromBFriendStatus(BFriendStatus value);
 - (BOOL) hasResponseSeconds;
 - (BOOL) hasIsExpert;
 - (BOOL) hasStripeAccount;
-- (BOOL) hasIsFree;
+- (BOOL) hasServiceIsFreeForUser;
+- (BOOL) hasChatFee;
+- (BOOL) hasUserInfo;
 @property (readonly, strong) NSString* userID;
 @property (readonly) BUserStatus userStatus;
 @property (readonly, strong) BTimestamp* creationDate;
@@ -918,7 +926,9 @@ NSString *NSStringFromBFriendStatus(BFriendStatus value);
 @property (readonly, strong) NSArray * reviews;
 - (BOOL) isExpert;
 @property (readonly, strong) NSString* stripeAccount;
-- (BOOL) isFree;
+- (BOOL) serviceIsFreeForUser;
+@property (readonly, strong) NSString* chatFee;
+@property (readonly) SInt64 userInfo;
 - (BImageData*)imagesAtIndex:(NSUInteger)index;
 - (BSocialIdentity*)socialIdentitiesAtIndex:(NSUInteger)index;
 - (BContactInfo*)contactInfoAtIndex:(NSUInteger)index;
@@ -1099,10 +1109,20 @@ NSString *NSStringFromBFriendStatus(BFriendStatus value);
 - (BUserProfileBuilder*) setStripeAccount:(NSString*) value;
 - (BUserProfileBuilder*) clearStripeAccount;
 
-- (BOOL) hasIsFree;
-- (BOOL) isFree;
-- (BUserProfileBuilder*) setIsFree:(BOOL) value;
-- (BUserProfileBuilder*) clearIsFree;
+- (BOOL) hasServiceIsFreeForUser;
+- (BOOL) serviceIsFreeForUser;
+- (BUserProfileBuilder*) setServiceIsFreeForUser:(BOOL) value;
+- (BUserProfileBuilder*) clearServiceIsFreeForUser;
+
+- (BOOL) hasChatFee;
+- (NSString*) chatFee;
+- (BUserProfileBuilder*) setChatFee:(NSString*) value;
+- (BUserProfileBuilder*) clearChatFee;
+
+- (BOOL) hasUserInfo;
+- (SInt64) userInfo;
+- (BUserProfileBuilder*) setUserInfo:(SInt64) value;
+- (BUserProfileBuilder*) clearUserInfo;
 @end
 
 #define ImageUpload_imageData @"imageData"

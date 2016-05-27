@@ -354,9 +354,9 @@ func ProfileForUserID(session *Session, userID string) *BlitzMessage.UserProfile
     profile.IsExpert      = proto.Bool(isExpert.Bool)
     profile.StripeAccount = proto.String(stripeAccount.String)
     if config.ServiceIsFree {
-        profile.IsFree = proto.Bool(true)
+        profile.ServiceIsFreeForUser = proto.Bool(true)
     } else {
-        profile.IsFree = proto.Bool(isFree.Bool)
+        profile.ServiceIsFreeForUser = proto.Bool(isFree.Bool)
     }
 
     //  Fix up the 'headline' employment --

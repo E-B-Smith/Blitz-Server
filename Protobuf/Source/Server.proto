@@ -129,6 +129,7 @@ enum ResponseCode {
   RCNotAuthorized = 6;
   RCClientTooOld  = 7;
   RCPaymentError  = 8;
+  RCPurchaseRequired = 9;
 }
 
 
@@ -153,6 +154,7 @@ message ResponseType {
   optional FriendUpdate           friendResponse          = 18;
   optional SearchCategories       searchCategories        = 19;
   optional FeedPostResponse       feedPostResponse        = 20;
+  optional PurchaseDescription    purchaseDescription     = 21;
 }
 
 
