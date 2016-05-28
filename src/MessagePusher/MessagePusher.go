@@ -197,6 +197,7 @@ func (pusher *MessagePusher) readConnection(connection *websocket.Conn, readChan
         message, format, error = DecodeMessage(format, wireMessage[:n])
         if error != nil {
             Log.LogError(error)
+            readChannel <- nil
             pusher.Disconnect(connection)
             return
         }
@@ -245,10 +246,15 @@ func (pusher *MessagePusher) HandlePushConnection(connection *websocket.Conn) {
         Log.Debugf("Waiting for messages...")
         select {
             case request := <- readChannel:
+                if request == nil {
+                    pusher.Disconnect(connection)
+                    break
+                }
                 if request != nil &&
                    request.RequestType != nil &&
                    request.RequestType.PushDisconnect != nil {
                    pusher.Disconnect(connection)
+                   break
                 }
 
             case message := <- user.writeChannel:
