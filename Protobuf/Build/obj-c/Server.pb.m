@@ -2241,7 +2241,7 @@ static BPushDisconnect* defaultBPushDisconnectInstance = nil;
 @property (strong) BUserProfileUpdate* userProfileUpdate;
 @property (strong) BUserProfileQuery* userProfileQuery;
 @property (strong) BConfirmationRequest* confirmationRequest;
-@property (strong) BUserMessageUpdate* messageSendRequest;
+@property (strong) BUserMessageUpdate* messageSendRequestDeprecated;
 @property (strong) BUserMessageUpdate* messageFetchRequest;
 @property (strong) BDebugMessage* debugMessage;
 @property (strong) BImageUpload* imageUpload;
@@ -2261,6 +2261,7 @@ static BPushDisconnect* defaultBPushDisconnectInstance = nil;
 @property (strong) BCharge* chargeRequest;
 @property (strong) BFriendUpdate* friendRequest;
 @property (strong) BSearchCategories* searchCategories;
+@property (strong) BUserMessage* sendMessage;
 @end
 
 @implementation BRequestType
@@ -2300,13 +2301,13 @@ static BPushDisconnect* defaultBPushDisconnectInstance = nil;
   hasConfirmationRequest_ = !!_value_;
 }
 @synthesize confirmationRequest;
-- (BOOL) hasMessageSendRequest {
-  return !!hasMessageSendRequest_;
+- (BOOL) hasMessageSendRequestDeprecated {
+  return !!hasMessageSendRequestDeprecated_;
 }
-- (void) setHasMessageSendRequest:(BOOL) _value_ {
-  hasMessageSendRequest_ = !!_value_;
+- (void) setHasMessageSendRequestDeprecated:(BOOL) _value_ {
+  hasMessageSendRequestDeprecated_ = !!_value_;
 }
-@synthesize messageSendRequest;
+@synthesize messageSendRequestDeprecated;
 - (BOOL) hasMessageFetchRequest {
   return !!hasMessageFetchRequest_;
 }
@@ -2440,6 +2441,13 @@ static BPushDisconnect* defaultBPushDisconnectInstance = nil;
   hasSearchCategories_ = !!_value_;
 }
 @synthesize searchCategories;
+- (BOOL) hasSendMessage {
+  return !!hasSendMessage_;
+}
+- (void) setHasSendMessage:(BOOL) _value_ {
+  hasSendMessage_ = !!_value_;
+}
+@synthesize sendMessage;
 - (instancetype) init {
   if ((self = [super init])) {
     self.sessionRequest = [BSessionRequest defaultInstance];
@@ -2447,7 +2455,7 @@ static BPushDisconnect* defaultBPushDisconnectInstance = nil;
     self.userProfileUpdate = [BUserProfileUpdate defaultInstance];
     self.userProfileQuery = [BUserProfileQuery defaultInstance];
     self.confirmationRequest = [BConfirmationRequest defaultInstance];
-    self.messageSendRequest = [BUserMessageUpdate defaultInstance];
+    self.messageSendRequestDeprecated = [BUserMessageUpdate defaultInstance];
     self.messageFetchRequest = [BUserMessageUpdate defaultInstance];
     self.debugMessage = [BDebugMessage defaultInstance];
     self.imageUpload = [BImageUpload defaultInstance];
@@ -2467,6 +2475,7 @@ static BPushDisconnect* defaultBPushDisconnectInstance = nil;
     self.chargeRequest = [BCharge defaultInstance];
     self.friendRequest = [BFriendUpdate defaultInstance];
     self.searchCategories = [BSearchCategories defaultInstance];
+    self.sendMessage = [BUserMessage defaultInstance];
   }
   return self;
 }
@@ -2503,8 +2512,8 @@ static BRequestType* defaultBRequestTypeInstance = nil;
       return NO;
     }
   }
-  if (self.hasMessageSendRequest) {
-    if (!self.messageSendRequest.isInitialized) {
+  if (self.hasMessageSendRequestDeprecated) {
+    if (!self.messageSendRequestDeprecated.isInitialized) {
       return NO;
     }
   }
@@ -2558,6 +2567,11 @@ static BRequestType* defaultBRequestTypeInstance = nil;
       return NO;
     }
   }
+  if (self.hasSendMessage) {
+    if (!self.sendMessage.isInitialized) {
+      return NO;
+    }
+  }
   return YES;
 }
 - (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
@@ -2576,8 +2590,8 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   if (self.hasConfirmationRequest) {
     [output writeMessage:5 value:self.confirmationRequest];
   }
-  if (self.hasMessageSendRequest) {
-    [output writeMessage:6 value:self.messageSendRequest];
+  if (self.hasMessageSendRequestDeprecated) {
+    [output writeMessage:6 value:self.messageSendRequestDeprecated];
   }
   if (self.hasMessageFetchRequest) {
     [output writeMessage:7 value:self.messageFetchRequest];
@@ -2636,6 +2650,9 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   if (self.hasSearchCategories) {
     [output writeMessage:25 value:self.searchCategories];
   }
+  if (self.hasSendMessage) {
+    [output writeMessage:26 value:self.sendMessage];
+  }
   [self.unknownFields writeToCodedOutputStream:output];
 }
 - (SInt32) serializedSize {
@@ -2660,8 +2677,8 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   if (self.hasConfirmationRequest) {
     size_ += computeMessageSize(5, self.confirmationRequest);
   }
-  if (self.hasMessageSendRequest) {
-    size_ += computeMessageSize(6, self.messageSendRequest);
+  if (self.hasMessageSendRequestDeprecated) {
+    size_ += computeMessageSize(6, self.messageSendRequestDeprecated);
   }
   if (self.hasMessageFetchRequest) {
     size_ += computeMessageSize(7, self.messageFetchRequest);
@@ -2719,6 +2736,9 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   }
   if (self.hasSearchCategories) {
     size_ += computeMessageSize(25, self.searchCategories);
+  }
+  if (self.hasSendMessage) {
+    size_ += computeMessageSize(26, self.sendMessage);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -2785,9 +2805,9 @@ static BRequestType* defaultBRequestTypeInstance = nil;
                          withIndent:[NSString stringWithFormat:@"%@  ", indent]];
     [output appendFormat:@"%@}\n", indent];
   }
-  if (self.hasMessageSendRequest) {
-    [output appendFormat:@"%@%@ {\n", indent, @"messageSendRequest"];
-    [self.messageSendRequest writeDescriptionTo:output
+  if (self.hasMessageSendRequestDeprecated) {
+    [output appendFormat:@"%@%@ {\n", indent, @"messageSendRequestDeprecated"];
+    [self.messageSendRequestDeprecated writeDescriptionTo:output
                          withIndent:[NSString stringWithFormat:@"%@  ", indent]];
     [output appendFormat:@"%@}\n", indent];
   }
@@ -2905,6 +2925,12 @@ static BRequestType* defaultBRequestTypeInstance = nil;
                          withIndent:[NSString stringWithFormat:@"%@  ", indent]];
     [output appendFormat:@"%@}\n", indent];
   }
+  if (self.hasSendMessage) {
+    [output appendFormat:@"%@%@ {\n", indent, @"sendMessage"];
+    [self.sendMessage writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (void) storeInDictionary:(NSMutableDictionary *)dictionary {
@@ -2933,10 +2959,10 @@ static BRequestType* defaultBRequestTypeInstance = nil;
    [self.confirmationRequest storeInDictionary:messageDictionary];
    [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"confirmationRequest"];
   }
-  if (self.hasMessageSendRequest) {
+  if (self.hasMessageSendRequestDeprecated) {
    NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
-   [self.messageSendRequest storeInDictionary:messageDictionary];
-   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"messageSendRequest"];
+   [self.messageSendRequestDeprecated storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"messageSendRequestDeprecated"];
   }
   if (self.hasMessageFetchRequest) {
    NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
@@ -3033,6 +3059,11 @@ static BRequestType* defaultBRequestTypeInstance = nil;
    [self.searchCategories storeInDictionary:messageDictionary];
    [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"searchCategories"];
   }
+  if (self.hasSendMessage) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.sendMessage storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"sendMessage"];
+  }
   [self.unknownFields storeInDictionary:dictionary];
 }
 - (BOOL) isEqual:(id)other {
@@ -3054,8 +3085,8 @@ static BRequestType* defaultBRequestTypeInstance = nil;
       (!self.hasUserProfileQuery || [self.userProfileQuery isEqual:otherMessage.userProfileQuery]) &&
       self.hasConfirmationRequest == otherMessage.hasConfirmationRequest &&
       (!self.hasConfirmationRequest || [self.confirmationRequest isEqual:otherMessage.confirmationRequest]) &&
-      self.hasMessageSendRequest == otherMessage.hasMessageSendRequest &&
-      (!self.hasMessageSendRequest || [self.messageSendRequest isEqual:otherMessage.messageSendRequest]) &&
+      self.hasMessageSendRequestDeprecated == otherMessage.hasMessageSendRequestDeprecated &&
+      (!self.hasMessageSendRequestDeprecated || [self.messageSendRequestDeprecated isEqual:otherMessage.messageSendRequestDeprecated]) &&
       self.hasMessageFetchRequest == otherMessage.hasMessageFetchRequest &&
       (!self.hasMessageFetchRequest || [self.messageFetchRequest isEqual:otherMessage.messageFetchRequest]) &&
       self.hasDebugMessage == otherMessage.hasDebugMessage &&
@@ -3094,6 +3125,8 @@ static BRequestType* defaultBRequestTypeInstance = nil;
       (!self.hasFriendRequest || [self.friendRequest isEqual:otherMessage.friendRequest]) &&
       self.hasSearchCategories == otherMessage.hasSearchCategories &&
       (!self.hasSearchCategories || [self.searchCategories isEqual:otherMessage.searchCategories]) &&
+      self.hasSendMessage == otherMessage.hasSendMessage &&
+      (!self.hasSendMessage || [self.sendMessage isEqual:otherMessage.sendMessage]) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
@@ -3113,8 +3146,8 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   if (self.hasConfirmationRequest) {
     hashCode = hashCode * 31 + [self.confirmationRequest hash];
   }
-  if (self.hasMessageSendRequest) {
-    hashCode = hashCode * 31 + [self.messageSendRequest hash];
+  if (self.hasMessageSendRequestDeprecated) {
+    hashCode = hashCode * 31 + [self.messageSendRequestDeprecated hash];
   }
   if (self.hasMessageFetchRequest) {
     hashCode = hashCode * 31 + [self.messageFetchRequest hash];
@@ -3172,6 +3205,9 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   }
   if (self.hasSearchCategories) {
     hashCode = hashCode * 31 + [self.searchCategories hash];
+  }
+  if (self.hasSendMessage) {
+    hashCode = hashCode * 31 + [self.sendMessage hash];
   }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
@@ -3231,8 +3267,8 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   if (other.hasConfirmationRequest) {
     [self mergeConfirmationRequest:other.confirmationRequest];
   }
-  if (other.hasMessageSendRequest) {
-    [self mergeMessageSendRequest:other.messageSendRequest];
+  if (other.hasMessageSendRequestDeprecated) {
+    [self mergeMessageSendRequestDeprecated:other.messageSendRequestDeprecated];
   }
   if (other.hasMessageFetchRequest) {
     [self mergeMessageFetchRequest:other.messageFetchRequest];
@@ -3290,6 +3326,9 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   }
   if (other.hasSearchCategories) {
     [self mergeSearchCategories:other.searchCategories];
+  }
+  if (other.hasSendMessage) {
+    [self mergeSendMessage:other.sendMessage];
   }
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -3359,11 +3398,11 @@ static BRequestType* defaultBRequestTypeInstance = nil;
       }
       case 50: {
         BUserMessageUpdateBuilder* subBuilder = [BUserMessageUpdate builder];
-        if (self.hasMessageSendRequest) {
-          [subBuilder mergeFrom:self.messageSendRequest];
+        if (self.hasMessageSendRequestDeprecated) {
+          [subBuilder mergeFrom:self.messageSendRequestDeprecated];
         }
         [input readMessage:subBuilder extensionRegistry:extensionRegistry];
-        [self setMessageSendRequest:[subBuilder buildPartial]];
+        [self setMessageSendRequestDeprecated:[subBuilder buildPartial]];
         break;
       }
       case 58: {
@@ -3537,6 +3576,15 @@ static BRequestType* defaultBRequestTypeInstance = nil;
         [self setSearchCategories:[subBuilder buildPartial]];
         break;
       }
+      case 210: {
+        BUserMessageBuilder* subBuilder = [BUserMessage builder];
+        if (self.hasSendMessage) {
+          [subBuilder mergeFrom:self.sendMessage];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setSendMessage:[subBuilder buildPartial]];
+        break;
+      }
     }
   }
 }
@@ -3690,34 +3738,34 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   resultRequestType.confirmationRequest = [BConfirmationRequest defaultInstance];
   return self;
 }
-- (BOOL) hasMessageSendRequest {
-  return resultRequestType.hasMessageSendRequest;
+- (BOOL) hasMessageSendRequestDeprecated {
+  return resultRequestType.hasMessageSendRequestDeprecated;
 }
-- (BUserMessageUpdate*) messageSendRequest {
-  return resultRequestType.messageSendRequest;
+- (BUserMessageUpdate*) messageSendRequestDeprecated {
+  return resultRequestType.messageSendRequestDeprecated;
 }
-- (BRequestTypeBuilder*) setMessageSendRequest:(BUserMessageUpdate*) value {
-  resultRequestType.hasMessageSendRequest = YES;
-  resultRequestType.messageSendRequest = value;
+- (BRequestTypeBuilder*) setMessageSendRequestDeprecated:(BUserMessageUpdate*) value {
+  resultRequestType.hasMessageSendRequestDeprecated = YES;
+  resultRequestType.messageSendRequestDeprecated = value;
   return self;
 }
-- (BRequestTypeBuilder*) setMessageSendRequestBuilder:(BUserMessageUpdateBuilder*) builderForValue {
-  return [self setMessageSendRequest:[builderForValue build]];
+- (BRequestTypeBuilder*) setMessageSendRequestDeprecatedBuilder:(BUserMessageUpdateBuilder*) builderForValue {
+  return [self setMessageSendRequestDeprecated:[builderForValue build]];
 }
-- (BRequestTypeBuilder*) mergeMessageSendRequest:(BUserMessageUpdate*) value {
-  if (resultRequestType.hasMessageSendRequest &&
-      resultRequestType.messageSendRequest != [BUserMessageUpdate defaultInstance]) {
-    resultRequestType.messageSendRequest =
-      [[[BUserMessageUpdate builderWithPrototype:resultRequestType.messageSendRequest] mergeFrom:value] buildPartial];
+- (BRequestTypeBuilder*) mergeMessageSendRequestDeprecated:(BUserMessageUpdate*) value {
+  if (resultRequestType.hasMessageSendRequestDeprecated &&
+      resultRequestType.messageSendRequestDeprecated != [BUserMessageUpdate defaultInstance]) {
+    resultRequestType.messageSendRequestDeprecated =
+      [[[BUserMessageUpdate builderWithPrototype:resultRequestType.messageSendRequestDeprecated] mergeFrom:value] buildPartial];
   } else {
-    resultRequestType.messageSendRequest = value;
+    resultRequestType.messageSendRequestDeprecated = value;
   }
-  resultRequestType.hasMessageSendRequest = YES;
+  resultRequestType.hasMessageSendRequestDeprecated = YES;
   return self;
 }
-- (BRequestTypeBuilder*) clearMessageSendRequest {
-  resultRequestType.hasMessageSendRequest = NO;
-  resultRequestType.messageSendRequest = [BUserMessageUpdate defaultInstance];
+- (BRequestTypeBuilder*) clearMessageSendRequestDeprecated {
+  resultRequestType.hasMessageSendRequestDeprecated = NO;
+  resultRequestType.messageSendRequestDeprecated = [BUserMessageUpdate defaultInstance];
   return self;
 }
 - (BOOL) hasMessageFetchRequest {
@@ -4288,6 +4336,36 @@ static BRequestType* defaultBRequestTypeInstance = nil;
 - (BRequestTypeBuilder*) clearSearchCategories {
   resultRequestType.hasSearchCategories = NO;
   resultRequestType.searchCategories = [BSearchCategories defaultInstance];
+  return self;
+}
+- (BOOL) hasSendMessage {
+  return resultRequestType.hasSendMessage;
+}
+- (BUserMessage*) sendMessage {
+  return resultRequestType.sendMessage;
+}
+- (BRequestTypeBuilder*) setSendMessage:(BUserMessage*) value {
+  resultRequestType.hasSendMessage = YES;
+  resultRequestType.sendMessage = value;
+  return self;
+}
+- (BRequestTypeBuilder*) setSendMessageBuilder:(BUserMessageBuilder*) builderForValue {
+  return [self setSendMessage:[builderForValue build]];
+}
+- (BRequestTypeBuilder*) mergeSendMessage:(BUserMessage*) value {
+  if (resultRequestType.hasSendMessage &&
+      resultRequestType.sendMessage != [BUserMessage defaultInstance]) {
+    resultRequestType.sendMessage =
+      [[[BUserMessage builderWithPrototype:resultRequestType.sendMessage] mergeFrom:value] buildPartial];
+  } else {
+    resultRequestType.sendMessage = value;
+  }
+  resultRequestType.hasSendMessage = YES;
+  return self;
+}
+- (BRequestTypeBuilder*) clearSendMessage {
+  resultRequestType.hasSendMessage = NO;
+  resultRequestType.sendMessage = [BUserMessage defaultInstance];
   return self;
 }
 @end

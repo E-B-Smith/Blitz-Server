@@ -309,7 +309,7 @@ func CreateFeedPost(session *Session, feedPost *BlitzMessage.FeedPost) error {
             name, _ := NameForUserID(session.UserID)
             if len(name) == 0 { name = "Someone" }
             message := fmt.Sprintf("%s responded to your post.", name)
-            SendUserMessage(*feedPost.UserID,
+            SendUserMessageInternal(*feedPost.UserID,
                 [] string { *parentPost.UserID },
                 message,
                 BlitzMessage.UserMessageType_MTNotification,
@@ -336,7 +336,7 @@ func CreateFeedPost(session *Session, feedPost *BlitzMessage.FeedPost) error {
     name, _ := NameForUserID(*feedPost.UserID)
     if len(followingUsers) > 0 && len(name) > 0 {
         message := *feedPost.HeadlineText
-        SendUserMessage(*feedPost.UserID,
+        SendUserMessageInternal(*feedPost.UserID,
             followingUsers,
             message,
             BlitzMessage.UserMessageType_MTNotification,

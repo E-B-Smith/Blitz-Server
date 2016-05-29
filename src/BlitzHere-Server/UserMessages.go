@@ -10,6 +10,7 @@ import (
     "fmt"
     "time"
     "errors"
+    "strings"
     "database/sql"
     "github.com/lib/pq"
     "violent.blue/GoKit/Log"
@@ -188,35 +189,198 @@ func UserMessageFetchRequest(session *Session, fetch *BlitzMessage.UserMessageUp
 //----------------------------------------------------------------------------------------
 
 
-func SendBlitzUserMessage(message *BlitzMessage.UserMessage) error {
+func mapAppendFromArray(stringMap map[string]bool, s []string) map[string]bool {
+    for _, s := range s {
+        stringMap[s] = true
+    }
+    return stringMap
+}
+
+
+func arrayFromMap(stringMap map[string]bool) []string {
+    i := 0
+    a := make([]string, len(stringMap))
+    for key, _ := range stringMap {
+        a[i] = key
+        i++
+    }
+    return a
+}
+
+
+func updateMessageFromConversation(
+        session *Session,
+        message *BlitzMessage.UserMessage,
+        conversation *BlitzMessage.Conversation,
+        ) *BlitzMessage.ServerResponse {
+    return nil
+}
+
+
+func UpdateConversationMessage(
+        session *Session,
+        message *BlitzMessage.UserMessage,
+        ) *BlitzMessage.ServerResponse {
     Log.LogFunctionName()
 
-    if message.SenderID == nil {
-        return fmt.Errorf("No sender ID")
+    var error error
+    conversation, error := ReadUserConversation(session.UserID, *message.ConversationID)
+    if error != nil {
+        Log.LogError(error)
+        return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
     }
 
-    var recipients []string
-    if  message.ConversationID == nil {
-        recipients = message.Recipients
-        recipients = append(recipients, *message.SenderID)
-    } else {
-        recipients = MembersForConversationID(*message.ConversationID)
-    }
-    message.Recipients = recipients
+    //  Add an action to the message --
 
-    if  message.ConversationID != nil &&
-        *message.MessageType == BlitzMessage.UserMessageType_MTConversation &&
-        (message.ActionURL == nil || len(*message.ActionURL) == 0) {
-
+    if  message.ActionURL == nil || len(*message.ActionURL) == 0 {
         message.ActionURL = proto.String(
             fmt.Sprintf("%s?action=showchat&chatid=%s",
                 config.AppLinkURL,
                 *message.ConversationID,
-            ))
-
+        ))
     }
 
-    for _, recipientID := range recipients {
+    //  Declare MakeConversationFree function:
+
+    makeConversationFree :=
+        func (conversationID string) {
+            _, error = config.DB.Exec(
+                `update ConversationTable set isFree = true where conversationID = $1;`,
+                *message.ConversationID,
+            )
+            if error != nil { Log.LogError(error) }
+        }
+
+    //  Free or paid?
+
+    if  (conversation.IsFree != nil && *conversation.IsFree) ||
+        (conversation.ChargeID != nil && len(*conversation.ChargeID) > 0) {
+        return updateMessageFromConversation(session, message, conversation)
+    }
+    if  config.ServiceIsFree {
+        _, error = config.DB.Exec(
+            `update ConversationTable set isFree = true where conversationID = $1;`,
+            *message.ConversationID,
+        )
+        makeConversationFree(*conversation.ConversationID)
+        return updateMessageFromConversation(session, message, conversation)
+    }
+
+    //  Friends?
+
+    if len(conversation.MemberIDs) < 2 {
+        return ServerResponseForError(
+            BlitzMessage.ResponseCode_RCInputInvalid,
+            errors.New("Not enough conversation members."),
+        )
+    }
+
+    tags := GetEntityTagMapForUserIDEntityIDType(
+        session.UserID,
+        conversation.MemberIDs[1],
+        BlitzMessage.EntityType_ETUser,
+    )
+    if _, ok := tags[".friends"]; ok {
+        makeConversationFree(*message.ConversationID)
+        return updateMessageFromConversation(session, message, conversation)
+    }
+
+    //  Free for user?
+
+    row := config.DB.QueryRow(
+        `select isFree from UserTable where userID = $1;`,
+        session.UserID,
+    )
+    var isFree sql.NullBool
+    error = row.Scan(&isFree)
+    if error != nil { Log.LogError(error) }
+    if isFree.Bool {
+        makeConversationFree(*message.ConversationID)
+        return updateMessageFromConversation(session, message, conversation)
+    }
+
+    //  Less than four messages?
+
+    if conversation.MessageCount != nil && *conversation.MessageCount <= 4 {
+        return updateMessageFromConversation(session, message, conversation)
+    }
+
+    //  Make charge --
+
+    amount := "10.00"
+    memo := fmt.Sprintf("Chat with %s: $%s.",
+        PrettyNameForUserID(conversation.MemberIDs[1]),
+        amount,
+    )
+
+    purchase := &BlitzMessage.PurchaseDescription {
+        PurchaseType:           BlitzMessage.PurchaseType_PTChatConversation.Enum(),
+        PurchaseEntityID:       message.ConversationID,
+        //PurchaseID:           proto.String(GenerateUUID()),
+        MemoText:               proto.String(memo),
+        Amount:                 proto.String(amount),
+        Currency:               proto.String("usd"),
+    }
+
+    response := &BlitzMessage.ServerResponse {
+        ResponseCode:       BlitzMessage.ResponseCode(BlitzMessage.ResponseCode_RCPurchaseRequired).Enum(),
+        ResponseMessage:    proto.String(memo),
+        ResponseType:       &BlitzMessage.ResponseType { PurchaseDescription: purchase },
+    }
+    return response
+}
+
+
+func isEmptyStringPtr(s *string) bool {
+    return (s == nil || len(strings.TrimSpace(*s)) == 0)
+}
+
+
+func SendUserMessage(
+        session *Session,
+        message *BlitzMessage.UserMessage,
+        ) *BlitzMessage.ServerResponse {
+    Log.LogFunctionName()
+
+    var error error
+    if  isEmptyStringPtr(message.SenderID) ||
+        isEmptyStringPtr(message.MessageID) ||
+        message.MessageType == nil {
+        error = errors.New("Missing fields")
+        Log.LogError(error)
+        return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
+    }
+
+    if message.ConversationID != nil &&
+        *message.MessageType == BlitzMessage.UserMessageType_MTConversation {
+        response := UpdateConversationMessage(session, message)
+        if response != nil {
+            return response
+        }
+    }
+
+    error = WriteUserMessage(message)
+    if error != nil {
+        return ServerResponseForError(BlitzMessage.ResponseCode_RCServerError, error)
+    }
+    return ServerResponseForError(BlitzMessage.ResponseCode_RCSuccess, nil)
+}
+
+
+func WriteUserMessage(message *BlitzMessage.UserMessage) error {
+    Log.LogFunctionName()
+
+    var firstError error
+    recipients := make(map[string]bool)
+    recipients = mapAppendFromArray(recipients, message.Recipients)
+    recipients = mapAppendFromArray(recipients, []string {*message.SenderID} )
+    message.Recipients = arrayFromMap(recipients)
+
+    if len(message.Recipients) == 0 {
+        return errors.New("No recipients")
+    }
+
+    for _, recipientID := range message.Recipients {
         _, error := config.DB.Exec(
             `insert into UserMessageTable(
                 messageID,
@@ -227,8 +391,9 @@ func SendBlitzUserMessage(message *BlitzMessage.UserMessage) error {
                 messageText,
                 actionIcon,
                 actionURL,
-                conversationID)
-                values ($1, $2, $3, $4, $5, $6, $7, $8, $9);`,
+                conversationID
+            ) values ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+            on conflict do nothing;`,
             message.MessageID,
             message.SenderID,
             recipientID,
@@ -237,32 +402,43 @@ func SendBlitzUserMessage(message *BlitzMessage.UserMessage) error {
             message.MessageText,
             message.ActionIcon,
             message.ActionURL,
-            message.ConversationID)
+            message.ConversationID,
+        )
 
         if error != nil {
             Log.Errorf("Error inserting message: %v. MessageID: %s From: %s To: %s.",
                 error, *message.MessageID, *message.SenderID, recipientID)
+            if firstError == nil { firstError = error }
         }
     }
 
     globalMessagePusher.PushMessage(message)
-    return nil
+    return firstError
 }
 
 
 //----------------------------------------------------------------------------------------
-//                                                                         SendUserMessage
+//                                                                 SendUserMessageInternal
 //----------------------------------------------------------------------------------------
 
 
-func SendUserMessage(
+func SendUserMessageInternal(
         sender string,
         recipients []string,
         message string,
         messageType BlitzMessage.UserMessageType,
         actionIcon string,
-        actionURL string) {
+        actionURL string,
+        ) error {
     Log.LogFunctionName()
+
+    if  len(sender) == 0 ||
+        len(recipients) == 0 ||
+        len(message) == 0 {
+        error := errors.New("Bad parameters")
+        Log.LogError(error)
+        return error
+    }
 
     status := BlitzMessage.UserMessageStatus_MSNew
     blitzMessage := &BlitzMessage.UserMessage {
@@ -277,7 +453,8 @@ func SendUserMessage(
         ActionURL:      &actionURL,
     }
 
-    SendBlitzUserMessage(blitzMessage)
+    WriteUserMessage(blitzMessage)
+    return nil
 }
 
 
@@ -288,7 +465,8 @@ func SendUserMessage(
 //----------------------------------------------------------------------------------------
 
 
-func UserMessageSendRequest(
+/*
+func UserMessageSendUserMessage(
         session *Session,
         sendMessage *BlitzMessage.UserMessageUpdate,
         ) *BlitzMessage.ServerResponse {
@@ -320,6 +498,7 @@ func UserMessageSendRequest(
 
     return response
 }
+*/
 
 
 //----------------------------------------------------------------------------------------

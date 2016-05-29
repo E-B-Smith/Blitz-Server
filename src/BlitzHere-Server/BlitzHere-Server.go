@@ -316,14 +316,10 @@ func DispatchServiceRequests(writer http.ResponseWriter, httpRequest *http.Reque
         response = FetchConversations(session, requestMessageType)
 
     case *BlitzMessage.UserMessageUpdate:
+        response = UserMessageFetchRequest(session, requestMessageType)
 
-        switch {
-        case serverRequest.RequestType.MessageSendRequest != nil:
-            response = UserMessageSendRequest(session, requestMessageType)
-
-        case serverRequest.RequestType.MessageFetchRequest != nil:
-            response = UserMessageFetchRequest(session, requestMessageType)
-        }
+    case *BlitzMessage.UserMessage:
+        response = SendUserMessage(session, requestMessageType)
 
     case *BlitzMessage.UserReview:
         response = WriteReview(session, requestMessageType)

@@ -379,7 +379,7 @@ func SendFriendRequest(session *Session, request *BlitzMessage.FriendUpdate) *Bl
     )
 
     if len(message) > 0 {
-        SendUserMessage(
+        SendUserMessageInternal(
             session.UserID,
             []string { *request.FriendID },
             message,

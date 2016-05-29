@@ -275,16 +275,21 @@ func ChargeRequest(session *Session, chargeReq *BlitzMessage.Charge) *BlitzMessa
 
     if (chargeReq.ChargeStatus == nil ||
         *chargeReq.ChargeStatus != BlitzMessage.ChargeStatus_CSChargeRequest ||
-        chargeReq.PayerID == nil || len(*chargeReq.PayerID) == 0 ||
-        chargeReq.ChargeToken == nil || len(*chargeReq.ChargeToken) == 0 ||
+        chargeReq.PayerID == nil ||
+        len(*chargeReq.PayerID) == 0 ||
         chargeReq.ChargeToken == nil ||
+        len(*chargeReq.ChargeToken) == 0 ||
+        chargeReq.ChargeToken == nil ||
+        chargeReq.PurchaseType == nil ||
+        chargeReq.PurchaseTypeID == nil ||
+        len(*chargeReq.PurchaseTypeID) == 0 ||
         amountI < 0) {
         return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, nil)
     }
 
     //  Get the Stripe customerID --
 
-    stripeCID, error := StripeCIDFromUserID(*chargeReq.PayerID)//, *chargeReq.ChargeToken)
+    stripeCID, error := StripeCIDFromUserID(*chargeReq.PayerID)
     if error != nil {
         return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
     }
@@ -388,6 +393,20 @@ func ChargeRequest(session *Session, chargeReq *BlitzMessage.Charge) *BlitzMessa
     if error != nil {
         Log.LogError(error)
         return ServerResponseForError(BlitzMessage.ResponseCode_RCServerError, error)
+    }
+
+    if *chargeReq.PurchaseType == BlitzMessage.PurchaseType_PTChatConversation {
+        result, error = config.DB.Exec(
+            `update ConversationTable set chargeID = $1
+                where conversationID = $2;`,
+            chargeReq.ChargeID,
+            chargeReq.PurchaseTypeID,
+        )
+        error = pgsql.ResultError(result, error)
+        if error != nil {
+            Log.LogError(error)
+            return ServerResponseForError(BlitzMessage.ResponseCode_RCServerError, error)
+        }
     }
 
     response := &BlitzMessage.ServerResponse {

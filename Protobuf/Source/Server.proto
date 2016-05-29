@@ -91,7 +91,7 @@ message RequestType {
   optional UserProfileUpdate        userProfileUpdate   = 3;
   optional UserProfileQuery         userProfileQuery    = 4;
   optional ConfirmationRequest      confirmationRequest = 5;
-  optional UserMessageUpdate        messageSendRequest  = 6;
+  optional UserMessageUpdate        messageSendRequest_deprecated = 6;
   optional UserMessageUpdate        messageFetchRequest = 7;
   optional DebugMessage             debugMessage        = 8;
   optional ImageUpload              imageUpload         = 9;
@@ -111,6 +111,7 @@ message RequestType {
   optional Charge                   chargeRequest       = 23;
   optional FriendUpdate             friendRequest       = 24;
   optional SearchCategories         searchCategories    = 25;
+  optional UserMessage              sendMessage         = 26;
 }
 
 

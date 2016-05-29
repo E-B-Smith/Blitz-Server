@@ -111,7 +111,9 @@ func ReadUserConversation(userID string, conversationID string) (*BlitzMessage.C
             initiatorUserID,
             parentFeedPostID,
             creationDate,
-            closedDate
+            closedDate,
+            isFree,
+            chargeID
                 from ConversationTable
                 where conversationID = $1;`, conversationID)
 
@@ -129,6 +131,9 @@ func ReadUserConversation(userID string, conversationID string) (*BlitzMessage.C
         lastActivity        pq.NullTime
         lastUserID          sql.NullString
         lastActionURL       sql.NullString
+
+        isFree              sql.NullBool
+        chargeID            sql.NullString
     )
 
     error := row.Scan(
@@ -138,6 +143,8 @@ func ReadUserConversation(userID string, conversationID string) (*BlitzMessage.C
         &parentFeedPostID,
         &creationDate,
         &closedDate,
+        &isFree,
+        &chargeID,
     )
     if error != nil {
         Log.LogError(error)
@@ -180,6 +187,8 @@ func ReadUserConversation(userID string, conversationID string) (*BlitzMessage.C
     conv.LastActivityDate   =   BlitzMessage.TimestampPtrFromNullTime(lastActivity)
     conv.ClosedDate         =   BlitzMessage.TimestampPtrFromNullTime(closedDate)
     conv.ConversationType   =   &conversationType
+    conv.IsFree             =   BoolPtr(isFree.Bool)
+    conv.ChargeID           =   proto.String(chargeID.String)
 
     if parentFeedPostID.Valid {
         conv.ParentFeedPostID = &parentFeedPostID.String

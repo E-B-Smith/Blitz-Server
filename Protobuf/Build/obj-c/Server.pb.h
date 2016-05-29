@@ -670,7 +670,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 #define RequestType_userProfileUpdate @"userProfileUpdate"
 #define RequestType_userProfileQuery @"userProfileQuery"
 #define RequestType_confirmationRequest @"confirmationRequest"
-#define RequestType_messageSendRequest @"messageSendRequest"
+#define RequestType_messageSendRequest_deprecated @"messageSendRequestDeprecated"
 #define RequestType_messageFetchRequest @"messageFetchRequest"
 #define RequestType_debugMessage @"debugMessage"
 #define RequestType_imageUpload @"imageUpload"
@@ -690,6 +690,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 #define RequestType_chargeRequest @"chargeRequest"
 #define RequestType_friendRequest @"friendRequest"
 #define RequestType_searchCategories @"searchCategories"
+#define RequestType_sendMessage @"sendMessage"
 @interface BRequestType : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
   BOOL hasSessionRequest_:1;
@@ -697,7 +698,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
   BOOL hasUserProfileUpdate_:1;
   BOOL hasUserProfileQuery_:1;
   BOOL hasConfirmationRequest_:1;
-  BOOL hasMessageSendRequest_:1;
+  BOOL hasMessageSendRequestDeprecated_:1;
   BOOL hasMessageFetchRequest_:1;
   BOOL hasDebugMessage_:1;
   BOOL hasImageUpload_:1;
@@ -717,12 +718,13 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
   BOOL hasChargeRequest_:1;
   BOOL hasFriendRequest_:1;
   BOOL hasSearchCategories_:1;
+  BOOL hasSendMessage_:1;
   BSessionRequest* sessionRequest;
   BUserEventBatch* userEventBatch;
   BUserProfileUpdate* userProfileUpdate;
   BUserProfileQuery* userProfileQuery;
   BConfirmationRequest* confirmationRequest;
-  BUserMessageUpdate* messageSendRequest;
+  BUserMessageUpdate* messageSendRequestDeprecated;
   BUserMessageUpdate* messageFetchRequest;
   BDebugMessage* debugMessage;
   BImageUpload* imageUpload;
@@ -742,13 +744,14 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
   BCharge* chargeRequest;
   BFriendUpdate* friendRequest;
   BSearchCategories* searchCategories;
+  BUserMessage* sendMessage;
 }
 - (BOOL) hasSessionRequest;
 - (BOOL) hasUserEventBatch;
 - (BOOL) hasUserProfileUpdate;
 - (BOOL) hasUserProfileQuery;
 - (BOOL) hasConfirmationRequest;
-- (BOOL) hasMessageSendRequest;
+- (BOOL) hasMessageSendRequestDeprecated;
 - (BOOL) hasMessageFetchRequest;
 - (BOOL) hasDebugMessage;
 - (BOOL) hasImageUpload;
@@ -768,12 +771,13 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BOOL) hasChargeRequest;
 - (BOOL) hasFriendRequest;
 - (BOOL) hasSearchCategories;
+- (BOOL) hasSendMessage;
 @property (readonly, strong) BSessionRequest* sessionRequest;
 @property (readonly, strong) BUserEventBatch* userEventBatch;
 @property (readonly, strong) BUserProfileUpdate* userProfileUpdate;
 @property (readonly, strong) BUserProfileQuery* userProfileQuery;
 @property (readonly, strong) BConfirmationRequest* confirmationRequest;
-@property (readonly, strong) BUserMessageUpdate* messageSendRequest;
+@property (readonly, strong) BUserMessageUpdate* messageSendRequestDeprecated;
 @property (readonly, strong) BUserMessageUpdate* messageFetchRequest;
 @property (readonly, strong) BDebugMessage* debugMessage;
 @property (readonly, strong) BImageUpload* imageUpload;
@@ -793,6 +797,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 @property (readonly, strong) BCharge* chargeRequest;
 @property (readonly, strong) BFriendUpdate* friendRequest;
 @property (readonly, strong) BSearchCategories* searchCategories;
+@property (readonly, strong) BUserMessage* sendMessage;
 
 + (instancetype) defaultInstance;
 - (instancetype) defaultInstance;
@@ -864,12 +869,12 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BRequestTypeBuilder*) mergeConfirmationRequest:(BConfirmationRequest*) value;
 - (BRequestTypeBuilder*) clearConfirmationRequest;
 
-- (BOOL) hasMessageSendRequest;
-- (BUserMessageUpdate*) messageSendRequest;
-- (BRequestTypeBuilder*) setMessageSendRequest:(BUserMessageUpdate*) value;
-- (BRequestTypeBuilder*) setMessageSendRequestBuilder:(BUserMessageUpdateBuilder*) builderForValue;
-- (BRequestTypeBuilder*) mergeMessageSendRequest:(BUserMessageUpdate*) value;
-- (BRequestTypeBuilder*) clearMessageSendRequest;
+- (BOOL) hasMessageSendRequestDeprecated;
+- (BUserMessageUpdate*) messageSendRequestDeprecated;
+- (BRequestTypeBuilder*) setMessageSendRequestDeprecated:(BUserMessageUpdate*) value;
+- (BRequestTypeBuilder*) setMessageSendRequestDeprecatedBuilder:(BUserMessageUpdateBuilder*) builderForValue;
+- (BRequestTypeBuilder*) mergeMessageSendRequestDeprecated:(BUserMessageUpdate*) value;
+- (BRequestTypeBuilder*) clearMessageSendRequestDeprecated;
 
 - (BOOL) hasMessageFetchRequest;
 - (BUserMessageUpdate*) messageFetchRequest;
@@ -1003,6 +1008,13 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BRequestTypeBuilder*) setSearchCategoriesBuilder:(BSearchCategoriesBuilder*) builderForValue;
 - (BRequestTypeBuilder*) mergeSearchCategories:(BSearchCategories*) value;
 - (BRequestTypeBuilder*) clearSearchCategories;
+
+- (BOOL) hasSendMessage;
+- (BUserMessage*) sendMessage;
+- (BRequestTypeBuilder*) setSendMessage:(BUserMessage*) value;
+- (BRequestTypeBuilder*) setSendMessageBuilder:(BUserMessageBuilder*) builderForValue;
+- (BRequestTypeBuilder*) mergeSendMessage:(BUserMessage*) value;
+- (BRequestTypeBuilder*) clearSendMessage;
 @end
 
 #define ServerRequest_sessionToken @"sessionToken"

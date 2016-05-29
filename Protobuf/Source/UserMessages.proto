@@ -52,6 +52,8 @@ message Conversation {
   optional string             lastActivityUserID  = 13;
   optional string             lastActionURL       = 14;
   optional ConversationType   conversationType    = 15;
+  optional bool               isFree          = 16;
+  optional string             chargeID        = 17;
 }
 
 
