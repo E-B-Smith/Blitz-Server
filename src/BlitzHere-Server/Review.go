@@ -98,7 +98,17 @@ func WriteReview(session *Session, review *BlitzMessage.UserReview,
         reviewText,
         pgsql.NullStringFromStringArray(review.Tags),
     )
+    error = pgsql.ResultError(result, error)
+    if error != nil {
+        return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
+    }
 
+    result, error = config.DB.Exec(
+        `update ConversationTable set
+            closedDate = current_timestamp
+            where conversationID = $1;`,
+        review.ConversationID,
+    )
     error = pgsql.ResultError(result, error)
     if error != nil {
         return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
@@ -107,6 +117,7 @@ func WriteReview(session *Session, review *BlitzMessage.UserReview,
     return ServerResponseForError(BlitzMessage.ResponseCode_RCSuccess, nil)
 }
 //ResponseTimeForConversationUser($4, $1),
+
 
 //----------------------------------------------------------------------------------------
 //

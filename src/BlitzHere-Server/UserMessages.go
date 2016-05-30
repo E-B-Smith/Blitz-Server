@@ -230,6 +230,10 @@ func UpdateConversationMessage(
         return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
     }
 
+    //  Add recipients --
+
+    message.Recipients = conversation.MemberIDs
+
     //  Add an action to the message --
 
     if  message.ActionURL == nil || len(*message.ActionURL) == 0 {
@@ -238,6 +242,11 @@ func UpdateConversationMessage(
                 config.AppLinkURL,
                 *message.ConversationID,
         ))
+    }
+
+    if conversation.ClosedDate != nil {
+        return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid,
+            errors.New("Conversation is closed."))
     }
 
     //  Declare MakeConversationFree function:
@@ -308,14 +317,13 @@ func UpdateConversationMessage(
     //  Make charge --
 
     amount := "10.00"
-    memo := fmt.Sprintf("Chat with %s: $%s.",
+    memo := fmt.Sprintf("Chat with %s.",
         PrettyNameForUserID(conversation.MemberIDs[1]),
-        amount,
     )
 
     purchase := &BlitzMessage.PurchaseDescription {
         PurchaseType:           BlitzMessage.PurchaseType_PTChatConversation.Enum(),
-        PurchaseEntityID:       message.ConversationID,
+        PurchaseTypeID:         message.ConversationID,
         //PurchaseID:           proto.String(GenerateUUID()),
         MemoText:               proto.String(memo),
         Amount:                 proto.String(amount),
