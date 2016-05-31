@@ -7,6 +7,13 @@ buildDate   := $(shell date | sed s.[[:space:]].-.g)
 buildVersion = 0
 buildLinux   = 0
 buildDarwin  = 0
+.SILENT:
+
+export userhost:=blitzhere@blitzhere.com
+export installpath:=/home/blitzhere
+export GOPATH:=$(makepath)
+export GOROOT:=
+export PATH:=$(makepath)/bin:$(PATH)
 
 # Verbose options:
 
@@ -17,14 +24,6 @@ buildDarwin  = 0
 verbose     := true
 cp          := cp -a
 rm          := rm -Rf
-
-.SILENT:
-
-export userhost:=blitzhere@blitzhere.com
-export installpath:=/home/blitzhere
-export GOPATH:=$(makepath)
-export GOROOT:=
-export PATH:=$(makepath)/bin:$(PATH)
 
 
 # Compile --
