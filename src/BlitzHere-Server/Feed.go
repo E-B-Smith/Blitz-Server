@@ -75,7 +75,7 @@ func WriteFeedPost(feedPost *BlitzMessage.FeedPost) error {
             feedPost.PostID,
         )
 
-    error = pgsql.ResultError(result, error)
+    error = pgsql.UpdateResultError(result, error)
     if error != nil {
         Log.LogError(error)
         return error

@@ -96,7 +96,7 @@ func CreateStripeCIDFromUserIDToken(userID, token string) (string, error) {
         defaultCard,
         userID,
     )
-    error = pgsql.ResultError(result, error)
+    error = pgsql.UpdateResultError(result, error)
     if error != nil {
         Log.LogError(error)
         return "", error
@@ -333,7 +333,7 @@ func ChargeRequest(session *Session, chargeReq *BlitzMessage.Charge) *BlitzMessa
         chargeReq.Currency,
         chargeReq.ChargeToken,
     )
-    error = pgsql.ResultError(result, error)
+    error = pgsql.UpdateResultError(result, error)
     if error != nil  {
         Log.LogError(error)
         return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
@@ -389,7 +389,7 @@ func ChargeRequest(session *Session, chargeReq *BlitzMessage.Charge) *BlitzMessa
         stripeChargeID,
         chargeReq.ChargeID,
     )
-    error = pgsql.ResultError(result, error)
+    error = pgsql.UpdateResultError(result, error)
     if error != nil {
         Log.LogError(error)
         return ServerResponseForError(BlitzMessage.ResponseCode_RCServerError, error)
@@ -402,7 +402,7 @@ func ChargeRequest(session *Session, chargeReq *BlitzMessage.Charge) *BlitzMessa
             chargeReq.ChargeID,
             chargeReq.PurchaseTypeID,
         )
-        error = pgsql.ResultError(result, error)
+        error = pgsql.UpdateResultError(result, error)
         if error != nil {
             Log.LogError(error)
             return ServerResponseForError(BlitzMessage.ResponseCode_RCServerError, error)

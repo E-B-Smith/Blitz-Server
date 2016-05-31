@@ -308,7 +308,7 @@ func MergeProfileIDIntoProfileID(oldID string, newID string) error {
         `update usertable set (userstatus, name, gender, birthday, backgroundSummary, interestTags)
          = ($1, $2, $3, $4, $5, $6) where userid = $7;`,
         newStatus, newName, newGender, newBirthday, newSummary, newInterests, newID)
-    error = pgsql.ResultError(result, error)
+    error = pgsql.UpdateResultError(result, error)
     if error != nil {
         Log.LogError(error)
     }

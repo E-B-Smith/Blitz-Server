@@ -157,7 +157,7 @@ func SetEntityTagsWithUserID(userID, entityID string, entityType BlitzMessage.En
                 values ($1, $2, $3, $4);`,
             userID, entityID, entityType, cleanTag)
 
-        error = pgsql.ResultError(result, error)
+        error = pgsql.UpdateResultError(result, error)
         if error != nil { Log.LogError(error) }
     }
 }
