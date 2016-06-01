@@ -16,6 +16,7 @@ package main
 
 import (
     "fmt"
+    "time"
     "database/sql"
     "github.com/lib/pq"
     "violent.blue/GoKit/Log"
@@ -180,12 +181,12 @@ func ReadUserConversation(userID string, conversationID string) (*BlitzMessage.C
     conv.ConversationID     =   &conversationID
     conv.InitiatorUserID    =   &initiatorUserID.String
     conv.Status             =   BlitzMessage.UserMessageStatus(status.Int64).Enum()
-    conv.CreationDate       =   BlitzMessage.TimestampPtrFromNullTime(creationDate)
+    conv.CreationDate       =   BlitzMessage.TimestampPtr(creationDate)
     conv.MessageCount       =   Int32PtrFromNullInt64(replyCount)
     conv.UnreadCount        =   Int32PtrFromNullInt64(unreadCount)
     conv.LastMessage        =   &lastMessage.String
-    conv.LastActivityDate   =   BlitzMessage.TimestampPtrFromNullTime(lastActivity)
-    conv.ClosedDate         =   BlitzMessage.TimestampPtrFromNullTime(closedDate)
+    conv.LastActivityDate   =   BlitzMessage.TimestampPtr(lastActivity)
+    conv.ClosedDate         =   BlitzMessage.TimestampPtr(closedDate)
     conv.ConversationType   =   &conversationType
     conv.IsFree             =   BoolPtr(isFree.Bool)
     conv.ChargeID           =   proto.String(chargeID.String)
@@ -269,10 +270,28 @@ func StartConversation(session *Session, req *BlitzMessage.ConversationRequest) 
             MemberIDs:          memberArray,
         }
 
-        error := WriteConversation(conversation)
+        error = WriteConversation(conversation)
         if error != nil {
             return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
         }
+
+        //  Add a system to the participants --
+
+        introMessage := fmt.Sprintf("Chat with %s and %s.\n%s.",
+            PrettyNameForUserID(memberArray[0]),
+            PrettyNameForUserID(memberArray[1]),
+            PrettyTimestampLong(time.Now()),
+        )
+        error = SendUserMessageInternal(
+            BlitzMessage.Default_Global_SystemUserID,
+            memberArray,
+            conversationID,
+            introMessage,
+            BlitzMessage.UserMessageType_MTConversation,
+            "",
+            "",
+        )
+        if error != nil { Log.LogError(error) }
     }
 
     conversation, error = ReadUserConversation(session.UserID, conversationID)
@@ -387,16 +406,16 @@ func FetchFeedPostsAsConversations(userID string) []*BlitzMessage.Conversation {
         conv.InitiatorUserID    =   &userID.String
         conv.ParentFeedPostID   =   &postID.String
         conv.Status             =   BlitzMessage.UserMessageStatus(BlitzMessage.UserMessageStatus_MSRead).Enum()
-        conv.CreationDate       =   BlitzMessage.TimestampPtrFromNullTime(createDate)
+        conv.CreationDate       =   BlitzMessage.TimestampPtr(createDate)
         conv.LastMessage        =   &replyText.String
         conv.MessageCount       =   Int32PtrFromNullInt64(replyCount)
         conv.HeadlineText       =   &headline.String
         conv.ConversationType   =   &conversationType
 
         if replyDate.Valid {
-            conv.LastActivityDate = BlitzMessage.TimestampPtrFromNullTime(replyDate)
+            conv.LastActivityDate = BlitzMessage.TimestampPtr(replyDate)
         } else {
-            conv.LastActivityDate = BlitzMessage.TimestampPtrFromNullTime(createDate)
+            conv.LastActivityDate = BlitzMessage.TimestampPtr(createDate)
         }
 
         if replyUser.Valid {
@@ -477,13 +496,13 @@ func FetchNotificationsAsConversations(userID string) []*BlitzMessage.Conversati
         conv.ConversationID     =   &messageID.String
         conv.InitiatorUserID    =   &senderID.String
         conv.Status             =   BlitzMessage.UserMessageStatus(status.Int64).Enum()
-        conv.CreationDate       =   BlitzMessage.TimestampPtrFromNullTime(creationDate)
+        conv.CreationDate       =   BlitzMessage.TimestampPtr(creationDate)
         conv.MessageCount       =   proto.Int32(1)
         conv.UnreadCount        =   proto.Int32(unreadCount)
         conv.LastMessage        =   &lastMessage.String
-        conv.LastActivityDate   =   BlitzMessage.TimestampPtrFromNullTime(creationDate)
+        conv.LastActivityDate   =   BlitzMessage.TimestampPtr(creationDate)
         conv.LastActionURL      =   &lastActionURL.String
-        conv.ClosedDate         =   BlitzMessage.TimestampPtrFromNullTime(readDate)
+        conv.ClosedDate         =   BlitzMessage.TimestampPtr(readDate)
         conv.MemberIDs          =   []string { senderID.String, recipientID.String }
         conv.ConversationType   =   &conversationType
 

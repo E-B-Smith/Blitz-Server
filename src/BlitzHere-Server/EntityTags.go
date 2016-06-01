@@ -382,10 +382,12 @@ func SendFriendRequest(session *Session, request *BlitzMessage.FriendUpdate) *Bl
         SendUserMessageInternal(
             session.UserID,
             []string { *request.FriendID },
+            "",
             message,
             BlitzMessage.UserMessageType_MTNotification,
             "",
-            actionURL)
+            actionURL,
+        )
     }
 
     profiles := make([]*BlitzMessage.UserProfile, 2)

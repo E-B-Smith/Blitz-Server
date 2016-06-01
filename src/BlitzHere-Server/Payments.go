@@ -323,7 +323,7 @@ func ChargeRequest(session *Session, chargeReq *BlitzMessage.Charge) *BlitzMessa
             chargeToken
         ) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10);`,
         chargeReq.ChargeID,
-        BlitzMessage.NullTimeFromTimestamp(chargeReq.Timestamp),
+        chargeReq.Timestamp.NullTime(),
         chargeReq.ChargeStatus,
         chargeReq.PayerID,
         chargeReq.PurchaseType,

@@ -121,9 +121,7 @@ func (pusher *MessagePusher) Connect(connection *websocket.Conn) (*MessagePushUs
     user := NewMessagePushUser(connection)
     user.Format = format
     user.userID = userID
-    user.LastMessageTime = BlitzMessage.TimePtrFromTimestamp(
-        request.RequestType.PushConnect.LastMessageTimestamp,
-    )
+    user.LastMessageTime = request.RequestType.PushConnect.LastMessageTimestamp.TimePtr()
 
     pusher.connectionMap[connection] = userID
     pusher.userMap[userID] = user

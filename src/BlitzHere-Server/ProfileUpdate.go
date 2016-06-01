@@ -147,7 +147,7 @@ func UpdateProfile(profile *BlitzMessage.UserProfile) error {
     }
 
     if profile.CreationDate == nil {
-        profile.CreationDate = BlitzMessage.TimestampFromTime(time.Now())
+        profile.CreationDate = BlitzMessage.TimestampPtr(time.Now())
     }
 
     //  eDebug -- Remove this:
@@ -168,7 +168,7 @@ func UpdateProfile(profile *BlitzMessage.UserProfile) error {
                 where userID = $7;`,
         profile.Name,
         profile.Gender,
-        BlitzMessage.NullTimeFromTimestamp(profile.Birthday),
+        profile.Birthday.NullTime(),
         profile.BackgroundSummary,
         pgsql.NullStringFromStringArray(profile.InterestTags),
         profile.StripeAccount,

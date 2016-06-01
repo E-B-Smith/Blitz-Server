@@ -225,11 +225,15 @@ func UserConfirmation(session *Session, confirmation *BlitzMessage.ConfirmationR
 
     if confirmation.InviterUserID != nil {
         message := fmt.Sprintf("%s accepted your connection.", *profile.Name)
-        SendUserMessageInternal(BlitzMessage.Default_Globals_SystemUserID,
-                []string{ *confirmation.InviterUserID },
-                message,
-                BlitzMessage.UserMessageType_MTNotification,
-                "AppIcon", "")
+        SendUserMessageInternal(
+            BlitzMessage.Default_Global_SystemUserID,
+            []string{ *confirmation.InviterUserID },
+            "",
+            message,
+            BlitzMessage.UserMessageType_MTNotification,
+            "AppIcon",
+            "",
+        )
     }
 
     return response

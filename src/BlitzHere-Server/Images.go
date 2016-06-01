@@ -85,7 +85,7 @@ func UploadImage(session *Session, imageUpload *BlitzMessage.ImageUpload,
     crc = int64(crc32.ChecksumIEEE(imageData.ImageBytes))
     imageData.Crc32 = &crc
     if imageData.DateAdded == nil {
-        imageData.DateAdded = BlitzMessage.TimestampFromTime(time.Now())
+        imageData.DateAdded = BlitzMessage.TimestampPtr(time.Now())
     }
 
     var error error
@@ -103,7 +103,8 @@ func UploadImage(session *Session, imageUpload *BlitzMessage.ImageUpload,
              imageData.ContentType,
              imageData.Crc32,
              imageData.ImageBytes,
-             BlitzMessage.TimeFromTimestamp(imageData.DateAdded))
+             imageData.DateAdded.TimePtr(),
+    )
     if error != nil || pgsql.RowsUpdated(result) != 1 {
         //Log.LogError(error)
         result, error = config.DB.Exec(
@@ -116,9 +117,10 @@ func UploadImage(session *Session, imageUpload *BlitzMessage.ImageUpload,
                  imageData.ImageContent,
                  imageData.ContentType,
                  imageData.ImageBytes,
-                 BlitzMessage.TimeFromTimestamp(imageData.DateAdded),
+                 imageData.DateAdded.TimePtr(),
                  session.UserID,
-                 imageData.Crc32)
+                 imageData.Crc32,
+        )
     }
     if error != nil {
         return ServerResponseForError(BlitzMessage.ResponseCode_RCServerError, error)

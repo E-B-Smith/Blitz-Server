@@ -22,9 +22,11 @@ option (google.protobuf.objectivec_file_options).relax_camel_case = true;
 //                                                                                 Globals
 //----------------------------------------------------------------------------------------
 
-message Globals {
-  optional string SystemUserID = 1 [default = 'E4227250-C8E5-4DA9-8177-F084020910B8'];
+
+message Global {
+  optional string SystemUserID = 1 [default = 'e4227250-c8e5-4da9-8177-f084020910b8'];
 }
+
 
 //----------------------------------------------------------------------------------------
 //                                                                             Basic Types

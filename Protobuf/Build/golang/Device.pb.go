@@ -46,7 +46,7 @@ It has these top-level messages:
 	ServerRequest
 	ResponseType
 	ServerResponse
-	Globals
+	Global
 	Coordinate
 	Size
 	CoordinateRegion

@@ -10,8 +10,8 @@
 @class BCoordinatePolygonBuilder;
 @class BCoordinateRegion;
 @class BCoordinateRegionBuilder;
-@class BGlobals;
-@class BGlobalsBuilder;
+@class BGlobal;
+@class BGlobalBuilder;
 @class BKeyValue;
 @class BKeyValueBuilder;
 @class BLocation;
@@ -79,8 +79,8 @@
 + (void) registerAllExtensions:(PBMutableExtensionRegistry*) registry;
 @end
 
-#define Globals_SystemUserID @"systemUserID"
-@interface BGlobals : PBGeneratedMessage<GeneratedMessageProtocol> {
+#define Global_SystemUserID @"systemUserID"
+@interface BGlobal : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
   BOOL hasSystemUserID_:1;
   NSString* systemUserID;
@@ -93,40 +93,40 @@
 
 - (BOOL) isInitialized;
 - (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
-- (BGlobalsBuilder*) builder;
-+ (BGlobalsBuilder*) builder;
-+ (BGlobalsBuilder*) builderWithPrototype:(BGlobals*) prototype;
-- (BGlobalsBuilder*) toBuilder;
+- (BGlobalBuilder*) builder;
++ (BGlobalBuilder*) builder;
++ (BGlobalBuilder*) builderWithPrototype:(BGlobal*) prototype;
+- (BGlobalBuilder*) toBuilder;
 
-+ (BGlobals*) parseFromData:(NSData*) data;
-+ (BGlobals*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
-+ (BGlobals*) parseFromInputStream:(NSInputStream*) input;
-+ (BGlobals*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
-+ (BGlobals*) parseFromCodedInputStream:(PBCodedInputStream*) input;
-+ (BGlobals*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (BGlobal*) parseFromData:(NSData*) data;
++ (BGlobal*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (BGlobal*) parseFromInputStream:(NSInputStream*) input;
++ (BGlobal*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (BGlobal*) parseFromCodedInputStream:(PBCodedInputStream*) input;
++ (BGlobal*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
 @end
 
-@interface BGlobalsBuilder : PBGeneratedMessageBuilder {
+@interface BGlobalBuilder : PBGeneratedMessageBuilder {
 @private
-  BGlobals* resultGlobals;
+  BGlobal* resultGlobal;
 }
 
-- (BGlobals*) defaultInstance;
+- (BGlobal*) defaultInstance;
 
-- (BGlobalsBuilder*) clear;
-- (BGlobalsBuilder*) clone;
+- (BGlobalBuilder*) clear;
+- (BGlobalBuilder*) clone;
 
-- (BGlobals*) build;
-- (BGlobals*) buildPartial;
+- (BGlobal*) build;
+- (BGlobal*) buildPartial;
 
-- (BGlobalsBuilder*) mergeFrom:(BGlobals*) other;
-- (BGlobalsBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
-- (BGlobalsBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+- (BGlobalBuilder*) mergeFrom:(BGlobal*) other;
+- (BGlobalBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
+- (BGlobalBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
 
 - (BOOL) hasSystemUserID;
 - (NSString*) systemUserID;
-- (BGlobalsBuilder*) setSystemUserID:(NSString*) value;
-- (BGlobalsBuilder*) clearSystemUserID;
+- (BGlobalBuilder*) setSystemUserID:(NSString*) value;
+- (BGlobalBuilder*) clearSystemUserID;
 @end
 
 #define Coordinate_latitude @"latitude"

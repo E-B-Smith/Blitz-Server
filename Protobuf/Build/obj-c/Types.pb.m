@@ -21,11 +21,11 @@ static PBExtensionRegistry* extensionRegistry = nil;
 }
 @end
 
-@interface BGlobals ()
+@interface BGlobal ()
 @property (strong) NSString* systemUserID;
 @end
 
-@implementation BGlobals
+@implementation BGlobal
 
 - (BOOL) hasSystemUserID {
   return !!hasSystemUserID_;
@@ -36,21 +36,21 @@ static PBExtensionRegistry* extensionRegistry = nil;
 @synthesize systemUserID;
 - (instancetype) init {
   if ((self = [super init])) {
-    self.systemUserID = @"E4227250-C8E5-4DA9-8177-F084020910B8";
+    self.systemUserID = @"e4227250-c8e5-4da9-8177-f084020910b8";
   }
   return self;
 }
-static BGlobals* defaultBGlobalsInstance = nil;
+static BGlobal* defaultBGlobalInstance = nil;
 + (void) initialize {
-  if (self == [BGlobals class]) {
-    defaultBGlobalsInstance = [[BGlobals alloc] init];
+  if (self == [BGlobal class]) {
+    defaultBGlobalInstance = [[BGlobal alloc] init];
   }
 }
 + (instancetype) defaultInstance {
-  return defaultBGlobalsInstance;
+  return defaultBGlobalInstance;
 }
 - (instancetype) defaultInstance {
-  return defaultBGlobalsInstance;
+  return defaultBGlobalInstance;
 }
 - (BOOL) isInitialized {
   return YES;
@@ -75,35 +75,35 @@ static BGlobals* defaultBGlobalsInstance = nil;
   memoizedSerializedSize = size_;
   return size_;
 }
-+ (BGlobals*) parseFromData:(NSData*) data {
-  return (BGlobals*)[[[BGlobals builder] mergeFromData:data] build];
++ (BGlobal*) parseFromData:(NSData*) data {
+  return (BGlobal*)[[[BGlobal builder] mergeFromData:data] build];
 }
-+ (BGlobals*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
-  return (BGlobals*)[[[BGlobals builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
++ (BGlobal*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BGlobal*)[[[BGlobal builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
 }
-+ (BGlobals*) parseFromInputStream:(NSInputStream*) input {
-  return (BGlobals*)[[[BGlobals builder] mergeFromInputStream:input] build];
++ (BGlobal*) parseFromInputStream:(NSInputStream*) input {
+  return (BGlobal*)[[[BGlobal builder] mergeFromInputStream:input] build];
 }
-+ (BGlobals*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
-  return (BGlobals*)[[[BGlobals builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
++ (BGlobal*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BGlobal*)[[[BGlobal builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
 }
-+ (BGlobals*) parseFromCodedInputStream:(PBCodedInputStream*) input {
-  return (BGlobals*)[[[BGlobals builder] mergeFromCodedInputStream:input] build];
++ (BGlobal*) parseFromCodedInputStream:(PBCodedInputStream*) input {
+  return (BGlobal*)[[[BGlobal builder] mergeFromCodedInputStream:input] build];
 }
-+ (BGlobals*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
-  return (BGlobals*)[[[BGlobals builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
++ (BGlobal*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BGlobal*)[[[BGlobal builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
 }
-+ (BGlobalsBuilder*) builder {
-  return [[BGlobalsBuilder alloc] init];
++ (BGlobalBuilder*) builder {
+  return [[BGlobalBuilder alloc] init];
 }
-+ (BGlobalsBuilder*) builderWithPrototype:(BGlobals*) prototype {
-  return [[BGlobals builder] mergeFrom:prototype];
++ (BGlobalBuilder*) builderWithPrototype:(BGlobal*) prototype {
+  return [[BGlobal builder] mergeFrom:prototype];
 }
-- (BGlobalsBuilder*) builder {
-  return [BGlobals builder];
+- (BGlobalBuilder*) builder {
+  return [BGlobal builder];
 }
-- (BGlobalsBuilder*) toBuilder {
-  return [BGlobals builderWithPrototype:self];
+- (BGlobalBuilder*) toBuilder {
+  return [BGlobal builderWithPrototype:self];
 }
 - (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
   if (self.hasSystemUserID) {
@@ -121,10 +121,10 @@ static BGlobals* defaultBGlobalsInstance = nil;
   if (other == self) {
     return YES;
   }
-  if (![other isKindOfClass:[BGlobals class]]) {
+  if (![other isKindOfClass:[BGlobal class]]) {
     return NO;
   }
-  BGlobals *otherMessage = other;
+  BGlobal *otherMessage = other;
   return
       self.hasSystemUserID == otherMessage.hasSystemUserID &&
       (!self.hasSystemUserID || [self.systemUserID isEqual:otherMessage.systemUserID]) &&
@@ -140,42 +140,42 @@ static BGlobals* defaultBGlobalsInstance = nil;
 }
 @end
 
-@interface BGlobalsBuilder()
-@property (strong) BGlobals* resultGlobals;
+@interface BGlobalBuilder()
+@property (strong) BGlobal* resultGlobal;
 @end
 
-@implementation BGlobalsBuilder
-@synthesize resultGlobals;
+@implementation BGlobalBuilder
+@synthesize resultGlobal;
 - (instancetype) init {
   if ((self = [super init])) {
-    self.resultGlobals = [[BGlobals alloc] init];
+    self.resultGlobal = [[BGlobal alloc] init];
   }
   return self;
 }
 - (PBGeneratedMessage*) internalGetResult {
-  return resultGlobals;
+  return resultGlobal;
 }
-- (BGlobalsBuilder*) clear {
-  self.resultGlobals = [[BGlobals alloc] init];
+- (BGlobalBuilder*) clear {
+  self.resultGlobal = [[BGlobal alloc] init];
   return self;
 }
-- (BGlobalsBuilder*) clone {
-  return [BGlobals builderWithPrototype:resultGlobals];
+- (BGlobalBuilder*) clone {
+  return [BGlobal builderWithPrototype:resultGlobal];
 }
-- (BGlobals*) defaultInstance {
-  return [BGlobals defaultInstance];
+- (BGlobal*) defaultInstance {
+  return [BGlobal defaultInstance];
 }
-- (BGlobals*) build {
+- (BGlobal*) build {
   [self checkInitialized];
   return [self buildPartial];
 }
-- (BGlobals*) buildPartial {
-  BGlobals* returnMe = resultGlobals;
-  self.resultGlobals = nil;
+- (BGlobal*) buildPartial {
+  BGlobal* returnMe = resultGlobal;
+  self.resultGlobal = nil;
   return returnMe;
 }
-- (BGlobalsBuilder*) mergeFrom:(BGlobals*) other {
-  if (other == [BGlobals defaultInstance]) {
+- (BGlobalBuilder*) mergeFrom:(BGlobal*) other {
+  if (other == [BGlobal defaultInstance]) {
     return self;
   }
   if (other.hasSystemUserID) {
@@ -184,10 +184,10 @@ static BGlobals* defaultBGlobalsInstance = nil;
   [self mergeUnknownFields:other.unknownFields];
   return self;
 }
-- (BGlobalsBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
+- (BGlobalBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
   return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
 }
-- (BGlobalsBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+- (BGlobalBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
   PBUnknownFieldSetBuilder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
   while (YES) {
     SInt32 tag = [input readTag];
@@ -210,19 +210,19 @@ static BGlobals* defaultBGlobalsInstance = nil;
   }
 }
 - (BOOL) hasSystemUserID {
-  return resultGlobals.hasSystemUserID;
+  return resultGlobal.hasSystemUserID;
 }
 - (NSString*) systemUserID {
-  return resultGlobals.systemUserID;
+  return resultGlobal.systemUserID;
 }
-- (BGlobalsBuilder*) setSystemUserID:(NSString*) value {
-  resultGlobals.hasSystemUserID = YES;
-  resultGlobals.systemUserID = value;
+- (BGlobalBuilder*) setSystemUserID:(NSString*) value {
+  resultGlobal.hasSystemUserID = YES;
+  resultGlobal.systemUserID = value;
   return self;
 }
-- (BGlobalsBuilder*) clearSystemUserID {
-  resultGlobals.hasSystemUserID = NO;
-  resultGlobals.systemUserID = @"E4227250-C8E5-4DA9-8177-F084020910B8";
+- (BGlobalBuilder*) clearSystemUserID {
+  resultGlobal.hasSystemUserID = NO;
+  resultGlobal.systemUserID = @"e4227250-c8e5-4da9-8177-f084020910b8";
   return self;
 }
 @end

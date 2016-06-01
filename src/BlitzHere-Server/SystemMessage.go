@@ -112,7 +112,7 @@ func SystemMessageFormRequest(writer http.ResponseWriter, httpRequest *http.Requ
             ",actionURL        "+
             ") values ($1, $2, $3, $4, $5, $6, $7, $8);",
             messageID,
-            BlitzMessage.Default_Globals_SystemUserID,
+            BlitzMessage.Default_Global_SystemUserID,
             recipientID,
             messageDate,
             BlitzMessage.UserMessageType_MTSystem,

@@ -167,7 +167,7 @@ func ScanFeedPostRowForUserID(queryUserID string, row RowScanner) (*BlitzMessage
         PostScope:          BlitzMessage.FeedPostScope(postScope.Int64).Enum(),
         UserID:             StringPtrFromNullString(userID),
         AnonymousPost:      BoolPtrFromNullBool(anonymousPost),
-        Timestamp:          BlitzMessage.TimestampPtrFromNullTime(timestamp),
+        Timestamp:          BlitzMessage.TimestampPtr(timestamp),
         TimespanActive:     BlitzMessage.TimespanFromNullTimes(timeActiveStart, timeActiveStop),
         HeadlineText:       StringPtrFromNullString(headlineText),
         BodyText:           StringPtrFromNullString(bodyText),
@@ -311,6 +311,7 @@ func CreateFeedPost(session *Session, feedPost *BlitzMessage.FeedPost) error {
             message := fmt.Sprintf("%s responded to your post.", name)
             SendUserMessageInternal(*feedPost.UserID,
                 [] string { *parentPost.UserID },
+                "",
                 message,
                 BlitzMessage.UserMessageType_MTNotification,
                 "AppIcon",
@@ -338,6 +339,7 @@ func CreateFeedPost(session *Session, feedPost *BlitzMessage.FeedPost) error {
         message := *feedPost.HeadlineText
         SendUserMessageInternal(*feedPost.UserID,
             followingUsers,
+            "",
             message,
             BlitzMessage.UserMessageType_MTNotification,
             "AppIcon",

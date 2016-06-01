@@ -62,7 +62,7 @@ func WriteReview(session *Session, review *BlitzMessage.UserReview,
     }
 
     if review.Timestamp == nil {
-        review.Timestamp = BlitzMessage.TimestampFromTime(time.Now())
+        review.Timestamp = BlitzMessage.TimestampPtr(time.Now())
     }
 
     var reviewText *string
@@ -90,7 +90,7 @@ func WriteReview(session *Session, review *BlitzMessage.UserReview,
         );`,
         review.UserID,
         review.ReviewerID,
-        BlitzMessage.TimeFromTimestamp(review.Timestamp),
+        review.Timestamp.NullTime(),
         review.ConversationID,
         review.Responsive,
         review.Outgoing,
@@ -113,6 +113,22 @@ func WriteReview(session *Session, review *BlitzMessage.UserReview,
     if error != nil {
         return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
     }
+
+    //  Add a system to the participants --
+
+    message := fmt.Sprintf("This conversation has been closed.\n%s.",
+        PrettyTimestampLong(time.Now()),
+    )
+    error = SendUserMessageInternal(
+        BlitzMessage.Default_Global_SystemUserID,
+        MembersForConversationID(*review.ConversationID),
+        *review.ConversationID,
+        message,
+        BlitzMessage.UserMessageType_MTConversation,
+        "",
+        "",
+    )
+    if error != nil { Log.LogError(error) }
 
     return ServerResponseForError(BlitzMessage.ResponseCode_RCSuccess, nil)
 }
@@ -202,7 +218,7 @@ func AddReviewsToProfile(profile *BlitzMessage.UserProfile) error {
         if reviewText.Valid && len(s) > 0 {
             r := &BlitzMessage.UserReview{
                 ReviewerID:     &reviewerID,
-                Timestamp:      BlitzMessage.TimestampPtrFromNullTime(timestamp),
+                Timestamp:      BlitzMessage.TimestampPtr(timestamp),
                 ReviewText:     &s,
             }
             reviews = append(reviews, r)

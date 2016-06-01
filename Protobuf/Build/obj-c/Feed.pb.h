@@ -24,8 +24,8 @@
 @class BFeedPostResponseBuilder;
 @class BFeedPostUpdateRequest;
 @class BFeedPostUpdateRequestBuilder;
-@class BGlobals;
-@class BGlobalsBuilder;
+@class BGlobal;
+@class BGlobalBuilder;
 @class BKeyValue;
 @class BKeyValueBuilder;
 @class BLocation;

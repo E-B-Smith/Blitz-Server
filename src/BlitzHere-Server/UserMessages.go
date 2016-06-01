@@ -81,14 +81,14 @@ func ScanUserMessageTableRow(rows *sql.Rows) *BlitzMessage.UserMessage {
     }
     mt := BlitzMessage.UserMessageType(messageType);
     message := BlitzMessage.UserMessage {
-        MessageID:      &messageID,
-        SenderID:       &senderID,
-        Recipients:     []string{recipientID},
-        MessageType:    &mt,
+        MessageID:          &messageID,
+        SenderID:           &senderID,
+        Recipients:         []string{recipientID},
+        MessageType:        &mt,
+        CreationDate:       BlitzMessage.TimestampPtr(creationDate),
+        NotificationDate:   BlitzMessage.TimestampPtr(notificationDate.Time),
+        ReadDate:           BlitzMessage.TimestampPtr(readDate.Time),
     }
-    if creationDate.Valid       { message.CreationDate = BlitzMessage.TimestampFromTime(creationDate.Time) }
-    if notificationDate.Valid   { message.NotificationDate = BlitzMessage.TimestampFromTime(notificationDate.Time) }
-    if readDate.Valid           { message.ReadDate = BlitzMessage.TimestampFromTime(readDate.Time) }
     if messageText.Valid        { message.MessageText = &messageText.String }
     if actionIcon.Valid         { message.ActionIcon = &actionIcon.String }
     if actionURL.Valid          { message.ActionURL = &actionURL.String }
@@ -123,10 +123,10 @@ func UserMessageFetchRequest(session *Session, fetch *BlitzMessage.UserMessageUp
 
     if fetch.Timespan != nil {
         if fetch.Timespan.StartTimestamp != nil {
-            startDate = BlitzMessage.TimeFromTimestamp(fetch.Timespan.StartTimestamp)
+            startDate = fetch.Timespan.StartTimestamp.Time()
         }
         if fetch.Timespan.StopTimestamp != nil {
-            stopDate = BlitzMessage.TimeFromTimestamp(fetch.Timespan.StopTimestamp)
+            stopDate = fetch.Timespan.StopTimestamp.Time()
         }
     }
 
@@ -208,15 +208,6 @@ func arrayFromMap(stringMap map[string]bool) []string {
 }
 
 
-func updateMessageFromConversation(
-        session *Session,
-        message *BlitzMessage.UserMessage,
-        conversation *BlitzMessage.Conversation,
-        ) *BlitzMessage.ServerResponse {
-    return nil
-}
-
-
 func UpdateConversationMessage(
         session *Session,
         message *BlitzMessage.UserMessage,
@@ -232,6 +223,13 @@ func UpdateConversationMessage(
 
     //  Add recipients --
 
+    if len(conversation.MemberIDs) < 2 {
+        return ServerResponseForError(
+            BlitzMessage.ResponseCode_RCInputInvalid,
+            errors.New("Not enough conversation members."),
+        )
+    }
+
     message.Recipients = conversation.MemberIDs
 
     //  Add an action to the message --
@@ -246,7 +244,7 @@ func UpdateConversationMessage(
 
     if conversation.ClosedDate != nil {
         return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid,
-            errors.New("Conversation is closed."))
+            errors.New("The conversation is closed."))
     }
 
     //  Declare MakeConversationFree function:
@@ -264,25 +262,19 @@ func UpdateConversationMessage(
 
     if  (conversation.IsFree != nil && *conversation.IsFree) ||
         (conversation.ChargeID != nil && len(*conversation.ChargeID) > 0) {
-        return updateMessageFromConversation(session, message, conversation)
+        return nil
     }
     if  config.ServiceIsFree {
         _, error = config.DB.Exec(
             `update ConversationTable set isFree = true where conversationID = $1;`,
             *message.ConversationID,
         )
+        Log.Debugf("Service is in free mode.")
         makeConversationFree(*conversation.ConversationID)
-        return updateMessageFromConversation(session, message, conversation)
+        return nil
     }
 
     //  Friends?
-
-    if len(conversation.MemberIDs) < 2 {
-        return ServerResponseForError(
-            BlitzMessage.ResponseCode_RCInputInvalid,
-            errors.New("Not enough conversation members."),
-        )
-    }
 
     tags := GetEntityTagMapForUserIDEntityIDType(
         session.UserID,
@@ -290,8 +282,9 @@ func UpdateConversationMessage(
         BlitzMessage.EntityType_ETUser,
     )
     if _, ok := tags[".friends"]; ok {
+        Log.Debugf("Conversation is between friends.")
         makeConversationFree(*message.ConversationID)
-        return updateMessageFromConversation(session, message, conversation)
+        return nil
     }
 
     //  Free for user?
@@ -304,17 +297,39 @@ func UpdateConversationMessage(
     error = row.Scan(&isFree)
     if error != nil { Log.LogError(error) }
     if isFree.Bool {
+        Log.Debugf("Conversation is free for user.")
         makeConversationFree(*message.ConversationID)
-        return updateMessageFromConversation(session, message, conversation)
+        return nil
     }
 
     //  Less than four messages?
 
     if conversation.MessageCount != nil && *conversation.MessageCount <= 4 {
-        return updateMessageFromConversation(session, message, conversation)
+        Log.Debugf("Conversation < 4 messages.")
+        return nil
     }
 
     //  Make charge --
+
+    //  Send a system message to the participants --
+
+    if conversation.LastMessage == nil || ! strings.HasPrefix(*conversation.LastMessage, "Paid") {
+        chargeMessage := fmt.Sprintf("Paid chat with %s and %s.\n%s.",
+            PrettyNameForUserID(message.Recipients[0]),
+            PrettyNameForUserID(message.Recipients[1]),
+            PrettyTimestampLong(time.Now()),
+        )
+        error = SendUserMessageInternal(
+            BlitzMessage.Default_Global_SystemUserID,
+            message.Recipients,
+            *conversation.ConversationID,
+            chargeMessage,
+            BlitzMessage.UserMessageType_MTConversation,
+            "",
+            "",
+        )
+        if error != nil { Log.LogError(error) }
+    }
 
     amount := "10.00"
     memo := fmt.Sprintf("Chat with %s.",
@@ -400,12 +415,12 @@ func WriteUserMessage(message *BlitzMessage.UserMessage) error {
                 actionIcon,
                 actionURL,
                 conversationID
-            ) values ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+            ) values ($1, $2, $3, transaction_timestamp(), $4, $5, $6, $7, $8)
             on conflict do nothing;`,
             message.MessageID,
             message.SenderID,
             recipientID,
-            BlitzMessage.NullTimeFromTimestamp(message.CreationDate),
+            //BlitzMessage.NullTimeFromTimestamp(message.CreationDate),
             message.MessageType,
             message.MessageText,
             message.ActionIcon,
@@ -433,6 +448,7 @@ func WriteUserMessage(message *BlitzMessage.UserMessage) error {
 func SendUserMessageInternal(
         sender string,
         recipients []string,
+        conversationID string,
         message string,
         messageType BlitzMessage.UserMessageType,
         actionIcon string,
@@ -453,12 +469,15 @@ func SendUserMessageInternal(
         MessageID:      StringPtr(Util.NewUUIDString()),
         SenderID:       &sender,
         Recipients:     recipients,
-        CreationDate:   BlitzMessage.TimestampFromTime(time.Now()),
+        CreationDate:   BlitzMessage.TimestampPtr(time.Now()),
         MessageType:    &messageType,
         MessageStatus:  &status,
         MessageText:    &message,
         ActionIcon:     &actionIcon,
         ActionURL:      &actionURL,
+    }
+    if len(conversationID) > 0 {
+        blitzMessage.ConversationID = proto.String(conversationID)
     }
 
     WriteUserMessage(blitzMessage)

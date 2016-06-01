@@ -26,8 +26,8 @@
 @class BEntityTagListBuilder;
 @class BFriendUpdate;
 @class BFriendUpdateBuilder;
-@class BGlobals;
-@class BGlobalsBuilder;
+@class BGlobal;
+@class BGlobalBuilder;
 @class BImageData;
 @class BImageDataBuilder;
 @class BImageUpload;

@@ -8,44 +8,44 @@ public final class Types {
   public static void registerAllExtensions(
       com.google.protobuf.ExtensionRegistry registry) {
   }
-  public interface GlobalsOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:BlitzMessage.Globals)
+  public interface GlobalOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:BlitzMessage.Global)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>optional string SystemUserID = 1 [default = "E4227250-C8E5-4DA9-8177-F084020910B8"];</code>
+     * <code>optional string SystemUserID = 1 [default = "e4227250-c8e5-4da9-8177-f084020910b8"];</code>
      */
     boolean hasSystemUserID();
     /**
-     * <code>optional string SystemUserID = 1 [default = "E4227250-C8E5-4DA9-8177-F084020910B8"];</code>
+     * <code>optional string SystemUserID = 1 [default = "e4227250-c8e5-4da9-8177-f084020910b8"];</code>
      */
     java.lang.String getSystemUserID();
     /**
-     * <code>optional string SystemUserID = 1 [default = "E4227250-C8E5-4DA9-8177-F084020910B8"];</code>
+     * <code>optional string SystemUserID = 1 [default = "e4227250-c8e5-4da9-8177-f084020910b8"];</code>
      */
     com.google.protobuf.ByteString
         getSystemUserIDBytes();
   }
   /**
-   * Protobuf type {@code BlitzMessage.Globals}
+   * Protobuf type {@code BlitzMessage.Global}
    */
-  public static final class Globals extends
+  public static final class Global extends
       com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:BlitzMessage.Globals)
-      GlobalsOrBuilder {
-    // Use Globals.newBuilder() to construct.
-    private Globals(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      // @@protoc_insertion_point(message_implements:BlitzMessage.Global)
+      GlobalOrBuilder {
+    // Use Global.newBuilder() to construct.
+    private Global(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
       this.unknownFields = builder.getUnknownFields();
     }
-    private Globals(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+    private Global(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
 
-    private static final Globals defaultInstance;
-    public static Globals getDefaultInstance() {
+    private static final Global defaultInstance;
+    public static Global getDefaultInstance() {
       return defaultInstance;
     }
 
-    public Globals getDefaultInstanceForType() {
+    public Global getDefaultInstanceForType() {
       return defaultInstance;
     }
 
@@ -55,7 +55,7 @@ public final class Types {
         getUnknownFields() {
       return this.unknownFields;
     }
-    private Globals(
+    private Global(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -98,28 +98,28 @@ public final class Types {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.blitzhere.BlitzMessage.Types.internal_static_BlitzMessage_Globals_descriptor;
+      return com.blitzhere.BlitzMessage.Types.internal_static_BlitzMessage_Global_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.blitzhere.BlitzMessage.Types.internal_static_BlitzMessage_Globals_fieldAccessorTable
+      return com.blitzhere.BlitzMessage.Types.internal_static_BlitzMessage_Global_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.blitzhere.BlitzMessage.Types.Globals.class, com.blitzhere.BlitzMessage.Types.Globals.Builder.class);
+              com.blitzhere.BlitzMessage.Types.Global.class, com.blitzhere.BlitzMessage.Types.Global.Builder.class);
     }
 
-    public static com.google.protobuf.Parser<Globals> PARSER =
-        new com.google.protobuf.AbstractParser<Globals>() {
-      public Globals parsePartialFrom(
+    public static com.google.protobuf.Parser<Global> PARSER =
+        new com.google.protobuf.AbstractParser<Global>() {
+      public Global parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new Globals(input, extensionRegistry);
+        return new Global(input, extensionRegistry);
       }
     };
 
     @java.lang.Override
-    public com.google.protobuf.Parser<Globals> getParserForType() {
+    public com.google.protobuf.Parser<Global> getParserForType() {
       return PARSER;
     }
 
@@ -127,13 +127,13 @@ public final class Types {
     public static final int SYSTEMUSERID_FIELD_NUMBER = 1;
     private java.lang.Object systemUserID_;
     /**
-     * <code>optional string SystemUserID = 1 [default = "E4227250-C8E5-4DA9-8177-F084020910B8"];</code>
+     * <code>optional string SystemUserID = 1 [default = "e4227250-c8e5-4da9-8177-f084020910b8"];</code>
      */
     public boolean hasSystemUserID() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     /**
-     * <code>optional string SystemUserID = 1 [default = "E4227250-C8E5-4DA9-8177-F084020910B8"];</code>
+     * <code>optional string SystemUserID = 1 [default = "e4227250-c8e5-4da9-8177-f084020910b8"];</code>
      */
     public java.lang.String getSystemUserID() {
       java.lang.Object ref = systemUserID_;
@@ -150,7 +150,7 @@ public final class Types {
       }
     }
     /**
-     * <code>optional string SystemUserID = 1 [default = "E4227250-C8E5-4DA9-8177-F084020910B8"];</code>
+     * <code>optional string SystemUserID = 1 [default = "e4227250-c8e5-4da9-8177-f084020910b8"];</code>
      */
     public com.google.protobuf.ByteString
         getSystemUserIDBytes() {
@@ -167,7 +167,7 @@ public final class Types {
     }
 
     private void initFields() {
-      systemUserID_ = "E4227250-C8E5-4DA9-8177-F084020910B8";
+      systemUserID_ = "e4227250-c8e5-4da9-8177-f084020910b8";
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -210,53 +210,53 @@ public final class Types {
       return super.writeReplace();
     }
 
-    public static com.blitzhere.BlitzMessage.Types.Globals parseFrom(
+    public static com.blitzhere.BlitzMessage.Types.Global parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.blitzhere.BlitzMessage.Types.Globals parseFrom(
+    public static com.blitzhere.BlitzMessage.Types.Global parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.blitzhere.BlitzMessage.Types.Globals parseFrom(byte[] data)
+    public static com.blitzhere.BlitzMessage.Types.Global parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.blitzhere.BlitzMessage.Types.Globals parseFrom(
+    public static com.blitzhere.BlitzMessage.Types.Global parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.blitzhere.BlitzMessage.Types.Globals parseFrom(java.io.InputStream input)
+    public static com.blitzhere.BlitzMessage.Types.Global parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static com.blitzhere.BlitzMessage.Types.Globals parseFrom(
+    public static com.blitzhere.BlitzMessage.Types.Global parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseFrom(input, extensionRegistry);
     }
-    public static com.blitzhere.BlitzMessage.Types.Globals parseDelimitedFrom(java.io.InputStream input)
+    public static com.blitzhere.BlitzMessage.Types.Global parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input);
     }
-    public static com.blitzhere.BlitzMessage.Types.Globals parseDelimitedFrom(
+    public static com.blitzhere.BlitzMessage.Types.Global parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input, extensionRegistry);
     }
-    public static com.blitzhere.BlitzMessage.Types.Globals parseFrom(
+    public static com.blitzhere.BlitzMessage.Types.Global parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static com.blitzhere.BlitzMessage.Types.Globals parseFrom(
+    public static com.blitzhere.BlitzMessage.Types.Global parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -265,7 +265,7 @@ public final class Types {
 
     public static Builder newBuilder() { return Builder.create(); }
     public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.blitzhere.BlitzMessage.Types.Globals prototype) {
+    public static Builder newBuilder(com.blitzhere.BlitzMessage.Types.Global prototype) {
       return newBuilder().mergeFrom(prototype);
     }
     public Builder toBuilder() { return newBuilder(this); }
@@ -277,25 +277,25 @@ public final class Types {
       return builder;
     }
     /**
-     * Protobuf type {@code BlitzMessage.Globals}
+     * Protobuf type {@code BlitzMessage.Global}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:BlitzMessage.Globals)
-        com.blitzhere.BlitzMessage.Types.GlobalsOrBuilder {
+        // @@protoc_insertion_point(builder_implements:BlitzMessage.Global)
+        com.blitzhere.BlitzMessage.Types.GlobalOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.blitzhere.BlitzMessage.Types.internal_static_BlitzMessage_Globals_descriptor;
+        return com.blitzhere.BlitzMessage.Types.internal_static_BlitzMessage_Global_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.blitzhere.BlitzMessage.Types.internal_static_BlitzMessage_Globals_fieldAccessorTable
+        return com.blitzhere.BlitzMessage.Types.internal_static_BlitzMessage_Global_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                com.blitzhere.BlitzMessage.Types.Globals.class, com.blitzhere.BlitzMessage.Types.Globals.Builder.class);
+                com.blitzhere.BlitzMessage.Types.Global.class, com.blitzhere.BlitzMessage.Types.Global.Builder.class);
       }
 
-      // Construct using com.blitzhere.BlitzMessage.Types.Globals.newBuilder()
+      // Construct using com.blitzhere.BlitzMessage.Types.Global.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -315,7 +315,7 @@ public final class Types {
 
       public Builder clear() {
         super.clear();
-        systemUserID_ = "E4227250-C8E5-4DA9-8177-F084020910B8";
+        systemUserID_ = "e4227250-c8e5-4da9-8177-f084020910b8";
         bitField0_ = (bitField0_ & ~0x00000001);
         return this;
       }
@@ -326,23 +326,23 @@ public final class Types {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.blitzhere.BlitzMessage.Types.internal_static_BlitzMessage_Globals_descriptor;
+        return com.blitzhere.BlitzMessage.Types.internal_static_BlitzMessage_Global_descriptor;
       }
 
-      public com.blitzhere.BlitzMessage.Types.Globals getDefaultInstanceForType() {
-        return com.blitzhere.BlitzMessage.Types.Globals.getDefaultInstance();
+      public com.blitzhere.BlitzMessage.Types.Global getDefaultInstanceForType() {
+        return com.blitzhere.BlitzMessage.Types.Global.getDefaultInstance();
       }
 
-      public com.blitzhere.BlitzMessage.Types.Globals build() {
-        com.blitzhere.BlitzMessage.Types.Globals result = buildPartial();
+      public com.blitzhere.BlitzMessage.Types.Global build() {
+        com.blitzhere.BlitzMessage.Types.Global result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
         return result;
       }
 
-      public com.blitzhere.BlitzMessage.Types.Globals buildPartial() {
-        com.blitzhere.BlitzMessage.Types.Globals result = new com.blitzhere.BlitzMessage.Types.Globals(this);
+      public com.blitzhere.BlitzMessage.Types.Global buildPartial() {
+        com.blitzhere.BlitzMessage.Types.Global result = new com.blitzhere.BlitzMessage.Types.Global(this);
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
@@ -355,16 +355,16 @@ public final class Types {
       }
 
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.blitzhere.BlitzMessage.Types.Globals) {
-          return mergeFrom((com.blitzhere.BlitzMessage.Types.Globals)other);
+        if (other instanceof com.blitzhere.BlitzMessage.Types.Global) {
+          return mergeFrom((com.blitzhere.BlitzMessage.Types.Global)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(com.blitzhere.BlitzMessage.Types.Globals other) {
-        if (other == com.blitzhere.BlitzMessage.Types.Globals.getDefaultInstance()) return this;
+      public Builder mergeFrom(com.blitzhere.BlitzMessage.Types.Global other) {
+        if (other == com.blitzhere.BlitzMessage.Types.Global.getDefaultInstance()) return this;
         if (other.hasSystemUserID()) {
           bitField0_ |= 0x00000001;
           systemUserID_ = other.systemUserID_;
@@ -382,11 +382,11 @@ public final class Types {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.blitzhere.BlitzMessage.Types.Globals parsedMessage = null;
+        com.blitzhere.BlitzMessage.Types.Global parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.blitzhere.BlitzMessage.Types.Globals) e.getUnfinishedMessage();
+          parsedMessage = (com.blitzhere.BlitzMessage.Types.Global) e.getUnfinishedMessage();
           throw e;
         } finally {
           if (parsedMessage != null) {
@@ -397,15 +397,15 @@ public final class Types {
       }
       private int bitField0_;
 
-      private java.lang.Object systemUserID_ = "E4227250-C8E5-4DA9-8177-F084020910B8";
+      private java.lang.Object systemUserID_ = "e4227250-c8e5-4da9-8177-f084020910b8";
       /**
-       * <code>optional string SystemUserID = 1 [default = "E4227250-C8E5-4DA9-8177-F084020910B8"];</code>
+       * <code>optional string SystemUserID = 1 [default = "e4227250-c8e5-4da9-8177-f084020910b8"];</code>
        */
       public boolean hasSystemUserID() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       /**
-       * <code>optional string SystemUserID = 1 [default = "E4227250-C8E5-4DA9-8177-F084020910B8"];</code>
+       * <code>optional string SystemUserID = 1 [default = "e4227250-c8e5-4da9-8177-f084020910b8"];</code>
        */
       public java.lang.String getSystemUserID() {
         java.lang.Object ref = systemUserID_;
@@ -422,7 +422,7 @@ public final class Types {
         }
       }
       /**
-       * <code>optional string SystemUserID = 1 [default = "E4227250-C8E5-4DA9-8177-F084020910B8"];</code>
+       * <code>optional string SystemUserID = 1 [default = "e4227250-c8e5-4da9-8177-f084020910b8"];</code>
        */
       public com.google.protobuf.ByteString
           getSystemUserIDBytes() {
@@ -438,7 +438,7 @@ public final class Types {
         }
       }
       /**
-       * <code>optional string SystemUserID = 1 [default = "E4227250-C8E5-4DA9-8177-F084020910B8"];</code>
+       * <code>optional string SystemUserID = 1 [default = "e4227250-c8e5-4da9-8177-f084020910b8"];</code>
        */
       public Builder setSystemUserID(
           java.lang.String value) {
@@ -451,7 +451,7 @@ public final class Types {
         return this;
       }
       /**
-       * <code>optional string SystemUserID = 1 [default = "E4227250-C8E5-4DA9-8177-F084020910B8"];</code>
+       * <code>optional string SystemUserID = 1 [default = "e4227250-c8e5-4da9-8177-f084020910b8"];</code>
        */
       public Builder clearSystemUserID() {
         bitField0_ = (bitField0_ & ~0x00000001);
@@ -460,7 +460,7 @@ public final class Types {
         return this;
       }
       /**
-       * <code>optional string SystemUserID = 1 [default = "E4227250-C8E5-4DA9-8177-F084020910B8"];</code>
+       * <code>optional string SystemUserID = 1 [default = "e4227250-c8e5-4da9-8177-f084020910b8"];</code>
        */
       public Builder setSystemUserIDBytes(
           com.google.protobuf.ByteString value) {
@@ -473,15 +473,15 @@ public final class Types {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:BlitzMessage.Globals)
+      // @@protoc_insertion_point(builder_scope:BlitzMessage.Global)
     }
 
     static {
-      defaultInstance = new Globals(true);
+      defaultInstance = new Global(true);
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:BlitzMessage.Globals)
+    // @@protoc_insertion_point(class_scope:BlitzMessage.Global)
   }
 
   public interface CoordinateOrBuilder extends
@@ -6028,10 +6028,10 @@ public final class Types {
   }
 
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_BlitzMessage_Globals_descriptor;
+    internal_static_BlitzMessage_Global_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_BlitzMessage_Globals_fieldAccessorTable;
+      internal_static_BlitzMessage_Global_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_BlitzMessage_Coordinate_descriptor;
   private static
@@ -6087,25 +6087,25 @@ public final class Types {
   static {
     java.lang.String[] descriptorData = {
       "\n\013Types.proto\022\014BlitzMessage\032\033objectivec-" +
-      "descriptor.proto\"E\n\007Globals\022:\n\014SystemUse" +
-      "rID\030\001 \001(\t:$E4227250-C8E5-4DA9-8177-F0840" +
-      "20910B8\"=\n\nCoordinate\022\026\n\010latitude\030\001 \001(\001:" +
-      "\004-360\022\027\n\tlongitude\030\002 \001(\001:\004-360\"+\n\004Size\022\020" +
-      "\n\005width\030\001 \001(\001:\0010\022\021\n\006height\030\002 \001(\001:\0010\"^\n\020C" +
-      "oordinateRegion\022(\n\006center\030\001 \001(\0132\030.BlitzM" +
-      "essage.Coordinate\022 \n\004size\030\002 \001(\0132\022.BlitzM" +
-      "essage.Size\"=\n\021CoordinatePolygon\022(\n\006poin" +
-      "ts\030\001 \003(\0132\030.BlitzMessage.Coordinate\"|\n\010Lo",
-      "cation\022,\n\ncoordinate\030\001 \001(\0132\030.BlitzMessag" +
-      "e.Coordinate\022\020\n\010altitude\030\002 \001(\001\022\r\n\005speed\030" +
-      "\003 \001(\001\022\016\n\006course\030\004 \001(\001\022\021\n\tplacename\030\005 \001(\t" +
-      "\"\032\n\tTimestamp\022\r\n\005epoch\030\001 \002(\001\"k\n\010Timespan" +
-      "\022/\n\016startTimestamp\030\001 \001(\0132\027.BlitzMessage." +
-      "Timestamp\022.\n\rstopTimestamp\030\002 \001(\0132\027.Blitz" +
-      "Message.Timestamp\"\033\n\004Void\022\023\n\013debugString" +
-      "\030\001 \001(\t\"&\n\010KeyValue\022\013\n\003key\030\001 \001(\t\022\r\n\005value" +
-      "\030\002 \003(\tB/\n\032com.blitzhere.BlitzMessage\210\001\001\322" +
-      ">\002\n\000\322>\003\022\001B\322>\002\030\001"
+      "descriptor.proto\"D\n\006Global\022:\n\014SystemUser" +
+      "ID\030\001 \001(\t:$e4227250-c8e5-4da9-8177-f08402" +
+      "0910b8\"=\n\nCoordinate\022\026\n\010latitude\030\001 \001(\001:\004" +
+      "-360\022\027\n\tlongitude\030\002 \001(\001:\004-360\"+\n\004Size\022\020\n" +
+      "\005width\030\001 \001(\001:\0010\022\021\n\006height\030\002 \001(\001:\0010\"^\n\020Co" +
+      "ordinateRegion\022(\n\006center\030\001 \001(\0132\030.BlitzMe" +
+      "ssage.Coordinate\022 \n\004size\030\002 \001(\0132\022.BlitzMe" +
+      "ssage.Size\"=\n\021CoordinatePolygon\022(\n\006point" +
+      "s\030\001 \003(\0132\030.BlitzMessage.Coordinate\"|\n\010Loc",
+      "ation\022,\n\ncoordinate\030\001 \001(\0132\030.BlitzMessage" +
+      ".Coordinate\022\020\n\010altitude\030\002 \001(\001\022\r\n\005speed\030\003" +
+      " \001(\001\022\016\n\006course\030\004 \001(\001\022\021\n\tplacename\030\005 \001(\t\"" +
+      "\032\n\tTimestamp\022\r\n\005epoch\030\001 \002(\001\"k\n\010Timespan\022" +
+      "/\n\016startTimestamp\030\001 \001(\0132\027.BlitzMessage.T" +
+      "imestamp\022.\n\rstopTimestamp\030\002 \001(\0132\027.BlitzM" +
+      "essage.Timestamp\"\033\n\004Void\022\023\n\013debugString\030" +
+      "\001 \001(\t\"&\n\010KeyValue\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030" +
+      "\002 \003(\tB/\n\032com.blitzhere.BlitzMessage\210\001\001\322>" +
+      "\002\n\000\322>\003\022\001B\322>\002\030\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -6120,11 +6120,11 @@ public final class Types {
         new com.google.protobuf.Descriptors.FileDescriptor[] {
           google.protobuf.ObjectivecDescriptor.getDescriptor(),
         }, assigner);
-    internal_static_BlitzMessage_Globals_descriptor =
+    internal_static_BlitzMessage_Global_descriptor =
       getDescriptor().getMessageTypes().get(0);
-    internal_static_BlitzMessage_Globals_fieldAccessorTable = new
+    internal_static_BlitzMessage_Global_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_BlitzMessage_Globals_descriptor,
+        internal_static_BlitzMessage_Global_descriptor,
         new java.lang.String[] { "SystemUserID", });
     internal_static_BlitzMessage_Coordinate_descriptor =
       getDescriptor().getMessageTypes().get(1);

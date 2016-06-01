@@ -116,7 +116,7 @@ func ImagesForUserID(userID string) []*BlitzMessage.ImageData {
         }
         content := BlitzMessage.ImageContent(*Int32PtrFromNullInt64(imageContent))
         imageData := BlitzMessage.ImageData {
-            DateAdded:      BlitzMessage.TimestampPtrFromNullTime(dateAdded),
+            DateAdded:      BlitzMessage.TimestampPtr(dateAdded),
             ImageContent:   &content,
             ContentType:    StringPtrFromNullString(contentType),
             Crc32:          &crc32,
@@ -336,11 +336,11 @@ func ProfileForUserID(session *Session, userID string) *BlitzMessage.UserProfile
     profile := new(BlitzMessage.UserProfile)
     profile.UserID      = proto.String(profileID)
     profile.UserStatus  = BlitzMessage.UserStatus(userStatus.Int64).Enum()
-    profile.CreationDate= BlitzMessage.TimestampFromTime(creationDate.Time)
-    profile.LastSeen    = BlitzMessage.TimestampFromTime(lastSeen.Time)
+    profile.CreationDate= BlitzMessage.TimestampPtr(creationDate.Time)
+    profile.LastSeen    = BlitzMessage.TimestampPtr(lastSeen.Time)
     profile.Name        = proto.String(name.String)
     profile.Gender      = BlitzMessage.Gender(gender.Int64).Enum()
-    profile.Birthday    = BlitzMessage.TimestampFromTime(birthday.Time)
+    profile.Birthday    = BlitzMessage.TimestampPtr(birthday.Time)
     profile.BackgroundSummary = proto.String(background.String)
     profile.InterestTags = pgsql.StringArrayFromNullString(interestTags)
 

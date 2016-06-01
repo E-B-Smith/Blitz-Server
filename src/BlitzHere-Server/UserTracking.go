@@ -25,19 +25,21 @@ func UpdateUserTrackingEvent(userID string, event *BlitzMessage.UserEvent) error
         if error := recover(); error != nil { Log.LogStackWithError(error) }
     } ()
 
-    result, error := config.DB.Exec("update UserEventTable set " +
+    result, error := config.DB.Exec(
+        "update UserEventTable set " +
         " (userID, timestamp, location, event, eventData) = " +
         " ($1, $2, row($3, $4, $5), $6, $7)" +
         " where userID = $8 and timestamp = $9;",
         &userID,
-        BlitzMessage.NullTimeFromTimestamp(event.Timestamp),
+        event.Timestamp.NullTime(),
         event.Location.Coordinate.Latitude,
         event.Location.Coordinate.Longitude,
         event.Location.Placename,
         event.Event,
         pgsql.NullStringFromStringArray(event.EventData),
         &userID,
-        BlitzMessage.NullTimeFromTimestamp(event.Timestamp));
+        event.Timestamp.NullTime(),
+    )
 
     var rowsUpdated int64 = 0
     if result != nil { rowsUpdated, _ = result.RowsAffected() }
@@ -47,7 +49,9 @@ func UpdateUserTrackingEvent(userID string, event *BlitzMessage.UserEvent) error
 //         userID, BlitzMessage.NullTimeFromTimestamp(event.Timestamp))
     } else {
         Log.Debugf("Inserting event %s %v: %v.",
-           userID, BlitzMessage.NullTimeFromTimestamp(event.Timestamp), error)
+           userID, event.Timestamp.NullTime(),
+           error,
+        )
 
         //  Insert instead --
 
@@ -55,15 +59,16 @@ func UpdateUserTrackingEvent(userID string, event *BlitzMessage.UserEvent) error
             " (userID, timestamp, location, event, eventdata) values " +
             " ($1, $2, row($3, $4, $5), $6, $7);",
             &userID,
-            BlitzMessage.NullTimeFromTimestamp(event.Timestamp),
+            event.Timestamp.NullTime(),
             event.Location.Coordinate.Latitude,
             event.Location.Coordinate.Longitude,
             event.Location.Placename,
             event.Event,
-            pgsql.NullStringFromStringArray(event.EventData));
+            pgsql.NullStringFromStringArray(event.EventData),
+        )
 
         if error != nil {
-            Log.Errorf("Error inserting event %s %v: %v.", userID, BlitzMessage.NullTimeFromTimestamp(event.Timestamp), error)
+            Log.Errorf("Error inserting event %s %v: %v.", userID, event.Timestamp.NullTime(), error)
         }
     }
     return error
@@ -93,7 +98,10 @@ func UpdateUserTrackingBatch(session *Session, userEvents *BlitzMessage.UserEven
             errorCount++
             if firstError == nil { firstError = error }
             Log.Errorf("Error updating event %s %v: %v.",
-                session.UserID, BlitzMessage.NullTimeFromTimestamp(userEvents.UserEvents[i].Timestamp), error)
+                session.UserID,
+                userEvents.UserEvents[i].Timestamp.NullTime(),
+                error,
+            )
         }
     }
 

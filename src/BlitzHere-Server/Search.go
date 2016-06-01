@@ -89,7 +89,7 @@ func AutocompleteRequest(session *Session, query *BlitzMessage.AutocompleteReque
     }
 
     response := &BlitzMessage.ServerResponse {
-        ResponseCode:       BlitzMessage.ResponseCodePtr(BlitzMessage.ResponseCode_RCSuccess),
+        ResponseCode:       BlitzMessage.ResponseCode(BlitzMessage.ResponseCode_RCSuccess).Enum(),
         ResponseType:       &BlitzMessage.ResponseType { AutocompleteResponse: &results },
     }
     return response
@@ -154,7 +154,7 @@ func UserSearchRequest(session *Session, query *BlitzMessage.UserSearchRequest,
     }
 
     response := &BlitzMessage.ServerResponse {
-        ResponseCode:       BlitzMessage.ResponseCodePtr(BlitzMessage.ResponseCode_RCSuccess),
+        ResponseCode:       BlitzMessage.ResponseCode(BlitzMessage.ResponseCode_RCSuccess).Enum(),
         ResponseType:       &BlitzMessage.ResponseType { UserSearchResponse: &results },
     }
     return response
@@ -219,7 +219,7 @@ func FetchSearchCategories(session *Session, query *BlitzMessage.SearchCategorie
     }
 
     response := &BlitzMessage.ServerResponse {
-        ResponseCode:       BlitzMessage.ResponseCodePtr(BlitzMessage.ResponseCode_RCSuccess),
+        ResponseCode:       BlitzMessage.ResponseCode(BlitzMessage.ResponseCode_RCSuccess).Enum(),
         ResponseType:       &BlitzMessage.ResponseType { SearchCategories: &searchCategories },
     }
     return response

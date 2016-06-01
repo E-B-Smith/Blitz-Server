@@ -13,8 +13,8 @@
 @class BCoordinateRegionBuilder;
 @class BDeviceInfo;
 @class BDeviceInfoBuilder;
-@class BGlobals;
-@class BGlobalsBuilder;
+@class BGlobal;
+@class BGlobalBuilder;
 @class BKeyValue;
 @class BKeyValueBuilder;
 @class BLocation;

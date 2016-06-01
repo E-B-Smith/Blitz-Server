@@ -145,6 +145,11 @@ func TimeFromRFC3339(s *string) time.Time {
     return time.Time{}
 }
 
+
+func PrettyTimestampLong(t time.Time) string {
+    return t.Format("Monday January 2, 2006 at 3:04 pm")
+}
+
 // type RowScanner interface {
 //     Scan(dest ...interface{}) error
 // }
