@@ -1526,24 +1526,6 @@ public final class Feed {
       if (isInitialized == 1) return true;
       if (isInitialized == 0) return false;
 
-      if (hasTimestamp()) {
-        if (!getTimestamp().isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-      }
-      if (hasTimespanActive()) {
-        if (!getTimespanActive().isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-      }
-      for (int i = 0; i < getRepliesDeprecatedCount(); i++) {
-        if (!getRepliesDeprecated(i).isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-      }
       memoizedIsInitialized = 1;
       return true;
     }
@@ -2157,24 +2139,6 @@ public final class Feed {
       }
 
       public final boolean isInitialized() {
-        if (hasTimestamp()) {
-          if (!getTimestamp().isInitialized()) {
-            
-            return false;
-          }
-        }
-        if (hasTimespanActive()) {
-          if (!getTimespanActive().isInitialized()) {
-            
-            return false;
-          }
-        }
-        for (int i = 0; i < getRepliesDeprecatedCount(); i++) {
-          if (!getRepliesDeprecated(i).isInitialized()) {
-            
-            return false;
-          }
-        }
         return true;
       }
 
@@ -4138,18 +4102,6 @@ public final class Feed {
       if (isInitialized == 1) return true;
       if (isInitialized == 0) return false;
 
-      if (hasFeedPostDeprecated()) {
-        if (!getFeedPostDeprecated().isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-      }
-      for (int i = 0; i < getFeedPostsCount(); i++) {
-        if (!getFeedPosts(i).isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-      }
       memoizedIsInitialized = 1;
       return true;
     }
@@ -4422,18 +4374,6 @@ public final class Feed {
       }
 
       public final boolean isInitialized() {
-        if (hasFeedPostDeprecated()) {
-          if (!getFeedPostDeprecated().isInitialized()) {
-            
-            return false;
-          }
-        }
-        for (int i = 0; i < getFeedPostsCount(); i++) {
-          if (!getFeedPosts(i).isInitialized()) {
-            
-            return false;
-          }
-        }
         return true;
       }
 
@@ -5109,12 +5049,6 @@ public final class Feed {
       if (isInitialized == 1) return true;
       if (isInitialized == 0) return false;
 
-      if (hasTimespan()) {
-        if (!getTimespan().isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-      }
       memoizedIsInitialized = 1;
       return true;
     }
@@ -5356,12 +5290,6 @@ public final class Feed {
       }
 
       public final boolean isInitialized() {
-        if (hasTimespan()) {
-          if (!getTimespan().isInitialized()) {
-            
-            return false;
-          }
-        }
         return true;
       }
 
@@ -5836,12 +5764,6 @@ public final class Feed {
       if (isInitialized == 1) return true;
       if (isInitialized == 0) return false;
 
-      for (int i = 0; i < getFeedPostsCount(); i++) {
-        if (!getFeedPosts(i).isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-      }
       memoizedIsInitialized = 1;
       return true;
     }
@@ -6071,12 +5993,6 @@ public final class Feed {
       }
 
       public final boolean isInitialized() {
-        for (int i = 0; i < getFeedPostsCount(); i++) {
-          if (!getFeedPosts(i).isInitialized()) {
-            
-            return false;
-          }
-        }
         return true;
       }
 

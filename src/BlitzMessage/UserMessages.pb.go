@@ -55,7 +55,7 @@ func (x *UserMessageStatus) UnmarshalJSON(data []byte) error {
 	*x = UserMessageStatus(value)
 	return nil
 }
-func (UserMessageStatus) EnumDescriptor() ([]byte, []int) { return fileDescriptor8, []int{0} }
+func (UserMessageStatus) EnumDescriptor() ([]byte, []int) { return fileDescriptor9, []int{0} }
 
 type ConversationType int32
 
@@ -95,7 +95,7 @@ func (x *ConversationType) UnmarshalJSON(data []byte) error {
 	*x = ConversationType(value)
 	return nil
 }
-func (ConversationType) EnumDescriptor() ([]byte, []int) { return fileDescriptor8, []int{1} }
+func (ConversationType) EnumDescriptor() ([]byte, []int) { return fileDescriptor9, []int{1} }
 
 type UserMessageType int32
 
@@ -138,7 +138,7 @@ func (x *UserMessageType) UnmarshalJSON(data []byte) error {
 	*x = UserMessageType(value)
 	return nil
 }
-func (UserMessageType) EnumDescriptor() ([]byte, []int) { return fileDescriptor8, []int{2} }
+func (UserMessageType) EnumDescriptor() ([]byte, []int) { return fileDescriptor9, []int{2} }
 
 type Conversation struct {
 	ConversationID     *string            `protobuf:"bytes,1,opt,name=conversationID" json:"conversationID,omitempty"`
@@ -164,7 +164,7 @@ type Conversation struct {
 func (m *Conversation) Reset()                    { *m = Conversation{} }
 func (m *Conversation) String() string            { return proto.CompactTextString(m) }
 func (*Conversation) ProtoMessage()               {}
-func (*Conversation) Descriptor() ([]byte, []int) { return fileDescriptor8, []int{0} }
+func (*Conversation) Descriptor() ([]byte, []int) { return fileDescriptor9, []int{0} }
 
 func (m *Conversation) GetConversationID() string {
 	if m != nil && m.ConversationID != nil {
@@ -294,7 +294,7 @@ type ConversationRequest struct {
 func (m *ConversationRequest) Reset()                    { *m = ConversationRequest{} }
 func (m *ConversationRequest) String() string            { return proto.CompactTextString(m) }
 func (*ConversationRequest) ProtoMessage()               {}
-func (*ConversationRequest) Descriptor() ([]byte, []int) { return fileDescriptor8, []int{1} }
+func (*ConversationRequest) Descriptor() ([]byte, []int) { return fileDescriptor9, []int{1} }
 
 func (m *ConversationRequest) GetUserIDs() []string {
 	if m != nil {
@@ -319,7 +319,7 @@ type ConversationResponse struct {
 func (m *ConversationResponse) Reset()                    { *m = ConversationResponse{} }
 func (m *ConversationResponse) String() string            { return proto.CompactTextString(m) }
 func (*ConversationResponse) ProtoMessage()               {}
-func (*ConversationResponse) Descriptor() ([]byte, []int) { return fileDescriptor8, []int{2} }
+func (*ConversationResponse) Descriptor() ([]byte, []int) { return fileDescriptor9, []int{2} }
 
 func (m *ConversationResponse) GetConversation() *Conversation {
 	if m != nil {
@@ -344,7 +344,7 @@ type FetchConversations struct {
 func (m *FetchConversations) Reset()                    { *m = FetchConversations{} }
 func (m *FetchConversations) String() string            { return proto.CompactTextString(m) }
 func (*FetchConversations) ProtoMessage()               {}
-func (*FetchConversations) Descriptor() ([]byte, []int) { return fileDescriptor8, []int{3} }
+func (*FetchConversations) Descriptor() ([]byte, []int) { return fileDescriptor9, []int{3} }
 
 func (m *FetchConversations) GetTimespan() *Timespan {
 	if m != nil {
@@ -370,7 +370,7 @@ type UpdateConversationStatus struct {
 func (m *UpdateConversationStatus) Reset()                    { *m = UpdateConversationStatus{} }
 func (m *UpdateConversationStatus) String() string            { return proto.CompactTextString(m) }
 func (*UpdateConversationStatus) ProtoMessage()               {}
-func (*UpdateConversationStatus) Descriptor() ([]byte, []int) { return fileDescriptor8, []int{4} }
+func (*UpdateConversationStatus) Descriptor() ([]byte, []int) { return fileDescriptor9, []int{4} }
 
 func (m *UpdateConversationStatus) GetConversationID() string {
 	if m != nil && m.ConversationID != nil {
@@ -412,7 +412,7 @@ type UserMessage struct {
 func (m *UserMessage) Reset()                    { *m = UserMessage{} }
 func (m *UserMessage) String() string            { return proto.CompactTextString(m) }
 func (*UserMessage) ProtoMessage()               {}
-func (*UserMessage) Descriptor() ([]byte, []int) { return fileDescriptor8, []int{5} }
+func (*UserMessage) Descriptor() ([]byte, []int) { return fileDescriptor9, []int{5} }
 
 func (m *UserMessage) GetMessageID() string {
 	if m != nil && m.MessageID != nil {
@@ -507,7 +507,7 @@ type UserMessageUpdate struct {
 func (m *UserMessageUpdate) Reset()                    { *m = UserMessageUpdate{} }
 func (m *UserMessageUpdate) String() string            { return proto.CompactTextString(m) }
 func (*UserMessageUpdate) ProtoMessage()               {}
-func (*UserMessageUpdate) Descriptor() ([]byte, []int) { return fileDescriptor8, []int{6} }
+func (*UserMessageUpdate) Descriptor() ([]byte, []int) { return fileDescriptor9, []int{6} }
 
 func (m *UserMessageUpdate) GetTimespan() *Timespan {
 	if m != nil {
@@ -536,7 +536,7 @@ func init() {
 	proto.RegisterEnum("BlitzMessage.UserMessageType", UserMessageType_name, UserMessageType_value)
 }
 
-var fileDescriptor8 = []byte{
+var fileDescriptor9 = []byte{
 	// 800 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x09, 0x6e, 0x88, 0x02, 0xff, 0x9c, 0x55, 0xcb, 0x4e, 0xf3, 0x46,
 	0x14, 0xfe, 0x1d, 0x87, 0xe0, 0x1c, 0xe7, 0x62, 0x06, 0xfa, 0xe3, 0xa6, 0x6a, 0x8b, 0xb2, 0xa2,

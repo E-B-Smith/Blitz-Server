@@ -263,11 +263,6 @@ static BSocialIdentity* defaultBSocialIdentityInstance = nil;
   if (!self.hasSocialService) {
     return NO;
   }
-  if (self.hasAuthExpire) {
-    if (!self.authExpire.isInitialized) {
-      return NO;
-    }
-  }
   return YES;
 }
 - (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
@@ -1157,11 +1152,6 @@ static BEmployment* defaultBEmploymentInstance = nil;
   return defaultBEmploymentInstance;
 }
 - (BOOL) isInitialized {
-  if (self.hasTimespan) {
-    if (!self.timespan.isInitialized) {
-      return NO;
-    }
-  }
   return YES;
 }
 - (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
@@ -1668,11 +1658,6 @@ static BEducation* defaultBEducationInstance = nil;
   return defaultBEducationInstance;
 }
 - (BOOL) isInitialized {
-  if (self.hasTimespan) {
-    if (!self.timespan.isInitialized) {
-      return NO;
-    }
-  }
   return YES;
 }
 - (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
@@ -2122,11 +2107,6 @@ static BImageData* defaultBImageDataInstance = nil;
   return defaultBImageDataInstance;
 }
 - (BOOL) isInitialized {
-  if (self.hasDateAdded) {
-    if (!self.dateAdded.isInitialized) {
-      return NO;
-    }
-  }
   return YES;
 }
 - (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
@@ -2674,11 +2654,6 @@ static BUserReview* defaultBUserReviewInstance = nil;
   return [tagsArray objectAtIndex:index];
 }
 - (BOOL) isInitialized {
-  if (self.hasTimestamp) {
-    if (!self.timestamp.isInitialized) {
-      return NO;
-    }
-  }
   return YES;
 }
 - (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
@@ -3485,29 +3460,6 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   return [reviewsArray objectAtIndex:index];
 }
 - (BOOL) isInitialized {
-  if (self.hasCreationDate) {
-    if (!self.creationDate.isInitialized) {
-      return NO;
-    }
-  }
-  if (self.hasLastSeen) {
-    if (!self.lastSeen.isInitialized) {
-      return NO;
-    }
-  }
-  if (self.hasBirthday) {
-    if (!self.birthday.isInitialized) {
-      return NO;
-    }
-  }
-  __block BOOL isInitimages = YES;
-   [self.images enumerateObjectsUsingBlock:^(BImageData *element, NSUInteger idx, BOOL *stop) {
-    if (!element.isInitialized) {
-      isInitimages = NO;
-      *stop = YES;
-    }
-  }];
-  if (!isInitimages) return isInitimages;
   __block BOOL isInitsocialIdentities = YES;
    [self.socialIdentities enumerateObjectsUsingBlock:^(BSocialIdentity *element, NSUInteger idx, BOOL *stop) {
     if (!element.isInitialized) {
@@ -3524,35 +3476,6 @@ static BUserProfile* defaultBUserProfileInstance = nil;
     }
   }];
   if (!isInitcontactInfo) return isInitcontactInfo;
-  if (self.hasHeadlineEmployment) {
-    if (!self.headlineEmployment.isInitialized) {
-      return NO;
-    }
-  }
-  __block BOOL isInitemployment = YES;
-   [self.employment enumerateObjectsUsingBlock:^(BEmployment *element, NSUInteger idx, BOOL *stop) {
-    if (!element.isInitialized) {
-      isInitemployment = NO;
-      *stop = YES;
-    }
-  }];
-  if (!isInitemployment) return isInitemployment;
-  __block BOOL isIniteducation = YES;
-   [self.education enumerateObjectsUsingBlock:^(BEducation *element, NSUInteger idx, BOOL *stop) {
-    if (!element.isInitialized) {
-      isIniteducation = NO;
-      *stop = YES;
-    }
-  }];
-  if (!isIniteducation) return isIniteducation;
-  __block BOOL isInitreviews = YES;
-   [self.reviews enumerateObjectsUsingBlock:^(BUserReview *element, NSUInteger idx, BOOL *stop) {
-    if (!element.isInitialized) {
-      isInitreviews = NO;
-      *stop = YES;
-    }
-  }];
-  if (!isInitreviews) return isInitreviews;
   return YES;
 }
 - (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
@@ -5022,14 +4945,6 @@ static BImageUpload* defaultBImageUploadInstance = nil;
   return [imageDataArray objectAtIndex:index];
 }
 - (BOOL) isInitialized {
-  __block BOOL isInitimageData = YES;
-   [self.imageData enumerateObjectsUsingBlock:^(BImageData *element, NSUInteger idx, BOOL *stop) {
-    if (!element.isInitialized) {
-      isInitimageData = NO;
-      *stop = YES;
-    }
-  }];
-  if (!isInitimageData) return isInitimageData;
   return YES;
 }
 - (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {

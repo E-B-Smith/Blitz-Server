@@ -21,1672 +21,6 @@ static PBExtensionRegistry* extensionRegistry = nil;
 }
 @end
 
-@interface BGlobal ()
-@property (strong) NSString* systemUserID;
-@end
-
-@implementation BGlobal
-
-- (BOOL) hasSystemUserID {
-  return !!hasSystemUserID_;
-}
-- (void) setHasSystemUserID:(BOOL) _value_ {
-  hasSystemUserID_ = !!_value_;
-}
-@synthesize systemUserID;
-- (instancetype) init {
-  if ((self = [super init])) {
-    self.systemUserID = @"e4227250-c8e5-4da9-8177-f084020910b8";
-  }
-  return self;
-}
-static BGlobal* defaultBGlobalInstance = nil;
-+ (void) initialize {
-  if (self == [BGlobal class]) {
-    defaultBGlobalInstance = [[BGlobal alloc] init];
-  }
-}
-+ (instancetype) defaultInstance {
-  return defaultBGlobalInstance;
-}
-- (instancetype) defaultInstance {
-  return defaultBGlobalInstance;
-}
-- (BOOL) isInitialized {
-  return YES;
-}
-- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
-  if (self.hasSystemUserID) {
-    [output writeString:1 value:self.systemUserID];
-  }
-  [self.unknownFields writeToCodedOutputStream:output];
-}
-- (SInt32) serializedSize {
-  __block SInt32 size_ = memoizedSerializedSize;
-  if (size_ != -1) {
-    return size_;
-  }
-
-  size_ = 0;
-  if (self.hasSystemUserID) {
-    size_ += computeStringSize(1, self.systemUserID);
-  }
-  size_ += self.unknownFields.serializedSize;
-  memoizedSerializedSize = size_;
-  return size_;
-}
-+ (BGlobal*) parseFromData:(NSData*) data {
-  return (BGlobal*)[[[BGlobal builder] mergeFromData:data] build];
-}
-+ (BGlobal*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
-  return (BGlobal*)[[[BGlobal builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
-}
-+ (BGlobal*) parseFromInputStream:(NSInputStream*) input {
-  return (BGlobal*)[[[BGlobal builder] mergeFromInputStream:input] build];
-}
-+ (BGlobal*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
-  return (BGlobal*)[[[BGlobal builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
-}
-+ (BGlobal*) parseFromCodedInputStream:(PBCodedInputStream*) input {
-  return (BGlobal*)[[[BGlobal builder] mergeFromCodedInputStream:input] build];
-}
-+ (BGlobal*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
-  return (BGlobal*)[[[BGlobal builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
-}
-+ (BGlobalBuilder*) builder {
-  return [[BGlobalBuilder alloc] init];
-}
-+ (BGlobalBuilder*) builderWithPrototype:(BGlobal*) prototype {
-  return [[BGlobal builder] mergeFrom:prototype];
-}
-- (BGlobalBuilder*) builder {
-  return [BGlobal builder];
-}
-- (BGlobalBuilder*) toBuilder {
-  return [BGlobal builderWithPrototype:self];
-}
-- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
-  if (self.hasSystemUserID) {
-    [output appendFormat:@"%@%@: %@\n", indent, @"systemUserID", self.systemUserID];
-  }
-  [self.unknownFields writeDescriptionTo:output withIndent:indent];
-}
-- (void) storeInDictionary:(NSMutableDictionary *)dictionary {
-  if (self.hasSystemUserID) {
-    [dictionary setObject: self.systemUserID forKey: @"systemUserID"];
-  }
-  [self.unknownFields storeInDictionary:dictionary];
-}
-- (BOOL) isEqual:(id)other {
-  if (other == self) {
-    return YES;
-  }
-  if (![other isKindOfClass:[BGlobal class]]) {
-    return NO;
-  }
-  BGlobal *otherMessage = other;
-  return
-      self.hasSystemUserID == otherMessage.hasSystemUserID &&
-      (!self.hasSystemUserID || [self.systemUserID isEqual:otherMessage.systemUserID]) &&
-      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
-}
-- (NSUInteger) hash {
-  __block NSUInteger hashCode = 7;
-  if (self.hasSystemUserID) {
-    hashCode = hashCode * 31 + [self.systemUserID hash];
-  }
-  hashCode = hashCode * 31 + [self.unknownFields hash];
-  return hashCode;
-}
-@end
-
-@interface BGlobalBuilder()
-@property (strong) BGlobal* resultGlobal;
-@end
-
-@implementation BGlobalBuilder
-@synthesize resultGlobal;
-- (instancetype) init {
-  if ((self = [super init])) {
-    self.resultGlobal = [[BGlobal alloc] init];
-  }
-  return self;
-}
-- (PBGeneratedMessage*) internalGetResult {
-  return resultGlobal;
-}
-- (BGlobalBuilder*) clear {
-  self.resultGlobal = [[BGlobal alloc] init];
-  return self;
-}
-- (BGlobalBuilder*) clone {
-  return [BGlobal builderWithPrototype:resultGlobal];
-}
-- (BGlobal*) defaultInstance {
-  return [BGlobal defaultInstance];
-}
-- (BGlobal*) build {
-  [self checkInitialized];
-  return [self buildPartial];
-}
-- (BGlobal*) buildPartial {
-  BGlobal* returnMe = resultGlobal;
-  self.resultGlobal = nil;
-  return returnMe;
-}
-- (BGlobalBuilder*) mergeFrom:(BGlobal*) other {
-  if (other == [BGlobal defaultInstance]) {
-    return self;
-  }
-  if (other.hasSystemUserID) {
-    [self setSystemUserID:other.systemUserID];
-  }
-  [self mergeUnknownFields:other.unknownFields];
-  return self;
-}
-- (BGlobalBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
-  return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
-}
-- (BGlobalBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
-  PBUnknownFieldSetBuilder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
-  while (YES) {
-    SInt32 tag = [input readTag];
-    switch (tag) {
-      case 0:
-        [self setUnknownFields:[unknownFields build]];
-        return self;
-      default: {
-        if (![self parseUnknownField:input unknownFields:unknownFields extensionRegistry:extensionRegistry tag:tag]) {
-          [self setUnknownFields:[unknownFields build]];
-          return self;
-        }
-        break;
-      }
-      case 10: {
-        [self setSystemUserID:[input readString]];
-        break;
-      }
-    }
-  }
-}
-- (BOOL) hasSystemUserID {
-  return resultGlobal.hasSystemUserID;
-}
-- (NSString*) systemUserID {
-  return resultGlobal.systemUserID;
-}
-- (BGlobalBuilder*) setSystemUserID:(NSString*) value {
-  resultGlobal.hasSystemUserID = YES;
-  resultGlobal.systemUserID = value;
-  return self;
-}
-- (BGlobalBuilder*) clearSystemUserID {
-  resultGlobal.hasSystemUserID = NO;
-  resultGlobal.systemUserID = @"e4227250-c8e5-4da9-8177-f084020910b8";
-  return self;
-}
-@end
-
-@interface BCoordinate ()
-@property Float64 latitude;
-@property Float64 longitude;
-@end
-
-@implementation BCoordinate
-
-- (BOOL) hasLatitude {
-  return !!hasLatitude_;
-}
-- (void) setHasLatitude:(BOOL) _value_ {
-  hasLatitude_ = !!_value_;
-}
-@synthesize latitude;
-- (BOOL) hasLongitude {
-  return !!hasLongitude_;
-}
-- (void) setHasLongitude:(BOOL) _value_ {
-  hasLongitude_ = !!_value_;
-}
-@synthesize longitude;
-- (instancetype) init {
-  if ((self = [super init])) {
-    self.latitude = -360;
-    self.longitude = -360;
-  }
-  return self;
-}
-static BCoordinate* defaultBCoordinateInstance = nil;
-+ (void) initialize {
-  if (self == [BCoordinate class]) {
-    defaultBCoordinateInstance = [[BCoordinate alloc] init];
-  }
-}
-+ (instancetype) defaultInstance {
-  return defaultBCoordinateInstance;
-}
-- (instancetype) defaultInstance {
-  return defaultBCoordinateInstance;
-}
-- (BOOL) isInitialized {
-  return YES;
-}
-- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
-  if (self.hasLatitude) {
-    [output writeDouble:1 value:self.latitude];
-  }
-  if (self.hasLongitude) {
-    [output writeDouble:2 value:self.longitude];
-  }
-  [self.unknownFields writeToCodedOutputStream:output];
-}
-- (SInt32) serializedSize {
-  __block SInt32 size_ = memoizedSerializedSize;
-  if (size_ != -1) {
-    return size_;
-  }
-
-  size_ = 0;
-  if (self.hasLatitude) {
-    size_ += computeDoubleSize(1, self.latitude);
-  }
-  if (self.hasLongitude) {
-    size_ += computeDoubleSize(2, self.longitude);
-  }
-  size_ += self.unknownFields.serializedSize;
-  memoizedSerializedSize = size_;
-  return size_;
-}
-+ (BCoordinate*) parseFromData:(NSData*) data {
-  return (BCoordinate*)[[[BCoordinate builder] mergeFromData:data] build];
-}
-+ (BCoordinate*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
-  return (BCoordinate*)[[[BCoordinate builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
-}
-+ (BCoordinate*) parseFromInputStream:(NSInputStream*) input {
-  return (BCoordinate*)[[[BCoordinate builder] mergeFromInputStream:input] build];
-}
-+ (BCoordinate*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
-  return (BCoordinate*)[[[BCoordinate builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
-}
-+ (BCoordinate*) parseFromCodedInputStream:(PBCodedInputStream*) input {
-  return (BCoordinate*)[[[BCoordinate builder] mergeFromCodedInputStream:input] build];
-}
-+ (BCoordinate*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
-  return (BCoordinate*)[[[BCoordinate builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
-}
-+ (BCoordinateBuilder*) builder {
-  return [[BCoordinateBuilder alloc] init];
-}
-+ (BCoordinateBuilder*) builderWithPrototype:(BCoordinate*) prototype {
-  return [[BCoordinate builder] mergeFrom:prototype];
-}
-- (BCoordinateBuilder*) builder {
-  return [BCoordinate builder];
-}
-- (BCoordinateBuilder*) toBuilder {
-  return [BCoordinate builderWithPrototype:self];
-}
-- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
-  if (self.hasLatitude) {
-    [output appendFormat:@"%@%@: %@\n", indent, @"latitude", [NSNumber numberWithDouble:self.latitude]];
-  }
-  if (self.hasLongitude) {
-    [output appendFormat:@"%@%@: %@\n", indent, @"longitude", [NSNumber numberWithDouble:self.longitude]];
-  }
-  [self.unknownFields writeDescriptionTo:output withIndent:indent];
-}
-- (void) storeInDictionary:(NSMutableDictionary *)dictionary {
-  if (self.hasLatitude) {
-    [dictionary setObject: [NSNumber numberWithDouble:self.latitude] forKey: @"latitude"];
-  }
-  if (self.hasLongitude) {
-    [dictionary setObject: [NSNumber numberWithDouble:self.longitude] forKey: @"longitude"];
-  }
-  [self.unknownFields storeInDictionary:dictionary];
-}
-- (BOOL) isEqual:(id)other {
-  if (other == self) {
-    return YES;
-  }
-  if (![other isKindOfClass:[BCoordinate class]]) {
-    return NO;
-  }
-  BCoordinate *otherMessage = other;
-  return
-      self.hasLatitude == otherMessage.hasLatitude &&
-      (!self.hasLatitude || self.latitude == otherMessage.latitude) &&
-      self.hasLongitude == otherMessage.hasLongitude &&
-      (!self.hasLongitude || self.longitude == otherMessage.longitude) &&
-      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
-}
-- (NSUInteger) hash {
-  __block NSUInteger hashCode = 7;
-  if (self.hasLatitude) {
-    hashCode = hashCode * 31 + [[NSNumber numberWithDouble:self.latitude] hash];
-  }
-  if (self.hasLongitude) {
-    hashCode = hashCode * 31 + [[NSNumber numberWithDouble:self.longitude] hash];
-  }
-  hashCode = hashCode * 31 + [self.unknownFields hash];
-  return hashCode;
-}
-@end
-
-@interface BCoordinateBuilder()
-@property (strong) BCoordinate* resultCoordinate;
-@end
-
-@implementation BCoordinateBuilder
-@synthesize resultCoordinate;
-- (instancetype) init {
-  if ((self = [super init])) {
-    self.resultCoordinate = [[BCoordinate alloc] init];
-  }
-  return self;
-}
-- (PBGeneratedMessage*) internalGetResult {
-  return resultCoordinate;
-}
-- (BCoordinateBuilder*) clear {
-  self.resultCoordinate = [[BCoordinate alloc] init];
-  return self;
-}
-- (BCoordinateBuilder*) clone {
-  return [BCoordinate builderWithPrototype:resultCoordinate];
-}
-- (BCoordinate*) defaultInstance {
-  return [BCoordinate defaultInstance];
-}
-- (BCoordinate*) build {
-  [self checkInitialized];
-  return [self buildPartial];
-}
-- (BCoordinate*) buildPartial {
-  BCoordinate* returnMe = resultCoordinate;
-  self.resultCoordinate = nil;
-  return returnMe;
-}
-- (BCoordinateBuilder*) mergeFrom:(BCoordinate*) other {
-  if (other == [BCoordinate defaultInstance]) {
-    return self;
-  }
-  if (other.hasLatitude) {
-    [self setLatitude:other.latitude];
-  }
-  if (other.hasLongitude) {
-    [self setLongitude:other.longitude];
-  }
-  [self mergeUnknownFields:other.unknownFields];
-  return self;
-}
-- (BCoordinateBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
-  return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
-}
-- (BCoordinateBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
-  PBUnknownFieldSetBuilder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
-  while (YES) {
-    SInt32 tag = [input readTag];
-    switch (tag) {
-      case 0:
-        [self setUnknownFields:[unknownFields build]];
-        return self;
-      default: {
-        if (![self parseUnknownField:input unknownFields:unknownFields extensionRegistry:extensionRegistry tag:tag]) {
-          [self setUnknownFields:[unknownFields build]];
-          return self;
-        }
-        break;
-      }
-      case 9: {
-        [self setLatitude:[input readDouble]];
-        break;
-      }
-      case 17: {
-        [self setLongitude:[input readDouble]];
-        break;
-      }
-    }
-  }
-}
-- (BOOL) hasLatitude {
-  return resultCoordinate.hasLatitude;
-}
-- (Float64) latitude {
-  return resultCoordinate.latitude;
-}
-- (BCoordinateBuilder*) setLatitude:(Float64) value {
-  resultCoordinate.hasLatitude = YES;
-  resultCoordinate.latitude = value;
-  return self;
-}
-- (BCoordinateBuilder*) clearLatitude {
-  resultCoordinate.hasLatitude = NO;
-  resultCoordinate.latitude = -360;
-  return self;
-}
-- (BOOL) hasLongitude {
-  return resultCoordinate.hasLongitude;
-}
-- (Float64) longitude {
-  return resultCoordinate.longitude;
-}
-- (BCoordinateBuilder*) setLongitude:(Float64) value {
-  resultCoordinate.hasLongitude = YES;
-  resultCoordinate.longitude = value;
-  return self;
-}
-- (BCoordinateBuilder*) clearLongitude {
-  resultCoordinate.hasLongitude = NO;
-  resultCoordinate.longitude = -360;
-  return self;
-}
-@end
-
-@interface BSize ()
-@property Float64 width;
-@property Float64 height;
-@end
-
-@implementation BSize
-
-- (BOOL) hasWidth {
-  return !!hasWidth_;
-}
-- (void) setHasWidth:(BOOL) _value_ {
-  hasWidth_ = !!_value_;
-}
-@synthesize width;
-- (BOOL) hasHeight {
-  return !!hasHeight_;
-}
-- (void) setHasHeight:(BOOL) _value_ {
-  hasHeight_ = !!_value_;
-}
-@synthesize height;
-- (instancetype) init {
-  if ((self = [super init])) {
-    self.width = 0;
-    self.height = 0;
-  }
-  return self;
-}
-static BSize* defaultBSizeInstance = nil;
-+ (void) initialize {
-  if (self == [BSize class]) {
-    defaultBSizeInstance = [[BSize alloc] init];
-  }
-}
-+ (instancetype) defaultInstance {
-  return defaultBSizeInstance;
-}
-- (instancetype) defaultInstance {
-  return defaultBSizeInstance;
-}
-- (BOOL) isInitialized {
-  return YES;
-}
-- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
-  if (self.hasWidth) {
-    [output writeDouble:1 value:self.width];
-  }
-  if (self.hasHeight) {
-    [output writeDouble:2 value:self.height];
-  }
-  [self.unknownFields writeToCodedOutputStream:output];
-}
-- (SInt32) serializedSize {
-  __block SInt32 size_ = memoizedSerializedSize;
-  if (size_ != -1) {
-    return size_;
-  }
-
-  size_ = 0;
-  if (self.hasWidth) {
-    size_ += computeDoubleSize(1, self.width);
-  }
-  if (self.hasHeight) {
-    size_ += computeDoubleSize(2, self.height);
-  }
-  size_ += self.unknownFields.serializedSize;
-  memoizedSerializedSize = size_;
-  return size_;
-}
-+ (BSize*) parseFromData:(NSData*) data {
-  return (BSize*)[[[BSize builder] mergeFromData:data] build];
-}
-+ (BSize*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
-  return (BSize*)[[[BSize builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
-}
-+ (BSize*) parseFromInputStream:(NSInputStream*) input {
-  return (BSize*)[[[BSize builder] mergeFromInputStream:input] build];
-}
-+ (BSize*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
-  return (BSize*)[[[BSize builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
-}
-+ (BSize*) parseFromCodedInputStream:(PBCodedInputStream*) input {
-  return (BSize*)[[[BSize builder] mergeFromCodedInputStream:input] build];
-}
-+ (BSize*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
-  return (BSize*)[[[BSize builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
-}
-+ (BSizeBuilder*) builder {
-  return [[BSizeBuilder alloc] init];
-}
-+ (BSizeBuilder*) builderWithPrototype:(BSize*) prototype {
-  return [[BSize builder] mergeFrom:prototype];
-}
-- (BSizeBuilder*) builder {
-  return [BSize builder];
-}
-- (BSizeBuilder*) toBuilder {
-  return [BSize builderWithPrototype:self];
-}
-- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
-  if (self.hasWidth) {
-    [output appendFormat:@"%@%@: %@\n", indent, @"width", [NSNumber numberWithDouble:self.width]];
-  }
-  if (self.hasHeight) {
-    [output appendFormat:@"%@%@: %@\n", indent, @"height", [NSNumber numberWithDouble:self.height]];
-  }
-  [self.unknownFields writeDescriptionTo:output withIndent:indent];
-}
-- (void) storeInDictionary:(NSMutableDictionary *)dictionary {
-  if (self.hasWidth) {
-    [dictionary setObject: [NSNumber numberWithDouble:self.width] forKey: @"width"];
-  }
-  if (self.hasHeight) {
-    [dictionary setObject: [NSNumber numberWithDouble:self.height] forKey: @"height"];
-  }
-  [self.unknownFields storeInDictionary:dictionary];
-}
-- (BOOL) isEqual:(id)other {
-  if (other == self) {
-    return YES;
-  }
-  if (![other isKindOfClass:[BSize class]]) {
-    return NO;
-  }
-  BSize *otherMessage = other;
-  return
-      self.hasWidth == otherMessage.hasWidth &&
-      (!self.hasWidth || self.width == otherMessage.width) &&
-      self.hasHeight == otherMessage.hasHeight &&
-      (!self.hasHeight || self.height == otherMessage.height) &&
-      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
-}
-- (NSUInteger) hash {
-  __block NSUInteger hashCode = 7;
-  if (self.hasWidth) {
-    hashCode = hashCode * 31 + [[NSNumber numberWithDouble:self.width] hash];
-  }
-  if (self.hasHeight) {
-    hashCode = hashCode * 31 + [[NSNumber numberWithDouble:self.height] hash];
-  }
-  hashCode = hashCode * 31 + [self.unknownFields hash];
-  return hashCode;
-}
-@end
-
-@interface BSizeBuilder()
-@property (strong) BSize* resultSize;
-@end
-
-@implementation BSizeBuilder
-@synthesize resultSize;
-- (instancetype) init {
-  if ((self = [super init])) {
-    self.resultSize = [[BSize alloc] init];
-  }
-  return self;
-}
-- (PBGeneratedMessage*) internalGetResult {
-  return resultSize;
-}
-- (BSizeBuilder*) clear {
-  self.resultSize = [[BSize alloc] init];
-  return self;
-}
-- (BSizeBuilder*) clone {
-  return [BSize builderWithPrototype:resultSize];
-}
-- (BSize*) defaultInstance {
-  return [BSize defaultInstance];
-}
-- (BSize*) build {
-  [self checkInitialized];
-  return [self buildPartial];
-}
-- (BSize*) buildPartial {
-  BSize* returnMe = resultSize;
-  self.resultSize = nil;
-  return returnMe;
-}
-- (BSizeBuilder*) mergeFrom:(BSize*) other {
-  if (other == [BSize defaultInstance]) {
-    return self;
-  }
-  if (other.hasWidth) {
-    [self setWidth:other.width];
-  }
-  if (other.hasHeight) {
-    [self setHeight:other.height];
-  }
-  [self mergeUnknownFields:other.unknownFields];
-  return self;
-}
-- (BSizeBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
-  return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
-}
-- (BSizeBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
-  PBUnknownFieldSetBuilder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
-  while (YES) {
-    SInt32 tag = [input readTag];
-    switch (tag) {
-      case 0:
-        [self setUnknownFields:[unknownFields build]];
-        return self;
-      default: {
-        if (![self parseUnknownField:input unknownFields:unknownFields extensionRegistry:extensionRegistry tag:tag]) {
-          [self setUnknownFields:[unknownFields build]];
-          return self;
-        }
-        break;
-      }
-      case 9: {
-        [self setWidth:[input readDouble]];
-        break;
-      }
-      case 17: {
-        [self setHeight:[input readDouble]];
-        break;
-      }
-    }
-  }
-}
-- (BOOL) hasWidth {
-  return resultSize.hasWidth;
-}
-- (Float64) width {
-  return resultSize.width;
-}
-- (BSizeBuilder*) setWidth:(Float64) value {
-  resultSize.hasWidth = YES;
-  resultSize.width = value;
-  return self;
-}
-- (BSizeBuilder*) clearWidth {
-  resultSize.hasWidth = NO;
-  resultSize.width = 0;
-  return self;
-}
-- (BOOL) hasHeight {
-  return resultSize.hasHeight;
-}
-- (Float64) height {
-  return resultSize.height;
-}
-- (BSizeBuilder*) setHeight:(Float64) value {
-  resultSize.hasHeight = YES;
-  resultSize.height = value;
-  return self;
-}
-- (BSizeBuilder*) clearHeight {
-  resultSize.hasHeight = NO;
-  resultSize.height = 0;
-  return self;
-}
-@end
-
-@interface BCoordinateRegion ()
-@property (strong) BCoordinate* center;
-@property (strong) BSize* size;
-@end
-
-@implementation BCoordinateRegion
-
-- (BOOL) hasCenter {
-  return !!hasCenter_;
-}
-- (void) setHasCenter:(BOOL) _value_ {
-  hasCenter_ = !!_value_;
-}
-@synthesize center;
-- (BOOL) hasSize {
-  return !!hasSize_;
-}
-- (void) setHasSize:(BOOL) _value_ {
-  hasSize_ = !!_value_;
-}
-@synthesize size;
-- (instancetype) init {
-  if ((self = [super init])) {
-    self.center = [BCoordinate defaultInstance];
-    self.size = [BSize defaultInstance];
-  }
-  return self;
-}
-static BCoordinateRegion* defaultBCoordinateRegionInstance = nil;
-+ (void) initialize {
-  if (self == [BCoordinateRegion class]) {
-    defaultBCoordinateRegionInstance = [[BCoordinateRegion alloc] init];
-  }
-}
-+ (instancetype) defaultInstance {
-  return defaultBCoordinateRegionInstance;
-}
-- (instancetype) defaultInstance {
-  return defaultBCoordinateRegionInstance;
-}
-- (BOOL) isInitialized {
-  return YES;
-}
-- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
-  if (self.hasCenter) {
-    [output writeMessage:1 value:self.center];
-  }
-  if (self.hasSize) {
-    [output writeMessage:2 value:self.size];
-  }
-  [self.unknownFields writeToCodedOutputStream:output];
-}
-- (SInt32) serializedSize {
-  __block SInt32 size_ = memoizedSerializedSize;
-  if (size_ != -1) {
-    return size_;
-  }
-
-  size_ = 0;
-  if (self.hasCenter) {
-    size_ += computeMessageSize(1, self.center);
-  }
-  if (self.hasSize) {
-    size_ += computeMessageSize(2, self.size);
-  }
-  size_ += self.unknownFields.serializedSize;
-  memoizedSerializedSize = size_;
-  return size_;
-}
-+ (BCoordinateRegion*) parseFromData:(NSData*) data {
-  return (BCoordinateRegion*)[[[BCoordinateRegion builder] mergeFromData:data] build];
-}
-+ (BCoordinateRegion*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
-  return (BCoordinateRegion*)[[[BCoordinateRegion builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
-}
-+ (BCoordinateRegion*) parseFromInputStream:(NSInputStream*) input {
-  return (BCoordinateRegion*)[[[BCoordinateRegion builder] mergeFromInputStream:input] build];
-}
-+ (BCoordinateRegion*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
-  return (BCoordinateRegion*)[[[BCoordinateRegion builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
-}
-+ (BCoordinateRegion*) parseFromCodedInputStream:(PBCodedInputStream*) input {
-  return (BCoordinateRegion*)[[[BCoordinateRegion builder] mergeFromCodedInputStream:input] build];
-}
-+ (BCoordinateRegion*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
-  return (BCoordinateRegion*)[[[BCoordinateRegion builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
-}
-+ (BCoordinateRegionBuilder*) builder {
-  return [[BCoordinateRegionBuilder alloc] init];
-}
-+ (BCoordinateRegionBuilder*) builderWithPrototype:(BCoordinateRegion*) prototype {
-  return [[BCoordinateRegion builder] mergeFrom:prototype];
-}
-- (BCoordinateRegionBuilder*) builder {
-  return [BCoordinateRegion builder];
-}
-- (BCoordinateRegionBuilder*) toBuilder {
-  return [BCoordinateRegion builderWithPrototype:self];
-}
-- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
-  if (self.hasCenter) {
-    [output appendFormat:@"%@%@ {\n", indent, @"center"];
-    [self.center writeDescriptionTo:output
-                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
-    [output appendFormat:@"%@}\n", indent];
-  }
-  if (self.hasSize) {
-    [output appendFormat:@"%@%@ {\n", indent, @"size"];
-    [self.size writeDescriptionTo:output
-                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
-    [output appendFormat:@"%@}\n", indent];
-  }
-  [self.unknownFields writeDescriptionTo:output withIndent:indent];
-}
-- (void) storeInDictionary:(NSMutableDictionary *)dictionary {
-  if (self.hasCenter) {
-   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
-   [self.center storeInDictionary:messageDictionary];
-   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"center"];
-  }
-  if (self.hasSize) {
-   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
-   [self.size storeInDictionary:messageDictionary];
-   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"size"];
-  }
-  [self.unknownFields storeInDictionary:dictionary];
-}
-- (BOOL) isEqual:(id)other {
-  if (other == self) {
-    return YES;
-  }
-  if (![other isKindOfClass:[BCoordinateRegion class]]) {
-    return NO;
-  }
-  BCoordinateRegion *otherMessage = other;
-  return
-      self.hasCenter == otherMessage.hasCenter &&
-      (!self.hasCenter || [self.center isEqual:otherMessage.center]) &&
-      self.hasSize == otherMessage.hasSize &&
-      (!self.hasSize || [self.size isEqual:otherMessage.size]) &&
-      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
-}
-- (NSUInteger) hash {
-  __block NSUInteger hashCode = 7;
-  if (self.hasCenter) {
-    hashCode = hashCode * 31 + [self.center hash];
-  }
-  if (self.hasSize) {
-    hashCode = hashCode * 31 + [self.size hash];
-  }
-  hashCode = hashCode * 31 + [self.unknownFields hash];
-  return hashCode;
-}
-@end
-
-@interface BCoordinateRegionBuilder()
-@property (strong) BCoordinateRegion* resultCoordinateRegion;
-@end
-
-@implementation BCoordinateRegionBuilder
-@synthesize resultCoordinateRegion;
-- (instancetype) init {
-  if ((self = [super init])) {
-    self.resultCoordinateRegion = [[BCoordinateRegion alloc] init];
-  }
-  return self;
-}
-- (PBGeneratedMessage*) internalGetResult {
-  return resultCoordinateRegion;
-}
-- (BCoordinateRegionBuilder*) clear {
-  self.resultCoordinateRegion = [[BCoordinateRegion alloc] init];
-  return self;
-}
-- (BCoordinateRegionBuilder*) clone {
-  return [BCoordinateRegion builderWithPrototype:resultCoordinateRegion];
-}
-- (BCoordinateRegion*) defaultInstance {
-  return [BCoordinateRegion defaultInstance];
-}
-- (BCoordinateRegion*) build {
-  [self checkInitialized];
-  return [self buildPartial];
-}
-- (BCoordinateRegion*) buildPartial {
-  BCoordinateRegion* returnMe = resultCoordinateRegion;
-  self.resultCoordinateRegion = nil;
-  return returnMe;
-}
-- (BCoordinateRegionBuilder*) mergeFrom:(BCoordinateRegion*) other {
-  if (other == [BCoordinateRegion defaultInstance]) {
-    return self;
-  }
-  if (other.hasCenter) {
-    [self mergeCenter:other.center];
-  }
-  if (other.hasSize) {
-    [self mergeSize:other.size];
-  }
-  [self mergeUnknownFields:other.unknownFields];
-  return self;
-}
-- (BCoordinateRegionBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
-  return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
-}
-- (BCoordinateRegionBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
-  PBUnknownFieldSetBuilder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
-  while (YES) {
-    SInt32 tag = [input readTag];
-    switch (tag) {
-      case 0:
-        [self setUnknownFields:[unknownFields build]];
-        return self;
-      default: {
-        if (![self parseUnknownField:input unknownFields:unknownFields extensionRegistry:extensionRegistry tag:tag]) {
-          [self setUnknownFields:[unknownFields build]];
-          return self;
-        }
-        break;
-      }
-      case 10: {
-        BCoordinateBuilder* subBuilder = [BCoordinate builder];
-        if (self.hasCenter) {
-          [subBuilder mergeFrom:self.center];
-        }
-        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
-        [self setCenter:[subBuilder buildPartial]];
-        break;
-      }
-      case 18: {
-        BSizeBuilder* subBuilder = [BSize builder];
-        if (self.hasSize) {
-          [subBuilder mergeFrom:self.size];
-        }
-        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
-        [self setSize:[subBuilder buildPartial]];
-        break;
-      }
-    }
-  }
-}
-- (BOOL) hasCenter {
-  return resultCoordinateRegion.hasCenter;
-}
-- (BCoordinate*) center {
-  return resultCoordinateRegion.center;
-}
-- (BCoordinateRegionBuilder*) setCenter:(BCoordinate*) value {
-  resultCoordinateRegion.hasCenter = YES;
-  resultCoordinateRegion.center = value;
-  return self;
-}
-- (BCoordinateRegionBuilder*) setCenterBuilder:(BCoordinateBuilder*) builderForValue {
-  return [self setCenter:[builderForValue build]];
-}
-- (BCoordinateRegionBuilder*) mergeCenter:(BCoordinate*) value {
-  if (resultCoordinateRegion.hasCenter &&
-      resultCoordinateRegion.center != [BCoordinate defaultInstance]) {
-    resultCoordinateRegion.center =
-      [[[BCoordinate builderWithPrototype:resultCoordinateRegion.center] mergeFrom:value] buildPartial];
-  } else {
-    resultCoordinateRegion.center = value;
-  }
-  resultCoordinateRegion.hasCenter = YES;
-  return self;
-}
-- (BCoordinateRegionBuilder*) clearCenter {
-  resultCoordinateRegion.hasCenter = NO;
-  resultCoordinateRegion.center = [BCoordinate defaultInstance];
-  return self;
-}
-- (BOOL) hasSize {
-  return resultCoordinateRegion.hasSize;
-}
-- (BSize*) size {
-  return resultCoordinateRegion.size;
-}
-- (BCoordinateRegionBuilder*) setSize:(BSize*) value {
-  resultCoordinateRegion.hasSize = YES;
-  resultCoordinateRegion.size = value;
-  return self;
-}
-- (BCoordinateRegionBuilder*) setSizeBuilder:(BSizeBuilder*) builderForValue {
-  return [self setSize:[builderForValue build]];
-}
-- (BCoordinateRegionBuilder*) mergeSize:(BSize*) value {
-  if (resultCoordinateRegion.hasSize &&
-      resultCoordinateRegion.size != [BSize defaultInstance]) {
-    resultCoordinateRegion.size =
-      [[[BSize builderWithPrototype:resultCoordinateRegion.size] mergeFrom:value] buildPartial];
-  } else {
-    resultCoordinateRegion.size = value;
-  }
-  resultCoordinateRegion.hasSize = YES;
-  return self;
-}
-- (BCoordinateRegionBuilder*) clearSize {
-  resultCoordinateRegion.hasSize = NO;
-  resultCoordinateRegion.size = [BSize defaultInstance];
-  return self;
-}
-@end
-
-@interface BCoordinatePolygon ()
-@property (strong) NSMutableArray * pointsArray;
-@end
-
-@implementation BCoordinatePolygon
-
-@synthesize pointsArray;
-@dynamic points;
-- (instancetype) init {
-  if ((self = [super init])) {
-  }
-  return self;
-}
-static BCoordinatePolygon* defaultBCoordinatePolygonInstance = nil;
-+ (void) initialize {
-  if (self == [BCoordinatePolygon class]) {
-    defaultBCoordinatePolygonInstance = [[BCoordinatePolygon alloc] init];
-  }
-}
-+ (instancetype) defaultInstance {
-  return defaultBCoordinatePolygonInstance;
-}
-- (instancetype) defaultInstance {
-  return defaultBCoordinatePolygonInstance;
-}
-- (NSArray *)points {
-  return pointsArray;
-}
-- (BCoordinate*)pointsAtIndex:(NSUInteger)index {
-  return [pointsArray objectAtIndex:index];
-}
-- (BOOL) isInitialized {
-  return YES;
-}
-- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
-  [self.pointsArray enumerateObjectsUsingBlock:^(BCoordinate *element, NSUInteger idx, BOOL *stop) {
-    [output writeMessage:1 value:element];
-  }];
-  [self.unknownFields writeToCodedOutputStream:output];
-}
-- (SInt32) serializedSize {
-  __block SInt32 size_ = memoizedSerializedSize;
-  if (size_ != -1) {
-    return size_;
-  }
-
-  size_ = 0;
-  [self.pointsArray enumerateObjectsUsingBlock:^(BCoordinate *element, NSUInteger idx, BOOL *stop) {
-    size_ += computeMessageSize(1, element);
-  }];
-  size_ += self.unknownFields.serializedSize;
-  memoizedSerializedSize = size_;
-  return size_;
-}
-+ (BCoordinatePolygon*) parseFromData:(NSData*) data {
-  return (BCoordinatePolygon*)[[[BCoordinatePolygon builder] mergeFromData:data] build];
-}
-+ (BCoordinatePolygon*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
-  return (BCoordinatePolygon*)[[[BCoordinatePolygon builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
-}
-+ (BCoordinatePolygon*) parseFromInputStream:(NSInputStream*) input {
-  return (BCoordinatePolygon*)[[[BCoordinatePolygon builder] mergeFromInputStream:input] build];
-}
-+ (BCoordinatePolygon*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
-  return (BCoordinatePolygon*)[[[BCoordinatePolygon builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
-}
-+ (BCoordinatePolygon*) parseFromCodedInputStream:(PBCodedInputStream*) input {
-  return (BCoordinatePolygon*)[[[BCoordinatePolygon builder] mergeFromCodedInputStream:input] build];
-}
-+ (BCoordinatePolygon*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
-  return (BCoordinatePolygon*)[[[BCoordinatePolygon builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
-}
-+ (BCoordinatePolygonBuilder*) builder {
-  return [[BCoordinatePolygonBuilder alloc] init];
-}
-+ (BCoordinatePolygonBuilder*) builderWithPrototype:(BCoordinatePolygon*) prototype {
-  return [[BCoordinatePolygon builder] mergeFrom:prototype];
-}
-- (BCoordinatePolygonBuilder*) builder {
-  return [BCoordinatePolygon builder];
-}
-- (BCoordinatePolygonBuilder*) toBuilder {
-  return [BCoordinatePolygon builderWithPrototype:self];
-}
-- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
-  [self.pointsArray enumerateObjectsUsingBlock:^(BCoordinate *element, NSUInteger idx, BOOL *stop) {
-    [output appendFormat:@"%@%@ {\n", indent, @"points"];
-    [element writeDescriptionTo:output
-                     withIndent:[NSString stringWithFormat:@"%@  ", indent]];
-    [output appendFormat:@"%@}\n", indent];
-  }];
-  [self.unknownFields writeDescriptionTo:output withIndent:indent];
-}
-- (void) storeInDictionary:(NSMutableDictionary *)dictionary {
-  for (BCoordinate* element in self.pointsArray) {
-    NSMutableDictionary *elementDictionary = [NSMutableDictionary dictionary];
-    [element storeInDictionary:elementDictionary];
-    [dictionary setObject:[NSDictionary dictionaryWithDictionary:elementDictionary] forKey:@"points"];
-  }
-  [self.unknownFields storeInDictionary:dictionary];
-}
-- (BOOL) isEqual:(id)other {
-  if (other == self) {
-    return YES;
-  }
-  if (![other isKindOfClass:[BCoordinatePolygon class]]) {
-    return NO;
-  }
-  BCoordinatePolygon *otherMessage = other;
-  return
-      [self.pointsArray isEqualToArray:otherMessage.pointsArray] &&
-      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
-}
-- (NSUInteger) hash {
-  __block NSUInteger hashCode = 7;
-  [self.pointsArray enumerateObjectsUsingBlock:^(BCoordinate *element, NSUInteger idx, BOOL *stop) {
-    hashCode = hashCode * 31 + [element hash];
-  }];
-  hashCode = hashCode * 31 + [self.unknownFields hash];
-  return hashCode;
-}
-@end
-
-@interface BCoordinatePolygonBuilder()
-@property (strong) BCoordinatePolygon* resultCoordinatePolygon;
-@end
-
-@implementation BCoordinatePolygonBuilder
-@synthesize resultCoordinatePolygon;
-- (instancetype) init {
-  if ((self = [super init])) {
-    self.resultCoordinatePolygon = [[BCoordinatePolygon alloc] init];
-  }
-  return self;
-}
-- (PBGeneratedMessage*) internalGetResult {
-  return resultCoordinatePolygon;
-}
-- (BCoordinatePolygonBuilder*) clear {
-  self.resultCoordinatePolygon = [[BCoordinatePolygon alloc] init];
-  return self;
-}
-- (BCoordinatePolygonBuilder*) clone {
-  return [BCoordinatePolygon builderWithPrototype:resultCoordinatePolygon];
-}
-- (BCoordinatePolygon*) defaultInstance {
-  return [BCoordinatePolygon defaultInstance];
-}
-- (BCoordinatePolygon*) build {
-  [self checkInitialized];
-  return [self buildPartial];
-}
-- (BCoordinatePolygon*) buildPartial {
-  BCoordinatePolygon* returnMe = resultCoordinatePolygon;
-  self.resultCoordinatePolygon = nil;
-  return returnMe;
-}
-- (BCoordinatePolygonBuilder*) mergeFrom:(BCoordinatePolygon*) other {
-  if (other == [BCoordinatePolygon defaultInstance]) {
-    return self;
-  }
-  if (other.pointsArray.count > 0) {
-    if (resultCoordinatePolygon.pointsArray == nil) {
-      resultCoordinatePolygon.pointsArray = [[NSMutableArray alloc] initWithArray:other.pointsArray];
-    } else {
-      [resultCoordinatePolygon.pointsArray addObjectsFromArray:other.pointsArray];
-    }
-  }
-  [self mergeUnknownFields:other.unknownFields];
-  return self;
-}
-- (BCoordinatePolygonBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
-  return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
-}
-- (BCoordinatePolygonBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
-  PBUnknownFieldSetBuilder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
-  while (YES) {
-    SInt32 tag = [input readTag];
-    switch (tag) {
-      case 0:
-        [self setUnknownFields:[unknownFields build]];
-        return self;
-      default: {
-        if (![self parseUnknownField:input unknownFields:unknownFields extensionRegistry:extensionRegistry tag:tag]) {
-          [self setUnknownFields:[unknownFields build]];
-          return self;
-        }
-        break;
-      }
-      case 10: {
-        BCoordinateBuilder* subBuilder = [BCoordinate builder];
-        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
-        [self addPoints:[subBuilder buildPartial]];
-        break;
-      }
-    }
-  }
-}
-- (NSMutableArray *)points {
-  return resultCoordinatePolygon.pointsArray;
-}
-- (BCoordinate*)pointsAtIndex:(NSUInteger)index {
-  return [resultCoordinatePolygon pointsAtIndex:index];
-}
-- (BCoordinatePolygonBuilder *)addPoints:(BCoordinate*)value {
-  if (resultCoordinatePolygon.pointsArray == nil) {
-    resultCoordinatePolygon.pointsArray = [[NSMutableArray alloc]init];
-  }
-  [resultCoordinatePolygon.pointsArray addObject:value];
-  return self;
-}
-- (BCoordinatePolygonBuilder *)setPointsArray:(NSArray *)array {
-  resultCoordinatePolygon.pointsArray = [[NSMutableArray alloc]initWithArray:array];
-  return self;
-}
-- (BCoordinatePolygonBuilder *)clearPoints {
-  resultCoordinatePolygon.pointsArray = nil;
-  return self;
-}
-@end
-
-@interface BLocation ()
-@property (strong) BCoordinate* coordinate;
-@property Float64 altitude;
-@property Float64 speed;
-@property Float64 course;
-@property (strong) NSString* placename;
-@end
-
-@implementation BLocation
-
-- (BOOL) hasCoordinate {
-  return !!hasCoordinate_;
-}
-- (void) setHasCoordinate:(BOOL) _value_ {
-  hasCoordinate_ = !!_value_;
-}
-@synthesize coordinate;
-- (BOOL) hasAltitude {
-  return !!hasAltitude_;
-}
-- (void) setHasAltitude:(BOOL) _value_ {
-  hasAltitude_ = !!_value_;
-}
-@synthesize altitude;
-- (BOOL) hasSpeed {
-  return !!hasSpeed_;
-}
-- (void) setHasSpeed:(BOOL) _value_ {
-  hasSpeed_ = !!_value_;
-}
-@synthesize speed;
-- (BOOL) hasCourse {
-  return !!hasCourse_;
-}
-- (void) setHasCourse:(BOOL) _value_ {
-  hasCourse_ = !!_value_;
-}
-@synthesize course;
-- (BOOL) hasPlacename {
-  return !!hasPlacename_;
-}
-- (void) setHasPlacename:(BOOL) _value_ {
-  hasPlacename_ = !!_value_;
-}
-@synthesize placename;
-- (instancetype) init {
-  if ((self = [super init])) {
-    self.coordinate = [BCoordinate defaultInstance];
-    self.altitude = 0;
-    self.speed = 0;
-    self.course = 0;
-    self.placename = @"";
-  }
-  return self;
-}
-static BLocation* defaultBLocationInstance = nil;
-+ (void) initialize {
-  if (self == [BLocation class]) {
-    defaultBLocationInstance = [[BLocation alloc] init];
-  }
-}
-+ (instancetype) defaultInstance {
-  return defaultBLocationInstance;
-}
-- (instancetype) defaultInstance {
-  return defaultBLocationInstance;
-}
-- (BOOL) isInitialized {
-  return YES;
-}
-- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
-  if (self.hasCoordinate) {
-    [output writeMessage:1 value:self.coordinate];
-  }
-  if (self.hasAltitude) {
-    [output writeDouble:2 value:self.altitude];
-  }
-  if (self.hasSpeed) {
-    [output writeDouble:3 value:self.speed];
-  }
-  if (self.hasCourse) {
-    [output writeDouble:4 value:self.course];
-  }
-  if (self.hasPlacename) {
-    [output writeString:5 value:self.placename];
-  }
-  [self.unknownFields writeToCodedOutputStream:output];
-}
-- (SInt32) serializedSize {
-  __block SInt32 size_ = memoizedSerializedSize;
-  if (size_ != -1) {
-    return size_;
-  }
-
-  size_ = 0;
-  if (self.hasCoordinate) {
-    size_ += computeMessageSize(1, self.coordinate);
-  }
-  if (self.hasAltitude) {
-    size_ += computeDoubleSize(2, self.altitude);
-  }
-  if (self.hasSpeed) {
-    size_ += computeDoubleSize(3, self.speed);
-  }
-  if (self.hasCourse) {
-    size_ += computeDoubleSize(4, self.course);
-  }
-  if (self.hasPlacename) {
-    size_ += computeStringSize(5, self.placename);
-  }
-  size_ += self.unknownFields.serializedSize;
-  memoizedSerializedSize = size_;
-  return size_;
-}
-+ (BLocation*) parseFromData:(NSData*) data {
-  return (BLocation*)[[[BLocation builder] mergeFromData:data] build];
-}
-+ (BLocation*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
-  return (BLocation*)[[[BLocation builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
-}
-+ (BLocation*) parseFromInputStream:(NSInputStream*) input {
-  return (BLocation*)[[[BLocation builder] mergeFromInputStream:input] build];
-}
-+ (BLocation*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
-  return (BLocation*)[[[BLocation builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
-}
-+ (BLocation*) parseFromCodedInputStream:(PBCodedInputStream*) input {
-  return (BLocation*)[[[BLocation builder] mergeFromCodedInputStream:input] build];
-}
-+ (BLocation*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
-  return (BLocation*)[[[BLocation builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
-}
-+ (BLocationBuilder*) builder {
-  return [[BLocationBuilder alloc] init];
-}
-+ (BLocationBuilder*) builderWithPrototype:(BLocation*) prototype {
-  return [[BLocation builder] mergeFrom:prototype];
-}
-- (BLocationBuilder*) builder {
-  return [BLocation builder];
-}
-- (BLocationBuilder*) toBuilder {
-  return [BLocation builderWithPrototype:self];
-}
-- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
-  if (self.hasCoordinate) {
-    [output appendFormat:@"%@%@ {\n", indent, @"coordinate"];
-    [self.coordinate writeDescriptionTo:output
-                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
-    [output appendFormat:@"%@}\n", indent];
-  }
-  if (self.hasAltitude) {
-    [output appendFormat:@"%@%@: %@\n", indent, @"altitude", [NSNumber numberWithDouble:self.altitude]];
-  }
-  if (self.hasSpeed) {
-    [output appendFormat:@"%@%@: %@\n", indent, @"speed", [NSNumber numberWithDouble:self.speed]];
-  }
-  if (self.hasCourse) {
-    [output appendFormat:@"%@%@: %@\n", indent, @"course", [NSNumber numberWithDouble:self.course]];
-  }
-  if (self.hasPlacename) {
-    [output appendFormat:@"%@%@: %@\n", indent, @"placename", self.placename];
-  }
-  [self.unknownFields writeDescriptionTo:output withIndent:indent];
-}
-- (void) storeInDictionary:(NSMutableDictionary *)dictionary {
-  if (self.hasCoordinate) {
-   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
-   [self.coordinate storeInDictionary:messageDictionary];
-   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"coordinate"];
-  }
-  if (self.hasAltitude) {
-    [dictionary setObject: [NSNumber numberWithDouble:self.altitude] forKey: @"altitude"];
-  }
-  if (self.hasSpeed) {
-    [dictionary setObject: [NSNumber numberWithDouble:self.speed] forKey: @"speed"];
-  }
-  if (self.hasCourse) {
-    [dictionary setObject: [NSNumber numberWithDouble:self.course] forKey: @"course"];
-  }
-  if (self.hasPlacename) {
-    [dictionary setObject: self.placename forKey: @"placename"];
-  }
-  [self.unknownFields storeInDictionary:dictionary];
-}
-- (BOOL) isEqual:(id)other {
-  if (other == self) {
-    return YES;
-  }
-  if (![other isKindOfClass:[BLocation class]]) {
-    return NO;
-  }
-  BLocation *otherMessage = other;
-  return
-      self.hasCoordinate == otherMessage.hasCoordinate &&
-      (!self.hasCoordinate || [self.coordinate isEqual:otherMessage.coordinate]) &&
-      self.hasAltitude == otherMessage.hasAltitude &&
-      (!self.hasAltitude || self.altitude == otherMessage.altitude) &&
-      self.hasSpeed == otherMessage.hasSpeed &&
-      (!self.hasSpeed || self.speed == otherMessage.speed) &&
-      self.hasCourse == otherMessage.hasCourse &&
-      (!self.hasCourse || self.course == otherMessage.course) &&
-      self.hasPlacename == otherMessage.hasPlacename &&
-      (!self.hasPlacename || [self.placename isEqual:otherMessage.placename]) &&
-      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
-}
-- (NSUInteger) hash {
-  __block NSUInteger hashCode = 7;
-  if (self.hasCoordinate) {
-    hashCode = hashCode * 31 + [self.coordinate hash];
-  }
-  if (self.hasAltitude) {
-    hashCode = hashCode * 31 + [[NSNumber numberWithDouble:self.altitude] hash];
-  }
-  if (self.hasSpeed) {
-    hashCode = hashCode * 31 + [[NSNumber numberWithDouble:self.speed] hash];
-  }
-  if (self.hasCourse) {
-    hashCode = hashCode * 31 + [[NSNumber numberWithDouble:self.course] hash];
-  }
-  if (self.hasPlacename) {
-    hashCode = hashCode * 31 + [self.placename hash];
-  }
-  hashCode = hashCode * 31 + [self.unknownFields hash];
-  return hashCode;
-}
-@end
-
-@interface BLocationBuilder()
-@property (strong) BLocation* resultLocation;
-@end
-
-@implementation BLocationBuilder
-@synthesize resultLocation;
-- (instancetype) init {
-  if ((self = [super init])) {
-    self.resultLocation = [[BLocation alloc] init];
-  }
-  return self;
-}
-- (PBGeneratedMessage*) internalGetResult {
-  return resultLocation;
-}
-- (BLocationBuilder*) clear {
-  self.resultLocation = [[BLocation alloc] init];
-  return self;
-}
-- (BLocationBuilder*) clone {
-  return [BLocation builderWithPrototype:resultLocation];
-}
-- (BLocation*) defaultInstance {
-  return [BLocation defaultInstance];
-}
-- (BLocation*) build {
-  [self checkInitialized];
-  return [self buildPartial];
-}
-- (BLocation*) buildPartial {
-  BLocation* returnMe = resultLocation;
-  self.resultLocation = nil;
-  return returnMe;
-}
-- (BLocationBuilder*) mergeFrom:(BLocation*) other {
-  if (other == [BLocation defaultInstance]) {
-    return self;
-  }
-  if (other.hasCoordinate) {
-    [self mergeCoordinate:other.coordinate];
-  }
-  if (other.hasAltitude) {
-    [self setAltitude:other.altitude];
-  }
-  if (other.hasSpeed) {
-    [self setSpeed:other.speed];
-  }
-  if (other.hasCourse) {
-    [self setCourse:other.course];
-  }
-  if (other.hasPlacename) {
-    [self setPlacename:other.placename];
-  }
-  [self mergeUnknownFields:other.unknownFields];
-  return self;
-}
-- (BLocationBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
-  return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
-}
-- (BLocationBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
-  PBUnknownFieldSetBuilder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
-  while (YES) {
-    SInt32 tag = [input readTag];
-    switch (tag) {
-      case 0:
-        [self setUnknownFields:[unknownFields build]];
-        return self;
-      default: {
-        if (![self parseUnknownField:input unknownFields:unknownFields extensionRegistry:extensionRegistry tag:tag]) {
-          [self setUnknownFields:[unknownFields build]];
-          return self;
-        }
-        break;
-      }
-      case 10: {
-        BCoordinateBuilder* subBuilder = [BCoordinate builder];
-        if (self.hasCoordinate) {
-          [subBuilder mergeFrom:self.coordinate];
-        }
-        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
-        [self setCoordinate:[subBuilder buildPartial]];
-        break;
-      }
-      case 17: {
-        [self setAltitude:[input readDouble]];
-        break;
-      }
-      case 25: {
-        [self setSpeed:[input readDouble]];
-        break;
-      }
-      case 33: {
-        [self setCourse:[input readDouble]];
-        break;
-      }
-      case 42: {
-        [self setPlacename:[input readString]];
-        break;
-      }
-    }
-  }
-}
-- (BOOL) hasCoordinate {
-  return resultLocation.hasCoordinate;
-}
-- (BCoordinate*) coordinate {
-  return resultLocation.coordinate;
-}
-- (BLocationBuilder*) setCoordinate:(BCoordinate*) value {
-  resultLocation.hasCoordinate = YES;
-  resultLocation.coordinate = value;
-  return self;
-}
-- (BLocationBuilder*) setCoordinateBuilder:(BCoordinateBuilder*) builderForValue {
-  return [self setCoordinate:[builderForValue build]];
-}
-- (BLocationBuilder*) mergeCoordinate:(BCoordinate*) value {
-  if (resultLocation.hasCoordinate &&
-      resultLocation.coordinate != [BCoordinate defaultInstance]) {
-    resultLocation.coordinate =
-      [[[BCoordinate builderWithPrototype:resultLocation.coordinate] mergeFrom:value] buildPartial];
-  } else {
-    resultLocation.coordinate = value;
-  }
-  resultLocation.hasCoordinate = YES;
-  return self;
-}
-- (BLocationBuilder*) clearCoordinate {
-  resultLocation.hasCoordinate = NO;
-  resultLocation.coordinate = [BCoordinate defaultInstance];
-  return self;
-}
-- (BOOL) hasAltitude {
-  return resultLocation.hasAltitude;
-}
-- (Float64) altitude {
-  return resultLocation.altitude;
-}
-- (BLocationBuilder*) setAltitude:(Float64) value {
-  resultLocation.hasAltitude = YES;
-  resultLocation.altitude = value;
-  return self;
-}
-- (BLocationBuilder*) clearAltitude {
-  resultLocation.hasAltitude = NO;
-  resultLocation.altitude = 0;
-  return self;
-}
-- (BOOL) hasSpeed {
-  return resultLocation.hasSpeed;
-}
-- (Float64) speed {
-  return resultLocation.speed;
-}
-- (BLocationBuilder*) setSpeed:(Float64) value {
-  resultLocation.hasSpeed = YES;
-  resultLocation.speed = value;
-  return self;
-}
-- (BLocationBuilder*) clearSpeed {
-  resultLocation.hasSpeed = NO;
-  resultLocation.speed = 0;
-  return self;
-}
-- (BOOL) hasCourse {
-  return resultLocation.hasCourse;
-}
-- (Float64) course {
-  return resultLocation.course;
-}
-- (BLocationBuilder*) setCourse:(Float64) value {
-  resultLocation.hasCourse = YES;
-  resultLocation.course = value;
-  return self;
-}
-- (BLocationBuilder*) clearCourse {
-  resultLocation.hasCourse = NO;
-  resultLocation.course = 0;
-  return self;
-}
-- (BOOL) hasPlacename {
-  return resultLocation.hasPlacename;
-}
-- (NSString*) placename {
-  return resultLocation.placename;
-}
-- (BLocationBuilder*) setPlacename:(NSString*) value {
-  resultLocation.hasPlacename = YES;
-  resultLocation.placename = value;
-  return self;
-}
-- (BLocationBuilder*) clearPlacename {
-  resultLocation.hasPlacename = NO;
-  resultLocation.placename = @"";
-  return self;
-}
-@end
-
 @interface BTimestamp ()
 @property Float64 epoch;
 @end
@@ -1719,9 +53,6 @@ static BTimestamp* defaultBTimestampInstance = nil;
   return defaultBTimestampInstance;
 }
 - (BOOL) isInitialized {
-  if (!self.hasEpoch) {
-    return NO;
-  }
   return YES;
 }
 - (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
@@ -1937,16 +268,6 @@ static BTimespan* defaultBTimespanInstance = nil;
   return defaultBTimespanInstance;
 }
 - (BOOL) isInitialized {
-  if (self.hasStartTimestamp) {
-    if (!self.startTimestamp.isInitialized) {
-      return NO;
-    }
-  }
-  if (self.hasStopTimestamp) {
-    if (!self.stopTimestamp.isInitialized) {
-      return NO;
-    }
-  }
   return YES;
 }
 - (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
@@ -2209,22 +530,1810 @@ static BTimespan* defaultBTimespanInstance = nil;
 }
 @end
 
+@interface BPoint ()
+@property Float64 x;
+@property Float64 y;
+@end
+
+@implementation BPoint
+
+- (BOOL) hasX {
+  return !!hasX_;
+}
+- (void) setHasX:(BOOL) _value_ {
+  hasX_ = !!_value_;
+}
+@synthesize x;
+- (BOOL) hasY {
+  return !!hasY_;
+}
+- (void) setHasY:(BOOL) _value_ {
+  hasY_ = !!_value_;
+}
+@synthesize y;
+- (instancetype) init {
+  if ((self = [super init])) {
+    self.x = 0;
+    self.y = 0;
+  }
+  return self;
+}
+static BPoint* defaultBPointInstance = nil;
++ (void) initialize {
+  if (self == [BPoint class]) {
+    defaultBPointInstance = [[BPoint alloc] init];
+  }
+}
++ (instancetype) defaultInstance {
+  return defaultBPointInstance;
+}
+- (instancetype) defaultInstance {
+  return defaultBPointInstance;
+}
+- (BOOL) isInitialized {
+  return YES;
+}
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
+  if (self.hasX) {
+    [output writeDouble:1 value:self.x];
+  }
+  if (self.hasY) {
+    [output writeDouble:2 value:self.y];
+  }
+  [self.unknownFields writeToCodedOutputStream:output];
+}
+- (SInt32) serializedSize {
+  __block SInt32 size_ = memoizedSerializedSize;
+  if (size_ != -1) {
+    return size_;
+  }
+
+  size_ = 0;
+  if (self.hasX) {
+    size_ += computeDoubleSize(1, self.x);
+  }
+  if (self.hasY) {
+    size_ += computeDoubleSize(2, self.y);
+  }
+  size_ += self.unknownFields.serializedSize;
+  memoizedSerializedSize = size_;
+  return size_;
+}
++ (BPoint*) parseFromData:(NSData*) data {
+  return (BPoint*)[[[BPoint builder] mergeFromData:data] build];
+}
++ (BPoint*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BPoint*)[[[BPoint builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
+}
++ (BPoint*) parseFromInputStream:(NSInputStream*) input {
+  return (BPoint*)[[[BPoint builder] mergeFromInputStream:input] build];
+}
++ (BPoint*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BPoint*)[[[BPoint builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (BPoint*) parseFromCodedInputStream:(PBCodedInputStream*) input {
+  return (BPoint*)[[[BPoint builder] mergeFromCodedInputStream:input] build];
+}
++ (BPoint*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BPoint*)[[[BPoint builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (BPointBuilder*) builder {
+  return [[BPointBuilder alloc] init];
+}
++ (BPointBuilder*) builderWithPrototype:(BPoint*) prototype {
+  return [[BPoint builder] mergeFrom:prototype];
+}
+- (BPointBuilder*) builder {
+  return [BPoint builder];
+}
+- (BPointBuilder*) toBuilder {
+  return [BPoint builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  if (self.hasX) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"x", [NSNumber numberWithDouble:self.x]];
+  }
+  if (self.hasY) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"y", [NSNumber numberWithDouble:self.y]];
+  }
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (void) storeInDictionary:(NSMutableDictionary *)dictionary {
+  if (self.hasX) {
+    [dictionary setObject: [NSNumber numberWithDouble:self.x] forKey: @"x"];
+  }
+  if (self.hasY) {
+    [dictionary setObject: [NSNumber numberWithDouble:self.y] forKey: @"y"];
+  }
+  [self.unknownFields storeInDictionary:dictionary];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[BPoint class]]) {
+    return NO;
+  }
+  BPoint *otherMessage = other;
+  return
+      self.hasX == otherMessage.hasX &&
+      (!self.hasX || self.x == otherMessage.x) &&
+      self.hasY == otherMessage.hasY &&
+      (!self.hasY || self.y == otherMessage.y) &&
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  __block NSUInteger hashCode = 7;
+  if (self.hasX) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithDouble:self.x] hash];
+  }
+  if (self.hasY) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithDouble:self.y] hash];
+  }
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
+}
+@end
+
+@interface BPointBuilder()
+@property (strong) BPoint* resultPoint;
+@end
+
+@implementation BPointBuilder
+@synthesize resultPoint;
+- (instancetype) init {
+  if ((self = [super init])) {
+    self.resultPoint = [[BPoint alloc] init];
+  }
+  return self;
+}
+- (PBGeneratedMessage*) internalGetResult {
+  return resultPoint;
+}
+- (BPointBuilder*) clear {
+  self.resultPoint = [[BPoint alloc] init];
+  return self;
+}
+- (BPointBuilder*) clone {
+  return [BPoint builderWithPrototype:resultPoint];
+}
+- (BPoint*) defaultInstance {
+  return [BPoint defaultInstance];
+}
+- (BPoint*) build {
+  [self checkInitialized];
+  return [self buildPartial];
+}
+- (BPoint*) buildPartial {
+  BPoint* returnMe = resultPoint;
+  self.resultPoint = nil;
+  return returnMe;
+}
+- (BPointBuilder*) mergeFrom:(BPoint*) other {
+  if (other == [BPoint defaultInstance]) {
+    return self;
+  }
+  if (other.hasX) {
+    [self setX:other.x];
+  }
+  if (other.hasY) {
+    [self setY:other.y];
+  }
+  [self mergeUnknownFields:other.unknownFields];
+  return self;
+}
+- (BPointBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
+  return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
+}
+- (BPointBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  PBUnknownFieldSetBuilder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
+  while (YES) {
+    SInt32 tag = [input readTag];
+    switch (tag) {
+      case 0:
+        [self setUnknownFields:[unknownFields build]];
+        return self;
+      default: {
+        if (![self parseUnknownField:input unknownFields:unknownFields extensionRegistry:extensionRegistry tag:tag]) {
+          [self setUnknownFields:[unknownFields build]];
+          return self;
+        }
+        break;
+      }
+      case 9: {
+        [self setX:[input readDouble]];
+        break;
+      }
+      case 17: {
+        [self setY:[input readDouble]];
+        break;
+      }
+    }
+  }
+}
+- (BOOL) hasX {
+  return resultPoint.hasX;
+}
+- (Float64) x {
+  return resultPoint.x;
+}
+- (BPointBuilder*) setX:(Float64) value {
+  resultPoint.hasX = YES;
+  resultPoint.x = value;
+  return self;
+}
+- (BPointBuilder*) clearX {
+  resultPoint.hasX = NO;
+  resultPoint.x = 0;
+  return self;
+}
+- (BOOL) hasY {
+  return resultPoint.hasY;
+}
+- (Float64) y {
+  return resultPoint.y;
+}
+- (BPointBuilder*) setY:(Float64) value {
+  resultPoint.hasY = YES;
+  resultPoint.y = value;
+  return self;
+}
+- (BPointBuilder*) clearY {
+  resultPoint.hasY = NO;
+  resultPoint.y = 0;
+  return self;
+}
+@end
+
+@interface BSize ()
+@property Float64 width;
+@property Float64 height;
+@end
+
+@implementation BSize
+
+- (BOOL) hasWidth {
+  return !!hasWidth_;
+}
+- (void) setHasWidth:(BOOL) _value_ {
+  hasWidth_ = !!_value_;
+}
+@synthesize width;
+- (BOOL) hasHeight {
+  return !!hasHeight_;
+}
+- (void) setHasHeight:(BOOL) _value_ {
+  hasHeight_ = !!_value_;
+}
+@synthesize height;
+- (instancetype) init {
+  if ((self = [super init])) {
+    self.width = 0;
+    self.height = 0;
+  }
+  return self;
+}
+static BSize* defaultBSizeInstance = nil;
++ (void) initialize {
+  if (self == [BSize class]) {
+    defaultBSizeInstance = [[BSize alloc] init];
+  }
+}
++ (instancetype) defaultInstance {
+  return defaultBSizeInstance;
+}
+- (instancetype) defaultInstance {
+  return defaultBSizeInstance;
+}
+- (BOOL) isInitialized {
+  return YES;
+}
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
+  if (self.hasWidth) {
+    [output writeDouble:1 value:self.width];
+  }
+  if (self.hasHeight) {
+    [output writeDouble:2 value:self.height];
+  }
+  [self.unknownFields writeToCodedOutputStream:output];
+}
+- (SInt32) serializedSize {
+  __block SInt32 size_ = memoizedSerializedSize;
+  if (size_ != -1) {
+    return size_;
+  }
+
+  size_ = 0;
+  if (self.hasWidth) {
+    size_ += computeDoubleSize(1, self.width);
+  }
+  if (self.hasHeight) {
+    size_ += computeDoubleSize(2, self.height);
+  }
+  size_ += self.unknownFields.serializedSize;
+  memoizedSerializedSize = size_;
+  return size_;
+}
++ (BSize*) parseFromData:(NSData*) data {
+  return (BSize*)[[[BSize builder] mergeFromData:data] build];
+}
++ (BSize*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BSize*)[[[BSize builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
+}
++ (BSize*) parseFromInputStream:(NSInputStream*) input {
+  return (BSize*)[[[BSize builder] mergeFromInputStream:input] build];
+}
++ (BSize*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BSize*)[[[BSize builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (BSize*) parseFromCodedInputStream:(PBCodedInputStream*) input {
+  return (BSize*)[[[BSize builder] mergeFromCodedInputStream:input] build];
+}
++ (BSize*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BSize*)[[[BSize builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (BSizeBuilder*) builder {
+  return [[BSizeBuilder alloc] init];
+}
++ (BSizeBuilder*) builderWithPrototype:(BSize*) prototype {
+  return [[BSize builder] mergeFrom:prototype];
+}
+- (BSizeBuilder*) builder {
+  return [BSize builder];
+}
+- (BSizeBuilder*) toBuilder {
+  return [BSize builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  if (self.hasWidth) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"width", [NSNumber numberWithDouble:self.width]];
+  }
+  if (self.hasHeight) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"height", [NSNumber numberWithDouble:self.height]];
+  }
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (void) storeInDictionary:(NSMutableDictionary *)dictionary {
+  if (self.hasWidth) {
+    [dictionary setObject: [NSNumber numberWithDouble:self.width] forKey: @"width"];
+  }
+  if (self.hasHeight) {
+    [dictionary setObject: [NSNumber numberWithDouble:self.height] forKey: @"height"];
+  }
+  [self.unknownFields storeInDictionary:dictionary];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[BSize class]]) {
+    return NO;
+  }
+  BSize *otherMessage = other;
+  return
+      self.hasWidth == otherMessage.hasWidth &&
+      (!self.hasWidth || self.width == otherMessage.width) &&
+      self.hasHeight == otherMessage.hasHeight &&
+      (!self.hasHeight || self.height == otherMessage.height) &&
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  __block NSUInteger hashCode = 7;
+  if (self.hasWidth) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithDouble:self.width] hash];
+  }
+  if (self.hasHeight) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithDouble:self.height] hash];
+  }
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
+}
+@end
+
+@interface BSizeBuilder()
+@property (strong) BSize* resultSize;
+@end
+
+@implementation BSizeBuilder
+@synthesize resultSize;
+- (instancetype) init {
+  if ((self = [super init])) {
+    self.resultSize = [[BSize alloc] init];
+  }
+  return self;
+}
+- (PBGeneratedMessage*) internalGetResult {
+  return resultSize;
+}
+- (BSizeBuilder*) clear {
+  self.resultSize = [[BSize alloc] init];
+  return self;
+}
+- (BSizeBuilder*) clone {
+  return [BSize builderWithPrototype:resultSize];
+}
+- (BSize*) defaultInstance {
+  return [BSize defaultInstance];
+}
+- (BSize*) build {
+  [self checkInitialized];
+  return [self buildPartial];
+}
+- (BSize*) buildPartial {
+  BSize* returnMe = resultSize;
+  self.resultSize = nil;
+  return returnMe;
+}
+- (BSizeBuilder*) mergeFrom:(BSize*) other {
+  if (other == [BSize defaultInstance]) {
+    return self;
+  }
+  if (other.hasWidth) {
+    [self setWidth:other.width];
+  }
+  if (other.hasHeight) {
+    [self setHeight:other.height];
+  }
+  [self mergeUnknownFields:other.unknownFields];
+  return self;
+}
+- (BSizeBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
+  return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
+}
+- (BSizeBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  PBUnknownFieldSetBuilder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
+  while (YES) {
+    SInt32 tag = [input readTag];
+    switch (tag) {
+      case 0:
+        [self setUnknownFields:[unknownFields build]];
+        return self;
+      default: {
+        if (![self parseUnknownField:input unknownFields:unknownFields extensionRegistry:extensionRegistry tag:tag]) {
+          [self setUnknownFields:[unknownFields build]];
+          return self;
+        }
+        break;
+      }
+      case 9: {
+        [self setWidth:[input readDouble]];
+        break;
+      }
+      case 17: {
+        [self setHeight:[input readDouble]];
+        break;
+      }
+    }
+  }
+}
+- (BOOL) hasWidth {
+  return resultSize.hasWidth;
+}
+- (Float64) width {
+  return resultSize.width;
+}
+- (BSizeBuilder*) setWidth:(Float64) value {
+  resultSize.hasWidth = YES;
+  resultSize.width = value;
+  return self;
+}
+- (BSizeBuilder*) clearWidth {
+  resultSize.hasWidth = NO;
+  resultSize.width = 0;
+  return self;
+}
+- (BOOL) hasHeight {
+  return resultSize.hasHeight;
+}
+- (Float64) height {
+  return resultSize.height;
+}
+- (BSizeBuilder*) setHeight:(Float64) value {
+  resultSize.hasHeight = YES;
+  resultSize.height = value;
+  return self;
+}
+- (BSizeBuilder*) clearHeight {
+  resultSize.hasHeight = NO;
+  resultSize.height = 0;
+  return self;
+}
+@end
+
+@interface BCoordinate ()
+@property Float64 latitude;
+@property Float64 longitude;
+@end
+
+@implementation BCoordinate
+
+- (BOOL) hasLatitude {
+  return !!hasLatitude_;
+}
+- (void) setHasLatitude:(BOOL) _value_ {
+  hasLatitude_ = !!_value_;
+}
+@synthesize latitude;
+- (BOOL) hasLongitude {
+  return !!hasLongitude_;
+}
+- (void) setHasLongitude:(BOOL) _value_ {
+  hasLongitude_ = !!_value_;
+}
+@synthesize longitude;
+- (instancetype) init {
+  if ((self = [super init])) {
+    self.latitude = -360;
+    self.longitude = -360;
+  }
+  return self;
+}
+static BCoordinate* defaultBCoordinateInstance = nil;
++ (void) initialize {
+  if (self == [BCoordinate class]) {
+    defaultBCoordinateInstance = [[BCoordinate alloc] init];
+  }
+}
++ (instancetype) defaultInstance {
+  return defaultBCoordinateInstance;
+}
+- (instancetype) defaultInstance {
+  return defaultBCoordinateInstance;
+}
+- (BOOL) isInitialized {
+  return YES;
+}
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
+  if (self.hasLatitude) {
+    [output writeDouble:1 value:self.latitude];
+  }
+  if (self.hasLongitude) {
+    [output writeDouble:2 value:self.longitude];
+  }
+  [self.unknownFields writeToCodedOutputStream:output];
+}
+- (SInt32) serializedSize {
+  __block SInt32 size_ = memoizedSerializedSize;
+  if (size_ != -1) {
+    return size_;
+  }
+
+  size_ = 0;
+  if (self.hasLatitude) {
+    size_ += computeDoubleSize(1, self.latitude);
+  }
+  if (self.hasLongitude) {
+    size_ += computeDoubleSize(2, self.longitude);
+  }
+  size_ += self.unknownFields.serializedSize;
+  memoizedSerializedSize = size_;
+  return size_;
+}
++ (BCoordinate*) parseFromData:(NSData*) data {
+  return (BCoordinate*)[[[BCoordinate builder] mergeFromData:data] build];
+}
++ (BCoordinate*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BCoordinate*)[[[BCoordinate builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
+}
++ (BCoordinate*) parseFromInputStream:(NSInputStream*) input {
+  return (BCoordinate*)[[[BCoordinate builder] mergeFromInputStream:input] build];
+}
++ (BCoordinate*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BCoordinate*)[[[BCoordinate builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (BCoordinate*) parseFromCodedInputStream:(PBCodedInputStream*) input {
+  return (BCoordinate*)[[[BCoordinate builder] mergeFromCodedInputStream:input] build];
+}
++ (BCoordinate*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BCoordinate*)[[[BCoordinate builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (BCoordinateBuilder*) builder {
+  return [[BCoordinateBuilder alloc] init];
+}
++ (BCoordinateBuilder*) builderWithPrototype:(BCoordinate*) prototype {
+  return [[BCoordinate builder] mergeFrom:prototype];
+}
+- (BCoordinateBuilder*) builder {
+  return [BCoordinate builder];
+}
+- (BCoordinateBuilder*) toBuilder {
+  return [BCoordinate builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  if (self.hasLatitude) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"latitude", [NSNumber numberWithDouble:self.latitude]];
+  }
+  if (self.hasLongitude) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"longitude", [NSNumber numberWithDouble:self.longitude]];
+  }
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (void) storeInDictionary:(NSMutableDictionary *)dictionary {
+  if (self.hasLatitude) {
+    [dictionary setObject: [NSNumber numberWithDouble:self.latitude] forKey: @"latitude"];
+  }
+  if (self.hasLongitude) {
+    [dictionary setObject: [NSNumber numberWithDouble:self.longitude] forKey: @"longitude"];
+  }
+  [self.unknownFields storeInDictionary:dictionary];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[BCoordinate class]]) {
+    return NO;
+  }
+  BCoordinate *otherMessage = other;
+  return
+      self.hasLatitude == otherMessage.hasLatitude &&
+      (!self.hasLatitude || self.latitude == otherMessage.latitude) &&
+      self.hasLongitude == otherMessage.hasLongitude &&
+      (!self.hasLongitude || self.longitude == otherMessage.longitude) &&
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  __block NSUInteger hashCode = 7;
+  if (self.hasLatitude) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithDouble:self.latitude] hash];
+  }
+  if (self.hasLongitude) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithDouble:self.longitude] hash];
+  }
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
+}
+@end
+
+@interface BCoordinateBuilder()
+@property (strong) BCoordinate* resultCoordinate;
+@end
+
+@implementation BCoordinateBuilder
+@synthesize resultCoordinate;
+- (instancetype) init {
+  if ((self = [super init])) {
+    self.resultCoordinate = [[BCoordinate alloc] init];
+  }
+  return self;
+}
+- (PBGeneratedMessage*) internalGetResult {
+  return resultCoordinate;
+}
+- (BCoordinateBuilder*) clear {
+  self.resultCoordinate = [[BCoordinate alloc] init];
+  return self;
+}
+- (BCoordinateBuilder*) clone {
+  return [BCoordinate builderWithPrototype:resultCoordinate];
+}
+- (BCoordinate*) defaultInstance {
+  return [BCoordinate defaultInstance];
+}
+- (BCoordinate*) build {
+  [self checkInitialized];
+  return [self buildPartial];
+}
+- (BCoordinate*) buildPartial {
+  BCoordinate* returnMe = resultCoordinate;
+  self.resultCoordinate = nil;
+  return returnMe;
+}
+- (BCoordinateBuilder*) mergeFrom:(BCoordinate*) other {
+  if (other == [BCoordinate defaultInstance]) {
+    return self;
+  }
+  if (other.hasLatitude) {
+    [self setLatitude:other.latitude];
+  }
+  if (other.hasLongitude) {
+    [self setLongitude:other.longitude];
+  }
+  [self mergeUnknownFields:other.unknownFields];
+  return self;
+}
+- (BCoordinateBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
+  return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
+}
+- (BCoordinateBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  PBUnknownFieldSetBuilder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
+  while (YES) {
+    SInt32 tag = [input readTag];
+    switch (tag) {
+      case 0:
+        [self setUnknownFields:[unknownFields build]];
+        return self;
+      default: {
+        if (![self parseUnknownField:input unknownFields:unknownFields extensionRegistry:extensionRegistry tag:tag]) {
+          [self setUnknownFields:[unknownFields build]];
+          return self;
+        }
+        break;
+      }
+      case 9: {
+        [self setLatitude:[input readDouble]];
+        break;
+      }
+      case 17: {
+        [self setLongitude:[input readDouble]];
+        break;
+      }
+    }
+  }
+}
+- (BOOL) hasLatitude {
+  return resultCoordinate.hasLatitude;
+}
+- (Float64) latitude {
+  return resultCoordinate.latitude;
+}
+- (BCoordinateBuilder*) setLatitude:(Float64) value {
+  resultCoordinate.hasLatitude = YES;
+  resultCoordinate.latitude = value;
+  return self;
+}
+- (BCoordinateBuilder*) clearLatitude {
+  resultCoordinate.hasLatitude = NO;
+  resultCoordinate.latitude = -360;
+  return self;
+}
+- (BOOL) hasLongitude {
+  return resultCoordinate.hasLongitude;
+}
+- (Float64) longitude {
+  return resultCoordinate.longitude;
+}
+- (BCoordinateBuilder*) setLongitude:(Float64) value {
+  resultCoordinate.hasLongitude = YES;
+  resultCoordinate.longitude = value;
+  return self;
+}
+- (BCoordinateBuilder*) clearLongitude {
+  resultCoordinate.hasLongitude = NO;
+  resultCoordinate.longitude = -360;
+  return self;
+}
+@end
+
+@interface BCoordinateRegion ()
+@property (strong) BCoordinate* center;
+@property (strong) BCoordinate* span;
+@end
+
+@implementation BCoordinateRegion
+
+- (BOOL) hasCenter {
+  return !!hasCenter_;
+}
+- (void) setHasCenter:(BOOL) _value_ {
+  hasCenter_ = !!_value_;
+}
+@synthesize center;
+- (BOOL) hasSpan {
+  return !!hasSpan_;
+}
+- (void) setHasSpan:(BOOL) _value_ {
+  hasSpan_ = !!_value_;
+}
+@synthesize span;
+- (instancetype) init {
+  if ((self = [super init])) {
+    self.center = [BCoordinate defaultInstance];
+    self.span = [BCoordinate defaultInstance];
+  }
+  return self;
+}
+static BCoordinateRegion* defaultBCoordinateRegionInstance = nil;
++ (void) initialize {
+  if (self == [BCoordinateRegion class]) {
+    defaultBCoordinateRegionInstance = [[BCoordinateRegion alloc] init];
+  }
+}
++ (instancetype) defaultInstance {
+  return defaultBCoordinateRegionInstance;
+}
+- (instancetype) defaultInstance {
+  return defaultBCoordinateRegionInstance;
+}
+- (BOOL) isInitialized {
+  return YES;
+}
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
+  if (self.hasCenter) {
+    [output writeMessage:1 value:self.center];
+  }
+  if (self.hasSpan) {
+    [output writeMessage:2 value:self.span];
+  }
+  [self.unknownFields writeToCodedOutputStream:output];
+}
+- (SInt32) serializedSize {
+  __block SInt32 size_ = memoizedSerializedSize;
+  if (size_ != -1) {
+    return size_;
+  }
+
+  size_ = 0;
+  if (self.hasCenter) {
+    size_ += computeMessageSize(1, self.center);
+  }
+  if (self.hasSpan) {
+    size_ += computeMessageSize(2, self.span);
+  }
+  size_ += self.unknownFields.serializedSize;
+  memoizedSerializedSize = size_;
+  return size_;
+}
++ (BCoordinateRegion*) parseFromData:(NSData*) data {
+  return (BCoordinateRegion*)[[[BCoordinateRegion builder] mergeFromData:data] build];
+}
++ (BCoordinateRegion*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BCoordinateRegion*)[[[BCoordinateRegion builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
+}
++ (BCoordinateRegion*) parseFromInputStream:(NSInputStream*) input {
+  return (BCoordinateRegion*)[[[BCoordinateRegion builder] mergeFromInputStream:input] build];
+}
++ (BCoordinateRegion*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BCoordinateRegion*)[[[BCoordinateRegion builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (BCoordinateRegion*) parseFromCodedInputStream:(PBCodedInputStream*) input {
+  return (BCoordinateRegion*)[[[BCoordinateRegion builder] mergeFromCodedInputStream:input] build];
+}
++ (BCoordinateRegion*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BCoordinateRegion*)[[[BCoordinateRegion builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (BCoordinateRegionBuilder*) builder {
+  return [[BCoordinateRegionBuilder alloc] init];
+}
++ (BCoordinateRegionBuilder*) builderWithPrototype:(BCoordinateRegion*) prototype {
+  return [[BCoordinateRegion builder] mergeFrom:prototype];
+}
+- (BCoordinateRegionBuilder*) builder {
+  return [BCoordinateRegion builder];
+}
+- (BCoordinateRegionBuilder*) toBuilder {
+  return [BCoordinateRegion builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  if (self.hasCenter) {
+    [output appendFormat:@"%@%@ {\n", indent, @"center"];
+    [self.center writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
+  if (self.hasSpan) {
+    [output appendFormat:@"%@%@ {\n", indent, @"span"];
+    [self.span writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (void) storeInDictionary:(NSMutableDictionary *)dictionary {
+  if (self.hasCenter) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.center storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"center"];
+  }
+  if (self.hasSpan) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.span storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"span"];
+  }
+  [self.unknownFields storeInDictionary:dictionary];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[BCoordinateRegion class]]) {
+    return NO;
+  }
+  BCoordinateRegion *otherMessage = other;
+  return
+      self.hasCenter == otherMessage.hasCenter &&
+      (!self.hasCenter || [self.center isEqual:otherMessage.center]) &&
+      self.hasSpan == otherMessage.hasSpan &&
+      (!self.hasSpan || [self.span isEqual:otherMessage.span]) &&
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  __block NSUInteger hashCode = 7;
+  if (self.hasCenter) {
+    hashCode = hashCode * 31 + [self.center hash];
+  }
+  if (self.hasSpan) {
+    hashCode = hashCode * 31 + [self.span hash];
+  }
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
+}
+@end
+
+@interface BCoordinateRegionBuilder()
+@property (strong) BCoordinateRegion* resultCoordinateRegion;
+@end
+
+@implementation BCoordinateRegionBuilder
+@synthesize resultCoordinateRegion;
+- (instancetype) init {
+  if ((self = [super init])) {
+    self.resultCoordinateRegion = [[BCoordinateRegion alloc] init];
+  }
+  return self;
+}
+- (PBGeneratedMessage*) internalGetResult {
+  return resultCoordinateRegion;
+}
+- (BCoordinateRegionBuilder*) clear {
+  self.resultCoordinateRegion = [[BCoordinateRegion alloc] init];
+  return self;
+}
+- (BCoordinateRegionBuilder*) clone {
+  return [BCoordinateRegion builderWithPrototype:resultCoordinateRegion];
+}
+- (BCoordinateRegion*) defaultInstance {
+  return [BCoordinateRegion defaultInstance];
+}
+- (BCoordinateRegion*) build {
+  [self checkInitialized];
+  return [self buildPartial];
+}
+- (BCoordinateRegion*) buildPartial {
+  BCoordinateRegion* returnMe = resultCoordinateRegion;
+  self.resultCoordinateRegion = nil;
+  return returnMe;
+}
+- (BCoordinateRegionBuilder*) mergeFrom:(BCoordinateRegion*) other {
+  if (other == [BCoordinateRegion defaultInstance]) {
+    return self;
+  }
+  if (other.hasCenter) {
+    [self mergeCenter:other.center];
+  }
+  if (other.hasSpan) {
+    [self mergeSpan:other.span];
+  }
+  [self mergeUnknownFields:other.unknownFields];
+  return self;
+}
+- (BCoordinateRegionBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
+  return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
+}
+- (BCoordinateRegionBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  PBUnknownFieldSetBuilder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
+  while (YES) {
+    SInt32 tag = [input readTag];
+    switch (tag) {
+      case 0:
+        [self setUnknownFields:[unknownFields build]];
+        return self;
+      default: {
+        if (![self parseUnknownField:input unknownFields:unknownFields extensionRegistry:extensionRegistry tag:tag]) {
+          [self setUnknownFields:[unknownFields build]];
+          return self;
+        }
+        break;
+      }
+      case 10: {
+        BCoordinateBuilder* subBuilder = [BCoordinate builder];
+        if (self.hasCenter) {
+          [subBuilder mergeFrom:self.center];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setCenter:[subBuilder buildPartial]];
+        break;
+      }
+      case 18: {
+        BCoordinateBuilder* subBuilder = [BCoordinate builder];
+        if (self.hasSpan) {
+          [subBuilder mergeFrom:self.span];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setSpan:[subBuilder buildPartial]];
+        break;
+      }
+    }
+  }
+}
+- (BOOL) hasCenter {
+  return resultCoordinateRegion.hasCenter;
+}
+- (BCoordinate*) center {
+  return resultCoordinateRegion.center;
+}
+- (BCoordinateRegionBuilder*) setCenter:(BCoordinate*) value {
+  resultCoordinateRegion.hasCenter = YES;
+  resultCoordinateRegion.center = value;
+  return self;
+}
+- (BCoordinateRegionBuilder*) setCenterBuilder:(BCoordinateBuilder*) builderForValue {
+  return [self setCenter:[builderForValue build]];
+}
+- (BCoordinateRegionBuilder*) mergeCenter:(BCoordinate*) value {
+  if (resultCoordinateRegion.hasCenter &&
+      resultCoordinateRegion.center != [BCoordinate defaultInstance]) {
+    resultCoordinateRegion.center =
+      [[[BCoordinate builderWithPrototype:resultCoordinateRegion.center] mergeFrom:value] buildPartial];
+  } else {
+    resultCoordinateRegion.center = value;
+  }
+  resultCoordinateRegion.hasCenter = YES;
+  return self;
+}
+- (BCoordinateRegionBuilder*) clearCenter {
+  resultCoordinateRegion.hasCenter = NO;
+  resultCoordinateRegion.center = [BCoordinate defaultInstance];
+  return self;
+}
+- (BOOL) hasSpan {
+  return resultCoordinateRegion.hasSpan;
+}
+- (BCoordinate*) span {
+  return resultCoordinateRegion.span;
+}
+- (BCoordinateRegionBuilder*) setSpan:(BCoordinate*) value {
+  resultCoordinateRegion.hasSpan = YES;
+  resultCoordinateRegion.span = value;
+  return self;
+}
+- (BCoordinateRegionBuilder*) setSpanBuilder:(BCoordinateBuilder*) builderForValue {
+  return [self setSpan:[builderForValue build]];
+}
+- (BCoordinateRegionBuilder*) mergeSpan:(BCoordinate*) value {
+  if (resultCoordinateRegion.hasSpan &&
+      resultCoordinateRegion.span != [BCoordinate defaultInstance]) {
+    resultCoordinateRegion.span =
+      [[[BCoordinate builderWithPrototype:resultCoordinateRegion.span] mergeFrom:value] buildPartial];
+  } else {
+    resultCoordinateRegion.span = value;
+  }
+  resultCoordinateRegion.hasSpan = YES;
+  return self;
+}
+- (BCoordinateRegionBuilder*) clearSpan {
+  resultCoordinateRegion.hasSpan = NO;
+  resultCoordinateRegion.span = [BCoordinate defaultInstance];
+  return self;
+}
+@end
+
+@interface BCoordinatePolygon ()
+@property (strong) NSMutableArray * pointsArray;
+@end
+
+@implementation BCoordinatePolygon
+
+@synthesize pointsArray;
+@dynamic points;
+- (instancetype) init {
+  if ((self = [super init])) {
+  }
+  return self;
+}
+static BCoordinatePolygon* defaultBCoordinatePolygonInstance = nil;
++ (void) initialize {
+  if (self == [BCoordinatePolygon class]) {
+    defaultBCoordinatePolygonInstance = [[BCoordinatePolygon alloc] init];
+  }
+}
++ (instancetype) defaultInstance {
+  return defaultBCoordinatePolygonInstance;
+}
+- (instancetype) defaultInstance {
+  return defaultBCoordinatePolygonInstance;
+}
+- (NSArray *)points {
+  return pointsArray;
+}
+- (BCoordinate*)pointsAtIndex:(NSUInteger)index {
+  return [pointsArray objectAtIndex:index];
+}
+- (BOOL) isInitialized {
+  return YES;
+}
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
+  [self.pointsArray enumerateObjectsUsingBlock:^(BCoordinate *element, NSUInteger idx, BOOL *stop) {
+    [output writeMessage:1 value:element];
+  }];
+  [self.unknownFields writeToCodedOutputStream:output];
+}
+- (SInt32) serializedSize {
+  __block SInt32 size_ = memoizedSerializedSize;
+  if (size_ != -1) {
+    return size_;
+  }
+
+  size_ = 0;
+  [self.pointsArray enumerateObjectsUsingBlock:^(BCoordinate *element, NSUInteger idx, BOOL *stop) {
+    size_ += computeMessageSize(1, element);
+  }];
+  size_ += self.unknownFields.serializedSize;
+  memoizedSerializedSize = size_;
+  return size_;
+}
++ (BCoordinatePolygon*) parseFromData:(NSData*) data {
+  return (BCoordinatePolygon*)[[[BCoordinatePolygon builder] mergeFromData:data] build];
+}
++ (BCoordinatePolygon*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BCoordinatePolygon*)[[[BCoordinatePolygon builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
+}
++ (BCoordinatePolygon*) parseFromInputStream:(NSInputStream*) input {
+  return (BCoordinatePolygon*)[[[BCoordinatePolygon builder] mergeFromInputStream:input] build];
+}
++ (BCoordinatePolygon*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BCoordinatePolygon*)[[[BCoordinatePolygon builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (BCoordinatePolygon*) parseFromCodedInputStream:(PBCodedInputStream*) input {
+  return (BCoordinatePolygon*)[[[BCoordinatePolygon builder] mergeFromCodedInputStream:input] build];
+}
++ (BCoordinatePolygon*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BCoordinatePolygon*)[[[BCoordinatePolygon builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (BCoordinatePolygonBuilder*) builder {
+  return [[BCoordinatePolygonBuilder alloc] init];
+}
++ (BCoordinatePolygonBuilder*) builderWithPrototype:(BCoordinatePolygon*) prototype {
+  return [[BCoordinatePolygon builder] mergeFrom:prototype];
+}
+- (BCoordinatePolygonBuilder*) builder {
+  return [BCoordinatePolygon builder];
+}
+- (BCoordinatePolygonBuilder*) toBuilder {
+  return [BCoordinatePolygon builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  [self.pointsArray enumerateObjectsUsingBlock:^(BCoordinate *element, NSUInteger idx, BOOL *stop) {
+    [output appendFormat:@"%@%@ {\n", indent, @"points"];
+    [element writeDescriptionTo:output
+                     withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }];
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (void) storeInDictionary:(NSMutableDictionary *)dictionary {
+  for (BCoordinate* element in self.pointsArray) {
+    NSMutableDictionary *elementDictionary = [NSMutableDictionary dictionary];
+    [element storeInDictionary:elementDictionary];
+    [dictionary setObject:[NSDictionary dictionaryWithDictionary:elementDictionary] forKey:@"points"];
+  }
+  [self.unknownFields storeInDictionary:dictionary];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[BCoordinatePolygon class]]) {
+    return NO;
+  }
+  BCoordinatePolygon *otherMessage = other;
+  return
+      [self.pointsArray isEqualToArray:otherMessage.pointsArray] &&
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  __block NSUInteger hashCode = 7;
+  [self.pointsArray enumerateObjectsUsingBlock:^(BCoordinate *element, NSUInteger idx, BOOL *stop) {
+    hashCode = hashCode * 31 + [element hash];
+  }];
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
+}
+@end
+
+@interface BCoordinatePolygonBuilder()
+@property (strong) BCoordinatePolygon* resultCoordinatePolygon;
+@end
+
+@implementation BCoordinatePolygonBuilder
+@synthesize resultCoordinatePolygon;
+- (instancetype) init {
+  if ((self = [super init])) {
+    self.resultCoordinatePolygon = [[BCoordinatePolygon alloc] init];
+  }
+  return self;
+}
+- (PBGeneratedMessage*) internalGetResult {
+  return resultCoordinatePolygon;
+}
+- (BCoordinatePolygonBuilder*) clear {
+  self.resultCoordinatePolygon = [[BCoordinatePolygon alloc] init];
+  return self;
+}
+- (BCoordinatePolygonBuilder*) clone {
+  return [BCoordinatePolygon builderWithPrototype:resultCoordinatePolygon];
+}
+- (BCoordinatePolygon*) defaultInstance {
+  return [BCoordinatePolygon defaultInstance];
+}
+- (BCoordinatePolygon*) build {
+  [self checkInitialized];
+  return [self buildPartial];
+}
+- (BCoordinatePolygon*) buildPartial {
+  BCoordinatePolygon* returnMe = resultCoordinatePolygon;
+  self.resultCoordinatePolygon = nil;
+  return returnMe;
+}
+- (BCoordinatePolygonBuilder*) mergeFrom:(BCoordinatePolygon*) other {
+  if (other == [BCoordinatePolygon defaultInstance]) {
+    return self;
+  }
+  if (other.pointsArray.count > 0) {
+    if (resultCoordinatePolygon.pointsArray == nil) {
+      resultCoordinatePolygon.pointsArray = [[NSMutableArray alloc] initWithArray:other.pointsArray];
+    } else {
+      [resultCoordinatePolygon.pointsArray addObjectsFromArray:other.pointsArray];
+    }
+  }
+  [self mergeUnknownFields:other.unknownFields];
+  return self;
+}
+- (BCoordinatePolygonBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
+  return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
+}
+- (BCoordinatePolygonBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  PBUnknownFieldSetBuilder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
+  while (YES) {
+    SInt32 tag = [input readTag];
+    switch (tag) {
+      case 0:
+        [self setUnknownFields:[unknownFields build]];
+        return self;
+      default: {
+        if (![self parseUnknownField:input unknownFields:unknownFields extensionRegistry:extensionRegistry tag:tag]) {
+          [self setUnknownFields:[unknownFields build]];
+          return self;
+        }
+        break;
+      }
+      case 10: {
+        BCoordinateBuilder* subBuilder = [BCoordinate builder];
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self addPoints:[subBuilder buildPartial]];
+        break;
+      }
+    }
+  }
+}
+- (NSMutableArray *)points {
+  return resultCoordinatePolygon.pointsArray;
+}
+- (BCoordinate*)pointsAtIndex:(NSUInteger)index {
+  return [resultCoordinatePolygon pointsAtIndex:index];
+}
+- (BCoordinatePolygonBuilder *)addPoints:(BCoordinate*)value {
+  if (resultCoordinatePolygon.pointsArray == nil) {
+    resultCoordinatePolygon.pointsArray = [[NSMutableArray alloc]init];
+  }
+  [resultCoordinatePolygon.pointsArray addObject:value];
+  return self;
+}
+- (BCoordinatePolygonBuilder *)setPointsArray:(NSArray *)array {
+  resultCoordinatePolygon.pointsArray = [[NSMutableArray alloc]initWithArray:array];
+  return self;
+}
+- (BCoordinatePolygonBuilder *)clearPoints {
+  resultCoordinatePolygon.pointsArray = nil;
+  return self;
+}
+@end
+
+@interface BLocation ()
+@property (strong) BCoordinate* coordinate;
+@property Float64 altitude;
+@property Float64 speed;
+@property Float64 course;
+@property (strong) BTimestamp* timestamp;
+@property (strong) NSString* placename;
+@end
+
+@implementation BLocation
+
+- (BOOL) hasCoordinate {
+  return !!hasCoordinate_;
+}
+- (void) setHasCoordinate:(BOOL) _value_ {
+  hasCoordinate_ = !!_value_;
+}
+@synthesize coordinate;
+- (BOOL) hasAltitude {
+  return !!hasAltitude_;
+}
+- (void) setHasAltitude:(BOOL) _value_ {
+  hasAltitude_ = !!_value_;
+}
+@synthesize altitude;
+- (BOOL) hasSpeed {
+  return !!hasSpeed_;
+}
+- (void) setHasSpeed:(BOOL) _value_ {
+  hasSpeed_ = !!_value_;
+}
+@synthesize speed;
+- (BOOL) hasCourse {
+  return !!hasCourse_;
+}
+- (void) setHasCourse:(BOOL) _value_ {
+  hasCourse_ = !!_value_;
+}
+@synthesize course;
+- (BOOL) hasTimestamp {
+  return !!hasTimestamp_;
+}
+- (void) setHasTimestamp:(BOOL) _value_ {
+  hasTimestamp_ = !!_value_;
+}
+@synthesize timestamp;
+- (BOOL) hasPlacename {
+  return !!hasPlacename_;
+}
+- (void) setHasPlacename:(BOOL) _value_ {
+  hasPlacename_ = !!_value_;
+}
+@synthesize placename;
+- (instancetype) init {
+  if ((self = [super init])) {
+    self.coordinate = [BCoordinate defaultInstance];
+    self.altitude = 0;
+    self.speed = 0;
+    self.course = 0;
+    self.timestamp = [BTimestamp defaultInstance];
+    self.placename = @"";
+  }
+  return self;
+}
+static BLocation* defaultBLocationInstance = nil;
++ (void) initialize {
+  if (self == [BLocation class]) {
+    defaultBLocationInstance = [[BLocation alloc] init];
+  }
+}
++ (instancetype) defaultInstance {
+  return defaultBLocationInstance;
+}
+- (instancetype) defaultInstance {
+  return defaultBLocationInstance;
+}
+- (BOOL) isInitialized {
+  return YES;
+}
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
+  if (self.hasCoordinate) {
+    [output writeMessage:1 value:self.coordinate];
+  }
+  if (self.hasAltitude) {
+    [output writeDouble:2 value:self.altitude];
+  }
+  if (self.hasSpeed) {
+    [output writeDouble:3 value:self.speed];
+  }
+  if (self.hasCourse) {
+    [output writeDouble:4 value:self.course];
+  }
+  if (self.hasTimestamp) {
+    [output writeMessage:5 value:self.timestamp];
+  }
+  if (self.hasPlacename) {
+    [output writeString:6 value:self.placename];
+  }
+  [self.unknownFields writeToCodedOutputStream:output];
+}
+- (SInt32) serializedSize {
+  __block SInt32 size_ = memoizedSerializedSize;
+  if (size_ != -1) {
+    return size_;
+  }
+
+  size_ = 0;
+  if (self.hasCoordinate) {
+    size_ += computeMessageSize(1, self.coordinate);
+  }
+  if (self.hasAltitude) {
+    size_ += computeDoubleSize(2, self.altitude);
+  }
+  if (self.hasSpeed) {
+    size_ += computeDoubleSize(3, self.speed);
+  }
+  if (self.hasCourse) {
+    size_ += computeDoubleSize(4, self.course);
+  }
+  if (self.hasTimestamp) {
+    size_ += computeMessageSize(5, self.timestamp);
+  }
+  if (self.hasPlacename) {
+    size_ += computeStringSize(6, self.placename);
+  }
+  size_ += self.unknownFields.serializedSize;
+  memoizedSerializedSize = size_;
+  return size_;
+}
++ (BLocation*) parseFromData:(NSData*) data {
+  return (BLocation*)[[[BLocation builder] mergeFromData:data] build];
+}
++ (BLocation*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BLocation*)[[[BLocation builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
+}
++ (BLocation*) parseFromInputStream:(NSInputStream*) input {
+  return (BLocation*)[[[BLocation builder] mergeFromInputStream:input] build];
+}
++ (BLocation*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BLocation*)[[[BLocation builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (BLocation*) parseFromCodedInputStream:(PBCodedInputStream*) input {
+  return (BLocation*)[[[BLocation builder] mergeFromCodedInputStream:input] build];
+}
++ (BLocation*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BLocation*)[[[BLocation builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (BLocationBuilder*) builder {
+  return [[BLocationBuilder alloc] init];
+}
++ (BLocationBuilder*) builderWithPrototype:(BLocation*) prototype {
+  return [[BLocation builder] mergeFrom:prototype];
+}
+- (BLocationBuilder*) builder {
+  return [BLocation builder];
+}
+- (BLocationBuilder*) toBuilder {
+  return [BLocation builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  if (self.hasCoordinate) {
+    [output appendFormat:@"%@%@ {\n", indent, @"coordinate"];
+    [self.coordinate writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
+  if (self.hasAltitude) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"altitude", [NSNumber numberWithDouble:self.altitude]];
+  }
+  if (self.hasSpeed) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"speed", [NSNumber numberWithDouble:self.speed]];
+  }
+  if (self.hasCourse) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"course", [NSNumber numberWithDouble:self.course]];
+  }
+  if (self.hasTimestamp) {
+    [output appendFormat:@"%@%@ {\n", indent, @"timestamp"];
+    [self.timestamp writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
+  if (self.hasPlacename) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"placename", self.placename];
+  }
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (void) storeInDictionary:(NSMutableDictionary *)dictionary {
+  if (self.hasCoordinate) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.coordinate storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"coordinate"];
+  }
+  if (self.hasAltitude) {
+    [dictionary setObject: [NSNumber numberWithDouble:self.altitude] forKey: @"altitude"];
+  }
+  if (self.hasSpeed) {
+    [dictionary setObject: [NSNumber numberWithDouble:self.speed] forKey: @"speed"];
+  }
+  if (self.hasCourse) {
+    [dictionary setObject: [NSNumber numberWithDouble:self.course] forKey: @"course"];
+  }
+  if (self.hasTimestamp) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.timestamp storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"timestamp"];
+  }
+  if (self.hasPlacename) {
+    [dictionary setObject: self.placename forKey: @"placename"];
+  }
+  [self.unknownFields storeInDictionary:dictionary];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[BLocation class]]) {
+    return NO;
+  }
+  BLocation *otherMessage = other;
+  return
+      self.hasCoordinate == otherMessage.hasCoordinate &&
+      (!self.hasCoordinate || [self.coordinate isEqual:otherMessage.coordinate]) &&
+      self.hasAltitude == otherMessage.hasAltitude &&
+      (!self.hasAltitude || self.altitude == otherMessage.altitude) &&
+      self.hasSpeed == otherMessage.hasSpeed &&
+      (!self.hasSpeed || self.speed == otherMessage.speed) &&
+      self.hasCourse == otherMessage.hasCourse &&
+      (!self.hasCourse || self.course == otherMessage.course) &&
+      self.hasTimestamp == otherMessage.hasTimestamp &&
+      (!self.hasTimestamp || [self.timestamp isEqual:otherMessage.timestamp]) &&
+      self.hasPlacename == otherMessage.hasPlacename &&
+      (!self.hasPlacename || [self.placename isEqual:otherMessage.placename]) &&
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  __block NSUInteger hashCode = 7;
+  if (self.hasCoordinate) {
+    hashCode = hashCode * 31 + [self.coordinate hash];
+  }
+  if (self.hasAltitude) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithDouble:self.altitude] hash];
+  }
+  if (self.hasSpeed) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithDouble:self.speed] hash];
+  }
+  if (self.hasCourse) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithDouble:self.course] hash];
+  }
+  if (self.hasTimestamp) {
+    hashCode = hashCode * 31 + [self.timestamp hash];
+  }
+  if (self.hasPlacename) {
+    hashCode = hashCode * 31 + [self.placename hash];
+  }
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
+}
+@end
+
+@interface BLocationBuilder()
+@property (strong) BLocation* resultLocation;
+@end
+
+@implementation BLocationBuilder
+@synthesize resultLocation;
+- (instancetype) init {
+  if ((self = [super init])) {
+    self.resultLocation = [[BLocation alloc] init];
+  }
+  return self;
+}
+- (PBGeneratedMessage*) internalGetResult {
+  return resultLocation;
+}
+- (BLocationBuilder*) clear {
+  self.resultLocation = [[BLocation alloc] init];
+  return self;
+}
+- (BLocationBuilder*) clone {
+  return [BLocation builderWithPrototype:resultLocation];
+}
+- (BLocation*) defaultInstance {
+  return [BLocation defaultInstance];
+}
+- (BLocation*) build {
+  [self checkInitialized];
+  return [self buildPartial];
+}
+- (BLocation*) buildPartial {
+  BLocation* returnMe = resultLocation;
+  self.resultLocation = nil;
+  return returnMe;
+}
+- (BLocationBuilder*) mergeFrom:(BLocation*) other {
+  if (other == [BLocation defaultInstance]) {
+    return self;
+  }
+  if (other.hasCoordinate) {
+    [self mergeCoordinate:other.coordinate];
+  }
+  if (other.hasAltitude) {
+    [self setAltitude:other.altitude];
+  }
+  if (other.hasSpeed) {
+    [self setSpeed:other.speed];
+  }
+  if (other.hasCourse) {
+    [self setCourse:other.course];
+  }
+  if (other.hasTimestamp) {
+    [self mergeTimestamp:other.timestamp];
+  }
+  if (other.hasPlacename) {
+    [self setPlacename:other.placename];
+  }
+  [self mergeUnknownFields:other.unknownFields];
+  return self;
+}
+- (BLocationBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
+  return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
+}
+- (BLocationBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  PBUnknownFieldSetBuilder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
+  while (YES) {
+    SInt32 tag = [input readTag];
+    switch (tag) {
+      case 0:
+        [self setUnknownFields:[unknownFields build]];
+        return self;
+      default: {
+        if (![self parseUnknownField:input unknownFields:unknownFields extensionRegistry:extensionRegistry tag:tag]) {
+          [self setUnknownFields:[unknownFields build]];
+          return self;
+        }
+        break;
+      }
+      case 10: {
+        BCoordinateBuilder* subBuilder = [BCoordinate builder];
+        if (self.hasCoordinate) {
+          [subBuilder mergeFrom:self.coordinate];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setCoordinate:[subBuilder buildPartial]];
+        break;
+      }
+      case 17: {
+        [self setAltitude:[input readDouble]];
+        break;
+      }
+      case 25: {
+        [self setSpeed:[input readDouble]];
+        break;
+      }
+      case 33: {
+        [self setCourse:[input readDouble]];
+        break;
+      }
+      case 42: {
+        BTimestampBuilder* subBuilder = [BTimestamp builder];
+        if (self.hasTimestamp) {
+          [subBuilder mergeFrom:self.timestamp];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setTimestamp:[subBuilder buildPartial]];
+        break;
+      }
+      case 50: {
+        [self setPlacename:[input readString]];
+        break;
+      }
+    }
+  }
+}
+- (BOOL) hasCoordinate {
+  return resultLocation.hasCoordinate;
+}
+- (BCoordinate*) coordinate {
+  return resultLocation.coordinate;
+}
+- (BLocationBuilder*) setCoordinate:(BCoordinate*) value {
+  resultLocation.hasCoordinate = YES;
+  resultLocation.coordinate = value;
+  return self;
+}
+- (BLocationBuilder*) setCoordinateBuilder:(BCoordinateBuilder*) builderForValue {
+  return [self setCoordinate:[builderForValue build]];
+}
+- (BLocationBuilder*) mergeCoordinate:(BCoordinate*) value {
+  if (resultLocation.hasCoordinate &&
+      resultLocation.coordinate != [BCoordinate defaultInstance]) {
+    resultLocation.coordinate =
+      [[[BCoordinate builderWithPrototype:resultLocation.coordinate] mergeFrom:value] buildPartial];
+  } else {
+    resultLocation.coordinate = value;
+  }
+  resultLocation.hasCoordinate = YES;
+  return self;
+}
+- (BLocationBuilder*) clearCoordinate {
+  resultLocation.hasCoordinate = NO;
+  resultLocation.coordinate = [BCoordinate defaultInstance];
+  return self;
+}
+- (BOOL) hasAltitude {
+  return resultLocation.hasAltitude;
+}
+- (Float64) altitude {
+  return resultLocation.altitude;
+}
+- (BLocationBuilder*) setAltitude:(Float64) value {
+  resultLocation.hasAltitude = YES;
+  resultLocation.altitude = value;
+  return self;
+}
+- (BLocationBuilder*) clearAltitude {
+  resultLocation.hasAltitude = NO;
+  resultLocation.altitude = 0;
+  return self;
+}
+- (BOOL) hasSpeed {
+  return resultLocation.hasSpeed;
+}
+- (Float64) speed {
+  return resultLocation.speed;
+}
+- (BLocationBuilder*) setSpeed:(Float64) value {
+  resultLocation.hasSpeed = YES;
+  resultLocation.speed = value;
+  return self;
+}
+- (BLocationBuilder*) clearSpeed {
+  resultLocation.hasSpeed = NO;
+  resultLocation.speed = 0;
+  return self;
+}
+- (BOOL) hasCourse {
+  return resultLocation.hasCourse;
+}
+- (Float64) course {
+  return resultLocation.course;
+}
+- (BLocationBuilder*) setCourse:(Float64) value {
+  resultLocation.hasCourse = YES;
+  resultLocation.course = value;
+  return self;
+}
+- (BLocationBuilder*) clearCourse {
+  resultLocation.hasCourse = NO;
+  resultLocation.course = 0;
+  return self;
+}
+- (BOOL) hasTimestamp {
+  return resultLocation.hasTimestamp;
+}
+- (BTimestamp*) timestamp {
+  return resultLocation.timestamp;
+}
+- (BLocationBuilder*) setTimestamp:(BTimestamp*) value {
+  resultLocation.hasTimestamp = YES;
+  resultLocation.timestamp = value;
+  return self;
+}
+- (BLocationBuilder*) setTimestampBuilder:(BTimestampBuilder*) builderForValue {
+  return [self setTimestamp:[builderForValue build]];
+}
+- (BLocationBuilder*) mergeTimestamp:(BTimestamp*) value {
+  if (resultLocation.hasTimestamp &&
+      resultLocation.timestamp != [BTimestamp defaultInstance]) {
+    resultLocation.timestamp =
+      [[[BTimestamp builderWithPrototype:resultLocation.timestamp] mergeFrom:value] buildPartial];
+  } else {
+    resultLocation.timestamp = value;
+  }
+  resultLocation.hasTimestamp = YES;
+  return self;
+}
+- (BLocationBuilder*) clearTimestamp {
+  resultLocation.hasTimestamp = NO;
+  resultLocation.timestamp = [BTimestamp defaultInstance];
+  return self;
+}
+- (BOOL) hasPlacename {
+  return resultLocation.hasPlacename;
+}
+- (NSString*) placename {
+  return resultLocation.placename;
+}
+- (BLocationBuilder*) setPlacename:(NSString*) value {
+  resultLocation.hasPlacename = YES;
+  resultLocation.placename = value;
+  return self;
+}
+- (BLocationBuilder*) clearPlacename {
+  resultLocation.hasPlacename = NO;
+  resultLocation.placename = @"";
+  return self;
+}
+@end
+
 @interface BVoid ()
-@property (strong) NSString* debugString;
+@property (strong) NSString* text;
 @end
 
 @implementation BVoid
 
-- (BOOL) hasDebugString {
-  return !!hasDebugString_;
+- (BOOL) hasText {
+  return !!hasText_;
 }
-- (void) setHasDebugString:(BOOL) _value_ {
-  hasDebugString_ = !!_value_;
+- (void) setHasText:(BOOL) _value_ {
+  hasText_ = !!_value_;
 }
-@synthesize debugString;
+@synthesize text;
 - (instancetype) init {
   if ((self = [super init])) {
-    self.debugString = @"";
+    self.text = @"";
   }
   return self;
 }
@@ -2244,8 +2353,8 @@ static BVoid* defaultBVoidInstance = nil;
   return YES;
 }
 - (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
-  if (self.hasDebugString) {
-    [output writeString:1 value:self.debugString];
+  if (self.hasText) {
+    [output writeString:1 value:self.text];
   }
   [self.unknownFields writeToCodedOutputStream:output];
 }
@@ -2256,8 +2365,8 @@ static BVoid* defaultBVoidInstance = nil;
   }
 
   size_ = 0;
-  if (self.hasDebugString) {
-    size_ += computeStringSize(1, self.debugString);
+  if (self.hasText) {
+    size_ += computeStringSize(1, self.text);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -2294,14 +2403,14 @@ static BVoid* defaultBVoidInstance = nil;
   return [BVoid builderWithPrototype:self];
 }
 - (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
-  if (self.hasDebugString) {
-    [output appendFormat:@"%@%@: %@\n", indent, @"debugString", self.debugString];
+  if (self.hasText) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"text", self.text];
   }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (void) storeInDictionary:(NSMutableDictionary *)dictionary {
-  if (self.hasDebugString) {
-    [dictionary setObject: self.debugString forKey: @"debugString"];
+  if (self.hasText) {
+    [dictionary setObject: self.text forKey: @"text"];
   }
   [self.unknownFields storeInDictionary:dictionary];
 }
@@ -2314,14 +2423,14 @@ static BVoid* defaultBVoidInstance = nil;
   }
   BVoid *otherMessage = other;
   return
-      self.hasDebugString == otherMessage.hasDebugString &&
-      (!self.hasDebugString || [self.debugString isEqual:otherMessage.debugString]) &&
+      self.hasText == otherMessage.hasText &&
+      (!self.hasText || [self.text isEqual:otherMessage.text]) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
   __block NSUInteger hashCode = 7;
-  if (self.hasDebugString) {
-    hashCode = hashCode * 31 + [self.debugString hash];
+  if (self.hasText) {
+    hashCode = hashCode * 31 + [self.text hash];
   }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
@@ -2366,8 +2475,8 @@ static BVoid* defaultBVoidInstance = nil;
   if (other == [BVoid defaultInstance]) {
     return self;
   }
-  if (other.hasDebugString) {
-    [self setDebugString:other.debugString];
+  if (other.hasText) {
+    [self setText:other.text];
   }
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -2391,26 +2500,26 @@ static BVoid* defaultBVoidInstance = nil;
         break;
       }
       case 10: {
-        [self setDebugString:[input readString]];
+        [self setText:[input readString]];
         break;
       }
     }
   }
 }
-- (BOOL) hasDebugString {
-  return resultVoid.hasDebugString;
+- (BOOL) hasText {
+  return resultVoid.hasText;
 }
-- (NSString*) debugString {
-  return resultVoid.debugString;
+- (NSString*) text {
+  return resultVoid.text;
 }
-- (BVoidBuilder*) setDebugString:(NSString*) value {
-  resultVoid.hasDebugString = YES;
-  resultVoid.debugString = value;
+- (BVoidBuilder*) setText:(NSString*) value {
+  resultVoid.hasText = YES;
+  resultVoid.text = value;
   return self;
 }
-- (BVoidBuilder*) clearDebugString {
-  resultVoid.hasDebugString = NO;
-  resultVoid.debugString = @"";
+- (BVoidBuilder*) clearText {
+  resultVoid.hasText = NO;
+  resultVoid.text = @"";
   return self;
 }
 @end

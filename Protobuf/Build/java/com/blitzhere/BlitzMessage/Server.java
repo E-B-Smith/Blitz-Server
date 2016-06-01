@@ -954,12 +954,6 @@ public final class Server {
           return false;
         }
       }
-      if (hasLastAppDataResetDate()) {
-        if (!getLastAppDataResetDate().isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-      }
       memoizedIsInitialized = 1;
       return true;
     }
@@ -1244,12 +1238,6 @@ public final class Server {
       public final boolean isInitialized() {
         if (hasProfile()) {
           if (!getProfile().isInitialized()) {
-            
-            return false;
-          }
-        }
-        if (hasLastAppDataResetDate()) {
-          if (!getLastAppDataResetDate().isInitialized()) {
             
             return false;
           }
@@ -3190,12 +3178,6 @@ public final class Server {
       if (isInitialized == 1) return true;
       if (isInitialized == 0) return false;
 
-      for (int i = 0; i < getUserMessagesCount(); i++) {
-        if (!getUserMessages(i).isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-      }
       if (hasUserProfile()) {
         if (!getUserProfile().isInitialized()) {
           memoizedIsInitialized = 0;
@@ -3584,12 +3566,6 @@ public final class Server {
       }
 
       public final boolean isInitialized() {
-        for (int i = 0; i < getUserMessagesCount(); i++) {
-          if (!getUserMessages(i).isInitialized()) {
-            
-            return false;
-          }
-        }
         if (hasUserProfile()) {
           if (!getUserProfile().isInitialized()) {
             
@@ -4822,12 +4798,6 @@ public final class Server {
       if (isInitialized == 1) return true;
       if (isInitialized == 0) return false;
 
-      if (hasLastMessageTimestamp()) {
-        if (!getLastMessageTimestamp().isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-      }
       memoizedIsInitialized = 1;
       return true;
     }
@@ -5053,12 +5023,6 @@ public final class Server {
       }
 
       public final boolean isInitialized() {
-        if (hasLastMessageTimestamp()) {
-          if (!getLastMessageTimestamp().isInitialized()) {
-            
-            return false;
-          }
-        }
         return true;
       }
 
@@ -6973,74 +6937,14 @@ public final class Server {
           return false;
         }
       }
-      if (hasMessageSendRequestDeprecated()) {
-        if (!getMessageSendRequestDeprecated().isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-      }
-      if (hasMessageFetchRequest()) {
-        if (!getMessageFetchRequest().isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-      }
-      if (hasImageUpload()) {
-        if (!getImageUpload().isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-      }
       if (hasAcceptInviteRequest()) {
         if (!getAcceptInviteRequest().isInitialized()) {
           memoizedIsInitialized = 0;
           return false;
         }
       }
-      if (hasFeedPostFetchRequest()) {
-        if (!getFeedPostFetchRequest().isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-      }
-      if (hasFeedPostUpdateRequest()) {
-        if (!getFeedPostUpdateRequest().isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-      }
-      if (hasPushConnect()) {
-        if (!getPushConnect().isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-      }
-      if (hasFetchConversations()) {
-        if (!getFetchConversations().isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-      }
-      if (hasUserReview()) {
-        if (!getUserReview().isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-      }
-      if (hasChargeRequest()) {
-        if (!getChargeRequest().isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-      }
       if (hasFriendRequest()) {
         if (!getFriendRequest().isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-      }
-      if (hasSendMessage()) {
-        if (!getSendMessage().isInitialized()) {
           memoizedIsInitialized = 0;
           return false;
         }
@@ -7901,74 +7805,14 @@ public final class Server {
             return false;
           }
         }
-        if (hasMessageSendRequestDeprecated()) {
-          if (!getMessageSendRequestDeprecated().isInitialized()) {
-            
-            return false;
-          }
-        }
-        if (hasMessageFetchRequest()) {
-          if (!getMessageFetchRequest().isInitialized()) {
-            
-            return false;
-          }
-        }
-        if (hasImageUpload()) {
-          if (!getImageUpload().isInitialized()) {
-            
-            return false;
-          }
-        }
         if (hasAcceptInviteRequest()) {
           if (!getAcceptInviteRequest().isInitialized()) {
             
             return false;
           }
         }
-        if (hasFeedPostFetchRequest()) {
-          if (!getFeedPostFetchRequest().isInitialized()) {
-            
-            return false;
-          }
-        }
-        if (hasFeedPostUpdateRequest()) {
-          if (!getFeedPostUpdateRequest().isInitialized()) {
-            
-            return false;
-          }
-        }
-        if (hasPushConnect()) {
-          if (!getPushConnect().isInitialized()) {
-            
-            return false;
-          }
-        }
-        if (hasFetchConversations()) {
-          if (!getFetchConversations().isInitialized()) {
-            
-            return false;
-          }
-        }
-        if (hasUserReview()) {
-          if (!getUserReview().isInitialized()) {
-            
-            return false;
-          }
-        }
-        if (hasChargeRequest()) {
-          if (!getChargeRequest().isInitialized()) {
-            
-            return false;
-          }
-        }
         if (hasFriendRequest()) {
           if (!getFriendRequest().isInitialized()) {
-            
-            return false;
-          }
-        }
-        if (hasSendMessage()) {
-          if (!getSendMessage().isInitialized()) {
             
             return false;
           }
@@ -12751,12 +12595,6 @@ public final class Server {
           return false;
         }
       }
-      if (hasUserEventBatchResponse()) {
-        if (!getUserEventBatchResponse().isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-      }
       if (hasUserProfileUpdate()) {
         if (!getUserProfileUpdate().isInitialized()) {
           memoizedIsInitialized = 0;
@@ -12765,18 +12603,6 @@ public final class Server {
       }
       if (hasConfirmationRequest()) {
         if (!getConfirmationRequest().isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-      }
-      if (hasUserMessageUpdate()) {
-        if (!getUserMessageUpdate().isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-      }
-      if (hasImageUploadReply()) {
-        if (!getImageUploadReply().isInitialized()) {
           memoizedIsInitialized = 0;
           return false;
         }
@@ -12799,26 +12625,8 @@ public final class Server {
           return false;
         }
       }
-      if (hasFetchConversations()) {
-        if (!getFetchConversations().isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-      }
-      if (hasChargeResponse()) {
-        if (!getChargeResponse().isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-      }
       if (hasFriendResponse()) {
         if (!getFriendResponse().isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-      }
-      if (hasFeedPostResponse()) {
-        if (!getFeedPostResponse().isInitialized()) {
           memoizedIsInitialized = 0;
           return false;
         }
@@ -13486,12 +13294,6 @@ public final class Server {
             return false;
           }
         }
-        if (hasUserEventBatchResponse()) {
-          if (!getUserEventBatchResponse().isInitialized()) {
-            
-            return false;
-          }
-        }
         if (hasUserProfileUpdate()) {
           if (!getUserProfileUpdate().isInitialized()) {
             
@@ -13500,18 +13302,6 @@ public final class Server {
         }
         if (hasConfirmationRequest()) {
           if (!getConfirmationRequest().isInitialized()) {
-            
-            return false;
-          }
-        }
-        if (hasUserMessageUpdate()) {
-          if (!getUserMessageUpdate().isInitialized()) {
-            
-            return false;
-          }
-        }
-        if (hasImageUploadReply()) {
-          if (!getImageUploadReply().isInitialized()) {
             
             return false;
           }
@@ -13534,26 +13324,8 @@ public final class Server {
             return false;
           }
         }
-        if (hasFetchConversations()) {
-          if (!getFetchConversations().isInitialized()) {
-            
-            return false;
-          }
-        }
-        if (hasChargeResponse()) {
-          if (!getChargeResponse().isInitialized()) {
-            
-            return false;
-          }
-        }
         if (hasFriendResponse()) {
           if (!getFriendResponse().isInitialized()) {
-            
-            return false;
-          }
-        }
-        if (hasFeedPostResponse()) {
-          if (!getFeedPostResponse().isInitialized()) {
             
             return false;
           }

@@ -65,8 +65,6 @@
 @class BFetchConversationsBuilder;
 @class BFriendUpdate;
 @class BFriendUpdateBuilder;
-@class BGlobal;
-@class BGlobalBuilder;
 @class BImageData;
 @class BImageDataBuilder;
 @class BImageUpload;
@@ -75,6 +73,8 @@
 @class BKeyValueBuilder;
 @class BLocation;
 @class BLocationBuilder;
+@class BPoint;
+@class BPointBuilder;
 @class BProfilesFromContactInfo;
 @class BProfilesFromContactInfoBuilder;
 @class BPurchaseDescription;

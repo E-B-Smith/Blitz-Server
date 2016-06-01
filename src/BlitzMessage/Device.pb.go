@@ -9,6 +9,7 @@ It is generated from these files:
 	Device.proto
 	EntityTags.proto
 	Feed.proto
+	Globals.proto
 	Payments.proto
 	Search.proto
 	Server.proto
@@ -25,6 +26,7 @@ It has these top-level messages:
 	FeedPostUpdateRequest
 	FeedPostFetchRequest
 	FeedPostResponse
+	Global
 	CardInfo
 	UserCardInfo
 	Charge
@@ -46,14 +48,14 @@ It has these top-level messages:
 	ServerRequest
 	ResponseType
 	ServerResponse
-	Global
-	Coordinate
+	Timestamp
+	Timespan
+	Point
 	Size
+	Coordinate
 	CoordinateRegion
 	CoordinatePolygon
 	Location
-	Timestamp
-	Timespan
 	Void
 	KeyValue
 	UserEvent

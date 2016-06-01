@@ -13,12 +13,12 @@
 @class BCoordinateRegionBuilder;
 @class BDeviceInfo;
 @class BDeviceInfoBuilder;
-@class BGlobal;
-@class BGlobalBuilder;
 @class BKeyValue;
 @class BKeyValueBuilder;
 @class BLocation;
 @class BLocationBuilder;
+@class BPoint;
+@class BPointBuilder;
 @class BSize;
 @class BSizeBuilder;
 @class BTimespan;

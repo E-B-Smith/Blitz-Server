@@ -49,7 +49,7 @@ func (x *CardStatus) UnmarshalJSON(data []byte) error {
 	*x = CardStatus(value)
 	return nil
 }
-func (CardStatus) EnumDescriptor() ([]byte, []int) { return fileDescriptor3, []int{0} }
+func (CardStatus) EnumDescriptor() ([]byte, []int) { return fileDescriptor4, []int{0} }
 
 type ChargeStatus int32
 
@@ -92,7 +92,7 @@ func (x *ChargeStatus) UnmarshalJSON(data []byte) error {
 	*x = ChargeStatus(value)
 	return nil
 }
-func (ChargeStatus) EnumDescriptor() ([]byte, []int) { return fileDescriptor3, []int{1} }
+func (ChargeStatus) EnumDescriptor() ([]byte, []int) { return fileDescriptor4, []int{1} }
 
 type ChargeTokenType int32
 
@@ -132,7 +132,7 @@ func (x *ChargeTokenType) UnmarshalJSON(data []byte) error {
 	*x = ChargeTokenType(value)
 	return nil
 }
-func (ChargeTokenType) EnumDescriptor() ([]byte, []int) { return fileDescriptor3, []int{2} }
+func (ChargeTokenType) EnumDescriptor() ([]byte, []int) { return fileDescriptor4, []int{2} }
 
 type PurchaseType int32
 
@@ -169,7 +169,7 @@ func (x *PurchaseType) UnmarshalJSON(data []byte) error {
 	*x = PurchaseType(value)
 	return nil
 }
-func (PurchaseType) EnumDescriptor() ([]byte, []int) { return fileDescriptor3, []int{3} }
+func (PurchaseType) EnumDescriptor() ([]byte, []int) { return fileDescriptor4, []int{3} }
 
 type CardInfo struct {
 	CardStatus       *CardStatus `protobuf:"varint,1,opt,name=cardStatus,enum=BlitzMessage.CardStatus" json:"cardStatus,omitempty"`
@@ -186,7 +186,7 @@ type CardInfo struct {
 func (m *CardInfo) Reset()                    { *m = CardInfo{} }
 func (m *CardInfo) String() string            { return proto.CompactTextString(m) }
 func (*CardInfo) ProtoMessage()               {}
-func (*CardInfo) Descriptor() ([]byte, []int) { return fileDescriptor3, []int{0} }
+func (*CardInfo) Descriptor() ([]byte, []int) { return fileDescriptor4, []int{0} }
 
 func (m *CardInfo) GetCardStatus() CardStatus {
 	if m != nil && m.CardStatus != nil {
@@ -253,7 +253,7 @@ type UserCardInfo struct {
 func (m *UserCardInfo) Reset()                    { *m = UserCardInfo{} }
 func (m *UserCardInfo) String() string            { return proto.CompactTextString(m) }
 func (*UserCardInfo) ProtoMessage()               {}
-func (*UserCardInfo) Descriptor() ([]byte, []int) { return fileDescriptor3, []int{1} }
+func (*UserCardInfo) Descriptor() ([]byte, []int) { return fileDescriptor4, []int{1} }
 
 func (m *UserCardInfo) GetUserID() string {
 	if m != nil && m.UserID != nil {
@@ -289,7 +289,7 @@ type Charge struct {
 func (m *Charge) Reset()                    { *m = Charge{} }
 func (m *Charge) String() string            { return proto.CompactTextString(m) }
 func (*Charge) ProtoMessage()               {}
-func (*Charge) Descriptor() ([]byte, []int) { return fileDescriptor3, []int{2} }
+func (*Charge) Descriptor() ([]byte, []int) { return fileDescriptor4, []int{2} }
 
 func (m *Charge) GetChargeID() string {
 	if m != nil && m.ChargeID != nil {
@@ -397,7 +397,7 @@ type PurchaseDescription struct {
 func (m *PurchaseDescription) Reset()                    { *m = PurchaseDescription{} }
 func (m *PurchaseDescription) String() string            { return proto.CompactTextString(m) }
 func (*PurchaseDescription) ProtoMessage()               {}
-func (*PurchaseDescription) Descriptor() ([]byte, []int) { return fileDescriptor3, []int{3} }
+func (*PurchaseDescription) Descriptor() ([]byte, []int) { return fileDescriptor4, []int{3} }
 
 func (m *PurchaseDescription) GetPurchaseType() PurchaseType {
 	if m != nil && m.PurchaseType != nil {
@@ -452,7 +452,7 @@ func init() {
 	proto.RegisterEnum("BlitzMessage.PurchaseType", PurchaseType_name, PurchaseType_value)
 }
 
-var fileDescriptor3 = []byte{
+var fileDescriptor4 = []byte{
 	// 667 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x09, 0x6e, 0x88, 0x02, 0xff, 0x9c, 0x54, 0xcd, 0x4e, 0xdb, 0x4a,
 	0x14, 0xc6, 0x09, 0x81, 0xe4, 0x24, 0x24, 0x91, 0x91, 0x60, 0x94, 0xab, 0x2b, 0x5d, 0xb1, 0x42,

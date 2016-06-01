@@ -353,11 +353,6 @@ static BSessionRequest* defaultBSessionRequestInstance = nil;
       return NO;
     }
   }
-  if (self.hasLastAppDataResetDate) {
-    if (!self.lastAppDataResetDate.isInitialized) {
-      return NO;
-    }
-  }
   return YES;
 }
 - (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
@@ -1235,14 +1230,6 @@ static BSessionResponse* defaultBSessionResponseInstance = nil;
   return [userMessagesArray objectAtIndex:index];
 }
 - (BOOL) isInitialized {
-  __block BOOL isInituserMessages = YES;
-   [self.userMessages enumerateObjectsUsingBlock:^(BUserMessage *element, NSUInteger idx, BOOL *stop) {
-    if (!element.isInitialized) {
-      isInituserMessages = NO;
-      *stop = YES;
-    }
-  }];
-  if (!isInituserMessages) return isInituserMessages;
   if (self.hasUserProfile) {
     if (!self.userProfile.isInitialized) {
       return NO;
@@ -1835,11 +1822,6 @@ static BPushConnect* defaultBPushConnectInstance = nil;
   return defaultBPushConnectInstance;
 }
 - (BOOL) isInitialized {
-  if (self.hasLastMessageTimestamp) {
-    if (!self.lastMessageTimestamp.isInitialized) {
-      return NO;
-    }
-  }
   return YES;
 }
 - (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
@@ -2512,63 +2494,13 @@ static BRequestType* defaultBRequestTypeInstance = nil;
       return NO;
     }
   }
-  if (self.hasMessageSendRequestDeprecated) {
-    if (!self.messageSendRequestDeprecated.isInitialized) {
-      return NO;
-    }
-  }
-  if (self.hasMessageFetchRequest) {
-    if (!self.messageFetchRequest.isInitialized) {
-      return NO;
-    }
-  }
-  if (self.hasImageUpload) {
-    if (!self.imageUpload.isInitialized) {
-      return NO;
-    }
-  }
   if (self.hasAcceptInviteRequest) {
     if (!self.acceptInviteRequest.isInitialized) {
       return NO;
     }
   }
-  if (self.hasFeedPostFetchRequest) {
-    if (!self.feedPostFetchRequest.isInitialized) {
-      return NO;
-    }
-  }
-  if (self.hasFeedPostUpdateRequest) {
-    if (!self.feedPostUpdateRequest.isInitialized) {
-      return NO;
-    }
-  }
-  if (self.hasPushConnect) {
-    if (!self.pushConnect.isInitialized) {
-      return NO;
-    }
-  }
-  if (self.hasFetchConversations) {
-    if (!self.fetchConversations.isInitialized) {
-      return NO;
-    }
-  }
-  if (self.hasUserReview) {
-    if (!self.userReview.isInitialized) {
-      return NO;
-    }
-  }
-  if (self.hasChargeRequest) {
-    if (!self.chargeRequest.isInitialized) {
-      return NO;
-    }
-  }
   if (self.hasFriendRequest) {
     if (!self.friendRequest.isInitialized) {
-      return NO;
-    }
-  }
-  if (self.hasSendMessage) {
-    if (!self.sendMessage.isInitialized) {
       return NO;
     }
   }
@@ -4853,11 +4785,6 @@ static BResponseType* defaultBResponseTypeInstance = nil;
       return NO;
     }
   }
-  if (self.hasUserEventBatchResponse) {
-    if (!self.userEventBatchResponse.isInitialized) {
-      return NO;
-    }
-  }
   if (self.hasUserProfileUpdate) {
     if (!self.userProfileUpdate.isInitialized) {
       return NO;
@@ -4865,16 +4792,6 @@ static BResponseType* defaultBResponseTypeInstance = nil;
   }
   if (self.hasConfirmationRequest) {
     if (!self.confirmationRequest.isInitialized) {
-      return NO;
-    }
-  }
-  if (self.hasUserMessageUpdate) {
-    if (!self.userMessageUpdate.isInitialized) {
-      return NO;
-    }
-  }
-  if (self.hasImageUploadReply) {
-    if (!self.imageUploadReply.isInitialized) {
       return NO;
     }
   }
@@ -4893,23 +4810,8 @@ static BResponseType* defaultBResponseTypeInstance = nil;
       return NO;
     }
   }
-  if (self.hasFetchConversations) {
-    if (!self.fetchConversations.isInitialized) {
-      return NO;
-    }
-  }
-  if (self.hasChargeResponse) {
-    if (!self.chargeResponse.isInitialized) {
-      return NO;
-    }
-  }
   if (self.hasFriendResponse) {
     if (!self.friendResponse.isInitialized) {
-      return NO;
-    }
-  }
-  if (self.hasFeedPostResponse) {
-    if (!self.feedPostResponse.isInitialized) {
       return NO;
     }
   }

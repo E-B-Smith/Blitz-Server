@@ -10,12 +10,12 @@
 @class BCoordinatePolygonBuilder;
 @class BCoordinateRegion;
 @class BCoordinateRegionBuilder;
-@class BGlobal;
-@class BGlobalBuilder;
 @class BKeyValue;
 @class BKeyValueBuilder;
 @class BLocation;
 @class BLocationBuilder;
+@class BPoint;
+@class BPointBuilder;
 @class BSize;
 @class BSizeBuilder;
 @class BTimespan;
@@ -77,382 +77,6 @@
 }
 + (PBExtensionRegistry*) extensionRegistry;
 + (void) registerAllExtensions:(PBMutableExtensionRegistry*) registry;
-@end
-
-#define Global_SystemUserID @"systemUserID"
-@interface BGlobal : PBGeneratedMessage<GeneratedMessageProtocol> {
-@private
-  BOOL hasSystemUserID_:1;
-  NSString* systemUserID;
-}
-- (BOOL) hasSystemUserID;
-@property (readonly, strong) NSString* systemUserID;
-
-+ (instancetype) defaultInstance;
-- (instancetype) defaultInstance;
-
-- (BOOL) isInitialized;
-- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
-- (BGlobalBuilder*) builder;
-+ (BGlobalBuilder*) builder;
-+ (BGlobalBuilder*) builderWithPrototype:(BGlobal*) prototype;
-- (BGlobalBuilder*) toBuilder;
-
-+ (BGlobal*) parseFromData:(NSData*) data;
-+ (BGlobal*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
-+ (BGlobal*) parseFromInputStream:(NSInputStream*) input;
-+ (BGlobal*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
-+ (BGlobal*) parseFromCodedInputStream:(PBCodedInputStream*) input;
-+ (BGlobal*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
-@end
-
-@interface BGlobalBuilder : PBGeneratedMessageBuilder {
-@private
-  BGlobal* resultGlobal;
-}
-
-- (BGlobal*) defaultInstance;
-
-- (BGlobalBuilder*) clear;
-- (BGlobalBuilder*) clone;
-
-- (BGlobal*) build;
-- (BGlobal*) buildPartial;
-
-- (BGlobalBuilder*) mergeFrom:(BGlobal*) other;
-- (BGlobalBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
-- (BGlobalBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
-
-- (BOOL) hasSystemUserID;
-- (NSString*) systemUserID;
-- (BGlobalBuilder*) setSystemUserID:(NSString*) value;
-- (BGlobalBuilder*) clearSystemUserID;
-@end
-
-#define Coordinate_latitude @"latitude"
-#define Coordinate_longitude @"longitude"
-@interface BCoordinate : PBGeneratedMessage<GeneratedMessageProtocol> {
-@private
-  BOOL hasLatitude_:1;
-  BOOL hasLongitude_:1;
-  Float64 latitude;
-  Float64 longitude;
-}
-- (BOOL) hasLatitude;
-- (BOOL) hasLongitude;
-@property (readonly) Float64 latitude;
-@property (readonly) Float64 longitude;
-
-+ (instancetype) defaultInstance;
-- (instancetype) defaultInstance;
-
-- (BOOL) isInitialized;
-- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
-- (BCoordinateBuilder*) builder;
-+ (BCoordinateBuilder*) builder;
-+ (BCoordinateBuilder*) builderWithPrototype:(BCoordinate*) prototype;
-- (BCoordinateBuilder*) toBuilder;
-
-+ (BCoordinate*) parseFromData:(NSData*) data;
-+ (BCoordinate*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
-+ (BCoordinate*) parseFromInputStream:(NSInputStream*) input;
-+ (BCoordinate*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
-+ (BCoordinate*) parseFromCodedInputStream:(PBCodedInputStream*) input;
-+ (BCoordinate*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
-@end
-
-@interface BCoordinateBuilder : PBGeneratedMessageBuilder {
-@private
-  BCoordinate* resultCoordinate;
-}
-
-- (BCoordinate*) defaultInstance;
-
-- (BCoordinateBuilder*) clear;
-- (BCoordinateBuilder*) clone;
-
-- (BCoordinate*) build;
-- (BCoordinate*) buildPartial;
-
-- (BCoordinateBuilder*) mergeFrom:(BCoordinate*) other;
-- (BCoordinateBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
-- (BCoordinateBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
-
-- (BOOL) hasLatitude;
-- (Float64) latitude;
-- (BCoordinateBuilder*) setLatitude:(Float64) value;
-- (BCoordinateBuilder*) clearLatitude;
-
-- (BOOL) hasLongitude;
-- (Float64) longitude;
-- (BCoordinateBuilder*) setLongitude:(Float64) value;
-- (BCoordinateBuilder*) clearLongitude;
-@end
-
-#define Size_width @"width"
-#define Size_height @"height"
-@interface BSize : PBGeneratedMessage<GeneratedMessageProtocol> {
-@private
-  BOOL hasWidth_:1;
-  BOOL hasHeight_:1;
-  Float64 width;
-  Float64 height;
-}
-- (BOOL) hasWidth;
-- (BOOL) hasHeight;
-@property (readonly) Float64 width;
-@property (readonly) Float64 height;
-
-+ (instancetype) defaultInstance;
-- (instancetype) defaultInstance;
-
-- (BOOL) isInitialized;
-- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
-- (BSizeBuilder*) builder;
-+ (BSizeBuilder*) builder;
-+ (BSizeBuilder*) builderWithPrototype:(BSize*) prototype;
-- (BSizeBuilder*) toBuilder;
-
-+ (BSize*) parseFromData:(NSData*) data;
-+ (BSize*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
-+ (BSize*) parseFromInputStream:(NSInputStream*) input;
-+ (BSize*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
-+ (BSize*) parseFromCodedInputStream:(PBCodedInputStream*) input;
-+ (BSize*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
-@end
-
-@interface BSizeBuilder : PBGeneratedMessageBuilder {
-@private
-  BSize* resultSize;
-}
-
-- (BSize*) defaultInstance;
-
-- (BSizeBuilder*) clear;
-- (BSizeBuilder*) clone;
-
-- (BSize*) build;
-- (BSize*) buildPartial;
-
-- (BSizeBuilder*) mergeFrom:(BSize*) other;
-- (BSizeBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
-- (BSizeBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
-
-- (BOOL) hasWidth;
-- (Float64) width;
-- (BSizeBuilder*) setWidth:(Float64) value;
-- (BSizeBuilder*) clearWidth;
-
-- (BOOL) hasHeight;
-- (Float64) height;
-- (BSizeBuilder*) setHeight:(Float64) value;
-- (BSizeBuilder*) clearHeight;
-@end
-
-#define CoordinateRegion_center @"center"
-#define CoordinateRegion_size @"size"
-@interface BCoordinateRegion : PBGeneratedMessage<GeneratedMessageProtocol> {
-@private
-  BOOL hasCenter_:1;
-  BOOL hasSize_:1;
-  BCoordinate* center;
-  BSize* size;
-}
-- (BOOL) hasCenter;
-- (BOOL) hasSize;
-@property (readonly, strong) BCoordinate* center;
-@property (readonly, strong) BSize* size;
-
-+ (instancetype) defaultInstance;
-- (instancetype) defaultInstance;
-
-- (BOOL) isInitialized;
-- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
-- (BCoordinateRegionBuilder*) builder;
-+ (BCoordinateRegionBuilder*) builder;
-+ (BCoordinateRegionBuilder*) builderWithPrototype:(BCoordinateRegion*) prototype;
-- (BCoordinateRegionBuilder*) toBuilder;
-
-+ (BCoordinateRegion*) parseFromData:(NSData*) data;
-+ (BCoordinateRegion*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
-+ (BCoordinateRegion*) parseFromInputStream:(NSInputStream*) input;
-+ (BCoordinateRegion*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
-+ (BCoordinateRegion*) parseFromCodedInputStream:(PBCodedInputStream*) input;
-+ (BCoordinateRegion*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
-@end
-
-@interface BCoordinateRegionBuilder : PBGeneratedMessageBuilder {
-@private
-  BCoordinateRegion* resultCoordinateRegion;
-}
-
-- (BCoordinateRegion*) defaultInstance;
-
-- (BCoordinateRegionBuilder*) clear;
-- (BCoordinateRegionBuilder*) clone;
-
-- (BCoordinateRegion*) build;
-- (BCoordinateRegion*) buildPartial;
-
-- (BCoordinateRegionBuilder*) mergeFrom:(BCoordinateRegion*) other;
-- (BCoordinateRegionBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
-- (BCoordinateRegionBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
-
-- (BOOL) hasCenter;
-- (BCoordinate*) center;
-- (BCoordinateRegionBuilder*) setCenter:(BCoordinate*) value;
-- (BCoordinateRegionBuilder*) setCenterBuilder:(BCoordinateBuilder*) builderForValue;
-- (BCoordinateRegionBuilder*) mergeCenter:(BCoordinate*) value;
-- (BCoordinateRegionBuilder*) clearCenter;
-
-- (BOOL) hasSize;
-- (BSize*) size;
-- (BCoordinateRegionBuilder*) setSize:(BSize*) value;
-- (BCoordinateRegionBuilder*) setSizeBuilder:(BSizeBuilder*) builderForValue;
-- (BCoordinateRegionBuilder*) mergeSize:(BSize*) value;
-- (BCoordinateRegionBuilder*) clearSize;
-@end
-
-#define CoordinatePolygon_points @"points"
-@interface BCoordinatePolygon : PBGeneratedMessage<GeneratedMessageProtocol> {
-@private
-  NSMutableArray * pointsArray;
-}
-@property (readonly, strong) NSArray * points;
-- (BCoordinate*)pointsAtIndex:(NSUInteger)index;
-
-+ (instancetype) defaultInstance;
-- (instancetype) defaultInstance;
-
-- (BOOL) isInitialized;
-- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
-- (BCoordinatePolygonBuilder*) builder;
-+ (BCoordinatePolygonBuilder*) builder;
-+ (BCoordinatePolygonBuilder*) builderWithPrototype:(BCoordinatePolygon*) prototype;
-- (BCoordinatePolygonBuilder*) toBuilder;
-
-+ (BCoordinatePolygon*) parseFromData:(NSData*) data;
-+ (BCoordinatePolygon*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
-+ (BCoordinatePolygon*) parseFromInputStream:(NSInputStream*) input;
-+ (BCoordinatePolygon*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
-+ (BCoordinatePolygon*) parseFromCodedInputStream:(PBCodedInputStream*) input;
-+ (BCoordinatePolygon*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
-@end
-
-@interface BCoordinatePolygonBuilder : PBGeneratedMessageBuilder {
-@private
-  BCoordinatePolygon* resultCoordinatePolygon;
-}
-
-- (BCoordinatePolygon*) defaultInstance;
-
-- (BCoordinatePolygonBuilder*) clear;
-- (BCoordinatePolygonBuilder*) clone;
-
-- (BCoordinatePolygon*) build;
-- (BCoordinatePolygon*) buildPartial;
-
-- (BCoordinatePolygonBuilder*) mergeFrom:(BCoordinatePolygon*) other;
-- (BCoordinatePolygonBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
-- (BCoordinatePolygonBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
-
-- (NSMutableArray *)points;
-- (BCoordinate*)pointsAtIndex:(NSUInteger)index;
-- (BCoordinatePolygonBuilder *)addPoints:(BCoordinate*)value;
-- (BCoordinatePolygonBuilder *)setPointsArray:(NSArray *)array;
-- (BCoordinatePolygonBuilder *)clearPoints;
-@end
-
-#define Location_coordinate @"coordinate"
-#define Location_altitude @"altitude"
-#define Location_speed @"speed"
-#define Location_course @"course"
-#define Location_placename @"placename"
-@interface BLocation : PBGeneratedMessage<GeneratedMessageProtocol> {
-@private
-  BOOL hasAltitude_:1;
-  BOOL hasSpeed_:1;
-  BOOL hasCourse_:1;
-  BOOL hasPlacename_:1;
-  BOOL hasCoordinate_:1;
-  Float64 altitude;
-  Float64 speed;
-  Float64 course;
-  NSString* placename;
-  BCoordinate* coordinate;
-}
-- (BOOL) hasCoordinate;
-- (BOOL) hasAltitude;
-- (BOOL) hasSpeed;
-- (BOOL) hasCourse;
-- (BOOL) hasPlacename;
-@property (readonly, strong) BCoordinate* coordinate;
-@property (readonly) Float64 altitude;
-@property (readonly) Float64 speed;
-@property (readonly) Float64 course;
-@property (readonly, strong) NSString* placename;
-
-+ (instancetype) defaultInstance;
-- (instancetype) defaultInstance;
-
-- (BOOL) isInitialized;
-- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
-- (BLocationBuilder*) builder;
-+ (BLocationBuilder*) builder;
-+ (BLocationBuilder*) builderWithPrototype:(BLocation*) prototype;
-- (BLocationBuilder*) toBuilder;
-
-+ (BLocation*) parseFromData:(NSData*) data;
-+ (BLocation*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
-+ (BLocation*) parseFromInputStream:(NSInputStream*) input;
-+ (BLocation*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
-+ (BLocation*) parseFromCodedInputStream:(PBCodedInputStream*) input;
-+ (BLocation*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
-@end
-
-@interface BLocationBuilder : PBGeneratedMessageBuilder {
-@private
-  BLocation* resultLocation;
-}
-
-- (BLocation*) defaultInstance;
-
-- (BLocationBuilder*) clear;
-- (BLocationBuilder*) clone;
-
-- (BLocation*) build;
-- (BLocation*) buildPartial;
-
-- (BLocationBuilder*) mergeFrom:(BLocation*) other;
-- (BLocationBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
-- (BLocationBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
-
-- (BOOL) hasCoordinate;
-- (BCoordinate*) coordinate;
-- (BLocationBuilder*) setCoordinate:(BCoordinate*) value;
-- (BLocationBuilder*) setCoordinateBuilder:(BCoordinateBuilder*) builderForValue;
-- (BLocationBuilder*) mergeCoordinate:(BCoordinate*) value;
-- (BLocationBuilder*) clearCoordinate;
-
-- (BOOL) hasAltitude;
-- (Float64) altitude;
-- (BLocationBuilder*) setAltitude:(Float64) value;
-- (BLocationBuilder*) clearAltitude;
-
-- (BOOL) hasSpeed;
-- (Float64) speed;
-- (BLocationBuilder*) setSpeed:(Float64) value;
-- (BLocationBuilder*) clearSpeed;
-
-- (BOOL) hasCourse;
-- (Float64) course;
-- (BLocationBuilder*) setCourse:(Float64) value;
-- (BLocationBuilder*) clearCourse;
-
-- (BOOL) hasPlacename;
-- (NSString*) placename;
-- (BLocationBuilder*) setPlacename:(NSString*) value;
-- (BLocationBuilder*) clearPlacename;
 @end
 
 #define Timestamp_epoch @"epoch"
@@ -569,14 +193,412 @@
 - (BTimespanBuilder*) clearStopTimestamp;
 @end
 
-#define Void_debugString @"debugString"
+#define Point_x @"x"
+#define Point_y @"y"
+@interface BPoint : PBGeneratedMessage<GeneratedMessageProtocol> {
+@private
+  BOOL hasX_:1;
+  BOOL hasY_:1;
+  Float64 x;
+  Float64 y;
+}
+- (BOOL) hasX;
+- (BOOL) hasY;
+@property (readonly) Float64 x;
+@property (readonly) Float64 y;
+
++ (instancetype) defaultInstance;
+- (instancetype) defaultInstance;
+
+- (BOOL) isInitialized;
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
+- (BPointBuilder*) builder;
++ (BPointBuilder*) builder;
++ (BPointBuilder*) builderWithPrototype:(BPoint*) prototype;
+- (BPointBuilder*) toBuilder;
+
++ (BPoint*) parseFromData:(NSData*) data;
++ (BPoint*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (BPoint*) parseFromInputStream:(NSInputStream*) input;
++ (BPoint*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (BPoint*) parseFromCodedInputStream:(PBCodedInputStream*) input;
++ (BPoint*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+@end
+
+@interface BPointBuilder : PBGeneratedMessageBuilder {
+@private
+  BPoint* resultPoint;
+}
+
+- (BPoint*) defaultInstance;
+
+- (BPointBuilder*) clear;
+- (BPointBuilder*) clone;
+
+- (BPoint*) build;
+- (BPoint*) buildPartial;
+
+- (BPointBuilder*) mergeFrom:(BPoint*) other;
+- (BPointBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
+- (BPointBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+
+- (BOOL) hasX;
+- (Float64) x;
+- (BPointBuilder*) setX:(Float64) value;
+- (BPointBuilder*) clearX;
+
+- (BOOL) hasY;
+- (Float64) y;
+- (BPointBuilder*) setY:(Float64) value;
+- (BPointBuilder*) clearY;
+@end
+
+#define Size_width @"width"
+#define Size_height @"height"
+@interface BSize : PBGeneratedMessage<GeneratedMessageProtocol> {
+@private
+  BOOL hasWidth_:1;
+  BOOL hasHeight_:1;
+  Float64 width;
+  Float64 height;
+}
+- (BOOL) hasWidth;
+- (BOOL) hasHeight;
+@property (readonly) Float64 width;
+@property (readonly) Float64 height;
+
++ (instancetype) defaultInstance;
+- (instancetype) defaultInstance;
+
+- (BOOL) isInitialized;
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
+- (BSizeBuilder*) builder;
++ (BSizeBuilder*) builder;
++ (BSizeBuilder*) builderWithPrototype:(BSize*) prototype;
+- (BSizeBuilder*) toBuilder;
+
++ (BSize*) parseFromData:(NSData*) data;
++ (BSize*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (BSize*) parseFromInputStream:(NSInputStream*) input;
++ (BSize*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (BSize*) parseFromCodedInputStream:(PBCodedInputStream*) input;
++ (BSize*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+@end
+
+@interface BSizeBuilder : PBGeneratedMessageBuilder {
+@private
+  BSize* resultSize;
+}
+
+- (BSize*) defaultInstance;
+
+- (BSizeBuilder*) clear;
+- (BSizeBuilder*) clone;
+
+- (BSize*) build;
+- (BSize*) buildPartial;
+
+- (BSizeBuilder*) mergeFrom:(BSize*) other;
+- (BSizeBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
+- (BSizeBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+
+- (BOOL) hasWidth;
+- (Float64) width;
+- (BSizeBuilder*) setWidth:(Float64) value;
+- (BSizeBuilder*) clearWidth;
+
+- (BOOL) hasHeight;
+- (Float64) height;
+- (BSizeBuilder*) setHeight:(Float64) value;
+- (BSizeBuilder*) clearHeight;
+@end
+
+#define Coordinate_latitude @"latitude"
+#define Coordinate_longitude @"longitude"
+@interface BCoordinate : PBGeneratedMessage<GeneratedMessageProtocol> {
+@private
+  BOOL hasLatitude_:1;
+  BOOL hasLongitude_:1;
+  Float64 latitude;
+  Float64 longitude;
+}
+- (BOOL) hasLatitude;
+- (BOOL) hasLongitude;
+@property (readonly) Float64 latitude;
+@property (readonly) Float64 longitude;
+
++ (instancetype) defaultInstance;
+- (instancetype) defaultInstance;
+
+- (BOOL) isInitialized;
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
+- (BCoordinateBuilder*) builder;
++ (BCoordinateBuilder*) builder;
++ (BCoordinateBuilder*) builderWithPrototype:(BCoordinate*) prototype;
+- (BCoordinateBuilder*) toBuilder;
+
++ (BCoordinate*) parseFromData:(NSData*) data;
++ (BCoordinate*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (BCoordinate*) parseFromInputStream:(NSInputStream*) input;
++ (BCoordinate*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (BCoordinate*) parseFromCodedInputStream:(PBCodedInputStream*) input;
++ (BCoordinate*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+@end
+
+@interface BCoordinateBuilder : PBGeneratedMessageBuilder {
+@private
+  BCoordinate* resultCoordinate;
+}
+
+- (BCoordinate*) defaultInstance;
+
+- (BCoordinateBuilder*) clear;
+- (BCoordinateBuilder*) clone;
+
+- (BCoordinate*) build;
+- (BCoordinate*) buildPartial;
+
+- (BCoordinateBuilder*) mergeFrom:(BCoordinate*) other;
+- (BCoordinateBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
+- (BCoordinateBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+
+- (BOOL) hasLatitude;
+- (Float64) latitude;
+- (BCoordinateBuilder*) setLatitude:(Float64) value;
+- (BCoordinateBuilder*) clearLatitude;
+
+- (BOOL) hasLongitude;
+- (Float64) longitude;
+- (BCoordinateBuilder*) setLongitude:(Float64) value;
+- (BCoordinateBuilder*) clearLongitude;
+@end
+
+#define CoordinateRegion_center @"center"
+#define CoordinateRegion_span @"span"
+@interface BCoordinateRegion : PBGeneratedMessage<GeneratedMessageProtocol> {
+@private
+  BOOL hasCenter_:1;
+  BOOL hasSpan_:1;
+  BCoordinate* center;
+  BCoordinate* span;
+}
+- (BOOL) hasCenter;
+- (BOOL) hasSpan;
+@property (readonly, strong) BCoordinate* center;
+@property (readonly, strong) BCoordinate* span;
+
++ (instancetype) defaultInstance;
+- (instancetype) defaultInstance;
+
+- (BOOL) isInitialized;
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
+- (BCoordinateRegionBuilder*) builder;
++ (BCoordinateRegionBuilder*) builder;
++ (BCoordinateRegionBuilder*) builderWithPrototype:(BCoordinateRegion*) prototype;
+- (BCoordinateRegionBuilder*) toBuilder;
+
++ (BCoordinateRegion*) parseFromData:(NSData*) data;
++ (BCoordinateRegion*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (BCoordinateRegion*) parseFromInputStream:(NSInputStream*) input;
++ (BCoordinateRegion*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (BCoordinateRegion*) parseFromCodedInputStream:(PBCodedInputStream*) input;
++ (BCoordinateRegion*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+@end
+
+@interface BCoordinateRegionBuilder : PBGeneratedMessageBuilder {
+@private
+  BCoordinateRegion* resultCoordinateRegion;
+}
+
+- (BCoordinateRegion*) defaultInstance;
+
+- (BCoordinateRegionBuilder*) clear;
+- (BCoordinateRegionBuilder*) clone;
+
+- (BCoordinateRegion*) build;
+- (BCoordinateRegion*) buildPartial;
+
+- (BCoordinateRegionBuilder*) mergeFrom:(BCoordinateRegion*) other;
+- (BCoordinateRegionBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
+- (BCoordinateRegionBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+
+- (BOOL) hasCenter;
+- (BCoordinate*) center;
+- (BCoordinateRegionBuilder*) setCenter:(BCoordinate*) value;
+- (BCoordinateRegionBuilder*) setCenterBuilder:(BCoordinateBuilder*) builderForValue;
+- (BCoordinateRegionBuilder*) mergeCenter:(BCoordinate*) value;
+- (BCoordinateRegionBuilder*) clearCenter;
+
+- (BOOL) hasSpan;
+- (BCoordinate*) span;
+- (BCoordinateRegionBuilder*) setSpan:(BCoordinate*) value;
+- (BCoordinateRegionBuilder*) setSpanBuilder:(BCoordinateBuilder*) builderForValue;
+- (BCoordinateRegionBuilder*) mergeSpan:(BCoordinate*) value;
+- (BCoordinateRegionBuilder*) clearSpan;
+@end
+
+#define CoordinatePolygon_points @"points"
+@interface BCoordinatePolygon : PBGeneratedMessage<GeneratedMessageProtocol> {
+@private
+  NSMutableArray * pointsArray;
+}
+@property (readonly, strong) NSArray * points;
+- (BCoordinate*)pointsAtIndex:(NSUInteger)index;
+
++ (instancetype) defaultInstance;
+- (instancetype) defaultInstance;
+
+- (BOOL) isInitialized;
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
+- (BCoordinatePolygonBuilder*) builder;
++ (BCoordinatePolygonBuilder*) builder;
++ (BCoordinatePolygonBuilder*) builderWithPrototype:(BCoordinatePolygon*) prototype;
+- (BCoordinatePolygonBuilder*) toBuilder;
+
++ (BCoordinatePolygon*) parseFromData:(NSData*) data;
++ (BCoordinatePolygon*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (BCoordinatePolygon*) parseFromInputStream:(NSInputStream*) input;
++ (BCoordinatePolygon*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (BCoordinatePolygon*) parseFromCodedInputStream:(PBCodedInputStream*) input;
++ (BCoordinatePolygon*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+@end
+
+@interface BCoordinatePolygonBuilder : PBGeneratedMessageBuilder {
+@private
+  BCoordinatePolygon* resultCoordinatePolygon;
+}
+
+- (BCoordinatePolygon*) defaultInstance;
+
+- (BCoordinatePolygonBuilder*) clear;
+- (BCoordinatePolygonBuilder*) clone;
+
+- (BCoordinatePolygon*) build;
+- (BCoordinatePolygon*) buildPartial;
+
+- (BCoordinatePolygonBuilder*) mergeFrom:(BCoordinatePolygon*) other;
+- (BCoordinatePolygonBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
+- (BCoordinatePolygonBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+
+- (NSMutableArray *)points;
+- (BCoordinate*)pointsAtIndex:(NSUInteger)index;
+- (BCoordinatePolygonBuilder *)addPoints:(BCoordinate*)value;
+- (BCoordinatePolygonBuilder *)setPointsArray:(NSArray *)array;
+- (BCoordinatePolygonBuilder *)clearPoints;
+@end
+
+#define Location_coordinate @"coordinate"
+#define Location_altitude @"altitude"
+#define Location_speed @"speed"
+#define Location_course @"course"
+#define Location_timestamp @"timestamp"
+#define Location_placename @"placename"
+@interface BLocation : PBGeneratedMessage<GeneratedMessageProtocol> {
+@private
+  BOOL hasAltitude_:1;
+  BOOL hasSpeed_:1;
+  BOOL hasCourse_:1;
+  BOOL hasPlacename_:1;
+  BOOL hasCoordinate_:1;
+  BOOL hasTimestamp_:1;
+  Float64 altitude;
+  Float64 speed;
+  Float64 course;
+  NSString* placename;
+  BCoordinate* coordinate;
+  BTimestamp* timestamp;
+}
+- (BOOL) hasCoordinate;
+- (BOOL) hasAltitude;
+- (BOOL) hasSpeed;
+- (BOOL) hasCourse;
+- (BOOL) hasTimestamp;
+- (BOOL) hasPlacename;
+@property (readonly, strong) BCoordinate* coordinate;
+@property (readonly) Float64 altitude;
+@property (readonly) Float64 speed;
+@property (readonly) Float64 course;
+@property (readonly, strong) BTimestamp* timestamp;
+@property (readonly, strong) NSString* placename;
+
++ (instancetype) defaultInstance;
+- (instancetype) defaultInstance;
+
+- (BOOL) isInitialized;
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
+- (BLocationBuilder*) builder;
++ (BLocationBuilder*) builder;
++ (BLocationBuilder*) builderWithPrototype:(BLocation*) prototype;
+- (BLocationBuilder*) toBuilder;
+
++ (BLocation*) parseFromData:(NSData*) data;
++ (BLocation*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (BLocation*) parseFromInputStream:(NSInputStream*) input;
++ (BLocation*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (BLocation*) parseFromCodedInputStream:(PBCodedInputStream*) input;
++ (BLocation*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+@end
+
+@interface BLocationBuilder : PBGeneratedMessageBuilder {
+@private
+  BLocation* resultLocation;
+}
+
+- (BLocation*) defaultInstance;
+
+- (BLocationBuilder*) clear;
+- (BLocationBuilder*) clone;
+
+- (BLocation*) build;
+- (BLocation*) buildPartial;
+
+- (BLocationBuilder*) mergeFrom:(BLocation*) other;
+- (BLocationBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
+- (BLocationBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+
+- (BOOL) hasCoordinate;
+- (BCoordinate*) coordinate;
+- (BLocationBuilder*) setCoordinate:(BCoordinate*) value;
+- (BLocationBuilder*) setCoordinateBuilder:(BCoordinateBuilder*) builderForValue;
+- (BLocationBuilder*) mergeCoordinate:(BCoordinate*) value;
+- (BLocationBuilder*) clearCoordinate;
+
+- (BOOL) hasAltitude;
+- (Float64) altitude;
+- (BLocationBuilder*) setAltitude:(Float64) value;
+- (BLocationBuilder*) clearAltitude;
+
+- (BOOL) hasSpeed;
+- (Float64) speed;
+- (BLocationBuilder*) setSpeed:(Float64) value;
+- (BLocationBuilder*) clearSpeed;
+
+- (BOOL) hasCourse;
+- (Float64) course;
+- (BLocationBuilder*) setCourse:(Float64) value;
+- (BLocationBuilder*) clearCourse;
+
+- (BOOL) hasTimestamp;
+- (BTimestamp*) timestamp;
+- (BLocationBuilder*) setTimestamp:(BTimestamp*) value;
+- (BLocationBuilder*) setTimestampBuilder:(BTimestampBuilder*) builderForValue;
+- (BLocationBuilder*) mergeTimestamp:(BTimestamp*) value;
+- (BLocationBuilder*) clearTimestamp;
+
+- (BOOL) hasPlacename;
+- (NSString*) placename;
+- (BLocationBuilder*) setPlacename:(NSString*) value;
+- (BLocationBuilder*) clearPlacename;
+@end
+
+#define Void_text @"text"
 @interface BVoid : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
-  BOOL hasDebugString_:1;
-  NSString* debugString;
+  BOOL hasText_:1;
+  NSString* text;
 }
-- (BOOL) hasDebugString;
-@property (readonly, strong) NSString* debugString;
+- (BOOL) hasText;
+@property (readonly, strong) NSString* text;
 
 + (instancetype) defaultInstance;
 - (instancetype) defaultInstance;
@@ -613,10 +635,10 @@
 - (BVoidBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
 - (BVoidBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
 
-- (BOOL) hasDebugString;
-- (NSString*) debugString;
-- (BVoidBuilder*) setDebugString:(NSString*) value;
-- (BVoidBuilder*) clearDebugString;
+- (BOOL) hasText;
+- (NSString*) text;
+- (BVoidBuilder*) setText:(NSString*) value;
+- (BVoidBuilder*) clearText;
 @end
 
 #define KeyValue_key @"key"

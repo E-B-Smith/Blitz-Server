@@ -7,7 +7,6 @@ buildDate   := $(shell date | sed s.[[:space:]].-.g)
 buildVersion = 0
 buildLinux   = 0
 buildDarwin  = 0
-.SILENT:
 
 export userhost:=blitzhere@blitzhere.com
 export installpath:=/home/blitzhere
@@ -16,14 +15,20 @@ export GOROOT:=
 export PATH:=$(makepath)/bin:$(PATH)
 
 # Verbose options:
+ifeq (1, 0)
+    verbose    := echo
+    cp         := cp -av
+    rm         := rm -Rfv
+else
+    .SILENT:
+    verbose     := true
+    cp          := cp -a
+    rm          := rm -Rf
+endif
 
-#verbose    := echo
-#cp         := cp -av
-#rm         := rm -Rfv
 
-verbose     := true
-cp          := cp -a
-rm          := rm -Rf
+protosource := $(filter-out Protobuf/Source/objectivec-descriptor.proto, $(wildcard Protobuf/Source/*.proto))
+protogo := $(patsubst Protobuf/Source/%.proto, src/BlitzMessage/%.pb.go, $(protosource))
 
 
 # Compile --
@@ -53,32 +58,16 @@ gobuild= \
     cd - >/dev/null; \
 
 
-compile: \
-    FORCE \
-    updateversion \
-    src/BlitzMessage/Device.pb.go \
-    src/BlitzMessage/EntityTags.pb.go \
-    src/BlitzMessage/Feed.pb.go \
-    src/BlitzMessage/Payments.pb.go \
-    src/BlitzMessage/Search.pb.go \
-    src/BlitzMessage/Server.pb.go \
-    src/BlitzMessage/Types.pb.go \
-    src/BlitzMessage/UserEvents.pb.go \
-    src/BlitzMessage/UserMessages.pb.go \
-    src/BlitzMessage/UserProfiles.pb.go \
+compile : \
+    $(protogo) \
     src/ApplePushService/ResourceData.go \
-    ; \
-        echo ">>> Build version $(buildVersion) $(buildDate)."; \
-        $(call gobuild, src/BlitzHere-Server) \
-        $(call gobuild, src/Signup-Server) \
-        $(call gobuild, src/Status-Server)
-
-
-updateversion: \
     ; \
     $(eval buildVersion=$(shell Staging/fetch-version -i blitzhere)) \
     if [[ $$? != 0 || "$(buildVersion)" == "" ]]; then exit 1; fi; \
-    echo ">>> Updated version to $(buildVersion)."
+    echo ">>> Build version $(buildVersion) $(buildDate)."; \
+    $(call gobuild, src/BlitzHere-Server) \
+    $(call gobuild, src/Signup-Server) \
+    $(call gobuild, src/Status-Server)
 
 
 linux: \
@@ -90,38 +79,20 @@ linux: \
 src/ApplePushService/ResourceData.go : \
     $(shell find src/ApplePushService/Resources) \
     ; \
-        echo ">>> Building ApplePush resources"; \
-        cd src/ApplePushService; \
-        ../Resource/go-makeresource Resources/*
+    echo ">>> Building ApplePush resources"; \
+    cd src/ApplePushService; \
+    ../Resource/go-makeresource Resources/*
 
 
 FORCE:
 
 
 proto \
-src/BlitzMessage/Device.pb.go \
-src/BlitzMessage/EntityTags.pb.go \
-src/BlitzMessage/Feed.pb.go \
-src/BlitzMessage/Payments.pb.go \
-src/BlitzMessage/Search.pb.go \
-src/BlitzMessage/Server.pb.go \
-src/BlitzMessage/Types.pb.go \
-src/BlitzMessage/UserEvents.pb.go \
-src/BlitzMessage/UserMessages.pb.go \
-src/BlitzMessage/UserProfiles.pb.go : \
-    Protobuf/Source/Device.proto \
-    Protobuf/Source/EntityTags.proto \
-    Protobuf/Source/Feed.proto \
-    Protobuf/Source/Payments.proto \
-    Protobuf/Source/Search.proto \
-    Protobuf/Source/Server.proto \
-    Protobuf/Source/Types.proto \
-    Protobuf/Source/UserEvents.proto \
-    Protobuf/Source/UserMessages.proto \
-    Protobuf/Source/UserProfiles.proto \
+$(protogo) : \
+    $(protosource) \
     ; \
-        ./Protobuf/make-proto ; \
-        if [[ $$? != 0 ]]; then echo $?; exit 1; fi;
+    ./Protobuf/make-proto ; \
+    if [[ $$? != 0 ]]; then echo $?; exit 1; fi;
 
 
 # Clean --
@@ -129,12 +100,12 @@ src/BlitzMessage/UserProfiles.pb.go : \
 
 clean: \
     ; \
-        echo ">>> Cleaning..."; \
-        $(rm) bin/*; \
-        $(rm) pkg/*; \
-        $(rm) Protobuf/Build; \
-        $(rm) src/ApplePushService/ResourceData.go; \
-        $(rm) src/BlitzMessage/*.pb.go;
+    echo ">>> Cleaning..."; \
+    $(rm) bin/*; \
+    $(rm) pkg/*; \
+    $(rm) Protobuf/Build; \
+    $(rm) src/ApplePushService/ResourceData.go; \
+    $(rm) src/BlitzMessage/*.pb.go;
 
 
 # Testing --
@@ -158,8 +129,8 @@ gotest= \
 
 test: \
     ; \
-        cd $(makepath); $(call gotest, src); \
-        cd $(makepath); $(call gotest, src/violent.blue/GoKit);
+    cd $(makepath); $(call gotest, src); \
+    cd $(makepath); $(call gotest, src/violent.blue/GoKit);
 
 
 #  Deploy --
@@ -169,25 +140,25 @@ deploy: \
     FORCE \
     linux \
     ; \
-        echo ">>> Deploying to $$userhost." ; \
-        \
-        ssh $$userhost mkdir -p "$$installpath"/bin  "$$installpath"/database; \
-        rsync -aP --force  --progress  \
-            --exclude '.*' \
-            --exclude '*.log' \
-            --exclude 'log' \
-            --exclude '*.Darwin*' \
-            Staging/  \
-            $$userhost:"$$installpath"/bin ;\
-        if [[ $$? != 0 ]]; then exit 1; fi; \
-        \
-        rsync -aP --force  --progress \
-            --exclude '.*' \
-            Database/  \
-            $$userhost:"$$installpath"/database; \
-        if [[ $$? != 0 ]]; then exit 1; fi; \
-        ssh $$userhost  bin/link-versions ; \
-        if [[ $$? != 0 ]]; then exit 1; fi;
+    echo ">>> Deploying to $$userhost." ; \
+    \
+    ssh $$userhost mkdir -p "$$installpath"/bin  "$$installpath"/database; \
+    rsync -aP --force  --progress  \
+        --exclude '.*' \
+        --exclude '*.log' \
+        --exclude 'log' \
+        --exclude '*.Darwin*' \
+        Staging/  \
+        $$userhost:"$$installpath"/bin ;\
+    if [[ $$? != 0 ]]; then exit 1; fi; \
+    \
+    rsync -aP --force  --progress \
+        --exclude '.*' \
+        Database/  \
+        $$userhost:"$$installpath"/database; \
+    if [[ $$? != 0 ]]; then exit 1; fi; \
+    ssh $$userhost  bin/link-versions ; \
+    if [[ $$? != 0 ]]; then exit 1; fi;
 
 
 restart: \

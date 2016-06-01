@@ -67,7 +67,7 @@ func (x *ResponseCode) UnmarshalJSON(data []byte) error {
 	*x = ResponseCode(value)
 	return nil
 }
-func (ResponseCode) EnumDescriptor() ([]byte, []int) { return fileDescriptor5, []int{0} }
+func (ResponseCode) EnumDescriptor() ([]byte, []int) { return fileDescriptor6, []int{0} }
 
 type DebugMessage struct {
 	DebugText        []string `protobuf:"bytes,1,rep,name=debugText" json:"debugText,omitempty"`
@@ -77,7 +77,7 @@ type DebugMessage struct {
 func (m *DebugMessage) Reset()                    { *m = DebugMessage{} }
 func (m *DebugMessage) String() string            { return proto.CompactTextString(m) }
 func (*DebugMessage) ProtoMessage()               {}
-func (*DebugMessage) Descriptor() ([]byte, []int) { return fileDescriptor5, []int{0} }
+func (*DebugMessage) Descriptor() ([]byte, []int) { return fileDescriptor6, []int{0} }
 
 func (m *DebugMessage) GetDebugText() []string {
 	if m != nil {
@@ -97,7 +97,7 @@ type SessionRequest struct {
 func (m *SessionRequest) Reset()                    { *m = SessionRequest{} }
 func (m *SessionRequest) String() string            { return proto.CompactTextString(m) }
 func (*SessionRequest) ProtoMessage()               {}
-func (*SessionRequest) Descriptor() ([]byte, []int) { return fileDescriptor5, []int{1} }
+func (*SessionRequest) Descriptor() ([]byte, []int) { return fileDescriptor6, []int{1} }
 
 func (m *SessionRequest) GetLocation() *Location {
 	if m != nil {
@@ -134,7 +134,7 @@ type BlitzHereAppOptions struct {
 func (m *BlitzHereAppOptions) Reset()                    { *m = BlitzHereAppOptions{} }
 func (m *BlitzHereAppOptions) String() string            { return proto.CompactTextString(m) }
 func (*BlitzHereAppOptions) ProtoMessage()               {}
-func (*BlitzHereAppOptions) Descriptor() ([]byte, []int) { return fileDescriptor5, []int{2} }
+func (*BlitzHereAppOptions) Descriptor() ([]byte, []int) { return fileDescriptor6, []int{2} }
 
 type AppOptions struct {
 	BlitzHereOptions *BlitzHereAppOptions `protobuf:"bytes,1,opt,name=blitzHereOptions" json:"blitzHereOptions,omitempty"`
@@ -144,7 +144,7 @@ type AppOptions struct {
 func (m *AppOptions) Reset()                    { *m = AppOptions{} }
 func (m *AppOptions) String() string            { return proto.CompactTextString(m) }
 func (*AppOptions) ProtoMessage()               {}
-func (*AppOptions) Descriptor() ([]byte, []int) { return fileDescriptor5, []int{3} }
+func (*AppOptions) Descriptor() ([]byte, []int) { return fileDescriptor6, []int{3} }
 
 func (m *AppOptions) GetBlitzHereOptions() *BlitzHereAppOptions {
 	if m != nil {
@@ -168,7 +168,7 @@ type SessionResponse struct {
 func (m *SessionResponse) Reset()                    { *m = SessionResponse{} }
 func (m *SessionResponse) String() string            { return proto.CompactTextString(m) }
 func (*SessionResponse) ProtoMessage()               {}
-func (*SessionResponse) Descriptor() ([]byte, []int) { return fileDescriptor5, []int{4} }
+func (*SessionResponse) Descriptor() ([]byte, []int) { return fileDescriptor6, []int{4} }
 
 func (m *SessionResponse) GetUserID() string {
 	if m != nil && m.UserID != nil {
@@ -235,7 +235,7 @@ type PushConnect struct {
 func (m *PushConnect) Reset()                    { *m = PushConnect{} }
 func (m *PushConnect) String() string            { return proto.CompactTextString(m) }
 func (*PushConnect) ProtoMessage()               {}
-func (*PushConnect) Descriptor() ([]byte, []int) { return fileDescriptor5, []int{5} }
+func (*PushConnect) Descriptor() ([]byte, []int) { return fileDescriptor6, []int{5} }
 
 func (m *PushConnect) GetUserID() string {
 	if m != nil && m.UserID != nil {
@@ -258,7 +258,7 @@ type PushDisconnect struct {
 func (m *PushDisconnect) Reset()                    { *m = PushDisconnect{} }
 func (m *PushDisconnect) String() string            { return proto.CompactTextString(m) }
 func (*PushDisconnect) ProtoMessage()               {}
-func (*PushDisconnect) Descriptor() ([]byte, []int) { return fileDescriptor5, []int{6} }
+func (*PushDisconnect) Descriptor() ([]byte, []int) { return fileDescriptor6, []int{6} }
 
 type RequestType struct {
 	SessionRequest               *SessionRequest           `protobuf:"bytes,1,opt,name=sessionRequest" json:"sessionRequest,omitempty"`
@@ -293,7 +293,7 @@ type RequestType struct {
 func (m *RequestType) Reset()                    { *m = RequestType{} }
 func (m *RequestType) String() string            { return proto.CompactTextString(m) }
 func (*RequestType) ProtoMessage()               {}
-func (*RequestType) Descriptor() ([]byte, []int) { return fileDescriptor5, []int{7} }
+func (*RequestType) Descriptor() ([]byte, []int) { return fileDescriptor6, []int{7} }
 
 func (m *RequestType) GetSessionRequest() *SessionRequest {
 	if m != nil {
@@ -486,7 +486,7 @@ type ServerRequest struct {
 func (m *ServerRequest) Reset()                    { *m = ServerRequest{} }
 func (m *ServerRequest) String() string            { return proto.CompactTextString(m) }
 func (*ServerRequest) ProtoMessage()               {}
-func (*ServerRequest) Descriptor() ([]byte, []int) { return fileDescriptor5, []int{8} }
+func (*ServerRequest) Descriptor() ([]byte, []int) { return fileDescriptor6, []int{8} }
 
 func (m *ServerRequest) GetSessionToken() string {
 	if m != nil && m.SessionToken != nil {
@@ -530,7 +530,7 @@ type ResponseType struct {
 func (m *ResponseType) Reset()                    { *m = ResponseType{} }
 func (m *ResponseType) String() string            { return proto.CompactTextString(m) }
 func (*ResponseType) ProtoMessage()               {}
-func (*ResponseType) Descriptor() ([]byte, []int) { return fileDescriptor5, []int{9} }
+func (*ResponseType) Descriptor() ([]byte, []int) { return fileDescriptor6, []int{9} }
 
 func (m *ResponseType) GetSessionResponse() *SessionResponse {
 	if m != nil {
@@ -675,7 +675,7 @@ type ServerResponse struct {
 func (m *ServerResponse) Reset()                    { *m = ServerResponse{} }
 func (m *ServerResponse) String() string            { return proto.CompactTextString(m) }
 func (*ServerResponse) ProtoMessage()               {}
-func (*ServerResponse) Descriptor() ([]byte, []int) { return fileDescriptor5, []int{10} }
+func (*ServerResponse) Descriptor() ([]byte, []int) { return fileDescriptor6, []int{10} }
 
 func (m *ServerResponse) GetResponseCode() ResponseCode {
 	if m != nil && m.ResponseCode != nil {
@@ -713,7 +713,7 @@ func init() {
 	proto.RegisterEnum("BlitzMessage.ResponseCode", ResponseCode_name, ResponseCode_value)
 }
 
-var fileDescriptor5 = []byte{
+var fileDescriptor6 = []byte{
 	// 1310 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x09, 0x6e, 0x88, 0x02, 0xff, 0xd4, 0x57, 0xdd, 0x72, 0xdb, 0x44,
 	0x14, 0xc6, 0x71, 0x9b, 0xc4, 0xc7, 0x7f, 0xca, 0xda, 0x49, 0xd4, 0xb4, 0x85, 0xd6, 0x30, 0x4c,

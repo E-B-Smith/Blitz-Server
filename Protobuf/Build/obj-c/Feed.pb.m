@@ -344,24 +344,6 @@ static BFeedPost* defaultBFeedPostInstance = nil;
   return [panelUserIDsArray objectAtIndex:index];
 }
 - (BOOL) isInitialized {
-  if (self.hasTimestamp) {
-    if (!self.timestamp.isInitialized) {
-      return NO;
-    }
-  }
-  if (self.hasTimespanActive) {
-    if (!self.timespanActive.isInitialized) {
-      return NO;
-    }
-  }
-  __block BOOL isInitrepliesDeprecated = YES;
-   [self.repliesDeprecated enumerateObjectsUsingBlock:^(BFeedPost *element, NSUInteger idx, BOOL *stop) {
-    if (!element.isInitialized) {
-      isInitrepliesDeprecated = NO;
-      *stop = YES;
-    }
-  }];
-  if (!isInitrepliesDeprecated) return isInitrepliesDeprecated;
   return YES;
 }
 - (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
@@ -1446,19 +1428,6 @@ static BFeedPostUpdateRequest* defaultBFeedPostUpdateRequestInstance = nil;
   return [feedPostsArray objectAtIndex:index];
 }
 - (BOOL) isInitialized {
-  if (self.hasFeedPostDeprecated) {
-    if (!self.feedPostDeprecated.isInitialized) {
-      return NO;
-    }
-  }
-  __block BOOL isInitfeedPosts = YES;
-   [self.feedPosts enumerateObjectsUsingBlock:^(BFeedPost *element, NSUInteger idx, BOOL *stop) {
-    if (!element.isInitialized) {
-      isInitfeedPosts = NO;
-      *stop = YES;
-    }
-  }];
-  if (!isInitfeedPosts) return isInitfeedPosts;
   return YES;
 }
 - (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
@@ -1807,11 +1776,6 @@ static BFeedPostFetchRequest* defaultBFeedPostFetchRequestInstance = nil;
   return defaultBFeedPostFetchRequestInstance;
 }
 - (BOOL) isInitialized {
-  if (self.hasTimespan) {
-    if (!self.timespan.isInitialized) {
-      return NO;
-    }
-  }
   return YES;
 }
 - (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
@@ -2127,14 +2091,6 @@ static BFeedPostResponse* defaultBFeedPostResponseInstance = nil;
   return [feedPostsArray objectAtIndex:index];
 }
 - (BOOL) isInitialized {
-  __block BOOL isInitfeedPosts = YES;
-   [self.feedPosts enumerateObjectsUsingBlock:^(BFeedPost *element, NSUInteger idx, BOOL *stop) {
-    if (!element.isInitialized) {
-      isInitfeedPosts = NO;
-      *stop = YES;
-    }
-  }];
-  if (!isInitfeedPosts) return isInitfeedPosts;
   return YES;
 }
 - (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {

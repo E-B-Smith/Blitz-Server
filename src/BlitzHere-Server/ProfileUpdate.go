@@ -65,8 +65,8 @@ func InsertEmployment(userID *string, isHeadLineItem bool, employment *BlitzMess
         employment.CompanyName,
         employment.Location,
         employment.Industry,
-        BlitzMessage.NullTimeFromTimespanStart(employment.Timespan),
-        BlitzMessage.NullTimeFromTimespanStop(employment.Timespan),
+        employment.Timespan.NullTimeStart(),
+        employment.Timespan.NullTimeStop(),
         employment.Summary)
     if error != nil {
         Log.LogError(error)
@@ -100,8 +100,8 @@ func InsertEducation(userID *string, education *BlitzMessage.Education) {
         education.SchoolName,
         education.Degree,
         education.Emphasis,
-        BlitzMessage.NullTimeFromTimespanStart(education.Timespan),
-        BlitzMessage.NullTimeFromTimespanStop(education.Timespan),
+        education.Timespan.NullTimeStart(),
+        education.Timespan.NullTimeStop(),
         education.Summary)
     if error != nil {
         Log.LogError(error)

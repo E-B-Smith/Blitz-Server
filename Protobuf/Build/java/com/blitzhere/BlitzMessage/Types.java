@@ -8,44 +8,39 @@ public final class Types {
   public static void registerAllExtensions(
       com.google.protobuf.ExtensionRegistry registry) {
   }
-  public interface GlobalOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:BlitzMessage.Global)
+  public interface TimestampOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:BlitzMessage.Timestamp)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>optional string SystemUserID = 1 [default = "e4227250-c8e5-4da9-8177-f084020910b8"];</code>
+     * <code>optional double epoch = 1;</code>
      */
-    boolean hasSystemUserID();
+    boolean hasEpoch();
     /**
-     * <code>optional string SystemUserID = 1 [default = "e4227250-c8e5-4da9-8177-f084020910b8"];</code>
+     * <code>optional double epoch = 1;</code>
      */
-    java.lang.String getSystemUserID();
-    /**
-     * <code>optional string SystemUserID = 1 [default = "e4227250-c8e5-4da9-8177-f084020910b8"];</code>
-     */
-    com.google.protobuf.ByteString
-        getSystemUserIDBytes();
+    double getEpoch();
   }
   /**
-   * Protobuf type {@code BlitzMessage.Global}
+   * Protobuf type {@code BlitzMessage.Timestamp}
    */
-  public static final class Global extends
+  public static final class Timestamp extends
       com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:BlitzMessage.Global)
-      GlobalOrBuilder {
-    // Use Global.newBuilder() to construct.
-    private Global(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      // @@protoc_insertion_point(message_implements:BlitzMessage.Timestamp)
+      TimestampOrBuilder {
+    // Use Timestamp.newBuilder() to construct.
+    private Timestamp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
       this.unknownFields = builder.getUnknownFields();
     }
-    private Global(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+    private Timestamp(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
 
-    private static final Global defaultInstance;
-    public static Global getDefaultInstance() {
+    private static final Timestamp defaultInstance;
+    public static Timestamp getDefaultInstance() {
       return defaultInstance;
     }
 
-    public Global getDefaultInstanceForType() {
+    public Timestamp getDefaultInstanceForType() {
       return defaultInstance;
     }
 
@@ -55,487 +50,7 @@ public final class Types {
         getUnknownFields() {
       return this.unknownFields;
     }
-    private Global(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      initFields();
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            default: {
-              if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-            case 10: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000001;
-              systemUserID_ = bs;
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e.getMessage()).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return com.blitzhere.BlitzMessage.Types.internal_static_BlitzMessage_Global_descriptor;
-    }
-
-    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return com.blitzhere.BlitzMessage.Types.internal_static_BlitzMessage_Global_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              com.blitzhere.BlitzMessage.Types.Global.class, com.blitzhere.BlitzMessage.Types.Global.Builder.class);
-    }
-
-    public static com.google.protobuf.Parser<Global> PARSER =
-        new com.google.protobuf.AbstractParser<Global>() {
-      public Global parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new Global(input, extensionRegistry);
-      }
-    };
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<Global> getParserForType() {
-      return PARSER;
-    }
-
-    private int bitField0_;
-    public static final int SYSTEMUSERID_FIELD_NUMBER = 1;
-    private java.lang.Object systemUserID_;
-    /**
-     * <code>optional string SystemUserID = 1 [default = "e4227250-c8e5-4da9-8177-f084020910b8"];</code>
-     */
-    public boolean hasSystemUserID() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
-    }
-    /**
-     * <code>optional string SystemUserID = 1 [default = "e4227250-c8e5-4da9-8177-f084020910b8"];</code>
-     */
-    public java.lang.String getSystemUserID() {
-      java.lang.Object ref = systemUserID_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          systemUserID_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>optional string SystemUserID = 1 [default = "e4227250-c8e5-4da9-8177-f084020910b8"];</code>
-     */
-    public com.google.protobuf.ByteString
-        getSystemUserIDBytes() {
-      java.lang.Object ref = systemUserID_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        systemUserID_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    private void initFields() {
-      systemUserID_ = "e4227250-c8e5-4da9-8177-f084020910b8";
-    }
-    private byte memoizedIsInitialized = -1;
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
-
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      getSerializedSize();
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeBytes(1, getSystemUserIDBytes());
-      }
-      getUnknownFields().writeTo(output);
-    }
-
-    private int memoizedSerializedSize = -1;
-    public int getSerializedSize() {
-      int size = memoizedSerializedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(1, getSystemUserIDBytes());
-      }
-      size += getUnknownFields().getSerializedSize();
-      memoizedSerializedSize = size;
-      return size;
-    }
-
-    private static final long serialVersionUID = 0L;
-    @java.lang.Override
-    protected java.lang.Object writeReplace()
-        throws java.io.ObjectStreamException {
-      return super.writeReplace();
-    }
-
-    public static com.blitzhere.BlitzMessage.Types.Global parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.blitzhere.BlitzMessage.Types.Global parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.blitzhere.BlitzMessage.Types.Global parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.blitzhere.BlitzMessage.Types.Global parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.blitzhere.BlitzMessage.Types.Global parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static com.blitzhere.BlitzMessage.Types.Global parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-    public static com.blitzhere.BlitzMessage.Types.Global parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input);
-    }
-    public static com.blitzhere.BlitzMessage.Types.Global parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input, extensionRegistry);
-    }
-    public static com.blitzhere.BlitzMessage.Types.Global parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static com.blitzhere.BlitzMessage.Types.Global parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-
-    public static Builder newBuilder() { return Builder.create(); }
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.blitzhere.BlitzMessage.Types.Global prototype) {
-      return newBuilder().mergeFrom(prototype);
-    }
-    public Builder toBuilder() { return newBuilder(this); }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    /**
-     * Protobuf type {@code BlitzMessage.Global}
-     */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:BlitzMessage.Global)
-        com.blitzhere.BlitzMessage.Types.GlobalOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return com.blitzhere.BlitzMessage.Types.internal_static_BlitzMessage_Global_descriptor;
-      }
-
-      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return com.blitzhere.BlitzMessage.Types.internal_static_BlitzMessage_Global_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                com.blitzhere.BlitzMessage.Types.Global.class, com.blitzhere.BlitzMessage.Types.Global.Builder.class);
-      }
-
-      // Construct using com.blitzhere.BlitzMessage.Types.Global.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-        }
-      }
-      private static Builder create() {
-        return new Builder();
-      }
-
-      public Builder clear() {
-        super.clear();
-        systemUserID_ = "e4227250-c8e5-4da9-8177-f084020910b8";
-        bitField0_ = (bitField0_ & ~0x00000001);
-        return this;
-      }
-
-      public Builder clone() {
-        return create().mergeFrom(buildPartial());
-      }
-
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return com.blitzhere.BlitzMessage.Types.internal_static_BlitzMessage_Global_descriptor;
-      }
-
-      public com.blitzhere.BlitzMessage.Types.Global getDefaultInstanceForType() {
-        return com.blitzhere.BlitzMessage.Types.Global.getDefaultInstance();
-      }
-
-      public com.blitzhere.BlitzMessage.Types.Global build() {
-        com.blitzhere.BlitzMessage.Types.Global result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      public com.blitzhere.BlitzMessage.Types.Global buildPartial() {
-        com.blitzhere.BlitzMessage.Types.Global result = new com.blitzhere.BlitzMessage.Types.Global(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.systemUserID_ = systemUserID_;
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
-      }
-
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.blitzhere.BlitzMessage.Types.Global) {
-          return mergeFrom((com.blitzhere.BlitzMessage.Types.Global)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(com.blitzhere.BlitzMessage.Types.Global other) {
-        if (other == com.blitzhere.BlitzMessage.Types.Global.getDefaultInstance()) return this;
-        if (other.hasSystemUserID()) {
-          bitField0_ |= 0x00000001;
-          systemUserID_ = other.systemUserID_;
-          onChanged();
-        }
-        this.mergeUnknownFields(other.getUnknownFields());
-        return this;
-      }
-
-      public final boolean isInitialized() {
-        return true;
-      }
-
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        com.blitzhere.BlitzMessage.Types.Global parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.blitzhere.BlitzMessage.Types.Global) e.getUnfinishedMessage();
-          throw e;
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-      private int bitField0_;
-
-      private java.lang.Object systemUserID_ = "e4227250-c8e5-4da9-8177-f084020910b8";
-      /**
-       * <code>optional string SystemUserID = 1 [default = "e4227250-c8e5-4da9-8177-f084020910b8"];</code>
-       */
-      public boolean hasSystemUserID() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
-      }
-      /**
-       * <code>optional string SystemUserID = 1 [default = "e4227250-c8e5-4da9-8177-f084020910b8"];</code>
-       */
-      public java.lang.String getSystemUserID() {
-        java.lang.Object ref = systemUserID_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            systemUserID_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>optional string SystemUserID = 1 [default = "e4227250-c8e5-4da9-8177-f084020910b8"];</code>
-       */
-      public com.google.protobuf.ByteString
-          getSystemUserIDBytes() {
-        java.lang.Object ref = systemUserID_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          systemUserID_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>optional string SystemUserID = 1 [default = "e4227250-c8e5-4da9-8177-f084020910b8"];</code>
-       */
-      public Builder setSystemUserID(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
-        systemUserID_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string SystemUserID = 1 [default = "e4227250-c8e5-4da9-8177-f084020910b8"];</code>
-       */
-      public Builder clearSystemUserID() {
-        bitField0_ = (bitField0_ & ~0x00000001);
-        systemUserID_ = getDefaultInstance().getSystemUserID();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string SystemUserID = 1 [default = "e4227250-c8e5-4da9-8177-f084020910b8"];</code>
-       */
-      public Builder setSystemUserIDBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
-        systemUserID_ = value;
-        onChanged();
-        return this;
-      }
-
-      // @@protoc_insertion_point(builder_scope:BlitzMessage.Global)
-    }
-
-    static {
-      defaultInstance = new Global(true);
-      defaultInstance.initFields();
-    }
-
-    // @@protoc_insertion_point(class_scope:BlitzMessage.Global)
-  }
-
-  public interface CoordinateOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:BlitzMessage.Coordinate)
-      com.google.protobuf.MessageOrBuilder {
-
-    /**
-     * <code>optional double latitude = 1 [default = -360];</code>
-     */
-    boolean hasLatitude();
-    /**
-     * <code>optional double latitude = 1 [default = -360];</code>
-     */
-    double getLatitude();
-
-    /**
-     * <code>optional double longitude = 2 [default = -360];</code>
-     */
-    boolean hasLongitude();
-    /**
-     * <code>optional double longitude = 2 [default = -360];</code>
-     */
-    double getLongitude();
-  }
-  /**
-   * Protobuf type {@code BlitzMessage.Coordinate}
-   */
-  public static final class Coordinate extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:BlitzMessage.Coordinate)
-      CoordinateOrBuilder {
-    // Use Coordinate.newBuilder() to construct.
-    private Coordinate(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
-      super(builder);
-      this.unknownFields = builder.getUnknownFields();
-    }
-    private Coordinate(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
-
-    private static final Coordinate defaultInstance;
-    public static Coordinate getDefaultInstance() {
-      return defaultInstance;
-    }
-
-    public Coordinate getDefaultInstanceForType() {
-      return defaultInstance;
-    }
-
-    private final com.google.protobuf.UnknownFieldSet unknownFields;
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-        getUnknownFields() {
-      return this.unknownFields;
-    }
-    private Coordinate(
+    private Timestamp(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -560,12 +75,7 @@ public final class Types {
             }
             case 9: {
               bitField0_ |= 0x00000001;
-              latitude_ = input.readDouble();
-              break;
-            }
-            case 17: {
-              bitField0_ |= 0x00000002;
-              longitude_ = input.readDouble();
+              epoch_ = input.readDouble();
               break;
             }
           }
@@ -582,65 +92,49 @@ public final class Types {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.blitzhere.BlitzMessage.Types.internal_static_BlitzMessage_Coordinate_descriptor;
+      return com.blitzhere.BlitzMessage.Types.internal_static_BlitzMessage_Timestamp_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.blitzhere.BlitzMessage.Types.internal_static_BlitzMessage_Coordinate_fieldAccessorTable
+      return com.blitzhere.BlitzMessage.Types.internal_static_BlitzMessage_Timestamp_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.blitzhere.BlitzMessage.Types.Coordinate.class, com.blitzhere.BlitzMessage.Types.Coordinate.Builder.class);
+              com.blitzhere.BlitzMessage.Types.Timestamp.class, com.blitzhere.BlitzMessage.Types.Timestamp.Builder.class);
     }
 
-    public static com.google.protobuf.Parser<Coordinate> PARSER =
-        new com.google.protobuf.AbstractParser<Coordinate>() {
-      public Coordinate parsePartialFrom(
+    public static com.google.protobuf.Parser<Timestamp> PARSER =
+        new com.google.protobuf.AbstractParser<Timestamp>() {
+      public Timestamp parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new Coordinate(input, extensionRegistry);
+        return new Timestamp(input, extensionRegistry);
       }
     };
 
     @java.lang.Override
-    public com.google.protobuf.Parser<Coordinate> getParserForType() {
+    public com.google.protobuf.Parser<Timestamp> getParserForType() {
       return PARSER;
     }
 
     private int bitField0_;
-    public static final int LATITUDE_FIELD_NUMBER = 1;
-    private double latitude_;
+    public static final int EPOCH_FIELD_NUMBER = 1;
+    private double epoch_;
     /**
-     * <code>optional double latitude = 1 [default = -360];</code>
+     * <code>optional double epoch = 1;</code>
      */
-    public boolean hasLatitude() {
+    public boolean hasEpoch() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     /**
-     * <code>optional double latitude = 1 [default = -360];</code>
+     * <code>optional double epoch = 1;</code>
      */
-    public double getLatitude() {
-      return latitude_;
-    }
-
-    public static final int LONGITUDE_FIELD_NUMBER = 2;
-    private double longitude_;
-    /**
-     * <code>optional double longitude = 2 [default = -360];</code>
-     */
-    public boolean hasLongitude() {
-      return ((bitField0_ & 0x00000002) == 0x00000002);
-    }
-    /**
-     * <code>optional double longitude = 2 [default = -360];</code>
-     */
-    public double getLongitude() {
-      return longitude_;
+    public double getEpoch() {
+      return epoch_;
     }
 
     private void initFields() {
-      latitude_ = -360D;
-      longitude_ = -360D;
+      epoch_ = 0D;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -656,10 +150,7 @@ public final class Types {
                         throws java.io.IOException {
       getSerializedSize();
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeDouble(1, latitude_);
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeDouble(2, longitude_);
+        output.writeDouble(1, epoch_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -672,11 +163,7 @@ public final class Types {
       size = 0;
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeDoubleSize(1, latitude_);
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeDoubleSize(2, longitude_);
+          .computeDoubleSize(1, epoch_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -690,53 +177,53 @@ public final class Types {
       return super.writeReplace();
     }
 
-    public static com.blitzhere.BlitzMessage.Types.Coordinate parseFrom(
+    public static com.blitzhere.BlitzMessage.Types.Timestamp parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.blitzhere.BlitzMessage.Types.Coordinate parseFrom(
+    public static com.blitzhere.BlitzMessage.Types.Timestamp parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.blitzhere.BlitzMessage.Types.Coordinate parseFrom(byte[] data)
+    public static com.blitzhere.BlitzMessage.Types.Timestamp parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.blitzhere.BlitzMessage.Types.Coordinate parseFrom(
+    public static com.blitzhere.BlitzMessage.Types.Timestamp parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.blitzhere.BlitzMessage.Types.Coordinate parseFrom(java.io.InputStream input)
+    public static com.blitzhere.BlitzMessage.Types.Timestamp parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static com.blitzhere.BlitzMessage.Types.Coordinate parseFrom(
+    public static com.blitzhere.BlitzMessage.Types.Timestamp parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseFrom(input, extensionRegistry);
     }
-    public static com.blitzhere.BlitzMessage.Types.Coordinate parseDelimitedFrom(java.io.InputStream input)
+    public static com.blitzhere.BlitzMessage.Types.Timestamp parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input);
     }
-    public static com.blitzhere.BlitzMessage.Types.Coordinate parseDelimitedFrom(
+    public static com.blitzhere.BlitzMessage.Types.Timestamp parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input, extensionRegistry);
     }
-    public static com.blitzhere.BlitzMessage.Types.Coordinate parseFrom(
+    public static com.blitzhere.BlitzMessage.Types.Timestamp parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static com.blitzhere.BlitzMessage.Types.Coordinate parseFrom(
+    public static com.blitzhere.BlitzMessage.Types.Timestamp parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -745,7 +232,7 @@ public final class Types {
 
     public static Builder newBuilder() { return Builder.create(); }
     public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.blitzhere.BlitzMessage.Types.Coordinate prototype) {
+    public static Builder newBuilder(com.blitzhere.BlitzMessage.Types.Timestamp prototype) {
       return newBuilder().mergeFrom(prototype);
     }
     public Builder toBuilder() { return newBuilder(this); }
@@ -757,25 +244,25 @@ public final class Types {
       return builder;
     }
     /**
-     * Protobuf type {@code BlitzMessage.Coordinate}
+     * Protobuf type {@code BlitzMessage.Timestamp}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:BlitzMessage.Coordinate)
-        com.blitzhere.BlitzMessage.Types.CoordinateOrBuilder {
+        // @@protoc_insertion_point(builder_implements:BlitzMessage.Timestamp)
+        com.blitzhere.BlitzMessage.Types.TimestampOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.blitzhere.BlitzMessage.Types.internal_static_BlitzMessage_Coordinate_descriptor;
+        return com.blitzhere.BlitzMessage.Types.internal_static_BlitzMessage_Timestamp_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.blitzhere.BlitzMessage.Types.internal_static_BlitzMessage_Coordinate_fieldAccessorTable
+        return com.blitzhere.BlitzMessage.Types.internal_static_BlitzMessage_Timestamp_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                com.blitzhere.BlitzMessage.Types.Coordinate.class, com.blitzhere.BlitzMessage.Types.Coordinate.Builder.class);
+                com.blitzhere.BlitzMessage.Types.Timestamp.class, com.blitzhere.BlitzMessage.Types.Timestamp.Builder.class);
       }
 
-      // Construct using com.blitzhere.BlitzMessage.Types.Coordinate.newBuilder()
+      // Construct using com.blitzhere.BlitzMessage.Types.Timestamp.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -795,10 +282,8 @@ public final class Types {
 
       public Builder clear() {
         super.clear();
-        latitude_ = -360D;
+        epoch_ = 0D;
         bitField0_ = (bitField0_ & ~0x00000001);
-        longitude_ = -360D;
-        bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
 
@@ -808,54 +293,47 @@ public final class Types {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.blitzhere.BlitzMessage.Types.internal_static_BlitzMessage_Coordinate_descriptor;
+        return com.blitzhere.BlitzMessage.Types.internal_static_BlitzMessage_Timestamp_descriptor;
       }
 
-      public com.blitzhere.BlitzMessage.Types.Coordinate getDefaultInstanceForType() {
-        return com.blitzhere.BlitzMessage.Types.Coordinate.getDefaultInstance();
+      public com.blitzhere.BlitzMessage.Types.Timestamp getDefaultInstanceForType() {
+        return com.blitzhere.BlitzMessage.Types.Timestamp.getDefaultInstance();
       }
 
-      public com.blitzhere.BlitzMessage.Types.Coordinate build() {
-        com.blitzhere.BlitzMessage.Types.Coordinate result = buildPartial();
+      public com.blitzhere.BlitzMessage.Types.Timestamp build() {
+        com.blitzhere.BlitzMessage.Types.Timestamp result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
         return result;
       }
 
-      public com.blitzhere.BlitzMessage.Types.Coordinate buildPartial() {
-        com.blitzhere.BlitzMessage.Types.Coordinate result = new com.blitzhere.BlitzMessage.Types.Coordinate(this);
+      public com.blitzhere.BlitzMessage.Types.Timestamp buildPartial() {
+        com.blitzhere.BlitzMessage.Types.Timestamp result = new com.blitzhere.BlitzMessage.Types.Timestamp(this);
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
           to_bitField0_ |= 0x00000001;
         }
-        result.latitude_ = latitude_;
-        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
-          to_bitField0_ |= 0x00000002;
-        }
-        result.longitude_ = longitude_;
+        result.epoch_ = epoch_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
       }
 
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.blitzhere.BlitzMessage.Types.Coordinate) {
-          return mergeFrom((com.blitzhere.BlitzMessage.Types.Coordinate)other);
+        if (other instanceof com.blitzhere.BlitzMessage.Types.Timestamp) {
+          return mergeFrom((com.blitzhere.BlitzMessage.Types.Timestamp)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(com.blitzhere.BlitzMessage.Types.Coordinate other) {
-        if (other == com.blitzhere.BlitzMessage.Types.Coordinate.getDefaultInstance()) return this;
-        if (other.hasLatitude()) {
-          setLatitude(other.getLatitude());
-        }
-        if (other.hasLongitude()) {
-          setLongitude(other.getLongitude());
+      public Builder mergeFrom(com.blitzhere.BlitzMessage.Types.Timestamp other) {
+        if (other == com.blitzhere.BlitzMessage.Types.Timestamp.getDefaultInstance()) return this;
+        if (other.hasEpoch()) {
+          setEpoch(other.getEpoch());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -869,11 +347,11 @@ public final class Types {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.blitzhere.BlitzMessage.Types.Coordinate parsedMessage = null;
+        com.blitzhere.BlitzMessage.Types.Timestamp parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.blitzhere.BlitzMessage.Types.Coordinate) e.getUnfinishedMessage();
+          parsedMessage = (com.blitzhere.BlitzMessage.Types.Timestamp) e.getUnfinishedMessage();
           throw e;
         } finally {
           if (parsedMessage != null) {
@@ -884,79 +362,1219 @@ public final class Types {
       }
       private int bitField0_;
 
-      private double latitude_ = -360D;
+      private double epoch_ ;
       /**
-       * <code>optional double latitude = 1 [default = -360];</code>
+       * <code>optional double epoch = 1;</code>
        */
-      public boolean hasLatitude() {
+      public boolean hasEpoch() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       /**
-       * <code>optional double latitude = 1 [default = -360];</code>
+       * <code>optional double epoch = 1;</code>
        */
-      public double getLatitude() {
-        return latitude_;
+      public double getEpoch() {
+        return epoch_;
       }
       /**
-       * <code>optional double latitude = 1 [default = -360];</code>
+       * <code>optional double epoch = 1;</code>
        */
-      public Builder setLatitude(double value) {
+      public Builder setEpoch(double value) {
         bitField0_ |= 0x00000001;
-        latitude_ = value;
+        epoch_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional double latitude = 1 [default = -360];</code>
+       * <code>optional double epoch = 1;</code>
        */
-      public Builder clearLatitude() {
+      public Builder clearEpoch() {
         bitField0_ = (bitField0_ & ~0x00000001);
-        latitude_ = -360D;
+        epoch_ = 0D;
         onChanged();
         return this;
       }
 
-      private double longitude_ = -360D;
-      /**
-       * <code>optional double longitude = 2 [default = -360];</code>
-       */
-      public boolean hasLongitude() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
-      }
-      /**
-       * <code>optional double longitude = 2 [default = -360];</code>
-       */
-      public double getLongitude() {
-        return longitude_;
-      }
-      /**
-       * <code>optional double longitude = 2 [default = -360];</code>
-       */
-      public Builder setLongitude(double value) {
-        bitField0_ |= 0x00000002;
-        longitude_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional double longitude = 2 [default = -360];</code>
-       */
-      public Builder clearLongitude() {
-        bitField0_ = (bitField0_ & ~0x00000002);
-        longitude_ = -360D;
-        onChanged();
-        return this;
-      }
-
-      // @@protoc_insertion_point(builder_scope:BlitzMessage.Coordinate)
+      // @@protoc_insertion_point(builder_scope:BlitzMessage.Timestamp)
     }
 
     static {
-      defaultInstance = new Coordinate(true);
+      defaultInstance = new Timestamp(true);
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:BlitzMessage.Coordinate)
+    // @@protoc_insertion_point(class_scope:BlitzMessage.Timestamp)
+  }
+
+  public interface TimespanOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:BlitzMessage.Timespan)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional .BlitzMessage.Timestamp startTimestamp = 1;</code>
+     */
+    boolean hasStartTimestamp();
+    /**
+     * <code>optional .BlitzMessage.Timestamp startTimestamp = 1;</code>
+     */
+    com.blitzhere.BlitzMessage.Types.Timestamp getStartTimestamp();
+    /**
+     * <code>optional .BlitzMessage.Timestamp startTimestamp = 1;</code>
+     */
+    com.blitzhere.BlitzMessage.Types.TimestampOrBuilder getStartTimestampOrBuilder();
+
+    /**
+     * <code>optional .BlitzMessage.Timestamp stopTimestamp = 2;</code>
+     */
+    boolean hasStopTimestamp();
+    /**
+     * <code>optional .BlitzMessage.Timestamp stopTimestamp = 2;</code>
+     */
+    com.blitzhere.BlitzMessage.Types.Timestamp getStopTimestamp();
+    /**
+     * <code>optional .BlitzMessage.Timestamp stopTimestamp = 2;</code>
+     */
+    com.blitzhere.BlitzMessage.Types.TimestampOrBuilder getStopTimestampOrBuilder();
+  }
+  /**
+   * Protobuf type {@code BlitzMessage.Timespan}
+   */
+  public static final class Timespan extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:BlitzMessage.Timespan)
+      TimespanOrBuilder {
+    // Use Timespan.newBuilder() to construct.
+    private Timespan(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private Timespan(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final Timespan defaultInstance;
+    public static Timespan getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public Timespan getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private Timespan(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              com.blitzhere.BlitzMessage.Types.Timestamp.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000001) == 0x00000001)) {
+                subBuilder = startTimestamp_.toBuilder();
+              }
+              startTimestamp_ = input.readMessage(com.blitzhere.BlitzMessage.Types.Timestamp.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(startTimestamp_);
+                startTimestamp_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000001;
+              break;
+            }
+            case 18: {
+              com.blitzhere.BlitzMessage.Types.Timestamp.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000002) == 0x00000002)) {
+                subBuilder = stopTimestamp_.toBuilder();
+              }
+              stopTimestamp_ = input.readMessage(com.blitzhere.BlitzMessage.Types.Timestamp.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(stopTimestamp_);
+                stopTimestamp_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000002;
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.blitzhere.BlitzMessage.Types.internal_static_BlitzMessage_Timespan_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.blitzhere.BlitzMessage.Types.internal_static_BlitzMessage_Timespan_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.blitzhere.BlitzMessage.Types.Timespan.class, com.blitzhere.BlitzMessage.Types.Timespan.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<Timespan> PARSER =
+        new com.google.protobuf.AbstractParser<Timespan>() {
+      public Timespan parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new Timespan(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<Timespan> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int STARTTIMESTAMP_FIELD_NUMBER = 1;
+    private com.blitzhere.BlitzMessage.Types.Timestamp startTimestamp_;
+    /**
+     * <code>optional .BlitzMessage.Timestamp startTimestamp = 1;</code>
+     */
+    public boolean hasStartTimestamp() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional .BlitzMessage.Timestamp startTimestamp = 1;</code>
+     */
+    public com.blitzhere.BlitzMessage.Types.Timestamp getStartTimestamp() {
+      return startTimestamp_;
+    }
+    /**
+     * <code>optional .BlitzMessage.Timestamp startTimestamp = 1;</code>
+     */
+    public com.blitzhere.BlitzMessage.Types.TimestampOrBuilder getStartTimestampOrBuilder() {
+      return startTimestamp_;
+    }
+
+    public static final int STOPTIMESTAMP_FIELD_NUMBER = 2;
+    private com.blitzhere.BlitzMessage.Types.Timestamp stopTimestamp_;
+    /**
+     * <code>optional .BlitzMessage.Timestamp stopTimestamp = 2;</code>
+     */
+    public boolean hasStopTimestamp() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional .BlitzMessage.Timestamp stopTimestamp = 2;</code>
+     */
+    public com.blitzhere.BlitzMessage.Types.Timestamp getStopTimestamp() {
+      return stopTimestamp_;
+    }
+    /**
+     * <code>optional .BlitzMessage.Timestamp stopTimestamp = 2;</code>
+     */
+    public com.blitzhere.BlitzMessage.Types.TimestampOrBuilder getStopTimestampOrBuilder() {
+      return stopTimestamp_;
+    }
+
+    private void initFields() {
+      startTimestamp_ = com.blitzhere.BlitzMessage.Types.Timestamp.getDefaultInstance();
+      stopTimestamp_ = com.blitzhere.BlitzMessage.Types.Timestamp.getDefaultInstance();
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeMessage(1, startTimestamp_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeMessage(2, stopTimestamp_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(1, startTimestamp_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(2, stopTimestamp_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.blitzhere.BlitzMessage.Types.Timespan parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.blitzhere.BlitzMessage.Types.Timespan parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.blitzhere.BlitzMessage.Types.Timespan parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.blitzhere.BlitzMessage.Types.Timespan parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.blitzhere.BlitzMessage.Types.Timespan parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.blitzhere.BlitzMessage.Types.Timespan parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.blitzhere.BlitzMessage.Types.Timespan parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.blitzhere.BlitzMessage.Types.Timespan parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.blitzhere.BlitzMessage.Types.Timespan parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.blitzhere.BlitzMessage.Types.Timespan parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.blitzhere.BlitzMessage.Types.Timespan prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code BlitzMessage.Timespan}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:BlitzMessage.Timespan)
+        com.blitzhere.BlitzMessage.Types.TimespanOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.blitzhere.BlitzMessage.Types.internal_static_BlitzMessage_Timespan_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.blitzhere.BlitzMessage.Types.internal_static_BlitzMessage_Timespan_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.blitzhere.BlitzMessage.Types.Timespan.class, com.blitzhere.BlitzMessage.Types.Timespan.Builder.class);
+      }
+
+      // Construct using com.blitzhere.BlitzMessage.Types.Timespan.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getStartTimestampFieldBuilder();
+          getStopTimestampFieldBuilder();
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        if (startTimestampBuilder_ == null) {
+          startTimestamp_ = com.blitzhere.BlitzMessage.Types.Timestamp.getDefaultInstance();
+        } else {
+          startTimestampBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000001);
+        if (stopTimestampBuilder_ == null) {
+          stopTimestamp_ = com.blitzhere.BlitzMessage.Types.Timestamp.getDefaultInstance();
+        } else {
+          stopTimestampBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.blitzhere.BlitzMessage.Types.internal_static_BlitzMessage_Timespan_descriptor;
+      }
+
+      public com.blitzhere.BlitzMessage.Types.Timespan getDefaultInstanceForType() {
+        return com.blitzhere.BlitzMessage.Types.Timespan.getDefaultInstance();
+      }
+
+      public com.blitzhere.BlitzMessage.Types.Timespan build() {
+        com.blitzhere.BlitzMessage.Types.Timespan result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.blitzhere.BlitzMessage.Types.Timespan buildPartial() {
+        com.blitzhere.BlitzMessage.Types.Timespan result = new com.blitzhere.BlitzMessage.Types.Timespan(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        if (startTimestampBuilder_ == null) {
+          result.startTimestamp_ = startTimestamp_;
+        } else {
+          result.startTimestamp_ = startTimestampBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        if (stopTimestampBuilder_ == null) {
+          result.stopTimestamp_ = stopTimestamp_;
+        } else {
+          result.stopTimestamp_ = stopTimestampBuilder_.build();
+        }
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.blitzhere.BlitzMessage.Types.Timespan) {
+          return mergeFrom((com.blitzhere.BlitzMessage.Types.Timespan)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.blitzhere.BlitzMessage.Types.Timespan other) {
+        if (other == com.blitzhere.BlitzMessage.Types.Timespan.getDefaultInstance()) return this;
+        if (other.hasStartTimestamp()) {
+          mergeStartTimestamp(other.getStartTimestamp());
+        }
+        if (other.hasStopTimestamp()) {
+          mergeStopTimestamp(other.getStopTimestamp());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.blitzhere.BlitzMessage.Types.Timespan parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.blitzhere.BlitzMessage.Types.Timespan) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private com.blitzhere.BlitzMessage.Types.Timestamp startTimestamp_ = com.blitzhere.BlitzMessage.Types.Timestamp.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          com.blitzhere.BlitzMessage.Types.Timestamp, com.blitzhere.BlitzMessage.Types.Timestamp.Builder, com.blitzhere.BlitzMessage.Types.TimestampOrBuilder> startTimestampBuilder_;
+      /**
+       * <code>optional .BlitzMessage.Timestamp startTimestamp = 1;</code>
+       */
+      public boolean hasStartTimestamp() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional .BlitzMessage.Timestamp startTimestamp = 1;</code>
+       */
+      public com.blitzhere.BlitzMessage.Types.Timestamp getStartTimestamp() {
+        if (startTimestampBuilder_ == null) {
+          return startTimestamp_;
+        } else {
+          return startTimestampBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .BlitzMessage.Timestamp startTimestamp = 1;</code>
+       */
+      public Builder setStartTimestamp(com.blitzhere.BlitzMessage.Types.Timestamp value) {
+        if (startTimestampBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          startTimestamp_ = value;
+          onChanged();
+        } else {
+          startTimestampBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      /**
+       * <code>optional .BlitzMessage.Timestamp startTimestamp = 1;</code>
+       */
+      public Builder setStartTimestamp(
+          com.blitzhere.BlitzMessage.Types.Timestamp.Builder builderForValue) {
+        if (startTimestampBuilder_ == null) {
+          startTimestamp_ = builderForValue.build();
+          onChanged();
+        } else {
+          startTimestampBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      /**
+       * <code>optional .BlitzMessage.Timestamp startTimestamp = 1;</code>
+       */
+      public Builder mergeStartTimestamp(com.blitzhere.BlitzMessage.Types.Timestamp value) {
+        if (startTimestampBuilder_ == null) {
+          if (((bitField0_ & 0x00000001) == 0x00000001) &&
+              startTimestamp_ != com.blitzhere.BlitzMessage.Types.Timestamp.getDefaultInstance()) {
+            startTimestamp_ =
+              com.blitzhere.BlitzMessage.Types.Timestamp.newBuilder(startTimestamp_).mergeFrom(value).buildPartial();
+          } else {
+            startTimestamp_ = value;
+          }
+          onChanged();
+        } else {
+          startTimestampBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      /**
+       * <code>optional .BlitzMessage.Timestamp startTimestamp = 1;</code>
+       */
+      public Builder clearStartTimestamp() {
+        if (startTimestampBuilder_ == null) {
+          startTimestamp_ = com.blitzhere.BlitzMessage.Types.Timestamp.getDefaultInstance();
+          onChanged();
+        } else {
+          startTimestampBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+      /**
+       * <code>optional .BlitzMessage.Timestamp startTimestamp = 1;</code>
+       */
+      public com.blitzhere.BlitzMessage.Types.Timestamp.Builder getStartTimestampBuilder() {
+        bitField0_ |= 0x00000001;
+        onChanged();
+        return getStartTimestampFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .BlitzMessage.Timestamp startTimestamp = 1;</code>
+       */
+      public com.blitzhere.BlitzMessage.Types.TimestampOrBuilder getStartTimestampOrBuilder() {
+        if (startTimestampBuilder_ != null) {
+          return startTimestampBuilder_.getMessageOrBuilder();
+        } else {
+          return startTimestamp_;
+        }
+      }
+      /**
+       * <code>optional .BlitzMessage.Timestamp startTimestamp = 1;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          com.blitzhere.BlitzMessage.Types.Timestamp, com.blitzhere.BlitzMessage.Types.Timestamp.Builder, com.blitzhere.BlitzMessage.Types.TimestampOrBuilder> 
+          getStartTimestampFieldBuilder() {
+        if (startTimestampBuilder_ == null) {
+          startTimestampBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.blitzhere.BlitzMessage.Types.Timestamp, com.blitzhere.BlitzMessage.Types.Timestamp.Builder, com.blitzhere.BlitzMessage.Types.TimestampOrBuilder>(
+                  getStartTimestamp(),
+                  getParentForChildren(),
+                  isClean());
+          startTimestamp_ = null;
+        }
+        return startTimestampBuilder_;
+      }
+
+      private com.blitzhere.BlitzMessage.Types.Timestamp stopTimestamp_ = com.blitzhere.BlitzMessage.Types.Timestamp.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          com.blitzhere.BlitzMessage.Types.Timestamp, com.blitzhere.BlitzMessage.Types.Timestamp.Builder, com.blitzhere.BlitzMessage.Types.TimestampOrBuilder> stopTimestampBuilder_;
+      /**
+       * <code>optional .BlitzMessage.Timestamp stopTimestamp = 2;</code>
+       */
+      public boolean hasStopTimestamp() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional .BlitzMessage.Timestamp stopTimestamp = 2;</code>
+       */
+      public com.blitzhere.BlitzMessage.Types.Timestamp getStopTimestamp() {
+        if (stopTimestampBuilder_ == null) {
+          return stopTimestamp_;
+        } else {
+          return stopTimestampBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .BlitzMessage.Timestamp stopTimestamp = 2;</code>
+       */
+      public Builder setStopTimestamp(com.blitzhere.BlitzMessage.Types.Timestamp value) {
+        if (stopTimestampBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          stopTimestamp_ = value;
+          onChanged();
+        } else {
+          stopTimestampBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000002;
+        return this;
+      }
+      /**
+       * <code>optional .BlitzMessage.Timestamp stopTimestamp = 2;</code>
+       */
+      public Builder setStopTimestamp(
+          com.blitzhere.BlitzMessage.Types.Timestamp.Builder builderForValue) {
+        if (stopTimestampBuilder_ == null) {
+          stopTimestamp_ = builderForValue.build();
+          onChanged();
+        } else {
+          stopTimestampBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000002;
+        return this;
+      }
+      /**
+       * <code>optional .BlitzMessage.Timestamp stopTimestamp = 2;</code>
+       */
+      public Builder mergeStopTimestamp(com.blitzhere.BlitzMessage.Types.Timestamp value) {
+        if (stopTimestampBuilder_ == null) {
+          if (((bitField0_ & 0x00000002) == 0x00000002) &&
+              stopTimestamp_ != com.blitzhere.BlitzMessage.Types.Timestamp.getDefaultInstance()) {
+            stopTimestamp_ =
+              com.blitzhere.BlitzMessage.Types.Timestamp.newBuilder(stopTimestamp_).mergeFrom(value).buildPartial();
+          } else {
+            stopTimestamp_ = value;
+          }
+          onChanged();
+        } else {
+          stopTimestampBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000002;
+        return this;
+      }
+      /**
+       * <code>optional .BlitzMessage.Timestamp stopTimestamp = 2;</code>
+       */
+      public Builder clearStopTimestamp() {
+        if (stopTimestampBuilder_ == null) {
+          stopTimestamp_ = com.blitzhere.BlitzMessage.Types.Timestamp.getDefaultInstance();
+          onChanged();
+        } else {
+          stopTimestampBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+      /**
+       * <code>optional .BlitzMessage.Timestamp stopTimestamp = 2;</code>
+       */
+      public com.blitzhere.BlitzMessage.Types.Timestamp.Builder getStopTimestampBuilder() {
+        bitField0_ |= 0x00000002;
+        onChanged();
+        return getStopTimestampFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .BlitzMessage.Timestamp stopTimestamp = 2;</code>
+       */
+      public com.blitzhere.BlitzMessage.Types.TimestampOrBuilder getStopTimestampOrBuilder() {
+        if (stopTimestampBuilder_ != null) {
+          return stopTimestampBuilder_.getMessageOrBuilder();
+        } else {
+          return stopTimestamp_;
+        }
+      }
+      /**
+       * <code>optional .BlitzMessage.Timestamp stopTimestamp = 2;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          com.blitzhere.BlitzMessage.Types.Timestamp, com.blitzhere.BlitzMessage.Types.Timestamp.Builder, com.blitzhere.BlitzMessage.Types.TimestampOrBuilder> 
+          getStopTimestampFieldBuilder() {
+        if (stopTimestampBuilder_ == null) {
+          stopTimestampBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.blitzhere.BlitzMessage.Types.Timestamp, com.blitzhere.BlitzMessage.Types.Timestamp.Builder, com.blitzhere.BlitzMessage.Types.TimestampOrBuilder>(
+                  getStopTimestamp(),
+                  getParentForChildren(),
+                  isClean());
+          stopTimestamp_ = null;
+        }
+        return stopTimestampBuilder_;
+      }
+
+      // @@protoc_insertion_point(builder_scope:BlitzMessage.Timespan)
+    }
+
+    static {
+      defaultInstance = new Timespan(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:BlitzMessage.Timespan)
+  }
+
+  public interface PointOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:BlitzMessage.Point)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional double x = 1;</code>
+     */
+    boolean hasX();
+    /**
+     * <code>optional double x = 1;</code>
+     */
+    double getX();
+
+    /**
+     * <code>optional double y = 2;</code>
+     */
+    boolean hasY();
+    /**
+     * <code>optional double y = 2;</code>
+     */
+    double getY();
+  }
+  /**
+   * Protobuf type {@code BlitzMessage.Point}
+   */
+  public static final class Point extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:BlitzMessage.Point)
+      PointOrBuilder {
+    // Use Point.newBuilder() to construct.
+    private Point(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private Point(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final Point defaultInstance;
+    public static Point getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public Point getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private Point(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 9: {
+              bitField0_ |= 0x00000001;
+              x_ = input.readDouble();
+              break;
+            }
+            case 17: {
+              bitField0_ |= 0x00000002;
+              y_ = input.readDouble();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.blitzhere.BlitzMessage.Types.internal_static_BlitzMessage_Point_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.blitzhere.BlitzMessage.Types.internal_static_BlitzMessage_Point_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.blitzhere.BlitzMessage.Types.Point.class, com.blitzhere.BlitzMessage.Types.Point.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<Point> PARSER =
+        new com.google.protobuf.AbstractParser<Point>() {
+      public Point parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new Point(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<Point> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int X_FIELD_NUMBER = 1;
+    private double x_;
+    /**
+     * <code>optional double x = 1;</code>
+     */
+    public boolean hasX() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional double x = 1;</code>
+     */
+    public double getX() {
+      return x_;
+    }
+
+    public static final int Y_FIELD_NUMBER = 2;
+    private double y_;
+    /**
+     * <code>optional double y = 2;</code>
+     */
+    public boolean hasY() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional double y = 2;</code>
+     */
+    public double getY() {
+      return y_;
+    }
+
+    private void initFields() {
+      x_ = 0D;
+      y_ = 0D;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeDouble(1, x_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeDouble(2, y_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeDoubleSize(1, x_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeDoubleSize(2, y_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.blitzhere.BlitzMessage.Types.Point parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.blitzhere.BlitzMessage.Types.Point parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.blitzhere.BlitzMessage.Types.Point parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.blitzhere.BlitzMessage.Types.Point parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.blitzhere.BlitzMessage.Types.Point parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.blitzhere.BlitzMessage.Types.Point parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.blitzhere.BlitzMessage.Types.Point parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.blitzhere.BlitzMessage.Types.Point parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.blitzhere.BlitzMessage.Types.Point parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.blitzhere.BlitzMessage.Types.Point parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.blitzhere.BlitzMessage.Types.Point prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code BlitzMessage.Point}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:BlitzMessage.Point)
+        com.blitzhere.BlitzMessage.Types.PointOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.blitzhere.BlitzMessage.Types.internal_static_BlitzMessage_Point_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.blitzhere.BlitzMessage.Types.internal_static_BlitzMessage_Point_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.blitzhere.BlitzMessage.Types.Point.class, com.blitzhere.BlitzMessage.Types.Point.Builder.class);
+      }
+
+      // Construct using com.blitzhere.BlitzMessage.Types.Point.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        x_ = 0D;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        y_ = 0D;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.blitzhere.BlitzMessage.Types.internal_static_BlitzMessage_Point_descriptor;
+      }
+
+      public com.blitzhere.BlitzMessage.Types.Point getDefaultInstanceForType() {
+        return com.blitzhere.BlitzMessage.Types.Point.getDefaultInstance();
+      }
+
+      public com.blitzhere.BlitzMessage.Types.Point build() {
+        com.blitzhere.BlitzMessage.Types.Point result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.blitzhere.BlitzMessage.Types.Point buildPartial() {
+        com.blitzhere.BlitzMessage.Types.Point result = new com.blitzhere.BlitzMessage.Types.Point(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.x_ = x_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.y_ = y_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.blitzhere.BlitzMessage.Types.Point) {
+          return mergeFrom((com.blitzhere.BlitzMessage.Types.Point)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.blitzhere.BlitzMessage.Types.Point other) {
+        if (other == com.blitzhere.BlitzMessage.Types.Point.getDefaultInstance()) return this;
+        if (other.hasX()) {
+          setX(other.getX());
+        }
+        if (other.hasY()) {
+          setY(other.getY());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.blitzhere.BlitzMessage.Types.Point parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.blitzhere.BlitzMessage.Types.Point) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private double x_ ;
+      /**
+       * <code>optional double x = 1;</code>
+       */
+      public boolean hasX() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional double x = 1;</code>
+       */
+      public double getX() {
+        return x_;
+      }
+      /**
+       * <code>optional double x = 1;</code>
+       */
+      public Builder setX(double value) {
+        bitField0_ |= 0x00000001;
+        x_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional double x = 1;</code>
+       */
+      public Builder clearX() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        x_ = 0D;
+        onChanged();
+        return this;
+      }
+
+      private double y_ ;
+      /**
+       * <code>optional double y = 2;</code>
+       */
+      public boolean hasY() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional double y = 2;</code>
+       */
+      public double getY() {
+        return y_;
+      }
+      /**
+       * <code>optional double y = 2;</code>
+       */
+      public Builder setY(double value) {
+        bitField0_ |= 0x00000002;
+        y_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional double y = 2;</code>
+       */
+      public Builder clearY() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        y_ = 0D;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:BlitzMessage.Point)
+    }
+
+    static {
+      defaultInstance = new Point(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:BlitzMessage.Point)
   }
 
   public interface SizeOrBuilder extends
@@ -1434,6 +2052,481 @@ public final class Types {
     // @@protoc_insertion_point(class_scope:BlitzMessage.Size)
   }
 
+  public interface CoordinateOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:BlitzMessage.Coordinate)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional double latitude = 1 [default = -360];</code>
+     */
+    boolean hasLatitude();
+    /**
+     * <code>optional double latitude = 1 [default = -360];</code>
+     */
+    double getLatitude();
+
+    /**
+     * <code>optional double longitude = 2 [default = -360];</code>
+     */
+    boolean hasLongitude();
+    /**
+     * <code>optional double longitude = 2 [default = -360];</code>
+     */
+    double getLongitude();
+  }
+  /**
+   * Protobuf type {@code BlitzMessage.Coordinate}
+   */
+  public static final class Coordinate extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:BlitzMessage.Coordinate)
+      CoordinateOrBuilder {
+    // Use Coordinate.newBuilder() to construct.
+    private Coordinate(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private Coordinate(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final Coordinate defaultInstance;
+    public static Coordinate getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public Coordinate getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private Coordinate(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 9: {
+              bitField0_ |= 0x00000001;
+              latitude_ = input.readDouble();
+              break;
+            }
+            case 17: {
+              bitField0_ |= 0x00000002;
+              longitude_ = input.readDouble();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.blitzhere.BlitzMessage.Types.internal_static_BlitzMessage_Coordinate_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.blitzhere.BlitzMessage.Types.internal_static_BlitzMessage_Coordinate_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.blitzhere.BlitzMessage.Types.Coordinate.class, com.blitzhere.BlitzMessage.Types.Coordinate.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<Coordinate> PARSER =
+        new com.google.protobuf.AbstractParser<Coordinate>() {
+      public Coordinate parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new Coordinate(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<Coordinate> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int LATITUDE_FIELD_NUMBER = 1;
+    private double latitude_;
+    /**
+     * <code>optional double latitude = 1 [default = -360];</code>
+     */
+    public boolean hasLatitude() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional double latitude = 1 [default = -360];</code>
+     */
+    public double getLatitude() {
+      return latitude_;
+    }
+
+    public static final int LONGITUDE_FIELD_NUMBER = 2;
+    private double longitude_;
+    /**
+     * <code>optional double longitude = 2 [default = -360];</code>
+     */
+    public boolean hasLongitude() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional double longitude = 2 [default = -360];</code>
+     */
+    public double getLongitude() {
+      return longitude_;
+    }
+
+    private void initFields() {
+      latitude_ = -360D;
+      longitude_ = -360D;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeDouble(1, latitude_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeDouble(2, longitude_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeDoubleSize(1, latitude_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeDoubleSize(2, longitude_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.blitzhere.BlitzMessage.Types.Coordinate parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.blitzhere.BlitzMessage.Types.Coordinate parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.blitzhere.BlitzMessage.Types.Coordinate parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.blitzhere.BlitzMessage.Types.Coordinate parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.blitzhere.BlitzMessage.Types.Coordinate parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.blitzhere.BlitzMessage.Types.Coordinate parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.blitzhere.BlitzMessage.Types.Coordinate parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.blitzhere.BlitzMessage.Types.Coordinate parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.blitzhere.BlitzMessage.Types.Coordinate parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.blitzhere.BlitzMessage.Types.Coordinate parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.blitzhere.BlitzMessage.Types.Coordinate prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code BlitzMessage.Coordinate}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:BlitzMessage.Coordinate)
+        com.blitzhere.BlitzMessage.Types.CoordinateOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.blitzhere.BlitzMessage.Types.internal_static_BlitzMessage_Coordinate_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.blitzhere.BlitzMessage.Types.internal_static_BlitzMessage_Coordinate_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.blitzhere.BlitzMessage.Types.Coordinate.class, com.blitzhere.BlitzMessage.Types.Coordinate.Builder.class);
+      }
+
+      // Construct using com.blitzhere.BlitzMessage.Types.Coordinate.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        latitude_ = -360D;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        longitude_ = -360D;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.blitzhere.BlitzMessage.Types.internal_static_BlitzMessage_Coordinate_descriptor;
+      }
+
+      public com.blitzhere.BlitzMessage.Types.Coordinate getDefaultInstanceForType() {
+        return com.blitzhere.BlitzMessage.Types.Coordinate.getDefaultInstance();
+      }
+
+      public com.blitzhere.BlitzMessage.Types.Coordinate build() {
+        com.blitzhere.BlitzMessage.Types.Coordinate result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.blitzhere.BlitzMessage.Types.Coordinate buildPartial() {
+        com.blitzhere.BlitzMessage.Types.Coordinate result = new com.blitzhere.BlitzMessage.Types.Coordinate(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.latitude_ = latitude_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.longitude_ = longitude_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.blitzhere.BlitzMessage.Types.Coordinate) {
+          return mergeFrom((com.blitzhere.BlitzMessage.Types.Coordinate)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.blitzhere.BlitzMessage.Types.Coordinate other) {
+        if (other == com.blitzhere.BlitzMessage.Types.Coordinate.getDefaultInstance()) return this;
+        if (other.hasLatitude()) {
+          setLatitude(other.getLatitude());
+        }
+        if (other.hasLongitude()) {
+          setLongitude(other.getLongitude());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.blitzhere.BlitzMessage.Types.Coordinate parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.blitzhere.BlitzMessage.Types.Coordinate) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private double latitude_ = -360D;
+      /**
+       * <code>optional double latitude = 1 [default = -360];</code>
+       */
+      public boolean hasLatitude() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional double latitude = 1 [default = -360];</code>
+       */
+      public double getLatitude() {
+        return latitude_;
+      }
+      /**
+       * <code>optional double latitude = 1 [default = -360];</code>
+       */
+      public Builder setLatitude(double value) {
+        bitField0_ |= 0x00000001;
+        latitude_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional double latitude = 1 [default = -360];</code>
+       */
+      public Builder clearLatitude() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        latitude_ = -360D;
+        onChanged();
+        return this;
+      }
+
+      private double longitude_ = -360D;
+      /**
+       * <code>optional double longitude = 2 [default = -360];</code>
+       */
+      public boolean hasLongitude() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional double longitude = 2 [default = -360];</code>
+       */
+      public double getLongitude() {
+        return longitude_;
+      }
+      /**
+       * <code>optional double longitude = 2 [default = -360];</code>
+       */
+      public Builder setLongitude(double value) {
+        bitField0_ |= 0x00000002;
+        longitude_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional double longitude = 2 [default = -360];</code>
+       */
+      public Builder clearLongitude() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        longitude_ = -360D;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:BlitzMessage.Coordinate)
+    }
+
+    static {
+      defaultInstance = new Coordinate(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:BlitzMessage.Coordinate)
+  }
+
   public interface CoordinateRegionOrBuilder extends
       // @@protoc_insertion_point(interface_extends:BlitzMessage.CoordinateRegion)
       com.google.protobuf.MessageOrBuilder {
@@ -1452,29 +2545,17 @@ public final class Types {
     com.blitzhere.BlitzMessage.Types.CoordinateOrBuilder getCenterOrBuilder();
 
     /**
-     * <code>optional .BlitzMessage.Size size = 2;</code>
-     *
-     * <pre>
-     *  In degrees
-     * </pre>
+     * <code>optional .BlitzMessage.Coordinate span = 2;</code>
      */
-    boolean hasSize();
+    boolean hasSpan();
     /**
-     * <code>optional .BlitzMessage.Size size = 2;</code>
-     *
-     * <pre>
-     *  In degrees
-     * </pre>
+     * <code>optional .BlitzMessage.Coordinate span = 2;</code>
      */
-    com.blitzhere.BlitzMessage.Types.Size getSize();
+    com.blitzhere.BlitzMessage.Types.Coordinate getSpan();
     /**
-     * <code>optional .BlitzMessage.Size size = 2;</code>
-     *
-     * <pre>
-     *  In degrees
-     * </pre>
+     * <code>optional .BlitzMessage.Coordinate span = 2;</code>
      */
-    com.blitzhere.BlitzMessage.Types.SizeOrBuilder getSizeOrBuilder();
+    com.blitzhere.BlitzMessage.Types.CoordinateOrBuilder getSpanOrBuilder();
   }
   /**
    * Protobuf type {@code BlitzMessage.CoordinateRegion}
@@ -1542,14 +2623,14 @@ public final class Types {
               break;
             }
             case 18: {
-              com.blitzhere.BlitzMessage.Types.Size.Builder subBuilder = null;
+              com.blitzhere.BlitzMessage.Types.Coordinate.Builder subBuilder = null;
               if (((bitField0_ & 0x00000002) == 0x00000002)) {
-                subBuilder = size_.toBuilder();
+                subBuilder = span_.toBuilder();
               }
-              size_ = input.readMessage(com.blitzhere.BlitzMessage.Types.Size.PARSER, extensionRegistry);
+              span_ = input.readMessage(com.blitzhere.BlitzMessage.Types.Coordinate.PARSER, extensionRegistry);
               if (subBuilder != null) {
-                subBuilder.mergeFrom(size_);
-                size_ = subBuilder.buildPartial();
+                subBuilder.mergeFrom(span_);
+                span_ = subBuilder.buildPartial();
               }
               bitField0_ |= 0x00000002;
               break;
@@ -1615,42 +2696,30 @@ public final class Types {
       return center_;
     }
 
-    public static final int SIZE_FIELD_NUMBER = 2;
-    private com.blitzhere.BlitzMessage.Types.Size size_;
+    public static final int SPAN_FIELD_NUMBER = 2;
+    private com.blitzhere.BlitzMessage.Types.Coordinate span_;
     /**
-     * <code>optional .BlitzMessage.Size size = 2;</code>
-     *
-     * <pre>
-     *  In degrees
-     * </pre>
+     * <code>optional .BlitzMessage.Coordinate span = 2;</code>
      */
-    public boolean hasSize() {
+    public boolean hasSpan() {
       return ((bitField0_ & 0x00000002) == 0x00000002);
     }
     /**
-     * <code>optional .BlitzMessage.Size size = 2;</code>
-     *
-     * <pre>
-     *  In degrees
-     * </pre>
+     * <code>optional .BlitzMessage.Coordinate span = 2;</code>
      */
-    public com.blitzhere.BlitzMessage.Types.Size getSize() {
-      return size_;
+    public com.blitzhere.BlitzMessage.Types.Coordinate getSpan() {
+      return span_;
     }
     /**
-     * <code>optional .BlitzMessage.Size size = 2;</code>
-     *
-     * <pre>
-     *  In degrees
-     * </pre>
+     * <code>optional .BlitzMessage.Coordinate span = 2;</code>
      */
-    public com.blitzhere.BlitzMessage.Types.SizeOrBuilder getSizeOrBuilder() {
-      return size_;
+    public com.blitzhere.BlitzMessage.Types.CoordinateOrBuilder getSpanOrBuilder() {
+      return span_;
     }
 
     private void initFields() {
       center_ = com.blitzhere.BlitzMessage.Types.Coordinate.getDefaultInstance();
-      size_ = com.blitzhere.BlitzMessage.Types.Size.getDefaultInstance();
+      span_ = com.blitzhere.BlitzMessage.Types.Coordinate.getDefaultInstance();
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -1669,7 +2738,7 @@ public final class Types {
         output.writeMessage(1, center_);
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeMessage(2, size_);
+        output.writeMessage(2, span_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -1686,7 +2755,7 @@ public final class Types {
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(2, size_);
+          .computeMessageSize(2, span_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -1798,7 +2867,7 @@ public final class Types {
       private void maybeForceBuilderInitialization() {
         if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
           getCenterFieldBuilder();
-          getSizeFieldBuilder();
+          getSpanFieldBuilder();
         }
       }
       private static Builder create() {
@@ -1813,10 +2882,10 @@ public final class Types {
           centerBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000001);
-        if (sizeBuilder_ == null) {
-          size_ = com.blitzhere.BlitzMessage.Types.Size.getDefaultInstance();
+        if (spanBuilder_ == null) {
+          span_ = com.blitzhere.BlitzMessage.Types.Coordinate.getDefaultInstance();
         } else {
-          sizeBuilder_.clear();
+          spanBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000002);
         return this;
@@ -1858,10 +2927,10 @@ public final class Types {
         if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
           to_bitField0_ |= 0x00000002;
         }
-        if (sizeBuilder_ == null) {
-          result.size_ = size_;
+        if (spanBuilder_ == null) {
+          result.span_ = span_;
         } else {
-          result.size_ = sizeBuilder_.build();
+          result.span_ = spanBuilder_.build();
         }
         result.bitField0_ = to_bitField0_;
         onBuilt();
@@ -1882,8 +2951,8 @@ public final class Types {
         if (other.hasCenter()) {
           mergeCenter(other.getCenter());
         }
-        if (other.hasSize()) {
-          mergeSize(other.getSize());
+        if (other.hasSpan()) {
+          mergeSpan(other.getSpan());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -2028,156 +3097,120 @@ public final class Types {
         return centerBuilder_;
       }
 
-      private com.blitzhere.BlitzMessage.Types.Size size_ = com.blitzhere.BlitzMessage.Types.Size.getDefaultInstance();
+      private com.blitzhere.BlitzMessage.Types.Coordinate span_ = com.blitzhere.BlitzMessage.Types.Coordinate.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
-          com.blitzhere.BlitzMessage.Types.Size, com.blitzhere.BlitzMessage.Types.Size.Builder, com.blitzhere.BlitzMessage.Types.SizeOrBuilder> sizeBuilder_;
+          com.blitzhere.BlitzMessage.Types.Coordinate, com.blitzhere.BlitzMessage.Types.Coordinate.Builder, com.blitzhere.BlitzMessage.Types.CoordinateOrBuilder> spanBuilder_;
       /**
-       * <code>optional .BlitzMessage.Size size = 2;</code>
-       *
-       * <pre>
-       *  In degrees
-       * </pre>
+       * <code>optional .BlitzMessage.Coordinate span = 2;</code>
        */
-      public boolean hasSize() {
+      public boolean hasSpan() {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
       /**
-       * <code>optional .BlitzMessage.Size size = 2;</code>
-       *
-       * <pre>
-       *  In degrees
-       * </pre>
+       * <code>optional .BlitzMessage.Coordinate span = 2;</code>
        */
-      public com.blitzhere.BlitzMessage.Types.Size getSize() {
-        if (sizeBuilder_ == null) {
-          return size_;
+      public com.blitzhere.BlitzMessage.Types.Coordinate getSpan() {
+        if (spanBuilder_ == null) {
+          return span_;
         } else {
-          return sizeBuilder_.getMessage();
+          return spanBuilder_.getMessage();
         }
       }
       /**
-       * <code>optional .BlitzMessage.Size size = 2;</code>
-       *
-       * <pre>
-       *  In degrees
-       * </pre>
+       * <code>optional .BlitzMessage.Coordinate span = 2;</code>
        */
-      public Builder setSize(com.blitzhere.BlitzMessage.Types.Size value) {
-        if (sizeBuilder_ == null) {
+      public Builder setSpan(com.blitzhere.BlitzMessage.Types.Coordinate value) {
+        if (spanBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          size_ = value;
+          span_ = value;
           onChanged();
         } else {
-          sizeBuilder_.setMessage(value);
+          spanBuilder_.setMessage(value);
         }
         bitField0_ |= 0x00000002;
         return this;
       }
       /**
-       * <code>optional .BlitzMessage.Size size = 2;</code>
-       *
-       * <pre>
-       *  In degrees
-       * </pre>
+       * <code>optional .BlitzMessage.Coordinate span = 2;</code>
        */
-      public Builder setSize(
-          com.blitzhere.BlitzMessage.Types.Size.Builder builderForValue) {
-        if (sizeBuilder_ == null) {
-          size_ = builderForValue.build();
+      public Builder setSpan(
+          com.blitzhere.BlitzMessage.Types.Coordinate.Builder builderForValue) {
+        if (spanBuilder_ == null) {
+          span_ = builderForValue.build();
           onChanged();
         } else {
-          sizeBuilder_.setMessage(builderForValue.build());
+          spanBuilder_.setMessage(builderForValue.build());
         }
         bitField0_ |= 0x00000002;
         return this;
       }
       /**
-       * <code>optional .BlitzMessage.Size size = 2;</code>
-       *
-       * <pre>
-       *  In degrees
-       * </pre>
+       * <code>optional .BlitzMessage.Coordinate span = 2;</code>
        */
-      public Builder mergeSize(com.blitzhere.BlitzMessage.Types.Size value) {
-        if (sizeBuilder_ == null) {
+      public Builder mergeSpan(com.blitzhere.BlitzMessage.Types.Coordinate value) {
+        if (spanBuilder_ == null) {
           if (((bitField0_ & 0x00000002) == 0x00000002) &&
-              size_ != com.blitzhere.BlitzMessage.Types.Size.getDefaultInstance()) {
-            size_ =
-              com.blitzhere.BlitzMessage.Types.Size.newBuilder(size_).mergeFrom(value).buildPartial();
+              span_ != com.blitzhere.BlitzMessage.Types.Coordinate.getDefaultInstance()) {
+            span_ =
+              com.blitzhere.BlitzMessage.Types.Coordinate.newBuilder(span_).mergeFrom(value).buildPartial();
           } else {
-            size_ = value;
+            span_ = value;
           }
           onChanged();
         } else {
-          sizeBuilder_.mergeFrom(value);
+          spanBuilder_.mergeFrom(value);
         }
         bitField0_ |= 0x00000002;
         return this;
       }
       /**
-       * <code>optional .BlitzMessage.Size size = 2;</code>
-       *
-       * <pre>
-       *  In degrees
-       * </pre>
+       * <code>optional .BlitzMessage.Coordinate span = 2;</code>
        */
-      public Builder clearSize() {
-        if (sizeBuilder_ == null) {
-          size_ = com.blitzhere.BlitzMessage.Types.Size.getDefaultInstance();
+      public Builder clearSpan() {
+        if (spanBuilder_ == null) {
+          span_ = com.blitzhere.BlitzMessage.Types.Coordinate.getDefaultInstance();
           onChanged();
         } else {
-          sizeBuilder_.clear();
+          spanBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
       /**
-       * <code>optional .BlitzMessage.Size size = 2;</code>
-       *
-       * <pre>
-       *  In degrees
-       * </pre>
+       * <code>optional .BlitzMessage.Coordinate span = 2;</code>
        */
-      public com.blitzhere.BlitzMessage.Types.Size.Builder getSizeBuilder() {
+      public com.blitzhere.BlitzMessage.Types.Coordinate.Builder getSpanBuilder() {
         bitField0_ |= 0x00000002;
         onChanged();
-        return getSizeFieldBuilder().getBuilder();
+        return getSpanFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .BlitzMessage.Size size = 2;</code>
-       *
-       * <pre>
-       *  In degrees
-       * </pre>
+       * <code>optional .BlitzMessage.Coordinate span = 2;</code>
        */
-      public com.blitzhere.BlitzMessage.Types.SizeOrBuilder getSizeOrBuilder() {
-        if (sizeBuilder_ != null) {
-          return sizeBuilder_.getMessageOrBuilder();
+      public com.blitzhere.BlitzMessage.Types.CoordinateOrBuilder getSpanOrBuilder() {
+        if (spanBuilder_ != null) {
+          return spanBuilder_.getMessageOrBuilder();
         } else {
-          return size_;
+          return span_;
         }
       }
       /**
-       * <code>optional .BlitzMessage.Size size = 2;</code>
-       *
-       * <pre>
-       *  In degrees
-       * </pre>
+       * <code>optional .BlitzMessage.Coordinate span = 2;</code>
        */
       private com.google.protobuf.SingleFieldBuilder<
-          com.blitzhere.BlitzMessage.Types.Size, com.blitzhere.BlitzMessage.Types.Size.Builder, com.blitzhere.BlitzMessage.Types.SizeOrBuilder> 
-          getSizeFieldBuilder() {
-        if (sizeBuilder_ == null) {
-          sizeBuilder_ = new com.google.protobuf.SingleFieldBuilder<
-              com.blitzhere.BlitzMessage.Types.Size, com.blitzhere.BlitzMessage.Types.Size.Builder, com.blitzhere.BlitzMessage.Types.SizeOrBuilder>(
-                  getSize(),
+          com.blitzhere.BlitzMessage.Types.Coordinate, com.blitzhere.BlitzMessage.Types.Coordinate.Builder, com.blitzhere.BlitzMessage.Types.CoordinateOrBuilder> 
+          getSpanFieldBuilder() {
+        if (spanBuilder_ == null) {
+          spanBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.blitzhere.BlitzMessage.Types.Coordinate, com.blitzhere.BlitzMessage.Types.Coordinate.Builder, com.blitzhere.BlitzMessage.Types.CoordinateOrBuilder>(
+                  getSpan(),
                   getParentForChildren(),
                   isClean());
-          size_ = null;
+          span_ = null;
         }
-        return sizeBuilder_;
+        return spanBuilder_;
       }
 
       // @@protoc_insertion_point(builder_scope:BlitzMessage.CoordinateRegion)
@@ -2912,15 +3945,28 @@ public final class Types {
     double getCourse();
 
     /**
-     * <code>optional string placename = 5;</code>
+     * <code>optional .BlitzMessage.Timestamp timestamp = 5;</code>
+     */
+    boolean hasTimestamp();
+    /**
+     * <code>optional .BlitzMessage.Timestamp timestamp = 5;</code>
+     */
+    com.blitzhere.BlitzMessage.Types.Timestamp getTimestamp();
+    /**
+     * <code>optional .BlitzMessage.Timestamp timestamp = 5;</code>
+     */
+    com.blitzhere.BlitzMessage.Types.TimestampOrBuilder getTimestampOrBuilder();
+
+    /**
+     * <code>optional string placename = 6;</code>
      */
     boolean hasPlacename();
     /**
-     * <code>optional string placename = 5;</code>
+     * <code>optional string placename = 6;</code>
      */
     java.lang.String getPlacename();
     /**
-     * <code>optional string placename = 5;</code>
+     * <code>optional string placename = 6;</code>
      */
     com.google.protobuf.ByteString
         getPlacenameBytes();
@@ -3006,8 +4052,21 @@ public final class Types {
               break;
             }
             case 42: {
-              com.google.protobuf.ByteString bs = input.readBytes();
+              com.blitzhere.BlitzMessage.Types.Timestamp.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000010) == 0x00000010)) {
+                subBuilder = timestamp_.toBuilder();
+              }
+              timestamp_ = input.readMessage(com.blitzhere.BlitzMessage.Types.Timestamp.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(timestamp_);
+                timestamp_ = subBuilder.buildPartial();
+              }
               bitField0_ |= 0x00000010;
+              break;
+            }
+            case 50: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000020;
               placename_ = bs;
               break;
             }
@@ -3117,16 +4176,37 @@ public final class Types {
       return course_;
     }
 
-    public static final int PLACENAME_FIELD_NUMBER = 5;
-    private java.lang.Object placename_;
+    public static final int TIMESTAMP_FIELD_NUMBER = 5;
+    private com.blitzhere.BlitzMessage.Types.Timestamp timestamp_;
     /**
-     * <code>optional string placename = 5;</code>
+     * <code>optional .BlitzMessage.Timestamp timestamp = 5;</code>
      */
-    public boolean hasPlacename() {
+    public boolean hasTimestamp() {
       return ((bitField0_ & 0x00000010) == 0x00000010);
     }
     /**
-     * <code>optional string placename = 5;</code>
+     * <code>optional .BlitzMessage.Timestamp timestamp = 5;</code>
+     */
+    public com.blitzhere.BlitzMessage.Types.Timestamp getTimestamp() {
+      return timestamp_;
+    }
+    /**
+     * <code>optional .BlitzMessage.Timestamp timestamp = 5;</code>
+     */
+    public com.blitzhere.BlitzMessage.Types.TimestampOrBuilder getTimestampOrBuilder() {
+      return timestamp_;
+    }
+
+    public static final int PLACENAME_FIELD_NUMBER = 6;
+    private java.lang.Object placename_;
+    /**
+     * <code>optional string placename = 6;</code>
+     */
+    public boolean hasPlacename() {
+      return ((bitField0_ & 0x00000020) == 0x00000020);
+    }
+    /**
+     * <code>optional string placename = 6;</code>
      */
     public java.lang.String getPlacename() {
       java.lang.Object ref = placename_;
@@ -3143,7 +4223,7 @@ public final class Types {
       }
     }
     /**
-     * <code>optional string placename = 5;</code>
+     * <code>optional string placename = 6;</code>
      */
     public com.google.protobuf.ByteString
         getPlacenameBytes() {
@@ -3164,6 +4244,7 @@ public final class Types {
       altitude_ = 0D;
       speed_ = 0D;
       course_ = 0D;
+      timestamp_ = com.blitzhere.BlitzMessage.Types.Timestamp.getDefaultInstance();
       placename_ = "";
     }
     private byte memoizedIsInitialized = -1;
@@ -3192,7 +4273,10 @@ public final class Types {
         output.writeDouble(4, course_);
       }
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
-        output.writeBytes(5, getPlacenameBytes());
+        output.writeMessage(5, timestamp_);
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        output.writeBytes(6, getPlacenameBytes());
       }
       getUnknownFields().writeTo(output);
     }
@@ -3221,7 +4305,11 @@ public final class Types {
       }
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(5, getPlacenameBytes());
+          .computeMessageSize(5, timestamp_);
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(6, getPlacenameBytes());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -3333,6 +4421,7 @@ public final class Types {
       private void maybeForceBuilderInitialization() {
         if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
           getCoordinateFieldBuilder();
+          getTimestampFieldBuilder();
         }
       }
       private static Builder create() {
@@ -3353,8 +4442,14 @@ public final class Types {
         bitField0_ = (bitField0_ & ~0x00000004);
         course_ = 0D;
         bitField0_ = (bitField0_ & ~0x00000008);
-        placename_ = "";
+        if (timestampBuilder_ == null) {
+          timestamp_ = com.blitzhere.BlitzMessage.Types.Timestamp.getDefaultInstance();
+        } else {
+          timestampBuilder_.clear();
+        }
         bitField0_ = (bitField0_ & ~0x00000010);
+        placename_ = "";
+        bitField0_ = (bitField0_ & ~0x00000020);
         return this;
       }
 
@@ -3406,6 +4501,14 @@ public final class Types {
         if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
           to_bitField0_ |= 0x00000010;
         }
+        if (timestampBuilder_ == null) {
+          result.timestamp_ = timestamp_;
+        } else {
+          result.timestamp_ = timestampBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
+          to_bitField0_ |= 0x00000020;
+        }
         result.placename_ = placename_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
@@ -3435,8 +4538,11 @@ public final class Types {
         if (other.hasCourse()) {
           setCourse(other.getCourse());
         }
+        if (other.hasTimestamp()) {
+          mergeTimestamp(other.getTimestamp());
+        }
         if (other.hasPlacename()) {
-          bitField0_ |= 0x00000010;
+          bitField0_ |= 0x00000020;
           placename_ = other.placename_;
           onChanged();
         }
@@ -3679,15 +4785,131 @@ public final class Types {
         return this;
       }
 
-      private java.lang.Object placename_ = "";
+      private com.blitzhere.BlitzMessage.Types.Timestamp timestamp_ = com.blitzhere.BlitzMessage.Types.Timestamp.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          com.blitzhere.BlitzMessage.Types.Timestamp, com.blitzhere.BlitzMessage.Types.Timestamp.Builder, com.blitzhere.BlitzMessage.Types.TimestampOrBuilder> timestampBuilder_;
       /**
-       * <code>optional string placename = 5;</code>
+       * <code>optional .BlitzMessage.Timestamp timestamp = 5;</code>
        */
-      public boolean hasPlacename() {
+      public boolean hasTimestamp() {
         return ((bitField0_ & 0x00000010) == 0x00000010);
       }
       /**
-       * <code>optional string placename = 5;</code>
+       * <code>optional .BlitzMessage.Timestamp timestamp = 5;</code>
+       */
+      public com.blitzhere.BlitzMessage.Types.Timestamp getTimestamp() {
+        if (timestampBuilder_ == null) {
+          return timestamp_;
+        } else {
+          return timestampBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .BlitzMessage.Timestamp timestamp = 5;</code>
+       */
+      public Builder setTimestamp(com.blitzhere.BlitzMessage.Types.Timestamp value) {
+        if (timestampBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          timestamp_ = value;
+          onChanged();
+        } else {
+          timestampBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000010;
+        return this;
+      }
+      /**
+       * <code>optional .BlitzMessage.Timestamp timestamp = 5;</code>
+       */
+      public Builder setTimestamp(
+          com.blitzhere.BlitzMessage.Types.Timestamp.Builder builderForValue) {
+        if (timestampBuilder_ == null) {
+          timestamp_ = builderForValue.build();
+          onChanged();
+        } else {
+          timestampBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000010;
+        return this;
+      }
+      /**
+       * <code>optional .BlitzMessage.Timestamp timestamp = 5;</code>
+       */
+      public Builder mergeTimestamp(com.blitzhere.BlitzMessage.Types.Timestamp value) {
+        if (timestampBuilder_ == null) {
+          if (((bitField0_ & 0x00000010) == 0x00000010) &&
+              timestamp_ != com.blitzhere.BlitzMessage.Types.Timestamp.getDefaultInstance()) {
+            timestamp_ =
+              com.blitzhere.BlitzMessage.Types.Timestamp.newBuilder(timestamp_).mergeFrom(value).buildPartial();
+          } else {
+            timestamp_ = value;
+          }
+          onChanged();
+        } else {
+          timestampBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000010;
+        return this;
+      }
+      /**
+       * <code>optional .BlitzMessage.Timestamp timestamp = 5;</code>
+       */
+      public Builder clearTimestamp() {
+        if (timestampBuilder_ == null) {
+          timestamp_ = com.blitzhere.BlitzMessage.Types.Timestamp.getDefaultInstance();
+          onChanged();
+        } else {
+          timestampBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000010);
+        return this;
+      }
+      /**
+       * <code>optional .BlitzMessage.Timestamp timestamp = 5;</code>
+       */
+      public com.blitzhere.BlitzMessage.Types.Timestamp.Builder getTimestampBuilder() {
+        bitField0_ |= 0x00000010;
+        onChanged();
+        return getTimestampFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .BlitzMessage.Timestamp timestamp = 5;</code>
+       */
+      public com.blitzhere.BlitzMessage.Types.TimestampOrBuilder getTimestampOrBuilder() {
+        if (timestampBuilder_ != null) {
+          return timestampBuilder_.getMessageOrBuilder();
+        } else {
+          return timestamp_;
+        }
+      }
+      /**
+       * <code>optional .BlitzMessage.Timestamp timestamp = 5;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          com.blitzhere.BlitzMessage.Types.Timestamp, com.blitzhere.BlitzMessage.Types.Timestamp.Builder, com.blitzhere.BlitzMessage.Types.TimestampOrBuilder> 
+          getTimestampFieldBuilder() {
+        if (timestampBuilder_ == null) {
+          timestampBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.blitzhere.BlitzMessage.Types.Timestamp, com.blitzhere.BlitzMessage.Types.Timestamp.Builder, com.blitzhere.BlitzMessage.Types.TimestampOrBuilder>(
+                  getTimestamp(),
+                  getParentForChildren(),
+                  isClean());
+          timestamp_ = null;
+        }
+        return timestampBuilder_;
+      }
+
+      private java.lang.Object placename_ = "";
+      /**
+       * <code>optional string placename = 6;</code>
+       */
+      public boolean hasPlacename() {
+        return ((bitField0_ & 0x00000020) == 0x00000020);
+      }
+      /**
+       * <code>optional string placename = 6;</code>
        */
       public java.lang.String getPlacename() {
         java.lang.Object ref = placename_;
@@ -3704,7 +4926,7 @@ public final class Types {
         }
       }
       /**
-       * <code>optional string placename = 5;</code>
+       * <code>optional string placename = 6;</code>
        */
       public com.google.protobuf.ByteString
           getPlacenameBytes() {
@@ -3720,36 +4942,36 @@ public final class Types {
         }
       }
       /**
-       * <code>optional string placename = 5;</code>
+       * <code>optional string placename = 6;</code>
        */
       public Builder setPlacename(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000010;
+  bitField0_ |= 0x00000020;
         placename_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional string placename = 5;</code>
+       * <code>optional string placename = 6;</code>
        */
       public Builder clearPlacename() {
-        bitField0_ = (bitField0_ & ~0x00000010);
+        bitField0_ = (bitField0_ & ~0x00000020);
         placename_ = getDefaultInstance().getPlacename();
         onChanged();
         return this;
       }
       /**
-       * <code>optional string placename = 5;</code>
+       * <code>optional string placename = 6;</code>
        */
       public Builder setPlacenameBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000010;
+  bitField0_ |= 0x00000020;
         placename_ = value;
         onChanged();
         return this;
@@ -3766,1149 +4988,23 @@ public final class Types {
     // @@protoc_insertion_point(class_scope:BlitzMessage.Location)
   }
 
-  public interface TimestampOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:BlitzMessage.Timestamp)
-      com.google.protobuf.MessageOrBuilder {
-
-    /**
-     * <code>required double epoch = 1;</code>
-     */
-    boolean hasEpoch();
-    /**
-     * <code>required double epoch = 1;</code>
-     */
-    double getEpoch();
-  }
-  /**
-   * Protobuf type {@code BlitzMessage.Timestamp}
-   */
-  public static final class Timestamp extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:BlitzMessage.Timestamp)
-      TimestampOrBuilder {
-    // Use Timestamp.newBuilder() to construct.
-    private Timestamp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
-      super(builder);
-      this.unknownFields = builder.getUnknownFields();
-    }
-    private Timestamp(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
-
-    private static final Timestamp defaultInstance;
-    public static Timestamp getDefaultInstance() {
-      return defaultInstance;
-    }
-
-    public Timestamp getDefaultInstanceForType() {
-      return defaultInstance;
-    }
-
-    private final com.google.protobuf.UnknownFieldSet unknownFields;
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-        getUnknownFields() {
-      return this.unknownFields;
-    }
-    private Timestamp(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      initFields();
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            default: {
-              if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-            case 9: {
-              bitField0_ |= 0x00000001;
-              epoch_ = input.readDouble();
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e.getMessage()).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return com.blitzhere.BlitzMessage.Types.internal_static_BlitzMessage_Timestamp_descriptor;
-    }
-
-    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return com.blitzhere.BlitzMessage.Types.internal_static_BlitzMessage_Timestamp_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              com.blitzhere.BlitzMessage.Types.Timestamp.class, com.blitzhere.BlitzMessage.Types.Timestamp.Builder.class);
-    }
-
-    public static com.google.protobuf.Parser<Timestamp> PARSER =
-        new com.google.protobuf.AbstractParser<Timestamp>() {
-      public Timestamp parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new Timestamp(input, extensionRegistry);
-      }
-    };
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<Timestamp> getParserForType() {
-      return PARSER;
-    }
-
-    private int bitField0_;
-    public static final int EPOCH_FIELD_NUMBER = 1;
-    private double epoch_;
-    /**
-     * <code>required double epoch = 1;</code>
-     */
-    public boolean hasEpoch() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
-    }
-    /**
-     * <code>required double epoch = 1;</code>
-     */
-    public double getEpoch() {
-      return epoch_;
-    }
-
-    private void initFields() {
-      epoch_ = 0D;
-    }
-    private byte memoizedIsInitialized = -1;
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
-
-      if (!hasEpoch()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      getSerializedSize();
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeDouble(1, epoch_);
-      }
-      getUnknownFields().writeTo(output);
-    }
-
-    private int memoizedSerializedSize = -1;
-    public int getSerializedSize() {
-      int size = memoizedSerializedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeDoubleSize(1, epoch_);
-      }
-      size += getUnknownFields().getSerializedSize();
-      memoizedSerializedSize = size;
-      return size;
-    }
-
-    private static final long serialVersionUID = 0L;
-    @java.lang.Override
-    protected java.lang.Object writeReplace()
-        throws java.io.ObjectStreamException {
-      return super.writeReplace();
-    }
-
-    public static com.blitzhere.BlitzMessage.Types.Timestamp parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.blitzhere.BlitzMessage.Types.Timestamp parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.blitzhere.BlitzMessage.Types.Timestamp parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.blitzhere.BlitzMessage.Types.Timestamp parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.blitzhere.BlitzMessage.Types.Timestamp parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static com.blitzhere.BlitzMessage.Types.Timestamp parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-    public static com.blitzhere.BlitzMessage.Types.Timestamp parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input);
-    }
-    public static com.blitzhere.BlitzMessage.Types.Timestamp parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input, extensionRegistry);
-    }
-    public static com.blitzhere.BlitzMessage.Types.Timestamp parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static com.blitzhere.BlitzMessage.Types.Timestamp parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-
-    public static Builder newBuilder() { return Builder.create(); }
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.blitzhere.BlitzMessage.Types.Timestamp prototype) {
-      return newBuilder().mergeFrom(prototype);
-    }
-    public Builder toBuilder() { return newBuilder(this); }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    /**
-     * Protobuf type {@code BlitzMessage.Timestamp}
-     */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:BlitzMessage.Timestamp)
-        com.blitzhere.BlitzMessage.Types.TimestampOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return com.blitzhere.BlitzMessage.Types.internal_static_BlitzMessage_Timestamp_descriptor;
-      }
-
-      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return com.blitzhere.BlitzMessage.Types.internal_static_BlitzMessage_Timestamp_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                com.blitzhere.BlitzMessage.Types.Timestamp.class, com.blitzhere.BlitzMessage.Types.Timestamp.Builder.class);
-      }
-
-      // Construct using com.blitzhere.BlitzMessage.Types.Timestamp.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-        }
-      }
-      private static Builder create() {
-        return new Builder();
-      }
-
-      public Builder clear() {
-        super.clear();
-        epoch_ = 0D;
-        bitField0_ = (bitField0_ & ~0x00000001);
-        return this;
-      }
-
-      public Builder clone() {
-        return create().mergeFrom(buildPartial());
-      }
-
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return com.blitzhere.BlitzMessage.Types.internal_static_BlitzMessage_Timestamp_descriptor;
-      }
-
-      public com.blitzhere.BlitzMessage.Types.Timestamp getDefaultInstanceForType() {
-        return com.blitzhere.BlitzMessage.Types.Timestamp.getDefaultInstance();
-      }
-
-      public com.blitzhere.BlitzMessage.Types.Timestamp build() {
-        com.blitzhere.BlitzMessage.Types.Timestamp result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      public com.blitzhere.BlitzMessage.Types.Timestamp buildPartial() {
-        com.blitzhere.BlitzMessage.Types.Timestamp result = new com.blitzhere.BlitzMessage.Types.Timestamp(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.epoch_ = epoch_;
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
-      }
-
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.blitzhere.BlitzMessage.Types.Timestamp) {
-          return mergeFrom((com.blitzhere.BlitzMessage.Types.Timestamp)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(com.blitzhere.BlitzMessage.Types.Timestamp other) {
-        if (other == com.blitzhere.BlitzMessage.Types.Timestamp.getDefaultInstance()) return this;
-        if (other.hasEpoch()) {
-          setEpoch(other.getEpoch());
-        }
-        this.mergeUnknownFields(other.getUnknownFields());
-        return this;
-      }
-
-      public final boolean isInitialized() {
-        if (!hasEpoch()) {
-          
-          return false;
-        }
-        return true;
-      }
-
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        com.blitzhere.BlitzMessage.Types.Timestamp parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.blitzhere.BlitzMessage.Types.Timestamp) e.getUnfinishedMessage();
-          throw e;
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-      private int bitField0_;
-
-      private double epoch_ ;
-      /**
-       * <code>required double epoch = 1;</code>
-       */
-      public boolean hasEpoch() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
-      }
-      /**
-       * <code>required double epoch = 1;</code>
-       */
-      public double getEpoch() {
-        return epoch_;
-      }
-      /**
-       * <code>required double epoch = 1;</code>
-       */
-      public Builder setEpoch(double value) {
-        bitField0_ |= 0x00000001;
-        epoch_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required double epoch = 1;</code>
-       */
-      public Builder clearEpoch() {
-        bitField0_ = (bitField0_ & ~0x00000001);
-        epoch_ = 0D;
-        onChanged();
-        return this;
-      }
-
-      // @@protoc_insertion_point(builder_scope:BlitzMessage.Timestamp)
-    }
-
-    static {
-      defaultInstance = new Timestamp(true);
-      defaultInstance.initFields();
-    }
-
-    // @@protoc_insertion_point(class_scope:BlitzMessage.Timestamp)
-  }
-
-  public interface TimespanOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:BlitzMessage.Timespan)
-      com.google.protobuf.MessageOrBuilder {
-
-    /**
-     * <code>optional .BlitzMessage.Timestamp startTimestamp = 1;</code>
-     */
-    boolean hasStartTimestamp();
-    /**
-     * <code>optional .BlitzMessage.Timestamp startTimestamp = 1;</code>
-     */
-    com.blitzhere.BlitzMessage.Types.Timestamp getStartTimestamp();
-    /**
-     * <code>optional .BlitzMessage.Timestamp startTimestamp = 1;</code>
-     */
-    com.blitzhere.BlitzMessage.Types.TimestampOrBuilder getStartTimestampOrBuilder();
-
-    /**
-     * <code>optional .BlitzMessage.Timestamp stopTimestamp = 2;</code>
-     */
-    boolean hasStopTimestamp();
-    /**
-     * <code>optional .BlitzMessage.Timestamp stopTimestamp = 2;</code>
-     */
-    com.blitzhere.BlitzMessage.Types.Timestamp getStopTimestamp();
-    /**
-     * <code>optional .BlitzMessage.Timestamp stopTimestamp = 2;</code>
-     */
-    com.blitzhere.BlitzMessage.Types.TimestampOrBuilder getStopTimestampOrBuilder();
-  }
-  /**
-   * Protobuf type {@code BlitzMessage.Timespan}
-   */
-  public static final class Timespan extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:BlitzMessage.Timespan)
-      TimespanOrBuilder {
-    // Use Timespan.newBuilder() to construct.
-    private Timespan(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
-      super(builder);
-      this.unknownFields = builder.getUnknownFields();
-    }
-    private Timespan(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
-
-    private static final Timespan defaultInstance;
-    public static Timespan getDefaultInstance() {
-      return defaultInstance;
-    }
-
-    public Timespan getDefaultInstanceForType() {
-      return defaultInstance;
-    }
-
-    private final com.google.protobuf.UnknownFieldSet unknownFields;
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-        getUnknownFields() {
-      return this.unknownFields;
-    }
-    private Timespan(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      initFields();
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            default: {
-              if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-            case 10: {
-              com.blitzhere.BlitzMessage.Types.Timestamp.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000001) == 0x00000001)) {
-                subBuilder = startTimestamp_.toBuilder();
-              }
-              startTimestamp_ = input.readMessage(com.blitzhere.BlitzMessage.Types.Timestamp.PARSER, extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(startTimestamp_);
-                startTimestamp_ = subBuilder.buildPartial();
-              }
-              bitField0_ |= 0x00000001;
-              break;
-            }
-            case 18: {
-              com.blitzhere.BlitzMessage.Types.Timestamp.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000002) == 0x00000002)) {
-                subBuilder = stopTimestamp_.toBuilder();
-              }
-              stopTimestamp_ = input.readMessage(com.blitzhere.BlitzMessage.Types.Timestamp.PARSER, extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(stopTimestamp_);
-                stopTimestamp_ = subBuilder.buildPartial();
-              }
-              bitField0_ |= 0x00000002;
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e.getMessage()).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return com.blitzhere.BlitzMessage.Types.internal_static_BlitzMessage_Timespan_descriptor;
-    }
-
-    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return com.blitzhere.BlitzMessage.Types.internal_static_BlitzMessage_Timespan_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              com.blitzhere.BlitzMessage.Types.Timespan.class, com.blitzhere.BlitzMessage.Types.Timespan.Builder.class);
-    }
-
-    public static com.google.protobuf.Parser<Timespan> PARSER =
-        new com.google.protobuf.AbstractParser<Timespan>() {
-      public Timespan parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new Timespan(input, extensionRegistry);
-      }
-    };
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<Timespan> getParserForType() {
-      return PARSER;
-    }
-
-    private int bitField0_;
-    public static final int STARTTIMESTAMP_FIELD_NUMBER = 1;
-    private com.blitzhere.BlitzMessage.Types.Timestamp startTimestamp_;
-    /**
-     * <code>optional .BlitzMessage.Timestamp startTimestamp = 1;</code>
-     */
-    public boolean hasStartTimestamp() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
-    }
-    /**
-     * <code>optional .BlitzMessage.Timestamp startTimestamp = 1;</code>
-     */
-    public com.blitzhere.BlitzMessage.Types.Timestamp getStartTimestamp() {
-      return startTimestamp_;
-    }
-    /**
-     * <code>optional .BlitzMessage.Timestamp startTimestamp = 1;</code>
-     */
-    public com.blitzhere.BlitzMessage.Types.TimestampOrBuilder getStartTimestampOrBuilder() {
-      return startTimestamp_;
-    }
-
-    public static final int STOPTIMESTAMP_FIELD_NUMBER = 2;
-    private com.blitzhere.BlitzMessage.Types.Timestamp stopTimestamp_;
-    /**
-     * <code>optional .BlitzMessage.Timestamp stopTimestamp = 2;</code>
-     */
-    public boolean hasStopTimestamp() {
-      return ((bitField0_ & 0x00000002) == 0x00000002);
-    }
-    /**
-     * <code>optional .BlitzMessage.Timestamp stopTimestamp = 2;</code>
-     */
-    public com.blitzhere.BlitzMessage.Types.Timestamp getStopTimestamp() {
-      return stopTimestamp_;
-    }
-    /**
-     * <code>optional .BlitzMessage.Timestamp stopTimestamp = 2;</code>
-     */
-    public com.blitzhere.BlitzMessage.Types.TimestampOrBuilder getStopTimestampOrBuilder() {
-      return stopTimestamp_;
-    }
-
-    private void initFields() {
-      startTimestamp_ = com.blitzhere.BlitzMessage.Types.Timestamp.getDefaultInstance();
-      stopTimestamp_ = com.blitzhere.BlitzMessage.Types.Timestamp.getDefaultInstance();
-    }
-    private byte memoizedIsInitialized = -1;
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
-
-      if (hasStartTimestamp()) {
-        if (!getStartTimestamp().isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-      }
-      if (hasStopTimestamp()) {
-        if (!getStopTimestamp().isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-      }
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      getSerializedSize();
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeMessage(1, startTimestamp_);
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeMessage(2, stopTimestamp_);
-      }
-      getUnknownFields().writeTo(output);
-    }
-
-    private int memoizedSerializedSize = -1;
-    public int getSerializedSize() {
-      int size = memoizedSerializedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(1, startTimestamp_);
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(2, stopTimestamp_);
-      }
-      size += getUnknownFields().getSerializedSize();
-      memoizedSerializedSize = size;
-      return size;
-    }
-
-    private static final long serialVersionUID = 0L;
-    @java.lang.Override
-    protected java.lang.Object writeReplace()
-        throws java.io.ObjectStreamException {
-      return super.writeReplace();
-    }
-
-    public static com.blitzhere.BlitzMessage.Types.Timespan parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.blitzhere.BlitzMessage.Types.Timespan parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.blitzhere.BlitzMessage.Types.Timespan parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.blitzhere.BlitzMessage.Types.Timespan parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.blitzhere.BlitzMessage.Types.Timespan parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static com.blitzhere.BlitzMessage.Types.Timespan parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-    public static com.blitzhere.BlitzMessage.Types.Timespan parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input);
-    }
-    public static com.blitzhere.BlitzMessage.Types.Timespan parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input, extensionRegistry);
-    }
-    public static com.blitzhere.BlitzMessage.Types.Timespan parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static com.blitzhere.BlitzMessage.Types.Timespan parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-
-    public static Builder newBuilder() { return Builder.create(); }
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.blitzhere.BlitzMessage.Types.Timespan prototype) {
-      return newBuilder().mergeFrom(prototype);
-    }
-    public Builder toBuilder() { return newBuilder(this); }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    /**
-     * Protobuf type {@code BlitzMessage.Timespan}
-     */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:BlitzMessage.Timespan)
-        com.blitzhere.BlitzMessage.Types.TimespanOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return com.blitzhere.BlitzMessage.Types.internal_static_BlitzMessage_Timespan_descriptor;
-      }
-
-      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return com.blitzhere.BlitzMessage.Types.internal_static_BlitzMessage_Timespan_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                com.blitzhere.BlitzMessage.Types.Timespan.class, com.blitzhere.BlitzMessage.Types.Timespan.Builder.class);
-      }
-
-      // Construct using com.blitzhere.BlitzMessage.Types.Timespan.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-          getStartTimestampFieldBuilder();
-          getStopTimestampFieldBuilder();
-        }
-      }
-      private static Builder create() {
-        return new Builder();
-      }
-
-      public Builder clear() {
-        super.clear();
-        if (startTimestampBuilder_ == null) {
-          startTimestamp_ = com.blitzhere.BlitzMessage.Types.Timestamp.getDefaultInstance();
-        } else {
-          startTimestampBuilder_.clear();
-        }
-        bitField0_ = (bitField0_ & ~0x00000001);
-        if (stopTimestampBuilder_ == null) {
-          stopTimestamp_ = com.blitzhere.BlitzMessage.Types.Timestamp.getDefaultInstance();
-        } else {
-          stopTimestampBuilder_.clear();
-        }
-        bitField0_ = (bitField0_ & ~0x00000002);
-        return this;
-      }
-
-      public Builder clone() {
-        return create().mergeFrom(buildPartial());
-      }
-
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return com.blitzhere.BlitzMessage.Types.internal_static_BlitzMessage_Timespan_descriptor;
-      }
-
-      public com.blitzhere.BlitzMessage.Types.Timespan getDefaultInstanceForType() {
-        return com.blitzhere.BlitzMessage.Types.Timespan.getDefaultInstance();
-      }
-
-      public com.blitzhere.BlitzMessage.Types.Timespan build() {
-        com.blitzhere.BlitzMessage.Types.Timespan result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      public com.blitzhere.BlitzMessage.Types.Timespan buildPartial() {
-        com.blitzhere.BlitzMessage.Types.Timespan result = new com.blitzhere.BlitzMessage.Types.Timespan(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        if (startTimestampBuilder_ == null) {
-          result.startTimestamp_ = startTimestamp_;
-        } else {
-          result.startTimestamp_ = startTimestampBuilder_.build();
-        }
-        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
-          to_bitField0_ |= 0x00000002;
-        }
-        if (stopTimestampBuilder_ == null) {
-          result.stopTimestamp_ = stopTimestamp_;
-        } else {
-          result.stopTimestamp_ = stopTimestampBuilder_.build();
-        }
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
-      }
-
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.blitzhere.BlitzMessage.Types.Timespan) {
-          return mergeFrom((com.blitzhere.BlitzMessage.Types.Timespan)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(com.blitzhere.BlitzMessage.Types.Timespan other) {
-        if (other == com.blitzhere.BlitzMessage.Types.Timespan.getDefaultInstance()) return this;
-        if (other.hasStartTimestamp()) {
-          mergeStartTimestamp(other.getStartTimestamp());
-        }
-        if (other.hasStopTimestamp()) {
-          mergeStopTimestamp(other.getStopTimestamp());
-        }
-        this.mergeUnknownFields(other.getUnknownFields());
-        return this;
-      }
-
-      public final boolean isInitialized() {
-        if (hasStartTimestamp()) {
-          if (!getStartTimestamp().isInitialized()) {
-            
-            return false;
-          }
-        }
-        if (hasStopTimestamp()) {
-          if (!getStopTimestamp().isInitialized()) {
-            
-            return false;
-          }
-        }
-        return true;
-      }
-
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        com.blitzhere.BlitzMessage.Types.Timespan parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.blitzhere.BlitzMessage.Types.Timespan) e.getUnfinishedMessage();
-          throw e;
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-      private int bitField0_;
-
-      private com.blitzhere.BlitzMessage.Types.Timestamp startTimestamp_ = com.blitzhere.BlitzMessage.Types.Timestamp.getDefaultInstance();
-      private com.google.protobuf.SingleFieldBuilder<
-          com.blitzhere.BlitzMessage.Types.Timestamp, com.blitzhere.BlitzMessage.Types.Timestamp.Builder, com.blitzhere.BlitzMessage.Types.TimestampOrBuilder> startTimestampBuilder_;
-      /**
-       * <code>optional .BlitzMessage.Timestamp startTimestamp = 1;</code>
-       */
-      public boolean hasStartTimestamp() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
-      }
-      /**
-       * <code>optional .BlitzMessage.Timestamp startTimestamp = 1;</code>
-       */
-      public com.blitzhere.BlitzMessage.Types.Timestamp getStartTimestamp() {
-        if (startTimestampBuilder_ == null) {
-          return startTimestamp_;
-        } else {
-          return startTimestampBuilder_.getMessage();
-        }
-      }
-      /**
-       * <code>optional .BlitzMessage.Timestamp startTimestamp = 1;</code>
-       */
-      public Builder setStartTimestamp(com.blitzhere.BlitzMessage.Types.Timestamp value) {
-        if (startTimestampBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          startTimestamp_ = value;
-          onChanged();
-        } else {
-          startTimestampBuilder_.setMessage(value);
-        }
-        bitField0_ |= 0x00000001;
-        return this;
-      }
-      /**
-       * <code>optional .BlitzMessage.Timestamp startTimestamp = 1;</code>
-       */
-      public Builder setStartTimestamp(
-          com.blitzhere.BlitzMessage.Types.Timestamp.Builder builderForValue) {
-        if (startTimestampBuilder_ == null) {
-          startTimestamp_ = builderForValue.build();
-          onChanged();
-        } else {
-          startTimestampBuilder_.setMessage(builderForValue.build());
-        }
-        bitField0_ |= 0x00000001;
-        return this;
-      }
-      /**
-       * <code>optional .BlitzMessage.Timestamp startTimestamp = 1;</code>
-       */
-      public Builder mergeStartTimestamp(com.blitzhere.BlitzMessage.Types.Timestamp value) {
-        if (startTimestampBuilder_ == null) {
-          if (((bitField0_ & 0x00000001) == 0x00000001) &&
-              startTimestamp_ != com.blitzhere.BlitzMessage.Types.Timestamp.getDefaultInstance()) {
-            startTimestamp_ =
-              com.blitzhere.BlitzMessage.Types.Timestamp.newBuilder(startTimestamp_).mergeFrom(value).buildPartial();
-          } else {
-            startTimestamp_ = value;
-          }
-          onChanged();
-        } else {
-          startTimestampBuilder_.mergeFrom(value);
-        }
-        bitField0_ |= 0x00000001;
-        return this;
-      }
-      /**
-       * <code>optional .BlitzMessage.Timestamp startTimestamp = 1;</code>
-       */
-      public Builder clearStartTimestamp() {
-        if (startTimestampBuilder_ == null) {
-          startTimestamp_ = com.blitzhere.BlitzMessage.Types.Timestamp.getDefaultInstance();
-          onChanged();
-        } else {
-          startTimestampBuilder_.clear();
-        }
-        bitField0_ = (bitField0_ & ~0x00000001);
-        return this;
-      }
-      /**
-       * <code>optional .BlitzMessage.Timestamp startTimestamp = 1;</code>
-       */
-      public com.blitzhere.BlitzMessage.Types.Timestamp.Builder getStartTimestampBuilder() {
-        bitField0_ |= 0x00000001;
-        onChanged();
-        return getStartTimestampFieldBuilder().getBuilder();
-      }
-      /**
-       * <code>optional .BlitzMessage.Timestamp startTimestamp = 1;</code>
-       */
-      public com.blitzhere.BlitzMessage.Types.TimestampOrBuilder getStartTimestampOrBuilder() {
-        if (startTimestampBuilder_ != null) {
-          return startTimestampBuilder_.getMessageOrBuilder();
-        } else {
-          return startTimestamp_;
-        }
-      }
-      /**
-       * <code>optional .BlitzMessage.Timestamp startTimestamp = 1;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilder<
-          com.blitzhere.BlitzMessage.Types.Timestamp, com.blitzhere.BlitzMessage.Types.Timestamp.Builder, com.blitzhere.BlitzMessage.Types.TimestampOrBuilder> 
-          getStartTimestampFieldBuilder() {
-        if (startTimestampBuilder_ == null) {
-          startTimestampBuilder_ = new com.google.protobuf.SingleFieldBuilder<
-              com.blitzhere.BlitzMessage.Types.Timestamp, com.blitzhere.BlitzMessage.Types.Timestamp.Builder, com.blitzhere.BlitzMessage.Types.TimestampOrBuilder>(
-                  getStartTimestamp(),
-                  getParentForChildren(),
-                  isClean());
-          startTimestamp_ = null;
-        }
-        return startTimestampBuilder_;
-      }
-
-      private com.blitzhere.BlitzMessage.Types.Timestamp stopTimestamp_ = com.blitzhere.BlitzMessage.Types.Timestamp.getDefaultInstance();
-      private com.google.protobuf.SingleFieldBuilder<
-          com.blitzhere.BlitzMessage.Types.Timestamp, com.blitzhere.BlitzMessage.Types.Timestamp.Builder, com.blitzhere.BlitzMessage.Types.TimestampOrBuilder> stopTimestampBuilder_;
-      /**
-       * <code>optional .BlitzMessage.Timestamp stopTimestamp = 2;</code>
-       */
-      public boolean hasStopTimestamp() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
-      }
-      /**
-       * <code>optional .BlitzMessage.Timestamp stopTimestamp = 2;</code>
-       */
-      public com.blitzhere.BlitzMessage.Types.Timestamp getStopTimestamp() {
-        if (stopTimestampBuilder_ == null) {
-          return stopTimestamp_;
-        } else {
-          return stopTimestampBuilder_.getMessage();
-        }
-      }
-      /**
-       * <code>optional .BlitzMessage.Timestamp stopTimestamp = 2;</code>
-       */
-      public Builder setStopTimestamp(com.blitzhere.BlitzMessage.Types.Timestamp value) {
-        if (stopTimestampBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          stopTimestamp_ = value;
-          onChanged();
-        } else {
-          stopTimestampBuilder_.setMessage(value);
-        }
-        bitField0_ |= 0x00000002;
-        return this;
-      }
-      /**
-       * <code>optional .BlitzMessage.Timestamp stopTimestamp = 2;</code>
-       */
-      public Builder setStopTimestamp(
-          com.blitzhere.BlitzMessage.Types.Timestamp.Builder builderForValue) {
-        if (stopTimestampBuilder_ == null) {
-          stopTimestamp_ = builderForValue.build();
-          onChanged();
-        } else {
-          stopTimestampBuilder_.setMessage(builderForValue.build());
-        }
-        bitField0_ |= 0x00000002;
-        return this;
-      }
-      /**
-       * <code>optional .BlitzMessage.Timestamp stopTimestamp = 2;</code>
-       */
-      public Builder mergeStopTimestamp(com.blitzhere.BlitzMessage.Types.Timestamp value) {
-        if (stopTimestampBuilder_ == null) {
-          if (((bitField0_ & 0x00000002) == 0x00000002) &&
-              stopTimestamp_ != com.blitzhere.BlitzMessage.Types.Timestamp.getDefaultInstance()) {
-            stopTimestamp_ =
-              com.blitzhere.BlitzMessage.Types.Timestamp.newBuilder(stopTimestamp_).mergeFrom(value).buildPartial();
-          } else {
-            stopTimestamp_ = value;
-          }
-          onChanged();
-        } else {
-          stopTimestampBuilder_.mergeFrom(value);
-        }
-        bitField0_ |= 0x00000002;
-        return this;
-      }
-      /**
-       * <code>optional .BlitzMessage.Timestamp stopTimestamp = 2;</code>
-       */
-      public Builder clearStopTimestamp() {
-        if (stopTimestampBuilder_ == null) {
-          stopTimestamp_ = com.blitzhere.BlitzMessage.Types.Timestamp.getDefaultInstance();
-          onChanged();
-        } else {
-          stopTimestampBuilder_.clear();
-        }
-        bitField0_ = (bitField0_ & ~0x00000002);
-        return this;
-      }
-      /**
-       * <code>optional .BlitzMessage.Timestamp stopTimestamp = 2;</code>
-       */
-      public com.blitzhere.BlitzMessage.Types.Timestamp.Builder getStopTimestampBuilder() {
-        bitField0_ |= 0x00000002;
-        onChanged();
-        return getStopTimestampFieldBuilder().getBuilder();
-      }
-      /**
-       * <code>optional .BlitzMessage.Timestamp stopTimestamp = 2;</code>
-       */
-      public com.blitzhere.BlitzMessage.Types.TimestampOrBuilder getStopTimestampOrBuilder() {
-        if (stopTimestampBuilder_ != null) {
-          return stopTimestampBuilder_.getMessageOrBuilder();
-        } else {
-          return stopTimestamp_;
-        }
-      }
-      /**
-       * <code>optional .BlitzMessage.Timestamp stopTimestamp = 2;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilder<
-          com.blitzhere.BlitzMessage.Types.Timestamp, com.blitzhere.BlitzMessage.Types.Timestamp.Builder, com.blitzhere.BlitzMessage.Types.TimestampOrBuilder> 
-          getStopTimestampFieldBuilder() {
-        if (stopTimestampBuilder_ == null) {
-          stopTimestampBuilder_ = new com.google.protobuf.SingleFieldBuilder<
-              com.blitzhere.BlitzMessage.Types.Timestamp, com.blitzhere.BlitzMessage.Types.Timestamp.Builder, com.blitzhere.BlitzMessage.Types.TimestampOrBuilder>(
-                  getStopTimestamp(),
-                  getParentForChildren(),
-                  isClean());
-          stopTimestamp_ = null;
-        }
-        return stopTimestampBuilder_;
-      }
-
-      // @@protoc_insertion_point(builder_scope:BlitzMessage.Timespan)
-    }
-
-    static {
-      defaultInstance = new Timespan(true);
-      defaultInstance.initFields();
-    }
-
-    // @@protoc_insertion_point(class_scope:BlitzMessage.Timespan)
-  }
-
   public interface VoidOrBuilder extends
       // @@protoc_insertion_point(interface_extends:BlitzMessage.Void)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>optional string debugString = 1;</code>
+     * <code>optional string text = 1;</code>
      */
-    boolean hasDebugString();
+    boolean hasText();
     /**
-     * <code>optional string debugString = 1;</code>
+     * <code>optional string text = 1;</code>
      */
-    java.lang.String getDebugString();
+    java.lang.String getText();
     /**
-     * <code>optional string debugString = 1;</code>
+     * <code>optional string text = 1;</code>
      */
     com.google.protobuf.ByteString
-        getDebugStringBytes();
+        getTextBytes();
   }
   /**
    * Protobuf type {@code BlitzMessage.Void}
@@ -4965,7 +5061,7 @@ public final class Types {
             case 10: {
               com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000001;
-              debugString_ = bs;
+              text_ = bs;
               break;
             }
           }
@@ -5008,19 +5104,19 @@ public final class Types {
     }
 
     private int bitField0_;
-    public static final int DEBUGSTRING_FIELD_NUMBER = 1;
-    private java.lang.Object debugString_;
+    public static final int TEXT_FIELD_NUMBER = 1;
+    private java.lang.Object text_;
     /**
-     * <code>optional string debugString = 1;</code>
+     * <code>optional string text = 1;</code>
      */
-    public boolean hasDebugString() {
+    public boolean hasText() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     /**
-     * <code>optional string debugString = 1;</code>
+     * <code>optional string text = 1;</code>
      */
-    public java.lang.String getDebugString() {
-      java.lang.Object ref = debugString_;
+    public java.lang.String getText() {
+      java.lang.Object ref = text_;
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
@@ -5028,22 +5124,22 @@ public final class Types {
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         if (bs.isValidUtf8()) {
-          debugString_ = s;
+          text_ = s;
         }
         return s;
       }
     }
     /**
-     * <code>optional string debugString = 1;</code>
+     * <code>optional string text = 1;</code>
      */
     public com.google.protobuf.ByteString
-        getDebugStringBytes() {
-      java.lang.Object ref = debugString_;
+        getTextBytes() {
+      java.lang.Object ref = text_;
       if (ref instanceof java.lang.String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
-        debugString_ = b;
+        text_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
@@ -5051,7 +5147,7 @@ public final class Types {
     }
 
     private void initFields() {
-      debugString_ = "";
+      text_ = "";
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -5067,7 +5163,7 @@ public final class Types {
                         throws java.io.IOException {
       getSerializedSize();
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeBytes(1, getDebugStringBytes());
+        output.writeBytes(1, getTextBytes());
       }
       getUnknownFields().writeTo(output);
     }
@@ -5080,7 +5176,7 @@ public final class Types {
       size = 0;
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(1, getDebugStringBytes());
+          .computeBytesSize(1, getTextBytes());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -5199,7 +5295,7 @@ public final class Types {
 
       public Builder clear() {
         super.clear();
-        debugString_ = "";
+        text_ = "";
         bitField0_ = (bitField0_ & ~0x00000001);
         return this;
       }
@@ -5232,7 +5328,7 @@ public final class Types {
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
           to_bitField0_ |= 0x00000001;
         }
-        result.debugString_ = debugString_;
+        result.text_ = text_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -5249,9 +5345,9 @@ public final class Types {
 
       public Builder mergeFrom(com.blitzhere.BlitzMessage.Types.Void other) {
         if (other == com.blitzhere.BlitzMessage.Types.Void.getDefaultInstance()) return this;
-        if (other.hasDebugString()) {
+        if (other.hasText()) {
           bitField0_ |= 0x00000001;
-          debugString_ = other.debugString_;
+          text_ = other.text_;
           onChanged();
         }
         this.mergeUnknownFields(other.getUnknownFields());
@@ -5281,24 +5377,24 @@ public final class Types {
       }
       private int bitField0_;
 
-      private java.lang.Object debugString_ = "";
+      private java.lang.Object text_ = "";
       /**
-       * <code>optional string debugString = 1;</code>
+       * <code>optional string text = 1;</code>
        */
-      public boolean hasDebugString() {
+      public boolean hasText() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       /**
-       * <code>optional string debugString = 1;</code>
+       * <code>optional string text = 1;</code>
        */
-      public java.lang.String getDebugString() {
-        java.lang.Object ref = debugString_;
+      public java.lang.String getText() {
+        java.lang.Object ref = text_;
         if (!(ref instanceof java.lang.String)) {
           com.google.protobuf.ByteString bs =
               (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
           if (bs.isValidUtf8()) {
-            debugString_ = s;
+            text_ = s;
           }
           return s;
         } else {
@@ -5306,53 +5402,53 @@ public final class Types {
         }
       }
       /**
-       * <code>optional string debugString = 1;</code>
+       * <code>optional string text = 1;</code>
        */
       public com.google.protobuf.ByteString
-          getDebugStringBytes() {
-        java.lang.Object ref = debugString_;
+          getTextBytes() {
+        java.lang.Object ref = text_;
         if (ref instanceof String) {
           com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
-          debugString_ = b;
+          text_ = b;
           return b;
         } else {
           return (com.google.protobuf.ByteString) ref;
         }
       }
       /**
-       * <code>optional string debugString = 1;</code>
+       * <code>optional string text = 1;</code>
        */
-      public Builder setDebugString(
+      public Builder setText(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
   bitField0_ |= 0x00000001;
-        debugString_ = value;
+        text_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional string debugString = 1;</code>
+       * <code>optional string text = 1;</code>
        */
-      public Builder clearDebugString() {
+      public Builder clearText() {
         bitField0_ = (bitField0_ & ~0x00000001);
-        debugString_ = getDefaultInstance().getDebugString();
+        text_ = getDefaultInstance().getText();
         onChanged();
         return this;
       }
       /**
-       * <code>optional string debugString = 1;</code>
+       * <code>optional string text = 1;</code>
        */
-      public Builder setDebugStringBytes(
+      public Builder setTextBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
   bitField0_ |= 0x00000001;
-        debugString_ = value;
+        text_ = value;
         onChanged();
         return this;
       }
@@ -6028,20 +6124,30 @@ public final class Types {
   }
 
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_BlitzMessage_Global_descriptor;
+    internal_static_BlitzMessage_Timestamp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_BlitzMessage_Global_fieldAccessorTable;
+      internal_static_BlitzMessage_Timestamp_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_BlitzMessage_Coordinate_descriptor;
+    internal_static_BlitzMessage_Timespan_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_BlitzMessage_Coordinate_fieldAccessorTable;
+      internal_static_BlitzMessage_Timespan_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_BlitzMessage_Point_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_BlitzMessage_Point_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_BlitzMessage_Size_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_BlitzMessage_Size_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_BlitzMessage_Coordinate_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_BlitzMessage_Coordinate_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_BlitzMessage_CoordinateRegion_descriptor;
   private static
@@ -6057,16 +6163,6 @@ public final class Types {
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_BlitzMessage_Location_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_BlitzMessage_Timestamp_descriptor;
-  private static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_BlitzMessage_Timestamp_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_BlitzMessage_Timespan_descriptor;
-  private static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_BlitzMessage_Timespan_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_BlitzMessage_Void_descriptor;
   private static
@@ -6087,25 +6183,25 @@ public final class Types {
   static {
     java.lang.String[] descriptorData = {
       "\n\013Types.proto\022\014BlitzMessage\032\033objectivec-" +
-      "descriptor.proto\"D\n\006Global\022:\n\014SystemUser" +
-      "ID\030\001 \001(\t:$e4227250-c8e5-4da9-8177-f08402" +
-      "0910b8\"=\n\nCoordinate\022\026\n\010latitude\030\001 \001(\001:\004" +
-      "-360\022\027\n\tlongitude\030\002 \001(\001:\004-360\"+\n\004Size\022\020\n" +
-      "\005width\030\001 \001(\001:\0010\022\021\n\006height\030\002 \001(\001:\0010\"^\n\020Co" +
-      "ordinateRegion\022(\n\006center\030\001 \001(\0132\030.BlitzMe" +
-      "ssage.Coordinate\022 \n\004size\030\002 \001(\0132\022.BlitzMe" +
-      "ssage.Size\"=\n\021CoordinatePolygon\022(\n\006point" +
-      "s\030\001 \003(\0132\030.BlitzMessage.Coordinate\"|\n\010Loc",
-      "ation\022,\n\ncoordinate\030\001 \001(\0132\030.BlitzMessage" +
-      ".Coordinate\022\020\n\010altitude\030\002 \001(\001\022\r\n\005speed\030\003" +
-      " \001(\001\022\016\n\006course\030\004 \001(\001\022\021\n\tplacename\030\005 \001(\t\"" +
-      "\032\n\tTimestamp\022\r\n\005epoch\030\001 \002(\001\"k\n\010Timespan\022" +
-      "/\n\016startTimestamp\030\001 \001(\0132\027.BlitzMessage.T" +
-      "imestamp\022.\n\rstopTimestamp\030\002 \001(\0132\027.BlitzM" +
-      "essage.Timestamp\"\033\n\004Void\022\023\n\013debugString\030" +
-      "\001 \001(\t\"&\n\010KeyValue\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030" +
-      "\002 \003(\tB/\n\032com.blitzhere.BlitzMessage\210\001\001\322>" +
-      "\002\n\000\322>\003\022\001B\322>\002\030\001"
+      "descriptor.proto\"\032\n\tTimestamp\022\r\n\005epoch\030\001" +
+      " \001(\001\"k\n\010Timespan\022/\n\016startTimestamp\030\001 \001(\013" +
+      "2\027.BlitzMessage.Timestamp\022.\n\rstopTimesta" +
+      "mp\030\002 \001(\0132\027.BlitzMessage.Timestamp\"\035\n\005Poi" +
+      "nt\022\t\n\001x\030\001 \001(\001\022\t\n\001y\030\002 \001(\001\"+\n\004Size\022\020\n\005widt" +
+      "h\030\001 \001(\001:\0010\022\021\n\006height\030\002 \001(\001:\0010\"=\n\nCoordin" +
+      "ate\022\026\n\010latitude\030\001 \001(\001:\004-360\022\027\n\tlongitude" +
+      "\030\002 \001(\001:\004-360\"d\n\020CoordinateRegion\022(\n\006cent" +
+      "er\030\001 \001(\0132\030.BlitzMessage.Coordinate\022&\n\004sp",
+      "an\030\002 \001(\0132\030.BlitzMessage.Coordinate\"=\n\021Co" +
+      "ordinatePolygon\022(\n\006points\030\001 \003(\0132\030.BlitzM" +
+      "essage.Coordinate\"\250\001\n\010Location\022,\n\ncoordi" +
+      "nate\030\001 \001(\0132\030.BlitzMessage.Coordinate\022\020\n\010" +
+      "altitude\030\002 \001(\001\022\r\n\005speed\030\003 \001(\001\022\016\n\006course\030" +
+      "\004 \001(\001\022*\n\ttimestamp\030\005 \001(\0132\027.BlitzMessage." +
+      "Timestamp\022\021\n\tplacename\030\006 \001(\t\"\024\n\004Void\022\014\n\004" +
+      "text\030\001 \001(\t\"&\n\010KeyValue\022\013\n\003key\030\001 \001(\t\022\r\n\005v" +
+      "alue\030\002 \003(\tB/\n\032com.blitzhere.BlitzMessage" +
+      "\210\001\001\322>\002\n\000\322>\003\022\001B\322>\002\030\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -6120,60 +6216,60 @@ public final class Types {
         new com.google.protobuf.Descriptors.FileDescriptor[] {
           google.protobuf.ObjectivecDescriptor.getDescriptor(),
         }, assigner);
-    internal_static_BlitzMessage_Global_descriptor =
-      getDescriptor().getMessageTypes().get(0);
-    internal_static_BlitzMessage_Global_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_BlitzMessage_Global_descriptor,
-        new java.lang.String[] { "SystemUserID", });
-    internal_static_BlitzMessage_Coordinate_descriptor =
-      getDescriptor().getMessageTypes().get(1);
-    internal_static_BlitzMessage_Coordinate_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_BlitzMessage_Coordinate_descriptor,
-        new java.lang.String[] { "Latitude", "Longitude", });
-    internal_static_BlitzMessage_Size_descriptor =
-      getDescriptor().getMessageTypes().get(2);
-    internal_static_BlitzMessage_Size_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_BlitzMessage_Size_descriptor,
-        new java.lang.String[] { "Width", "Height", });
-    internal_static_BlitzMessage_CoordinateRegion_descriptor =
-      getDescriptor().getMessageTypes().get(3);
-    internal_static_BlitzMessage_CoordinateRegion_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_BlitzMessage_CoordinateRegion_descriptor,
-        new java.lang.String[] { "Center", "Size", });
-    internal_static_BlitzMessage_CoordinatePolygon_descriptor =
-      getDescriptor().getMessageTypes().get(4);
-    internal_static_BlitzMessage_CoordinatePolygon_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_BlitzMessage_CoordinatePolygon_descriptor,
-        new java.lang.String[] { "Points", });
-    internal_static_BlitzMessage_Location_descriptor =
-      getDescriptor().getMessageTypes().get(5);
-    internal_static_BlitzMessage_Location_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_BlitzMessage_Location_descriptor,
-        new java.lang.String[] { "Coordinate", "Altitude", "Speed", "Course", "Placename", });
     internal_static_BlitzMessage_Timestamp_descriptor =
-      getDescriptor().getMessageTypes().get(6);
+      getDescriptor().getMessageTypes().get(0);
     internal_static_BlitzMessage_Timestamp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_BlitzMessage_Timestamp_descriptor,
         new java.lang.String[] { "Epoch", });
     internal_static_BlitzMessage_Timespan_descriptor =
-      getDescriptor().getMessageTypes().get(7);
+      getDescriptor().getMessageTypes().get(1);
     internal_static_BlitzMessage_Timespan_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_BlitzMessage_Timespan_descriptor,
         new java.lang.String[] { "StartTimestamp", "StopTimestamp", });
+    internal_static_BlitzMessage_Point_descriptor =
+      getDescriptor().getMessageTypes().get(2);
+    internal_static_BlitzMessage_Point_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_BlitzMessage_Point_descriptor,
+        new java.lang.String[] { "X", "Y", });
+    internal_static_BlitzMessage_Size_descriptor =
+      getDescriptor().getMessageTypes().get(3);
+    internal_static_BlitzMessage_Size_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_BlitzMessage_Size_descriptor,
+        new java.lang.String[] { "Width", "Height", });
+    internal_static_BlitzMessage_Coordinate_descriptor =
+      getDescriptor().getMessageTypes().get(4);
+    internal_static_BlitzMessage_Coordinate_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_BlitzMessage_Coordinate_descriptor,
+        new java.lang.String[] { "Latitude", "Longitude", });
+    internal_static_BlitzMessage_CoordinateRegion_descriptor =
+      getDescriptor().getMessageTypes().get(5);
+    internal_static_BlitzMessage_CoordinateRegion_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_BlitzMessage_CoordinateRegion_descriptor,
+        new java.lang.String[] { "Center", "Span", });
+    internal_static_BlitzMessage_CoordinatePolygon_descriptor =
+      getDescriptor().getMessageTypes().get(6);
+    internal_static_BlitzMessage_CoordinatePolygon_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_BlitzMessage_CoordinatePolygon_descriptor,
+        new java.lang.String[] { "Points", });
+    internal_static_BlitzMessage_Location_descriptor =
+      getDescriptor().getMessageTypes().get(7);
+    internal_static_BlitzMessage_Location_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_BlitzMessage_Location_descriptor,
+        new java.lang.String[] { "Coordinate", "Altitude", "Speed", "Course", "Timestamp", "Placename", });
     internal_static_BlitzMessage_Void_descriptor =
       getDescriptor().getMessageTypes().get(8);
     internal_static_BlitzMessage_Void_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_BlitzMessage_Void_descriptor,
-        new java.lang.String[] { "DebugString", });
+        new java.lang.String[] { "Text", });
     internal_static_BlitzMessage_KeyValue_descriptor =
       getDescriptor().getMessageTypes().get(9);
     internal_static_BlitzMessage_KeyValue_fieldAccessorTable = new
