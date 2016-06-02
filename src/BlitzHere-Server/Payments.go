@@ -16,6 +16,7 @@ package main
 
 import (
     "fmt"
+    "errors"
     "strings"
     "strconv"
     "database/sql"
@@ -284,7 +285,7 @@ func ChargeRequest(session *Session, chargeReq *BlitzMessage.Charge) *BlitzMessa
         chargeReq.PurchaseTypeID == nil ||
         len(*chargeReq.PurchaseTypeID) == 0 ||
         amountI < 0) {
-        return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, nil)
+        return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, errors.New("Missing fields"))
     }
 
     //  Get the Stripe customerID --
@@ -304,6 +305,9 @@ func ChargeRequest(session *Session, chargeReq *BlitzMessage.Charge) *BlitzMessa
         newCard, error = card.New(&newCardParams)
         if error != nil {
             Log.LogError(error)
+            if stripeError, ok := error.(*stripe.Error); ok {
+                error = errors.New(stripeError.Msg)
+            }
             return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
         }
         chargeReq.ChargeToken = &newCard.ID
@@ -369,14 +373,23 @@ func ChargeRequest(session *Session, chargeReq *BlitzMessage.Charge) *BlitzMessa
     stripeCharge, stripeError := charge.New(chargeParams)
     if stripeError != nil {
         Log.LogError(stripeError)
-        chargeReq.ChargeStatus = BlitzMessage.ChargeStatus(BlitzMessage.ChargeStatus_CSDeclined).Enum()
-        stripeReason = stripeError.Error()
+        Log.Debugf("Charge: %+v.", stripeCharge)
         responseCode = BlitzMessage.ResponseCode_RCPaymentError
+        chargeReq.ChargeStatus = BlitzMessage.ChargeStatus(BlitzMessage.ChargeStatus_CSDeclined).Enum()
+
+        chargeReq.ProcessorReason = proto.String("Your card was declined (1).")
+        if stripeCharge != nil && len(stripeCharge.FailMsg) > 0 {
+            chargeReq.ProcessorReason = &stripeCharge.FailMsg
+        } else {
+            if stripeErrorType, ok := stripeError.(*stripe.Error); ok {
+                chargeReq.ProcessorReason = &stripeErrorType.Msg
+            }
+        }
+
     } else {
         stripeChargeID = stripeCharge.ID
+        chargeReq.ProcessorReason = &stripeReason
     }
-
-    chargeReq.ProcessorReason = &stripeReason
 
     result, error = config.DB.Exec(
         `update ChargeTable set (
@@ -395,7 +408,8 @@ func ChargeRequest(session *Session, chargeReq *BlitzMessage.Charge) *BlitzMessa
         return ServerResponseForError(BlitzMessage.ResponseCode_RCServerError, error)
     }
 
-    if *chargeReq.PurchaseType == BlitzMessage.PurchaseType_PTChatConversation {
+    if responseCode == BlitzMessage.ResponseCode_RCSuccess &&
+       *chargeReq.PurchaseType == BlitzMessage.PurchaseType_PTChatConversation {
         result, error = config.DB.Exec(
             `update ConversationTable set chargeID = $1
                 where conversationID = $2;`,

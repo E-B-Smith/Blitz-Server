@@ -332,7 +332,7 @@ func UpdateConversationMessage(
     }
 
     amount := "10.00"
-    memo := fmt.Sprintf("Chat with %s.",
+    memo := fmt.Sprintf("Chat with %s",
         PrettyNameForUserID(conversation.MemberIDs[1]),
     )
 
