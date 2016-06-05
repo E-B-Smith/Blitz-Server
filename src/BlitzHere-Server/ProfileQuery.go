@@ -1,6 +1,14 @@
-//  BlitzHere-Server  -  Track the Happiness user data.
+
+
+//----------------------------------------------------------------------------------------
 //
-//  E.B.Smith  -  November, 2014
+//                                                      BlitzHere-Server : ProfileQuery.go
+//                                                                    User profile queries
+//
+//                                                               E.B. Smith, November 2014
+//                        -©- Copyright © 2015-2016 Edward Smith, all rights reserved. -©-
+//
+//----------------------------------------------------------------------------------------
 
 
 package main

@@ -8,17 +8,17 @@ buildVersion = 0
 buildLinux   = 0
 buildDarwin  = 0
 
-export userhost:=blitzhere@blitzhere.com
-export installpath:=/home/blitzhere
-export GOPATH:=$(makepath)
-export GOROOT:=
-export PATH:=$(makepath)/bin:$(PATH)
+export userhost     := blitzhere@blitzhere.com
+export installpath  := /home/blitzhere
+export GOPATH       := $(makepath)
+export GOROOT       :=
+export PATH         := $(makepath)/bin:$(PATH)
 
 # Verbose options:
 ifeq (1, 0)
-    verbose    := echo
-    cp         := cp -av
-    rm         := rm -Rfv
+    verbose     := echo
+    cp          := cp -av
+    rm          := rm -Rfv
 else
     .SILENT:
     verbose     := true

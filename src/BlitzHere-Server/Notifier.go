@@ -1,7 +1,14 @@
-//  Notifier  -  A daemon that wakes every so often to send any new push notifications
-//               that need to sent.
+
+
+//----------------------------------------------------------------------------------------
 //
-//  E.B.Smith  -  March, 2014
+//                                                          BlitzHere-Server : Notifier.go
+//                      A daemon that wakes every so often to send new push notifications.
+//
+//                                                                  E.B. Smith, March 2014
+//                        -©- Copyright © 2015-2016 Edward Smith, all rights reserved. -©-
+//
+//----------------------------------------------------------------------------------------
 
 
 package main
