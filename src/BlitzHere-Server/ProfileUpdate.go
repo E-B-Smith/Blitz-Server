@@ -139,11 +139,21 @@ func UpdateProfile(profile *BlitzMessage.UserProfile) error {
 
     Log.Debugf("Updating profile %s.", userID)
 
+    var result sql.Result
     _, error = config.DB.Exec(
         `insert into usertable (userid, creationDate)
             values ($1, current_timestamp);`, userID)
-    if error != nil {
-        //Log.Debugf("Error inserting user '%s': %v.", userID, error)
+    if error == nil {
+        //  New user.  Add blitz friend:
+        result, error = config.DB.Exec(
+            `insert into entitytagtable
+                (userid, entitytype, entityid, entitytag)
+                ($1, 1, $2, '.friend');`,
+            userID,
+            BlitzMessage.Default_Global_BlitzUserID,
+        )
+        error = pgsql.UpdateResultError(result, error)
+        if error != nil { Log.LogError(error) }
     }
 
     if profile.CreationDate == nil {

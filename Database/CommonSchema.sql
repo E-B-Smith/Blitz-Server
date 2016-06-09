@@ -1054,3 +1054,13 @@ function trimwhitespace(s text) returns text as
     returns null on null input;
 
 
+------------------------------------------------------------------------------------------
+--
+--                                                                          Default Values
+--
+------------------------------------------------------------------------------------------
+
+
+insert into usertable (userid, name, userstatus, creationdate, isexpert, isFree) values
+    ('a8277a5e-b461-476b-9f4a-922a50b97f26', 'Team Blitz', 5, 'Jun  1 12:00:00 GMT 2016', false, true);
+
