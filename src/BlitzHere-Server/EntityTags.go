@@ -230,6 +230,7 @@ func UpdateEntityTags(session *Session, tagList *BlitzMessage.EntityTagList,
 const (
     kTagFriendDidAsk     = ".frienddidask"
     kTagFriendWasAsked   = ".friendwasasked"
+    kTagFriendAccepted   = ".friendaccepted"
     kTagFriend           = ".friend"
     kTagFriendIgnored    = ".friendignored"
 )
@@ -270,9 +271,10 @@ func SendFriendRequest(session *Session, request *BlitzMessage.FriendUpdate) *Bl
 
     FSAccept:
         friendStatus == FSIgnored   =>      userStatus.DidAsk  -userStatus.FSFriend, friendStatus.WasAsked   No notification.
+        friendStatus == FSAccepted  =>      userStatus.Friend, friendStatus.Friend,  No notification.
         friendStatus == FSFriends   =>      userStatus.Friend, friendStatus.Friend,  No notification.
         friendStatus == FSDidAsk    =>      userStatus.Friend, friendStatus.Friend,   Notification.
-        friendStatus == FSWasAsked  =>      userStatus.DidAsk, friendStatus.WasAsked, no notification.
+        friendStatus == FSWasAsked  =>      userStatus.DidAsk, friendStatus.WasAsked, No notification.
         default                     =>      userStatus.DidAsk,  friendStatus.WasAsked, Notification.
 
     */
@@ -289,6 +291,10 @@ func SendFriendRequest(session *Session, request *BlitzMessage.FriendUpdate) *Bl
     } else if _, ok = friendTagMap[kTagFriend]; ok {
 
         friendStatus = BlitzMessage.FriendStatus_FSFriends
+
+    } else if _, ok = friendTagMap[kTagFriendAccepted]; ok {
+
+        friendStatus = BlitzMessage.FriendStatus_FSAccepted
 
     } else if _, ok = friendTagMap[kTagFriendDidAsk]; ok {
 
@@ -318,23 +324,33 @@ func SendFriendRequest(session *Session, request *BlitzMessage.FriendUpdate) *Bl
 
         case BlitzMessage.FriendStatus_FSIgnored:
             userTagMap[kTagFriend] = false
-            userTagMap[kTagFriendDidAsk] = true
-            userTagMap[kTagFriendIgnored] = false
-            friendTagMap[kTagFriendWasAsked] = true
             friendTagMap[kTagFriend] = false
             Log.Debugf("EndState: Ignoring.")
 
         case BlitzMessage.FriendStatus_FSFriends:
             userTagMap[kTagFriend] = true
+            userTagMap[kTagFriendAccepted] = true;
             userTagMap[kTagFriendIgnored] = false
             friendTagMap[kTagFriend] = true
+            friendTagMap[kTagFriendAccepted] = true;
             friendTagMap[kTagFriendIgnored] = false
             Log.Debugf("EndState: Made friends.")
 
-        case BlitzMessage.FriendStatus_FSDidAsk:
+        case BlitzMessage.FriendStatus_FSAccepted:
             userTagMap[kTagFriend] = true
+            userTagMap[kTagFriendAccepted] = true;
             userTagMap[kTagFriendIgnored] = false
             friendTagMap[kTagFriend] = true
+            friendTagMap[kTagFriendAccepted] = true;
+            friendTagMap[kTagFriendIgnored] = false
+            Log.Debugf("EndState: Send friend re-accept.")
+
+        case BlitzMessage.FriendStatus_FSDidAsk:
+            userTagMap[kTagFriend] = true
+            userTagMap[kTagFriendAccepted] = true;
+            userTagMap[kTagFriendIgnored] = false
+            friendTagMap[kTagFriend] = true
+            friendTagMap[kTagFriendAccepted] = true;
             friendTagMap[kTagFriendIgnored] = false
             message =
                 fmt.Sprintf("%s accepted your friend request.",

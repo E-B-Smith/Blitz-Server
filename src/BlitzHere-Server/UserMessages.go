@@ -251,10 +251,11 @@ func UpdateConversationMessage(
 
     makeConversationFree :=
         func (conversationID string) {
-            _, error = config.DB.Exec(
+            result, error := config.DB.Exec(
                 `update ConversationTable set isFree = true where conversationID = $1;`,
                 *message.ConversationID,
             )
+            error = pgsql.UpdateResultError(result, error)
             if error != nil { Log.LogError(error) }
         }
 
@@ -265,27 +266,33 @@ func UpdateConversationMessage(
         return nil
     }
     if  config.ServiceIsFree {
-        _, error = config.DB.Exec(
-            `update ConversationTable set isFree = true where conversationID = $1;`,
-            *message.ConversationID,
-        )
         Log.Debugf("Service is in free mode.")
         makeConversationFree(*conversation.ConversationID)
         return nil
     }
+    Log.Debugf("Service is not in free mode.")
 
     //  Friends?
 
+    var otherMember string
+    for _, member := range conversation.MemberIDs {
+        if member != session.UserID {
+            otherMember = member
+            break
+        }
+    }
+
     tags := GetEntityTagMapForUserIDEntityIDType(
         session.UserID,
-        conversation.MemberIDs[1],
+        otherMember,
         BlitzMessage.EntityType_ETUser,
     )
-    if _, ok := tags[".friends"]; ok {
+    if val, ok := tags[kTagFriend]; ok && val {
         Log.Debugf("Conversation is between friends.")
         makeConversationFree(*message.ConversationID)
         return nil
     }
+    Log.Debugf("Conversation is not between friends.")
 
     //  Free for user?
 
@@ -301,6 +308,23 @@ func UpdateConversationMessage(
         makeConversationFree(*message.ConversationID)
         return nil
     }
+    Log.Debugf("Conversation is not free for user.")
+
+    //  Other user isn't expert?
+
+    row = config.DB.QueryRow(
+        `select isExpert from UserTable where userID = $1;`,
+        otherMember,
+    )
+    var isExpert sql.NullBool
+    error = row.Scan(&isExpert)
+    if error != nil { Log.LogError(error) }
+    if ! isExpert.Bool {
+        Log.Debugf("Conversation is not with expert.")
+        makeConversationFree(*message.ConversationID)
+        return nil
+    }
+    Log.Debugf("Conversation is with expert.")
 
     //  Less than four messages?
 
@@ -308,6 +332,8 @@ func UpdateConversationMessage(
         Log.Debugf("Conversation < 4 messages.")
         return nil
     }
+
+    Log.Debugf("Make charge.")
 
     //  Make charge --
 

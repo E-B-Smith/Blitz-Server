@@ -117,9 +117,9 @@ func UserSearchRequest(session *Session, query *BlitzMessage.UserSearchRequest,
         if len(part) == 0 { continue }
 
         if len(queryString) > 0 {
-            queryString += " & " + part
+            queryString += " & " + part+":*"
         } else {
-            queryString = part
+            queryString = part+":*"
         }
     }
 
@@ -129,6 +129,7 @@ func UserSearchRequest(session *Session, query *BlitzMessage.UserSearchRequest,
             order by ts_rank(search, to_tsquery('english', $1)) desc;`,
         queryString,
     )
+
     defer pgsql.CloseRows(rows)
     if error != nil {
         Log.LogError(error)
@@ -163,7 +164,7 @@ func UserSearchRequest(session *Session, query *BlitzMessage.UserSearchRequest,
 
 //----------------------------------------------------------------------------------------
 //
-//                                                                           SearchRequest
+//                                                                   FetchSearchCategories
 //
 //----------------------------------------------------------------------------------------
 
