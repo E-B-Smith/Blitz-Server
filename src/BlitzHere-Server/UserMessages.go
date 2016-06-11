@@ -251,6 +251,19 @@ func UpdateConversationMessage(
         return nil
     }
 
+    if conversation.ChargeID != nil && len(*conversation.ChargeID) > 0 {
+        return nil
+    }
+
+    Log.Debugf("Message init: %s sender: %s.",
+        conversation.InitiatorUserID,
+        session.UserID,
+    )
+    if conversation.InitiatorUserID != nil &&
+       *conversation.InitiatorUserID != session.UserID {
+        return nil
+    }
+
     //  Less than four messages?
 
     if conversation.MessageCount != nil && *conversation.MessageCount <= 4 {
@@ -264,11 +277,10 @@ func UpdateConversationMessage(
 
     //  Send a system message to the participants --
 
-    if conversation.LastMessage == nil || ! strings.HasPrefix(*conversation.LastMessage, "Paid") {
-        chargeMessage := fmt.Sprintf("Paid chat with %s and %s.",
-            PrettyNameForUserID(message.Recipients[0]),
-            PrettyNameForUserID(message.Recipients[1]),
-        )
+    if conversation.LastMessage == nil || ! strings.HasPrefix(*conversation.LastMessage, "You've exhausted") {
+        chargeMessage :=
+            "You've exhausted your free chat limit. To continue chatting with this expert, " +
+            "or to guarantee a response, please make a payment."
         error = SendUserMessageInternal(
             BlitzMessage.Default_Global_SystemUserID,
             message.Recipients,

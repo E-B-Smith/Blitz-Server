@@ -16,7 +16,6 @@ package main
 
 import (
     "fmt"
-    "time"
     "database/sql"
     "github.com/lib/pq"
     "violent.blue/GoKit/Log"
@@ -335,12 +334,25 @@ func StartConversation(session *Session, req *BlitzMessage.ConversationRequest) 
             return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
         }
 
-        //  Add a system to the participants --
+        //  Send a system message to the participants --
 
-        introMessage := fmt.Sprintf("Chat with %s and %s.",
-            PrettyNameForUserID(memberArray[0]),
-            PrettyNameForUserID(memberArray[1]),
-        )
+        var introMessage string
+        if conversation.IsFree != nil && *conversation.IsFree {
+            introMessage = fmt.Sprintf("Chat with %s and %s.",
+                PrettyNameForUserID(memberArray[0]),
+                PrettyNameForUserID(memberArray[1]),
+            )
+        } else {
+            introMessage = fmt.Sprintf(
+                "This is a private between %s and %s.\n" +
+                "This chat window is open for the next 5 days. " +
+                "If you may finish chatting earlier, please use " +
+                "the 'End' button to close the conversation.",
+                PrettyNameForUserID(memberArray[0]),
+                PrettyNameForUserID(memberArray[1]),
+            )
+        }
+
         error = SendUserMessageInternal(
             BlitzMessage.Default_Global_SystemUserID,
             memberArray,

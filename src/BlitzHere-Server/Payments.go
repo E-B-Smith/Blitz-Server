@@ -410,17 +410,70 @@ func ChargeRequest(session *Session, chargeReq *BlitzMessage.Charge) *BlitzMessa
 
     if responseCode == BlitzMessage.ResponseCode_RCSuccess &&
        *chargeReq.PurchaseType == BlitzMessage.PurchaseType_PTChatConversation {
+
+        var conversationID string = *chargeReq.PurchaseTypeID
+
         result, error = config.DB.Exec(
             `update ConversationTable set chargeID = $1
                 where conversationID = $2;`,
             chargeReq.ChargeID,
-            chargeReq.PurchaseTypeID,
+            conversationID,
         )
         error = pgsql.UpdateResultError(result, error)
         if error != nil {
             Log.LogError(error)
             return ServerResponseForError(BlitzMessage.ResponseCode_RCServerError, error)
         }
+
+        expertMessage := fmt.Sprintf(
+            "Congratulations, %s has requested for your expertise.\nPlease reply immediately" +
+            " to ensure the best service experience. This chat window will be open for the" +
+            " next 5 days, unless your requester may be satisfied earlier.",
+            PrettyNameForUserID(session.UserID),
+        )
+
+        actionURL := fmt.Sprintf("%s?action=showchat&chatid=%s",
+            config.AppLinkURL,
+            conversationID,
+        )
+
+        members := MembersForConversationID(conversationID)
+        var otherMember string
+        for _, member := range members {
+            if member != session.UserID {
+                otherMember = member
+                break
+            }
+        }
+
+        error = SendUserMessageInternal(
+            BlitzMessage.Default_Global_SystemUserID,
+            []string{ otherMember },
+            conversationID,
+            expertMessage,
+            BlitzMessage.UserMessageType_MTConversation,
+            "",
+            actionURL,
+        )
+
+        userMessage := fmt.Sprintf(
+            "Your paid chat with %s starts now.\n" +
+            "This chat window will be open for the" +
+            " next 5 days, or until you close the"+
+            " conversation with the 'End' button.",
+            PrettyNameForUserID(otherMember),
+        )
+
+        error = SendUserMessageInternal(
+            BlitzMessage.Default_Global_SystemUserID,
+            []string{ session.UserID } ,
+            conversationID,
+            userMessage,
+            BlitzMessage.UserMessageType_MTConversation,
+            "",
+            actionURL,
+        )
+
     }
 
     response := &BlitzMessage.ServerResponse {
