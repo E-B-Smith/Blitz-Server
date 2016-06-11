@@ -116,9 +116,7 @@ func WriteReview(session *Session, review *BlitzMessage.UserReview,
 
     //  Add a system to the participants --
 
-    message := fmt.Sprintf("This conversation has been closed.\n%s.",
-        PrettyTimestampLong(time.Now()),
-    )
+    message := fmt.Sprintf("This conversation has been closed.")
     error = SendUserMessageInternal(
         BlitzMessage.Default_Global_SystemUserID,
         MembersForConversationID(*review.ConversationID),

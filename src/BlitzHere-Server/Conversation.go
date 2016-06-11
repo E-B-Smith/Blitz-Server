@@ -32,8 +32,8 @@ func WriteConversation(conv *BlitzMessage.Conversation) error {
 
     result, error := config.DB.Exec(
         `insert into ConversationTable
-            (conversationID, status, initiatorUserID, parentFeedPostID, creationDate, closedDate)
-            values ($1, $2, $3, $4, current_timestamp, $5)
+            (conversationID, status, initiatorUserID, parentFeedPostID, creationDate, closedDate, isFree)
+            values ($1, $2, $3, $4, current_timestamp, $5, $6)
          on conflict(conversationID) do
             update set (status, parentFeedPostID, closedDate) = ($2, $4, $5);`,
         conv.ConversationID,
@@ -41,6 +41,7 @@ func WriteConversation(conv *BlitzMessage.Conversation) error {
         conv.InitiatorUserID,
         conv.ParentFeedPostID,
         conv.ClosedDate,
+        conv.IsFree,
     )
     Log.Debugf("Conversation Create status: %v.", error)
 
@@ -270,6 +271,65 @@ func StartConversation(session *Session, req *BlitzMessage.ConversationRequest) 
             MemberIDs:          memberArray,
         }
 
+        if  config.ServiceIsFree {
+            conversation.IsFree = proto.Bool(true)
+            Log.Debugf("Conversation is free: Service is free.")
+        }
+
+        //  Friends?
+
+        var otherMember string
+        for _, member := range conversation.MemberIDs {
+            if member != session.UserID {
+                otherMember = member
+                break
+            }
+        }
+
+        tags := GetEntityTagMapForUserIDEntityIDType(
+            session.UserID,
+            otherMember,
+            BlitzMessage.EntityType_ETUser,
+        )
+        if val, ok := tags[kTagFriend]; ok && val {
+            Log.Debugf("Conversation is between friends.")
+            conversation.IsFree = proto.Bool(true)
+        }
+
+        //  Free for user?
+
+        row := config.DB.QueryRow(
+            `select isFree from UserTable where userID = $1;`,
+            session.UserID,
+        )
+        var isFree sql.NullBool
+        error = row.Scan(&isFree)
+        if error != nil { Log.LogError(error) }
+        if isFree.Bool {
+            Log.Debugf("Conversation is free for user.")
+            conversation.IsFree = proto.Bool(true)
+        }
+
+        //  Other user isn't expert?
+
+        row = config.DB.QueryRow(
+            `select isExpert from UserTable where userID = $1;`,
+            otherMember,
+        )
+        var isExpert sql.NullBool
+        error = row.Scan(&isExpert)
+        if error != nil { Log.LogError(error) }
+        if ! isExpert.Bool {
+            Log.Debugf("Conversation is not with expert.")
+            conversation.IsFree = proto.Bool(true)
+        }
+
+        if conversation.IsFree != nil && *conversation.IsFree {
+            Log.Debugf("Conversation is free.")
+        } else {
+            Log.Debugf("Conversation is paid.")
+        }
+
         error = WriteConversation(conversation)
         if error != nil {
             return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
@@ -277,10 +337,9 @@ func StartConversation(session *Session, req *BlitzMessage.ConversationRequest) 
 
         //  Add a system to the participants --
 
-        introMessage := fmt.Sprintf("Chat with %s and %s.\n%s.",
+        introMessage := fmt.Sprintf("Chat with %s and %s.",
             PrettyNameForUserID(memberArray[0]),
             PrettyNameForUserID(memberArray[1]),
-            PrettyTimestampLong(time.Now()),
         )
         error = SendUserMessageInternal(
             BlitzMessage.Default_Global_SystemUserID,

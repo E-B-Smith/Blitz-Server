@@ -247,84 +247,9 @@ func UpdateConversationMessage(
             errors.New("The conversation is closed."))
     }
 
-    //  Declare MakeConversationFree function:
-
-    makeConversationFree :=
-        func (conversationID string) {
-            result, error := config.DB.Exec(
-                `update ConversationTable set isFree = true where conversationID = $1;`,
-                *message.ConversationID,
-            )
-            error = pgsql.UpdateResultError(result, error)
-            if error != nil { Log.LogError(error) }
-        }
-
-    //  Free or paid?
-
-    if  (conversation.IsFree != nil && *conversation.IsFree) ||
-        (conversation.ChargeID != nil && len(*conversation.ChargeID) > 0) {
+    if conversation.IsFree != nil && *conversation.IsFree {
         return nil
     }
-    if  config.ServiceIsFree {
-        Log.Debugf("Service is in free mode.")
-        makeConversationFree(*conversation.ConversationID)
-        return nil
-    }
-    Log.Debugf("Service is not in free mode.")
-
-    //  Friends?
-
-    var otherMember string
-    for _, member := range conversation.MemberIDs {
-        if member != session.UserID {
-            otherMember = member
-            break
-        }
-    }
-
-    tags := GetEntityTagMapForUserIDEntityIDType(
-        session.UserID,
-        otherMember,
-        BlitzMessage.EntityType_ETUser,
-    )
-    if val, ok := tags[kTagFriend]; ok && val {
-        Log.Debugf("Conversation is between friends.")
-        makeConversationFree(*message.ConversationID)
-        return nil
-    }
-    Log.Debugf("Conversation is not between friends.")
-
-    //  Free for user?
-
-    row := config.DB.QueryRow(
-        `select isFree from UserTable where userID = $1;`,
-        session.UserID,
-    )
-    var isFree sql.NullBool
-    error = row.Scan(&isFree)
-    if error != nil { Log.LogError(error) }
-    if isFree.Bool {
-        Log.Debugf("Conversation is free for user.")
-        makeConversationFree(*message.ConversationID)
-        return nil
-    }
-    Log.Debugf("Conversation is not free for user.")
-
-    //  Other user isn't expert?
-
-    row = config.DB.QueryRow(
-        `select isExpert from UserTable where userID = $1;`,
-        otherMember,
-    )
-    var isExpert sql.NullBool
-    error = row.Scan(&isExpert)
-    if error != nil { Log.LogError(error) }
-    if ! isExpert.Bool {
-        Log.Debugf("Conversation is not with expert.")
-        makeConversationFree(*message.ConversationID)
-        return nil
-    }
-    Log.Debugf("Conversation is with expert.")
 
     //  Less than four messages?
 
@@ -340,10 +265,9 @@ func UpdateConversationMessage(
     //  Send a system message to the participants --
 
     if conversation.LastMessage == nil || ! strings.HasPrefix(*conversation.LastMessage, "Paid") {
-        chargeMessage := fmt.Sprintf("Paid chat with %s and %s.\n%s.",
+        chargeMessage := fmt.Sprintf("Paid chat with %s and %s.",
             PrettyNameForUserID(message.Recipients[0]),
             PrettyNameForUserID(message.Recipients[1]),
-            PrettyTimestampLong(time.Now()),
         )
         error = SendUserMessageInternal(
             BlitzMessage.Default_Global_SystemUserID,
