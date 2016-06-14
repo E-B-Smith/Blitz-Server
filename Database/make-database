@@ -34,19 +34,21 @@ drop user if exists ${database};
 
 create extension if not exists "uuid-ossp";
 create extension if not exists adminpack;
-create extension if not exists pg_trgm;
 
 
 create user ${database}
-   with createdb login password '${databaselower}' superuser;
+   with createdb superuser;
+
 
 create database ${database}
    with encoding 'UTF8' owner ${database};
 
+
 create extension if not exists pg_trgm with schema ${database}Schema;
 
-create user ${database}
-   with nosuperuser;
+
+alter user ${database}
+   with nocreatedb nosuperuser login password '${databaselower}';
 
 
 \connect  $databaselower  $databaselower
@@ -59,12 +61,10 @@ alter user ${database} set search_path to ${database}Schema, public;
 \include_relative CommonSchema.sql
 
 truncate AppTable;
-\copy AppTable (appID, appName, minAppVersion, minAppDataDate) from stdin with (format csv, header false, encoding utf8);
-com.blitzhere.blitzhere-labs,   BlitzLabs,     1.1.0,   2016-03-07 05:48:42.357598+00
-com.blitzhere.blitzhere,        BlitzHere,     1.1.0,   2016-03-07 05:48:42.357598+00
-\.
-
-update AppTable set minAppDataDate = current_timestamp;
+insert into AppTable (appID, appName, minAppVersion, minAppDataDate) values
+     ('com.blitzhere.blitzhere-labs',   'BlitzLabs',     '1.3.0',   '2016-06-01 05:48:42.357598+00')
+    ,('com.blitzhere.blitzhere',        'BlitzHere',     '1.3.0',   '2016-06-01 05:48:42.357598+00')
+    ;
 
 DATABASE
 

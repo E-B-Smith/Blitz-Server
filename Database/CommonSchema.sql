@@ -72,6 +72,8 @@ create table UserTable
     ,isExpert           boolean
     ,stripeAccount      text
     ,isFree             boolean
+    ,processorid        text
+    ,defaultCard        text    -- deprecated
 
     ,search             tsvector
     );
@@ -492,40 +494,6 @@ create unique index ReviewTableIndex
 
 
 create or replace
-function AverageResponseTimeSecondsForUserID(userID UserID) returns int as
-    $$
-    declare seconds int;
-    begin
-
-    with Conversation as (
-    select ConversationTable.conversationID as cID,
-           ConversationMemberTable.memberID as mID,
-           ConversationTable.creationDate as Start
-        from ConversationMemberTable
-        inner join ConversationTable
-          on ConversationTable.conversationID = ConversationMemberTable.conversationID
-        where memberID = userID
-          and ConversationTable.initiatorUserID <> userID
-    )
-    , ConversationAll as (
-    select *,
-        (select creationDate from UserMessageTable
-           where conversationID = Conversation.cID
-             and senderID = Conversation.mID
-             order by creationDate asc
-             limit 1) as stop
-        from Conversation
-    )
-    select extract(epoch from avg(stop - start)) into seconds from ConversationAll;
-
-    return seconds;
-    end;
-    $$
-    language plpgsql immutable
-    returns null on null input;
-
-
-create or replace
 function ResponseTimeForConversationUser(conversationIDIn text, userIDIn text) returns real as
     $$
     declare
@@ -869,7 +837,7 @@ function UpdateAutocompleteTable(words text) returns void as
 
 
 create or replace
-function UpdateSearchIndexForUserID(indexID text) returns void as
+function UpdateSearchIndexForUserID(indexID text) returns text as
     $$
     declare
         --indexID   text = 'cd4f01ff-ca88-4e4b-9aaf-756660c34ea0';
@@ -943,15 +911,14 @@ function UpdateSearchIndexForUserID(indexID text) returns void as
     perform UpdateAutocompleteTable(searchtext[3]);
     perform UpdateAutocompleteTable(searchtext[4]);
 
-    -- result =
-    --     '1: ' || searchtext[1] || E'\n'
-    --     '2: ' || searchtext[2] || E'\n'
-    --     '3: ' || searchtext[3] || E'\n'
-    --     '4: ' || searchtext[4] || E'\n'
-    --     ;
+    result =
+        '1: ' || searchtext[1] || E'\n'
+        '2: ' || searchtext[2] || E'\n'
+        '3: ' || searchtext[3] || E'\n'
+        '4: ' || searchtext[4] || E'\n'
+        ;
 
-    -- return result;
-
+    return result;
     end;
     $$
     language plpgsql;
@@ -971,8 +938,8 @@ create table ChargeTable
     ,chargeStatus       smallint    not null
 
     ,payerID            UserID      not null
-    ,puchaseType        smallint    not null
-    ,puchaseTypeID      uuid        not null
+    ,purchaseType       smallint    not null
+    ,purchaseTypeID     uuid        not null
 
     ,memoText           text        not null
     ,amount             numeric(12, 4) not null
@@ -993,10 +960,10 @@ create table ChargeTable
 
 create table CategoryTable
     (
-     item           text        not null
-    ,parent         text        not null
-    ,description    text
-    ,isLeaf         boolean     not null
+     item               text        not null
+    ,parent             text        not null
+    ,descriptiontext    text
+    ,isLeaf             boolean     not null
     );
 create unique index CategoryIndex on
     CategoryTable(item, parent);

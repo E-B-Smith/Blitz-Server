@@ -1,0 +1,24 @@
+#!/bin/bash
+set -euo pipefail
+
+scriptname=$(resolvepath "$0")
+scriptpath=$(dirname "$scriptname")
+scriptname=$(basename "$scriptname")
+
+
+backuppath=~/backups
+if [[ `uname` == Darwin ]]; then
+    backuppath=~/Development/Database-Backup
+fi
+
+database=blitzhere
+backupfile="${backuppath}"/blitzhere-2016-06-14-19-07.sql
+
+if  ! askYN "Restore database '$database' from '$backupfile'?"; then
+    exit 1
+fi
+
+echo ">>> Restoring $database"
+psql --set ON_ERROR_STOP=on --username=$database $database < "$backupfile"
+
+echo "Done."

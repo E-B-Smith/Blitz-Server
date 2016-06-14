@@ -1,9 +1,9 @@
 #!/bin/bash
 set -euo pipefail
 
-database=happylabsdatabase
-databaseuser=happylabsadmin
-schema=happinessschema
+database=blitzhere
+databaseuser=blitzhere
+schema=${database}schema
 
 dumppath=~/dump/$database
 rm -Rf $dumppath

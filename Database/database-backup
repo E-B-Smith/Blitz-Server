@@ -21,8 +21,6 @@ function backupDB() {
 cd "$scriptpath"
 echo ">>> Backingup to $backuppath."
 (mkdir -p "$backuppath" || true)
-backupDB happinessdatabase happinessadmin
-backupDB happylabsdatabase happylabsadmin
-backupDB happylabs happylabs
-backupDB pulselabs pulselabs
+backupDB blitzlabs blitzlabs
+backupDB blitzhere blitzhere
 echo "Done."

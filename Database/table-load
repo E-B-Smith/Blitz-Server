@@ -1,9 +1,9 @@
 #!/bin/bash
 set -euo pipefail
 
-olddatabase=happylabsdatabase
-database=happylabs
-databaseuser=happylabs
+olddatabase=blitzhere
+database=${olddatabase}
+databaseuser=${database}
 
 loaded=0
 dumppath=~/dump/$olddatabase

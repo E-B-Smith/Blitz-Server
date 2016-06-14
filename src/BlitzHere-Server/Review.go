@@ -130,7 +130,6 @@ func WriteReview(session *Session, review *BlitzMessage.UserReview,
 
     return ServerResponseForError(BlitzMessage.ResponseCode_RCSuccess, nil)
 }
-//ResponseTimeForConversationUser($4, $1),
 
 
 //----------------------------------------------------------------------------------------
