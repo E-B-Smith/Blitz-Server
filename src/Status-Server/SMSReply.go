@@ -82,16 +82,13 @@ _O_
 
 const kBashStatusScript =
 `
-printf "BeingHappy-Server: "
-(echo status | nc localhost 9697 | tr -d '\n' || true)
+printf " BlitzHere-Server: "
+(echo status | nc localhost 10005 | tr -d '\n' || true)
 
-printf "\n HappyLabs-Server: "
-(echo status | nc localhost 9798 | tr -d '\n' || true)
-
-printf "\n    Signup-Server: "
-(echo status | nc localhost 9899 | tr -d '\n' || true)
+printf "\n BlitzLabs-Server: "
+(echo status | nc localhost 10003 | tr -d '\n' || true)
 
 printf "\n    Status-Server: "
-(echo status | nc localhost 10000 | tr -d '\n' || true)
+(echo status | nc localhost 10007 | tr -d '\n' || true)
 echo ""
 `

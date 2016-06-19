@@ -1,4 +1,4 @@
-//  Status-Server  -  Serves an html status page for the BeingHappy-Server and HappyLabs-Server
+//  Status-Server  -  Serves an html status page for the servers
 //
 //  E.B.Smith  -  March, 2015
 
@@ -40,16 +40,13 @@ var (
     flagInputFilename   string
 )
 
+
 var servers = []*ServerInfo {
-    &ServerInfo{ ConfigFilename: "BeingHappyLegacy-ServerStatus.config" },
-    &ServerInfo{ ConfigFilename: "BeingHappy-Server.config" },
-    &ServerInfo{ ConfigFilename: "HappyLabs-Server.config" },
-    &ServerInfo{ ConfigFilename: "HappyPulse-Server.config" },
-    &ServerInfo{ ConfigFilename: "PulseLabs-Server.config" },
-    &ServerInfo{ ConfigFilename: "Signup-Server.config" },
+    &ServerInfo{ ConfigFilename: "BlitzHere-Server.config" },
+    &ServerInfo{ ConfigFilename: "BlitzLabs-Server.config" },
     &ServerInfo{ ConfigFilename: "Status-Server.config" },
 }
-var labsServerInfo = servers[2]
+var labsServerInfo = servers[1]
 
 
 
@@ -107,7 +104,7 @@ func SendRefreshStatus(writer http.ResponseWriter, request *http.Request) {
         labsServerInfo.Config.ConnectDatabase()
     }
     if labsServerInfo.Config.PGSQL == nil {
-        error = errors.New("No configuration for HappyLabs")
+        error = errors.New("No configuration for BlitzLabs")
     } else {
         statusOutput, errorOutput, error = labsServerInfo.Config.PGSQL.RunSQLScript(kDownloadsScript)
     }
@@ -244,6 +241,7 @@ func StatsServer() int {
     if len(flagInputFilename) > 0 {
         error = ServerUtil.ParseConfigFileNamed(&config, flagInputFilename)
         if error != nil {
+            fmt.Fprintf(os.Stderr, "Configuration error: %v.\n", error)
             return 1
         }
     }
@@ -511,16 +509,6 @@ limit 20;
 \echo </code></pre></div>
 
 
-\echo <div><h3>Most Connected</h3><pre><code>
-select friendtable.userid, usertable.name, count(*) as "friends"
-    from friendtable
-    left join usertable on usertable.userid = friendtable.userid
-    group by friendtable.userid, usertable.name
-    order by "friends" desc
-    limit 20;
-\echo </code></pre></div>
-
-
 \echo <div><h3>Network Messages</h3><pre><code>
 select messageType as "Message", count(*) as "Count",
     to_char(sum(elapsed), '99990.9990') as "Tot. Sec.",
@@ -551,7 +539,7 @@ var kWebPageHeader =
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="viewport" content="width=device-width, minimal-ui">
 <link href="./favicon.png"  type="image/png" rel="shortcut icon">
-<title>BeingHappy : Server Status</title>
+<title>BlitzHere : Server Status</title>
 <link rel="stylesheet" type="text/css" href="style.css">
 <script type="text/javascript" src="stats.js"></script>
 </head>
@@ -561,8 +549,8 @@ var kWebPageHeader =
 <div>
 <img id="logo" src="Logo.png" alt="Logo">
 <div>
-<span>being</span>
-<span>happy</span>
+<span>blitz</span>
+<span>here</span>
 </div>
 </div>
 </div>

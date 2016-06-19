@@ -1,16 +1,19 @@
 
-#  BeingHappy Status Server configuration
+#  BlitzHere Status Server configuration
 
 service-name        Status-Server
 service-prefix      "/status"
 service-file-path   Status
-service-port        10008
-server-url          "https://bh.gy"
+service-port        10006
+server-url          "https://blitzhere.com"
 
-database-uri        "postgres://happylabs:happylabs@localhost:5432/happylabs"
+testing-enabled     true
+
+database-url        "postgres://blitzlabs:blitzlabs@localhost:5432/blitzlabs"
 
 log-level           LogLevelAll
-log-name            "~/log/Status-Server.log"
+log-filename        "~/log/Status-Server.log"
 
 templates-path      templates
-web-log             "/var/log/nginx/access.log"
+localization-file   strings.local
+http-access-log     "/var/log/nginx/access.log"
