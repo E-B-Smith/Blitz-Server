@@ -39,6 +39,7 @@ enum FeedPostStatus {
   FPSUnknown = 0;
   FPSActive  = 1;
   FPSDeleted = 2;
+  FPSAnswered= 3;
 }
 
 
