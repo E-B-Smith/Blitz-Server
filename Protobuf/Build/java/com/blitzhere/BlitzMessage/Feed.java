@@ -225,6 +225,10 @@ public final class Feed {
      * <code>FPSDeleted = 2;</code>
      */
     FPSDeleted(2, 2),
+    /**
+     * <code>FPSAnswered = 3;</code>
+     */
+    FPSAnswered(3, 3),
     ;
 
     /**
@@ -239,6 +243,10 @@ public final class Feed {
      * <code>FPSDeleted = 2;</code>
      */
     public static final int FPSDeleted_VALUE = 2;
+    /**
+     * <code>FPSAnswered = 3;</code>
+     */
+    public static final int FPSAnswered_VALUE = 3;
 
 
     public final int getNumber() { return value; }
@@ -248,6 +256,7 @@ public final class Feed {
         case 0: return FPSUnknown;
         case 1: return FPSActive;
         case 2: return FPSDeleted;
+        case 3: return FPSAnswered;
         default: return null;
       }
     }
@@ -6398,12 +6407,12 @@ public final class Feed {
       "\022\024\n\020FPOpenEndedReply\020\002\022\024\n\020FPSurveyQuesti" +
       "on\020\003\022\022\n\016FPSurveyAnswer\020\004*V\n\rFeedPostScop",
       "e\022\022\n\016FPScopeUnknown\020\000\022\027\n\023FPScopeLocalNet" +
-      "work\020\001\022\030\n\024FPScopeGlobalNetwork\020\002*?\n\016Feed" +
+      "work\020\001\022\030\n\024FPScopeGlobalNetwork\020\002*P\n\016Feed" +
       "PostStatus\022\016\n\nFPSUnknown\020\000\022\r\n\tFPSActive\020" +
-      "\001\022\016\n\nFPSDeleted\020\002*6\n\nUpdateVerb\022\014\n\010UVCre" +
-      "ate\020\001\022\014\n\010UVUpdate\020\002\022\014\n\010UVDelete\020\003B/\n\032com" +
-      ".blitzhere.BlitzMessage\210\001\001\322>\002\n\000\322>\003\022\001B\322>\002" +
-      "\030\001"
+      "\001\022\016\n\nFPSDeleted\020\002\022\017\n\013FPSAnswered\020\003*6\n\nUp" +
+      "dateVerb\022\014\n\010UVCreate\020\001\022\014\n\010UVUpdate\020\002\022\014\n\010" +
+      "UVDelete\020\003B/\n\032com.blitzhere.BlitzMessage" +
+      "\210\001\001\322>\002\n\000\322>\003\022\001B\322>\002\030\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {

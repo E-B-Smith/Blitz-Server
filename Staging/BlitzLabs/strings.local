@@ -2,6 +2,6 @@
 #   BlitzLabs localization file
 
 kLinkErrorRedirectURL       = "https://blitzhere.com/blitzlabs/";
-kConfirmConfirmedWelcome    = "Confirmed. Welcome to XprtLabs.";
+kConfirmConfirmedWelcome    = "Confirmed. Welcome to EkspertoLabs.";
 kConfirmConfirmingContact   = "Confirming contact info...";
 kConfirmAppURL              = "%s/?action=confirm&message=%s&code=%s&contact=%s";

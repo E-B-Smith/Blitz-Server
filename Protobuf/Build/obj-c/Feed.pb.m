@@ -80,6 +80,7 @@ BOOL BFeedPostStatusIsValidValue(BFeedPostStatus value) {
     case BFeedPostStatusFPSUnknown:
     case BFeedPostStatusFPSActive:
     case BFeedPostStatusFPSDeleted:
+    case BFeedPostStatusFPSAnswered:
       return YES;
     default:
       return NO;
@@ -93,6 +94,8 @@ NSString *NSStringFromBFeedPostStatus(BFeedPostStatus value) {
       return @"BFeedPostStatusFPSActive";
     case BFeedPostStatusFPSDeleted:
       return @"BFeedPostStatusFPSDeleted";
+    case BFeedPostStatusFPSAnswered:
+      return @"BFeedPostStatusFPSAnswered";
     default:
       return nil;
   }

@@ -110,6 +110,7 @@ typedef NS_ENUM(SInt32, BFeedPostStatus) {
   BFeedPostStatusFPSUnknown = 0,
   BFeedPostStatusFPSActive = 1,
   BFeedPostStatusFPSDeleted = 2,
+  BFeedPostStatusFPSAnswered = 3,
 };
 
 BOOL BFeedPostStatusIsValidValue(BFeedPostStatus value);
