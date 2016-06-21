@@ -265,6 +265,7 @@ func DispatchServiceRequests(writer http.ResponseWriter, httpRequest *http.Reque
     session := Session_SessionFromToken(sessionToken)
     if session == nil {
         Log.Errorf("Invalid sessionToken '%s'.  Message type: %v.", sessionToken, requestTypeName)
+        error = fmt.Errorf("Not logged in.")
         response = ServerResponseForError(BlitzMessage.ResponseCode_RCNotAuthorized, error)
         WriteResponse(writer, response, messageFormat)
         return
