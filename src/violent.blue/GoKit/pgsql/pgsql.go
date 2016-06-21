@@ -113,6 +113,11 @@ func CloseRows(rows *sql.Rows)  {
 }
 
 
+type RowScanner interface {
+    Scan(dest ...interface{}) error
+}
+
+
 func RowsUpdated(result sql.Result) int64 {
     var rowsUpdated int64 = 0
     if result != nil { rowsUpdated, _ = result.RowsAffected() }
@@ -262,7 +267,7 @@ func ConnectDatabase(databaseURI string) (psql *PGSQL, error error) {
     }
 
     Log.Debugf("Connection string: %s.", connectString)
-    connectString = databaseURI //  eDebug
+    //connectString = databaseURI //  eDebug
     psql.DB, error = sql.Open("postgres", connectString)
     if error != nil {
         psql.DB = nil
