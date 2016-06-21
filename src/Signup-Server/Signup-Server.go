@@ -469,7 +469,7 @@ func SignupServer() int {
         return 0
     }
     if (flagVersion) {
-        fmt.Fprintf(os.Stdout, "Version %s.\n", ServerUtil.CompileVersion())
+        fmt.Fprintf(os.Stdout, "Version %s.\n", Util.CompileVersion())
         return 0
     }
 
@@ -496,7 +496,7 @@ func SignupServer() int {
     }
 
     Log.SetFilename(config.LogFilename);
-    Log.Startf("Signup version %s pid %d.", ServerUtil.CompileVersion(), os.Getpid())
+    Log.Startf("Signup version %s pid %d.", Util.CompileVersion(), os.Getpid())
     Log.Infof("Command line: %s.",  commandLine)
     Log.Debugf("Configuration: %v.", config)
 

@@ -148,7 +148,7 @@ func UpdateProfile(profile *BlitzMessage.UserProfile) error {
         result, error = config.DB.Exec(
             `insert into entitytagtable
                 (userid, entitytype, entityid, entitytag)
-                ($1, 1, $2, '.friend');`,
+                values ($1, 1, $2, '.friend');`,
             userID,
             BlitzMessage.Default_Global_BlitzUserID,
         )

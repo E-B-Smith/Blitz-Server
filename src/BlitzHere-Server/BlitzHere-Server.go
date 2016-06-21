@@ -440,7 +440,7 @@ func Server() (returnValue int) {
     }
     config.LogLevel = Log.LogLevelDebug
     if (flagVersion) {
-        fmt.Fprintf(os.Stdout, "Version %s compiled %s.\n", ServerUtil.CompileVersion(), ServerUtil.CompileTime())
+        fmt.Fprintf(os.Stdout, "Version %s compiled %s.\n", Util.CompileVersion(), Util.CompileTime())
         return 0
     }
     if len(flagConfigFilename) > 0 {
@@ -531,6 +531,7 @@ func Server() (returnValue int) {
     http.HandleFunc(config.ServicePrefix+"/admin", AdminFormRequest)
     http.HandleFunc(config.ServicePrefix+"/message", SystemMessageFormRequest)
     http.HandleFunc(config.ServicePrefix+"/shortlink", LinkShortnerFormRequest)
+    http.HandleFunc(config.ServicePrefix+"/downloadapp", DownloadAppRequest)
 
     //  Set up short links --
 

@@ -232,10 +232,14 @@ func HTTPAppDeepLink(writer http.ResponseWriter, httpRequest *http.Request) {
     signature := SignatureFromDeviceInfo(deviceInfo)
     _, error = config.DB.Exec(
         `insert into HTTPDeepLinkTable
-            (deviceSignature, deviceRPM, creationDate, inviteData, referrer) values
-            ($1, $2, $3, $4, $5);`,
+            (deviceSignature, deviceRPM, creationDate, inviteData, referrer)
+            values ($1, $2, $3, $4, $5);`,
             signature, deviceInfo.RPM, time.Now(), inviteData, referrer)
     if error != nil { Log.LogError(error) }
+
+    //  See if we have a redirect included in the url:
+
+    if redirectURL, ok := deepLinkURL.Values["redirect"]; ok {
 
     //  Send back the web page --
 

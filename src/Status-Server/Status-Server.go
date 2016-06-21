@@ -18,6 +18,7 @@ import (
     "net/http"
     "path/filepath"
     "violent.blue/GoKit/Log"
+    "violent.blue/GoKit/Util"
     "violent.blue/GoKit/ServerUtil"
 )
 
@@ -231,7 +232,7 @@ func StatsServer() int {
         return 0
     }
     if (flagVersion) {
-        fmt.Fprintf(os.Stdout, "Version %s.\n", ServerUtil.CompileVersion())
+        fmt.Fprintf(os.Stdout, "Version %s.\n", Util.CompileVersion())
         return 0
     }
 
@@ -254,7 +255,7 @@ func StatsServer() int {
     }
 
     Log.SetFilename(config.LogFilename);
-    Log.Startf("Stats-Server version %s pid %d.", ServerUtil.CompileVersion(), os.Getpid())
+    Log.Startf("Stats-Server version %s pid %d.", Util.CompileVersion(), os.Getpid())
     Log.Infof ("Command line: %s.",  commandLine)
     Log.Debugf("Configuration: %v.", config)
 
