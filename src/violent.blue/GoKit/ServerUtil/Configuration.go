@@ -63,7 +63,6 @@ type Configuration struct {
 
     LocalizationFile        string
     TemplatesPath           string
-
     Template                *template.Template
 
     //  Email
@@ -77,22 +76,6 @@ type Configuration struct {
 
     MessageCount    int
     signalChannel   chan os.Signal
-}
-
-
-//----------------------------------------------------------------------------------------
-//                                                                     CompileTime/Version
-//----------------------------------------------------------------------------------------
-
-
-var compileVersion              string = "0.0.0"
-var compileTime                 string = "Sun Mar 6 09:01:25 PST 2016"
-
-func CompileVersion() string    { return compileVersion }
-func CompileTime() string       { return compileTime }
-
-func (config *Configuration) ServiceURL() string {
-    return config.ServerURL + config.ServicePrefix
 }
 
 
@@ -243,7 +226,7 @@ func ParseConfigFile(config interface{}, inputFile *os.File) error {
 }
 
 
-func (config *Configuration) ValueByName(name string) reflect.Value {
+func (config *Configuration) valueByName(name string) reflect.Value {
     return reflect.ValueOf(config).Elem().FieldByName(name)
 }
 
