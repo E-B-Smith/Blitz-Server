@@ -15,8 +15,11 @@ import (
     "strconv"
     "strings"
     "html/template"
+    "database/sql"
+    "github.com/lib/pq"
     "violent.blue/GoKit/Log"
     "violent.blue/GoKit/Util"
+    "violent.blue/GoKit/pgsql"
     "BlitzMessage"
     )
 
@@ -35,11 +38,13 @@ func UserIsConfirming(session *Session, confirmation *BlitzMessage.ConfirmationR
 
     if  confirmation.ContactInfo == nil ||
         confirmation.ContactInfo.Contact == nil ||
-        confirmation.UserProfile == nil {
+        confirmation.UserProfile == nil ||
+        confirmation.UserProfile.UserID == nil {
         return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, nil)
     }
 
-    profile := confirmation.UserProfile;
+    profile := ProfileForUserID(nil, *confirmation.UserProfile.UserID)
+    //profile := confirmation.UserProfile;
     Log.Debugf("Confirmation contact: %+v.", confirmation.ContactInfo.Contact)
     Log.Debugf("Confirming profile:\n%+v.", profile)
 
@@ -64,16 +69,30 @@ func UserIsConfirming(session *Session, confirmation *BlitzMessage.ConfirmationR
     } else if verified {
 
         code := "XXXX"
-        if  confirmation.ConfirmationCode != nil &&
-            len(*confirmation.ConfirmationCode) > 0 {
-            i, _ := strconv.ParseInt(*confirmation.ConfirmationCode, 10, 64)
-            code = fmt.Sprintf("%04x", i)
-            if len(code) <= 2 { code = "XXXX" }
+        if  confirmation.ConfirmationCode != nil {
+            code = strings.TrimSpace(*confirmation.ConfirmationCode)
         }
-        Log.Debugf("Code '%s' Secret '%s'.", code, session.Secret)
 
-        if ! strings.HasPrefix(session.Secret, code) {
-            Log.Errorf("Confirmation secret wrong. %s != %s.", *confirmation.ConfirmationCode, session.Secret)
+        row := config.DB.QueryRow(
+            `select code, codeDate from UserContactTable
+                where userID = $1
+                  and contactType = $2
+                  and contact = $3`,
+            profile.UserID,
+            confirmation.ContactInfo.ContactType,
+            confirmation.ContactInfo.Contact,
+        )
+        var ( dbCode sql.NullString; dbCodeDate pq.NullTime)
+        error = row.Scan(&dbCode, &dbCodeDate)
+        if error != nil {
+            Log.LogError(error)
+        }
+
+        Log.Debugf("Code '%s' Secret '%s'.", code, dbCode.String)
+
+        if error != nil || !dbCode.Valid || !dbCodeDate.Valid || code != dbCode.String ||
+            time.Since(dbCodeDate.Time) > (time.Hour * 24) {
+            Log.Errorf("Confirmation secret wrong. %s != %s.", *confirmation.ConfirmationCode, dbCode.String)
             error = fmt.Errorf("The confirmation code does not match.")
             verified = false
         }
@@ -84,14 +103,29 @@ func UserIsConfirming(session *Session, confirmation *BlitzMessage.ConfirmationR
 
     }
 
-
     if ! verified {
         Log.LogError(error)
         UpdateProfileStatusForUserID(*profile.UserID, BlitzMessage.UserStatus_USConfirming)
         return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
     }
 
-    session.Secret = Util.NewUUIDString()
+    var result sql.Result
+    result, error = config.DB.Exec(
+        `update UserContactTable set
+            code = NULL, codeDate = current_timestamp, isVerified = true
+            where userid = $1
+              and contacttype = $2
+              and contact = $3`,
+        *profile.UserID,
+        confirmation.ContactInfo.ContactType,
+        confirmation.ContactInfo.Contact,
+    )
+    error = pgsql.UpdateResultError(result, error)
+    if error != nil {
+        Log.LogError(error)
+        return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
+    }
+
     UpdateProfileStatusForUserID(*profile.UserID, BlitzMessage.UserStatus_USConfirmed)
     profile = ProfileForUserID(session, *profile.UserID)
 
@@ -99,7 +133,12 @@ func UserIsConfirming(session *Session, confirmation *BlitzMessage.ConfirmationR
         UserProfile: profile,
     }
     responseCode    := BlitzMessage.ResponseCode_RCSuccess
-    responseMessage := config.Localizef("kConfirmConfirmedWelcome", "Confirmed. Welcome to BlitzHere.")
+    responseMessage :=
+        config.Localizef(
+            "kConfirmConfirmedWelcome", "Hello %s\nWelcome to %s",
+            *profile.Name,
+            config.AppName,
+        )
     response := &BlitzMessage.ServerResponse {
         ResponseCode:       &responseCode,
         ResponseMessage:    &responseMessage,
@@ -146,7 +185,8 @@ func UserConfirmation(session *Session, confirmation *BlitzMessage.ConfirmationR
         return UserIsConfirming(session, confirmation)
     }
 
-    i, _ := strconv.ParseInt(session.Secret[0:4], 16, 32)
+    longSecret := Util.NewUUIDString()
+    i, _ := strconv.ParseInt(longSecret[0:4], 16, 32)
     confirmCode := fmt.Sprintf("%05d", i)
     message := config.Localizef("kConfirmConfirmingContact", "Confirming contact info...")
     message  = url.QueryEscape(message)
@@ -215,6 +255,24 @@ func UserConfirmation(session *Session, confirmation *BlitzMessage.ConfirmationR
 
     AddContactInfoToUserID(*profile.UserID, contact)
     UpdateProfileStatusForUserID(*profile.UserID, BlitzMessage.UserStatus_USConfirming)
+
+    var result sql.Result
+    result, error = config.DB.Exec(
+        `update UserContactTable set
+            code = $1, codeDate = current_timestamp
+            where userid = $2
+              and contacttype = $3
+              and contact = $4`,
+        confirmCode,
+        *profile.UserID,
+        contact.ContactType,
+        contact.Contact,
+    )
+    error = pgsql.UpdateResultError(result, error)
+    if error != nil {
+        Log.LogError(error)
+        return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
+    }
 
     code := BlitzMessage.ResponseCode_RCSuccess
     response := &BlitzMessage.ServerResponse {

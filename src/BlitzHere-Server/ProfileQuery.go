@@ -33,13 +33,14 @@ import (
 
 
 func AddContactInfoToUserID(userID string, contact *BlitzMessage.ContactInfo) {
-    result, error := config.DB.Exec("insert into UserContactTable " +
-        " (userID, contactType, contact, isverified) values " +
-        " ($1, $2, $3, $4) ;",
+    result, error := config.DB.Exec(
+        `insert into UserContactTable
+        (userID, contactType, contact)
+        values ($1, $2, $3);`,
         userID,
         contact.ContactType,
         Util.CleanStringPtr(contact.Contact),
-        contact.IsVerified);
+    )
     if error != nil {
         Log.Errorf("Insert UserContactInfo result: %v error: %v.", result, error)
     } else {
@@ -53,8 +54,8 @@ func UpdateContactInfoFromProfile(profile *BlitzMessage.UserProfile) {
 
     if profile.UserID == nil { return }
 
-    result, error := config.DB.Exec("delete from UserContactTable where userID = $1;", profile.UserID)
-    if error != nil { Log.Debugf("Delete UserContactInfo result: %v error: %v.", result, error) }
+    // result, error := config.DB.Exec("delete from UserContactTable where userID = $1;", profile.UserID)
+    // if error != nil { Log.Debugf("Delete UserContactInfo result: %v error: %v.", result, error) }
 
     for _, contact := range(profile.ContactInfo) {
         AddContactInfoToUserID(*profile.UserID, contact)
@@ -355,7 +356,9 @@ func ProfileForUserID(session *Session, userID string) *BlitzMessage.UserProfile
     profile.Images        = ImagesForUserID(userID)
     profile.SocialIdentities = SocialIdentitiesWithUserID(userID)
     profile.ContactInfo   = ContactInfoForUserID(userID)
-    profile.EntityTags    = GetEntityTagsWithUserID(session.UserID, userID, BlitzMessage.EntityType_ETUser)
+    if session != nil {
+        profile.EntityTags= GetEntityTagsWithUserID(session.UserID, userID, BlitzMessage.EntityType_ETUser)
+    }
     profile.Education     = EducationForUserID(userID)
     profile.Employment    = EmploymentForUserID(userID)
 

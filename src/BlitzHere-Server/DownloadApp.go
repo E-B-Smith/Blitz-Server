@@ -18,10 +18,12 @@ import (
     "fmt"
     "time"
     "strings"
+    "strconv"
     "net/http"
     "database/sql"
     "violent.blue/GoKit/Log"
     "violent.blue/GoKit/Util"
+    "violent.blue/GoKit/pgsql"
     "github.com/golang/protobuf/proto"
     "BlitzMessage"
 )
@@ -36,7 +38,7 @@ func DownloadAppRequest(writer http.ResponseWriter, httpRequest *http.Request) {
 
     respondWithErrorType := func(errorType string) {
         Log.Errorf("Error type '%s'.", errorType)
-        url := fmt.Sprintf("/index.html#download?action=%s", errorType)
+        url := fmt.Sprintf("/index.html?action=%s#download", errorType)
         http.Redirect(writer, httpRequest, url, 303)
     }
 
@@ -47,26 +49,24 @@ func DownloadAppRequest(writer http.ResponseWriter, httpRequest *http.Request) {
 
     error := httpRequest.ParseForm()
     if error != nil {
-        respondWithErrorType("error")
+        respondWithErrorType("error-error")
         return
     }
 
     name := strings.TrimSpace(httpRequest.PostFormValue("name"))
     if name == "" {
-        respondWithErrorType("name")
+        respondWithErrorType("error-name")
         return
     }
     phone := Util.StringIncludingCharactersInSet(httpRequest.PostFormValue("phone"), "0123456789")
     if len(phone) != 10 {
-        respondWithErrorType("phone")
+        respondWithErrorType("error-phone")
         return
     }
 
     Log.Debugf("Validated '%s' '%s'.", name, phone)
 
     //  Send url like eksprt://blitzhere.com/blitzhere?action=confirm&userid=<uid>&redirect=<appstore>&code=<code>&contact=<phone>
-
-    //  eDebug -- What if user already exists?
 
     row := config.DB.QueryRow(
         `select userID from UserContactTable
@@ -100,12 +100,32 @@ func DownloadAppRequest(writer http.ResponseWriter, httpRequest *http.Request) {
 
         error = UpdateProfile(&userProfile)
         if error != nil {
-            respondWithErrorType("error")
+            respondWithErrorType("error-error")
             return
         }
+
     }
 
-    confirmCode := "1234"
+    longSecret := Util.NewUUIDString()
+    i, _ := strconv.ParseInt(longSecret[0:4], 16, 32)
+    confirmCode := fmt.Sprintf("%05d", i)
+    var result sql.Result
+    result, error = config.DB.Exec(
+        `update UserContactTable set
+            code = $1, codeDate = current_timestamp
+            where userid = $2
+              and contacttype = $3
+              and contact = $4`,
+        confirmCode,
+        userID.String,
+        BlitzMessage.ContactType_CTPhoneSMS,
+        phone,
+    )
+    error = pgsql.UpdateResultError(result, error)
+    if error != nil {
+        Log.LogError(error)
+    }
+
     fullURL := fmt.Sprintf("%s/?action=confirm&userid=%s&code=%s&contact=%s&redirect=%s",
         config.AppLinkURL,
         userID.String,
@@ -116,11 +136,11 @@ func DownloadAppRequest(writer http.ResponseWriter, httpRequest *http.Request) {
     Log.Debugf("Full URL is '%s'.", fullURL)
     shortURL, error := LinkShortner_ShortLinkFromLink(fullURL)
     if error != nil {
-        respondWithErrorType("error")
+        respondWithErrorType("error-error")
         return
     }
 
-    message := fmt.Sprintf("Download %s:\n%s",
+    message := fmt.Sprintf("Welcome! Download %s:\n%s",
         config.AppName,
         shortURL,
     )

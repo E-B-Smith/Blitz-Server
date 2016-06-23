@@ -50,6 +50,8 @@ create table UserContactTable
     ,contactType    smallint
     ,contact        text
     ,isverified     boolean
+    ,code           text
+    ,codeDate       timestamptz
     );
 create unique index UserContactTableUniqueIndex
     on UserContactTable(userID, contactType, contact);

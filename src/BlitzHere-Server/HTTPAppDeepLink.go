@@ -239,9 +239,14 @@ func HTTPAppDeepLink(writer http.ResponseWriter, httpRequest *http.Request) {
 
     //  See if we have a redirect included in the url:
 
-    if redirectURL, ok := deepLinkURL.Values["redirect"]; ok {
+    // redirectURL := deepLinkURL.Query().Get("redirect")
+    // if len(redirectURL) > 0 {
+    //     Log.Debugf("Redirecting to '%s'.", redirectURL)
+    //     http.Redirect(writer, httpRequest, redirectURL, 303)
+    //     return
+    // }
 
-    //  Send back the web page --
+    //  Otherwise send back the web page --
 
     var buffer bytes.Buffer
     templateMap.AutoOpenDeepLink = true
