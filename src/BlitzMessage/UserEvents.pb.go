@@ -95,6 +95,8 @@ func init() {
 	proto.RegisterType((*UserEventBatchResponse)(nil), "BlitzMessage.UserEventBatchResponse")
 }
 
+func init() { proto.RegisterFile("UserEvents.proto", fileDescriptor8) }
+
 var fileDescriptor8 = []byte{
 	// 265 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x09, 0x6e, 0x88, 0x02, 0xff, 0x7c, 0x8f, 0x41, 0x4b, 0xc3, 0x40,

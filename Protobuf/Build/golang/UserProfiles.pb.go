@@ -1081,6 +1081,8 @@ func init() {
 	proto.RegisterEnum("BlitzMessage.FriendStatus", FriendStatus_name, FriendStatus_value)
 }
 
+func init() { proto.RegisterFile("UserProfiles.proto", fileDescriptor10) }
+
 var fileDescriptor10 = []byte{
 	// 1464 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x09, 0x6e, 0x88, 0x02, 0xff, 0x94, 0x56, 0xcf, 0x6e, 0xdb, 0x46,

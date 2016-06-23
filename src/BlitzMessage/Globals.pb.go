@@ -47,6 +47,8 @@ func init() {
 	proto.RegisterType((*Global)(nil), "BlitzMessage.Global")
 }
 
+func init() { proto.RegisterFile("Globals.proto", fileDescriptor3) }
+
 var fileDescriptor3 = []byte{
 	// 227 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x09, 0x6e, 0x88, 0x02, 0xff, 0x4c, 0xcf, 0xbf, 0x4a, 0x04, 0x31,

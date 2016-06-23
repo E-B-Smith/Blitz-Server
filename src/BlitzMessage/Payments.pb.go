@@ -452,6 +452,8 @@ func init() {
 	proto.RegisterEnum("BlitzMessage.PurchaseType", PurchaseType_name, PurchaseType_value)
 }
 
+func init() { proto.RegisterFile("Payments.proto", fileDescriptor4) }
+
 var fileDescriptor4 = []byte{
 	// 667 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x09, 0x6e, 0x88, 0x02, 0xff, 0x9c, 0x54, 0xcd, 0x4e, 0xdb, 0x4a,

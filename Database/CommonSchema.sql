@@ -580,14 +580,16 @@ create or replace function EraseUserID(eraseID UserID) returns text as
         end if;
     delete from DeviceTable where userID = eraseID;
     delete from ImageTable where userID = eraseID;
-    delete from MessageTable where senderID = eraseID;
-    delete from MessageTable where recipientID = eraseID;
+    delete from UserMessageTable where senderID = eraseID;
+    delete from UserMessageTable where recipientID = eraseID;
     delete from SocialTable where userID = eraseID;
     delete from UserContactTable where userID = eraseID;
     delete from UserEventTable where userID = eraseID;
     delete from UserIdentityTable where userID = eraseID;
     delete from UserTable where userID = eraseID;
     delete from SessionTable where userID = eraseID;
+    delete from EntityTagTable where userID = eraseID;
+    delete from EntityTagTable where entityID = eraseID::uuid and entityType = 1;
     return 'User erased';
     end;
     $$
@@ -595,13 +597,19 @@ create or replace function EraseUserID(eraseID UserID) returns text as
     returns null on null input;
 
 
-create or replace function MergeUserIDIntoUserID(oldID UserID, newID UserID) returns text as
+create or replace
+function MergeUserIDIntoUserID(oldID UserID, newID UserID) returns text as
     $$
     declare
         result text;
         oldidentity text;
     begin
-    if oldID is null or newID is null then return null; end if;
+    if oldID is null or newID is null then
+        return null;
+    end if;
+    if oldID = newID then
+        return 'User merged';
+    end if;
 
     --  UserContactTable
 
@@ -664,40 +672,66 @@ create or replace function MergeUserIDIntoUserID(oldID UserID, newID UserID) ret
             where UserIdentityTable.userid = newID
               and UserIdentityTable.identitystring = merge.identitystring) is null;
 
-    --  MessageTable
+    --  UserMessageTable
 
     with recursive merge as (
-        select messageid, senderid, recipientid from MessageTable where senderid = oldID
+        select messageid, senderid, recipientid from UserMessageTable where senderid = oldID
     )
-    update MessageTable set (senderid) = (newID)
-        from merge where MessageTable.messageid = merge.messageid
-                     and MessageTable.senderid = merge.senderid
-                     and MessageTable.recipientid = merge.recipientid
-        and (select 1 from MessageTable
-            where MessageTable.messageid = merge.messageid
-              and MessageTable.senderid = newID
-              and MessageTable.recipientid = merge.recipientid) is null;
+    update UserMessageTable set (senderid) = (newID)
+        from merge where UserMessageTable.messageid = merge.messageid
+                     and UserMessageTable.senderid = merge.senderid
+                     and UserMessageTable.recipientid = merge.recipientid
+        and (select 1 from UserMessageTable
+            where UserMessageTable.messageid = merge.messageid
+              and UserMessageTable.senderid = newID
+              and UserMessageTable.recipientid = merge.recipientid) is null;
 
     --
 
     with recursive merge as (
-        select messageid, senderid, recipientid from MessageTable where recipientid = oldID
+        select messageid, senderid, recipientid from UserMessageTable where recipientid = oldID
     )
-    update MessageTable set (recipientid) = (newID)
-        from merge where MessageTable.messageid = merge.messageid
-                     and MessageTable.senderid = merge.senderid
-                     and MessageTable.recipientid = merge.recipientid
-        and (select 1 from MessageTable
-            where MessageTable.messageid = merge.messageid
-              and MessageTable.senderid = merge.senderid
-              and MessageTable.recipientid = newID) is null;
+    update UserMessageTable set (recipientid) = (newID)
+        from merge where UserMessageTable.messageid = merge.messageid
+                     and UserMessageTable.senderid = merge.senderid
+                     and UserMessageTable.recipientid = merge.recipientid
+        and (select 1 from UserMessageTable
+            where UserMessageTable.messageid = merge.messageid
+              and UserMessageTable.senderid = merge.senderid
+              and UserMessageTable.recipientid = newID) is null;
 
     --  ImageTable
 
-    update imagetable set (userid) = (newID)
-        where userid = oldID
-        and (select 1 from imagetable
-            where imagetable.userid = newID) is null;
+    update imagetable set userid = newID
+        where userid = oldID;
+
+    --  Merge EntityTags
+
+    create temporary table TempEntityTagTable
+        (like EntityTagTable) on commit drop;
+
+    insert into TempEntityTagTable
+        select * from EntityTagTable
+        where userID = oldID;
+
+    insert into TempEntityTagTable
+        select * from EntityTagTable
+        where entityID = oldID::uuid
+          and entityType = 1;
+
+    update TempEntityTagTable set
+        userID = newID
+        where userID = oldID;
+
+    update TempEntityTagTable set
+        entityID = newID::uuid
+        where entityID = oldID::uuid
+          and entityType = 1;
+
+    insert into EntityTagTable
+        select * from TempEntityTagTable
+        on conflict (entityID, entityType, userID, entityTag)
+            do nothing;
 
     --  Done
 

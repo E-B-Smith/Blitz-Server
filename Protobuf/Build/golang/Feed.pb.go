@@ -436,6 +436,8 @@ func init() {
 	proto.RegisterEnum("BlitzMessage.UpdateVerb", UpdateVerb_name, UpdateVerb_value)
 }
 
+func init() { proto.RegisterFile("Feed.proto", fileDescriptor2) }
+
 var fileDescriptor2 = []byte{
 	// 742 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x09, 0x6e, 0x88, 0x02, 0xff, 0x84, 0x54, 0xcd, 0x6e, 0x23, 0x45,

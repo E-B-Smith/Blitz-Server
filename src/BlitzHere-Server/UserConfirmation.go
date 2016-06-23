@@ -31,103 +31,117 @@ import (
 
 func UserIsConfirming(session *Session, confirmation *BlitzMessage.ConfirmationRequest,
         ) *BlitzMessage.ServerResponse {
-
     Log.LogFunctionName()
+    Log.Debugf("Confirmation contact: %+v.", confirmation.ContactInfo.Contact)
 
-    var verified bool = false
-
-    if  confirmation.ContactInfo == nil ||
+    if  confirmation == nil ||
+        confirmation.ContactInfo == nil ||
         confirmation.ContactInfo.Contact == nil ||
-        confirmation.UserProfile == nil ||
-        confirmation.UserProfile.UserID == nil {
+        confirmation.ContactInfo.ContactType == nil ||
+        confirmation.ConfirmationCode == nil {
         return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, nil)
     }
 
-    profile := ProfileForUserID(nil, *confirmation.UserProfile.UserID)
-    //profile := confirmation.UserProfile;
-    Log.Debugf("Confirmation contact: %+v.", confirmation.ContactInfo.Contact)
-    Log.Debugf("Confirming profile:\n%+v.", profile)
-
+    var error error = nil
+    code := strings.TrimSpace(*confirmation.ConfirmationCode)
     confirmation.ContactInfo.Contact = Util.CleanStringPtr(confirmation.ContactInfo.Contact)
 
-    for _, contactInfo := range profile.ContactInfo {
-        if contactInfo.Contact != nil && *contactInfo.Contact == *confirmation.ContactInfo.Contact {
-            verified = true
-            contactInfo.IsVerified = &verified
-            Log.Debugf("Verified contact detail %s.", *contactInfo.Contact)
-            break
-        }
-    }
-
-    var error error = nil
-
+    var dbUserID sql.NullString
     if config.TestingEnabled && strings.HasPrefix(*confirmation.ContactInfo.Contact, "555") {
 
+        dbUserID.Valid = true
+        dbUserID.String = session.UserID
         error = nil
-        verified = true
-
-    } else if verified {
-
-        code := "XXXX"
-        if  confirmation.ConfirmationCode != nil {
-            code = strings.TrimSpace(*confirmation.ConfirmationCode)
-        }
-
-        row := config.DB.QueryRow(
-            `select code, codeDate from UserContactTable
-                where userID = $1
-                  and contactType = $2
-                  and contact = $3`,
-            profile.UserID,
-            confirmation.ContactInfo.ContactType,
-            confirmation.ContactInfo.Contact,
-        )
-        var ( dbCode sql.NullString; dbCodeDate pq.NullTime)
-        error = row.Scan(&dbCode, &dbCodeDate)
-        if error != nil {
-            Log.LogError(error)
-        }
-
-        Log.Debugf("Code '%s' Secret '%s'.", code, dbCode.String)
-
-        if error != nil || !dbCode.Valid || !dbCodeDate.Valid || code != dbCode.String ||
-            time.Since(dbCodeDate.Time) > (time.Hour * 24) {
-            Log.Errorf("Confirmation secret wrong. %s != %s.", *confirmation.ConfirmationCode, dbCode.String)
-            error = fmt.Errorf("The confirmation code does not match.")
-            verified = false
-        }
 
     } else {
 
-        error = errors.New("Error: Didn't verify contact detail with profile.");
+        //  Get the confirm code:
+
+        row := config.DB.QueryRow(
+            `select userid, codedate from usercontacttable
+                where contact = $1
+                  and contacttype = $2
+                  and code = $3
+                order by codedate
+                  limit 1;`,
+            confirmation.ContactInfo.Contact,
+            confirmation.ContactInfo.ContactType,
+            code,
+        )
+
+        var dbCodeDate pq.NullTime
+        error = row.Scan(&dbUserID, &dbCodeDate)
+        if error != nil || !dbUserID.Valid || !dbCodeDate.Valid || time.Since(dbCodeDate.Time) > (time.Hour * 24) {
+            Log.LogError(error)
+            error = fmt.Errorf("The confirmation code does not match or expired.")
+        }
 
     }
 
-    if ! verified {
-        Log.LogError(error)
-        UpdateProfileStatusForUserID(*profile.UserID, BlitzMessage.UserStatus_USConfirming)
-        return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
-    }
-
-    var result sql.Result
-    result, error = config.DB.Exec(
-        `update UserContactTable set
-            code = NULL, codeDate = current_timestamp, isVerified = true
-            where userid = $1
-              and contacttype = $2
-              and contact = $3`,
-        *profile.UserID,
-        confirmation.ContactInfo.ContactType,
-        confirmation.ContactInfo.Contact,
-    )
-    error = pgsql.UpdateResultError(result, error)
     if error != nil {
-        Log.LogError(error)
+        UpdateProfileStatusForUserID(session.UserID, BlitzMessage.UserStatus_USConfirming)
         return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
     }
 
-    UpdateProfileStatusForUserID(*profile.UserID, BlitzMessage.UserStatus_USConfirmed)
-    profile = ProfileForUserID(session, *profile.UserID)
+    //  Great!  We've confirmed.
+    //  Find the earliest verfied contact.
+    //  This is our real profile.
+
+    row := config.DB.QueryRow(
+        `select userID from usercontacttable
+            where contact = $1
+              and contacttype = $2
+              and isVerified = true
+            order by codedate nulls first
+            limit 1`,
+        confirmation.ContactInfo.Contact,
+        confirmation.ContactInfo.ContactType,
+    )
+
+    var oldestUserID sql.NullString
+    error = row.Scan(&oldestUserID)
+    if error == nil && oldestUserID.Valid {
+
+        //  An older profile exists.  Merge current profile
+        //  into profile.
+
+        row = config.DB.QueryRow(
+            `select MergeUserIDIntoUserID($1, $2);`,
+            dbUserID.String,
+            oldestUserID.String,
+        )
+        var result sql.NullString
+        error = row.Scan(&result)
+        if error != nil || ! result.Valid || result.String != "User merged" {
+            Log.Errorf("Can't merge user! Error: %v result: %+v.", error, result)
+        }
+        session.UserID = oldestUserID.String
+
+    } else {
+
+        //  Else this is a new profile.  Mark it verified:
+
+        var result sql.Result
+        result, error = config.DB.Exec(
+            `update UserContactTable set
+                code = NULL, codeDate = current_timestamp, isVerified = true
+                where userid = $1
+                  and contacttype = $2
+                  and contact = $3`,
+            dbUserID.String,
+            confirmation.ContactInfo.ContactType,
+            confirmation.ContactInfo.Contact,
+        )
+        error = pgsql.UpdateResultError(result, error)
+        if error != nil {
+            Log.LogError(error)
+            return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
+        }
+        session.UserID = dbUserID.String
+    }
+
+    UpdateProfileStatusForUserID(session.UserID, BlitzMessage.UserStatus_USConfirmed)
+    profile := ProfileForUserID(session, session.UserID)
 
     confirmed := BlitzMessage.ConfirmationRequest {
         UserProfile: profile,

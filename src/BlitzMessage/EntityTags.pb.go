@@ -123,6 +123,8 @@ func init() {
 	proto.RegisterEnum("BlitzMessage.EntityType", EntityType_name, EntityType_value)
 }
 
+func init() { proto.RegisterFile("EntityTags.proto", fileDescriptor1) }
+
 var fileDescriptor1 = []byte{
 	// 274 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x09, 0x6e, 0x88, 0x02, 0xff, 0x6c, 0x8f, 0xcf, 0x4a, 0xc3, 0x40,

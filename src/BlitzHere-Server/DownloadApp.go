@@ -66,7 +66,7 @@ func DownloadAppRequest(writer http.ResponseWriter, httpRequest *http.Request) {
 
     Log.Debugf("Validated '%s' '%s'.", name, phone)
 
-    //  Send url like eksprt://blitzhere.com/blitzhere?action=confirm&userid=<uid>&redirect=<appstore>&code=<code>&contact=<phone>
+    //  Send url like eksprt://blitzhere.com/blitzhere?action=confirm&redirect=<appstore>&code=<code>&contact=<phone>
 
     row := config.DB.QueryRow(
         `select userID from UserContactTable
@@ -126,9 +126,8 @@ func DownloadAppRequest(writer http.ResponseWriter, httpRequest *http.Request) {
         Log.LogError(error)
     }
 
-    fullURL := fmt.Sprintf("%s/?action=confirm&userid=%s&code=%s&contact=%s&redirect=%s",
+    fullURL := fmt.Sprintf("%s/?action=confirm&code=%s&contact=%s&redirect=%s",
         config.AppLinkURL,
-        userID.String,
         confirmCode,
         phone,
         config.AppStoreURL,

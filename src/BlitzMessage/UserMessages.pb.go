@@ -536,6 +536,8 @@ func init() {
 	proto.RegisterEnum("BlitzMessage.UserMessageType", UserMessageType_name, UserMessageType_value)
 }
 
+func init() { proto.RegisterFile("UserMessages.proto", fileDescriptor9) }
+
 var fileDescriptor9 = []byte{
 	// 800 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x09, 0x6e, 0x88, 0x02, 0xff, 0x9c, 0x55, 0xcb, 0x4e, 0xf3, 0x46,

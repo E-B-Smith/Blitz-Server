@@ -174,14 +174,16 @@ func UpdateProfile(profile *BlitzMessage.UserProfile) error {
             ,backgroundSummary
             ,interestTags
             ,stripeAccount
-        ) = ($1, $2, $3, $4, $5, $6)
-                where userID = $7;`,
+            ,editProfileID
+        ) = ($1, $2, $3, $4, $5, $6, $7)
+                where userID = $8;`,
         profile.Name,
         profile.Gender,
         profile.Birthday.NullTime(),
         profile.BackgroundSummary,
         pgsql.NullStringFromStringArray(profile.InterestTags),
         profile.StripeAccount,
+        profile.EditProfileID,
         profile.UserID,
     )
     if error != nil {
