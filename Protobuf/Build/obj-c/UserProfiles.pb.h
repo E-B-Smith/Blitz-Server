@@ -834,6 +834,7 @@ NSString *NSStringFromBFriendStatus(BFriendStatus value);
 #define UserProfile_serviceIsFreeForUser @"serviceIsFreeForUser"
 #define UserProfile_chatFee @"chatFee"
 #define UserProfile_userInfo @"userInfo"
+#define UserProfile_editProfileID @"editProfileID"
 @interface BUserProfile : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
   BOOL hasIsExpert_:1;
@@ -849,6 +850,7 @@ NSString *NSStringFromBFriendStatus(BFriendStatus value);
   BOOL hasBackgroundSummary_:1;
   BOOL hasStripeAccount_:1;
   BOOL hasChatFee_:1;
+  BOOL hasEditProfileID_:1;
   BOOL hasCreationDate_:1;
   BOOL hasLastSeen_:1;
   BOOL hasBirthday_:1;
@@ -868,6 +870,7 @@ NSString *NSStringFromBFriendStatus(BFriendStatus value);
   NSString* backgroundSummary;
   NSString* stripeAccount;
   NSString* chatFee;
+  NSString* editProfileID;
   BTimestamp* creationDate;
   BTimestamp* lastSeen;
   BTimestamp* birthday;
@@ -902,6 +905,7 @@ NSString *NSStringFromBFriendStatus(BFriendStatus value);
 - (BOOL) hasServiceIsFreeForUser;
 - (BOOL) hasChatFee;
 - (BOOL) hasUserInfo;
+- (BOOL) hasEditProfileID;
 @property (readonly, strong) NSString* userID;
 @property (readonly) BUserStatus userStatus;
 @property (readonly, strong) BTimestamp* creationDate;
@@ -929,6 +933,7 @@ NSString *NSStringFromBFriendStatus(BFriendStatus value);
 - (BOOL) serviceIsFreeForUser;
 @property (readonly, strong) NSString* chatFee;
 @property (readonly) SInt64 userInfo;
+@property (readonly, strong) NSString* editProfileID;
 - (BImageData*)imagesAtIndex:(NSUInteger)index;
 - (BSocialIdentity*)socialIdentitiesAtIndex:(NSUInteger)index;
 - (BContactInfo*)contactInfoAtIndex:(NSUInteger)index;
@@ -1123,6 +1128,11 @@ NSString *NSStringFromBFriendStatus(BFriendStatus value);
 - (SInt64) userInfo;
 - (BUserProfileBuilder*) setUserInfo:(SInt64) value;
 - (BUserProfileBuilder*) clearUserInfo;
+
+- (BOOL) hasEditProfileID;
+- (NSString*) editProfileID;
+- (BUserProfileBuilder*) setEditProfileID:(NSString*) value;
+- (BUserProfileBuilder*) clearEditProfileID;
 @end
 
 #define ImageUpload_imageData @"imageData"
