@@ -158,6 +158,8 @@ message UserProfile {
   optional string       chatFee           = 26;
 
   optional int64        userInfo          = 27; //  Ignored / not saved.
+
+  optional string       editProfileID     = 28;
 }
 
 

@@ -713,6 +713,8 @@ func init() {
 	proto.RegisterEnum("BlitzMessage.ResponseCode", ResponseCode_name, ResponseCode_value)
 }
 
+func init() { proto.RegisterFile("Server.proto", fileDescriptor6) }
+
 var fileDescriptor6 = []byte{
 	// 1310 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x09, 0x6e, 0x88, 0x02, 0xff, 0xd4, 0x57, 0xdd, 0x72, 0xdb, 0x44,

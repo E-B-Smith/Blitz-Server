@@ -3212,6 +3212,7 @@ static BUserReview* defaultBUserReviewInstance = nil;
 @property BOOL serviceIsFreeForUser;
 @property (strong) NSString* chatFee;
 @property SInt64 userInfo;
+@property (strong) NSString* editProfileID;
 @end
 
 @implementation BUserProfile
@@ -3375,6 +3376,13 @@ static BUserReview* defaultBUserReviewInstance = nil;
   hasUserInfo_ = !!_value_;
 }
 @synthesize userInfo;
+- (BOOL) hasEditProfileID {
+  return !!hasEditProfileID_;
+}
+- (void) setHasEditProfileID:(BOOL) _value_ {
+  hasEditProfileID_ = !!_value_;
+}
+@synthesize editProfileID;
 - (instancetype) init {
   if ((self = [super init])) {
     self.userID = @"";
@@ -3396,6 +3404,7 @@ static BUserReview* defaultBUserReviewInstance = nil;
     self.serviceIsFreeForUser = NO;
     self.chatFee = @"";
     self.userInfo = 0L;
+    self.editProfileID = @"";
   }
   return self;
 }
@@ -3560,6 +3569,9 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   if (self.hasUserInfo) {
     [output writeInt64:27 value:self.userInfo];
   }
+  if (self.hasEditProfileID) {
+    [output writeString:28 value:self.editProfileID];
+  }
   [self.unknownFields writeToCodedOutputStream:output];
 }
 - (SInt32) serializedSize {
@@ -3655,6 +3667,9 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   }
   if (self.hasUserInfo) {
     size_ += computeInt64Size(27, self.userInfo);
+  }
+  if (self.hasEditProfileID) {
+    size_ += computeStringSize(28, self.editProfileID);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -3805,6 +3820,9 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   if (self.hasUserInfo) {
     [output appendFormat:@"%@%@: %@\n", indent, @"userInfo", [NSNumber numberWithLongLong:self.userInfo]];
   }
+  if (self.hasEditProfileID) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"editProfileID", self.editProfileID];
+  }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (void) storeInDictionary:(NSMutableDictionary *)dictionary {
@@ -3909,6 +3927,9 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   if (self.hasUserInfo) {
     [dictionary setObject: [NSNumber numberWithLongLong:self.userInfo] forKey: @"userInfo"];
   }
+  if (self.hasEditProfileID) {
+    [dictionary setObject: self.editProfileID forKey: @"editProfileID"];
+  }
   [self.unknownFields storeInDictionary:dictionary];
 }
 - (BOOL) isEqual:(id)other {
@@ -3966,6 +3987,8 @@ static BUserProfile* defaultBUserProfileInstance = nil;
       (!self.hasChatFee || [self.chatFee isEqual:otherMessage.chatFee]) &&
       self.hasUserInfo == otherMessage.hasUserInfo &&
       (!self.hasUserInfo || self.userInfo == otherMessage.userInfo) &&
+      self.hasEditProfileID == otherMessage.hasEditProfileID &&
+      (!self.hasEditProfileID || [self.editProfileID isEqual:otherMessage.editProfileID]) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
@@ -4050,6 +4073,9 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   }
   if (self.hasUserInfo) {
     hashCode = hashCode * 31 + [[NSNumber numberWithLongLong:self.userInfo] hash];
+  }
+  if (self.hasEditProfileID) {
+    hashCode = hashCode * 31 + [self.editProfileID hash];
   }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
@@ -4206,6 +4232,9 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   }
   if (other.hasUserInfo) {
     [self setUserInfo:other.userInfo];
+  }
+  if (other.hasEditProfileID) {
+    [self setEditProfileID:other.editProfileID];
   }
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -4378,6 +4407,10 @@ static BUserProfile* defaultBUserProfileInstance = nil;
       }
       case 216: {
         [self setUserInfo:[input readInt64]];
+        break;
+      }
+      case 226: {
+        [self setEditProfileID:[input readString]];
         break;
       }
     }
@@ -4909,6 +4942,22 @@ static BUserProfile* defaultBUserProfileInstance = nil;
 - (BUserProfileBuilder*) clearUserInfo {
   resultUserProfile.hasUserInfo = NO;
   resultUserProfile.userInfo = 0L;
+  return self;
+}
+- (BOOL) hasEditProfileID {
+  return resultUserProfile.hasEditProfileID;
+}
+- (NSString*) editProfileID {
+  return resultUserProfile.editProfileID;
+}
+- (BUserProfileBuilder*) setEditProfileID:(NSString*) value {
+  resultUserProfile.hasEditProfileID = YES;
+  resultUserProfile.editProfileID = value;
+  return self;
+}
+- (BUserProfileBuilder*) clearEditProfileID {
+  resultUserProfile.hasEditProfileID = NO;
+  resultUserProfile.editProfileID = @"";
   return self;
 }
 @end

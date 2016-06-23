@@ -291,6 +291,8 @@ func init() {
 	proto.RegisterType((*KeyValue)(nil), "BlitzMessage.KeyValue")
 }
 
+func init() { proto.RegisterFile("Types.proto", fileDescriptor7) }
+
 var fileDescriptor7 = []byte{
 	// 434 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x09, 0x6e, 0x88, 0x02, 0xff, 0x84, 0x51, 0x4d, 0x6f, 0xd3, 0x40,
