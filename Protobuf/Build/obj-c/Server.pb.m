@@ -2244,6 +2244,7 @@ static BPushDisconnect* defaultBPushDisconnectInstance = nil;
 @property (strong) BFriendUpdate* friendRequest;
 @property (strong) BSearchCategories* searchCategories;
 @property (strong) BUserMessage* sendMessage;
+@property (strong) BEditProfile* editProfile;
 @end
 
 @implementation BRequestType
@@ -2430,6 +2431,13 @@ static BPushDisconnect* defaultBPushDisconnectInstance = nil;
   hasSendMessage_ = !!_value_;
 }
 @synthesize sendMessage;
+- (BOOL) hasEditProfile {
+  return !!hasEditProfile_;
+}
+- (void) setHasEditProfile:(BOOL) _value_ {
+  hasEditProfile_ = !!_value_;
+}
+@synthesize editProfile;
 - (instancetype) init {
   if ((self = [super init])) {
     self.sessionRequest = [BSessionRequest defaultInstance];
@@ -2458,6 +2466,7 @@ static BPushDisconnect* defaultBPushDisconnectInstance = nil;
     self.friendRequest = [BFriendUpdate defaultInstance];
     self.searchCategories = [BSearchCategories defaultInstance];
     self.sendMessage = [BUserMessage defaultInstance];
+    self.editProfile = [BEditProfile defaultInstance];
   }
   return self;
 }
@@ -2501,6 +2510,11 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   }
   if (self.hasFriendRequest) {
     if (!self.friendRequest.isInitialized) {
+      return NO;
+    }
+  }
+  if (self.hasEditProfile) {
+    if (!self.editProfile.isInitialized) {
       return NO;
     }
   }
@@ -2584,6 +2598,9 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   }
   if (self.hasSendMessage) {
     [output writeMessage:26 value:self.sendMessage];
+  }
+  if (self.hasEditProfile) {
+    [output writeMessage:27 value:self.editProfile];
   }
   [self.unknownFields writeToCodedOutputStream:output];
 }
@@ -2671,6 +2688,9 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   }
   if (self.hasSendMessage) {
     size_ += computeMessageSize(26, self.sendMessage);
+  }
+  if (self.hasEditProfile) {
+    size_ += computeMessageSize(27, self.editProfile);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -2863,6 +2883,12 @@ static BRequestType* defaultBRequestTypeInstance = nil;
                          withIndent:[NSString stringWithFormat:@"%@  ", indent]];
     [output appendFormat:@"%@}\n", indent];
   }
+  if (self.hasEditProfile) {
+    [output appendFormat:@"%@%@ {\n", indent, @"editProfile"];
+    [self.editProfile writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (void) storeInDictionary:(NSMutableDictionary *)dictionary {
@@ -2996,6 +3022,11 @@ static BRequestType* defaultBRequestTypeInstance = nil;
    [self.sendMessage storeInDictionary:messageDictionary];
    [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"sendMessage"];
   }
+  if (self.hasEditProfile) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.editProfile storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"editProfile"];
+  }
   [self.unknownFields storeInDictionary:dictionary];
 }
 - (BOOL) isEqual:(id)other {
@@ -3059,6 +3090,8 @@ static BRequestType* defaultBRequestTypeInstance = nil;
       (!self.hasSearchCategories || [self.searchCategories isEqual:otherMessage.searchCategories]) &&
       self.hasSendMessage == otherMessage.hasSendMessage &&
       (!self.hasSendMessage || [self.sendMessage isEqual:otherMessage.sendMessage]) &&
+      self.hasEditProfile == otherMessage.hasEditProfile &&
+      (!self.hasEditProfile || [self.editProfile isEqual:otherMessage.editProfile]) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
@@ -3140,6 +3173,9 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   }
   if (self.hasSendMessage) {
     hashCode = hashCode * 31 + [self.sendMessage hash];
+  }
+  if (self.hasEditProfile) {
+    hashCode = hashCode * 31 + [self.editProfile hash];
   }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
@@ -3261,6 +3297,9 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   }
   if (other.hasSendMessage) {
     [self mergeSendMessage:other.sendMessage];
+  }
+  if (other.hasEditProfile) {
+    [self mergeEditProfile:other.editProfile];
   }
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -3515,6 +3554,15 @@ static BRequestType* defaultBRequestTypeInstance = nil;
         }
         [input readMessage:subBuilder extensionRegistry:extensionRegistry];
         [self setSendMessage:[subBuilder buildPartial]];
+        break;
+      }
+      case 218: {
+        BEditProfileBuilder* subBuilder = [BEditProfile builder];
+        if (self.hasEditProfile) {
+          [subBuilder mergeFrom:self.editProfile];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setEditProfile:[subBuilder buildPartial]];
         break;
       }
     }
@@ -4300,6 +4348,36 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   resultRequestType.sendMessage = [BUserMessage defaultInstance];
   return self;
 }
+- (BOOL) hasEditProfile {
+  return resultRequestType.hasEditProfile;
+}
+- (BEditProfile*) editProfile {
+  return resultRequestType.editProfile;
+}
+- (BRequestTypeBuilder*) setEditProfile:(BEditProfile*) value {
+  resultRequestType.hasEditProfile = YES;
+  resultRequestType.editProfile = value;
+  return self;
+}
+- (BRequestTypeBuilder*) setEditProfileBuilder:(BEditProfileBuilder*) builderForValue {
+  return [self setEditProfile:[builderForValue build]];
+}
+- (BRequestTypeBuilder*) mergeEditProfile:(BEditProfile*) value {
+  if (resultRequestType.hasEditProfile &&
+      resultRequestType.editProfile != [BEditProfile defaultInstance]) {
+    resultRequestType.editProfile =
+      [[[BEditProfile builderWithPrototype:resultRequestType.editProfile] mergeFrom:value] buildPartial];
+  } else {
+    resultRequestType.editProfile = value;
+  }
+  resultRequestType.hasEditProfile = YES;
+  return self;
+}
+- (BRequestTypeBuilder*) clearEditProfile {
+  resultRequestType.hasEditProfile = NO;
+  resultRequestType.editProfile = [BEditProfile defaultInstance];
+  return self;
+}
 @end
 
 @interface BServerRequest ()
@@ -4606,6 +4684,7 @@ static BServerRequest* defaultBServerRequestInstance = nil;
 @property (strong) BSearchCategories* searchCategories;
 @property (strong) BFeedPostResponse* feedPostResponse;
 @property (strong) BPurchaseDescription* purchaseDescription;
+@property (strong) BEditProfile* editProfile;
 @end
 
 @implementation BResponseType
@@ -4743,6 +4822,13 @@ static BServerRequest* defaultBServerRequestInstance = nil;
   hasPurchaseDescription_ = !!_value_;
 }
 @synthesize purchaseDescription;
+- (BOOL) hasEditProfile {
+  return !!hasEditProfile_;
+}
+- (void) setHasEditProfile:(BOOL) _value_ {
+  hasEditProfile_ = !!_value_;
+}
+@synthesize editProfile;
 - (instancetype) init {
   if ((self = [super init])) {
     self.sessionResponse = [BSessionResponse defaultInstance];
@@ -4764,6 +4850,7 @@ static BServerRequest* defaultBServerRequestInstance = nil;
     self.searchCategories = [BSearchCategories defaultInstance];
     self.feedPostResponse = [BFeedPostResponse defaultInstance];
     self.purchaseDescription = [BPurchaseDescription defaultInstance];
+    self.editProfile = [BEditProfile defaultInstance];
   }
   return self;
 }
@@ -4812,6 +4899,11 @@ static BResponseType* defaultBResponseTypeInstance = nil;
   }
   if (self.hasFriendResponse) {
     if (!self.friendResponse.isInitialized) {
+      return NO;
+    }
+  }
+  if (self.hasEditProfile) {
+    if (!self.editProfile.isInitialized) {
       return NO;
     }
   }
@@ -4874,6 +4966,9 @@ static BResponseType* defaultBResponseTypeInstance = nil;
   }
   if (self.hasPurchaseDescription) {
     [output writeMessage:21 value:self.purchaseDescription];
+  }
+  if (self.hasEditProfile) {
+    [output writeMessage:22 value:self.editProfile];
   }
   [self.unknownFields writeToCodedOutputStream:output];
 }
@@ -4940,6 +5035,9 @@ static BResponseType* defaultBResponseTypeInstance = nil;
   }
   if (self.hasPurchaseDescription) {
     size_ += computeMessageSize(21, self.purchaseDescription);
+  }
+  if (self.hasEditProfile) {
+    size_ += computeMessageSize(22, self.editProfile);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -5090,6 +5188,12 @@ static BResponseType* defaultBResponseTypeInstance = nil;
                          withIndent:[NSString stringWithFormat:@"%@  ", indent]];
     [output appendFormat:@"%@}\n", indent];
   }
+  if (self.hasEditProfile) {
+    [output appendFormat:@"%@%@ {\n", indent, @"editProfile"];
+    [self.editProfile writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (void) storeInDictionary:(NSMutableDictionary *)dictionary {
@@ -5188,6 +5292,11 @@ static BResponseType* defaultBResponseTypeInstance = nil;
    [self.purchaseDescription storeInDictionary:messageDictionary];
    [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"purchaseDescription"];
   }
+  if (self.hasEditProfile) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.editProfile storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"editProfile"];
+  }
   [self.unknownFields storeInDictionary:dictionary];
 }
 - (BOOL) isEqual:(id)other {
@@ -5237,6 +5346,8 @@ static BResponseType* defaultBResponseTypeInstance = nil;
       (!self.hasFeedPostResponse || [self.feedPostResponse isEqual:otherMessage.feedPostResponse]) &&
       self.hasPurchaseDescription == otherMessage.hasPurchaseDescription &&
       (!self.hasPurchaseDescription || [self.purchaseDescription isEqual:otherMessage.purchaseDescription]) &&
+      self.hasEditProfile == otherMessage.hasEditProfile &&
+      (!self.hasEditProfile || [self.editProfile isEqual:otherMessage.editProfile]) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
@@ -5297,6 +5408,9 @@ static BResponseType* defaultBResponseTypeInstance = nil;
   }
   if (self.hasPurchaseDescription) {
     hashCode = hashCode * 31 + [self.purchaseDescription hash];
+  }
+  if (self.hasEditProfile) {
+    hashCode = hashCode * 31 + [self.editProfile hash];
   }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
@@ -5397,6 +5511,9 @@ static BResponseType* defaultBResponseTypeInstance = nil;
   }
   if (other.hasPurchaseDescription) {
     [self mergePurchaseDescription:other.purchaseDescription];
+  }
+  if (other.hasEditProfile) {
+    [self mergeEditProfile:other.editProfile];
   }
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -5588,6 +5705,15 @@ static BResponseType* defaultBResponseTypeInstance = nil;
         }
         [input readMessage:subBuilder extensionRegistry:extensionRegistry];
         [self setPurchaseDescription:[subBuilder buildPartial]];
+        break;
+      }
+      case 178: {
+        BEditProfileBuilder* subBuilder = [BEditProfile builder];
+        if (self.hasEditProfile) {
+          [subBuilder mergeFrom:self.editProfile];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setEditProfile:[subBuilder buildPartial]];
         break;
       }
     }
@@ -6161,6 +6287,36 @@ static BResponseType* defaultBResponseTypeInstance = nil;
 - (BResponseTypeBuilder*) clearPurchaseDescription {
   resultResponseType.hasPurchaseDescription = NO;
   resultResponseType.purchaseDescription = [BPurchaseDescription defaultInstance];
+  return self;
+}
+- (BOOL) hasEditProfile {
+  return resultResponseType.hasEditProfile;
+}
+- (BEditProfile*) editProfile {
+  return resultResponseType.editProfile;
+}
+- (BResponseTypeBuilder*) setEditProfile:(BEditProfile*) value {
+  resultResponseType.hasEditProfile = YES;
+  resultResponseType.editProfile = value;
+  return self;
+}
+- (BResponseTypeBuilder*) setEditProfileBuilder:(BEditProfileBuilder*) builderForValue {
+  return [self setEditProfile:[builderForValue build]];
+}
+- (BResponseTypeBuilder*) mergeEditProfile:(BEditProfile*) value {
+  if (resultResponseType.hasEditProfile &&
+      resultResponseType.editProfile != [BEditProfile defaultInstance]) {
+    resultResponseType.editProfile =
+      [[[BEditProfile builderWithPrototype:resultResponseType.editProfile] mergeFrom:value] buildPartial];
+  } else {
+    resultResponseType.editProfile = value;
+  }
+  resultResponseType.hasEditProfile = YES;
+  return self;
+}
+- (BResponseTypeBuilder*) clearEditProfile {
+  resultResponseType.hasEditProfile = NO;
+  resultResponseType.editProfile = [BEditProfile defaultInstance];
   return self;
 }
 @end

@@ -49,33 +49,48 @@ func UserIsConfirming(session *Session, confirmation *BlitzMessage.ConfirmationR
     var dbUserID sql.NullString
     if config.TestingEnabled && strings.HasPrefix(*confirmation.ContactInfo.Contact, "555") {
 
-        dbUserID.Valid = true
-        dbUserID.String = session.UserID
-        error = nil
-
-    } else {
-
-        //  Get the confirm code:
+        //  Figure out the code for testing:
 
         row := config.DB.QueryRow(
-            `select userid, codedate from usercontacttable
+            `select code from usercontacttable
                 where contact = $1
                   and contacttype = $2
-                  and code = $3
-                order by codedate
-                  limit 1;`,
+                  and code is not null
+                order by codedate desc
+                limit 1;`,
             confirmation.ContactInfo.Contact,
             confirmation.ContactInfo.ContactType,
-            code,
         )
-
-        var dbCodeDate pq.NullTime
-        error = row.Scan(&dbUserID, &dbCodeDate)
-        if error != nil || !dbUserID.Valid || !dbCodeDate.Valid || time.Since(dbCodeDate.Time) > (time.Hour * 24) {
-            Log.LogError(error)
-            error = fmt.Errorf("The confirmation code does not match or expired.")
+        var dbCode sql.NullString
+        error = row.Scan(&dbCode)
+        if error == nil && dbCode.Valid {
+            Log.Debugf("Found code '%s'.", dbCode.String)
+            code = dbCode.String
         }
 
+    }
+
+    //  Query the confirm code:
+
+    row := config.DB.QueryRow(
+        `select userid, codedate from usercontacttable
+            where contact = $1
+              and contacttype = $2
+              and code = $3
+            order by codedate
+            limit 1;`,
+        confirmation.ContactInfo.Contact,
+        confirmation.ContactInfo.ContactType,
+        code,
+    )
+
+    var dbCodeDate pq.NullTime
+    error = row.Scan(&dbUserID, &dbCodeDate)
+    if error != nil || !dbUserID.Valid || !dbCodeDate.Valid ||
+        time.Since(dbCodeDate.Time) > (time.Hour * 24) ||
+        len(code) == 0 {
+        Log.LogError(error)
+        error = fmt.Errorf("The confirmation code does not match or expired.")
     }
 
     if error != nil {
@@ -87,12 +102,12 @@ func UserIsConfirming(session *Session, confirmation *BlitzMessage.ConfirmationR
     //  Find the earliest verfied contact.
     //  This is our real profile.
 
-    row := config.DB.QueryRow(
+    row = config.DB.QueryRow(
         `select userID from usercontacttable
             where contact = $1
               and contacttype = $2
               and isVerified = true
-            order by codedate nulls first
+            order by codedate desc nulls first
             limit 1`,
         confirmation.ContactInfo.Contact,
         confirmation.ContactInfo.ContactType,

@@ -16,6 +16,8 @@
 @class BCoordinatePolygonBuilder;
 @class BCoordinateRegion;
 @class BCoordinateRegionBuilder;
+@class BEditProfile;
+@class BEditProfileBuilder;
 @class BEducation;
 @class BEducationBuilder;
 @class BEmployment;
@@ -1639,6 +1641,80 @@ NSString *NSStringFromBFriendStatus(BFriendStatus value);
 - (NSString*) confirmationCode;
 - (BUserInviteBuilder*) setConfirmationCode:(NSString*) value;
 - (BUserInviteBuilder*) clearConfirmationCode;
+@end
+
+#define EditProfile_profileID @"profileID"
+#define EditProfile_profile @"profile"
+#define EditProfile_editProfile @"editProfile"
+@interface BEditProfile : PBGeneratedMessage<GeneratedMessageProtocol> {
+@private
+  BOOL hasProfileID_:1;
+  BOOL hasProfile_:1;
+  BOOL hasEditProfile_:1;
+  NSString* profileID;
+  BUserProfile* profile;
+  BUserProfile* editProfile;
+}
+- (BOOL) hasProfileID;
+- (BOOL) hasProfile;
+- (BOOL) hasEditProfile;
+@property (readonly, strong) NSString* profileID;
+@property (readonly, strong) BUserProfile* profile;
+@property (readonly, strong) BUserProfile* editProfile;
+
++ (instancetype) defaultInstance;
+- (instancetype) defaultInstance;
+
+- (BOOL) isInitialized;
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
+- (BEditProfileBuilder*) builder;
++ (BEditProfileBuilder*) builder;
++ (BEditProfileBuilder*) builderWithPrototype:(BEditProfile*) prototype;
+- (BEditProfileBuilder*) toBuilder;
+
++ (BEditProfile*) parseFromData:(NSData*) data;
++ (BEditProfile*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (BEditProfile*) parseFromInputStream:(NSInputStream*) input;
++ (BEditProfile*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (BEditProfile*) parseFromCodedInputStream:(PBCodedInputStream*) input;
++ (BEditProfile*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+@end
+
+@interface BEditProfileBuilder : PBGeneratedMessageBuilder {
+@private
+  BEditProfile* resultEditProfile;
+}
+
+- (BEditProfile*) defaultInstance;
+
+- (BEditProfileBuilder*) clear;
+- (BEditProfileBuilder*) clone;
+
+- (BEditProfile*) build;
+- (BEditProfile*) buildPartial;
+
+- (BEditProfileBuilder*) mergeFrom:(BEditProfile*) other;
+- (BEditProfileBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
+- (BEditProfileBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+
+- (BOOL) hasProfileID;
+- (NSString*) profileID;
+- (BEditProfileBuilder*) setProfileID:(NSString*) value;
+- (BEditProfileBuilder*) clearProfileID;
+
+- (BOOL) hasProfile;
+- (BUserProfile*) profile;
+- (BEditProfileBuilder*) setProfile:(BUserProfile*) value;
+- (BEditProfileBuilder*) setProfileBuilder:(BUserProfileBuilder*) builderForValue;
+- (BEditProfileBuilder*) mergeProfile:(BUserProfile*) value;
+- (BEditProfileBuilder*) clearProfile;
+
+- (BOOL) hasEditProfile;
+- (BUserProfile*) editProfile;
+- (BEditProfileBuilder*) setEditProfile:(BUserProfile*) value;
+- (BEditProfileBuilder*) setEditProfileBuilder:(BUserProfileBuilder*) builderForValue;
+- (BEditProfileBuilder*) mergeEditProfile:(BUserProfile*) value;
+- (BEditProfileBuilder*) clearEditProfile;
 @end
 
 

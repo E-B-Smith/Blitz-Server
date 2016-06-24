@@ -352,6 +352,8 @@ func UpdateSession(ipAddress string,
 
     Log.Debugf("Updating user %s.", userID)
 
+    /* This was a half-baked idea.  I was trying to ID users by old sessions.  Security flaw.
+
     identities := IdentityStringsFromProfile(request.Profile)
     identities  = IdentityStringsForDevice(identities,
         request.DeviceInfo.VendorUID,
@@ -367,6 +369,10 @@ func UpdateSession(ipAddress string,
         MergeProfileIDIntoProfileID(userID, *profile.UserID) // Morph data in database.
         userID = *profile.UserID
     }
+
+    */
+    profile := request.Profile
+
 
     Log.Debugf("Insert user.")
     _, error = config.DB.Exec("insert into usertable (userid, userstatus, creationDate) "+

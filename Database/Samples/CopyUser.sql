@@ -1,13 +1,13 @@
 create or replace
-function CopyUserIDToUserID() returns text as
+function CopyUserIDToUserID(fromID text, newID text) returns text as
     $$
-    declare
-        fromID text;
-        newID  text;
+    -- declare
+    --     fromID text;
+    --     newID  text;
     begin
 
-    fromID := 'cd4f01ff-ca88-4e4b-9aaf-756660c34ea0';
-     newID := '84b868d1-323e-43e2-8667-9b68030d048b';
+    -- fromID := '24f1daba-3555-45d9-b19a-97ccc648fd0e';
+    --  newID := '24f1daba-3555-45d9-b19a-97ccc648fd0f';
 
     --  Copy user tables:
     --      UserTable
@@ -15,6 +15,7 @@ function CopyUserIDToUserID() returns text as
     --      EmploymentTable
     --      UserContactTable
     --      EntityTagTable
+    --      ImageTable
 
     -- UserTable
 
@@ -95,12 +96,25 @@ function CopyUserIDToUserID() returns text as
         where userID = newID
           and entityID = newID::uuid
           and entityType = 1;
-
     insert into EntityTagTable
         select * from TempEntityTagTable;
+
+    -- Images
+
+    create temporary table TempImageTable
+        (like ImageTable) on commit drop;
+
+    insert into TempImageTable
+        select * from ImageTable
+        where userID = fromID;
+
+    update TempImageTable set userid = newID;
+
+    delete from ImageTable where userID = newID;
+    insert into ImageTable
+        select * from TempImageTable;
 
     return 'User copied';
     end;
     $$
     language plpgsql;
-

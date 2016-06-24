@@ -45,6 +45,8 @@
 @class BDebugMessageBuilder;
 @class BDeviceInfo;
 @class BDeviceInfoBuilder;
+@class BEditProfile;
+@class BEditProfileBuilder;
 @class BEducation;
 @class BEducationBuilder;
 @class BEmployment;
@@ -691,6 +693,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 #define RequestType_friendRequest @"friendRequest"
 #define RequestType_searchCategories @"searchCategories"
 #define RequestType_sendMessage @"sendMessage"
+#define RequestType_editProfile @"editProfile"
 @interface BRequestType : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
   BOOL hasSessionRequest_:1;
@@ -719,6 +722,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
   BOOL hasFriendRequest_:1;
   BOOL hasSearchCategories_:1;
   BOOL hasSendMessage_:1;
+  BOOL hasEditProfile_:1;
   BSessionRequest* sessionRequest;
   BUserEventBatch* userEventBatch;
   BUserProfileUpdate* userProfileUpdate;
@@ -745,6 +749,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
   BFriendUpdate* friendRequest;
   BSearchCategories* searchCategories;
   BUserMessage* sendMessage;
+  BEditProfile* editProfile;
 }
 - (BOOL) hasSessionRequest;
 - (BOOL) hasUserEventBatch;
@@ -772,6 +777,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BOOL) hasFriendRequest;
 - (BOOL) hasSearchCategories;
 - (BOOL) hasSendMessage;
+- (BOOL) hasEditProfile;
 @property (readonly, strong) BSessionRequest* sessionRequest;
 @property (readonly, strong) BUserEventBatch* userEventBatch;
 @property (readonly, strong) BUserProfileUpdate* userProfileUpdate;
@@ -798,6 +804,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 @property (readonly, strong) BFriendUpdate* friendRequest;
 @property (readonly, strong) BSearchCategories* searchCategories;
 @property (readonly, strong) BUserMessage* sendMessage;
+@property (readonly, strong) BEditProfile* editProfile;
 
 + (instancetype) defaultInstance;
 - (instancetype) defaultInstance;
@@ -1015,6 +1022,13 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BRequestTypeBuilder*) setSendMessageBuilder:(BUserMessageBuilder*) builderForValue;
 - (BRequestTypeBuilder*) mergeSendMessage:(BUserMessage*) value;
 - (BRequestTypeBuilder*) clearSendMessage;
+
+- (BOOL) hasEditProfile;
+- (BEditProfile*) editProfile;
+- (BRequestTypeBuilder*) setEditProfile:(BEditProfile*) value;
+- (BRequestTypeBuilder*) setEditProfileBuilder:(BEditProfileBuilder*) builderForValue;
+- (BRequestTypeBuilder*) mergeEditProfile:(BEditProfile*) value;
+- (BRequestTypeBuilder*) clearEditProfile;
 @end
 
 #define ServerRequest_sessionToken @"sessionToken"
@@ -1098,6 +1112,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 #define ResponseType_searchCategories @"searchCategories"
 #define ResponseType_feedPostResponse @"feedPostResponse"
 #define ResponseType_purchaseDescription @"purchaseDescription"
+#define ResponseType_editProfile @"editProfile"
 @interface BResponseType : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
   BOOL hasSessionResponse_:1;
@@ -1119,6 +1134,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
   BOOL hasSearchCategories_:1;
   BOOL hasFeedPostResponse_:1;
   BOOL hasPurchaseDescription_:1;
+  BOOL hasEditProfile_:1;
   BSessionResponse* sessionResponse;
   BUserEventBatchResponse* userEventBatchResponse;
   BUserProfileUpdate* userProfileUpdate;
@@ -1138,6 +1154,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
   BSearchCategories* searchCategories;
   BFeedPostResponse* feedPostResponse;
   BPurchaseDescription* purchaseDescription;
+  BEditProfile* editProfile;
 }
 - (BOOL) hasSessionResponse;
 - (BOOL) hasUserEventBatchResponse;
@@ -1158,6 +1175,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BOOL) hasSearchCategories;
 - (BOOL) hasFeedPostResponse;
 - (BOOL) hasPurchaseDescription;
+- (BOOL) hasEditProfile;
 @property (readonly, strong) BSessionResponse* sessionResponse;
 @property (readonly, strong) BUserEventBatchResponse* userEventBatchResponse;
 @property (readonly, strong) BUserProfileUpdate* userProfileUpdate;
@@ -1177,6 +1195,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 @property (readonly, strong) BSearchCategories* searchCategories;
 @property (readonly, strong) BFeedPostResponse* feedPostResponse;
 @property (readonly, strong) BPurchaseDescription* purchaseDescription;
+@property (readonly, strong) BEditProfile* editProfile;
 
 + (instancetype) defaultInstance;
 - (instancetype) defaultInstance;
@@ -1345,6 +1364,13 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BResponseTypeBuilder*) setPurchaseDescriptionBuilder:(BPurchaseDescriptionBuilder*) builderForValue;
 - (BResponseTypeBuilder*) mergePurchaseDescription:(BPurchaseDescription*) value;
 - (BResponseTypeBuilder*) clearPurchaseDescription;
+
+- (BOOL) hasEditProfile;
+- (BEditProfile*) editProfile;
+- (BResponseTypeBuilder*) setEditProfile:(BEditProfile*) value;
+- (BResponseTypeBuilder*) setEditProfileBuilder:(BEditProfileBuilder*) builderForValue;
+- (BResponseTypeBuilder*) mergeEditProfile:(BEditProfile*) value;
+- (BResponseTypeBuilder*) clearEditProfile;
 @end
 
 #define ServerResponse_responseCode @"responseCode"

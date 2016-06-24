@@ -20520,6 +20520,884 @@ public final class UserProfiles {
     // @@protoc_insertion_point(class_scope:BlitzMessage.UserInvite)
   }
 
+  public interface EditProfileOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:BlitzMessage.EditProfile)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional string profileID = 1;</code>
+     */
+    boolean hasProfileID();
+    /**
+     * <code>optional string profileID = 1;</code>
+     */
+    java.lang.String getProfileID();
+    /**
+     * <code>optional string profileID = 1;</code>
+     */
+    com.google.protobuf.ByteString
+        getProfileIDBytes();
+
+    /**
+     * <code>optional .BlitzMessage.UserProfile profile = 2;</code>
+     */
+    boolean hasProfile();
+    /**
+     * <code>optional .BlitzMessage.UserProfile profile = 2;</code>
+     */
+    com.blitzhere.BlitzMessage.UserProfiles.UserProfile getProfile();
+    /**
+     * <code>optional .BlitzMessage.UserProfile profile = 2;</code>
+     */
+    com.blitzhere.BlitzMessage.UserProfiles.UserProfileOrBuilder getProfileOrBuilder();
+
+    /**
+     * <code>optional .BlitzMessage.UserProfile editProfile = 3;</code>
+     */
+    boolean hasEditProfile();
+    /**
+     * <code>optional .BlitzMessage.UserProfile editProfile = 3;</code>
+     */
+    com.blitzhere.BlitzMessage.UserProfiles.UserProfile getEditProfile();
+    /**
+     * <code>optional .BlitzMessage.UserProfile editProfile = 3;</code>
+     */
+    com.blitzhere.BlitzMessage.UserProfiles.UserProfileOrBuilder getEditProfileOrBuilder();
+  }
+  /**
+   * Protobuf type {@code BlitzMessage.EditProfile}
+   */
+  public static final class EditProfile extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:BlitzMessage.EditProfile)
+      EditProfileOrBuilder {
+    // Use EditProfile.newBuilder() to construct.
+    private EditProfile(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private EditProfile(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final EditProfile defaultInstance;
+    public static EditProfile getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public EditProfile getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private EditProfile(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000001;
+              profileID_ = bs;
+              break;
+            }
+            case 18: {
+              com.blitzhere.BlitzMessage.UserProfiles.UserProfile.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000002) == 0x00000002)) {
+                subBuilder = profile_.toBuilder();
+              }
+              profile_ = input.readMessage(com.blitzhere.BlitzMessage.UserProfiles.UserProfile.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(profile_);
+                profile_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000002;
+              break;
+            }
+            case 26: {
+              com.blitzhere.BlitzMessage.UserProfiles.UserProfile.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000004) == 0x00000004)) {
+                subBuilder = editProfile_.toBuilder();
+              }
+              editProfile_ = input.readMessage(com.blitzhere.BlitzMessage.UserProfiles.UserProfile.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(editProfile_);
+                editProfile_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000004;
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.blitzhere.BlitzMessage.UserProfiles.internal_static_BlitzMessage_EditProfile_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.blitzhere.BlitzMessage.UserProfiles.internal_static_BlitzMessage_EditProfile_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.blitzhere.BlitzMessage.UserProfiles.EditProfile.class, com.blitzhere.BlitzMessage.UserProfiles.EditProfile.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<EditProfile> PARSER =
+        new com.google.protobuf.AbstractParser<EditProfile>() {
+      public EditProfile parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new EditProfile(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<EditProfile> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int PROFILEID_FIELD_NUMBER = 1;
+    private java.lang.Object profileID_;
+    /**
+     * <code>optional string profileID = 1;</code>
+     */
+    public boolean hasProfileID() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional string profileID = 1;</code>
+     */
+    public java.lang.String getProfileID() {
+      java.lang.Object ref = profileID_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          profileID_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string profileID = 1;</code>
+     */
+    public com.google.protobuf.ByteString
+        getProfileIDBytes() {
+      java.lang.Object ref = profileID_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        profileID_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int PROFILE_FIELD_NUMBER = 2;
+    private com.blitzhere.BlitzMessage.UserProfiles.UserProfile profile_;
+    /**
+     * <code>optional .BlitzMessage.UserProfile profile = 2;</code>
+     */
+    public boolean hasProfile() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional .BlitzMessage.UserProfile profile = 2;</code>
+     */
+    public com.blitzhere.BlitzMessage.UserProfiles.UserProfile getProfile() {
+      return profile_;
+    }
+    /**
+     * <code>optional .BlitzMessage.UserProfile profile = 2;</code>
+     */
+    public com.blitzhere.BlitzMessage.UserProfiles.UserProfileOrBuilder getProfileOrBuilder() {
+      return profile_;
+    }
+
+    public static final int EDITPROFILE_FIELD_NUMBER = 3;
+    private com.blitzhere.BlitzMessage.UserProfiles.UserProfile editProfile_;
+    /**
+     * <code>optional .BlitzMessage.UserProfile editProfile = 3;</code>
+     */
+    public boolean hasEditProfile() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional .BlitzMessage.UserProfile editProfile = 3;</code>
+     */
+    public com.blitzhere.BlitzMessage.UserProfiles.UserProfile getEditProfile() {
+      return editProfile_;
+    }
+    /**
+     * <code>optional .BlitzMessage.UserProfile editProfile = 3;</code>
+     */
+    public com.blitzhere.BlitzMessage.UserProfiles.UserProfileOrBuilder getEditProfileOrBuilder() {
+      return editProfile_;
+    }
+
+    private void initFields() {
+      profileID_ = "";
+      profile_ = com.blitzhere.BlitzMessage.UserProfiles.UserProfile.getDefaultInstance();
+      editProfile_ = com.blitzhere.BlitzMessage.UserProfiles.UserProfile.getDefaultInstance();
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (hasProfile()) {
+        if (!getProfile().isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
+      if (hasEditProfile()) {
+        if (!getEditProfile().isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeBytes(1, getProfileIDBytes());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeMessage(2, profile_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeMessage(3, editProfile_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(1, getProfileIDBytes());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(2, profile_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(3, editProfile_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.blitzhere.BlitzMessage.UserProfiles.EditProfile parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.blitzhere.BlitzMessage.UserProfiles.EditProfile parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.blitzhere.BlitzMessage.UserProfiles.EditProfile parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.blitzhere.BlitzMessage.UserProfiles.EditProfile parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.blitzhere.BlitzMessage.UserProfiles.EditProfile parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.blitzhere.BlitzMessage.UserProfiles.EditProfile parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.blitzhere.BlitzMessage.UserProfiles.EditProfile parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.blitzhere.BlitzMessage.UserProfiles.EditProfile parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.blitzhere.BlitzMessage.UserProfiles.EditProfile parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.blitzhere.BlitzMessage.UserProfiles.EditProfile parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.blitzhere.BlitzMessage.UserProfiles.EditProfile prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code BlitzMessage.EditProfile}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:BlitzMessage.EditProfile)
+        com.blitzhere.BlitzMessage.UserProfiles.EditProfileOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.blitzhere.BlitzMessage.UserProfiles.internal_static_BlitzMessage_EditProfile_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.blitzhere.BlitzMessage.UserProfiles.internal_static_BlitzMessage_EditProfile_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.blitzhere.BlitzMessage.UserProfiles.EditProfile.class, com.blitzhere.BlitzMessage.UserProfiles.EditProfile.Builder.class);
+      }
+
+      // Construct using com.blitzhere.BlitzMessage.UserProfiles.EditProfile.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getProfileFieldBuilder();
+          getEditProfileFieldBuilder();
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        profileID_ = "";
+        bitField0_ = (bitField0_ & ~0x00000001);
+        if (profileBuilder_ == null) {
+          profile_ = com.blitzhere.BlitzMessage.UserProfiles.UserProfile.getDefaultInstance();
+        } else {
+          profileBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000002);
+        if (editProfileBuilder_ == null) {
+          editProfile_ = com.blitzhere.BlitzMessage.UserProfiles.UserProfile.getDefaultInstance();
+        } else {
+          editProfileBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000004);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.blitzhere.BlitzMessage.UserProfiles.internal_static_BlitzMessage_EditProfile_descriptor;
+      }
+
+      public com.blitzhere.BlitzMessage.UserProfiles.EditProfile getDefaultInstanceForType() {
+        return com.blitzhere.BlitzMessage.UserProfiles.EditProfile.getDefaultInstance();
+      }
+
+      public com.blitzhere.BlitzMessage.UserProfiles.EditProfile build() {
+        com.blitzhere.BlitzMessage.UserProfiles.EditProfile result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.blitzhere.BlitzMessage.UserProfiles.EditProfile buildPartial() {
+        com.blitzhere.BlitzMessage.UserProfiles.EditProfile result = new com.blitzhere.BlitzMessage.UserProfiles.EditProfile(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.profileID_ = profileID_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        if (profileBuilder_ == null) {
+          result.profile_ = profile_;
+        } else {
+          result.profile_ = profileBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        if (editProfileBuilder_ == null) {
+          result.editProfile_ = editProfile_;
+        } else {
+          result.editProfile_ = editProfileBuilder_.build();
+        }
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.blitzhere.BlitzMessage.UserProfiles.EditProfile) {
+          return mergeFrom((com.blitzhere.BlitzMessage.UserProfiles.EditProfile)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.blitzhere.BlitzMessage.UserProfiles.EditProfile other) {
+        if (other == com.blitzhere.BlitzMessage.UserProfiles.EditProfile.getDefaultInstance()) return this;
+        if (other.hasProfileID()) {
+          bitField0_ |= 0x00000001;
+          profileID_ = other.profileID_;
+          onChanged();
+        }
+        if (other.hasProfile()) {
+          mergeProfile(other.getProfile());
+        }
+        if (other.hasEditProfile()) {
+          mergeEditProfile(other.getEditProfile());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (hasProfile()) {
+          if (!getProfile().isInitialized()) {
+            
+            return false;
+          }
+        }
+        if (hasEditProfile()) {
+          if (!getEditProfile().isInitialized()) {
+            
+            return false;
+          }
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.blitzhere.BlitzMessage.UserProfiles.EditProfile parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.blitzhere.BlitzMessage.UserProfiles.EditProfile) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private java.lang.Object profileID_ = "";
+      /**
+       * <code>optional string profileID = 1;</code>
+       */
+      public boolean hasProfileID() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional string profileID = 1;</code>
+       */
+      public java.lang.String getProfileID() {
+        java.lang.Object ref = profileID_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            profileID_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string profileID = 1;</code>
+       */
+      public com.google.protobuf.ByteString
+          getProfileIDBytes() {
+        java.lang.Object ref = profileID_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          profileID_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string profileID = 1;</code>
+       */
+      public Builder setProfileID(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        profileID_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string profileID = 1;</code>
+       */
+      public Builder clearProfileID() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        profileID_ = getDefaultInstance().getProfileID();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string profileID = 1;</code>
+       */
+      public Builder setProfileIDBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        profileID_ = value;
+        onChanged();
+        return this;
+      }
+
+      private com.blitzhere.BlitzMessage.UserProfiles.UserProfile profile_ = com.blitzhere.BlitzMessage.UserProfiles.UserProfile.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          com.blitzhere.BlitzMessage.UserProfiles.UserProfile, com.blitzhere.BlitzMessage.UserProfiles.UserProfile.Builder, com.blitzhere.BlitzMessage.UserProfiles.UserProfileOrBuilder> profileBuilder_;
+      /**
+       * <code>optional .BlitzMessage.UserProfile profile = 2;</code>
+       */
+      public boolean hasProfile() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional .BlitzMessage.UserProfile profile = 2;</code>
+       */
+      public com.blitzhere.BlitzMessage.UserProfiles.UserProfile getProfile() {
+        if (profileBuilder_ == null) {
+          return profile_;
+        } else {
+          return profileBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .BlitzMessage.UserProfile profile = 2;</code>
+       */
+      public Builder setProfile(com.blitzhere.BlitzMessage.UserProfiles.UserProfile value) {
+        if (profileBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          profile_ = value;
+          onChanged();
+        } else {
+          profileBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000002;
+        return this;
+      }
+      /**
+       * <code>optional .BlitzMessage.UserProfile profile = 2;</code>
+       */
+      public Builder setProfile(
+          com.blitzhere.BlitzMessage.UserProfiles.UserProfile.Builder builderForValue) {
+        if (profileBuilder_ == null) {
+          profile_ = builderForValue.build();
+          onChanged();
+        } else {
+          profileBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000002;
+        return this;
+      }
+      /**
+       * <code>optional .BlitzMessage.UserProfile profile = 2;</code>
+       */
+      public Builder mergeProfile(com.blitzhere.BlitzMessage.UserProfiles.UserProfile value) {
+        if (profileBuilder_ == null) {
+          if (((bitField0_ & 0x00000002) == 0x00000002) &&
+              profile_ != com.blitzhere.BlitzMessage.UserProfiles.UserProfile.getDefaultInstance()) {
+            profile_ =
+              com.blitzhere.BlitzMessage.UserProfiles.UserProfile.newBuilder(profile_).mergeFrom(value).buildPartial();
+          } else {
+            profile_ = value;
+          }
+          onChanged();
+        } else {
+          profileBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000002;
+        return this;
+      }
+      /**
+       * <code>optional .BlitzMessage.UserProfile profile = 2;</code>
+       */
+      public Builder clearProfile() {
+        if (profileBuilder_ == null) {
+          profile_ = com.blitzhere.BlitzMessage.UserProfiles.UserProfile.getDefaultInstance();
+          onChanged();
+        } else {
+          profileBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+      /**
+       * <code>optional .BlitzMessage.UserProfile profile = 2;</code>
+       */
+      public com.blitzhere.BlitzMessage.UserProfiles.UserProfile.Builder getProfileBuilder() {
+        bitField0_ |= 0x00000002;
+        onChanged();
+        return getProfileFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .BlitzMessage.UserProfile profile = 2;</code>
+       */
+      public com.blitzhere.BlitzMessage.UserProfiles.UserProfileOrBuilder getProfileOrBuilder() {
+        if (profileBuilder_ != null) {
+          return profileBuilder_.getMessageOrBuilder();
+        } else {
+          return profile_;
+        }
+      }
+      /**
+       * <code>optional .BlitzMessage.UserProfile profile = 2;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          com.blitzhere.BlitzMessage.UserProfiles.UserProfile, com.blitzhere.BlitzMessage.UserProfiles.UserProfile.Builder, com.blitzhere.BlitzMessage.UserProfiles.UserProfileOrBuilder> 
+          getProfileFieldBuilder() {
+        if (profileBuilder_ == null) {
+          profileBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.blitzhere.BlitzMessage.UserProfiles.UserProfile, com.blitzhere.BlitzMessage.UserProfiles.UserProfile.Builder, com.blitzhere.BlitzMessage.UserProfiles.UserProfileOrBuilder>(
+                  getProfile(),
+                  getParentForChildren(),
+                  isClean());
+          profile_ = null;
+        }
+        return profileBuilder_;
+      }
+
+      private com.blitzhere.BlitzMessage.UserProfiles.UserProfile editProfile_ = com.blitzhere.BlitzMessage.UserProfiles.UserProfile.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          com.blitzhere.BlitzMessage.UserProfiles.UserProfile, com.blitzhere.BlitzMessage.UserProfiles.UserProfile.Builder, com.blitzhere.BlitzMessage.UserProfiles.UserProfileOrBuilder> editProfileBuilder_;
+      /**
+       * <code>optional .BlitzMessage.UserProfile editProfile = 3;</code>
+       */
+      public boolean hasEditProfile() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional .BlitzMessage.UserProfile editProfile = 3;</code>
+       */
+      public com.blitzhere.BlitzMessage.UserProfiles.UserProfile getEditProfile() {
+        if (editProfileBuilder_ == null) {
+          return editProfile_;
+        } else {
+          return editProfileBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .BlitzMessage.UserProfile editProfile = 3;</code>
+       */
+      public Builder setEditProfile(com.blitzhere.BlitzMessage.UserProfiles.UserProfile value) {
+        if (editProfileBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          editProfile_ = value;
+          onChanged();
+        } else {
+          editProfileBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000004;
+        return this;
+      }
+      /**
+       * <code>optional .BlitzMessage.UserProfile editProfile = 3;</code>
+       */
+      public Builder setEditProfile(
+          com.blitzhere.BlitzMessage.UserProfiles.UserProfile.Builder builderForValue) {
+        if (editProfileBuilder_ == null) {
+          editProfile_ = builderForValue.build();
+          onChanged();
+        } else {
+          editProfileBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000004;
+        return this;
+      }
+      /**
+       * <code>optional .BlitzMessage.UserProfile editProfile = 3;</code>
+       */
+      public Builder mergeEditProfile(com.blitzhere.BlitzMessage.UserProfiles.UserProfile value) {
+        if (editProfileBuilder_ == null) {
+          if (((bitField0_ & 0x00000004) == 0x00000004) &&
+              editProfile_ != com.blitzhere.BlitzMessage.UserProfiles.UserProfile.getDefaultInstance()) {
+            editProfile_ =
+              com.blitzhere.BlitzMessage.UserProfiles.UserProfile.newBuilder(editProfile_).mergeFrom(value).buildPartial();
+          } else {
+            editProfile_ = value;
+          }
+          onChanged();
+        } else {
+          editProfileBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000004;
+        return this;
+      }
+      /**
+       * <code>optional .BlitzMessage.UserProfile editProfile = 3;</code>
+       */
+      public Builder clearEditProfile() {
+        if (editProfileBuilder_ == null) {
+          editProfile_ = com.blitzhere.BlitzMessage.UserProfiles.UserProfile.getDefaultInstance();
+          onChanged();
+        } else {
+          editProfileBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000004);
+        return this;
+      }
+      /**
+       * <code>optional .BlitzMessage.UserProfile editProfile = 3;</code>
+       */
+      public com.blitzhere.BlitzMessage.UserProfiles.UserProfile.Builder getEditProfileBuilder() {
+        bitField0_ |= 0x00000004;
+        onChanged();
+        return getEditProfileFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .BlitzMessage.UserProfile editProfile = 3;</code>
+       */
+      public com.blitzhere.BlitzMessage.UserProfiles.UserProfileOrBuilder getEditProfileOrBuilder() {
+        if (editProfileBuilder_ != null) {
+          return editProfileBuilder_.getMessageOrBuilder();
+        } else {
+          return editProfile_;
+        }
+      }
+      /**
+       * <code>optional .BlitzMessage.UserProfile editProfile = 3;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          com.blitzhere.BlitzMessage.UserProfiles.UserProfile, com.blitzhere.BlitzMessage.UserProfiles.UserProfile.Builder, com.blitzhere.BlitzMessage.UserProfiles.UserProfileOrBuilder> 
+          getEditProfileFieldBuilder() {
+        if (editProfileBuilder_ == null) {
+          editProfileBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.blitzhere.BlitzMessage.UserProfiles.UserProfile, com.blitzhere.BlitzMessage.UserProfiles.UserProfile.Builder, com.blitzhere.BlitzMessage.UserProfiles.UserProfileOrBuilder>(
+                  getEditProfile(),
+                  getParentForChildren(),
+                  isClean());
+          editProfile_ = null;
+        }
+        return editProfileBuilder_;
+      }
+
+      // @@protoc_insertion_point(builder_scope:BlitzMessage.EditProfile)
+    }
+
+    static {
+      defaultInstance = new EditProfile(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:BlitzMessage.EditProfile)
+  }
+
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_BlitzMessage_SocialIdentity_descriptor;
   private static
@@ -20590,6 +21468,11 @@ public final class UserProfiles {
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_BlitzMessage_UserInvite_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_BlitzMessage_EditProfile_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_BlitzMessage_EditProfile_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -20671,19 +21554,22 @@ public final class UserProfiles {
       "\t\022.\n\013contactInfo\030\004 \001(\0132\031.BlitzMessage.Co",
       "ntactInfo\022+\n\010profiles\030\005 \003(\0132\031.BlitzMessa" +
       "ge.UserProfile\022\030\n\020confirmationCode\030\006 \001(\t" +
-      "*Z\n\013ContactType\022\r\n\tCTUnknown\020\000\022\016\n\nCTPhon" +
-      "eSMS\020\001\022\013\n\007CTEmail\020\002\022\n\n\006CTChat\020\003\022\023\n\017CTSoc" +
-      "ialService\020\004*j\n\nUserStatus\022\r\n\tUSUnknown\020" +
-      "\000\022\r\n\tUSBlocked\020\001\022\r\n\tUSInvited\020\002\022\014\n\010USAct" +
-      "ive\020\003\022\020\n\014USConfirming\020\004\022\017\n\013USConfirmed\020\005" +
-      "*:\n\006Gender\022\014\n\010GUnknown\020\000\022\013\n\007GFemale\020\001\022\t\n" +
-      "\005GMale\020\002\022\n\n\006GOther\020\003*F\n\014ImageContent\022\r\n\t" +
-      "ICUnknown\020\000\022\021\n\rICUserProfile\020\001\022\024\n\020ICUser",
-      "Background\020\002*i\n\014FriendStatus\022\r\n\tFSUnknow" +
-      "n\020\000\022\014\n\010FSDidAsk\020\001\022\r\n\tFSIgnored\020\002\022\016\n\nFSAc" +
-      "cepted\020\003\022\016\n\nFSWasAsked\020\004\022\r\n\tFSFriends\020\005B" +
-      "/\n\032com.blitzhere.BlitzMessage\210\001\001\322>\002\n\000\322>\003" +
-      "\022\001B\322>\002\030\001"
+      "\"|\n\013EditProfile\022\021\n\tprofileID\030\001 \001(\t\022*\n\007pr" +
+      "ofile\030\002 \001(\0132\031.BlitzMessage.UserProfile\022." +
+      "\n\013editProfile\030\003 \001(\0132\031.BlitzMessage.UserP" +
+      "rofile*Z\n\013ContactType\022\r\n\tCTUnknown\020\000\022\016\n\n" +
+      "CTPhoneSMS\020\001\022\013\n\007CTEmail\020\002\022\n\n\006CTChat\020\003\022\023\n" +
+      "\017CTSocialService\020\004*j\n\nUserStatus\022\r\n\tUSUn" +
+      "known\020\000\022\r\n\tUSBlocked\020\001\022\r\n\tUSInvited\020\002\022\014\n" +
+      "\010USActive\020\003\022\020\n\014USConfirming\020\004\022\017\n\013USConfi",
+      "rmed\020\005*:\n\006Gender\022\014\n\010GUnknown\020\000\022\013\n\007GFemal" +
+      "e\020\001\022\t\n\005GMale\020\002\022\n\n\006GOther\020\003*F\n\014ImageConte" +
+      "nt\022\r\n\tICUnknown\020\000\022\021\n\rICUserProfile\020\001\022\024\n\020" +
+      "ICUserBackground\020\002*i\n\014FriendStatus\022\r\n\tFS" +
+      "Unknown\020\000\022\014\n\010FSDidAsk\020\001\022\r\n\tFSIgnored\020\002\022\016" +
+      "\n\nFSAccepted\020\003\022\016\n\nFSWasAsked\020\004\022\r\n\tFSFrie" +
+      "nds\020\005B/\n\032com.blitzhere.BlitzMessage\210\001\001\322>" +
+      "\002\n\000\322>\003\022\001B\322>\002\030\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -20784,6 +21670,12 @@ public final class UserProfiles {
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_BlitzMessage_UserInvite_descriptor,
         new java.lang.String[] { "UserID", "FriendID", "Message", "ContactInfo", "Profiles", "ConfirmationCode", });
+    internal_static_BlitzMessage_EditProfile_descriptor =
+      getDescriptor().getMessageTypes().get(14);
+    internal_static_BlitzMessage_EditProfile_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_BlitzMessage_EditProfile_descriptor,
+        new java.lang.String[] { "ProfileID", "Profile", "EditProfile", });
     com.google.protobuf.ExtensionRegistry registry =
         com.google.protobuf.ExtensionRegistry.newInstance();
     registry.add(google.protobuf.ObjectivecDescriptor.objectivecFileOptions);

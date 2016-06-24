@@ -7,12 +7,14 @@ package main
 
 
 import (
+    "fmt"
     "time"
     "errors"
     "strings"
     "database/sql"
     "github.com/lib/pq"
     "violent.blue/GoKit/Log"
+    "violent.blue/GoKit/Util"
     "violent.blue/GoKit/pgsql"
     "BlitzMessage"
 )
@@ -345,6 +347,51 @@ func MergeProfileIDIntoProfileID(oldID string, newID string) error {
         Log.Debugf("Updated %d rows.", rowCount)
     }
     return nil
+}
+
+
+//----------------------------------------------------------------------------------------
+//
+//                                                                        StartEditProfile
+//
+//----------------------------------------------------------------------------------------
+
+
+func StartEditProfile(session *Session, editProfile *BlitzMessage.EditProfile,
+        ) *BlitzMessage.ServerResponse {
+    Log.LogFunctionName()
+
+    var error error
+    if editProfile == nil ||
+        editProfile.ProfileID == nil {
+        error = fmt.Errorf("Missing fields")
+        Log.LogError(error)
+        return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
+    }
+
+    editProfileID := Util.NewUUIDString()
+    row := config.DB.QueryRow(
+        `select CreateEditProfile($1, $2)`,
+        editProfile.ProfileID,
+        editProfileID,
+    )
+    var result sql.NullString
+    error = row.Scan(&result)
+    if error != nil || ! result.Valid || result.String != "Profile created" {
+        Log.Errorf("Can't create edit profile. Error: %v %+v.", error, result)
+        if error == nil { error = fmt.Errorf("%+v", result) }
+        return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
+    }
+
+    editProfile.Profile = ProfileForUserID(session, *editProfile.ProfileID)
+    editProfile.EditProfile = ProfileForUserID(session, editProfileID)
+
+    return &BlitzMessage.ServerResponse {
+        ResponseCode:       BlitzMessage.ResponseCode(BlitzMessage.ResponseCode_RCSuccess).Enum(),
+        ResponseType:       &BlitzMessage.ResponseType {
+            EditProfile:    editProfile,
+        },
+    }
 }
 
 

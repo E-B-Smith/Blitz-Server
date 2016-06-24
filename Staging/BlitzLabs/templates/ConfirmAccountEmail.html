@@ -1,6 +1,5 @@
 {{define "ConfirmAccountEmailSubject.html"}}{{.AppName}} Profile Confirmation{{end}}
 {{define "ConfirmAccountEmail.html"}}
-Confirm {{.AppName}}: {{.AppDeepLink}}
-
-Or use the code {{.AuthCode}}.
+Confirm {{.AppName}}: {{.AuthCode}}
+{{.AppDeepLink}}
 {{end}}

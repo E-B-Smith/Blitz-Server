@@ -228,3 +228,10 @@ message UserInvite {
 }
 
 
+message EditProfile {
+  optional string       profileID       = 1;
+  optional UserProfile  profile         = 2;
+  optional UserProfile  editProfile     = 3;
+}
+
+

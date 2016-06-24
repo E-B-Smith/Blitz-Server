@@ -7367,5 +7367,367 @@ static BUserInvite* defaultBUserInviteInstance = nil;
 }
 @end
 
+@interface BEditProfile ()
+@property (strong) NSString* profileID;
+@property (strong) BUserProfile* profile;
+@property (strong) BUserProfile* editProfile;
+@end
+
+@implementation BEditProfile
+
+- (BOOL) hasProfileID {
+  return !!hasProfileID_;
+}
+- (void) setHasProfileID:(BOOL) _value_ {
+  hasProfileID_ = !!_value_;
+}
+@synthesize profileID;
+- (BOOL) hasProfile {
+  return !!hasProfile_;
+}
+- (void) setHasProfile:(BOOL) _value_ {
+  hasProfile_ = !!_value_;
+}
+@synthesize profile;
+- (BOOL) hasEditProfile {
+  return !!hasEditProfile_;
+}
+- (void) setHasEditProfile:(BOOL) _value_ {
+  hasEditProfile_ = !!_value_;
+}
+@synthesize editProfile;
+- (instancetype) init {
+  if ((self = [super init])) {
+    self.profileID = @"";
+    self.profile = [BUserProfile defaultInstance];
+    self.editProfile = [BUserProfile defaultInstance];
+  }
+  return self;
+}
+static BEditProfile* defaultBEditProfileInstance = nil;
++ (void) initialize {
+  if (self == [BEditProfile class]) {
+    defaultBEditProfileInstance = [[BEditProfile alloc] init];
+  }
+}
++ (instancetype) defaultInstance {
+  return defaultBEditProfileInstance;
+}
+- (instancetype) defaultInstance {
+  return defaultBEditProfileInstance;
+}
+- (BOOL) isInitialized {
+  if (self.hasProfile) {
+    if (!self.profile.isInitialized) {
+      return NO;
+    }
+  }
+  if (self.hasEditProfile) {
+    if (!self.editProfile.isInitialized) {
+      return NO;
+    }
+  }
+  return YES;
+}
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
+  if (self.hasProfileID) {
+    [output writeString:1 value:self.profileID];
+  }
+  if (self.hasProfile) {
+    [output writeMessage:2 value:self.profile];
+  }
+  if (self.hasEditProfile) {
+    [output writeMessage:3 value:self.editProfile];
+  }
+  [self.unknownFields writeToCodedOutputStream:output];
+}
+- (SInt32) serializedSize {
+  __block SInt32 size_ = memoizedSerializedSize;
+  if (size_ != -1) {
+    return size_;
+  }
+
+  size_ = 0;
+  if (self.hasProfileID) {
+    size_ += computeStringSize(1, self.profileID);
+  }
+  if (self.hasProfile) {
+    size_ += computeMessageSize(2, self.profile);
+  }
+  if (self.hasEditProfile) {
+    size_ += computeMessageSize(3, self.editProfile);
+  }
+  size_ += self.unknownFields.serializedSize;
+  memoizedSerializedSize = size_;
+  return size_;
+}
++ (BEditProfile*) parseFromData:(NSData*) data {
+  return (BEditProfile*)[[[BEditProfile builder] mergeFromData:data] build];
+}
++ (BEditProfile*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BEditProfile*)[[[BEditProfile builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
+}
++ (BEditProfile*) parseFromInputStream:(NSInputStream*) input {
+  return (BEditProfile*)[[[BEditProfile builder] mergeFromInputStream:input] build];
+}
++ (BEditProfile*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BEditProfile*)[[[BEditProfile builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (BEditProfile*) parseFromCodedInputStream:(PBCodedInputStream*) input {
+  return (BEditProfile*)[[[BEditProfile builder] mergeFromCodedInputStream:input] build];
+}
++ (BEditProfile*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BEditProfile*)[[[BEditProfile builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (BEditProfileBuilder*) builder {
+  return [[BEditProfileBuilder alloc] init];
+}
++ (BEditProfileBuilder*) builderWithPrototype:(BEditProfile*) prototype {
+  return [[BEditProfile builder] mergeFrom:prototype];
+}
+- (BEditProfileBuilder*) builder {
+  return [BEditProfile builder];
+}
+- (BEditProfileBuilder*) toBuilder {
+  return [BEditProfile builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  if (self.hasProfileID) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"profileID", self.profileID];
+  }
+  if (self.hasProfile) {
+    [output appendFormat:@"%@%@ {\n", indent, @"profile"];
+    [self.profile writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
+  if (self.hasEditProfile) {
+    [output appendFormat:@"%@%@ {\n", indent, @"editProfile"];
+    [self.editProfile writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (void) storeInDictionary:(NSMutableDictionary *)dictionary {
+  if (self.hasProfileID) {
+    [dictionary setObject: self.profileID forKey: @"profileID"];
+  }
+  if (self.hasProfile) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.profile storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"profile"];
+  }
+  if (self.hasEditProfile) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.editProfile storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"editProfile"];
+  }
+  [self.unknownFields storeInDictionary:dictionary];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[BEditProfile class]]) {
+    return NO;
+  }
+  BEditProfile *otherMessage = other;
+  return
+      self.hasProfileID == otherMessage.hasProfileID &&
+      (!self.hasProfileID || [self.profileID isEqual:otherMessage.profileID]) &&
+      self.hasProfile == otherMessage.hasProfile &&
+      (!self.hasProfile || [self.profile isEqual:otherMessage.profile]) &&
+      self.hasEditProfile == otherMessage.hasEditProfile &&
+      (!self.hasEditProfile || [self.editProfile isEqual:otherMessage.editProfile]) &&
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  __block NSUInteger hashCode = 7;
+  if (self.hasProfileID) {
+    hashCode = hashCode * 31 + [self.profileID hash];
+  }
+  if (self.hasProfile) {
+    hashCode = hashCode * 31 + [self.profile hash];
+  }
+  if (self.hasEditProfile) {
+    hashCode = hashCode * 31 + [self.editProfile hash];
+  }
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
+}
+@end
+
+@interface BEditProfileBuilder()
+@property (strong) BEditProfile* resultEditProfile;
+@end
+
+@implementation BEditProfileBuilder
+@synthesize resultEditProfile;
+- (instancetype) init {
+  if ((self = [super init])) {
+    self.resultEditProfile = [[BEditProfile alloc] init];
+  }
+  return self;
+}
+- (PBGeneratedMessage*) internalGetResult {
+  return resultEditProfile;
+}
+- (BEditProfileBuilder*) clear {
+  self.resultEditProfile = [[BEditProfile alloc] init];
+  return self;
+}
+- (BEditProfileBuilder*) clone {
+  return [BEditProfile builderWithPrototype:resultEditProfile];
+}
+- (BEditProfile*) defaultInstance {
+  return [BEditProfile defaultInstance];
+}
+- (BEditProfile*) build {
+  [self checkInitialized];
+  return [self buildPartial];
+}
+- (BEditProfile*) buildPartial {
+  BEditProfile* returnMe = resultEditProfile;
+  self.resultEditProfile = nil;
+  return returnMe;
+}
+- (BEditProfileBuilder*) mergeFrom:(BEditProfile*) other {
+  if (other == [BEditProfile defaultInstance]) {
+    return self;
+  }
+  if (other.hasProfileID) {
+    [self setProfileID:other.profileID];
+  }
+  if (other.hasProfile) {
+    [self mergeProfile:other.profile];
+  }
+  if (other.hasEditProfile) {
+    [self mergeEditProfile:other.editProfile];
+  }
+  [self mergeUnknownFields:other.unknownFields];
+  return self;
+}
+- (BEditProfileBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
+  return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
+}
+- (BEditProfileBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  PBUnknownFieldSetBuilder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
+  while (YES) {
+    SInt32 tag = [input readTag];
+    switch (tag) {
+      case 0:
+        [self setUnknownFields:[unknownFields build]];
+        return self;
+      default: {
+        if (![self parseUnknownField:input unknownFields:unknownFields extensionRegistry:extensionRegistry tag:tag]) {
+          [self setUnknownFields:[unknownFields build]];
+          return self;
+        }
+        break;
+      }
+      case 10: {
+        [self setProfileID:[input readString]];
+        break;
+      }
+      case 18: {
+        BUserProfileBuilder* subBuilder = [BUserProfile builder];
+        if (self.hasProfile) {
+          [subBuilder mergeFrom:self.profile];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setProfile:[subBuilder buildPartial]];
+        break;
+      }
+      case 26: {
+        BUserProfileBuilder* subBuilder = [BUserProfile builder];
+        if (self.hasEditProfile) {
+          [subBuilder mergeFrom:self.editProfile];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setEditProfile:[subBuilder buildPartial]];
+        break;
+      }
+    }
+  }
+}
+- (BOOL) hasProfileID {
+  return resultEditProfile.hasProfileID;
+}
+- (NSString*) profileID {
+  return resultEditProfile.profileID;
+}
+- (BEditProfileBuilder*) setProfileID:(NSString*) value {
+  resultEditProfile.hasProfileID = YES;
+  resultEditProfile.profileID = value;
+  return self;
+}
+- (BEditProfileBuilder*) clearProfileID {
+  resultEditProfile.hasProfileID = NO;
+  resultEditProfile.profileID = @"";
+  return self;
+}
+- (BOOL) hasProfile {
+  return resultEditProfile.hasProfile;
+}
+- (BUserProfile*) profile {
+  return resultEditProfile.profile;
+}
+- (BEditProfileBuilder*) setProfile:(BUserProfile*) value {
+  resultEditProfile.hasProfile = YES;
+  resultEditProfile.profile = value;
+  return self;
+}
+- (BEditProfileBuilder*) setProfileBuilder:(BUserProfileBuilder*) builderForValue {
+  return [self setProfile:[builderForValue build]];
+}
+- (BEditProfileBuilder*) mergeProfile:(BUserProfile*) value {
+  if (resultEditProfile.hasProfile &&
+      resultEditProfile.profile != [BUserProfile defaultInstance]) {
+    resultEditProfile.profile =
+      [[[BUserProfile builderWithPrototype:resultEditProfile.profile] mergeFrom:value] buildPartial];
+  } else {
+    resultEditProfile.profile = value;
+  }
+  resultEditProfile.hasProfile = YES;
+  return self;
+}
+- (BEditProfileBuilder*) clearProfile {
+  resultEditProfile.hasProfile = NO;
+  resultEditProfile.profile = [BUserProfile defaultInstance];
+  return self;
+}
+- (BOOL) hasEditProfile {
+  return resultEditProfile.hasEditProfile;
+}
+- (BUserProfile*) editProfile {
+  return resultEditProfile.editProfile;
+}
+- (BEditProfileBuilder*) setEditProfile:(BUserProfile*) value {
+  resultEditProfile.hasEditProfile = YES;
+  resultEditProfile.editProfile = value;
+  return self;
+}
+- (BEditProfileBuilder*) setEditProfileBuilder:(BUserProfileBuilder*) builderForValue {
+  return [self setEditProfile:[builderForValue build]];
+}
+- (BEditProfileBuilder*) mergeEditProfile:(BUserProfile*) value {
+  if (resultEditProfile.hasEditProfile &&
+      resultEditProfile.editProfile != [BUserProfile defaultInstance]) {
+    resultEditProfile.editProfile =
+      [[[BUserProfile builderWithPrototype:resultEditProfile.editProfile] mergeFrom:value] buildPartial];
+  } else {
+    resultEditProfile.editProfile = value;
+  }
+  resultEditProfile.hasEditProfile = YES;
+  return self;
+}
+- (BEditProfileBuilder*) clearEditProfile {
+  resultEditProfile.hasEditProfile = NO;
+  resultEditProfile.editProfile = [BUserProfile defaultInstance];
+  return self;
+}
+@end
+
 
 // @@protoc_insertion_point(global_scope)

@@ -19,6 +19,8 @@
 @class BCoordinatePolygonBuilder;
 @class BCoordinateRegion;
 @class BCoordinateRegionBuilder;
+@class BEditProfile;
+@class BEditProfileBuilder;
 @class BEducation;
 @class BEducationBuilder;
 @class BEmployment;

@@ -112,6 +112,7 @@ message RequestType {
   optional FriendUpdate             friendRequest       = 24;
   optional SearchCategories         searchCategories    = 25;
   optional UserMessage              sendMessage         = 26;
+  optional EditProfile              editProfile         = 27;
 }
 
 
@@ -156,6 +157,7 @@ message ResponseType {
   optional SearchCategories       searchCategories        = 19;
   optional FeedPostResponse       feedPostResponse        = 20;
   optional PurchaseDescription    purchaseDescription     = 21;
+  optional EditProfile            editProfile             = 22;
 }
 
 

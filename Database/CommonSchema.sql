@@ -78,6 +78,7 @@ create table UserTable
     ,defaultCard        text    -- deprecated
 
     ,search             tsvector
+    ,editProfileID      text
     );
 create index UserSearchIndex on UserTable using gin(search);
 
@@ -525,51 +526,16 @@ function ResponseTimeForConversationUser(conversationIDIn text, userIDIn text) r
 
 ------------------------------------------------------------------------------------------
 --
---                                                                        Helper Functions
+--
+--                                                               User Profile Manipulation
+--
 --
 ------------------------------------------------------------------------------------------
 
 
-
-create function StringFromTimeInterval(timestamp1 timestamptz, timestamp2 timestamptz) returns text as
-    $$
-    declare
-        s text;
-        dys int; hrs int; m int;
-        sec real;
-        ti interval;
-    begin
-    if timestamp1 is null or timestamp2 is null then
-       return null;
-       end if;
-
-    if timestamp1 <= '-infinity'::timestamptz or timestamp1 >= 'infinity'::timestamptz or
-       timestamp2 <= '-infinity'::timestamptz or timestamp2 >= 'infinity'::timestamptz then
-        return 'infinity';
-        end if;
-
-    ti  := timestamp1 - timestamp2;
-    dys := extract(day from ti);
-    hrs := extract(hour from ti);
-    m   := extract(minutes from ti);
-    sec := extract(seconds from ti);
-
-    case
-    when dys > 0 then s := format('%s days, %s:%s:%s hours',
-        to_char(dys, 'FM999'), to_char(hrs, 'FM99'), to_char(m, 'FM09'), to_char(sec, 'FM09D0'));
-    when hrs > 0 then s := format('%s:%s:%s hours',
-        to_char(hrs, 'FM99'), to_char(m, 'FM09'), to_char(sec, 'FM09D0'));
-    when m > 0 then
-        s := format('%s:%s minutes', to_char(m, 'FM99'), to_char(sec, 'FM09D0'));
-    else
-        s := format('%s seconds', to_char(sec, 'FM09D0'));
-    end case;
-
-    return s;
-    end;
-    $$
-    language plpgsql immutable
-    returns null on null input;
+------------------------------------------------------------------------------------------
+--                                                                             EraseUserID
+------------------------------------------------------------------------------------------
 
 
 create or replace function EraseUserID(eraseID UserID) returns text as
@@ -595,6 +561,11 @@ create or replace function EraseUserID(eraseID UserID) returns text as
     $$
     language plpgsql
     returns null on null input;
+
+
+------------------------------------------------------------------------------------------
+--                                                                   MergeUserIDIntoUserID
+------------------------------------------------------------------------------------------
 
 
 create or replace
@@ -736,17 +707,266 @@ function MergeUserIDIntoUserID(oldID UserID, newID UserID) returns text as
     --  Done
 
     select EraseUserID(oldID) into result;
-
     if result = 'User erased'::text then
         result = 'User merged';
     else
         result = 'Merge failed';
-        end if;
+    end if;
 
     return result;
     end;
     $$
     language plpgsql
+    returns null on null input;
+
+
+------------------------------------------------------------------------------------------
+--                                                                      CopyUserIDToUserID
+------------------------------------------------------------------------------------------
+
+
+create or replace
+function CopyUserIDToUserID(fromID text, newID text) returns text as
+    $$
+    -- declare
+    --     fromID text;
+    --     newID  text;
+    begin
+
+    -- fromID := '24f1daba-3555-45d9-b19a-97ccc648fd0e';
+    --  newID := '24f1daba-3555-45d9-b19a-97ccc648fd0f';
+
+    --  Copy user tables:
+    --      UserTable
+    --      EducationTable
+    --      EmploymentTable
+    --      UserContactTable
+    --      EntityTagTable
+    --      ImageTable
+
+    -- UserTable
+
+    create temporary table TempUserTable
+        (like UserTable) on commit drop;
+
+    insert into TempUserTable
+        select * from UserTable
+        where userID = fromID;
+
+    update TempUserTable set userid = newID;
+
+    delete from UserTable where userID = newID;
+    insert into UserTable
+        select * from TempUserTable;
+
+    -- EducationTable
+
+    create temporary table TempEducationTable
+        (like EducationTable) on commit drop;
+
+    insert into TempEducationTable
+        select * from EducationTable
+        where userID = fromID;
+
+    update TempEducationTable set userid = newID;
+
+    delete from EducationTable where userID = newID;
+    insert into EducationTable
+        select * from TempEducationTable;
+
+    -- EmploymentTable
+
+    create temporary table TempEmploymentTable
+        (like EmploymentTable) on commit drop;
+
+    insert into TempEmploymentTable
+        select * from EmploymentTable
+        where userID = fromID;
+
+    update TempEmploymentTable set userid = newID;
+
+    delete from EmploymentTable where userID = newID;
+    insert into EmploymentTable
+        select * from TempEmploymentTable;
+
+    -- UserContactTable
+
+    create temporary table TempUserContactTable
+        (like UserContactTable) on commit drop;
+
+    insert into TempUserContactTable
+        select * from UserContactTable
+        where userID = fromID;
+
+    update TempUserContactTable set userid = newID;
+
+    delete from UserContactTable where userID = newID;
+    insert into UserContactTable
+        select * from TempUserContactTable;
+
+    --      EntityTagTable
+
+    create temporary table TempEntityTagTable
+        (like EntityTagTable) on commit drop;
+
+    insert into TempEntityTagTable
+        select * from EntityTagTable
+        where userID = fromID
+          and entityID = fromID::uuid
+          and entityType = 1;
+
+    update TempEntityTagTable set
+        userid = newID,
+        entityID = newID::uuid;
+
+    delete from EntityTagTable
+        where userID = newID
+          and entityID = newID::uuid
+          and entityType = 1;
+    insert into EntityTagTable
+        select * from TempEntityTagTable;
+
+    -- Images
+
+    create temporary table TempImageTable
+        (like ImageTable) on commit drop;
+
+    insert into TempImageTable
+        select * from ImageTable
+        where userID = fromID;
+
+    update TempImageTable set userid = newID;
+
+    delete from ImageTable where userID = newID;
+    insert into ImageTable
+        select * from TempImageTable;
+
+    return 'User copied';
+    end;
+    $$
+    language plpgsql;
+
+
+------------------------------------------------------------------------------------------
+--                                                                       CreateEditProfile
+------------------------------------------------------------------------------------------
+
+
+create or replace
+function CreateEditProfile(fromID text, newID text) returns text as
+    $$
+    declare
+        result text;
+    begin
+
+    select CopyUserIDToUserID(fromID, newID) into result;
+    if result <> 'User copied' then
+        return result;
+    end if;
+
+    update usertable set editprofileid = newID
+        where userID = fromID;
+
+    update userTable set
+        editprofileid = fromID,
+        userStatus = null
+        where userID = newID;
+
+    return 'Profile created';
+    end;
+    $$
+    language plpgsql;
+
+
+------------------------------------------------------------------------------------------
+--                                                                      ApproveEditProfile
+------------------------------------------------------------------------------------------
+
+
+create or replace
+function ApproveEditProfile(profileID text) returns text as
+    $$
+    declare
+        result text;
+        editID text;
+    begin
+
+    select editprofileid from usertable
+        where userID = profileID
+        into editID;
+
+    if character_length(editID) < 16 then
+        return 'Not approved';
+    end if;
+
+    select CopyUserIDToUserID(editID, profileID) into result;
+    if result <> 'User copied' then
+        return result;
+    end if;
+
+    update usertable set
+        editprofileid = null,
+        userStatus = 5
+        where userID = profileID;
+
+    select EraseUserID(editID) into result;
+    if result <> 'User erased' then
+       return result;
+    end if;
+
+    return 'Approved';
+    end;
+    $$
+    language plpgsql;
+
+
+------------------------------------------------------------------------------------------
+--
+--
+--                                                                        Helper Functions
+--
+--
+------------------------------------------------------------------------------------------
+
+
+create function StringFromTimeInterval(timestamp1 timestamptz, timestamp2 timestamptz) returns text as
+    $$
+    declare
+        s text;
+        dys int; hrs int; m int;
+        sec real;
+        ti interval;
+    begin
+    if timestamp1 is null or timestamp2 is null then
+       return null;
+       end if;
+
+    if timestamp1 <= '-infinity'::timestamptz or timestamp1 >= 'infinity'::timestamptz or
+       timestamp2 <= '-infinity'::timestamptz or timestamp2 >= 'infinity'::timestamptz then
+        return 'infinity';
+        end if;
+
+    ti  := timestamp1 - timestamp2;
+    dys := extract(day from ti);
+    hrs := extract(hour from ti);
+    m   := extract(minutes from ti);
+    sec := extract(seconds from ti);
+
+    case
+    when dys > 0 then s := format('%s days, %s:%s:%s hours',
+        to_char(dys, 'FM999'), to_char(hrs, 'FM99'), to_char(m, 'FM09'), to_char(sec, 'FM09D0'));
+    when hrs > 0 then s := format('%s:%s:%s hours',
+        to_char(hrs, 'FM99'), to_char(m, 'FM09'), to_char(sec, 'FM09D0'));
+    when m > 0 then
+        s := format('%s:%s minutes', to_char(m, 'FM99'), to_char(sec, 'FM09D0'));
+    else
+        s := format('%s seconds', to_char(sec, 'FM09D0'));
+    end case;
+
+    return s;
+    end;
+    $$
+    language plpgsql immutable
     returns null on null input;
 
 
@@ -760,7 +980,8 @@ function MergeUserIDIntoUserID(oldID UserID, newID UserID) returns text as
 -- select UserNameFromIPAddress('172.56.38.238');
 
 
-create or replace function UserNameFromIPAddress(ipaddress inet) returns text as
+create or replace
+function UserNameFromIPAddress(ipaddress inet) returns text as
     $$
     declare
         uid UserID;
