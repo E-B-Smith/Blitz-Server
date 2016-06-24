@@ -369,22 +369,42 @@ func StartEditProfile(session *Session, editProfile *BlitzMessage.EditProfile,
         return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
     }
 
-    editProfileID := Util.NewUUIDString()
-    row := config.DB.QueryRow(
-        `select CreateEditProfile($1, $2)`,
-        editProfile.ProfileID,
-        editProfileID,
-    )
-    var result sql.NullString
-    error = row.Scan(&result)
-    if error != nil || ! result.Valid || result.String != "Profile created" {
-        Log.Errorf("Can't create edit profile. Error: %v %+v.", error, result)
-        if error == nil { error = fmt.Errorf("%+v", result) }
+    userID := *editProfile.ProfileID
+    editID := Util.NewUUIDString()
+
+    profile := ProfileForUserID(session, userID)
+    if profile == nil {
         return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
     }
 
-    editProfile.Profile = ProfileForUserID(session, *editProfile.ProfileID)
-    editProfile.EditProfile = ProfileForUserID(session, editProfileID)
+    if profile.EditProfileID != nil && len(*profile.EditProfileID) > 0 {
+
+        if *profile.UserStatus >= BlitzMessage.UserStatus_USConfirmed {
+            editID = *profile.EditProfileID
+        } else {
+            editID = userID
+            userID = *profile.EditProfileID
+        }
+
+    } else {
+
+        row := config.DB.QueryRow(
+            `select CreateEditProfile($1, $2);`,
+            userID,
+            editID,
+        )
+        var result sql.NullString
+        error = row.Scan(&result)
+        if error != nil || ! result.Valid || result.String != "Profile created" {
+            Log.Errorf("Can't create edit profile. Error: %v %+v.", error, result)
+            if error == nil { error = fmt.Errorf("%+v", result) }
+            return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
+        }
+
+    }
+
+    editProfile.Profile = ProfileForUserID(session, userID)
+    editProfile.EditProfile = ProfileForUserID(session, editID)
 
     return &BlitzMessage.ServerResponse {
         ResponseCode:       BlitzMessage.ResponseCode(BlitzMessage.ResponseCode_RCSuccess).Enum(),
