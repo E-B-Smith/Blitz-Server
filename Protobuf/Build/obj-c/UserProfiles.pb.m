@@ -7371,6 +7371,7 @@ static BUserInvite* defaultBUserInviteInstance = nil;
 @property (strong) NSString* profileID;
 @property (strong) BUserProfile* profile;
 @property (strong) BUserProfile* editProfile;
+@property BOOL discardEdit;
 @end
 
 @implementation BEditProfile
@@ -7396,11 +7397,24 @@ static BUserInvite* defaultBUserInviteInstance = nil;
   hasEditProfile_ = !!_value_;
 }
 @synthesize editProfile;
+- (BOOL) hasDiscardEdit {
+  return !!hasDiscardEdit_;
+}
+- (void) setHasDiscardEdit:(BOOL) _value_ {
+  hasDiscardEdit_ = !!_value_;
+}
+- (BOOL) discardEdit {
+  return !!discardEdit_;
+}
+- (void) setDiscardEdit:(BOOL) _value_ {
+  discardEdit_ = !!_value_;
+}
 - (instancetype) init {
   if ((self = [super init])) {
     self.profileID = @"";
     self.profile = [BUserProfile defaultInstance];
     self.editProfile = [BUserProfile defaultInstance];
+    self.discardEdit = NO;
   }
   return self;
 }
@@ -7439,6 +7453,9 @@ static BEditProfile* defaultBEditProfileInstance = nil;
   if (self.hasEditProfile) {
     [output writeMessage:3 value:self.editProfile];
   }
+  if (self.hasDiscardEdit) {
+    [output writeBool:4 value:self.discardEdit];
+  }
   [self.unknownFields writeToCodedOutputStream:output];
 }
 - (SInt32) serializedSize {
@@ -7456,6 +7473,9 @@ static BEditProfile* defaultBEditProfileInstance = nil;
   }
   if (self.hasEditProfile) {
     size_ += computeMessageSize(3, self.editProfile);
+  }
+  if (self.hasDiscardEdit) {
+    size_ += computeBoolSize(4, self.discardEdit);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -7507,6 +7527,9 @@ static BEditProfile* defaultBEditProfileInstance = nil;
                          withIndent:[NSString stringWithFormat:@"%@  ", indent]];
     [output appendFormat:@"%@}\n", indent];
   }
+  if (self.hasDiscardEdit) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"discardEdit", [NSNumber numberWithBool:self.discardEdit]];
+  }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (void) storeInDictionary:(NSMutableDictionary *)dictionary {
@@ -7522,6 +7545,9 @@ static BEditProfile* defaultBEditProfileInstance = nil;
    NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
    [self.editProfile storeInDictionary:messageDictionary];
    [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"editProfile"];
+  }
+  if (self.hasDiscardEdit) {
+    [dictionary setObject: [NSNumber numberWithBool:self.discardEdit] forKey: @"discardEdit"];
   }
   [self.unknownFields storeInDictionary:dictionary];
 }
@@ -7540,6 +7566,8 @@ static BEditProfile* defaultBEditProfileInstance = nil;
       (!self.hasProfile || [self.profile isEqual:otherMessage.profile]) &&
       self.hasEditProfile == otherMessage.hasEditProfile &&
       (!self.hasEditProfile || [self.editProfile isEqual:otherMessage.editProfile]) &&
+      self.hasDiscardEdit == otherMessage.hasDiscardEdit &&
+      (!self.hasDiscardEdit || self.discardEdit == otherMessage.discardEdit) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
@@ -7552,6 +7580,9 @@ static BEditProfile* defaultBEditProfileInstance = nil;
   }
   if (self.hasEditProfile) {
     hashCode = hashCode * 31 + [self.editProfile hash];
+  }
+  if (self.hasDiscardEdit) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithBool:self.discardEdit] hash];
   }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
@@ -7605,6 +7636,9 @@ static BEditProfile* defaultBEditProfileInstance = nil;
   if (other.hasEditProfile) {
     [self mergeEditProfile:other.editProfile];
   }
+  if (other.hasDiscardEdit) {
+    [self setDiscardEdit:other.discardEdit];
+  }
   [self mergeUnknownFields:other.unknownFields];
   return self;
 }
@@ -7646,6 +7680,10 @@ static BEditProfile* defaultBEditProfileInstance = nil;
         }
         [input readMessage:subBuilder extensionRegistry:extensionRegistry];
         [self setEditProfile:[subBuilder buildPartial]];
+        break;
+      }
+      case 32: {
+        [self setDiscardEdit:[input readBool]];
         break;
       }
     }
@@ -7725,6 +7763,22 @@ static BEditProfile* defaultBEditProfileInstance = nil;
 - (BEditProfileBuilder*) clearEditProfile {
   resultEditProfile.hasEditProfile = NO;
   resultEditProfile.editProfile = [BUserProfile defaultInstance];
+  return self;
+}
+- (BOOL) hasDiscardEdit {
+  return resultEditProfile.hasDiscardEdit;
+}
+- (BOOL) discardEdit {
+  return resultEditProfile.discardEdit;
+}
+- (BEditProfileBuilder*) setDiscardEdit:(BOOL) value {
+  resultEditProfile.hasDiscardEdit = YES;
+  resultEditProfile.discardEdit = value;
+  return self;
+}
+- (BEditProfileBuilder*) clearDiscardEdit {
+  resultEditProfile.hasDiscardEdit = NO;
+  resultEditProfile.discardEdit = NO;
   return self;
 }
 @end

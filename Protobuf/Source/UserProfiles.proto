@@ -232,6 +232,7 @@ message EditProfile {
   optional string       profileID       = 1;
   optional UserProfile  profile         = 2;
   optional UserProfile  editProfile     = 3;
+  optional bool         discardEdit     = 4;
 }
 
 

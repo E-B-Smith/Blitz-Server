@@ -921,6 +921,43 @@ function ApproveEditProfile(profileID text) returns text as
 
 
 ------------------------------------------------------------------------------------------
+--                                                                      DiscardEditProfile
+------------------------------------------------------------------------------------------
+
+
+create or replace
+function DiscardEditProfile(profileID text) returns text as
+    $$
+    declare
+        result text;
+        editID text;
+    begin
+
+    select editprofileid from usertable
+        where userID = profileID
+        into editID;
+
+    if character_length(editID) < 16 then
+        return 'Not discarded';
+    end if;
+
+    update usertable set
+        editprofileid = null,
+        userStatus = 5
+        where userID = profileID;
+
+    select EraseUserID(editID) into result;
+    if result <> 'User erased' then
+       return result;
+    end if;
+
+    return 'Discarded';
+    end;
+    $$
+    language plpgsql;
+
+
+------------------------------------------------------------------------------------------
 --
 --
 --                                                                        Helper Functions

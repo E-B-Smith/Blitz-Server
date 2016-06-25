@@ -379,11 +379,27 @@ func StartEditProfile(session *Session, editProfile *BlitzMessage.EditProfile,
 
     if profile.EditProfileID != nil && len(*profile.EditProfileID) > 0 {
 
+        //  Make sure the editProfileID and profileID aren't swapped.
+
         if *profile.UserStatus >= BlitzMessage.UserStatus_USConfirmed {
             editID = *profile.EditProfileID
         } else {
             editID = userID
             userID = *profile.EditProfileID
+        }
+
+        //  Discard edit profile?
+
+        if editProfile.DiscardEdit != nil && *editProfile.DiscardEdit {
+            row := config.DB.QueryRow(
+                `select DiscardEditProfile($1);`,
+                userID,
+            )
+            var result sql.NullString
+            error = row.Scan(&result)
+            if error != nil || result.String != "Discarded" {
+                Log.Errorf("Discard edit result %v: %+v.", error, result)
+            }
         }
 
     } else {

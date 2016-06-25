@@ -1646,11 +1646,14 @@ NSString *NSStringFromBFriendStatus(BFriendStatus value);
 #define EditProfile_profileID @"profileID"
 #define EditProfile_profile @"profile"
 #define EditProfile_editProfile @"editProfile"
+#define EditProfile_discardEdit @"discardEdit"
 @interface BEditProfile : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
+  BOOL hasDiscardEdit_:1;
   BOOL hasProfileID_:1;
   BOOL hasProfile_:1;
   BOOL hasEditProfile_:1;
+  BOOL discardEdit_:1;
   NSString* profileID;
   BUserProfile* profile;
   BUserProfile* editProfile;
@@ -1658,9 +1661,11 @@ NSString *NSStringFromBFriendStatus(BFriendStatus value);
 - (BOOL) hasProfileID;
 - (BOOL) hasProfile;
 - (BOOL) hasEditProfile;
+- (BOOL) hasDiscardEdit;
 @property (readonly, strong) NSString* profileID;
 @property (readonly, strong) BUserProfile* profile;
 @property (readonly, strong) BUserProfile* editProfile;
+- (BOOL) discardEdit;
 
 + (instancetype) defaultInstance;
 - (instancetype) defaultInstance;
@@ -1715,6 +1720,11 @@ NSString *NSStringFromBFriendStatus(BFriendStatus value);
 - (BEditProfileBuilder*) setEditProfileBuilder:(BUserProfileBuilder*) builderForValue;
 - (BEditProfileBuilder*) mergeEditProfile:(BUserProfile*) value;
 - (BEditProfileBuilder*) clearEditProfile;
+
+- (BOOL) hasDiscardEdit;
+- (BOOL) discardEdit;
+- (BEditProfileBuilder*) setDiscardEdit:(BOOL) value;
+- (BEditProfileBuilder*) clearDiscardEdit;
 @end
 
 

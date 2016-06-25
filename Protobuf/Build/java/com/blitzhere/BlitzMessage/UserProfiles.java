@@ -20563,6 +20563,15 @@ public final class UserProfiles {
      * <code>optional .BlitzMessage.UserProfile editProfile = 3;</code>
      */
     com.blitzhere.BlitzMessage.UserProfiles.UserProfileOrBuilder getEditProfileOrBuilder();
+
+    /**
+     * <code>optional bool discardEdit = 4;</code>
+     */
+    boolean hasDiscardEdit();
+    /**
+     * <code>optional bool discardEdit = 4;</code>
+     */
+    boolean getDiscardEdit();
   }
   /**
    * Protobuf type {@code BlitzMessage.EditProfile}
@@ -20646,6 +20655,11 @@ public final class UserProfiles {
                 editProfile_ = subBuilder.buildPartial();
               }
               bitField0_ |= 0x00000004;
+              break;
+            }
+            case 32: {
+              bitField0_ |= 0x00000008;
+              discardEdit_ = input.readBool();
               break;
             }
           }
@@ -20772,10 +20786,26 @@ public final class UserProfiles {
       return editProfile_;
     }
 
+    public static final int DISCARDEDIT_FIELD_NUMBER = 4;
+    private boolean discardEdit_;
+    /**
+     * <code>optional bool discardEdit = 4;</code>
+     */
+    public boolean hasDiscardEdit() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional bool discardEdit = 4;</code>
+     */
+    public boolean getDiscardEdit() {
+      return discardEdit_;
+    }
+
     private void initFields() {
       profileID_ = "";
       profile_ = com.blitzhere.BlitzMessage.UserProfiles.UserProfile.getDefaultInstance();
       editProfile_ = com.blitzhere.BlitzMessage.UserProfiles.UserProfile.getDefaultInstance();
+      discardEdit_ = false;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -20811,6 +20841,9 @@ public final class UserProfiles {
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         output.writeMessage(3, editProfile_);
       }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeBool(4, discardEdit_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -20831,6 +20864,10 @@ public final class UserProfiles {
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(3, editProfile_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(4, discardEdit_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -20965,6 +21002,8 @@ public final class UserProfiles {
           editProfileBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000004);
+        discardEdit_ = false;
+        bitField0_ = (bitField0_ & ~0x00000008);
         return this;
       }
 
@@ -21013,6 +21052,10 @@ public final class UserProfiles {
         } else {
           result.editProfile_ = editProfileBuilder_.build();
         }
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.discardEdit_ = discardEdit_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -21039,6 +21082,9 @@ public final class UserProfiles {
         }
         if (other.hasEditProfile()) {
           mergeEditProfile(other.getEditProfile());
+        }
+        if (other.hasDiscardEdit()) {
+          setDiscardEdit(other.getDiscardEdit());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -21387,6 +21433,38 @@ public final class UserProfiles {
         return editProfileBuilder_;
       }
 
+      private boolean discardEdit_ ;
+      /**
+       * <code>optional bool discardEdit = 4;</code>
+       */
+      public boolean hasDiscardEdit() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional bool discardEdit = 4;</code>
+       */
+      public boolean getDiscardEdit() {
+        return discardEdit_;
+      }
+      /**
+       * <code>optional bool discardEdit = 4;</code>
+       */
+      public Builder setDiscardEdit(boolean value) {
+        bitField0_ |= 0x00000008;
+        discardEdit_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool discardEdit = 4;</code>
+       */
+      public Builder clearDiscardEdit() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        discardEdit_ = false;
+        onChanged();
+        return this;
+      }
+
       // @@protoc_insertion_point(builder_scope:BlitzMessage.EditProfile)
     }
 
@@ -21554,22 +21632,22 @@ public final class UserProfiles {
       "\t\022.\n\013contactInfo\030\004 \001(\0132\031.BlitzMessage.Co",
       "ntactInfo\022+\n\010profiles\030\005 \003(\0132\031.BlitzMessa" +
       "ge.UserProfile\022\030\n\020confirmationCode\030\006 \001(\t" +
-      "\"|\n\013EditProfile\022\021\n\tprofileID\030\001 \001(\t\022*\n\007pr" +
-      "ofile\030\002 \001(\0132\031.BlitzMessage.UserProfile\022." +
-      "\n\013editProfile\030\003 \001(\0132\031.BlitzMessage.UserP" +
-      "rofile*Z\n\013ContactType\022\r\n\tCTUnknown\020\000\022\016\n\n" +
-      "CTPhoneSMS\020\001\022\013\n\007CTEmail\020\002\022\n\n\006CTChat\020\003\022\023\n" +
-      "\017CTSocialService\020\004*j\n\nUserStatus\022\r\n\tUSUn" +
-      "known\020\000\022\r\n\tUSBlocked\020\001\022\r\n\tUSInvited\020\002\022\014\n" +
-      "\010USActive\020\003\022\020\n\014USConfirming\020\004\022\017\n\013USConfi",
-      "rmed\020\005*:\n\006Gender\022\014\n\010GUnknown\020\000\022\013\n\007GFemal" +
-      "e\020\001\022\t\n\005GMale\020\002\022\n\n\006GOther\020\003*F\n\014ImageConte" +
-      "nt\022\r\n\tICUnknown\020\000\022\021\n\rICUserProfile\020\001\022\024\n\020" +
-      "ICUserBackground\020\002*i\n\014FriendStatus\022\r\n\tFS" +
-      "Unknown\020\000\022\014\n\010FSDidAsk\020\001\022\r\n\tFSIgnored\020\002\022\016" +
-      "\n\nFSAccepted\020\003\022\016\n\nFSWasAsked\020\004\022\r\n\tFSFrie" +
-      "nds\020\005B/\n\032com.blitzhere.BlitzMessage\210\001\001\322>" +
-      "\002\n\000\322>\003\022\001B\322>\002\030\001"
+      "\"\221\001\n\013EditProfile\022\021\n\tprofileID\030\001 \001(\t\022*\n\007p" +
+      "rofile\030\002 \001(\0132\031.BlitzMessage.UserProfile\022" +
+      ".\n\013editProfile\030\003 \001(\0132\031.BlitzMessage.User" +
+      "Profile\022\023\n\013discardEdit\030\004 \001(\010*Z\n\013ContactT" +
+      "ype\022\r\n\tCTUnknown\020\000\022\016\n\nCTPhoneSMS\020\001\022\013\n\007CT" +
+      "Email\020\002\022\n\n\006CTChat\020\003\022\023\n\017CTSocialService\020\004" +
+      "*j\n\nUserStatus\022\r\n\tUSUnknown\020\000\022\r\n\tUSBlock" +
+      "ed\020\001\022\r\n\tUSInvited\020\002\022\014\n\010USActive\020\003\022\020\n\014USC",
+      "onfirming\020\004\022\017\n\013USConfirmed\020\005*:\n\006Gender\022\014" +
+      "\n\010GUnknown\020\000\022\013\n\007GFemale\020\001\022\t\n\005GMale\020\002\022\n\n\006" +
+      "GOther\020\003*F\n\014ImageContent\022\r\n\tICUnknown\020\000\022" +
+      "\021\n\rICUserProfile\020\001\022\024\n\020ICUserBackground\020\002" +
+      "*i\n\014FriendStatus\022\r\n\tFSUnknown\020\000\022\014\n\010FSDid" +
+      "Ask\020\001\022\r\n\tFSIgnored\020\002\022\016\n\nFSAccepted\020\003\022\016\n\n" +
+      "FSWasAsked\020\004\022\r\n\tFSFriends\020\005B/\n\032com.blitz" +
+      "here.BlitzMessage\210\001\001\322>\002\n\000\322>\003\022\001B\322>\002\030\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -21675,7 +21753,7 @@ public final class UserProfiles {
     internal_static_BlitzMessage_EditProfile_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_BlitzMessage_EditProfile_descriptor,
-        new java.lang.String[] { "ProfileID", "Profile", "EditProfile", });
+        new java.lang.String[] { "ProfileID", "Profile", "EditProfile", "DiscardEdit", });
     com.google.protobuf.ExtensionRegistry registry =
         com.google.protobuf.ExtensionRegistry.newInstance();
     registry.add(google.protobuf.ObjectivecDescriptor.objectivecFileOptions);

@@ -103,14 +103,17 @@ func UserIsConfirming(session *Session, confirmation *BlitzMessage.ConfirmationR
     //  This is our real profile.
 
     row = config.DB.QueryRow(
-        `select userID from usercontacttable
+        `select c.userID from usercontacttable c
+             join UserTable u on u.userID = c.userID
             where contact = $1
               and contacttype = $2
               and isVerified = true
+              and userStatus >= $3
             order by codedate desc nulls first
-            limit 1`,
+            limit 1;`,
         confirmation.ContactInfo.Contact,
         confirmation.ContactInfo.ContactType,
+        BlitzMessage.UserStatus_USConfirmed,
     )
 
     var oldestUserID sql.NullString
