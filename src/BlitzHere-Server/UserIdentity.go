@@ -149,7 +149,7 @@ func ExistingProfileFromIdentities(session *Session, identities []string) *Blitz
             return nil
         }
         rowCount++
-        profile = ProfileForUserID(session, userID)
+        profile = ProfileForUserID(session.UserID, userID)
         if profile != nil {
             Log.Debugf("Found row count %d: %s.", rowCount, *profile.UserID);
             return profile;
@@ -195,7 +195,7 @@ func ProfilesFromContactInfo(session *Session, profilesIn []*BlitzMessage.UserPr
                     Log.LogError(error)
                     continue
                 }
-                memberProfile := ProfileForUserID(session, userID)
+                memberProfile := ProfileForUserID(session.UserID, userID)
                 if memberProfile != nil {
                     profileMap[*memberProfile.UserID] = memberProfile
                     rowCount++

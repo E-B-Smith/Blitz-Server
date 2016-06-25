@@ -372,7 +372,7 @@ func StartEditProfile(session *Session, editProfile *BlitzMessage.EditProfile,
     userID := *editProfile.ProfileID
     editID := Util.NewUUIDString()
 
-    profile := ProfileForUserID(session, userID)
+    profile := ProfileForUserID(session.UserID, userID)
     if profile == nil {
         return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
     }
@@ -419,8 +419,8 @@ func StartEditProfile(session *Session, editProfile *BlitzMessage.EditProfile,
 
     }
 
-    editProfile.Profile = ProfileForUserID(session, userID)
-    editProfile.EditProfile = ProfileForUserID(session, editID)
+    editProfile.Profile = ProfileForUserID(userID, userID)
+    editProfile.EditProfile = ProfileForUserID(editID, editID)
 
     return &BlitzMessage.ServerResponse {
         ResponseCode:       BlitzMessage.ResponseCode(BlitzMessage.ResponseCode_RCSuccess).Enum(),

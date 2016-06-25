@@ -279,7 +279,7 @@ func PrettyNameForUserID(userID string) string {
 //----------------------------------------------------------------------------------------
 
 
-func ProfileForUserID(session *Session, userID string) *BlitzMessage.UserProfile {
+func ProfileForUserID(sessionUserID string, userID string) *BlitzMessage.UserProfile {
     Log.Infof("ProfileForUserId (%T) %s.", userID, userID)
 
     rows, error := config.DB.Query(
@@ -358,8 +358,8 @@ func ProfileForUserID(session *Session, userID string) *BlitzMessage.UserProfile
     profile.Images       = ImagesForUserID(userID)
     profile.SocialIdentities = SocialIdentitiesWithUserID(userID)
     profile.ContactInfo   = ContactInfoForUserID(userID)
-    if session != nil {
-        profile.EntityTags= GetEntityTagsWithUserID(session.UserID, userID, BlitzMessage.EntityType_ETUser)
+    if len(sessionUserID) > 0 {
+        profile.EntityTags= GetEntityTagsWithUserID(sessionUserID, userID, BlitzMessage.EntityType_ETUser)
     }
     profile.Education     = EducationForUserID(userID)
     profile.Employment    = EmploymentForUserID(userID)
@@ -460,8 +460,9 @@ func QueryProfilesByEntity(session *Session, query *BlitzMessage.UserProfileQuer
         if error != nil {
             Log.LogError(error)
         } else {
-            profile := ProfileForUserID(session, userID)
-            if profile != nil {
+            profile := ProfileForUserID(session.UserID, userID)
+            if profile != nil && profile.UserStatus != nil &&
+                *profile.UserStatus >= BlitzMessage.UserStatus_USConfirmed {
                 profileUpdate.Profiles = append(profileUpdate.Profiles, profile)
             }
         }
@@ -496,7 +497,7 @@ func QueryProfiles(session *Session, query *BlitzMessage.UserProfileQuery,
             `select userID from UserTable
                 where userStatus >= $1
                 limit 10;`,
-            BlitzMessage.UserStatus_USConfirming,
+            BlitzMessage.UserStatus_USConfirmed,
         )
         if error != nil {
             Log.LogError(error)
@@ -518,7 +519,7 @@ func QueryProfiles(session *Session, query *BlitzMessage.UserProfileQuery,
 
     var profileUpdate BlitzMessage.UserProfileUpdate
     for _, userID := range profileList {
-        profile := ProfileForUserID(session, userID)
+        profile := ProfileForUserID(session.UserID, userID)
         if profile != nil {
             profileUpdate.Profiles = append(profileUpdate.Profiles, profile)
         }

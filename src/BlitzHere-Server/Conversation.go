@@ -372,7 +372,7 @@ func StartConversation(session *Session, req *BlitzMessage.ConversationRequest) 
 
     profiles := make([]*BlitzMessage.UserProfile, 0, 3)
     for _, memberID := range memberArray {
-        profile := ProfileForUserID(session, memberID)
+        profile := ProfileForUserID(session.UserID, memberID)
         if profile != nil {
             profiles = append(profiles, profile)
         }

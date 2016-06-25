@@ -407,8 +407,8 @@ func SendFriendRequest(session *Session, request *BlitzMessage.FriendUpdate) *Bl
     }
 
     profiles := make([]*BlitzMessage.UserProfile, 2)
-    profiles[0] = ProfileForUserID(session, session.UserID)
-    profiles[1] = ProfileForUserID(session, *request.FriendID)
+    profiles[0] = ProfileForUserID(session.UserID, session.UserID)
+    profiles[1] = ProfileForUserID(session.UserID, *request.FriendID)
 
     response := BlitzMessage.FriendUpdate {
         FriendStatus:       request.FriendStatus,

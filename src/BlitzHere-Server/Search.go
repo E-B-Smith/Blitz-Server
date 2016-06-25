@@ -126,8 +126,10 @@ func UserSearchRequest(session *Session, query *BlitzMessage.UserSearchRequest,
     rows, error := config.DB.Query(
         `select userid from usertable
             where search @@ to_tsquery('english', $1)
+              and userStatus >= $2
             order by ts_rank(search, to_tsquery('english', $1)) desc;`,
         queryString,
+        BlitzMessage.UserStatus_USConfirmed,
     )
 
     defer pgsql.CloseRows(rows)
@@ -144,7 +146,7 @@ func UserSearchRequest(session *Session, query *BlitzMessage.UserSearchRequest,
         if error != nil || ! userID.Valid {
             Log.LogError(error)
         } else {
-            userprofile := ProfileForUserID(session, userID.String)
+            userprofile := ProfileForUserID(session.UserID, userID.String)
             if userprofile != nil { profiles = append(profiles, userprofile) }
         }
     }

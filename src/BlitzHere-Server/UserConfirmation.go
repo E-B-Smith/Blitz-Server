@@ -159,7 +159,7 @@ func UserIsConfirming(session *Session, confirmation *BlitzMessage.ConfirmationR
     }
 
     UpdateProfileStatusForUserID(session.UserID, BlitzMessage.UserStatus_USConfirmed)
-    profile := ProfileForUserID(session, session.UserID)
+    profile := ProfileForUserID(session.UserID, session.UserID)
 
     confirmed := BlitzMessage.ConfirmationRequest {
         UserProfile: profile,
@@ -367,12 +367,12 @@ func AcceptInviteRequest(session *Session, invite *BlitzMessage.UserInvite,
         return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, errors.New("No contact info"))
     }
 
-    currentProfile := ProfileForUserID(session, session.UserID)
+    currentProfile := ProfileForUserID(session.UserID, session.UserID)
     if currentProfile == nil {
         return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, errors.New("No Profile"))
     }
 
-    inviteProfile := ProfileForUserID(session, *invite.UserID)
+    inviteProfile := ProfileForUserID(session.UserID, *invite.UserID)
     if inviteProfile == nil {
         return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, errors.New("No Profile"))
     }
@@ -397,7 +397,7 @@ func AcceptInviteRequest(session *Session, invite *BlitzMessage.UserInvite,
         }
     }
 
-    currentProfile = ProfileForUserID(session, resultProfileID)
+    currentProfile = ProfileForUserID(session.UserID, resultProfileID)
     var status BlitzMessage.UserStatus = BlitzMessage.UserStatus_USConfirmed
     currentProfile.UserStatus = &status
     if currentProfile.ContactInfo == nil { currentProfile.ContactInfo = make([]*BlitzMessage.ContactInfo, 0, 1) }
