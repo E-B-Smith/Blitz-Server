@@ -2245,6 +2245,7 @@ static BPushDisconnect* defaultBPushDisconnectInstance = nil;
 @property (strong) BSearchCategories* searchCategories;
 @property (strong) BUserMessage* sendMessage;
 @property (strong) BEditProfile* editProfile;
+@property (strong) BFetchConversationGroups* fetchConversationGroups;
 @end
 
 @implementation BRequestType
@@ -2438,6 +2439,13 @@ static BPushDisconnect* defaultBPushDisconnectInstance = nil;
   hasEditProfile_ = !!_value_;
 }
 @synthesize editProfile;
+- (BOOL) hasFetchConversationGroups {
+  return !!hasFetchConversationGroups_;
+}
+- (void) setHasFetchConversationGroups:(BOOL) _value_ {
+  hasFetchConversationGroups_ = !!_value_;
+}
+@synthesize fetchConversationGroups;
 - (instancetype) init {
   if ((self = [super init])) {
     self.sessionRequest = [BSessionRequest defaultInstance];
@@ -2467,6 +2475,7 @@ static BPushDisconnect* defaultBPushDisconnectInstance = nil;
     self.searchCategories = [BSearchCategories defaultInstance];
     self.sendMessage = [BUserMessage defaultInstance];
     self.editProfile = [BEditProfile defaultInstance];
+    self.fetchConversationGroups = [BFetchConversationGroups defaultInstance];
   }
   return self;
 }
@@ -2602,6 +2611,9 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   if (self.hasEditProfile) {
     [output writeMessage:27 value:self.editProfile];
   }
+  if (self.hasFetchConversationGroups) {
+    [output writeMessage:28 value:self.fetchConversationGroups];
+  }
   [self.unknownFields writeToCodedOutputStream:output];
 }
 - (SInt32) serializedSize {
@@ -2691,6 +2703,9 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   }
   if (self.hasEditProfile) {
     size_ += computeMessageSize(27, self.editProfile);
+  }
+  if (self.hasFetchConversationGroups) {
+    size_ += computeMessageSize(28, self.fetchConversationGroups);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -2889,6 +2904,12 @@ static BRequestType* defaultBRequestTypeInstance = nil;
                          withIndent:[NSString stringWithFormat:@"%@  ", indent]];
     [output appendFormat:@"%@}\n", indent];
   }
+  if (self.hasFetchConversationGroups) {
+    [output appendFormat:@"%@%@ {\n", indent, @"fetchConversationGroups"];
+    [self.fetchConversationGroups writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (void) storeInDictionary:(NSMutableDictionary *)dictionary {
@@ -3027,6 +3048,11 @@ static BRequestType* defaultBRequestTypeInstance = nil;
    [self.editProfile storeInDictionary:messageDictionary];
    [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"editProfile"];
   }
+  if (self.hasFetchConversationGroups) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.fetchConversationGroups storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"fetchConversationGroups"];
+  }
   [self.unknownFields storeInDictionary:dictionary];
 }
 - (BOOL) isEqual:(id)other {
@@ -3092,6 +3118,8 @@ static BRequestType* defaultBRequestTypeInstance = nil;
       (!self.hasSendMessage || [self.sendMessage isEqual:otherMessage.sendMessage]) &&
       self.hasEditProfile == otherMessage.hasEditProfile &&
       (!self.hasEditProfile || [self.editProfile isEqual:otherMessage.editProfile]) &&
+      self.hasFetchConversationGroups == otherMessage.hasFetchConversationGroups &&
+      (!self.hasFetchConversationGroups || [self.fetchConversationGroups isEqual:otherMessage.fetchConversationGroups]) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
@@ -3176,6 +3204,9 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   }
   if (self.hasEditProfile) {
     hashCode = hashCode * 31 + [self.editProfile hash];
+  }
+  if (self.hasFetchConversationGroups) {
+    hashCode = hashCode * 31 + [self.fetchConversationGroups hash];
   }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
@@ -3300,6 +3331,9 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   }
   if (other.hasEditProfile) {
     [self mergeEditProfile:other.editProfile];
+  }
+  if (other.hasFetchConversationGroups) {
+    [self mergeFetchConversationGroups:other.fetchConversationGroups];
   }
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -3563,6 +3597,15 @@ static BRequestType* defaultBRequestTypeInstance = nil;
         }
         [input readMessage:subBuilder extensionRegistry:extensionRegistry];
         [self setEditProfile:[subBuilder buildPartial]];
+        break;
+      }
+      case 226: {
+        BFetchConversationGroupsBuilder* subBuilder = [BFetchConversationGroups builder];
+        if (self.hasFetchConversationGroups) {
+          [subBuilder mergeFrom:self.fetchConversationGroups];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setFetchConversationGroups:[subBuilder buildPartial]];
         break;
       }
     }
@@ -4378,6 +4421,36 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   resultRequestType.editProfile = [BEditProfile defaultInstance];
   return self;
 }
+- (BOOL) hasFetchConversationGroups {
+  return resultRequestType.hasFetchConversationGroups;
+}
+- (BFetchConversationGroups*) fetchConversationGroups {
+  return resultRequestType.fetchConversationGroups;
+}
+- (BRequestTypeBuilder*) setFetchConversationGroups:(BFetchConversationGroups*) value {
+  resultRequestType.hasFetchConversationGroups = YES;
+  resultRequestType.fetchConversationGroups = value;
+  return self;
+}
+- (BRequestTypeBuilder*) setFetchConversationGroupsBuilder:(BFetchConversationGroupsBuilder*) builderForValue {
+  return [self setFetchConversationGroups:[builderForValue build]];
+}
+- (BRequestTypeBuilder*) mergeFetchConversationGroups:(BFetchConversationGroups*) value {
+  if (resultRequestType.hasFetchConversationGroups &&
+      resultRequestType.fetchConversationGroups != [BFetchConversationGroups defaultInstance]) {
+    resultRequestType.fetchConversationGroups =
+      [[[BFetchConversationGroups builderWithPrototype:resultRequestType.fetchConversationGroups] mergeFrom:value] buildPartial];
+  } else {
+    resultRequestType.fetchConversationGroups = value;
+  }
+  resultRequestType.hasFetchConversationGroups = YES;
+  return self;
+}
+- (BRequestTypeBuilder*) clearFetchConversationGroups {
+  resultRequestType.hasFetchConversationGroups = NO;
+  resultRequestType.fetchConversationGroups = [BFetchConversationGroups defaultInstance];
+  return self;
+}
 @end
 
 @interface BServerRequest ()
@@ -4685,6 +4758,7 @@ static BServerRequest* defaultBServerRequestInstance = nil;
 @property (strong) BFeedPostResponse* feedPostResponse;
 @property (strong) BPurchaseDescription* purchaseDescription;
 @property (strong) BEditProfile* editProfile;
+@property (strong) BFetchConversationGroups* fetchConversationGroups;
 @end
 
 @implementation BResponseType
@@ -4829,6 +4903,13 @@ static BServerRequest* defaultBServerRequestInstance = nil;
   hasEditProfile_ = !!_value_;
 }
 @synthesize editProfile;
+- (BOOL) hasFetchConversationGroups {
+  return !!hasFetchConversationGroups_;
+}
+- (void) setHasFetchConversationGroups:(BOOL) _value_ {
+  hasFetchConversationGroups_ = !!_value_;
+}
+@synthesize fetchConversationGroups;
 - (instancetype) init {
   if ((self = [super init])) {
     self.sessionResponse = [BSessionResponse defaultInstance];
@@ -4851,6 +4932,7 @@ static BServerRequest* defaultBServerRequestInstance = nil;
     self.feedPostResponse = [BFeedPostResponse defaultInstance];
     self.purchaseDescription = [BPurchaseDescription defaultInstance];
     self.editProfile = [BEditProfile defaultInstance];
+    self.fetchConversationGroups = [BFetchConversationGroups defaultInstance];
   }
   return self;
 }
@@ -4970,6 +5052,9 @@ static BResponseType* defaultBResponseTypeInstance = nil;
   if (self.hasEditProfile) {
     [output writeMessage:22 value:self.editProfile];
   }
+  if (self.hasFetchConversationGroups) {
+    [output writeMessage:23 value:self.fetchConversationGroups];
+  }
   [self.unknownFields writeToCodedOutputStream:output];
 }
 - (SInt32) serializedSize {
@@ -5038,6 +5123,9 @@ static BResponseType* defaultBResponseTypeInstance = nil;
   }
   if (self.hasEditProfile) {
     size_ += computeMessageSize(22, self.editProfile);
+  }
+  if (self.hasFetchConversationGroups) {
+    size_ += computeMessageSize(23, self.fetchConversationGroups);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -5194,6 +5282,12 @@ static BResponseType* defaultBResponseTypeInstance = nil;
                          withIndent:[NSString stringWithFormat:@"%@  ", indent]];
     [output appendFormat:@"%@}\n", indent];
   }
+  if (self.hasFetchConversationGroups) {
+    [output appendFormat:@"%@%@ {\n", indent, @"fetchConversationGroups"];
+    [self.fetchConversationGroups writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (void) storeInDictionary:(NSMutableDictionary *)dictionary {
@@ -5297,6 +5391,11 @@ static BResponseType* defaultBResponseTypeInstance = nil;
    [self.editProfile storeInDictionary:messageDictionary];
    [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"editProfile"];
   }
+  if (self.hasFetchConversationGroups) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.fetchConversationGroups storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"fetchConversationGroups"];
+  }
   [self.unknownFields storeInDictionary:dictionary];
 }
 - (BOOL) isEqual:(id)other {
@@ -5348,6 +5447,8 @@ static BResponseType* defaultBResponseTypeInstance = nil;
       (!self.hasPurchaseDescription || [self.purchaseDescription isEqual:otherMessage.purchaseDescription]) &&
       self.hasEditProfile == otherMessage.hasEditProfile &&
       (!self.hasEditProfile || [self.editProfile isEqual:otherMessage.editProfile]) &&
+      self.hasFetchConversationGroups == otherMessage.hasFetchConversationGroups &&
+      (!self.hasFetchConversationGroups || [self.fetchConversationGroups isEqual:otherMessage.fetchConversationGroups]) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
@@ -5411,6 +5512,9 @@ static BResponseType* defaultBResponseTypeInstance = nil;
   }
   if (self.hasEditProfile) {
     hashCode = hashCode * 31 + [self.editProfile hash];
+  }
+  if (self.hasFetchConversationGroups) {
+    hashCode = hashCode * 31 + [self.fetchConversationGroups hash];
   }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
@@ -5514,6 +5618,9 @@ static BResponseType* defaultBResponseTypeInstance = nil;
   }
   if (other.hasEditProfile) {
     [self mergeEditProfile:other.editProfile];
+  }
+  if (other.hasFetchConversationGroups) {
+    [self mergeFetchConversationGroups:other.fetchConversationGroups];
   }
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -5714,6 +5821,15 @@ static BResponseType* defaultBResponseTypeInstance = nil;
         }
         [input readMessage:subBuilder extensionRegistry:extensionRegistry];
         [self setEditProfile:[subBuilder buildPartial]];
+        break;
+      }
+      case 186: {
+        BFetchConversationGroupsBuilder* subBuilder = [BFetchConversationGroups builder];
+        if (self.hasFetchConversationGroups) {
+          [subBuilder mergeFrom:self.fetchConversationGroups];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setFetchConversationGroups:[subBuilder buildPartial]];
         break;
       }
     }
@@ -6317,6 +6433,36 @@ static BResponseType* defaultBResponseTypeInstance = nil;
 - (BResponseTypeBuilder*) clearEditProfile {
   resultResponseType.hasEditProfile = NO;
   resultResponseType.editProfile = [BEditProfile defaultInstance];
+  return self;
+}
+- (BOOL) hasFetchConversationGroups {
+  return resultResponseType.hasFetchConversationGroups;
+}
+- (BFetchConversationGroups*) fetchConversationGroups {
+  return resultResponseType.fetchConversationGroups;
+}
+- (BResponseTypeBuilder*) setFetchConversationGroups:(BFetchConversationGroups*) value {
+  resultResponseType.hasFetchConversationGroups = YES;
+  resultResponseType.fetchConversationGroups = value;
+  return self;
+}
+- (BResponseTypeBuilder*) setFetchConversationGroupsBuilder:(BFetchConversationGroupsBuilder*) builderForValue {
+  return [self setFetchConversationGroups:[builderForValue build]];
+}
+- (BResponseTypeBuilder*) mergeFetchConversationGroups:(BFetchConversationGroups*) value {
+  if (resultResponseType.hasFetchConversationGroups &&
+      resultResponseType.fetchConversationGroups != [BFetchConversationGroups defaultInstance]) {
+    resultResponseType.fetchConversationGroups =
+      [[[BFetchConversationGroups builderWithPrototype:resultResponseType.fetchConversationGroups] mergeFrom:value] buildPartial];
+  } else {
+    resultResponseType.fetchConversationGroups = value;
+  }
+  resultResponseType.hasFetchConversationGroups = YES;
+  return self;
+}
+- (BResponseTypeBuilder*) clearFetchConversationGroups {
+  resultResponseType.hasFetchConversationGroups = NO;
+  resultResponseType.fetchConversationGroups = [BFetchConversationGroups defaultInstance];
   return self;
 }
 @end

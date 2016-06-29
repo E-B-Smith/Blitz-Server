@@ -591,10 +591,33 @@ func FetchNotificationsAsConversations(userID string) []*BlitzMessage.Conversati
 func FetchConversations(session *Session, req *BlitzMessage.FetchConversations) *BlitzMessage.ServerResponse {
     Log.LogFunctionName()
 
-    rows, error := config.DB.Query(
-        `select conversationID from ConversationMemberTable where memberID = $1;`,
-        session.UserID,
-    )
+    var rows *sql.Rows
+    var error error
+
+    if len(req.UserID) > 0 {
+
+        queryString :=
+            `select conversationID from conversationmembertable `
+
+        for _, uid := range req.UserID {
+            queryString += fmt.Sprintf(
+                `intersect select conversationID from conversationmembertable where memberID = '%s' `,
+                uid,
+            )
+        }
+
+        queryString += ";"
+        Log.Debugf("Query is '%s'.", queryString)
+        rows, error = config.DB.Query(queryString)
+
+    } else {
+
+        rows, error = config.DB.Query(
+            `select conversationID from ConversationMemberTable where memberID = $1;`,
+            session.UserID,
+        )
+    }
+
     if error != nil {
         return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
     }
@@ -614,8 +637,10 @@ func FetchConversations(session *Session, req *BlitzMessage.FetchConversations) 
         }
     }
 
-    convos = append(convos, FetchFeedPostsAsConversations(session.UserID)...)
-    convos = append(convos, FetchNotificationsAsConversations(session.UserID)...)
+    if len(req.UserID) == 0 {
+        convos = append(convos, FetchFeedPostsAsConversations(session.UserID)...)
+        convos = append(convos, FetchNotificationsAsConversations(session.UserID)...)
+    }
 
     response := BlitzMessage.FetchConversations { Conversations: convos }
     serverResponse := &BlitzMessage.ServerResponse {
@@ -686,4 +711,7 @@ func UpdateConversationStatus(session *Session, updateStatus *BlitzMessage.Updat
 
     return serverResponse
 }
+
+
+
 

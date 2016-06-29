@@ -57,6 +57,21 @@ message Conversation {
 }
 
 
+message ConversationGroup {
+  optional string             groupID       = 1;    //  For feed items, feed.postID, conversations then 'other' memberID.
+  optional ConversationType   groupType     = 2;
+  optional string             userID        = 3;    //  Feed: Initiator | Message: other userID.
+  optional Timestamp          activityDate  = 4;
+  optional string             headlineText  = 5;
+  optional string             statusText    = 6;
+  optional string             lastMessage   = 7;
+  optional string             lastUserID    = 8;    //  UserID from last message.
+  optional int32              totalCount    = 9;
+  optional int32              unreadCount   = 10;
+  optional string             actionURL     = 11;
+}
+
+
 message ConversationRequest {
   repeated string             userIDs          = 1;
   optional string             parentFeedPostID = 2;
@@ -71,7 +86,14 @@ message ConversationResponse {
 
 message FetchConversations {
   optional Timespan       timespan            = 1;
+  repeated string         userID              = 3;
   repeated Conversation   conversations       = 2;
+}
+
+
+message FetchConversationGroups {
+  optional Timespan           timespan            = 1;
+  repeated ConversationGroup   conversations      = 2;
 }
 
 

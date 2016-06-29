@@ -62,9 +62,11 @@ It has these top-level messages:
 	UserEventBatch
 	UserEventBatchResponse
 	Conversation
+	ConversationGroup
 	ConversationRequest
 	ConversationResponse
 	FetchConversations
+	FetchConversationGroups
 	UpdateConversationStatus
 	UserMessage
 	UserMessageUpdate

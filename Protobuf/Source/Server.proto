@@ -113,6 +113,7 @@ message RequestType {
   optional SearchCategories         searchCategories    = 25;
   optional UserMessage              sendMessage         = 26;
   optional EditProfile              editProfile         = 27;
+  optional FetchConversationGroups  fetchConversationGroups = 28;
 }
 
 
@@ -158,6 +159,7 @@ message ResponseType {
   optional FeedPostResponse       feedPostResponse        = 20;
   optional PurchaseDescription    purchaseDescription     = 21;
   optional EditProfile            editProfile             = 22;
+  optional FetchConversationGroups  fetchConversationGroups = 23;
 }
 
 

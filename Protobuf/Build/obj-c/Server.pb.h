@@ -31,6 +31,8 @@
 @class BContactInfoBuilder;
 @class BConversation;
 @class BConversationBuilder;
+@class BConversationGroup;
+@class BConversationGroupBuilder;
 @class BConversationRequest;
 @class BConversationRequestBuilder;
 @class BConversationResponse;
@@ -63,6 +65,8 @@
 @class BFeedPostResponseBuilder;
 @class BFeedPostUpdateRequest;
 @class BFeedPostUpdateRequestBuilder;
+@class BFetchConversationGroups;
+@class BFetchConversationGroupsBuilder;
 @class BFetchConversations;
 @class BFetchConversationsBuilder;
 @class BFriendUpdate;
@@ -694,6 +698,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 #define RequestType_searchCategories @"searchCategories"
 #define RequestType_sendMessage @"sendMessage"
 #define RequestType_editProfile @"editProfile"
+#define RequestType_fetchConversationGroups @"fetchConversationGroups"
 @interface BRequestType : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
   BOOL hasSessionRequest_:1;
@@ -723,6 +728,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
   BOOL hasSearchCategories_:1;
   BOOL hasSendMessage_:1;
   BOOL hasEditProfile_:1;
+  BOOL hasFetchConversationGroups_:1;
   BSessionRequest* sessionRequest;
   BUserEventBatch* userEventBatch;
   BUserProfileUpdate* userProfileUpdate;
@@ -750,6 +756,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
   BSearchCategories* searchCategories;
   BUserMessage* sendMessage;
   BEditProfile* editProfile;
+  BFetchConversationGroups* fetchConversationGroups;
 }
 - (BOOL) hasSessionRequest;
 - (BOOL) hasUserEventBatch;
@@ -778,6 +785,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BOOL) hasSearchCategories;
 - (BOOL) hasSendMessage;
 - (BOOL) hasEditProfile;
+- (BOOL) hasFetchConversationGroups;
 @property (readonly, strong) BSessionRequest* sessionRequest;
 @property (readonly, strong) BUserEventBatch* userEventBatch;
 @property (readonly, strong) BUserProfileUpdate* userProfileUpdate;
@@ -805,6 +813,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 @property (readonly, strong) BSearchCategories* searchCategories;
 @property (readonly, strong) BUserMessage* sendMessage;
 @property (readonly, strong) BEditProfile* editProfile;
+@property (readonly, strong) BFetchConversationGroups* fetchConversationGroups;
 
 + (instancetype) defaultInstance;
 - (instancetype) defaultInstance;
@@ -1029,6 +1038,13 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BRequestTypeBuilder*) setEditProfileBuilder:(BEditProfileBuilder*) builderForValue;
 - (BRequestTypeBuilder*) mergeEditProfile:(BEditProfile*) value;
 - (BRequestTypeBuilder*) clearEditProfile;
+
+- (BOOL) hasFetchConversationGroups;
+- (BFetchConversationGroups*) fetchConversationGroups;
+- (BRequestTypeBuilder*) setFetchConversationGroups:(BFetchConversationGroups*) value;
+- (BRequestTypeBuilder*) setFetchConversationGroupsBuilder:(BFetchConversationGroupsBuilder*) builderForValue;
+- (BRequestTypeBuilder*) mergeFetchConversationGroups:(BFetchConversationGroups*) value;
+- (BRequestTypeBuilder*) clearFetchConversationGroups;
 @end
 
 #define ServerRequest_sessionToken @"sessionToken"
@@ -1113,6 +1129,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 #define ResponseType_feedPostResponse @"feedPostResponse"
 #define ResponseType_purchaseDescription @"purchaseDescription"
 #define ResponseType_editProfile @"editProfile"
+#define ResponseType_fetchConversationGroups @"fetchConversationGroups"
 @interface BResponseType : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
   BOOL hasSessionResponse_:1;
@@ -1135,6 +1152,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
   BOOL hasFeedPostResponse_:1;
   BOOL hasPurchaseDescription_:1;
   BOOL hasEditProfile_:1;
+  BOOL hasFetchConversationGroups_:1;
   BSessionResponse* sessionResponse;
   BUserEventBatchResponse* userEventBatchResponse;
   BUserProfileUpdate* userProfileUpdate;
@@ -1155,6 +1173,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
   BFeedPostResponse* feedPostResponse;
   BPurchaseDescription* purchaseDescription;
   BEditProfile* editProfile;
+  BFetchConversationGroups* fetchConversationGroups;
 }
 - (BOOL) hasSessionResponse;
 - (BOOL) hasUserEventBatchResponse;
@@ -1176,6 +1195,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BOOL) hasFeedPostResponse;
 - (BOOL) hasPurchaseDescription;
 - (BOOL) hasEditProfile;
+- (BOOL) hasFetchConversationGroups;
 @property (readonly, strong) BSessionResponse* sessionResponse;
 @property (readonly, strong) BUserEventBatchResponse* userEventBatchResponse;
 @property (readonly, strong) BUserProfileUpdate* userProfileUpdate;
@@ -1196,6 +1216,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 @property (readonly, strong) BFeedPostResponse* feedPostResponse;
 @property (readonly, strong) BPurchaseDescription* purchaseDescription;
 @property (readonly, strong) BEditProfile* editProfile;
+@property (readonly, strong) BFetchConversationGroups* fetchConversationGroups;
 
 + (instancetype) defaultInstance;
 - (instancetype) defaultInstance;
@@ -1371,6 +1392,13 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BResponseTypeBuilder*) setEditProfileBuilder:(BEditProfileBuilder*) builderForValue;
 - (BResponseTypeBuilder*) mergeEditProfile:(BEditProfile*) value;
 - (BResponseTypeBuilder*) clearEditProfile;
+
+- (BOOL) hasFetchConversationGroups;
+- (BFetchConversationGroups*) fetchConversationGroups;
+- (BResponseTypeBuilder*) setFetchConversationGroups:(BFetchConversationGroups*) value;
+- (BResponseTypeBuilder*) setFetchConversationGroupsBuilder:(BFetchConversationGroupsBuilder*) builderForValue;
+- (BResponseTypeBuilder*) mergeFetchConversationGroups:(BFetchConversationGroups*) value;
+- (BResponseTypeBuilder*) clearFetchConversationGroups;
 @end
 
 #define ServerResponse_responseCode @"responseCode"

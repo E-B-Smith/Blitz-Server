@@ -343,6 +343,9 @@ func DispatchServiceRequests(writer http.ResponseWriter, httpRequest *http.Reque
     case *BlitzMessage.EditProfile:
         response = StartEditProfile(session, requestMessageType)
 
+    case *BlitzMessage.FetchConversationGroups:
+        response = FetchConversationGroups(session, requestMessageType)
+
     default:
         error = fmt.Errorf("Unrecognized request '%+v'", request)
         response = ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)

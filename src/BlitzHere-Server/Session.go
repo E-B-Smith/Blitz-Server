@@ -352,7 +352,7 @@ func UpdateSession(ipAddress string,
 
     Log.Debugf("Updating user %s.", userID)
 
-    /* This was a half-baked idea.  I was trying to ID users by old sessions.  Security flaw.
+    /* This was a half-baked idea.  I was trying to find users by old sessions.  Security flaw.
 
     identities := IdentityStringsFromProfile(request.Profile)
     identities  = IdentityStringsForDevice(identities,

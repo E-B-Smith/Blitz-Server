@@ -32,6 +32,12 @@ func MaxInt(a, b int) int {
 }
 
 
+func Int32PtrFromInt64(i int64) *int32 {
+    v32 := int32(i)
+    return &v32
+}
+
+
 func Int32PtrFromNullInt64(v sql.NullInt64) *int32 {
     v32 := int32(v.Int64)
     return &v32

@@ -400,7 +400,7 @@ func SendFriendRequest(session *Session, request *BlitzMessage.FriendUpdate) *Bl
             []string { *request.FriendID },
             "",
             message,
-            BlitzMessage.UserMessageType_MTNotification,
+            BlitzMessage.UserMessageType_MTActionNotification,
             "",
             actionURL,
         )

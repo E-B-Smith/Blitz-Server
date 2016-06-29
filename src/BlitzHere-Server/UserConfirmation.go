@@ -320,7 +320,7 @@ func UserConfirmation(session *Session, confirmation *BlitzMessage.ConfirmationR
             []string{ *confirmation.InviterUserID },
             "",
             message,
-            BlitzMessage.UserMessageType_MTNotification,
+            BlitzMessage.UserMessageType_MTActionNotification,
             "AppIcon",
             "",
         )

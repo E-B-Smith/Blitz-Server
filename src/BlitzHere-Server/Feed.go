@@ -568,11 +568,12 @@ func FetchFeedPosts(session *Session, fetchRequest *BlitzMessage.FeedPostFetchRe
         rows, error = config.DB.Query(
             `select ` + kScanFeedRowString +
             `   from FeedPostTable
-                where postStatus = $1
-                  and parentID = $2
+                where (postID = $1
+                   or parentID = $1)
+                  and postStatus <> $2
                 order by timestamp desc;`,
-            BlitzMessage.FeedPostStatus_FPSActive,
             parentID,
+            BlitzMessage.FeedPostStatus_FPSDeleted,
         )
 
     }
