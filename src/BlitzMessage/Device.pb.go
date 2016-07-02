@@ -42,6 +42,7 @@ It has these top-level messages:
 	BlitzHereAppOptions
 	AppOptions
 	SessionResponse
+	LoginAsAdmin
 	PushConnect
 	PushDisconnect
 	RequestType

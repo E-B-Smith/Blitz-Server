@@ -837,10 +837,12 @@ NSString *NSStringFromBFriendStatus(BFriendStatus value);
 #define UserProfile_chatFee @"chatFee"
 #define UserProfile_userInfo @"userInfo"
 #define UserProfile_editProfileID @"editProfileID"
+#define UserProfile_isAdmin @"isAdmin"
 @interface BUserProfile : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
   BOOL hasIsExpert_:1;
   BOOL hasServiceIsFreeForUser_:1;
+  BOOL hasIsAdmin_:1;
   BOOL hasRatingResponsive_:1;
   BOOL hasRatingOutgoing_:1;
   BOOL hasRatingRecommended_:1;
@@ -861,6 +863,7 @@ NSString *NSStringFromBFriendStatus(BFriendStatus value);
   BOOL hasGender_:1;
   BOOL isExpert_:1;
   BOOL serviceIsFreeForUser_:1;
+  BOOL isAdmin_:1;
   Float64 ratingResponsive;
   Float64 ratingOutgoing;
   Float64 ratingRecommended;
@@ -908,6 +911,7 @@ NSString *NSStringFromBFriendStatus(BFriendStatus value);
 - (BOOL) hasChatFee;
 - (BOOL) hasUserInfo;
 - (BOOL) hasEditProfileID;
+- (BOOL) hasIsAdmin;
 @property (readonly, strong) NSString* userID;
 @property (readonly) BUserStatus userStatus;
 @property (readonly, strong) BTimestamp* creationDate;
@@ -936,6 +940,7 @@ NSString *NSStringFromBFriendStatus(BFriendStatus value);
 @property (readonly, strong) NSString* chatFee;
 @property (readonly) SInt64 userInfo;
 @property (readonly, strong) NSString* editProfileID;
+- (BOOL) isAdmin;
 - (BImageData*)imagesAtIndex:(NSUInteger)index;
 - (BSocialIdentity*)socialIdentitiesAtIndex:(NSUInteger)index;
 - (BContactInfo*)contactInfoAtIndex:(NSUInteger)index;
@@ -1135,6 +1140,11 @@ NSString *NSStringFromBFriendStatus(BFriendStatus value);
 - (NSString*) editProfileID;
 - (BUserProfileBuilder*) setEditProfileID:(NSString*) value;
 - (BUserProfileBuilder*) clearEditProfileID;
+
+- (BOOL) hasIsAdmin;
+- (BOOL) isAdmin;
+- (BUserProfileBuilder*) setIsAdmin:(BOOL) value;
+- (BUserProfileBuilder*) clearIsAdmin;
 @end
 
 #define ImageUpload_imageData @"imageData"

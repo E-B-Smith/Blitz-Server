@@ -160,6 +160,7 @@ message UserProfile {
   optional int64        userInfo          = 27; //  Ignored / not saved.
 
   optional string       editProfileID     = 28;
+  optional bool         isAdmin           = 29;
 }
 
 

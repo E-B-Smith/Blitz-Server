@@ -25,6 +25,40 @@ import (
 
 
 //----------------------------------------------------------------------------------------
+//                                                                            LoginAsAdmin
+//----------------------------------------------------------------------------------------
+
+
+func LoginAsAdmin(session *Session, login *BlitzMessage.LoginAsAdmin,
+        ) *BlitzMessage.ServerResponse {
+    Log.LogFunctionName()
+
+    row := config.DB.QueryRow(
+        `select isAdmin from UserTable where userID = $1;`,
+        session.UserID,
+    )
+    var isAdmin sql.NullBool
+    error := row.Scan(&isAdmin)
+    if error != nil {
+        Log.LogError(error)
+    } else if isAdmin.Valid && isAdmin.Bool {
+
+        userID := BlitzMessage.Default_Global_BlitzUserID
+        login.AdminProfile = ProfileForUserID(userID, userID)
+        session.UserID = userID
+
+        response := &BlitzMessage.ServerResponse {
+            ResponseCode:       BlitzMessage.ResponseCode(BlitzMessage.ResponseCode_RCSuccess).Enum(),
+            ResponseType:       &BlitzMessage.ResponseType { LoginAsAdmin: login },
+        }
+        return response
+    }
+
+    return ServerResponseForError(BlitzMessage.ResponseCode_RCNotAuthorized, nil)
+}
+
+
+//----------------------------------------------------------------------------------------
 //                                                                        UserIsConfirming
 //----------------------------------------------------------------------------------------
 

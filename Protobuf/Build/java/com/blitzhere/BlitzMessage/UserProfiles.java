@@ -8446,6 +8446,15 @@ public final class UserProfiles {
      */
     com.google.protobuf.ByteString
         getEditProfileIDBytes();
+
+    /**
+     * <code>optional bool isAdmin = 29;</code>
+     */
+    boolean hasIsAdmin();
+    /**
+     * <code>optional bool isAdmin = 29;</code>
+     */
+    boolean getIsAdmin();
   }
   /**
    * Protobuf type {@code BlitzMessage.UserProfile}
@@ -8712,6 +8721,11 @@ public final class UserProfiles {
               com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00080000;
               editProfileID_ = bs;
+              break;
+            }
+            case 232: {
+              bitField0_ |= 0x00100000;
+              isAdmin_ = input.readBool();
               break;
             }
           }
@@ -9546,6 +9560,21 @@ public final class UserProfiles {
       }
     }
 
+    public static final int ISADMIN_FIELD_NUMBER = 29;
+    private boolean isAdmin_;
+    /**
+     * <code>optional bool isAdmin = 29;</code>
+     */
+    public boolean hasIsAdmin() {
+      return ((bitField0_ & 0x00100000) == 0x00100000);
+    }
+    /**
+     * <code>optional bool isAdmin = 29;</code>
+     */
+    public boolean getIsAdmin() {
+      return isAdmin_;
+    }
+
     private void initFields() {
       userID_ = "";
       userStatus_ = com.blitzhere.BlitzMessage.UserProfiles.UserStatus.USUnknown;
@@ -9575,6 +9604,7 @@ public final class UserProfiles {
       chatFee_ = "";
       userInfo_ = 0L;
       editProfileID_ = "";
+      isAdmin_ = false;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -9684,6 +9714,9 @@ public final class UserProfiles {
       }
       if (((bitField0_ & 0x00080000) == 0x00080000)) {
         output.writeBytes(28, getEditProfileIDBytes());
+      }
+      if (((bitField0_ & 0x00100000) == 0x00100000)) {
+        output.writeBool(29, isAdmin_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -9810,6 +9843,10 @@ public final class UserProfiles {
       if (((bitField0_ & 0x00080000) == 0x00080000)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(28, getEditProfileIDBytes());
+      }
+      if (((bitField0_ & 0x00100000) == 0x00100000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(29, isAdmin_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -10039,6 +10076,8 @@ public final class UserProfiles {
         bitField0_ = (bitField0_ & ~0x04000000);
         editProfileID_ = "";
         bitField0_ = (bitField0_ & ~0x08000000);
+        isAdmin_ = false;
+        bitField0_ = (bitField0_ & ~0x10000000);
         return this;
       }
 
@@ -10231,6 +10270,10 @@ public final class UserProfiles {
           to_bitField0_ |= 0x00080000;
         }
         result.editProfileID_ = editProfileID_;
+        if (((from_bitField0_ & 0x10000000) == 0x10000000)) {
+          to_bitField0_ |= 0x00100000;
+        }
+        result.isAdmin_ = isAdmin_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -10510,6 +10553,9 @@ public final class UserProfiles {
           bitField0_ |= 0x08000000;
           editProfileID_ = other.editProfileID_;
           onChanged();
+        }
+        if (other.hasIsAdmin()) {
+          setIsAdmin(other.getIsAdmin());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -13581,6 +13627,38 @@ public final class UserProfiles {
   }
   bitField0_ |= 0x08000000;
         editProfileID_ = value;
+        onChanged();
+        return this;
+      }
+
+      private boolean isAdmin_ ;
+      /**
+       * <code>optional bool isAdmin = 29;</code>
+       */
+      public boolean hasIsAdmin() {
+        return ((bitField0_ & 0x10000000) == 0x10000000);
+      }
+      /**
+       * <code>optional bool isAdmin = 29;</code>
+       */
+      public boolean getIsAdmin() {
+        return isAdmin_;
+      }
+      /**
+       * <code>optional bool isAdmin = 29;</code>
+       */
+      public Builder setIsAdmin(boolean value) {
+        bitField0_ |= 0x10000000;
+        isAdmin_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool isAdmin = 29;</code>
+       */
+      public Builder clearIsAdmin() {
+        bitField0_ = (bitField0_ & ~0x10000000);
+        isAdmin_ = false;
         onChanged();
         return this;
       }
@@ -21587,7 +21665,7 @@ public final class UserProfiles {
       "(\0132\027.BlitzMessage.Timestamp\022\026\n\016conversat" +
       "ionID\030\004 \001(\t\022\022\n\nresponsive\030\005 \001(\001\022\020\n\010outgo" +
       "ing\030\006 \001(\001\022\023\n\013recommended\030\007 \001(\001\022\022\n\nreview" +
-      "Text\030\010 \001(\t\022\014\n\004tags\030\t \003(\t\"\252\007\n\013UserProfile" +
+      "Text\030\010 \001(\t\022\014\n\004tags\030\t \003(\t\"\273\007\n\013UserProfile" +
       "\022\016\n\006userID\030\001 \001(\t\022,\n\nuserStatus\030\002 \001(\0162\030.B" +
       "litzMessage.UserStatus\022-\n\014creationDate\030\003",
       " \001(\0132\027.BlitzMessage.Timestamp\022)\n\010lastSee" +
@@ -21611,43 +21689,44 @@ public final class UserProfiles {
       "isExpert\030\027 \001(\010\022\025\n\rstripeAccount\030\030 \001(\t\022\034\n" +
       "\024serviceIsFreeForUser\030\031 \001(\010\022\017\n\007chatFee\030\032",
       " \001(\t\022\020\n\010userInfo\030\033 \001(\003\022\025\n\reditProfileID\030" +
-      "\034 \001(\t\"9\n\013ImageUpload\022*\n\timageData\030\001 \003(\0132" +
-      "\027.BlitzMessage.ImageData\"@\n\021UserProfileU" +
-      "pdate\022+\n\010profiles\030\001 \003(\0132\031.BlitzMessage.U" +
-      "serProfile\"\230\001\n\020UserProfileQuery\022\017\n\007userI" +
-      "Ds\030\001 \003(\t\022\031\n\021fetchDemoProfiles\030\002 \001(\010\022\034\n\024e" +
-      "ntityTag_deprecated\030\003 \001(\t\022\024\n\014entityUserI" +
-      "D\030\004 \001(\t\022\020\n\010entityID\030\005 \001(\t\022\022\n\nentityTags\030" +
-      "\006 \003(\t\"\246\001\n\023ConfirmationRequest\022.\n\013contact" +
-      "Info\030\001 \001(\0132\031.BlitzMessage.ContactInfo\022.\n",
-      "\013userProfile\030\002 \001(\0132\031.BlitzMessage.UserPr" +
-      "ofile\022\030\n\020confirmationCode\030\003 \001(\t\022\025\n\rinvit" +
-      "erUserID\030\004 \001(\t\"F\n\027ProfilesFromContactInf" +
-      "o\022+\n\010profiles\030\001 \003(\0132\031.BlitzMessage.UserP" +
-      "rofile\"\177\n\014FriendUpdate\0220\n\014friendStatus\030\001" +
-      " \001(\0162\032.BlitzMessage.FriendStatus\022\020\n\010frie" +
-      "ndID\030\002 \001(\t\022+\n\010profiles\030\003 \003(\0132\031.BlitzMess" +
-      "age.UserProfile\"\266\001\n\nUserInvite\022\016\n\006userID" +
-      "\030\001 \001(\t\022\020\n\010friendID\030\002 \001(\t\022\017\n\007message\030\003 \001(" +
-      "\t\022.\n\013contactInfo\030\004 \001(\0132\031.BlitzMessage.Co",
-      "ntactInfo\022+\n\010profiles\030\005 \003(\0132\031.BlitzMessa" +
-      "ge.UserProfile\022\030\n\020confirmationCode\030\006 \001(\t" +
-      "\"\221\001\n\013EditProfile\022\021\n\tprofileID\030\001 \001(\t\022*\n\007p" +
-      "rofile\030\002 \001(\0132\031.BlitzMessage.UserProfile\022" +
-      ".\n\013editProfile\030\003 \001(\0132\031.BlitzMessage.User" +
-      "Profile\022\023\n\013discardEdit\030\004 \001(\010*Z\n\013ContactT" +
-      "ype\022\r\n\tCTUnknown\020\000\022\016\n\nCTPhoneSMS\020\001\022\013\n\007CT" +
-      "Email\020\002\022\n\n\006CTChat\020\003\022\023\n\017CTSocialService\020\004" +
-      "*j\n\nUserStatus\022\r\n\tUSUnknown\020\000\022\r\n\tUSBlock" +
-      "ed\020\001\022\r\n\tUSInvited\020\002\022\014\n\010USActive\020\003\022\020\n\014USC",
-      "onfirming\020\004\022\017\n\013USConfirmed\020\005*:\n\006Gender\022\014" +
-      "\n\010GUnknown\020\000\022\013\n\007GFemale\020\001\022\t\n\005GMale\020\002\022\n\n\006" +
-      "GOther\020\003*F\n\014ImageContent\022\r\n\tICUnknown\020\000\022" +
-      "\021\n\rICUserProfile\020\001\022\024\n\020ICUserBackground\020\002" +
-      "*i\n\014FriendStatus\022\r\n\tFSUnknown\020\000\022\014\n\010FSDid" +
-      "Ask\020\001\022\r\n\tFSIgnored\020\002\022\016\n\nFSAccepted\020\003\022\016\n\n" +
-      "FSWasAsked\020\004\022\r\n\tFSFriends\020\005B/\n\032com.blitz" +
-      "here.BlitzMessage\210\001\001\322>\002\n\000\322>\003\022\001B\322>\002\030\001"
+      "\034 \001(\t\022\017\n\007isAdmin\030\035 \001(\010\"9\n\013ImageUpload\022*\n" +
+      "\timageData\030\001 \003(\0132\027.BlitzMessage.ImageDat" +
+      "a\"@\n\021UserProfileUpdate\022+\n\010profiles\030\001 \003(\013" +
+      "2\031.BlitzMessage.UserProfile\"\230\001\n\020UserProf" +
+      "ileQuery\022\017\n\007userIDs\030\001 \003(\t\022\031\n\021fetchDemoPr" +
+      "ofiles\030\002 \001(\010\022\034\n\024entityTag_deprecated\030\003 \001" +
+      "(\t\022\024\n\014entityUserID\030\004 \001(\t\022\020\n\010entityID\030\005 \001" +
+      "(\t\022\022\n\nentityTags\030\006 \003(\t\"\246\001\n\023ConfirmationR" +
+      "equest\022.\n\013contactInfo\030\001 \001(\0132\031.BlitzMessa",
+      "ge.ContactInfo\022.\n\013userProfile\030\002 \001(\0132\031.Bl" +
+      "itzMessage.UserProfile\022\030\n\020confirmationCo" +
+      "de\030\003 \001(\t\022\025\n\rinviterUserID\030\004 \001(\t\"F\n\027Profi" +
+      "lesFromContactInfo\022+\n\010profiles\030\001 \003(\0132\031.B" +
+      "litzMessage.UserProfile\"\177\n\014FriendUpdate\022" +
+      "0\n\014friendStatus\030\001 \001(\0162\032.BlitzMessage.Fri" +
+      "endStatus\022\020\n\010friendID\030\002 \001(\t\022+\n\010profiles\030" +
+      "\003 \003(\0132\031.BlitzMessage.UserProfile\"\266\001\n\nUse" +
+      "rInvite\022\016\n\006userID\030\001 \001(\t\022\020\n\010friendID\030\002 \001(" +
+      "\t\022\017\n\007message\030\003 \001(\t\022.\n\013contactInfo\030\004 \001(\0132",
+      "\031.BlitzMessage.ContactInfo\022+\n\010profiles\030\005" +
+      " \003(\0132\031.BlitzMessage.UserProfile\022\030\n\020confi" +
+      "rmationCode\030\006 \001(\t\"\221\001\n\013EditProfile\022\021\n\tpro" +
+      "fileID\030\001 \001(\t\022*\n\007profile\030\002 \001(\0132\031.BlitzMes" +
+      "sage.UserProfile\022.\n\013editProfile\030\003 \001(\0132\031." +
+      "BlitzMessage.UserProfile\022\023\n\013discardEdit\030" +
+      "\004 \001(\010*Z\n\013ContactType\022\r\n\tCTUnknown\020\000\022\016\n\nC" +
+      "TPhoneSMS\020\001\022\013\n\007CTEmail\020\002\022\n\n\006CTChat\020\003\022\023\n\017" +
+      "CTSocialService\020\004*j\n\nUserStatus\022\r\n\tUSUnk" +
+      "nown\020\000\022\r\n\tUSBlocked\020\001\022\r\n\tUSInvited\020\002\022\014\n\010",
+      "USActive\020\003\022\020\n\014USConfirming\020\004\022\017\n\013USConfir" +
+      "med\020\005*:\n\006Gender\022\014\n\010GUnknown\020\000\022\013\n\007GFemale" +
+      "\020\001\022\t\n\005GMale\020\002\022\n\n\006GOther\020\003*F\n\014ImageConten" +
+      "t\022\r\n\tICUnknown\020\000\022\021\n\rICUserProfile\020\001\022\024\n\020I" +
+      "CUserBackground\020\002*i\n\014FriendStatus\022\r\n\tFSU" +
+      "nknown\020\000\022\014\n\010FSDidAsk\020\001\022\r\n\tFSIgnored\020\002\022\016\n" +
+      "\nFSAccepted\020\003\022\016\n\nFSWasAsked\020\004\022\r\n\tFSFrien" +
+      "ds\020\005B/\n\032com.blitzhere.BlitzMessage\210\001\001\322>\002" +
+      "\n\000\322>\003\022\001B\322>\002\030\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -21705,7 +21784,7 @@ public final class UserProfiles {
     internal_static_BlitzMessage_UserProfile_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_BlitzMessage_UserProfile_descriptor,
-        new java.lang.String[] { "UserID", "UserStatus", "CreationDate", "LastSeen", "Name", "Gender", "Birthday", "Images", "SocialIdentities", "ContactInfo", "HeadlineEmployment", "Employment", "Education", "EntityTags", "InterestTags", "BackgroundSummary", "RatingCount", "RatingResponsive", "RatingOutgoing", "RatingRecommended", "ResponseSeconds", "Reviews", "IsExpert", "StripeAccount", "ServiceIsFreeForUser", "ChatFee", "UserInfo", "EditProfileID", });
+        new java.lang.String[] { "UserID", "UserStatus", "CreationDate", "LastSeen", "Name", "Gender", "Birthday", "Images", "SocialIdentities", "ContactInfo", "HeadlineEmployment", "Employment", "Education", "EntityTags", "InterestTags", "BackgroundSummary", "RatingCount", "RatingResponsive", "RatingOutgoing", "RatingRecommended", "ResponseSeconds", "Reviews", "IsExpert", "StripeAccount", "ServiceIsFreeForUser", "ChatFee", "UserInfo", "EditProfileID", "IsAdmin", });
     internal_static_BlitzMessage_ImageUpload_descriptor =
       getDescriptor().getMessageTypes().get(7);
     internal_static_BlitzMessage_ImageUpload_fieldAccessorTable = new

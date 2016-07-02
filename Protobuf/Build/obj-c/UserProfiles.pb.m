@@ -3213,6 +3213,7 @@ static BUserReview* defaultBUserReviewInstance = nil;
 @property (strong) NSString* chatFee;
 @property SInt64 userInfo;
 @property (strong) NSString* editProfileID;
+@property BOOL isAdmin;
 @end
 
 @implementation BUserProfile
@@ -3383,6 +3384,18 @@ static BUserReview* defaultBUserReviewInstance = nil;
   hasEditProfileID_ = !!_value_;
 }
 @synthesize editProfileID;
+- (BOOL) hasIsAdmin {
+  return !!hasIsAdmin_;
+}
+- (void) setHasIsAdmin:(BOOL) _value_ {
+  hasIsAdmin_ = !!_value_;
+}
+- (BOOL) isAdmin {
+  return !!isAdmin_;
+}
+- (void) setIsAdmin:(BOOL) _value_ {
+  isAdmin_ = !!_value_;
+}
 - (instancetype) init {
   if ((self = [super init])) {
     self.userID = @"";
@@ -3405,6 +3418,7 @@ static BUserReview* defaultBUserReviewInstance = nil;
     self.chatFee = @"";
     self.userInfo = 0L;
     self.editProfileID = @"";
+    self.isAdmin = NO;
   }
   return self;
 }
@@ -3572,6 +3586,9 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   if (self.hasEditProfileID) {
     [output writeString:28 value:self.editProfileID];
   }
+  if (self.hasIsAdmin) {
+    [output writeBool:29 value:self.isAdmin];
+  }
   [self.unknownFields writeToCodedOutputStream:output];
 }
 - (SInt32) serializedSize {
@@ -3670,6 +3687,9 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   }
   if (self.hasEditProfileID) {
     size_ += computeStringSize(28, self.editProfileID);
+  }
+  if (self.hasIsAdmin) {
+    size_ += computeBoolSize(29, self.isAdmin);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -3823,6 +3843,9 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   if (self.hasEditProfileID) {
     [output appendFormat:@"%@%@: %@\n", indent, @"editProfileID", self.editProfileID];
   }
+  if (self.hasIsAdmin) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"isAdmin", [NSNumber numberWithBool:self.isAdmin]];
+  }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (void) storeInDictionary:(NSMutableDictionary *)dictionary {
@@ -3930,6 +3953,9 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   if (self.hasEditProfileID) {
     [dictionary setObject: self.editProfileID forKey: @"editProfileID"];
   }
+  if (self.hasIsAdmin) {
+    [dictionary setObject: [NSNumber numberWithBool:self.isAdmin] forKey: @"isAdmin"];
+  }
   [self.unknownFields storeInDictionary:dictionary];
 }
 - (BOOL) isEqual:(id)other {
@@ -3989,6 +4015,8 @@ static BUserProfile* defaultBUserProfileInstance = nil;
       (!self.hasUserInfo || self.userInfo == otherMessage.userInfo) &&
       self.hasEditProfileID == otherMessage.hasEditProfileID &&
       (!self.hasEditProfileID || [self.editProfileID isEqual:otherMessage.editProfileID]) &&
+      self.hasIsAdmin == otherMessage.hasIsAdmin &&
+      (!self.hasIsAdmin || self.isAdmin == otherMessage.isAdmin) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
@@ -4076,6 +4104,9 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   }
   if (self.hasEditProfileID) {
     hashCode = hashCode * 31 + [self.editProfileID hash];
+  }
+  if (self.hasIsAdmin) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithBool:self.isAdmin] hash];
   }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
@@ -4235,6 +4266,9 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   }
   if (other.hasEditProfileID) {
     [self setEditProfileID:other.editProfileID];
+  }
+  if (other.hasIsAdmin) {
+    [self setIsAdmin:other.isAdmin];
   }
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -4411,6 +4445,10 @@ static BUserProfile* defaultBUserProfileInstance = nil;
       }
       case 226: {
         [self setEditProfileID:[input readString]];
+        break;
+      }
+      case 232: {
+        [self setIsAdmin:[input readBool]];
         break;
       }
     }
@@ -4958,6 +4996,22 @@ static BUserProfile* defaultBUserProfileInstance = nil;
 - (BUserProfileBuilder*) clearEditProfileID {
   resultUserProfile.hasEditProfileID = NO;
   resultUserProfile.editProfileID = @"";
+  return self;
+}
+- (BOOL) hasIsAdmin {
+  return resultUserProfile.hasIsAdmin;
+}
+- (BOOL) isAdmin {
+  return resultUserProfile.isAdmin;
+}
+- (BUserProfileBuilder*) setIsAdmin:(BOOL) value {
+  resultUserProfile.hasIsAdmin = YES;
+  resultUserProfile.isAdmin = value;
+  return self;
+}
+- (BUserProfileBuilder*) clearIsAdmin {
+  resultUserProfile.hasIsAdmin = NO;
+  resultUserProfile.isAdmin = NO;
   return self;
 }
 @end

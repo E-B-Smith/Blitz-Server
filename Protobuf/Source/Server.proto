@@ -65,6 +65,11 @@ message SessionResponse {
 }
 
 
+message LoginAsAdmin {
+  optional UserProfile        adminProfile    = 1;    //  Returned if successful.
+}
+
+
 //----------------------------------------------------------------------------------------
 //                                                               Push Connect / Disconnect
 //----------------------------------------------------------------------------------------
@@ -114,6 +119,7 @@ message RequestType {
   optional UserMessage              sendMessage         = 26;
   optional EditProfile              editProfile         = 27;
   optional FetchConversationGroups  fetchConversationGroups = 28;
+  optional LoginAsAdmin             loginAsAdmin        = 29;
 }
 
 
@@ -160,6 +166,7 @@ message ResponseType {
   optional PurchaseDescription    purchaseDescription     = 21;
   optional EditProfile            editProfile             = 22;
   optional FetchConversationGroups  fetchConversationGroups = 23;
+  optional LoginAsAdmin             loginAsAdmin          = 24;
 }
 
 

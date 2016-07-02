@@ -1781,6 +1781,241 @@ static BSessionResponse* defaultBSessionResponseInstance = nil;
 }
 @end
 
+@interface BLoginAsAdmin ()
+@property (strong) BUserProfile* adminProfile;
+@end
+
+@implementation BLoginAsAdmin
+
+- (BOOL) hasAdminProfile {
+  return !!hasAdminProfile_;
+}
+- (void) setHasAdminProfile:(BOOL) _value_ {
+  hasAdminProfile_ = !!_value_;
+}
+@synthesize adminProfile;
+- (instancetype) init {
+  if ((self = [super init])) {
+    self.adminProfile = [BUserProfile defaultInstance];
+  }
+  return self;
+}
+static BLoginAsAdmin* defaultBLoginAsAdminInstance = nil;
++ (void) initialize {
+  if (self == [BLoginAsAdmin class]) {
+    defaultBLoginAsAdminInstance = [[BLoginAsAdmin alloc] init];
+  }
+}
++ (instancetype) defaultInstance {
+  return defaultBLoginAsAdminInstance;
+}
+- (instancetype) defaultInstance {
+  return defaultBLoginAsAdminInstance;
+}
+- (BOOL) isInitialized {
+  if (self.hasAdminProfile) {
+    if (!self.adminProfile.isInitialized) {
+      return NO;
+    }
+  }
+  return YES;
+}
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
+  if (self.hasAdminProfile) {
+    [output writeMessage:1 value:self.adminProfile];
+  }
+  [self.unknownFields writeToCodedOutputStream:output];
+}
+- (SInt32) serializedSize {
+  __block SInt32 size_ = memoizedSerializedSize;
+  if (size_ != -1) {
+    return size_;
+  }
+
+  size_ = 0;
+  if (self.hasAdminProfile) {
+    size_ += computeMessageSize(1, self.adminProfile);
+  }
+  size_ += self.unknownFields.serializedSize;
+  memoizedSerializedSize = size_;
+  return size_;
+}
++ (BLoginAsAdmin*) parseFromData:(NSData*) data {
+  return (BLoginAsAdmin*)[[[BLoginAsAdmin builder] mergeFromData:data] build];
+}
++ (BLoginAsAdmin*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BLoginAsAdmin*)[[[BLoginAsAdmin builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
+}
++ (BLoginAsAdmin*) parseFromInputStream:(NSInputStream*) input {
+  return (BLoginAsAdmin*)[[[BLoginAsAdmin builder] mergeFromInputStream:input] build];
+}
++ (BLoginAsAdmin*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BLoginAsAdmin*)[[[BLoginAsAdmin builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (BLoginAsAdmin*) parseFromCodedInputStream:(PBCodedInputStream*) input {
+  return (BLoginAsAdmin*)[[[BLoginAsAdmin builder] mergeFromCodedInputStream:input] build];
+}
++ (BLoginAsAdmin*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BLoginAsAdmin*)[[[BLoginAsAdmin builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (BLoginAsAdminBuilder*) builder {
+  return [[BLoginAsAdminBuilder alloc] init];
+}
++ (BLoginAsAdminBuilder*) builderWithPrototype:(BLoginAsAdmin*) prototype {
+  return [[BLoginAsAdmin builder] mergeFrom:prototype];
+}
+- (BLoginAsAdminBuilder*) builder {
+  return [BLoginAsAdmin builder];
+}
+- (BLoginAsAdminBuilder*) toBuilder {
+  return [BLoginAsAdmin builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  if (self.hasAdminProfile) {
+    [output appendFormat:@"%@%@ {\n", indent, @"adminProfile"];
+    [self.adminProfile writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (void) storeInDictionary:(NSMutableDictionary *)dictionary {
+  if (self.hasAdminProfile) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.adminProfile storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"adminProfile"];
+  }
+  [self.unknownFields storeInDictionary:dictionary];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[BLoginAsAdmin class]]) {
+    return NO;
+  }
+  BLoginAsAdmin *otherMessage = other;
+  return
+      self.hasAdminProfile == otherMessage.hasAdminProfile &&
+      (!self.hasAdminProfile || [self.adminProfile isEqual:otherMessage.adminProfile]) &&
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  __block NSUInteger hashCode = 7;
+  if (self.hasAdminProfile) {
+    hashCode = hashCode * 31 + [self.adminProfile hash];
+  }
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
+}
+@end
+
+@interface BLoginAsAdminBuilder()
+@property (strong) BLoginAsAdmin* resultLoginAsAdmin;
+@end
+
+@implementation BLoginAsAdminBuilder
+@synthesize resultLoginAsAdmin;
+- (instancetype) init {
+  if ((self = [super init])) {
+    self.resultLoginAsAdmin = [[BLoginAsAdmin alloc] init];
+  }
+  return self;
+}
+- (PBGeneratedMessage*) internalGetResult {
+  return resultLoginAsAdmin;
+}
+- (BLoginAsAdminBuilder*) clear {
+  self.resultLoginAsAdmin = [[BLoginAsAdmin alloc] init];
+  return self;
+}
+- (BLoginAsAdminBuilder*) clone {
+  return [BLoginAsAdmin builderWithPrototype:resultLoginAsAdmin];
+}
+- (BLoginAsAdmin*) defaultInstance {
+  return [BLoginAsAdmin defaultInstance];
+}
+- (BLoginAsAdmin*) build {
+  [self checkInitialized];
+  return [self buildPartial];
+}
+- (BLoginAsAdmin*) buildPartial {
+  BLoginAsAdmin* returnMe = resultLoginAsAdmin;
+  self.resultLoginAsAdmin = nil;
+  return returnMe;
+}
+- (BLoginAsAdminBuilder*) mergeFrom:(BLoginAsAdmin*) other {
+  if (other == [BLoginAsAdmin defaultInstance]) {
+    return self;
+  }
+  if (other.hasAdminProfile) {
+    [self mergeAdminProfile:other.adminProfile];
+  }
+  [self mergeUnknownFields:other.unknownFields];
+  return self;
+}
+- (BLoginAsAdminBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
+  return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
+}
+- (BLoginAsAdminBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  PBUnknownFieldSetBuilder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
+  while (YES) {
+    SInt32 tag = [input readTag];
+    switch (tag) {
+      case 0:
+        [self setUnknownFields:[unknownFields build]];
+        return self;
+      default: {
+        if (![self parseUnknownField:input unknownFields:unknownFields extensionRegistry:extensionRegistry tag:tag]) {
+          [self setUnknownFields:[unknownFields build]];
+          return self;
+        }
+        break;
+      }
+      case 10: {
+        BUserProfileBuilder* subBuilder = [BUserProfile builder];
+        if (self.hasAdminProfile) {
+          [subBuilder mergeFrom:self.adminProfile];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setAdminProfile:[subBuilder buildPartial]];
+        break;
+      }
+    }
+  }
+}
+- (BOOL) hasAdminProfile {
+  return resultLoginAsAdmin.hasAdminProfile;
+}
+- (BUserProfile*) adminProfile {
+  return resultLoginAsAdmin.adminProfile;
+}
+- (BLoginAsAdminBuilder*) setAdminProfile:(BUserProfile*) value {
+  resultLoginAsAdmin.hasAdminProfile = YES;
+  resultLoginAsAdmin.adminProfile = value;
+  return self;
+}
+- (BLoginAsAdminBuilder*) setAdminProfileBuilder:(BUserProfileBuilder*) builderForValue {
+  return [self setAdminProfile:[builderForValue build]];
+}
+- (BLoginAsAdminBuilder*) mergeAdminProfile:(BUserProfile*) value {
+  if (resultLoginAsAdmin.hasAdminProfile &&
+      resultLoginAsAdmin.adminProfile != [BUserProfile defaultInstance]) {
+    resultLoginAsAdmin.adminProfile =
+      [[[BUserProfile builderWithPrototype:resultLoginAsAdmin.adminProfile] mergeFrom:value] buildPartial];
+  } else {
+    resultLoginAsAdmin.adminProfile = value;
+  }
+  resultLoginAsAdmin.hasAdminProfile = YES;
+  return self;
+}
+- (BLoginAsAdminBuilder*) clearAdminProfile {
+  resultLoginAsAdmin.hasAdminProfile = NO;
+  resultLoginAsAdmin.adminProfile = [BUserProfile defaultInstance];
+  return self;
+}
+@end
+
 @interface BPushConnect ()
 @property (strong) NSString* userID;
 @property (strong) BTimestamp* lastMessageTimestamp;
@@ -2246,6 +2481,7 @@ static BPushDisconnect* defaultBPushDisconnectInstance = nil;
 @property (strong) BUserMessage* sendMessage;
 @property (strong) BEditProfile* editProfile;
 @property (strong) BFetchConversationGroups* fetchConversationGroups;
+@property (strong) BLoginAsAdmin* loginAsAdmin;
 @end
 
 @implementation BRequestType
@@ -2446,6 +2682,13 @@ static BPushDisconnect* defaultBPushDisconnectInstance = nil;
   hasFetchConversationGroups_ = !!_value_;
 }
 @synthesize fetchConversationGroups;
+- (BOOL) hasLoginAsAdmin {
+  return !!hasLoginAsAdmin_;
+}
+- (void) setHasLoginAsAdmin:(BOOL) _value_ {
+  hasLoginAsAdmin_ = !!_value_;
+}
+@synthesize loginAsAdmin;
 - (instancetype) init {
   if ((self = [super init])) {
     self.sessionRequest = [BSessionRequest defaultInstance];
@@ -2476,6 +2719,7 @@ static BPushDisconnect* defaultBPushDisconnectInstance = nil;
     self.sendMessage = [BUserMessage defaultInstance];
     self.editProfile = [BEditProfile defaultInstance];
     self.fetchConversationGroups = [BFetchConversationGroups defaultInstance];
+    self.loginAsAdmin = [BLoginAsAdmin defaultInstance];
   }
   return self;
 }
@@ -2524,6 +2768,11 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   }
   if (self.hasEditProfile) {
     if (!self.editProfile.isInitialized) {
+      return NO;
+    }
+  }
+  if (self.hasLoginAsAdmin) {
+    if (!self.loginAsAdmin.isInitialized) {
       return NO;
     }
   }
@@ -2613,6 +2862,9 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   }
   if (self.hasFetchConversationGroups) {
     [output writeMessage:28 value:self.fetchConversationGroups];
+  }
+  if (self.hasLoginAsAdmin) {
+    [output writeMessage:29 value:self.loginAsAdmin];
   }
   [self.unknownFields writeToCodedOutputStream:output];
 }
@@ -2706,6 +2958,9 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   }
   if (self.hasFetchConversationGroups) {
     size_ += computeMessageSize(28, self.fetchConversationGroups);
+  }
+  if (self.hasLoginAsAdmin) {
+    size_ += computeMessageSize(29, self.loginAsAdmin);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -2910,6 +3165,12 @@ static BRequestType* defaultBRequestTypeInstance = nil;
                          withIndent:[NSString stringWithFormat:@"%@  ", indent]];
     [output appendFormat:@"%@}\n", indent];
   }
+  if (self.hasLoginAsAdmin) {
+    [output appendFormat:@"%@%@ {\n", indent, @"loginAsAdmin"];
+    [self.loginAsAdmin writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (void) storeInDictionary:(NSMutableDictionary *)dictionary {
@@ -3053,6 +3314,11 @@ static BRequestType* defaultBRequestTypeInstance = nil;
    [self.fetchConversationGroups storeInDictionary:messageDictionary];
    [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"fetchConversationGroups"];
   }
+  if (self.hasLoginAsAdmin) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.loginAsAdmin storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"loginAsAdmin"];
+  }
   [self.unknownFields storeInDictionary:dictionary];
 }
 - (BOOL) isEqual:(id)other {
@@ -3120,6 +3386,8 @@ static BRequestType* defaultBRequestTypeInstance = nil;
       (!self.hasEditProfile || [self.editProfile isEqual:otherMessage.editProfile]) &&
       self.hasFetchConversationGroups == otherMessage.hasFetchConversationGroups &&
       (!self.hasFetchConversationGroups || [self.fetchConversationGroups isEqual:otherMessage.fetchConversationGroups]) &&
+      self.hasLoginAsAdmin == otherMessage.hasLoginAsAdmin &&
+      (!self.hasLoginAsAdmin || [self.loginAsAdmin isEqual:otherMessage.loginAsAdmin]) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
@@ -3207,6 +3475,9 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   }
   if (self.hasFetchConversationGroups) {
     hashCode = hashCode * 31 + [self.fetchConversationGroups hash];
+  }
+  if (self.hasLoginAsAdmin) {
+    hashCode = hashCode * 31 + [self.loginAsAdmin hash];
   }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
@@ -3334,6 +3605,9 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   }
   if (other.hasFetchConversationGroups) {
     [self mergeFetchConversationGroups:other.fetchConversationGroups];
+  }
+  if (other.hasLoginAsAdmin) {
+    [self mergeLoginAsAdmin:other.loginAsAdmin];
   }
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -3606,6 +3880,15 @@ static BRequestType* defaultBRequestTypeInstance = nil;
         }
         [input readMessage:subBuilder extensionRegistry:extensionRegistry];
         [self setFetchConversationGroups:[subBuilder buildPartial]];
+        break;
+      }
+      case 234: {
+        BLoginAsAdminBuilder* subBuilder = [BLoginAsAdmin builder];
+        if (self.hasLoginAsAdmin) {
+          [subBuilder mergeFrom:self.loginAsAdmin];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setLoginAsAdmin:[subBuilder buildPartial]];
         break;
       }
     }
@@ -4451,6 +4734,36 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   resultRequestType.fetchConversationGroups = [BFetchConversationGroups defaultInstance];
   return self;
 }
+- (BOOL) hasLoginAsAdmin {
+  return resultRequestType.hasLoginAsAdmin;
+}
+- (BLoginAsAdmin*) loginAsAdmin {
+  return resultRequestType.loginAsAdmin;
+}
+- (BRequestTypeBuilder*) setLoginAsAdmin:(BLoginAsAdmin*) value {
+  resultRequestType.hasLoginAsAdmin = YES;
+  resultRequestType.loginAsAdmin = value;
+  return self;
+}
+- (BRequestTypeBuilder*) setLoginAsAdminBuilder:(BLoginAsAdminBuilder*) builderForValue {
+  return [self setLoginAsAdmin:[builderForValue build]];
+}
+- (BRequestTypeBuilder*) mergeLoginAsAdmin:(BLoginAsAdmin*) value {
+  if (resultRequestType.hasLoginAsAdmin &&
+      resultRequestType.loginAsAdmin != [BLoginAsAdmin defaultInstance]) {
+    resultRequestType.loginAsAdmin =
+      [[[BLoginAsAdmin builderWithPrototype:resultRequestType.loginAsAdmin] mergeFrom:value] buildPartial];
+  } else {
+    resultRequestType.loginAsAdmin = value;
+  }
+  resultRequestType.hasLoginAsAdmin = YES;
+  return self;
+}
+- (BRequestTypeBuilder*) clearLoginAsAdmin {
+  resultRequestType.hasLoginAsAdmin = NO;
+  resultRequestType.loginAsAdmin = [BLoginAsAdmin defaultInstance];
+  return self;
+}
 @end
 
 @interface BServerRequest ()
@@ -4759,6 +5072,7 @@ static BServerRequest* defaultBServerRequestInstance = nil;
 @property (strong) BPurchaseDescription* purchaseDescription;
 @property (strong) BEditProfile* editProfile;
 @property (strong) BFetchConversationGroups* fetchConversationGroups;
+@property (strong) BLoginAsAdmin* loginAsAdmin;
 @end
 
 @implementation BResponseType
@@ -4910,6 +5224,13 @@ static BServerRequest* defaultBServerRequestInstance = nil;
   hasFetchConversationGroups_ = !!_value_;
 }
 @synthesize fetchConversationGroups;
+- (BOOL) hasLoginAsAdmin {
+  return !!hasLoginAsAdmin_;
+}
+- (void) setHasLoginAsAdmin:(BOOL) _value_ {
+  hasLoginAsAdmin_ = !!_value_;
+}
+@synthesize loginAsAdmin;
 - (instancetype) init {
   if ((self = [super init])) {
     self.sessionResponse = [BSessionResponse defaultInstance];
@@ -4933,6 +5254,7 @@ static BServerRequest* defaultBServerRequestInstance = nil;
     self.purchaseDescription = [BPurchaseDescription defaultInstance];
     self.editProfile = [BEditProfile defaultInstance];
     self.fetchConversationGroups = [BFetchConversationGroups defaultInstance];
+    self.loginAsAdmin = [BLoginAsAdmin defaultInstance];
   }
   return self;
 }
@@ -4986,6 +5308,11 @@ static BResponseType* defaultBResponseTypeInstance = nil;
   }
   if (self.hasEditProfile) {
     if (!self.editProfile.isInitialized) {
+      return NO;
+    }
+  }
+  if (self.hasLoginAsAdmin) {
+    if (!self.loginAsAdmin.isInitialized) {
       return NO;
     }
   }
@@ -5054,6 +5381,9 @@ static BResponseType* defaultBResponseTypeInstance = nil;
   }
   if (self.hasFetchConversationGroups) {
     [output writeMessage:23 value:self.fetchConversationGroups];
+  }
+  if (self.hasLoginAsAdmin) {
+    [output writeMessage:24 value:self.loginAsAdmin];
   }
   [self.unknownFields writeToCodedOutputStream:output];
 }
@@ -5126,6 +5456,9 @@ static BResponseType* defaultBResponseTypeInstance = nil;
   }
   if (self.hasFetchConversationGroups) {
     size_ += computeMessageSize(23, self.fetchConversationGroups);
+  }
+  if (self.hasLoginAsAdmin) {
+    size_ += computeMessageSize(24, self.loginAsAdmin);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -5288,6 +5621,12 @@ static BResponseType* defaultBResponseTypeInstance = nil;
                          withIndent:[NSString stringWithFormat:@"%@  ", indent]];
     [output appendFormat:@"%@}\n", indent];
   }
+  if (self.hasLoginAsAdmin) {
+    [output appendFormat:@"%@%@ {\n", indent, @"loginAsAdmin"];
+    [self.loginAsAdmin writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (void) storeInDictionary:(NSMutableDictionary *)dictionary {
@@ -5396,6 +5735,11 @@ static BResponseType* defaultBResponseTypeInstance = nil;
    [self.fetchConversationGroups storeInDictionary:messageDictionary];
    [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"fetchConversationGroups"];
   }
+  if (self.hasLoginAsAdmin) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.loginAsAdmin storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"loginAsAdmin"];
+  }
   [self.unknownFields storeInDictionary:dictionary];
 }
 - (BOOL) isEqual:(id)other {
@@ -5449,6 +5793,8 @@ static BResponseType* defaultBResponseTypeInstance = nil;
       (!self.hasEditProfile || [self.editProfile isEqual:otherMessage.editProfile]) &&
       self.hasFetchConversationGroups == otherMessage.hasFetchConversationGroups &&
       (!self.hasFetchConversationGroups || [self.fetchConversationGroups isEqual:otherMessage.fetchConversationGroups]) &&
+      self.hasLoginAsAdmin == otherMessage.hasLoginAsAdmin &&
+      (!self.hasLoginAsAdmin || [self.loginAsAdmin isEqual:otherMessage.loginAsAdmin]) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
@@ -5515,6 +5861,9 @@ static BResponseType* defaultBResponseTypeInstance = nil;
   }
   if (self.hasFetchConversationGroups) {
     hashCode = hashCode * 31 + [self.fetchConversationGroups hash];
+  }
+  if (self.hasLoginAsAdmin) {
+    hashCode = hashCode * 31 + [self.loginAsAdmin hash];
   }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
@@ -5621,6 +5970,9 @@ static BResponseType* defaultBResponseTypeInstance = nil;
   }
   if (other.hasFetchConversationGroups) {
     [self mergeFetchConversationGroups:other.fetchConversationGroups];
+  }
+  if (other.hasLoginAsAdmin) {
+    [self mergeLoginAsAdmin:other.loginAsAdmin];
   }
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -5830,6 +6182,15 @@ static BResponseType* defaultBResponseTypeInstance = nil;
         }
         [input readMessage:subBuilder extensionRegistry:extensionRegistry];
         [self setFetchConversationGroups:[subBuilder buildPartial]];
+        break;
+      }
+      case 194: {
+        BLoginAsAdminBuilder* subBuilder = [BLoginAsAdmin builder];
+        if (self.hasLoginAsAdmin) {
+          [subBuilder mergeFrom:self.loginAsAdmin];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setLoginAsAdmin:[subBuilder buildPartial]];
         break;
       }
     }
@@ -6463,6 +6824,36 @@ static BResponseType* defaultBResponseTypeInstance = nil;
 - (BResponseTypeBuilder*) clearFetchConversationGroups {
   resultResponseType.hasFetchConversationGroups = NO;
   resultResponseType.fetchConversationGroups = [BFetchConversationGroups defaultInstance];
+  return self;
+}
+- (BOOL) hasLoginAsAdmin {
+  return resultResponseType.hasLoginAsAdmin;
+}
+- (BLoginAsAdmin*) loginAsAdmin {
+  return resultResponseType.loginAsAdmin;
+}
+- (BResponseTypeBuilder*) setLoginAsAdmin:(BLoginAsAdmin*) value {
+  resultResponseType.hasLoginAsAdmin = YES;
+  resultResponseType.loginAsAdmin = value;
+  return self;
+}
+- (BResponseTypeBuilder*) setLoginAsAdminBuilder:(BLoginAsAdminBuilder*) builderForValue {
+  return [self setLoginAsAdmin:[builderForValue build]];
+}
+- (BResponseTypeBuilder*) mergeLoginAsAdmin:(BLoginAsAdmin*) value {
+  if (resultResponseType.hasLoginAsAdmin &&
+      resultResponseType.loginAsAdmin != [BLoginAsAdmin defaultInstance]) {
+    resultResponseType.loginAsAdmin =
+      [[[BLoginAsAdmin builderWithPrototype:resultResponseType.loginAsAdmin] mergeFrom:value] buildPartial];
+  } else {
+    resultResponseType.loginAsAdmin = value;
+  }
+  resultResponseType.hasLoginAsAdmin = YES;
+  return self;
+}
+- (BResponseTypeBuilder*) clearLoginAsAdmin {
+  resultResponseType.hasLoginAsAdmin = NO;
+  resultResponseType.loginAsAdmin = [BLoginAsAdmin defaultInstance];
   return self;
 }
 @end

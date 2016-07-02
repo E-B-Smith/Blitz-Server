@@ -72,8 +72,9 @@ create table UserTable
     ,interestTags       text[]
 
     ,isExpert           boolean
-    ,stripeAccount      text
     ,isFree             boolean
+    ,isAdmin            boolean
+    ,stripeAccount      text
     ,processorid        text
     ,defaultCard        text    -- deprecated
 
