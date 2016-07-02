@@ -313,7 +313,28 @@ func ChargeRequest(session *Session, chargeReq *BlitzMessage.Charge) *BlitzMessa
         chargeReq.ChargeToken = &newCard.ID
     }
 
-    result, error := config.DB.Exec(
+    //  First check if we are over our daily fail-safe limit:
+
+    row := config.DB.QueryRow(
+        `select sum(amount) from ChargeTable
+            where age(now(), timestamp) < '24 hours'
+              and chargeStatus = $1;`,
+        BlitzMessage.ChargeStatus_CSCharged,
+    )
+    var total float64
+    error = row.Scan(&total)
+    if error != nil || total > 200.0 {
+        if error == nil {
+            error = fmt.Errorf("Sorry, we aren't able to submit charges at the moment.")
+        }
+        Log.Errorf("Charge limit reached! Total: %1.2f Error: %v.", total, error)
+        return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
+    }
+
+    //  Insert charge status:
+
+    var result sql.Result
+    result, error = config.DB.Exec(
         `insert into ChargeTable (
             chargeID,
             timestamp,
@@ -365,7 +386,8 @@ func ChargeRequest(session *Session, chargeReq *BlitzMessage.Charge) *BlitzMessa
         chargeParams.Desc = *chargeReq.MemoText
     }
 
-    //  We're charging the customer rather than the card. Not Needed:
+    //  We're charging the customer rather than the card.
+    //  Not Needed:
     // error = chargeParams.SetSource(stripeCID)
     // if error != nil { Log.LogError(error) }
 

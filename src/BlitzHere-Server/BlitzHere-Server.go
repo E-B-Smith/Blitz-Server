@@ -572,9 +572,12 @@ func Server() (returnValue int) {
     globalMessagePusher.UserDidConnect = UserDidConnectToPusher
     http.Handle(config.ServicePrefix+"/push", websocket.Handler(PushMessageHandler))
 
-
+    server := &http.Server{
+        ReadTimeout:   5 * time.Second,
+        WriteTimeout: 10 * time.Second,
+    }
     Log.Infof("Server listening at %d:%s.", config.ServicePort, config.ServicePrefix)
-    http.Serve(httpListener, nil)
+    server.Serve(httpListener)
     return 0
 }
 

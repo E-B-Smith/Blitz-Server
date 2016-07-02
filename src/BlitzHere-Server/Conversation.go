@@ -124,15 +124,6 @@ func ReadUserConversation(userID string, conversationID string) (*BlitzMessage.C
         parentFeedPostID    sql.NullString
         creationDate        pq.NullTime
         closedDate          pq.NullTime
-
-        replyCount          sql.NullInt64
-        unreadCount         sql.NullInt64
-
-        lastMessage         sql.NullString
-        lastActivity        pq.NullTime
-        lastUserID          sql.NullString
-        lastActionURL       sql.NullString
-
         isFree              sql.NullBool
         chargeID            sql.NullString
     )
@@ -151,6 +142,17 @@ func ReadUserConversation(userID string, conversationID string) (*BlitzMessage.C
         Log.LogError(error)
         return nil, error
     }
+    var conv = BlitzMessage.Conversation {
+        ConversationID:     &conversationID,
+        Status:             BlitzMessage.UserMessageStatus(status.Int64).Enum(),
+        InitiatorUserID:    &initiatorUserID.String,
+        ParentFeedPostID:   StringPtr(parentFeedPostID.String),
+        CreationDate:       BlitzMessage.TimestampPtr(creationDate),
+        ClosedDate:         BlitzMessage.TimestampPtr(closedDate),
+        ConversationType:   BlitzMessage.ConversationType(BlitzMessage.ConversationType_CTConversation).Enum(),
+        IsFree:             BoolPtr(isFree.Bool),
+        ChargeID:           proto.String(chargeID.String),
+    }
 
     row = config.DB.QueryRow(
         `select
@@ -160,45 +162,72 @@ func ReadUserConversation(userID string, conversationID string) (*BlitzMessage.C
             where conversationID = $1
               and recipientID = $2
             group by conversationID;`, conversationID, userID)
+    var replyCount, unreadCount sql.NullInt64
     error = row.Scan(&replyCount, &unreadCount)
     if error != nil { Log.LogError(error) }
 
-    row = config.DB.QueryRow(
-        `select messageText,
+    conv.MessageCount = Int32PtrFromInt64(replyCount.Int64)
+    conv.UnreadCount  = Int32PtrFromInt64(unreadCount.Int64)
+
+    var rows *sql.Rows
+    rows, error = config.DB.Query(
+        `with msgs as (
+         select messageText,
             creationDate,
             senderID,
             actionURL
             from usermessagetable
             where conversationID = $1
+              and recipientID = $2
             order by creationDate desc
-            limit 1;`, conversationID)
-    error = row.Scan(&lastMessage, &lastActivity, &lastUserID, &lastActionURL)
-    if error != nil { Log.LogError(error) }
-
-    conversationType := BlitzMessage.ConversationType_CTConversation
-
-    var conv BlitzMessage.Conversation
-    conv.ConversationID     =   &conversationID
-    conv.InitiatorUserID    =   &initiatorUserID.String
-    conv.Status             =   BlitzMessage.UserMessageStatus(status.Int64).Enum()
-    conv.CreationDate       =   BlitzMessage.TimestampPtr(creationDate)
-    conv.MessageCount       =   Int32PtrFromNullInt64(replyCount)
-    conv.UnreadCount        =   Int32PtrFromNullInt64(unreadCount)
-    conv.LastMessage        =   &lastMessage.String
-    conv.LastActivityDate   =   BlitzMessage.TimestampPtr(lastActivity)
-    conv.ClosedDate         =   BlitzMessage.TimestampPtr(closedDate)
-    conv.ConversationType   =   &conversationType
-    conv.IsFree             =   BoolPtr(isFree.Bool)
-    conv.ChargeID           =   proto.String(chargeID.String)
-
-    if parentFeedPostID.Valid {
-        conv.ParentFeedPostID = &parentFeedPostID.String
+            limit 3
+        )
+        select * from msgs order by creationDate asc;`,
+        conversationID,
+        userID,
+    )
+    if error != nil {
+        Log.LogError(error)
+        return nil, error
     }
-    if lastUserID.Valid {
-        conv.LastActivityUserID = &lastUserID.String
+    defer rows.Close()
+
+    for rows.Next() {
+        var (
+            lastMessage         sql.NullString
+            lastActivity         pq.NullTime
+            lastUserID          sql.NullString
+            lastActionURL       sql.NullString
+        )
+
+        error = rows.Scan(&lastMessage, &lastActivity, &lastUserID, &lastActionURL)
+        if error != nil {
+            Log.LogError(error)
+            continue
+        }
+
+        if lastActivity.Valid {
+            conv.LastActivityDate = BlitzMessage.TimestampPtr(lastActivity)
+        }
+
+        if lastUserID.String == BlitzMessage.Default_Global_SystemUserID {
+            conv.HeadlineText = &lastMessage.String
+        } else {
+            conv.LastMessage = &lastMessage.String
+            conv.LastActivityUserID = &lastUserID.String
+        }
+
+        if lastActionURL.Valid && len(lastActionURL.String) > 0 {
+            conv.LastActionURL = &lastActionURL.String
+        }
     }
-    if lastActionURL.Valid {
-        conv.LastActionURL = &lastActionURL.String
+
+    if conv.LastActivityDate == nil {
+        if conv.ClosedDate != nil {
+            conv.LastActivityDate = conv.ClosedDate
+        } else {
+            conv.LastActivityDate = conv.CreationDate
+        }
     }
 
     conv.MemberIDs = MembersForConversationID(conversationID)
@@ -523,6 +552,7 @@ func FetchNotificationsAsConversations(userID string) []*BlitzMessage.Conversati
             actionURL
         from UserMessageTable
         where recipientID = $1
+          and recipientID <> senderID
           and messageType = $2;`,
         userID,
         BlitzMessage.UserMessageType_MTActionNotification,
@@ -595,6 +625,8 @@ func FetchConversations(session *Session, req *BlitzMessage.FetchConversations) 
     var error error
 
     if len(req.UserID) > 0 {
+
+        //  Fetch all conversations between a set of users (i.e., by member id)
 
         queryString :=
             `select conversationID from conversationmembertable `

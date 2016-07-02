@@ -32,6 +32,16 @@ function setCookieWithMinutes(cname, cvalue, expiremin) {
     var expires = "expires="+d.toUTCString();
     document.cookie = cname + "=" + cvalue + "; " + expires;
 }
+function getParameterByName(name, url) {
+    'use strict';
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
 var checkForAppTimeoutTime;
 var checkForAppTimeout;
 var originalLocation=window.location;
@@ -39,10 +49,10 @@ function checkForAppFailed() {
     'use strict';
     clearTimeout(checkForAppTimeout);
     checkForAppTimeout = null;
-    if (Date().getTime() < checkForAppTimeoutTime) {
+    if ( (new Date()).getTime() < checkForAppTimeoutTime) {
         setCookieWithMinutes("hasApp", 'false', 5);
     }
-    window.location=originalLocation;
+    window.location="{{.AppStoreLink}}";
 }
 function checkForApp() {
     'use strict';
@@ -52,19 +62,25 @@ function checkForApp() {
     clearTimeout(checkForAppTimeout);
     checkForAppTimeout = null;
 
-    var hasApp = getCookie("hasApp");
-    var checkedForApp = getCookie("checkedForApp");
-    if (hasApp === 'true') {
-        window.location=appDeepLink;
-    } else if (checkedForApp === 'true') {
-        checkForAppTimeout = window.setTimeout(checkForApp, 10*1000);
-    } else {
-        setCookieWithMinutes("hasApp", 'true', 60);
-        setCookieWithMinutes("checkedForApp", 'true', 1);
-        checkForAppTimeoutTime = Date().getTime() + 200;
-        checkForAppTimeout = window.setTimeout(checkForAppFailed, 100);
-        window.location=appDeepLink;
+    //  Get the last link?
+    var getLastDeepLink = getParameterByName("getlast");
+    if (getLastDeepLink === 'true') {
+        var lastDeepLink = getCookie('lastDeepLink');
+        if (lastDeepLink.length > 0) {
+            setCookieWithMinutes('lastDeepLink', "", 0);
+            window.location = lastDeepLink;
+            return;
+        }
     }
+    setCookieWithMinutes('lastDeepLink', appDeepLink, 60);
+    checkForAppTimeoutTime = (new Date()).getTime() + 200;
+    checkForAppTimeout = window.setTimeout(checkForAppFailed, 100);
+    try {
+        window.location=appDeepLink;
+    } catch (err) {
+        window.location="{{.AppStoreLink}}";
+    }
+
 }
 window.onload = checkForApp;
 

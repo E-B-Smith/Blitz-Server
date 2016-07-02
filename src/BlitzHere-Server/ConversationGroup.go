@@ -151,6 +151,7 @@ func FetchNotificationsAsConversationGroup(userID string) []*BlitzMessage.Conver
             actionURL
         from UserMessageTable
         where recipientID = $1
+          and recipientID <> senderID
           and messageType = $2;`,
         userID,
         BlitzMessage.UserMessageType_MTActionNotification,
@@ -200,6 +201,7 @@ func FetchNotificationsAsConversationGroup(userID string) []*BlitzMessage.Conver
         conv.LastUserID         =   &senderID.String
         conv.TotalCount         =   proto.Int32(1)
         conv.UnreadCount        =   proto.Int32(unreadCount)
+        conv.ActionURL      =   &lastActionURL.String
 
         ary = append(ary, &conv)
     }

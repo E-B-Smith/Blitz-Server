@@ -93,10 +93,11 @@ func UserIsConfirming(session *Session, confirmation *BlitzMessage.ConfirmationR
         error = fmt.Errorf("The confirmation code does not match or expired.")
     }
 
-    if error != nil {
-        UpdateProfileStatusForUserID(session.UserID, BlitzMessage.UserStatus_USConfirming)
-        return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
-    }
+    //  Is this inserted by mistake?
+    // if error != nil {
+    //     UpdateProfileStatusForUserID(session.UserID, BlitzMessage.UserStatus_USConfirming)
+    //     return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
+    // }
 
     //  Great!  We've confirmed.
     //  Find the earliest verfied contact.
@@ -113,7 +114,7 @@ func UserIsConfirming(session *Session, confirmation *BlitzMessage.ConfirmationR
             limit 1;`,
         confirmation.ContactInfo.Contact,
         confirmation.ContactInfo.ContactType,
-        BlitzMessage.UserStatus_USConfirmed,
+        BlitzMessage.UserStatus_USConfirming,
     )
 
     var oldestUserID sql.NullString

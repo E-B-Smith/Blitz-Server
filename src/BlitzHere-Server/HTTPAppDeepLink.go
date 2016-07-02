@@ -137,6 +137,7 @@ func HTTPAppDeepLink(writer http.ResponseWriter, httpRequest *http.Request) {
     deepLinkPath := deepLinkURL.Path+"/"
     deepLinkURL.RawQuery = httpRequest.URL.RawQuery
     deepLinkURL.Scheme = config.AppLinkScheme
+    //deepLinkURL.Scheme = "https"
     deepLinkURLString := deepLinkURL.String()
     Log.Debugf("Deeplink URL: %s.", deepLinkURLString)
 
