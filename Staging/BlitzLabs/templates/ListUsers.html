@@ -1,0 +1,44 @@
+{{define "ListUsers.html"}}
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-type" content="text/html; charset=UTF-8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="viewport" content="width=device-width, minimal-ui">
+<link href="./favicon.png"  type="image/png" rel="shortcut icon">
+<title>{{ .AppName }} : List Users</title>
+<link rel="stylesheet" type="text/css" href="style-admin.css">
+<script src="script.js"></script>
+</head>
+
+<body>
+<div id="header">
+<div>
+<img id="logo" src="Logo.png" alt="Logo">
+<div>
+<span id="app-name">{{.AppName}}</span>
+</div>
+</div>
+</div>
+
+<div id="stats-body">
+<h1>User List</h1>
+<br>
+
+<table>
+{{range $index, $element := .Users}}
+<tr>
+<td><a href="updateprofile?uid={{$element.UserID.String}}">
+    {{$element.Name.String}}</a></td>
+<td>{{$element.Background.String}}</td>
+</tr>
+{{else}}
+<tr><td><p class=error>No users!</p></td></tr>
+{{end}}
+</table>
+
+</div>
+</body>
+</html>
+{{end}}
