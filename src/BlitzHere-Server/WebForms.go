@@ -28,12 +28,12 @@ import (
 
 //----------------------------------------------------------------------------------------
 //
-//                                                                            WebListUsers
+//                                                                             WebUserList
 //
 //----------------------------------------------------------------------------------------
 
 
-func WebListUsers(writer http.ResponseWriter, httpRequest *http.Request) {
+func WebUserList(writer http.ResponseWriter, httpRequest *http.Request) {
     Log.LogFunctionName()
 
     rows, error := config.DB.Query(
@@ -70,7 +70,7 @@ func WebListUsers(writer http.ResponseWriter, httpRequest *http.Request) {
         listUsers.Users = append(listUsers.Users, user)
     }
 
-    error = config.Template.ExecuteTemplate(writer, "ListUsers.html", listUsers)
+    error = config.Template.ExecuteTemplate(writer, "UserList.html", listUsers)
     if error != nil {
         Log.LogError(error)
     }
@@ -112,10 +112,11 @@ func WebUpdateProfile(writer http.ResponseWriter, httpRequest *http.Request) {
         updateProfile.Profile = ProfileForUserID(userID, userID)
         if updateProfile.Profile == nil {
             updateProfile.ErrorMessage = fmt.Sprintf("Invalid UserID '%s'.", userID)
+            return
         }
         for _, tag := range updateProfile.Profile.EntityTags {
             if ! strings.HasPrefix(*tag.TagName, ".") {
-                updateProfile.Expertise += fmt.Sprintf("'%s', ", *tag.TagName)
+                updateProfile.Expertise += fmt.Sprintf("%s, ", *tag.TagName)
             }
         }
         updateProfile.Expertise = strings.TrimRight(updateProfile.Expertise, ", ")
@@ -140,16 +141,55 @@ func WebUpdateProfile(writer http.ResponseWriter, httpRequest *http.Request) {
     updateProfile.Profile.BackgroundSummary =
         proto.String(httpRequest.PostFormValue("BackgroundSummary"))
 
+    //  Save the dot tags
+
+    dotTags := make([]*BlitzMessage.EntityTag, 0, 10)
+    for _, tag := range updateProfile.Profile.EntityTags {
+        if strings.HasPrefix(*tag.TagName, ".") {
+            dotTags = append(dotTags, tag)
+        }
+    }
+
+    newTags := strings.Split(httpRequest.PostFormValue("Expertise"), ",")
+    cleanTags := make([]string, 0, len(newTags))
+    for _, tag := range newTags {
+        cleanTag := ""
+        tArray := strings.Split(tag, " ")
+        for _, tagPart := range tArray {
+            if len(tagPart) > 0 { cleanTag += " " + tagPart }
+        }
+        cleanTag = strings.ToLower(strings.TrimSpace(cleanTag))
+        if len(cleanTag) > 0 {
+            cleanTags = append(cleanTags, cleanTag)
+        }
+    }
+
+    for _, tag := range cleanTags {
+        entityTag := BlitzMessage.EntityTag {
+            TagName:        proto.String(tag),
+            UserHasTagged:  proto.Bool(true),
+            TagCount:       proto.Int32(1),
+        }
+        dotTags = append(dotTags, &entityTag)
+    }
+    updateProfile.Profile.EntityTags = dotTags
 
     //  Update and send back the result --
 
-    if false {
+    if true {
         error = UpdateProfile(updateProfile.Profile)
         if error != nil {
             Log.LogError(error)
             updateProfile.ErrorMessage = error.Error()
         }
     }
+
+    for _, tag := range updateProfile.Profile.EntityTags {
+        if ! strings.HasPrefix(*tag.TagName, ".") {
+            updateProfile.Expertise += fmt.Sprintf("%s, ", *tag.TagName)
+        }
+    }
+    updateProfile.Expertise = strings.TrimRight(updateProfile.Expertise, ", ")
 
     updateProfile.ErrorMessage = "User updated."
 }

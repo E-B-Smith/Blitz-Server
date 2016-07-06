@@ -542,7 +542,7 @@ func Server() (returnValue int) {
     http.HandleFunc(config.ServicePrefix+"/message", SystemMessageFormRequest)
     http.HandleFunc(config.ServicePrefix+"/shortlink", LinkShortnerFormRequest)
     http.HandleFunc(config.ServicePrefix+"/downloadapp", DownloadAppRequest)
-    http.HandleFunc(config.ServicePrefix+"/listusers", WebListUsers)
+    http.HandleFunc(config.ServicePrefix+"/userlist", WebUserList)
     http.HandleFunc(config.ServicePrefix+"/updateprofile", WebUpdateProfile)
 
     //  Set up short links --

@@ -18,19 +18,7 @@ a   {
     font-size: 1.0em;
     font-weight: bolder;
     }
-input
-    {
-    margin-bottom: 1em;
-    font-size: 1.2em;
-    border: 1px solid;
-    -webkit-appearance: none;
-    width: 35em;
-    height: 2.0em;
-    }
-input[type="checkbox"]
-    {
-    width: 1em;
-    }
+input[type=text],
 textarea
     {
     margin-bottom: 1em;
@@ -40,13 +28,27 @@ textarea
     width: 35em;
     height: 2.0em;
     }
+input[type=submit]
+    {
+    margin-bottom: 1em;
+    font-size: 1.2em;
+    border: 1px solid;
+    -webkit-appearance: none;
+    height: 2.0em;
+    width: 10em;
+    border-radius: 2px;
+    background: #f0f8ff;
+    }
+input[type=checkbox]
+    {
+    margin-right: 0.75em;
+    }
 h1  {
     font-size: 1.5em;
     }
-.submit
-    {
-    width: 10em;
-    border-radius: 2px;
+h2  {
+    font-size: 1.3em;
+    font-weight: bold;
     }
 .error
     {

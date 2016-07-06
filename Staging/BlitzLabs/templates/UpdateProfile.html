@@ -10,6 +10,17 @@
 <title>{{ .AppName }} : Update Profile</title>
 <link rel="stylesheet" type="text/css" href="style-admin.css">
 <script src="script.js"></script>
+<style>
+td:nth-child(1) {
+    text-align: right;
+}
+pre {
+    font-weight: bold;
+    font-size: 0.9em;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+</style>
 </head>
 
 <body>
@@ -25,7 +36,6 @@
 <div id="stats-body">
 <h1>User Profile</h1>
 <div id='form-div'>
-<br>
 
 <p class="error">{{.ErrorMessage}}</p>
 
@@ -64,29 +74,56 @@
     </label>
     <br>
 
+    <h2>Work Experience</h2>
+    {{range $index, $element := .Profile.Employment}}
+        <table>
+        <tr><td>Job Title:  </td><td>{{$element.JobTitle}}</td></tr>
+        <tr><td>Company:    </td><td>{{$element.CompanyName}}</td></tr>
+        <tr><td>Location:   </td><td>{{$element.Location}}</td></tr>
+        <tr><td>Industry:   </td><td>{{$element.Industry}}</td></tr>
+        <tr><td>Summary:    </td><td></td></tr>
+        </table>
+        <pre>{{$element.Summary}}</pre>
+        <br>
+    {{else}}
+    &lt;&lt; None &gt;&gt;
+    <br>
+    {{end}}
+
+    <h2>Education</h2>
+    {{range $index, $element := .Profile.Education}}
+        <table>
+        <tr><td>Degree:     </td><td>{{$element.Degree}}</td></tr>
+        <tr><td>Emphasis:   </td><td>{{$element.Emphasis}}</td></tr>
+        <tr><td>School:     </td><td>{{$element.SchoolName}}</td></tr>
+        <tr><td>Summary:    </td><td></td></tr>
+        </table>
+        <pre>{{$element.Summary}}</pre>
+        <br>
+    {{else}}
+    &lt;&lt; None &gt;&gt;
+    <br>
+    {{end}}
+
+    <h2>Status</h2>
     <label>
-    <textarea style='height: 14.5em;'
-        placeholder="Background"
-        name="BackgroundSummary"
-        >{{.Profile.BackgroundSummary}}</textarea>
+    <input type="checkbox"
+        name="IsExpert"
+        value="IsExpert"
+        {{if BoolPtr .Profile.IsExpert}}checked{{end}}
+        >Is Expert
     </label>
     <br>
 
     <label>
     <input type="checkbox"
-        name="IsExpert"
-        value="IsExpert"
-        checked={{.Profile.IsExpert}}
-        >Is an Expert
+        name="IsAppoved"
+        value="IsAppoved"
+        >Approve Profile
     </label>
     <br>
 
-    <label>
-    <input type="checkbox" name="IsApproved" value="IsApproved">
-    Approve Profile Update
-    </label>
     <br>
-
     <input type="submit" value="Update" class="submit">
     </form>
 {{end}}
