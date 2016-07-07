@@ -76,14 +76,18 @@ func ContactInfoForUserID(userID string) []*BlitzMessage.ContactInfo {
 
     contactArray := make([]*BlitzMessage.ContactInfo, 0, 5)
     for rows.Next() {
-        var (contactType int; contact string; verified bool)
+        var (
+            contactType int
+            contact     string
+            verified    sql.NullBool
+        )
         error = rows.Scan(&contactType, &contact, &verified)
         if error == nil {
             ct := BlitzMessage.ContactType(contactType)
             contactStruct := BlitzMessage.ContactInfo {
                 ContactType: &ct,
                 Contact: &contact,
-                IsVerified: &verified,
+                IsVerified: &verified.Bool,
             }
             contactArray = append(contactArray, &contactStruct)
         } else {

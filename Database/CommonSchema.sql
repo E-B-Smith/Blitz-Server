@@ -80,6 +80,9 @@ create table UserTable
 
     ,search             tsvector
     ,editProfileID      text
+
+    ,chatCharge         text
+    ,callCharge         text
     );
 create index UserSearchIndex on UserTable using gin(search);
 
@@ -890,17 +893,30 @@ function ApproveEditProfile(profileID text) returns text as
     declare
         result text;
         editID text;
+        editStatus smallint;
+        fromID text;
+        toID   text;
     begin
 
-    select editprofileid from usertable
+    select editprofileid, userStatus from usertable
         where userID = profileID
-        into editID;
+        into editID, editStatus;
 
     if character_length(editID) < 16 then
-        return 'Not approved';
+        return 'No change to approve';
     end if;
 
-    select CopyUserIDToUserID(editID, profileID) into result;
+    -- Swap the editID and profileID if they're reversed:
+
+    if editStatus = 5 then
+        fromID := editID;
+          toID := profileID;
+    else
+        fromID := profileID;
+          toID := editID;
+    end if;
+
+    select CopyUserIDToUserID(fromID, toID) into result;
     if result <> 'User copied' then
         return result;
     end if;
@@ -908,9 +924,9 @@ function ApproveEditProfile(profileID text) returns text as
     update usertable set
         editprofileid = null,
         userStatus = 5
-        where userID = profileID;
+        where userID = toID;
 
-    select EraseUserID(editID) into result;
+    select EraseUserID(fromID) into result;
     if result <> 'User erased' then
        return result;
     end if;

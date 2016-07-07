@@ -16,11 +16,12 @@ package main
 
 import (
     "fmt"
-    // "errors"
+    "errors"
     "strings"
     "net/http"
     "database/sql"
     "violent.blue/GoKit/Log"
+    "violent.blue/GoKit/pgsql"
     "github.com/golang/protobuf/proto"
     "BlitzMessage"
 )
@@ -114,6 +115,11 @@ func WebUpdateProfile(writer http.ResponseWriter, httpRequest *http.Request) {
             updateProfile.ErrorMessage = fmt.Sprintf("Invalid UserID '%s'.", userID)
             return
         }
+        if updateProfile.Profile.EditProfileID != nil  &&
+           len(*updateProfile.Profile.EditProfileID) > 10 {
+            userID = *updateProfile.Profile.EditProfileID
+            updateProfile.Profile = ProfileForUserID(userID, userID)
+        }
         for _, tag := range updateProfile.Profile.EntityTags {
             if ! strings.HasPrefix(*tag.TagName, ".") {
                 updateProfile.Expertise += fmt.Sprintf("%s, ", *tag.TagName)
@@ -181,6 +187,49 @@ func WebUpdateProfile(writer http.ResponseWriter, httpRequest *http.Request) {
         if error != nil {
             Log.LogError(error)
             updateProfile.ErrorMessage = error.Error()
+            return
+        }
+
+        //  Update expert status:
+
+        isExpert := httpRequest.PostFormValue("IsExpert")
+        Log.Debugf("IsExpert: %s.", isExpert)
+        isExpertBool := false
+        if isExpert == "IsExpert" {
+            isExpertBool = true
+        }
+        var result sql.Result
+        result, error = config.DB.Exec(
+            `update UserTable set isExpert = $1 where userID = $2;`,
+            isExpertBool,
+            userID,
+        )
+        error = pgsql.UpdateResultError(result, error)
+        if error != nil {
+            Log.LogError(error)
+            updateProfile.ErrorMessage = error.Error()
+            return
+        }
+        updateProfile.Profile.IsExpert = &isExpertBool
+
+        //  Expert approve update?
+
+        isApproved := httpRequest.PostFormValue("IsApproved")
+        if isApproved == "IsApproved" {
+            row := config.DB.QueryRow(
+                `select ApproveEditProfile($1);`,
+                userID,
+            )
+            var result sql.NullString
+            error = row.Scan(&result)
+            if error == nil && result.String != "Approved" {
+                error = errors.New(result.String)
+            }
+            if error != nil {
+                Log.LogError(error)
+                updateProfile.ErrorMessage = error.Error()
+                return
+            }
         }
     }
 

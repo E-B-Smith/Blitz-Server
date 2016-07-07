@@ -1,4 +1,4 @@
-{{define "Admin.html"}}
+{{define "UserList.html"}}
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="viewport" content="width=device-width, minimal-ui">
 <link href="./favicon.png"  type="image/png" rel="shortcut icon">
-<title>{{.AppName}} : Admin</title>
+<title>{{ .AppName }} : List Users</title>
 <link rel="stylesheet" type="text/css" href="style-admin.css">
 <script src="script.js"></script>
 </head>
@@ -22,15 +22,21 @@
 </div>
 </div>
 
-<div id="stats-body" style="font-size: 1.2em;">
-<h1>Administrative</h1>
+<div id="stats-body">
+<h1>User List</h1>
 <br>
 
-<a href="/userlist/">User List</a><br>
-<a href="/status/">Server Status</a><br>
-<a href="/signup/">Test-User Sign-Up</a><br>
-<a href="shortlink">Make a Short Link</a><br>
-<a href="message">Send a System-Wide Message</a><br>
+<table>
+{{range $index, $element := .Users}}
+<tr>
+<td><a href="updateprofile?uid={{$element.UserID.String}}">
+    {{$element.Name.String}}</a></td>
+<td>{{$element.Background.String}}</td>
+</tr>
+{{else}}
+<tr><td><p class=error>No users!</p></td></tr>
+{{end}}
+</table>
 
 </div>
 </body>

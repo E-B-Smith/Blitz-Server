@@ -1,5 +1,5 @@
 *   {
-    font-size: 11px;
+    font-size: 12px;
     font-family: "Lucida Console", Monaco, monospace;
     background-color: white;
     color: rgb(120, 120, 120);
@@ -18,7 +18,8 @@ a   {
     font-size: 1.0em;
     font-weight: bolder;
     }
-input
+input[type=text],
+textarea
     {
     margin-bottom: 1em;
     font-size: 1.2em;
@@ -27,13 +28,27 @@ input
     width: 35em;
     height: 2.0em;
     }
-h1  {
-    font-size: 1.3em;
-    }
-.submit
+input[type=submit]
     {
+    margin-bottom: 1em;
+    font-size: 1.2em;
+    border: 1px solid;
+    -webkit-appearance: none;
+    height: 2.0em;
     width: 10em;
     border-radius: 2px;
+    background: #f0f8ff;
+    }
+input[type=checkbox]
+    {
+    margin-right: 0.75em;
+    }
+h1  {
+    font-size: 1.5em;
+    }
+h2  {
+    font-size: 1.3em;
+    font-weight: bold;
     }
 .error
     {
