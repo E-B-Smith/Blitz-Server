@@ -65,8 +65,9 @@ func WebUserList(writer http.ResponseWriter, httpRequest *http.Request) {
             Log.LogError(error)
             continue
         }
-        if len(user.Background.String) > 20 {
-            user.Background.String = user.Background.String[:20] + "..."
+        const bLen = 30
+        if len(user.Background.String) > bLen {
+            user.Background.String = user.Background.String[:bLen] + "..."
         }
         listUsers.Users = append(listUsers.Users, user)
     }
@@ -76,8 +77,6 @@ func WebUserList(writer http.ResponseWriter, httpRequest *http.Request) {
         Log.LogError(error)
     }
 }
-
-
 
 
 //----------------------------------------------------------------------------------------

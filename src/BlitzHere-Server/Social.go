@@ -8,6 +8,8 @@ package main
 
 import (
     "strings"
+    "database/sql"
+    "github.com/golang/protobuf/proto"
     "violent.blue/GoKit/Log"
     "violent.blue/GoKit/pgsql"
     "BlitzMessage"
@@ -84,9 +86,12 @@ func SocialIdentitiesWithUserID(userID string)  []*BlitzMessage.SocialIdentity {
     } ()
 
     social := make([]*BlitzMessage.SocialIdentity, 0, 10)
-    rows, error := config.DB.Query("select"+
-      "  service, socialID, userName, displayName, URI from SocialTable "+
-      "  where userID = $1;", userID)
+    rows, error := config.DB.Query(
+        `select service, socialID, userName, displayName, URI
+            from SocialTable
+           where userID = $1;`,
+           userID,
+    )
     defer pgsql.CloseRows(rows)
     if error != nil {
         Log.Debugf("Error querying social: %v.", error)
@@ -94,20 +99,25 @@ func SocialIdentitiesWithUserID(userID string)  []*BlitzMessage.SocialIdentity {
     }
 
     for rows.Next() {
-        var (service string; socialID string; userName string; displayName string; URI string)
+        var (
+            service     sql.NullString
+            socialID    sql.NullString
+            userName    sql.NullString
+            displayName sql.NullString
+            URI         sql.NullString
+        )
         error = rows.Scan(&service, &socialID, &userName, &displayName, &URI)
         if error == nil {
-            sid := BlitzMessage.SocialIdentity{
-                SocialService: &service,
-                SocialID: &socialID,
-                UserName: &userName,
-                DisplayName: &displayName,
-                UserURI: &URI,
-                }
+            sid := BlitzMessage.SocialIdentity {
+                SocialService:  proto.String(service.String),
+                SocialID:       proto.String(socialID.String),
+                UserName:       proto.String(userName.String),
+                DisplayName:    proto.String(displayName.String),
+                UserURI:        proto.String(URI.String),
+            }
             social = append(social, &sid)
         }
     }
     return social
 }
-
 
