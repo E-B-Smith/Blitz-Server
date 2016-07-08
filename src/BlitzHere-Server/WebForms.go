@@ -38,7 +38,13 @@ func WebUserList(writer http.ResponseWriter, httpRequest *http.Request) {
     Log.LogFunctionName()
 
     rows, error := config.DB.Query(
-        `select userid, name, backgroundSummary from usertable
+        `select
+            userid,
+            name,
+            backgroundSummary,
+            editprofileid,
+            isExpert
+            from usertable
             where userstatus >= 5 order by lastSeen desc;`,
     )
     if error != nil {
@@ -46,6 +52,7 @@ func WebUserList(writer http.ResponseWriter, httpRequest *http.Request) {
     }
 
     type UserStruct struct {
+        Annotation  string
         UserID      sql.NullString
         Name        sql.NullString
         Background  sql.NullString
@@ -60,7 +67,9 @@ func WebUserList(writer http.ResponseWriter, httpRequest *http.Request) {
 
     for rows.Next() {
         var user UserStruct
-        error = rows.Scan(&user.UserID, &user.Name, &user.Background)
+        var editprofileid sql.NullString
+        var isExpert sql.NullBool
+        error = rows.Scan(&user.UserID, &user.Name, &user.Background, &editprofileid, &isExpert)
         if error != nil {
             Log.LogError(error)
             continue
@@ -69,6 +78,25 @@ func WebUserList(writer http.ResponseWriter, httpRequest *http.Request) {
         if len(user.Background.String) > bLen {
             user.Background.String = user.Background.String[:bLen] + "..."
         }
+
+        if len(editprofileid.String) > 10 {
+            user.Annotation = "Approve Edit"
+        } else if ! isExpert.Bool {
+            row := config.DB.QueryRow(
+                `select count(*) from entitytagtable
+                    where userid = $1
+                      and entityid = $1::uuid
+                      and entitytype = 1
+                      and entitytag = '.appliedexpert'`,
+                user.UserID.String,
+            )
+            var count int64
+            error = row.Scan(&count)
+            if error == nil && count > 0 {
+                user.Annotation = "Applied"
+            }
+        }
+
         listUsers.Users = append(listUsers.Users, user)
     }
 

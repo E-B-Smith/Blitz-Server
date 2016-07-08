@@ -3211,6 +3211,7 @@ static BUserReview* defaultBUserReviewInstance = nil;
 @property (strong) NSString* stripeAccount;
 @property BOOL serviceIsFreeForUser;
 @property (strong) NSString* chatFee;
+@property (strong) NSString* callFee;
 @property SInt64 userInfo;
 @property (strong) NSString* editProfileID;
 @property BOOL isAdmin;
@@ -3370,6 +3371,13 @@ static BUserReview* defaultBUserReviewInstance = nil;
   hasChatFee_ = !!_value_;
 }
 @synthesize chatFee;
+- (BOOL) hasCallFee {
+  return !!hasCallFee_;
+}
+- (void) setHasCallFee:(BOOL) _value_ {
+  hasCallFee_ = !!_value_;
+}
+@synthesize callFee;
 - (BOOL) hasUserInfo {
   return !!hasUserInfo_;
 }
@@ -3416,6 +3424,7 @@ static BUserReview* defaultBUserReviewInstance = nil;
     self.stripeAccount = @"";
     self.serviceIsFreeForUser = NO;
     self.chatFee = @"";
+    self.callFee = @"";
     self.userInfo = 0L;
     self.editProfileID = @"";
     self.isAdmin = NO;
@@ -3589,6 +3598,9 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   if (self.hasIsAdmin) {
     [output writeBool:29 value:self.isAdmin];
   }
+  if (self.hasCallFee) {
+    [output writeString:30 value:self.callFee];
+  }
   [self.unknownFields writeToCodedOutputStream:output];
 }
 - (SInt32) serializedSize {
@@ -3690,6 +3702,9 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   }
   if (self.hasIsAdmin) {
     size_ += computeBoolSize(29, self.isAdmin);
+  }
+  if (self.hasCallFee) {
+    size_ += computeStringSize(30, self.callFee);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -3846,6 +3861,9 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   if (self.hasIsAdmin) {
     [output appendFormat:@"%@%@: %@\n", indent, @"isAdmin", [NSNumber numberWithBool:self.isAdmin]];
   }
+  if (self.hasCallFee) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"callFee", self.callFee];
+  }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (void) storeInDictionary:(NSMutableDictionary *)dictionary {
@@ -3956,6 +3974,9 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   if (self.hasIsAdmin) {
     [dictionary setObject: [NSNumber numberWithBool:self.isAdmin] forKey: @"isAdmin"];
   }
+  if (self.hasCallFee) {
+    [dictionary setObject: self.callFee forKey: @"callFee"];
+  }
   [self.unknownFields storeInDictionary:dictionary];
 }
 - (BOOL) isEqual:(id)other {
@@ -4017,6 +4038,8 @@ static BUserProfile* defaultBUserProfileInstance = nil;
       (!self.hasEditProfileID || [self.editProfileID isEqual:otherMessage.editProfileID]) &&
       self.hasIsAdmin == otherMessage.hasIsAdmin &&
       (!self.hasIsAdmin || self.isAdmin == otherMessage.isAdmin) &&
+      self.hasCallFee == otherMessage.hasCallFee &&
+      (!self.hasCallFee || [self.callFee isEqual:otherMessage.callFee]) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
@@ -4107,6 +4130,9 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   }
   if (self.hasIsAdmin) {
     hashCode = hashCode * 31 + [[NSNumber numberWithBool:self.isAdmin] hash];
+  }
+  if (self.hasCallFee) {
+    hashCode = hashCode * 31 + [self.callFee hash];
   }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
@@ -4260,6 +4286,9 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   }
   if (other.hasChatFee) {
     [self setChatFee:other.chatFee];
+  }
+  if (other.hasCallFee) {
+    [self setCallFee:other.callFee];
   }
   if (other.hasUserInfo) {
     [self setUserInfo:other.userInfo];
@@ -4449,6 +4478,10 @@ static BUserProfile* defaultBUserProfileInstance = nil;
       }
       case 232: {
         [self setIsAdmin:[input readBool]];
+        break;
+      }
+      case 242: {
+        [self setCallFee:[input readString]];
         break;
       }
     }
@@ -4964,6 +4997,22 @@ static BUserProfile* defaultBUserProfileInstance = nil;
 - (BUserProfileBuilder*) clearChatFee {
   resultUserProfile.hasChatFee = NO;
   resultUserProfile.chatFee = @"";
+  return self;
+}
+- (BOOL) hasCallFee {
+  return resultUserProfile.hasCallFee;
+}
+- (NSString*) callFee {
+  return resultUserProfile.callFee;
+}
+- (BUserProfileBuilder*) setCallFee:(NSString*) value {
+  resultUserProfile.hasCallFee = YES;
+  resultUserProfile.callFee = value;
+  return self;
+}
+- (BUserProfileBuilder*) clearCallFee {
+  resultUserProfile.hasCallFee = NO;
+  resultUserProfile.callFee = @"";
   return self;
 }
 - (BOOL) hasUserInfo {

@@ -29,9 +29,16 @@
 <table>
 {{range $index, $element := .Users}}
 <tr>
-<td><a href="updateprofile?uid={{$element.UserID.String}}">
-    {{$element.Name.String}}</a></td>
-<td>{{$element.Background.String}}</td>
+<td>
+    {{$element.Annotation}}
+</td>
+<td>
+    <a href="updateprofile?uid={{$element.UserID.String}}">
+    {{$element.Name.String}}</a>
+</td>
+<td>
+    {{$element.Background.String}}
+</td>
 </tr>
 {{else}}
 <tr><td><p class=error>No users!</p></td></tr>

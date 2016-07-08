@@ -21,6 +21,7 @@ import (
     "strconv"
     "net/http"
     "hash/crc32"
+    "io/ioutil"
     "database/sql"
     "violent.blue/GoKit/Log"
     "violent.blue/GoKit/pgsql"
@@ -69,6 +70,25 @@ func UploadImage(session *Session, imageUpload *BlitzMessage.ImageUpload,
         if error != nil { Log.LogError(error) }
         return ServerResponseForError(BlitzMessage.ResponseCode_RCSuccess, nil)
     }
+
+    if len(imageData.ImageBytes) == 0 &&
+        imageData.ImageURL != nil  &&
+        len(*imageData.ImageURL) > 0 {
+        response, error := http.Get(*imageData.ImageURL)
+        if error != nil {
+            Log.Errorf("Error getting image '%s': %v.", *imageData.ImageURL, error)
+            return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
+        }
+        defer response.Body.Close()
+        imageData.ImageBytes, error = ioutil.ReadAll(response.Body)
+        if error != nil {
+            Log.LogError(error)
+            return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
+        }
+        ctype := response.Header.Get("Content-Type")
+        imageData.ContentType = &ctype
+    }
+
 
     if len(imageData.ImageBytes) == 0 {
         return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, errors.New("No image in message"))

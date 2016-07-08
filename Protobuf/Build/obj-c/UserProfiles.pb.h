@@ -835,6 +835,7 @@ NSString *NSStringFromBFriendStatus(BFriendStatus value);
 #define UserProfile_stripeAccount @"stripeAccount"
 #define UserProfile_serviceIsFreeForUser @"serviceIsFreeForUser"
 #define UserProfile_chatFee @"chatFee"
+#define UserProfile_callFee @"callFee"
 #define UserProfile_userInfo @"userInfo"
 #define UserProfile_editProfileID @"editProfileID"
 #define UserProfile_isAdmin @"isAdmin"
@@ -854,6 +855,7 @@ NSString *NSStringFromBFriendStatus(BFriendStatus value);
   BOOL hasBackgroundSummary_:1;
   BOOL hasStripeAccount_:1;
   BOOL hasChatFee_:1;
+  BOOL hasCallFee_:1;
   BOOL hasEditProfileID_:1;
   BOOL hasCreationDate_:1;
   BOOL hasLastSeen_:1;
@@ -875,6 +877,7 @@ NSString *NSStringFromBFriendStatus(BFriendStatus value);
   NSString* backgroundSummary;
   NSString* stripeAccount;
   NSString* chatFee;
+  NSString* callFee;
   NSString* editProfileID;
   BTimestamp* creationDate;
   BTimestamp* lastSeen;
@@ -909,6 +912,7 @@ NSString *NSStringFromBFriendStatus(BFriendStatus value);
 - (BOOL) hasStripeAccount;
 - (BOOL) hasServiceIsFreeForUser;
 - (BOOL) hasChatFee;
+- (BOOL) hasCallFee;
 - (BOOL) hasUserInfo;
 - (BOOL) hasEditProfileID;
 - (BOOL) hasIsAdmin;
@@ -938,6 +942,7 @@ NSString *NSStringFromBFriendStatus(BFriendStatus value);
 @property (readonly, strong) NSString* stripeAccount;
 - (BOOL) serviceIsFreeForUser;
 @property (readonly, strong) NSString* chatFee;
+@property (readonly, strong) NSString* callFee;
 @property (readonly) SInt64 userInfo;
 @property (readonly, strong) NSString* editProfileID;
 - (BOOL) isAdmin;
@@ -1130,6 +1135,11 @@ NSString *NSStringFromBFriendStatus(BFriendStatus value);
 - (NSString*) chatFee;
 - (BUserProfileBuilder*) setChatFee:(NSString*) value;
 - (BUserProfileBuilder*) clearChatFee;
+
+- (BOOL) hasCallFee;
+- (NSString*) callFee;
+- (BUserProfileBuilder*) setCallFee:(NSString*) value;
+- (BUserProfileBuilder*) clearCallFee;
 
 - (BOOL) hasUserInfo;
 - (SInt64) userInfo;
