@@ -52,7 +52,8 @@ function checkForAppFailed() {
     if ( (new Date()).getTime() < checkForAppTimeoutTime) {
         setCookieWithMinutes("hasApp", 'false', 5);
     }
-    window.location="{{.AppStoreLink}}";
+    //eDebug
+    //window.location="{{.AppStoreLink}}";
 }
 function checkForApp() {
     'use strict';
@@ -75,12 +76,11 @@ function checkForApp() {
     setCookieWithMinutes('lastDeepLink', appDeepLink, 60);
     checkForAppTimeoutTime = (new Date()).getTime() + 200;
     checkForAppTimeout = window.setTimeout(checkForAppFailed, 100);
-    try {
-        window.location=appDeepLink;
-    } catch (err) {
-        window.location="{{.AppStoreLink}}";
-    }
-
+//     try {
+//         window.location=appDeepLink;
+//     } catch (err) {
+//         window.location="{{.AppStoreLink}}";
+//     }
 }
 window.onload = checkForApp;
 

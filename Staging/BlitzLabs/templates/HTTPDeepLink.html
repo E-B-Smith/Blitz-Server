@@ -76,7 +76,11 @@ function checkForApp() {
     setCookieWithMinutes('lastDeepLink', appDeepLink, 60);
     checkForAppTimeoutTime = (new Date()).getTime() + 200;
     checkForAppTimeout = window.setTimeout(checkForAppFailed, 100);
-    window.location=appDeepLink;
+//     try {
+//         window.location=appDeepLink;
+//     } catch (err) {
+//         window.location="{{.AppStoreLink}}";
+//     }
 }
 window.onload = checkForApp;
 
