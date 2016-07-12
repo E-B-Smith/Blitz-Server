@@ -78,6 +78,18 @@ func Float64FromPtr(f *float64) float64 {
 //----------------------------------------------------------------------------------------
 
 
+var TimestampZero Timestamp
+var  TimespanZero  Timespan
+
+
+func init() {
+    TimestampZero.Epoch = new(float64)
+    TimespanZero = Timespan {
+        StartTimestamp: &TimestampZero,
+        StopTimestamp:  &TimestampZero,
+    }
+}
+
 func TimestampPtr(inputValue interface{}) *Timestamp {
     var t *time.Time = nil
 
@@ -102,7 +114,7 @@ func TimestampPtr(inputValue interface{}) *Timestamp {
         panic(fmt.Errorf("Unhandled type: %+v.", val))
     }
 
-    if t == nil { return nil }
+    if t == nil || t.IsZero() { return nil }
     var fepoch float64 = float64(t.UnixNano()) / float64(1000000000)
     ts := Timestamp{ Epoch: &fepoch }
     return &ts
@@ -163,6 +175,15 @@ func TimespanFromNullTimes(startDate, stopDate pq.NullTime) *Timespan {
     }
 
     return &t
+}
+
+
+func TimespanFromTimestamps(startDate, stopDate *Timestamp) *Timespan {
+    if startDate == nil && stopDate == nil { return nil }
+    return &Timespan {
+        StartTimestamp: startDate,
+        StopTimestamp:  stopDate,
+    }
 }
 
 

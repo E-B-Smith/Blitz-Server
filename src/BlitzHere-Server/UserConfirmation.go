@@ -21,7 +21,7 @@ import (
     "violent.blue/GoKit/Util"
     "violent.blue/GoKit/pgsql"
     "BlitzMessage"
-    )
+)
 
 
 //----------------------------------------------------------------------------------------

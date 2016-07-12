@@ -17,14 +17,38 @@ package main
 import (
     "fmt"
     "errors"
+    "strconv"
     "strings"
     "net/http"
     "database/sql"
+    "github.com/lib/pq"
     "violent.blue/GoKit/Log"
     "violent.blue/GoKit/pgsql"
+    "violent.blue/GoKit/ServerUtil"
     "github.com/golang/protobuf/proto"
     "BlitzMessage"
 )
+
+
+//----------------------------------------------------------------------------------------
+//
+//                                                                        AdminFormRequest
+//
+//----------------------------------------------------------------------------------------
+
+
+func AdminFormRequest(writer http.ResponseWriter, request *http.Request) {
+    Log.LogFunctionName()
+
+    var templateMap struct {
+        AppName     string
+    }
+    templateMap.AppName = config.AppName
+
+    var error error
+    error = config.Template.ExecuteTemplate(writer, "Admin.html", templateMap)
+    if error != nil { panic(error) }
+}
 
 
 //----------------------------------------------------------------------------------------
@@ -43,7 +67,8 @@ func WebUserList(writer http.ResponseWriter, httpRequest *http.Request) {
             name,
             backgroundSummary,
             editprofileid,
-            isExpert
+            isExpert,
+            lastSeen
             from usertable
             where userstatus >= 5 order by lastSeen desc;`,
     )
@@ -52,6 +77,7 @@ func WebUserList(writer http.ResponseWriter, httpRequest *http.Request) {
     }
 
     type UserStruct struct {
+        LastSeen    string
         Annotation  string
         UserID      sql.NullString
         Name        sql.NullString
@@ -69,11 +95,21 @@ func WebUserList(writer http.ResponseWriter, httpRequest *http.Request) {
         var user UserStruct
         var editprofileid sql.NullString
         var isExpert sql.NullBool
-        error = rows.Scan(&user.UserID, &user.Name, &user.Background, &editprofileid, &isExpert)
+        var lastSeen pq.NullTime
+        error = rows.Scan(
+            &user.UserID,
+            &user.Name,
+            &user.Background,
+            &editprofileid,
+            &isExpert,
+            &lastSeen,
+        )
         if error != nil {
             Log.LogError(error)
             continue
         }
+        user.LastSeen = lastSeen.Time.String()
+
         const bLen = 30
         if len(user.Background.String) > bLen {
             user.Background.String = user.Background.String[:bLen] + "..."
@@ -134,6 +170,33 @@ func WebUpdateProfile(writer http.ResponseWriter, httpRequest *http.Request) {
         }
     } ()
 
+
+    fillFormFromProfile := func() {
+
+        //  Expertise:
+        for _, tag := range updateProfile.Profile.EntityTags {
+            if ! strings.HasPrefix(*tag.TagName, ".") {
+                updateProfile.Expertise += fmt.Sprintf("%s, ", *tag.TagName)
+            }
+        }
+        updateProfile.Expertise = strings.TrimRight(updateProfile.Expertise, ", ")
+
+        //  Dates
+        for _, emp := range updateProfile.Profile.Employment {
+            if emp.Timespan == nil {
+                emp.Timespan = &BlitzMessage.TimespanZero
+            } else {
+                if emp.Timespan.StartTimestamp == nil {
+                    emp.Timespan.StartTimestamp = &BlitzMessage.TimestampZero
+                }
+                if emp.Timespan.StopTimestamp == nil {
+                    emp.Timespan.StopTimestamp = &BlitzMessage.TimestampZero
+                }
+            }
+        }
+    }
+
+
     var error error
     if httpRequest.Method == "GET" {
         userID := httpRequest.URL.Query().Get("uid")
@@ -147,12 +210,7 @@ func WebUpdateProfile(writer http.ResponseWriter, httpRequest *http.Request) {
             userID = *updateProfile.Profile.EditProfileID
             updateProfile.Profile = ProfileForUserID(userID, userID)
         }
-        for _, tag := range updateProfile.Profile.EntityTags {
-            if ! strings.HasPrefix(*tag.TagName, ".") {
-                updateProfile.Expertise += fmt.Sprintf("%s, ", *tag.TagName)
-            }
-        }
-        updateProfile.Expertise = strings.TrimRight(updateProfile.Expertise, ", ")
+        fillFormFromProfile()
         return
     }
 
@@ -170,9 +228,9 @@ func WebUpdateProfile(writer http.ResponseWriter, httpRequest *http.Request) {
         updateProfile.ErrorMessage = fmt.Sprintf("Invalid UserID '%s'.", userID)
     }
 
-    updateProfile.Profile.Name = proto.String(httpRequest.PostFormValue("Name"))
+    updateProfile.Profile.Name = Util.CleanStringPtr(httpRequest.PostFormValue("Name"))
     updateProfile.Profile.BackgroundSummary =
-        proto.String(httpRequest.PostFormValue("BackgroundSummary"))
+        Util.CleanStringPtr(httpRequest.PostFormValue("BackgroundSummary"))
 
     //  Save the dot tags
 
@@ -206,6 +264,59 @@ func WebUpdateProfile(writer http.ResponseWriter, httpRequest *http.Request) {
         dotTags = append(dotTags, &entityTag)
     }
     updateProfile.Profile.EntityTags = dotTags
+
+    //  Get the employment info --
+
+    c := httpRequest.PostFormValue("JobCount")
+    count, _ := strconv.Atoi(c)
+    updateProfile.Profile.Employment = make([]*BlitzMessage.Employment, 0, 10)
+    for i := 0; i < count; i++ {
+
+        c = strconv.Itoa(i)
+        s := httpRequest.PostFormValue("Job-Start-"+c)
+        t := ServerUtil.ParseMonthYearString(s)
+        startTime := BlitzMessage.TimestampPtr(t)
+        s = httpRequest.PostFormValue("Job-Stop-"+c)
+        t = ServerUtil.ParseMonthYearString(s)
+        stopTime  := BlitzMessage.TimestampPtr(t)
+
+        emp := BlitzMessage.Employment {
+            JobTitle:       Util.CleanStringPtr(httpRequest.PostFormValue("Job-JobTitle-"+c)),
+            CompanyName:    Util.CleanStringPtr(httpRequest.PostFormValue("Job-CompanyName-"+c)),
+            Location:       Util.CleanStringPtr(httpRequest.PostFormValue("Job-Location-"+c)),
+            Industry:       Util.CleanStringPtr(httpRequest.PostFormValue("Job-Industry-"+c)),
+            Summary:        Util.CleanStringPtr(httpRequest.PostFormValue("Job-Summary-"+c)),
+            Timespan:       BlitzMessage.TimespanFromTimestamps(startTime, stopTime),
+        }
+        updateProfile.Profile.Employment =
+            append(updateProfile.Profile.Employment, &emp)
+    }
+
+    //  Get the education info --
+
+    c = httpRequest.PostFormValue("EduCount")
+    count, _ = strconv.Atoi(c)
+    updateProfile.Profile.Education = make([]*BlitzMessage.Education, 0, 10)
+    for i := 0; i < count; i++ {
+
+        c = strconv.Itoa(i)
+        s := httpRequest.PostFormValue("Edu-Start-"+c)
+        t := ServerUtil.ParseMonthYearString(s)
+        startTime := BlitzMessage.TimestampPtr(t)
+        s = httpRequest.PostFormValue("Edu-Stop-"+c)
+        t = ServerUtil.ParseMonthYearString(s)
+        stopTime  := BlitzMessage.TimestampPtr(t)
+
+        edu := BlitzMessage.Education {
+            Degree:         Util.CleanStringPtr(httpRequest.PostFormValue("Edu-Degree-"+c)),
+            Emphasis:       Util.CleanStringPtr(httpRequest.PostFormValue("Edu-Emphasis-"+c)),
+            SchoolName:     Util.CleanStringPtr(httpRequest.PostFormValue("Edu-SchoolName-"+c)),
+            Summary:        Util.CleanStringPtr(httpRequest.PostFormValue("Edu-Summary-"+c)),
+            Timespan:       BlitzMessage.TimespanFromTimestamps(startTime, stopTime),
+        }
+        updateProfile.Profile.Education =
+            append(updateProfile.Profile.Education, &edu)
+    }
 
     //  Update and send back the result --
 
@@ -260,13 +371,7 @@ func WebUpdateProfile(writer http.ResponseWriter, httpRequest *http.Request) {
         }
     }
 
-    for _, tag := range updateProfile.Profile.EntityTags {
-        if ! strings.HasPrefix(*tag.TagName, ".") {
-            updateProfile.Expertise += fmt.Sprintf("%s, ", *tag.TagName)
-        }
-    }
-    updateProfile.Expertise = strings.TrimRight(updateProfile.Expertise, ", ")
-
+    fillFormFromProfile()
     updateProfile.ErrorMessage = "User updated."
 }
 

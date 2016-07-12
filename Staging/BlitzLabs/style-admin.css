@@ -75,11 +75,16 @@ h2  {
     display: inline-block;
     vertical-align: top;
     }
+#header a
+    {
+    text-decoration: none;
+    font-weight: normal;
+    }
 #app-name span
     {
     font-size: 4em;
     font-family: "Avenir", "Futura", "Lucida Grande", Verdana, Tahoma, Arial, sans-serif;
-    margin-left: 10px;
+    margin-left: -10px;
     color: rgb(151,151,151);
     }
 #app-name span + span
@@ -148,3 +153,4 @@ h2  {
 b   {
     color: inherit;
     }
+

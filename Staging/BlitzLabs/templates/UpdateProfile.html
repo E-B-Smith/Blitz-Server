@@ -6,10 +6,10 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="viewport" content="width=device-width, minimal-ui">
-<link href="./favicon.png"  type="image/png" rel="shortcut icon">
+<link href="../favicon.png"  type="image/png" rel="shortcut icon">
 <title>{{ .AppName }} : Update Profile</title>
-<link rel="stylesheet" type="text/css" href="style-admin.css">
-<script src="script.js"></script>
+<link rel="stylesheet" type="text/css" href="../style-admin.css">
+<script src="../script.js"></script>
 <style>
 td:nth-child(1) {
     text-align: right;
@@ -20,17 +20,27 @@ pre {
     margin-top: 0;
     margin-bottom: 0;
 }
+td
+    {
+    vertical-align: text-bottom;
+    }
+table
+    {
+    border: 1px solid #7f7f7f;
+    }
 </style>
 </head>
 
 <body>
 <div id="header">
+<a href="../admin">
 <div>
-<img id="logo" src="Logo.png" alt="Logo">
+<img id="logo" src="../Logo.png" alt="Logo">
 <div>
 <span id="app-name">{{.AppName}}</span>
 </div>
 </div>
+</a>
 </div>
 
 <div id="stats-body">
@@ -75,15 +85,43 @@ pre {
     <br>
 
     <h2>Work Experience</h2>
+    <label>
+    <input type="hidden"
+        name="JobCount"
+        value="{{len .Profile.Employment}}"
+        />
+    </label>
     {{range $index, $element := .Profile.Employment}}
         <table>
-        <tr><td>Job Title:  </td><td>{{$element.JobTitle}}</td></tr>
-        <tr><td>Company:    </td><td>{{$element.CompanyName}}</td></tr>
-        <tr><td>Location:   </td><td>{{$element.Location}}</td></tr>
-        <tr><td>Industry:   </td><td>{{$element.Industry}}</td></tr>
-        <tr><td>Summary:    </td><td></td></tr>
+        <tr>
+            <td>Job Title:  </td>
+            <td><input type="text" name="Job-JobTitle-{{$index}}" value="{{$element.JobTitle}}"/></td>
+        </tr>
+        <tr>
+            <td>Company:</td>
+            <td><input type="text" name="Job-CompanyName-{{$index}}" value="{{$element.CompanyName}}"/></td>
+        </tr>
+        <tr>
+            <td>Location:   </td>
+            <td><input type="text" name="Job-Location-{{$index}}" value="{{$element.Location}}"/></td>
+        </tr>
+        <tr>
+            <td>Industry:   </td>
+            <td><input type="text" name="Job-Industry-{{$index}}" value="{{$element.Industry}}"/></td>
+        </tr>
+        <tr>
+            <td>Start:   </td>
+            <td><input type="text" name="Job-Start-{{$index}}" value="{{MonthYearString $element.Timespan.StartTimestamp.Epoch}}"/></td>
+        </tr>
+        <tr>
+            <td>End:    </td>
+            <td><input type="text" name="Job-Stop-{{$index}}" value="{{MonthYearString $element.Timespan.StopTimestamp.Epoch}}"/></td>
+        </tr>
+        <tr>
+            <td style='vertical-align: top;'>Summary:    </td>
+            <td><textarea style='height: 5em;' name="Job-Summary-{{$index}}">{{$element.Summary}}</textarea></td>
+        </tr>
         </table>
-        <pre>{{$element.Summary}}</pre>
         <br>
     {{else}}
     &lt;&lt; None &gt;&gt;
@@ -91,14 +129,39 @@ pre {
     {{end}}
 
     <h2>Education</h2>
+    <label>
+    <input type="hidden"
+        name="EduCount"
+        value="{{len .Profile.Education}}"
+        />
+    </label>
     {{range $index, $element := .Profile.Education}}
         <table>
-        <tr><td>Degree:     </td><td>{{$element.Degree}}</td></tr>
-        <tr><td>Emphasis:   </td><td>{{$element.Emphasis}}</td></tr>
-        <tr><td>School:     </td><td>{{$element.SchoolName}}</td></tr>
-        <tr><td>Summary:    </td><td></td></tr>
+        <tr>
+            <td>Degree:  </td>
+            <td><input type="text" name="Edu-Degree-{{$index}}" value="{{$element.Degree}}"/></td>
+        </tr>
+        <tr>
+            <td>Emphasis:</td>
+            <td><input type="text" name="Edu-Emphasis-{{$index}}" value="{{$element.Emphasis}}"/></td>
+        </tr>
+        <tr>
+            <td>School:   </td>
+            <td><input type="text" name="Edu-SchoolName-{{$index}}" value="{{$element.SchoolName}}"/></td>
+        </tr>
+        <tr>
+            <td>Start:   </td>
+            <td><input type="text" name="Edu-Start-{{$index}}" value="{{MonthYearString $element.Timespan.StartTimestamp.Epoch}}"/></td>
+        </tr>
+        <tr>
+            <td>End:    </td>
+            <td><input type="text" name="Edu-Stop-{{$index}}" value="{{MonthYearString $element.Timespan.StopTimestamp.Epoch}}"/></td>
+        </tr>
+        <tr>
+            <td style='vertical-align: top;'>Summary:    </td>
+            <td><textarea style='height: 5em;' name="Edu-Summary-{{$index}}">{{$element.Summary}}</textarea></td>
+        </tr>
         </table>
-        <pre>{{$element.Summary}}</pre>
         <br>
     {{else}}
     &lt;&lt; None &gt;&gt;

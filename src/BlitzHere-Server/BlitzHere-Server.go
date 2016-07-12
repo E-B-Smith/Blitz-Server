@@ -380,27 +380,6 @@ func sendHello(writer http.ResponseWriter, request *http.Request) {
 }
 
 
-func AdminFormRequest(writer http.ResponseWriter, request *http.Request) {
-    Log.LogFunctionName()
-
-    defer func() {
-        if error := recover(); error != nil {
-            Log.LogStackWithError(error)
-            http.Redirect(writer, request, "error.html", 303)
-        }
-    } ()
-
-    var templateMap struct {
-        AppName     string
-    }
-    templateMap.AppName = config.AppName
-
-    var error error
-    error = config.Template.ExecuteTemplate(writer, "Admin.html", templateMap)
-    if error != nil { panic(error) }
-}
-
-
 func PushMessageHandler(userConnection *websocket.Conn) {
     globalMessagePusher.HandlePushConnection(userConnection)
 }
@@ -538,12 +517,12 @@ func Server() (returnValue int) {
     http.HandleFunc(config.ServicePrefix+"/api", DispatchServiceRequests)
     http.HandleFunc(config.ServicePrefix+"/hello", sendHello)
     http.HandleFunc(config.ServicePrefix+"/image", GetImage)
-    http.HandleFunc(config.ServicePrefix+"/admin", AdminFormRequest)
-    http.HandleFunc(config.ServicePrefix+"/message", SystemMessageFormRequest)
-    http.HandleFunc(config.ServicePrefix+"/shortlink", LinkShortnerFormRequest)
     http.HandleFunc(config.ServicePrefix+"/downloadapp", DownloadAppRequest)
-    http.HandleFunc(config.ServicePrefix+"/userlist", WebUserList)
-    http.HandleFunc(config.ServicePrefix+"/updateprofile", WebUpdateProfile)
+    http.HandleFunc(config.ServicePrefix+"/admin", AdminFormRequest)
+    http.HandleFunc(config.ServicePrefix+"/admin/message", SystemMessageFormRequest)
+    http.HandleFunc(config.ServicePrefix+"/admin/shortlink", LinkShortnerFormRequest)
+    http.HandleFunc(config.ServicePrefix+"/admin/userlist", WebUserList)
+    http.HandleFunc(config.ServicePrefix+"/admin/updateprofile", WebUpdateProfile)
 
     //  Set up short links --
 

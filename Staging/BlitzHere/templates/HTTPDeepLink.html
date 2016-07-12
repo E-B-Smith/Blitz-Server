@@ -74,13 +74,25 @@ function checkForApp() {
         }
     }
     setCookieWithMinutes('lastDeepLink', appDeepLink, 60);
-    checkForAppTimeoutTime = (new Date()).getTime() + 200;
-    checkForAppTimeout = window.setTimeout(checkForAppFailed, 100);
-//     try {
-//         window.location=appDeepLink;
-//     } catch (err) {
-//         window.location="{{.AppStoreLink}}";
-//     }
+
+//     checkForAppTimeoutTime = (new Date()).getTime() + 200;
+//     checkForAppTimeout = window.setTimeout(checkForAppFailed, 100);
+
+    //  Re-direct?
+    var redirectLink = getParameterByName("redirect");
+    if (redirectLink && redirectLink.length > 0) {
+        try {
+            window.location=redirectLink;
+        } catch (err) {
+            window.location="{{.AppStoreLink}}";
+        }
+    } else {
+        try {
+            window.location=appDeepLink;
+        } catch (err) {
+            window.location="{{.AppStoreLink}}";
+        }
+    }
 }
 window.onload = checkForApp;
 
