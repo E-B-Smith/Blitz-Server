@@ -80,7 +80,7 @@ table
     <textarea style='height: 14.10em;'
         placeholder="Background"
         name="BackgroundSummary"
-        >{{.Profile.BackgroundSummary}}</textarea>
+        >{{StringPtr .Profile.BackgroundSummary}}</textarea>
     </label>
     <br>
 
@@ -95,19 +95,19 @@ table
         <table>
         <tr>
             <td>Job Title:  </td>
-            <td><input type="text" name="Job-JobTitle-{{$index}}" value="{{$element.JobTitle}}"/></td>
+            <td><input type="text" name="Job-JobTitle-{{$index}}" value="{{StringPtr $element.JobTitle}}"/></td>
         </tr>
         <tr>
             <td>Company:</td>
-            <td><input type="text" name="Job-CompanyName-{{$index}}" value="{{$element.CompanyName}}"/></td>
+            <td><input type="text" name="Job-CompanyName-{{$index}}" value="{{StringPtr $element.CompanyName}}"/></td>
         </tr>
         <tr>
             <td>Location:   </td>
-            <td><input type="text" name="Job-Location-{{$index}}" value="{{$element.Location}}"/></td>
+            <td><input type="text" name="Job-Location-{{$index}}" value="{{StringPtr $element.Location}}"/></td>
         </tr>
         <tr>
             <td>Industry:   </td>
-            <td><input type="text" name="Job-Industry-{{$index}}" value="{{$element.Industry}}"/></td>
+            <td><input type="text" name="Job-Industry-{{$index}}" value="{{StringPtr $element.Industry}}"/></td>
         </tr>
         <tr>
             <td>Start:   </td>
@@ -119,7 +119,7 @@ table
         </tr>
         <tr>
             <td style='vertical-align: top;'>Summary:    </td>
-            <td><textarea style='height: 5em;' name="Job-Summary-{{$index}}">{{$element.Summary}}</textarea></td>
+            <td><textarea style='height: 5em;' name="Job-Summary-{{$index}}">{{StringPtr $element.Summary}}</textarea></td>
         </tr>
         </table>
         <br>
@@ -139,15 +139,15 @@ table
         <table>
         <tr>
             <td>Degree:  </td>
-            <td><input type="text" name="Edu-Degree-{{$index}}" value="{{$element.Degree}}"/></td>
+            <td><input type="text" name="Edu-Degree-{{$index}}" value="{{StringPtr $element.Degree}}"/></td>
         </tr>
         <tr>
             <td>Emphasis:</td>
-            <td><input type="text" name="Edu-Emphasis-{{$index}}" value="{{$element.Emphasis}}"/></td>
+            <td><input type="text" name="Edu-Emphasis-{{$index}}" value="{{StringPtr $element.Emphasis}}"/></td>
         </tr>
         <tr>
             <td>School:   </td>
-            <td><input type="text" name="Edu-SchoolName-{{$index}}" value="{{$element.SchoolName}}"/></td>
+            <td><input type="text" name="Edu-SchoolName-{{$index}}" value="{{StringPtr $element.SchoolName}}"/></td>
         </tr>
         <tr>
             <td>Start:   </td>
@@ -159,7 +159,7 @@ table
         </tr>
         <tr>
             <td style='vertical-align: top;'>Summary:    </td>
-            <td><textarea style='height: 5em;' name="Edu-Summary-{{$index}}">{{$element.Summary}}</textarea></td>
+            <td><textarea style='height: 5em;' name="Edu-Summary-{{$index}}">{{StringPtr $element.Summary}}</textarea></td>
         </tr>
         </table>
         <br>

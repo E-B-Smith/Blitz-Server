@@ -6,21 +6,24 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="viewport" content="width=device-width, minimal-ui">
-<link href="./favicon.png"  type="image/png" rel="shortcut icon">
-<title>{{ .AppName }} : List Users</title>
-<link rel="stylesheet" type="text/css" href="style-admin.css">
-<script src="script.js"></script>
+<link href="../favicon.png"  type="image/png" rel="shortcut icon">
+<title>{{.AppName}} : List Users</title>
+<link rel="stylesheet" type="text/css" href="../style-admin.css">
+<script src="../script.js"></script>
 </head>
 
 <body>
 <div id="header">
+<a href="../admin">
 <div>
-<img id="logo" src="Logo.png" alt="Logo">
+<img id="logo" src="../Logo.png" alt="Logo">
 <div>
 <span id="app-name">{{.AppName}}</span>
 </div>
 </div>
+</a>
 </div>
+
 
 <div id="stats-body">
 <h1>User List</h1>
@@ -30,6 +33,9 @@
 {{range $index, $element := .Users}}
 <tr>
 <td>
+    {{$element.LastSeen}}
+</td>
+<td style='color: red;'>
     {{$element.Annotation}}
 </td>
 <td>

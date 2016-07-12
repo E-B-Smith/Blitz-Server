@@ -1,0 +1,171 @@
+# BlitzHere-nginx.conf
+#
+# EB Smith  -  March 2016
+
+##
+# You should look at the following URL's in order to grasp a solid understanding
+# of Nginx configuration files in order to fully unleash the power of Nginx.
+# http://wiki.nginx.org/Pitfalls
+# http://wiki.nginx.org/QuickStart
+# http://wiki.nginx.org/Configuration
+#
+# Generally, you will want to move this file somewhere, and start with a clean
+# file but keep this around for reference. Or just disable in sites-enabled.
+#
+# Please see /usr/share/doc/nginx-doc/examples/ for more detailed examples.
+##
+
+
+# -------------------------------------------------------------------------- blitzhere.com
+
+
+server {
+    listen      80;
+    server_name *.blitzhere.com;
+    return 301  https://blitzhere.com$request_uri;
+}
+server {
+    listen      80;
+    server_name blitzhere.com;
+    return 301  https://blitzhere.com$request_uri;
+}
+server {
+    listen 443 ssl;
+    listen [::]:443 ssl;
+    server_name blitzhere.com www.blitzhere.com;
+    add_header  Strict-Transport-Security "max-age=2592000;";   #  "includeSubdomains;";
+
+    ssl_certificate             /etc/keys/com.blitzhere.chain.crt;
+    ssl_certificate_key         /etc/keys/com.blitzhere.pem;
+    ssl_dhparam                 /etc/keys/dhparams.pem;
+    ssl_protocols               TLSv1 TLSv1.1 TLSv1.2;
+    ssl_ciphers                 ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AES:ECDH+3DES:DH+3DES:RSA+AESGCM:RSA+AES:RSA+3DES:!aNULL:!MD5:!DSS;
+    ssl_prefer_server_ciphers   on;
+    ssl_stapling                on;
+    ssl_session_cache           builtin:1000 shared:SSL:10m;
+
+    root  /home/blitzhere/www;
+    index index.html index.htm;
+
+    #try_files $uri $uri/ = 404;
+    rewrite ^/(.*)/$ /$1 permanent;
+
+    location / {
+    }
+
+    # -------------------------------------------------------------------------- BlitzLabs
+
+    location /blitzlabs/admin {
+        auth_basic          "Restricted";
+        auth_basic_user_file /etc/keys/htpasswd;
+
+        proxy_pass          http://127.0.0.1:10002;
+        proxy_set_header    X-Real-IP $remote_addr;
+        proxy_set_header    X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header    Host $http_host;
+        proxy_set_header    X-Forwarded-Host $host;
+        proxy_set_header    X-Forwarded-Server $host;
+        proxy_redirect      off;
+        expires             off;
+    }
+    location /blitzlabs {
+        proxy_pass          http://127.0.0.1:10002;
+        proxy_set_header    X-Real-IP $remote_addr;
+        proxy_set_header    X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header    Host $http_host;
+        proxy_set_header    X-Forwarded-Host $host;
+        proxy_set_header    X-Forwarded-Server $host;
+
+        # For the web socket upgrade:
+
+        proxy_http_version  1.1;
+        proxy_set_header    Upgrade $http_upgrade;
+        proxy_set_header    Connection "upgrade";
+
+        proxy_redirect      off;
+        expires             off;
+    }
+
+    #  BlitzLabs link shortner
+
+    location ~ ^/bl/.*$ {
+        proxy_pass          http://127.0.0.1:10002;
+        proxy_set_header    X-Real-IP $remote_addr;
+        proxy_set_header    X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header    Host $http_host;
+        proxy_set_header    X-Forwarded-Host $host;
+        proxy_set_header    X-Forwarded-Server $host;
+        proxy_redirect      off;
+        expires             off;
+    }
+
+    # -------------------------------------------------------------------------- BlitzHere
+
+    location /blitzhere/admin {
+        auth_basic          "Restricted";
+        auth_basic_user_file /etc/keys/htpasswd;
+
+        proxy_pass          http://127.0.0.1:10004;
+        proxy_set_header    X-Real-IP $remote_addr;
+        proxy_set_header    X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header    Host $http_host;
+        proxy_set_header    X-Forwarded-Host $host;
+        proxy_set_header    X-Forwarded-Server $host;
+        proxy_redirect      off;
+        expires             off;
+    }
+    location /blitzhere {
+        proxy_pass          http://127.0.0.1:10004;
+        proxy_set_header    X-Real-IP $remote_addr;
+        proxy_set_header    X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header    Host $http_host;
+        proxy_set_header    X-Forwarded-Host $host;
+        proxy_set_header    X-Forwarded-Server $host;
+
+        # For the web socket upgrade:
+
+        proxy_http_version  1.1;
+        proxy_set_header    Upgrade $http_upgrade;
+        proxy_set_header    Connection "upgrade";
+
+        proxy_redirect      off;
+        expires             off;
+    }
+
+    #  BlitzHere link shortner
+
+    location ~ ^/bh/.*$ {
+        proxy_pass          http://127.0.0.1:10004;
+        proxy_set_header    X-Real-IP $remote_addr;
+        proxy_set_header    X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header    Host $http_host;
+        proxy_set_header    X-Forwarded-Host $host;
+        proxy_set_header    X-Forwarded-Server $host;
+        proxy_redirect      off;
+        expires             off;
+    }
+
+    # ----------------------------------------------------------------------------- Status
+
+    location /status {
+        proxy_pass          http://127.0.0.1:10006;
+        proxy_set_header    X-Real-IP $remote_addr;
+        proxy_set_header    X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header    Host $http_host;
+        proxy_set_header    X-Forwarded-Host $host;
+        proxy_set_header    X-Forwarded-Server $host;
+        proxy_redirect      off;
+        expires             off;
+
+        auth_basic          "Restricted";
+        auth_basic_user_file /etc/keys/htpasswd;
+    }
+
+    # Deny access to .htaccess files, if Apache's document root
+    # concurs with nginx's one
+
+    location ~ /\.ht {
+       deny all;
+    }
+}
+

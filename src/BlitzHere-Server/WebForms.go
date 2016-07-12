@@ -24,6 +24,7 @@ import (
     "github.com/lib/pq"
     "violent.blue/GoKit/Log"
     "violent.blue/GoKit/pgsql"
+    "violent.blue/GoKit/Util"
     "violent.blue/GoKit/ServerUtil"
     "github.com/golang/protobuf/proto"
     "BlitzMessage"
@@ -228,9 +229,9 @@ func WebUpdateProfile(writer http.ResponseWriter, httpRequest *http.Request) {
         updateProfile.ErrorMessage = fmt.Sprintf("Invalid UserID '%s'.", userID)
     }
 
-    updateProfile.Profile.Name = Util.CleanStringPtr(httpRequest.PostFormValue("Name"))
+    updateProfile.Profile.Name = Util.CleanStringPtrFromString(httpRequest.PostFormValue("Name"))
     updateProfile.Profile.BackgroundSummary =
-        Util.CleanStringPtr(httpRequest.PostFormValue("BackgroundSummary"))
+        Util.CleanStringPtrFromString(httpRequest.PostFormValue("BackgroundSummary"))
 
     //  Save the dot tags
 
@@ -281,11 +282,11 @@ func WebUpdateProfile(writer http.ResponseWriter, httpRequest *http.Request) {
         stopTime  := BlitzMessage.TimestampPtr(t)
 
         emp := BlitzMessage.Employment {
-            JobTitle:       Util.CleanStringPtr(httpRequest.PostFormValue("Job-JobTitle-"+c)),
-            CompanyName:    Util.CleanStringPtr(httpRequest.PostFormValue("Job-CompanyName-"+c)),
-            Location:       Util.CleanStringPtr(httpRequest.PostFormValue("Job-Location-"+c)),
-            Industry:       Util.CleanStringPtr(httpRequest.PostFormValue("Job-Industry-"+c)),
-            Summary:        Util.CleanStringPtr(httpRequest.PostFormValue("Job-Summary-"+c)),
+            JobTitle:       Util.CleanStringPtrFromString(httpRequest.PostFormValue("Job-JobTitle-"+c)),
+            CompanyName:    Util.CleanStringPtrFromString(httpRequest.PostFormValue("Job-CompanyName-"+c)),
+            Location:       Util.CleanStringPtrFromString(httpRequest.PostFormValue("Job-Location-"+c)),
+            Industry:       Util.CleanStringPtrFromString(httpRequest.PostFormValue("Job-Industry-"+c)),
+            Summary:        Util.CleanStringPtrFromString(httpRequest.PostFormValue("Job-Summary-"+c)),
             Timespan:       BlitzMessage.TimespanFromTimestamps(startTime, stopTime),
         }
         updateProfile.Profile.Employment =
@@ -308,10 +309,10 @@ func WebUpdateProfile(writer http.ResponseWriter, httpRequest *http.Request) {
         stopTime  := BlitzMessage.TimestampPtr(t)
 
         edu := BlitzMessage.Education {
-            Degree:         Util.CleanStringPtr(httpRequest.PostFormValue("Edu-Degree-"+c)),
-            Emphasis:       Util.CleanStringPtr(httpRequest.PostFormValue("Edu-Emphasis-"+c)),
-            SchoolName:     Util.CleanStringPtr(httpRequest.PostFormValue("Edu-SchoolName-"+c)),
-            Summary:        Util.CleanStringPtr(httpRequest.PostFormValue("Edu-Summary-"+c)),
+            Degree:         Util.CleanStringPtrFromString(httpRequest.PostFormValue("Edu-Degree-"+c)),
+            Emphasis:       Util.CleanStringPtrFromString(httpRequest.PostFormValue("Edu-Emphasis-"+c)),
+            SchoolName:     Util.CleanStringPtrFromString(httpRequest.PostFormValue("Edu-SchoolName-"+c)),
+            Summary:        Util.CleanStringPtrFromString(httpRequest.PostFormValue("Edu-Summary-"+c)),
             Timespan:       BlitzMessage.TimespanFromTimestamps(startTime, stopTime),
         }
         updateProfile.Profile.Education =
