@@ -479,10 +479,9 @@ func ChargeRequest(session *Session, chargeReq *BlitzMessage.Charge) *BlitzMessa
         )
 
         userMessage := fmt.Sprintf(
-            "Your paid chat with %s starts now.\n" +
-            "This chat window will be open for the" +
-            " next 5 days, or until you close the"+
-            " conversation with the 'End' button.",
+            "Congrats! You are now connected with %s for the next 5 days.\n" +
+            "This session will remain open until your request is resolved.\n" +
+            "Good luck!'",
             PrettyNameForUserID(otherMember),
         )
 

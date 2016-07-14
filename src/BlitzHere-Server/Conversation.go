@@ -286,6 +286,8 @@ func StartConversation(session *Session, req *BlitzMessage.ConversationRequest) 
     error := row.Scan(&conversationID)
     if error != nil {
 
+        var introMessage string
+
         //  Create a new conversation --
 
         conversationID = Util.NewUUIDString()
@@ -302,6 +304,7 @@ func StartConversation(session *Session, req *BlitzMessage.ConversationRequest) 
         if  config.ServiceIsFree {
             conversation.IsFree = proto.Bool(true)
             Log.Debugf("Conversation is free: Service is free.")
+            introMessage = "Blitz is in free mode.\nEnjoy you chat."
         }
 
         //  Friends?
@@ -322,34 +325,67 @@ func StartConversation(session *Session, req *BlitzMessage.ConversationRequest) 
         if val, ok := tags[kTagFriend]; ok && val {
             Log.Debugf("Conversation is between friends.")
             conversation.IsFree = proto.Bool(true)
+            if len(introMessage) <= 0 {
+                introMessage = "Chat between friends is free.\nEnjoy your chat."
+            }
         }
 
         //  Free for user?
 
         row := config.DB.QueryRow(
-            `select isFree from UserTable where userID = $1;`,
+            `select isFree, isExpert from UserTable where userID = $1;`,
             session.UserID,
         )
-        var isFree sql.NullBool
-        error = row.Scan(&isFree)
+        var isFree, isExpert sql.NullBool
+        error = row.Scan(&isFree, &isExpert)
         if error != nil { Log.LogError(error) }
         if isFree.Bool {
             Log.Debugf("Conversation is free for user.")
             conversation.IsFree = proto.Bool(true)
+            if len(introMessage) <= 0 {
+                introMessage = "This chat is free."
+            }
         }
 
-        //  Other user isn't expert?
+        //  Other user is expert?
 
         row = config.DB.QueryRow(
             `select isExpert from UserTable where userID = $1;`,
             otherMember,
         )
-        var isExpert sql.NullBool
-        error = row.Scan(&isExpert)
+        var otherIsExpert sql.NullBool
+        error = row.Scan(&otherIsExpert)
         if error != nil { Log.LogError(error) }
-        if ! isExpert.Bool {
-            Log.Debugf("Conversation is not with expert.")
-            conversation.IsFree = proto.Bool(true)
+
+        if isExpert.Bool {
+            if otherIsExpert.Bool {
+                conversation.IsFree = proto.Bool(true)
+                if len(introMessage) <= 0 {
+                    introMessage =
+                        "As Blitz experts, you have unrestricted access to chat with other experts.\n"+
+                        "Please state your objective and provide time for the expert to respond."
+                }
+            } else {
+                conversation.IsFree = proto.Bool(true)
+                if len(introMessage) <= 0 {
+                    introMessage =
+                    "A Blitz expert would like to chat with you!\nThis chat session will remain open for the next 5 days."
+                }
+            }
+        } else {
+            if otherIsExpert.Bool {
+                if len(introMessage) <= 0 {
+                    introMessage =
+                        "You can send one free message to an expert.\nPlease state your objective and provide "+
+                        "time for the expert to respond.\nFor guaranteeing a response, please make a payment "+
+                        "– Good luck!"
+                }
+            } else {
+                conversation.IsFree = proto.Bool(true)
+                if len(introMessage) <= 0 {
+                    introMessage = "Chat with non-experts is free.\nEnjoy your chat."
+                }
+            }
         }
 
         if conversation.IsFree != nil && *conversation.IsFree {
@@ -365,18 +401,8 @@ func StartConversation(session *Session, req *BlitzMessage.ConversationRequest) 
 
         //  Send a system message to the participants --
 
-        var introMessage string
-        if conversation.IsFree != nil && *conversation.IsFree {
+        if len(introMessage) <= 0 {
             introMessage = fmt.Sprintf("Chat with %s and %s.",
-                PrettyNameForUserID(memberArray[0]),
-                PrettyNameForUserID(memberArray[1]),
-            )
-        } else {
-            introMessage = fmt.Sprintf(
-                "This is a private between %s and %s.\n" +
-                "This chat window is open for the next 5 days. " +
-                "If you may finish chatting earlier, please use " +
-                "the 'End' button to close the conversation.",
                 PrettyNameForUserID(memberArray[0]),
                 PrettyNameForUserID(memberArray[1]),
             )

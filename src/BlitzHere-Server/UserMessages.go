@@ -266,7 +266,7 @@ func UpdateConversationMessage(
 
     //  Less than four messages?
 
-    if conversation.MessageCount != nil && *conversation.MessageCount <= 4 {
+    if conversation.MessageCount != nil && *conversation.MessageCount <= 1 {
         Log.Debugf("Conversation < 4 messages.")
         return nil
     }
