@@ -220,12 +220,13 @@ message ConversationGroup {
   optional ConversationType   groupType     = 2;
   optional string             userID        = 3;    //  Feed: Initiator | Message: other userID.
   optional Timestamp          activityDate  = 4;
-  optional string             headline      = 5;
+  optional string             headlineText  = 5;
   optional string             statusText    = 6;
   optional string             lastMessage   = 7;
   optional string             lastUserID    = 8;    //  UserID from last message.
   optional int32              totalCount    = 9;
   optional int32              unreadCount   = 10;
+  optional string             actionURL     = 11;
 }
 */
 
@@ -234,16 +235,37 @@ func FetchConversationGroups(
     ) *BlitzMessage.ServerResponse {
     Log.LogFunctionName()
 
+    userForConversationID := func(conversationID, sessionUserID string) *string {
+        Log.Debugf("cid: %s sid: %s.", conversationID, sessionUserID)
+        row := config.DB.QueryRow(
+            `select memberID from ConversationMemberTable
+                where conversationID = $1
+                  and memberID <> $2
+                limit 1;`,
+            conversationID,
+            sessionUserID,
+        )
+        var memberID sql.NullString
+        error := row.Scan(&memberID)
+        if error != nil || ! memberID.Valid {
+            return nil
+        }
+        Log.Debugf("Found: %s.", memberID.String)
+        return &memberID.String
+    }
+
     rows, error := config.DB.Query(
-        `select conversationID, senderID, messageText, creationDate
+        `select distinct on (conversationID, senderID)
+            conversationID, senderID, creationDate, messageText
         from (
             select conversationID, senderID, messageText, creationDate,
                 rank() over (partition by senderID order by creationDate desc) as r
             from UserMessageTable
             where recipientID = $1
+              and conversationID is not null
+              order by conversationID, creationDate desc
         ) as conv
-        where r = 1 and conversationID is not null
-        order by conversationID, creationDate desc;`,
+        order by conversationID, senderID, creationDate desc;`,
         session.UserID,
     )
     if error != nil {
@@ -258,15 +280,19 @@ func FetchConversationGroups(
         var (
             convID          string
             senderID        string
-            messageText     string
             creationDate    pq.NullTime
+            messageText     string
         )
-        error = rows.Scan(&convID, &senderID, &messageText, &creationDate)
+        error = rows.Scan(&convID, &senderID, &creationDate, &messageText)
         if error != nil {
             Log.LogError(error)
             continue
         }
         if convID != groupConversationID && group != nil {
+            if group.GroupID == nil {
+                group.GroupID = userForConversationID(groupConversationID, session.UserID)
+                group.UserID = group.GroupID
+            }
             groups = append(groups, group)
             group = nil
         }
@@ -280,15 +306,21 @@ func FetchConversationGroups(
         if senderID == BlitzMessage.Default_Global_SystemUserID {
             group.StatusText = &messageText
         } else {
-            group.LastMessage = &messageText
-            group.LastUserID  = &senderID
+
             if senderID != session.UserID {
                 group.GroupID = &senderID
                 group.UserID  = &senderID
             }
+
+            group.LastMessage = &messageText
+            group.LastUserID  = &senderID
         }
     }
     if group != nil {
+        if group.GroupID == nil {
+            group.GroupID = userForConversationID(groupConversationID, session.UserID)
+            group.UserID = group.GroupID
+        }
         groups = append(groups, group)
     }
 
@@ -311,13 +343,13 @@ func FetchConversationGroups(
             group.GroupID,
             session.UserID,
         )
-        var total, unread int64
+        var total, unread sql.NullInt64
         error = row.Scan(&total, &unread)
         if error != nil {
             Log.LogError(error)
         }
-        group.TotalCount  = Int32PtrFromInt64(total)
-        group.UnreadCount = Int32PtrFromInt64(unread)
+        group.TotalCount  = Int32PtrFromInt64(total.Int64)
+        group.UnreadCount = Int32PtrFromInt64(unread.Int64)
     }
 
     groups = append(groups, FetchFeedPostsAsConversationGroup(session.UserID)...)

@@ -240,9 +240,8 @@ func SendFriendRequest(session *Session, request *BlitzMessage.FriendUpdate) *Bl
     Log.LogFunctionName()
 
     if  request.FriendID == nil ||
-        request.FriendStatus == nil ||
-        *request.FriendStatus == BlitzMessage.FriendStatus_FSUnknown {
-        ServerResponseForCode(BlitzMessage.ResponseCode_RCInputInvalid, nil)
+        request.FriendStatus == nil {
+        return ServerResponseForCode(BlitzMessage.ResponseCode_RCInputInvalid, nil)
     }
 
     userTagMap   := GetEntityTagMapForUserIDEntityIDType(
@@ -277,6 +276,8 @@ func SendFriendRequest(session *Session, request *BlitzMessage.FriendUpdate) *Bl
         friendStatus == FSWasAsked  =>      userStatus.DidAsk, friendStatus.WasAsked, No notification.
         default                     =>      userStatus.DidAsk,  friendStatus.WasAsked, Notification.
 
+    FSUnknown:
+        Remove friend tags from both.
     */
 
     var ok bool
@@ -311,11 +312,30 @@ func SendFriendRequest(session *Session, request *BlitzMessage.FriendUpdate) *Bl
         friendStatus.String(),
     )
 
+    if *request.FriendStatus == BlitzMessage.FriendStatus_FSUnknown {
+
+        userTagMap[kTagFriendDidAsk] = false;
+        userTagMap[kTagFriendWasAsked] = false;
+        userTagMap[kTagFriendAccepted] = false;
+        userTagMap[kTagFriend] = false;
+        userTagMap[kTagFriendIgnored] = false;
+
+        friendTagMap[kTagFriendDidAsk] = false;
+        friendTagMap[kTagFriendWasAsked] = false;
+        friendTagMap[kTagFriendAccepted] = false;
+        friendTagMap[kTagFriend] = false;
+        friendTagMap[kTagFriendIgnored] = false;
+
+    } else
     if *request.FriendStatus == BlitzMessage.FriendStatus_FSIgnored {
 
         userTagMap[kTagFriendIgnored] = true
         userTagMap[kTagFriend] = false
-        friendTagMap[kTagFriend] = false
+
+        friendTagMap[kTagFriendDidAsk] = false;
+        friendTagMap[kTagFriendWasAsked] = false;
+        friendTagMap[kTagFriend] = false;
+
         Log.Debugf("EndState: Ignored.")
 
     } else {
@@ -324,6 +344,10 @@ func SendFriendRequest(session *Session, request *BlitzMessage.FriendUpdate) *Bl
 
         case BlitzMessage.FriendStatus_FSIgnored:
             userTagMap[kTagFriend] = false
+            userTagMap[kTagFriendDidAsk] = true;
+            userTagMap[kTagFriendWasAsked] = false;
+            userTagMap[kTagFriendAccepted] = false;
+
             friendTagMap[kTagFriend] = false
             Log.Debugf("EndState: Ignoring.")
 
