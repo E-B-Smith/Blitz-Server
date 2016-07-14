@@ -150,7 +150,9 @@ func TestTransport(t *testing.T) {
 func onSameConn(t *testing.T, modReq func(*http.Request)) bool {
 	st := newServerTester(t, func(w http.ResponseWriter, r *http.Request) {
 		io.WriteString(w, r.RemoteAddr)
-	}, optOnlyServer)
+	}, optOnlyServer, func(c net.Conn, st http.ConnState) {
+		t.Logf("conn %v is now state %v", c.RemoteAddr(), st)
+	})
 	defer st.Close()
 	tr := &Transport{TLSClientConfig: tlsConfigInsecure}
 	defer tr.CloseIdleConnections()
@@ -755,18 +757,18 @@ func testTransportReqBodyAfterResponse(t *testing.T, status int) {
 				if f.StreamEnded() {
 					return fmt.Errorf("headers contains END_STREAM unexpectedly: %v", f)
 				}
-				time.Sleep(50 * time.Millisecond) // let client send body
-				enc.WriteField(hpack.HeaderField{Name: ":status", Value: strconv.Itoa(status)})
-				ct.fr.WriteHeaders(HeadersFrameParam{
-					StreamID:      f.StreamID,
-					EndHeaders:    true,
-					EndStream:     false,
-					BlockFragment: buf.Bytes(),
-				})
 			case *DataFrame:
 				dataLen := len(f.Data())
-				dataRecv += int64(dataLen)
 				if dataLen > 0 {
+					if dataRecv == 0 {
+						enc.WriteField(hpack.HeaderField{Name: ":status", Value: strconv.Itoa(status)})
+						ct.fr.WriteHeaders(HeadersFrameParam{
+							StreamID:      f.StreamID,
+							EndHeaders:    true,
+							EndStream:     false,
+							BlockFragment: buf.Bytes(),
+						})
+					}
 					if err := ct.fr.WriteWindowUpdate(0, uint32(dataLen)); err != nil {
 						return err
 					}
@@ -774,6 +776,8 @@ func testTransportReqBodyAfterResponse(t *testing.T, status int) {
 						return err
 					}
 				}
+				dataRecv += int64(dataLen)
+
 				if !closed && ((status != 200 && dataRecv > 0) ||
 					(status == 200 && dataRecv == bodySize)) {
 					closed = true
@@ -2010,4 +2014,81 @@ func TestTransportFlowControl(t *testing.T) {
 		// Let the server get ahead of the client.
 		time.Sleep(1 * time.Millisecond)
 	}
+}
+
+// golang.org/issue/14627 -- if the server sends a GOAWAY frame, make
+// the Transport remember it and return it back to users (via
+// RoundTrip or request body reads) if needed (e.g. if the server
+// proceeds to close the TCP connection before the client gets its
+// response)
+func TestTransportUsesGoAwayDebugError_RoundTrip(t *testing.T) {
+	testTransportUsesGoAwayDebugError(t, false)
+}
+
+func TestTransportUsesGoAwayDebugError_Body(t *testing.T) {
+	testTransportUsesGoAwayDebugError(t, true)
+}
+
+func testTransportUsesGoAwayDebugError(t *testing.T, failMidBody bool) {
+	ct := newClientTester(t)
+	clientDone := make(chan struct{})
+
+	const goAwayErrCode = ErrCodeHTTP11Required // arbitrary
+	const goAwayDebugData = "some debug data"
+
+	ct.client = func() error {
+		defer close(clientDone)
+		req, _ := http.NewRequest("GET", "https://dummy.tld/", nil)
+		res, err := ct.tr.RoundTrip(req)
+		if failMidBody {
+			if err != nil {
+				return fmt.Errorf("unexpected client RoundTrip error: %v", err)
+			}
+			_, err = io.Copy(ioutil.Discard, res.Body)
+			res.Body.Close()
+		}
+		want := GoAwayError{
+			LastStreamID: 5,
+			ErrCode:      goAwayErrCode,
+			DebugData:    goAwayDebugData,
+		}
+		if !reflect.DeepEqual(err, want) {
+			t.Errorf("RoundTrip error = %T: %#v, want %T (%#T)", err, err, want, want)
+		}
+		return nil
+	}
+	ct.server = func() error {
+		ct.greet()
+		for {
+			f, err := ct.fr.ReadFrame()
+			if err != nil {
+				t.Logf("ReadFrame: %v", err)
+				return nil
+			}
+			hf, ok := f.(*HeadersFrame)
+			if !ok {
+				continue
+			}
+			if failMidBody {
+				var buf bytes.Buffer
+				enc := hpack.NewEncoder(&buf)
+				enc.WriteField(hpack.HeaderField{Name: ":status", Value: "200"})
+				enc.WriteField(hpack.HeaderField{Name: "content-length", Value: "123"})
+				ct.fr.WriteHeaders(HeadersFrameParam{
+					StreamID:      hf.StreamID,
+					EndHeaders:    true,
+					EndStream:     false,
+					BlockFragment: buf.Bytes(),
+				})
+			}
+			// Write two GOAWAY frames, to test that the Transport takes
+			// the interesting parts of both.
+			ct.fr.WriteGoAway(5, ErrCodeNo, []byte(goAwayDebugData))
+			ct.fr.WriteGoAway(5, goAwayErrCode, nil)
+			ct.sc.Close()
+			<-clientDone
+			return nil
+		}
+	}
+	ct.run()
 }
