@@ -235,37 +235,26 @@ func FetchConversationGroups(
     ) *BlitzMessage.ServerResponse {
     Log.LogFunctionName()
 
-    userForConversationID := func(conversationID, sessionUserID string) *string {
-        Log.Debugf("cid: %s sid: %s.", conversationID, sessionUserID)
-        row := config.DB.QueryRow(
-            `select memberID from ConversationMemberTable
-                where conversationID = $1
-                  and memberID <> $2
-                limit 1;`,
-            conversationID,
-            sessionUserID,
-        )
-        var memberID sql.NullString
-        error := row.Scan(&memberID)
-        if error != nil || ! memberID.Valid {
-            return nil
-        }
-        Log.Debugf("Found: %s.", memberID.String)
-        return &memberID.String
-    }
-
     rows, error := config.DB.Query(
-        `select distinct on (conversationID, senderID)
-            conversationID, senderID, creationDate, messageText
-        from (
-            select conversationID, senderID, messageText, creationDate,
-                rank() over (partition by senderID order by creationDate desc) as r
-            from UserMessageTable
-            where recipientID = $1
-              and conversationID is not null
-              order by conversationID, creationDate desc
-        ) as conv
-        order by conversationID, senderID, creationDate desc;`,
+        `with convosdistinct as (
+            -- Get our conversations
+            with convos as (
+            select conversationID from ConversationMemberTable
+               where memberID = $1
+            )
+            -- Get the latest conversation with a person
+            select distinct on (memberID) memberID, umt.creationdate, umt.conversationID as cid from ConversationMemberTable cmt, convos
+                join usermessagetable umt on umt.conversationID = convos.conversationID
+                where cmt.ConversationID = convos.ConversationID
+                  and cmt.MemberID <> $1
+                order by memberID, umt.creationDate desc
+        )
+        -- Get the latest messages of the latest conversation with a person
+        select distinct on (umt.conversationID, umt.senderID)
+                umt.conversationID, umt.senderID, convosdistinct.memberID, umt.creationDate, umt.messageText
+            from UserMessageTable umt, convosdistinct
+           where umt.conversationID = convosdistinct.cid
+            order by umt.conversationID, umt.senderID, umt.creationDate desc;`,
         session.UserID,
     )
     if error != nil {
@@ -280,19 +269,16 @@ func FetchConversationGroups(
         var (
             convID          string
             senderID        string
+            memberID        string
             creationDate    pq.NullTime
             messageText     string
         )
-        error = rows.Scan(&convID, &senderID, &creationDate, &messageText)
+        error = rows.Scan(&convID, &senderID, &memberID, &creationDate, &messageText)
         if error != nil {
             Log.LogError(error)
             continue
         }
         if convID != groupConversationID && group != nil {
-            if group.GroupID == nil {
-                group.GroupID = userForConversationID(groupConversationID, session.UserID)
-                group.UserID = group.GroupID
-            }
             groups = append(groups, group)
             group = nil
         }
@@ -300,28 +286,21 @@ func FetchConversationGroups(
         if group == nil {
             group = &BlitzMessage.ConversationGroup {
                 GroupType:  BlitzMessage.ConversationType(BlitzMessage.ConversationType_CTConversation).Enum(),
+                GroupID:    proto.String(memberID),
+                UserID:     proto.String(memberID),
             }
         }
         group.ActivityDate = BlitzMessage.TimestampPtr(creationDate)
         if senderID == BlitzMessage.Default_Global_SystemUserID {
             group.StatusText = &messageText
         } else {
-
-            if senderID != session.UserID {
-                group.GroupID = &senderID
-                group.UserID  = &senderID
-            }
-
             group.LastMessage = &messageText
             group.LastUserID  = &senderID
         }
     }
     if group != nil {
-        if group.GroupID == nil {
-            group.GroupID = userForConversationID(groupConversationID, session.UserID)
-            group.UserID = group.GroupID
-        }
         groups = append(groups, group)
+        group = nil
     }
 
     //  Get un-read message counts --
