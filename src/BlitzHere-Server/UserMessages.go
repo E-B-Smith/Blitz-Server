@@ -264,10 +264,21 @@ func UpdateConversationMessage(
         return nil
     }
 
-    //  Less than four messages?
+    //  Less than one message?
 
-    if conversation.MessageCount != nil && *conversation.MessageCount <= 1 {
-        Log.Debugf("Conversation < 4 messages.")
+    row := config.DB.QueryRow(
+        `select count(*) from UserMessageTable
+            where conversationID = $1
+              and senderID = $2;`,
+        conversation.ConversationID,
+        session.UserID,
+    )
+    var messagesSent sql.NullInt64
+    error = row.Scan(&messagesSent)
+    if error != nil {
+        Log.LogError(error)
+    }
+    if messagesSent.Int64 < 1 {
         return nil
     }
 
