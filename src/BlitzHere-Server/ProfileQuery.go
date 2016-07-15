@@ -302,6 +302,8 @@ func ProfileForUserID(sessionUserID string, userID string) *BlitzMessage.UserPro
             ,isFree
             ,editProfileID
             ,isAdmin
+            ,chatCharge
+            ,callCharge
         from UserTable where userID = $1;`, userID)
     defer pgsql.CloseRows(rows)
 
@@ -330,6 +332,8 @@ func ProfileForUserID(sessionUserID string, userID string) *BlitzMessage.UserPro
         isFree          sql.NullBool
         editProfileID   sql.NullString
         isAdmin         sql.NullBool
+        chatCharge      sql.NullString
+        callCharge      sql.NullString
     )
     error = rows.Scan(
         &profileID,
@@ -346,6 +350,8 @@ func ProfileForUserID(sessionUserID string, userID string) *BlitzMessage.UserPro
         &isFree,
         &editProfileID,
         &isAdmin,
+        &chatCharge,
+        &callCharge,
     )
     if error != nil {
         Log.Errorf("Error scanning row: %v.", error)
@@ -373,6 +379,8 @@ func ProfileForUserID(sessionUserID string, userID string) *BlitzMessage.UserPro
 
     profile.IsExpert      = proto.Bool(isExpert.Bool)
     profile.IsAdmin       = proto.Bool(isAdmin.Bool)
+    profile.chatCharge    = proto.String(chatCharge.String)
+    profile.callCharge    = proto.String(callCharge.String)
     profile.StripeAccount = proto.String(stripeAccount.String)
     if config.ServiceIsFree {
         profile.ServiceIsFreeForUser = proto.Bool(true)
