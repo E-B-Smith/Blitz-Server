@@ -32,6 +32,11 @@ insert into CategoryTable
     ,('Software', 'iphone', true)
     ,('Software', 'quality assurance', true)
     ,('Software', 'qa', true)
+
+    ,('Consumer', 'Fashion', true)
+    ,('Fashion',  'shoes', true)
+    ,('Fashion',  'sandals', true)
+
     ;
 
 ENDOFDATA

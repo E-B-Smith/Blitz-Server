@@ -379,8 +379,8 @@ func ProfileForUserID(sessionUserID string, userID string) *BlitzMessage.UserPro
 
     profile.IsExpert      = proto.Bool(isExpert.Bool)
     profile.IsAdmin       = proto.Bool(isAdmin.Bool)
-    profile.chatCharge    = proto.String(chatCharge.String)
-    profile.callCharge    = proto.String(callCharge.String)
+    profile.ChatFee       = proto.String(chatCharge.String)
+    profile.CallFee       = proto.String(callCharge.String)
     profile.StripeAccount = proto.String(stripeAccount.String)
     if config.ServiceIsFree {
         profile.ServiceIsFreeForUser = proto.Bool(true)
