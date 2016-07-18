@@ -202,7 +202,7 @@ func UserIsConfirming(session *Session, confirmation *BlitzMessage.ConfirmationR
     responseCode    := BlitzMessage.ResponseCode_RCSuccess
     responseMessage :=
         config.Localizef(
-            "kConfirmConfirmedWelcome", "Hello %s\nWelcome to %s",
+            "kConfirmConfirmedWelcome", "Hello %s\nWelcome back to %s",
             *profile.Name,
             config.AppName,
         )
