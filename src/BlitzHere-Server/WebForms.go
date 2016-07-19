@@ -172,6 +172,20 @@ func WebUpdateProfile(writer http.ResponseWriter, httpRequest *http.Request) {
     } ()
 
 
+    fixNullTimespan := func(ts *BlitzMessage.Timespan) *BlitzMessage.Timespan {
+        if ts == nil {
+            ts = &BlitzMessage.TimespanZero
+        } else {
+            if ts.StartTimestamp == nil {
+                ts.StartTimestamp = &BlitzMessage.TimestampZero
+            }
+            if ts.StopTimestamp == nil {
+                ts.StopTimestamp = &BlitzMessage.TimestampZero
+            }
+        }
+        return ts
+    }
+
     fillFormFromProfile := func() {
 
         //  Expertise:
@@ -182,18 +196,18 @@ func WebUpdateProfile(writer http.ResponseWriter, httpRequest *http.Request) {
         }
         updateProfile.Expertise = strings.TrimRight(updateProfile.Expertise, ", ")
 
-        //  Dates
+        //  Add extra emp & edu --
+        for i := 0; i < 2; i++ {
+            updateProfile.Profile.Employment = append(updateProfile.Profile.Employment, &BlitzMessage.Employment{})
+            updateProfile.Profile.Education  = append(updateProfile.Profile.Education,  &BlitzMessage.Education{})
+        }
+
+        //  Fix zero dates --
         for _, emp := range updateProfile.Profile.Employment {
-            if emp.Timespan == nil {
-                emp.Timespan = &BlitzMessage.TimespanZero
-            } else {
-                if emp.Timespan.StartTimestamp == nil {
-                    emp.Timespan.StartTimestamp = &BlitzMessage.TimestampZero
-                }
-                if emp.Timespan.StopTimestamp == nil {
-                    emp.Timespan.StopTimestamp = &BlitzMessage.TimestampZero
-                }
-            }
+            emp.Timespan = fixNullTimespan(emp.Timespan)
+        }
+        for _, edu := range updateProfile.Profile.Education {
+            edu.Timespan = fixNullTimespan(edu.Timespan)
         }
     }
 
@@ -370,6 +384,8 @@ func WebUpdateProfile(writer http.ResponseWriter, httpRequest *http.Request) {
                 return
             }
         }
+
+        updateProfile.Profile = ProfileForUserID(userID, userID)
     }
 
     fillFormFromProfile()

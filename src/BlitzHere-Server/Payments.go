@@ -321,13 +321,11 @@ func ChargeRequest(session *Session, chargeReq *BlitzMessage.Charge) *BlitzMessa
               and chargeStatus = $1;`,
         BlitzMessage.ChargeStatus_CSCharged,
     )
-    var total float64
+    var total sql.NullFloat64
     error = row.Scan(&total)
-    if error != nil || total > 200.0 {
-        if error == nil {
-            error = fmt.Errorf("Sorry, we aren't able to submit charges at the moment.")
-        }
-        Log.Errorf("Charge limit reached! Total: %1.2f Error: %v.", total, error)
+    if error != nil || total.Float64 > 200.0 {
+        Log.Errorf("Charge limit reached! Total: %1.2f Error: %v.", total.Float64, error)
+        error = fmt.Errorf("Sorry, we aren't able to submit charges at the moment.")
         return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
     }
 
