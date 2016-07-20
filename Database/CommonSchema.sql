@@ -462,7 +462,7 @@ create table ConversationTable
     ,parentFeedPostID           UUID
     ,creationDate               timestamptz not null
     ,closedDate                 timestamptz
-    ,isFree                     bool
+    ,paymentStatus              smallint
     ,chargeID                   uuid
     );
 

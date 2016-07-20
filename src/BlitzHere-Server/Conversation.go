@@ -31,7 +31,7 @@ func WriteConversation(conv *BlitzMessage.Conversation) error {
 
     result, error := config.DB.Exec(
         `insert into ConversationTable
-            (conversationID, status, initiatorUserID, parentFeedPostID, creationDate, closedDate, isFree)
+            (conversationID, status, initiatorUserID, parentFeedPostID, creationDate, closedDate, paymentStatus)
             values ($1, $2, $3, $4, current_timestamp, $5, $6)
          on conflict(conversationID) do
             update set (status, parentFeedPostID, closedDate) = ($2, $4, $5);`,
@@ -40,7 +40,7 @@ func WriteConversation(conv *BlitzMessage.Conversation) error {
         conv.InitiatorUserID,
         conv.ParentFeedPostID,
         conv.ClosedDate,
-        conv.IsFree,
+        conv.PaymentStatus,
     )
     Log.Debugf("Conversation Create status: %v.", error)
 
@@ -113,7 +113,7 @@ func ReadUserConversation(userID string, conversationID string) (*BlitzMessage.C
             parentFeedPostID,
             creationDate,
             closedDate,
-            isFree,
+            paymentStatus,
             chargeID
                 from ConversationTable
                 where conversationID = $1;`, conversationID)
@@ -124,7 +124,7 @@ func ReadUserConversation(userID string, conversationID string) (*BlitzMessage.C
         parentFeedPostID    sql.NullString
         creationDate        pq.NullTime
         closedDate          pq.NullTime
-        isFree              sql.NullBool
+        paymentStatus       sql.NullInt64
         chargeID            sql.NullString
     )
 
@@ -135,7 +135,7 @@ func ReadUserConversation(userID string, conversationID string) (*BlitzMessage.C
         &parentFeedPostID,
         &creationDate,
         &closedDate,
-        &isFree,
+        &paymentStatus,
         &chargeID,
     )
     if error != nil {
@@ -150,7 +150,7 @@ func ReadUserConversation(userID string, conversationID string) (*BlitzMessage.C
         CreationDate:       BlitzMessage.TimestampPtr(creationDate),
         ClosedDate:         BlitzMessage.TimestampPtr(closedDate),
         ConversationType:   BlitzMessage.ConversationType(BlitzMessage.ConversationType_CTConversation).Enum(),
-        IsFree:             BoolPtr(isFree.Bool),
+        PaymentStatus:      BlitzMessage.PaymentStatus(paymentStatus.Int64).Enum(),
         ChargeID:           proto.String(chargeID.String),
     }
 
@@ -302,7 +302,7 @@ func StartConversation(session *Session, req *BlitzMessage.ConversationRequest) 
         }
 
         if  config.ServiceIsFree {
-            conversation.IsFree = proto.Bool(true)
+            conversation.PaymentStatus = BlitzMessage.PaymentStatus(BlitzMessage.PaymentStatus_PSIsFree).Enum()
             Log.Debugf("Conversation is free: Service is free.")
             introMessage = "Blitz is in free mode.\nEnjoy you chat."
         }
@@ -324,7 +324,7 @@ func StartConversation(session *Session, req *BlitzMessage.ConversationRequest) 
         )
         if val, ok := tags[kTagFriend]; ok && val {
             Log.Debugf("Conversation is between friends.")
-            conversation.IsFree = proto.Bool(true)
+            conversation.PaymentStatus = BlitzMessage.PaymentStatus(BlitzMessage.PaymentStatus_PSIsFree).Enum()
             if len(introMessage) <= 0 {
                 introMessage = "Chat between friends is free.\nEnjoy your chat."
             }
@@ -341,7 +341,7 @@ func StartConversation(session *Session, req *BlitzMessage.ConversationRequest) 
         if error != nil { Log.LogError(error) }
         if isFree.Bool {
             Log.Debugf("Conversation is free for user.")
-            conversation.IsFree = proto.Bool(true)
+            conversation.PaymentStatus = BlitzMessage.PaymentStatus(BlitzMessage.PaymentStatus_PSIsFree).Enum()
             if len(introMessage) <= 0 {
                 introMessage = "This chat is free."
             }
@@ -359,14 +359,14 @@ func StartConversation(session *Session, req *BlitzMessage.ConversationRequest) 
 
         if isExpert.Bool {
             if otherIsExpert.Bool {
-                conversation.IsFree = proto.Bool(true)
+                conversation.PaymentStatus = BlitzMessage.PaymentStatus(BlitzMessage.PaymentStatus_PSIsFree).Enum()
                 if len(introMessage) <= 0 {
                     introMessage =
                         "As Blitz experts, you have unrestricted access to chat with other experts.\n"+
                         "Please state your objective and provide time for the expert to respond."
                 }
             } else {
-                conversation.IsFree = proto.Bool(true)
+                conversation.PaymentStatus = BlitzMessage.PaymentStatus(BlitzMessage.PaymentStatus_PSIsFree).Enum()
                 if len(introMessage) <= 0 {
                     introMessage =
                     "A Blitz expert would like to chat with you!\nThis chat session will remain open for the next 5 days."
@@ -381,14 +381,15 @@ func StartConversation(session *Session, req *BlitzMessage.ConversationRequest) 
                         "– Good luck!"
                 }
             } else {
-                conversation.IsFree = proto.Bool(true)
+                conversation.PaymentStatus = BlitzMessage.PaymentStatus(BlitzMessage.PaymentStatus_PSIsFree).Enum()
                 if len(introMessage) <= 0 {
                     introMessage = "Chat with non-experts is free.\nEnjoy your chat."
                 }
             }
         }
 
-        if conversation.IsFree != nil && *conversation.IsFree {
+        if  conversation.PaymentStatus != nil  &&
+            *conversation.PaymentStatus == BlitzMessage.PaymentStatus_PSIsFree {
             Log.Debugf("Conversation is free.")
         } else {
             Log.Debugf("Conversation is paid.")

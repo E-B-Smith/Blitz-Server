@@ -247,7 +247,8 @@ func UpdateConversationMessage(
             errors.New("The conversation is closed."))
     }
 
-    if conversation.IsFree != nil && *conversation.IsFree {
+    if conversation.PaymentStatus != nil &&
+        *conversation.PaymentStatus == BlitzMessage.PaymentStatus_PSIsFree {
         return nil
     }
 

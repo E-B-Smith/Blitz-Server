@@ -368,7 +368,10 @@ func WebUpdateProfile(writer http.ResponseWriter, httpRequest *http.Request) {
         //  Expert approve update?
 
         isApproved := httpRequest.PostFormValue("IsApproved")
-        if isApproved == "IsApproved" {
+        if  isApproved == "IsApproved" &&
+            updateProfile.Profile.EditProfileID != nil &&
+            len(*updateProfile.Profile.EditProfileID) > 0 {
+
             row := config.DB.QueryRow(
                 `select ApproveEditProfile($1);`,
                 userID,
@@ -383,8 +386,8 @@ func WebUpdateProfile(writer http.ResponseWriter, httpRequest *http.Request) {
                 updateProfile.ErrorMessage = error.Error()
                 return
             }
+        userID = *updateProfile.Profile.EditProfileID
         }
-
         updateProfile.Profile = ProfileForUserID(userID, userID)
     }
 

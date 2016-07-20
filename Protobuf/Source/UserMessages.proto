@@ -36,6 +36,17 @@ enum ConversationType {
 }
 
 
+enum PaymentStatus {
+  PSUnknown           = 0;
+  PSIsFree            = 1;
+  PSTrialPeriod       = 2;
+  PSPaymentRequired   = 3;
+  PSExpertNeedsAccept = 4;
+  PSExpertRejected    = 5;
+  PSExpertAccepted    = 6;
+}
+
+
 message Conversation {
   optional string             conversationID  = 1;
   optional string             initiatorUserID = 2;
@@ -52,8 +63,9 @@ message Conversation {
   optional string             lastActivityUserID  = 13;
   optional string             lastActionURL       = 14;
   optional ConversationType   conversationType    = 15;
-  optional bool               isFree          = 16;
+  optional bool               isFree_deprecated   = 16;
   optional string             chargeID        = 17;
+  optional PaymentStatus      PaymentStatus   = 18;
 }
 
 
@@ -126,6 +138,7 @@ message UserMessage {
   optional string           messageText       = 10;
   optional string           actionIcon        = 11;
   optional string           actionURL         = 12;
+  optional PaymentStatus    paymentStatus     = 13;
 }
 
 
