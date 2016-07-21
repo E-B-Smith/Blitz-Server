@@ -12,6 +12,7 @@ option (google.protobuf.objectivec_file_options).relax_camel_case = true;
 
 import "Types.proto";
 import "UserProfiles.proto";
+import "Payments.proto";
 //----------------------------------------------------------------------------------------
 //
 //                                                                           User Messages
@@ -139,6 +140,7 @@ message UserMessage {
   optional string           actionIcon        = 11;
   optional string           actionURL         = 12;
   optional PaymentStatus    paymentStatus     = 13;
+  optional PurchaseDescription purchaseDescription = 14;
 }
 
 

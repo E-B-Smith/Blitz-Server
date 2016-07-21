@@ -91,7 +91,7 @@ message PurchaseDescription {
   optional string       purchaseTypeID    = 2;  //  ConversationID, e.g.
 
   //  Sent to client as purchase request response:
-  optional string       purchaseID_wha    = 3;  //  ???
+  optional string       purchaseID_wha    = 3;  //  ??? - Stripe related?
   optional string       memoText          = 4;
   optional string       amount            = 5;
   optional string       currency          = 6;
