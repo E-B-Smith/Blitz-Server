@@ -502,3 +502,48 @@ func ChargeRequest(session *Session, chargeReq *BlitzMessage.Charge) *BlitzMessa
     return response
 }
 
+
+//----------------------------------------------------------------------------------------
+//
+//                                                                FetchPurchaseDescription
+//
+//----------------------------------------------------------------------------------------
+
+
+func FetchPurchaseDescription(session *Session,
+                              fetch *BlitzMessage.FetchPurchaseDescription,
+    ) *BlitzMessage.ServerResponse {
+    Log.LogFunctionName()
+
+    if fetch == nil ||
+       fetch.Purchase == nil ||
+       fetch.Purchase.PurchaseType == nil ||
+       fetch.Purchase.PurchaseTypeID == nil ||
+       len(*fetch.Purchase.PurchaseTypeID) == 0 {
+        return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, errors.New("Missing fields"))
+    }
+
+    var error error
+    purchase := fetch.Purchase
+
+    switch *purchase.PurchaseType {
+
+    case BlitzMessage.PurchaseType_PTChatConversation:
+        error = UpdatePurchaseDescriptionForConversation(session, purchase)
+
+    default:
+        error = errors.New("Purchase not supported")
+    }
+
+    if error != nil {
+        return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
+    }
+
+    response := &BlitzMessage.ServerResponse {
+        ResponseCode:       BlitzMessage.ResponseCode(BlitzMessage.ResponseCode_RCSuccess).Enum(),
+        ResponseType:       &BlitzMessage.ResponseType { FetchPurchaseDescription: fetch },
+    }
+
+    return response
+}
+

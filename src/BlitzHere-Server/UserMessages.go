@@ -211,23 +211,20 @@ func arrayFromMap(stringMap map[string]bool) []string {
 func UpdateConversationMessage(
         session *Session,
         message *BlitzMessage.UserMessage,
-        ) *BlitzMessage.ServerResponse {
+        ) error {
     Log.LogFunctionName()
 
     var error error
     conversation, error := ReadUserConversation(session.UserID, *message.ConversationID)
     if error != nil {
         Log.LogError(error)
-        return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
+        return error
     }
 
     //  Add recipients --
 
     if len(conversation.MemberIDs) < 2 {
-        return ServerResponseForError(
-            BlitzMessage.ResponseCode_RCInputInvalid,
-            errors.New("Not enough conversation members."),
-        )
+        return errors.New("Not enough conversation members.")
     }
 
     message.Recipients = conversation.MemberIDs
@@ -243,88 +240,67 @@ func UpdateConversationMessage(
     }
 
     if conversation.ClosedDate != nil {
-        return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid,
-            errors.New("The conversation is closed."))
+        return errors.New("The conversation is closed.")
     }
 
-    if conversation.PaymentStatus != nil &&
-        *conversation.PaymentStatus == BlitzMessage.PaymentStatus_PSIsFree {
-        return nil
+    if conversation.PaymentStatus == nil {
+        conversation.PaymentStatus = BlitzMessage.PaymentStatus(BlitzMessage.PaymentStatus_PSUnknown).Enum()
     }
 
-    if conversation.ChargeID != nil && len(*conversation.ChargeID) > 0 {
-        return nil
-    }
+    message.PaymentStatus = conversation.PaymentStatus
+    switch *conversation.PaymentStatus {
 
-    Log.Debugf("Message init: %s sender: %s.",
-        conversation.InitiatorUserID,
-        session.UserID,
-    )
-    if conversation.InitiatorUserID != nil &&
-       *conversation.InitiatorUserID != session.UserID {
-        return nil
-    }
+    case BlitzMessage.PaymentStatus_PSIsFree,
+         BlitzMessage.PaymentStatus_PSExpertAccepted:
+         return nil
 
-    //  Less than one message?
+    case BlitzMessage.PaymentStatus_PSUnknown,
+         BlitzMessage.PaymentStatus_PSTrialPeriod:
+        //  Get the trial count messages:
 
-    row := config.DB.QueryRow(
-        `select count(*) from UserMessageTable
-            where conversationID = $1
-              and senderID = $2;`,
-        conversation.ConversationID,
-        session.UserID,
-    )
-    var messagesSent sql.NullInt64
-    error = row.Scan(&messagesSent)
-    if error != nil {
-        Log.LogError(error)
-    }
-    if messagesSent.Int64 < 1 {
-        return nil
-    }
-
-    Log.Debugf("Make charge.")
-
-    //  Make charge --
-
-    //  Send a system message to the participants --
-
-    if conversation.LastMessage == nil || ! strings.HasPrefix(*conversation.LastMessage, "You've exhausted") {
-        chargeMessage :=
-            "You've exhausted your free chat limit. To continue chatting with this expert, " +
-            "or to guarantee a response, please make a payment."
-        error = SendUserMessageInternal(
-            BlitzMessage.Default_Global_SystemUserID,
-            message.Recipients,
-            *conversation.ConversationID,
-            chargeMessage,
-            BlitzMessage.UserMessageType_MTConversation,
-            "",
-            "",
+        row := config.DB.QueryRow(
+            `select count(*) from UserMessageTable
+                where conversationID = $1
+                  and senderID = $2;`,
+            conversation.ConversationID,
+            session.UserID,
         )
+        var messagesSent sql.NullInt64
+        error = row.Scan(&messagesSent)
+        if error != nil {
+            Log.LogError(error)
+        }
+        const trialCount = 1
+        if messagesSent.Int64 < trialCount-1 {
+            return nil
+        }
+        message.PaymentStatus = BlitzMessage.PaymentStatus(BlitzMessage.PaymentStatus_PSPaymentRequired).Enum()
+        var result sql.Result
+        result, error = config.DB.Exec(
+            `update ConversationTable set paymentStatus = $1
+                where conversationID = $2;`,
+            BlitzMessage.PaymentStatus_PSPaymentRequired,
+            conversation.ConversationID,
+        )
+        error = pgsql.UpdateResultError(result, error)
         if error != nil { Log.LogError(error) }
+
+        if messagesSent.Int64 < trialCount {
+            return nil
+        }
+        return errors.New("Payment required")
+
+    case BlitzMessage.PaymentStatus_PSPaymentRequired:
+        return errors.New("Payment required")
+
+    case BlitzMessage.PaymentStatus_PSExpertNeedsAccept:
+        return errors.New("Waiting for expert")
+
+    case BlitzMessage.PaymentStatus_PSExpertRejected:
+        return errors.New("Sorry, your expert is unavailable")
     }
 
-    amount := "10.00"
-    memo := fmt.Sprintf("Chat with %s",
-        PrettyNameForUserID(conversation.MemberIDs[1]),
-    )
-
-    purchase := &BlitzMessage.PurchaseDescription {
-        PurchaseType:           BlitzMessage.PurchaseType_PTChatConversation.Enum(),
-        PurchaseTypeID:         message.ConversationID,
-        //PurchaseID:           proto.String(GenerateUUID()),
-        MemoText:               proto.String(memo),
-        Amount:                 proto.String(amount),
-        Currency:               proto.String("usd"),
-    }
-
-    response := &BlitzMessage.ServerResponse {
-        ResponseCode:       BlitzMessage.ResponseCode(BlitzMessage.ResponseCode_RCPurchaseRequired).Enum(),
-        ResponseMessage:    proto.String(memo),
-        ResponseType:       &BlitzMessage.ResponseType { PurchaseDescription: purchase },
-    }
-    return response
+    return nil
 }
 
 
@@ -350,9 +326,9 @@ func SendUserMessage(
 
     if message.ConversationID != nil &&
         *message.MessageType == BlitzMessage.UserMessageType_MTConversation {
-        response := UpdateConversationMessage(session, message)
-        if response != nil {
-            return response
+        error = UpdateConversationMessage(session, message)
+        if error != nil {
+            return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
         }
     }
 

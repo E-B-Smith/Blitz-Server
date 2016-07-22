@@ -97,3 +97,8 @@ message PurchaseDescription {
   optional string       currency          = 6;
 }
 
+
+message FetchPurchaseDescription {
+  optional PurchaseDescription purchase   = 1;
+}
+

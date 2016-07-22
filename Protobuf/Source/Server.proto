@@ -120,6 +120,7 @@ message RequestType {
   optional EditProfile              editProfile         = 27;
   optional FetchConversationGroups  fetchConversationGroups = 28;
   optional LoginAsAdmin             loginAsAdmin        = 29;
+  optional FetchPurchaseDescription fetchPurchaseDescription = 30;
 }
 
 
@@ -167,6 +168,7 @@ message ResponseType {
   optional EditProfile            editProfile             = 22;
   optional FetchConversationGroups  fetchConversationGroups = 23;
   optional LoginAsAdmin             loginAsAdmin          = 24;
+  optional FetchPurchaseDescription fetchPurchaseDescription = 25;
 }
 
 

@@ -16,6 +16,7 @@ package main
 
 import (
     "fmt"
+    "errors"
     "database/sql"
     "github.com/lib/pq"
     "violent.blue/GoKit/Log"
@@ -392,6 +393,7 @@ func StartConversation(session *Session, req *BlitzMessage.ConversationRequest) 
             *conversation.PaymentStatus == BlitzMessage.PaymentStatus_PSIsFree {
             Log.Debugf("Conversation is free.")
         } else {
+            conversation.PaymentStatus = BlitzMessage.PaymentStatus(BlitzMessage.PaymentStatus_PSTrialPeriod).Enum()
             Log.Debugf("Conversation is paid.")
         }
 
@@ -772,5 +774,113 @@ func UpdateConversationStatus(session *Session, updateStatus *BlitzMessage.Updat
 }
 
 
+//----------------------------------------------------------------------------------------
+//                                                UpdatePurchaseDescriptionForConversation
+//----------------------------------------------------------------------------------------
 
+
+func UpdatePurchaseDescriptionForConversation(session *Session, purchase *BlitzMessage.PurchaseDescription) error {
+    Log.LogFunctionName()
+
+    purchase.MemoText = nil
+    purchase.Amount = nil
+    purchase.Currency = nil
+
+    if *purchase.PurchaseType != BlitzMessage.PurchaseType_PTChatConversation {
+        return errors.New("Invalid Input")
+    }
+
+    var error error
+    row := config.DB.QueryRow(
+        `select
+            conversationID,
+            initiatorUserID,
+            closedDate,
+            paymentStatus,
+            chargeID
+                from ConversationTable
+                where conversationID = $1;`, purchase.PurchaseTypeID)
+
+    var (
+        conversationID      sql.NullString
+        initiatorUserID     sql.NullString
+        closedDate          pq.NullTime
+        paymentStatus       sql.NullInt64
+        chargeID            sql.NullString
+    )
+
+    error = row.Scan(
+        &conversationID,
+        &initiatorUserID,
+        &closedDate,
+        &paymentStatus,
+        &chargeID,
+    )
+    if error != nil {
+        Log.LogError(error)
+        return errors.New("No such conversation")
+    }
+    if closedDate.Valid {
+        return errors.New("Conversation already closed")
+    }
+
+    switch BlitzMessage.PaymentStatus(paymentStatus.Int64) {
+
+    case BlitzMessage.PaymentStatus_PSIsFree:
+        return errors.New("Conversation is free")
+
+    case BlitzMessage.PaymentStatus_PSUnknown,
+         BlitzMessage.PaymentStatus_PSTrialPeriod,
+         BlitzMessage.PaymentStatus_PSPaymentRequired:
+        {}
+
+    case BlitzMessage.PaymentStatus_PSExpertNeedsAccept:
+        return errors.New("Already purchased. Waiting for expert")
+
+    case BlitzMessage.PaymentStatus_PSExpertRejected:
+        return errors.New("Expert unavailable. Purchase refunded")
+
+    case BlitzMessage.PaymentStatus_PSExpertAccepted:
+        return errors.New("Expert chat purchased and expert is available")
+
+    }
+
+    if initiatorUserID.String != session.UserID {
+        return errors.New("Not buyer")
+    }
+
+    var expertID string
+    members := MembersForConversationID(conversationID.String)
+    for _, mid := range members {
+        if mid != session.UserID {
+            expertID = mid
+            break
+        }
+    }
+    if len(expertID) <= 0 {
+        return errors.New("Expert not available")
+    }
+
+    row = config.DB.QueryRow(
+        `select
+            name,
+            chatCharge,
+            callCharge
+            from UserTable where userID = $1;`,
+        expertID,
+    )
+    var name sql.NullString
+    var chatCharge, callCharge sql.NullFloat64
+    error = row.Scan(&chatCharge, &callCharge)
+    if error != nil {
+        Log.LogError(error)
+        return errors.New("Expert not available")
+    }
+
+    purchase.Amount   = proto.String(fmt.Sprintf("%1.02f", chatCharge.Float64))
+    purchase.Currency = proto.String("usd")
+    purchase.MemoText = proto.String(fmt.Sprintf("Chat with %s to get expert views and opinions.", name.String))
+
+    return nil
+}
 

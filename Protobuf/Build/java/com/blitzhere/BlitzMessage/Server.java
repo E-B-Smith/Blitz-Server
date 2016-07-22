@@ -6521,6 +6521,19 @@ public final class Server {
      * <code>optional .BlitzMessage.LoginAsAdmin loginAsAdmin = 29;</code>
      */
     com.blitzhere.BlitzMessage.Server.LoginAsAdminOrBuilder getLoginAsAdminOrBuilder();
+
+    /**
+     * <code>optional .BlitzMessage.FetchPurchaseDescription fetchPurchaseDescription = 30;</code>
+     */
+    boolean hasFetchPurchaseDescription();
+    /**
+     * <code>optional .BlitzMessage.FetchPurchaseDescription fetchPurchaseDescription = 30;</code>
+     */
+    com.blitzhere.BlitzMessage.Payments.FetchPurchaseDescription getFetchPurchaseDescription();
+    /**
+     * <code>optional .BlitzMessage.FetchPurchaseDescription fetchPurchaseDescription = 30;</code>
+     */
+    com.blitzhere.BlitzMessage.Payments.FetchPurchaseDescriptionOrBuilder getFetchPurchaseDescriptionOrBuilder();
   }
   /**
    * Protobuf type {@code BlitzMessage.RequestType}
@@ -6949,6 +6962,19 @@ public final class Server {
                 loginAsAdmin_ = subBuilder.buildPartial();
               }
               bitField0_ |= 0x10000000;
+              break;
+            }
+            case 242: {
+              com.blitzhere.BlitzMessage.Payments.FetchPurchaseDescription.Builder subBuilder = null;
+              if (((bitField0_ & 0x20000000) == 0x20000000)) {
+                subBuilder = fetchPurchaseDescription_.toBuilder();
+              }
+              fetchPurchaseDescription_ = input.readMessage(com.blitzhere.BlitzMessage.Payments.FetchPurchaseDescription.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(fetchPurchaseDescription_);
+                fetchPurchaseDescription_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x20000000;
               break;
             }
           }
@@ -7600,6 +7626,27 @@ public final class Server {
       return loginAsAdmin_;
     }
 
+    public static final int FETCHPURCHASEDESCRIPTION_FIELD_NUMBER = 30;
+    private com.blitzhere.BlitzMessage.Payments.FetchPurchaseDescription fetchPurchaseDescription_;
+    /**
+     * <code>optional .BlitzMessage.FetchPurchaseDescription fetchPurchaseDescription = 30;</code>
+     */
+    public boolean hasFetchPurchaseDescription() {
+      return ((bitField0_ & 0x20000000) == 0x20000000);
+    }
+    /**
+     * <code>optional .BlitzMessage.FetchPurchaseDescription fetchPurchaseDescription = 30;</code>
+     */
+    public com.blitzhere.BlitzMessage.Payments.FetchPurchaseDescription getFetchPurchaseDescription() {
+      return fetchPurchaseDescription_;
+    }
+    /**
+     * <code>optional .BlitzMessage.FetchPurchaseDescription fetchPurchaseDescription = 30;</code>
+     */
+    public com.blitzhere.BlitzMessage.Payments.FetchPurchaseDescriptionOrBuilder getFetchPurchaseDescriptionOrBuilder() {
+      return fetchPurchaseDescription_;
+    }
+
     private void initFields() {
       sessionRequest_ = com.blitzhere.BlitzMessage.Server.SessionRequest.getDefaultInstance();
       userEventBatch_ = com.blitzhere.BlitzMessage.UserEvents.UserEventBatch.getDefaultInstance();
@@ -7630,6 +7677,7 @@ public final class Server {
       editProfile_ = com.blitzhere.BlitzMessage.UserProfiles.EditProfile.getDefaultInstance();
       fetchConversationGroups_ = com.blitzhere.BlitzMessage.UserMessages.FetchConversationGroups.getDefaultInstance();
       loginAsAdmin_ = com.blitzhere.BlitzMessage.Server.LoginAsAdmin.getDefaultInstance();
+      fetchPurchaseDescription_ = com.blitzhere.BlitzMessage.Payments.FetchPurchaseDescription.getDefaultInstance();
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -7779,6 +7827,9 @@ public final class Server {
       if (((bitField0_ & 0x10000000) == 0x10000000)) {
         output.writeMessage(29, loginAsAdmin_);
       }
+      if (((bitField0_ & 0x20000000) == 0x20000000)) {
+        output.writeMessage(30, fetchPurchaseDescription_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -7903,6 +7954,10 @@ public final class Server {
       if (((bitField0_ & 0x10000000) == 0x10000000)) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(29, loginAsAdmin_);
+      }
+      if (((bitField0_ & 0x20000000) == 0x20000000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(30, fetchPurchaseDescription_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -8042,6 +8097,7 @@ public final class Server {
           getEditProfileFieldBuilder();
           getFetchConversationGroupsFieldBuilder();
           getLoginAsAdminFieldBuilder();
+          getFetchPurchaseDescriptionFieldBuilder();
         }
       }
       private static Builder create() {
@@ -8224,6 +8280,12 @@ public final class Server {
           loginAsAdminBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x10000000);
+        if (fetchPurchaseDescriptionBuilder_ == null) {
+          fetchPurchaseDescription_ = com.blitzhere.BlitzMessage.Payments.FetchPurchaseDescription.getDefaultInstance();
+        } else {
+          fetchPurchaseDescriptionBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x20000000);
         return this;
       }
 
@@ -8484,6 +8546,14 @@ public final class Server {
         } else {
           result.loginAsAdmin_ = loginAsAdminBuilder_.build();
         }
+        if (((from_bitField0_ & 0x20000000) == 0x20000000)) {
+          to_bitField0_ |= 0x20000000;
+        }
+        if (fetchPurchaseDescriptionBuilder_ == null) {
+          result.fetchPurchaseDescription_ = fetchPurchaseDescription_;
+        } else {
+          result.fetchPurchaseDescription_ = fetchPurchaseDescriptionBuilder_.build();
+        }
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -8586,6 +8656,9 @@ public final class Server {
         }
         if (other.hasLoginAsAdmin()) {
           mergeLoginAsAdmin(other.getLoginAsAdmin());
+        }
+        if (other.hasFetchPurchaseDescription()) {
+          mergeFetchPurchaseDescription(other.getFetchPurchaseDescription());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -12026,6 +12099,122 @@ public final class Server {
         return loginAsAdminBuilder_;
       }
 
+      private com.blitzhere.BlitzMessage.Payments.FetchPurchaseDescription fetchPurchaseDescription_ = com.blitzhere.BlitzMessage.Payments.FetchPurchaseDescription.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          com.blitzhere.BlitzMessage.Payments.FetchPurchaseDescription, com.blitzhere.BlitzMessage.Payments.FetchPurchaseDescription.Builder, com.blitzhere.BlitzMessage.Payments.FetchPurchaseDescriptionOrBuilder> fetchPurchaseDescriptionBuilder_;
+      /**
+       * <code>optional .BlitzMessage.FetchPurchaseDescription fetchPurchaseDescription = 30;</code>
+       */
+      public boolean hasFetchPurchaseDescription() {
+        return ((bitField0_ & 0x20000000) == 0x20000000);
+      }
+      /**
+       * <code>optional .BlitzMessage.FetchPurchaseDescription fetchPurchaseDescription = 30;</code>
+       */
+      public com.blitzhere.BlitzMessage.Payments.FetchPurchaseDescription getFetchPurchaseDescription() {
+        if (fetchPurchaseDescriptionBuilder_ == null) {
+          return fetchPurchaseDescription_;
+        } else {
+          return fetchPurchaseDescriptionBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .BlitzMessage.FetchPurchaseDescription fetchPurchaseDescription = 30;</code>
+       */
+      public Builder setFetchPurchaseDescription(com.blitzhere.BlitzMessage.Payments.FetchPurchaseDescription value) {
+        if (fetchPurchaseDescriptionBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          fetchPurchaseDescription_ = value;
+          onChanged();
+        } else {
+          fetchPurchaseDescriptionBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x20000000;
+        return this;
+      }
+      /**
+       * <code>optional .BlitzMessage.FetchPurchaseDescription fetchPurchaseDescription = 30;</code>
+       */
+      public Builder setFetchPurchaseDescription(
+          com.blitzhere.BlitzMessage.Payments.FetchPurchaseDescription.Builder builderForValue) {
+        if (fetchPurchaseDescriptionBuilder_ == null) {
+          fetchPurchaseDescription_ = builderForValue.build();
+          onChanged();
+        } else {
+          fetchPurchaseDescriptionBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x20000000;
+        return this;
+      }
+      /**
+       * <code>optional .BlitzMessage.FetchPurchaseDescription fetchPurchaseDescription = 30;</code>
+       */
+      public Builder mergeFetchPurchaseDescription(com.blitzhere.BlitzMessage.Payments.FetchPurchaseDescription value) {
+        if (fetchPurchaseDescriptionBuilder_ == null) {
+          if (((bitField0_ & 0x20000000) == 0x20000000) &&
+              fetchPurchaseDescription_ != com.blitzhere.BlitzMessage.Payments.FetchPurchaseDescription.getDefaultInstance()) {
+            fetchPurchaseDescription_ =
+              com.blitzhere.BlitzMessage.Payments.FetchPurchaseDescription.newBuilder(fetchPurchaseDescription_).mergeFrom(value).buildPartial();
+          } else {
+            fetchPurchaseDescription_ = value;
+          }
+          onChanged();
+        } else {
+          fetchPurchaseDescriptionBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x20000000;
+        return this;
+      }
+      /**
+       * <code>optional .BlitzMessage.FetchPurchaseDescription fetchPurchaseDescription = 30;</code>
+       */
+      public Builder clearFetchPurchaseDescription() {
+        if (fetchPurchaseDescriptionBuilder_ == null) {
+          fetchPurchaseDescription_ = com.blitzhere.BlitzMessage.Payments.FetchPurchaseDescription.getDefaultInstance();
+          onChanged();
+        } else {
+          fetchPurchaseDescriptionBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x20000000);
+        return this;
+      }
+      /**
+       * <code>optional .BlitzMessage.FetchPurchaseDescription fetchPurchaseDescription = 30;</code>
+       */
+      public com.blitzhere.BlitzMessage.Payments.FetchPurchaseDescription.Builder getFetchPurchaseDescriptionBuilder() {
+        bitField0_ |= 0x20000000;
+        onChanged();
+        return getFetchPurchaseDescriptionFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .BlitzMessage.FetchPurchaseDescription fetchPurchaseDescription = 30;</code>
+       */
+      public com.blitzhere.BlitzMessage.Payments.FetchPurchaseDescriptionOrBuilder getFetchPurchaseDescriptionOrBuilder() {
+        if (fetchPurchaseDescriptionBuilder_ != null) {
+          return fetchPurchaseDescriptionBuilder_.getMessageOrBuilder();
+        } else {
+          return fetchPurchaseDescription_;
+        }
+      }
+      /**
+       * <code>optional .BlitzMessage.FetchPurchaseDescription fetchPurchaseDescription = 30;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          com.blitzhere.BlitzMessage.Payments.FetchPurchaseDescription, com.blitzhere.BlitzMessage.Payments.FetchPurchaseDescription.Builder, com.blitzhere.BlitzMessage.Payments.FetchPurchaseDescriptionOrBuilder> 
+          getFetchPurchaseDescriptionFieldBuilder() {
+        if (fetchPurchaseDescriptionBuilder_ == null) {
+          fetchPurchaseDescriptionBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.blitzhere.BlitzMessage.Payments.FetchPurchaseDescription, com.blitzhere.BlitzMessage.Payments.FetchPurchaseDescription.Builder, com.blitzhere.BlitzMessage.Payments.FetchPurchaseDescriptionOrBuilder>(
+                  getFetchPurchaseDescription(),
+                  getParentForChildren(),
+                  isClean());
+          fetchPurchaseDescription_ = null;
+        }
+        return fetchPurchaseDescriptionBuilder_;
+      }
+
       // @@protoc_insertion_point(builder_scope:BlitzMessage.RequestType)
     }
 
@@ -13018,6 +13207,19 @@ public final class Server {
      * <code>optional .BlitzMessage.LoginAsAdmin loginAsAdmin = 24;</code>
      */
     com.blitzhere.BlitzMessage.Server.LoginAsAdminOrBuilder getLoginAsAdminOrBuilder();
+
+    /**
+     * <code>optional .BlitzMessage.FetchPurchaseDescription fetchPurchaseDescription = 25;</code>
+     */
+    boolean hasFetchPurchaseDescription();
+    /**
+     * <code>optional .BlitzMessage.FetchPurchaseDescription fetchPurchaseDescription = 25;</code>
+     */
+    com.blitzhere.BlitzMessage.Payments.FetchPurchaseDescription getFetchPurchaseDescription();
+    /**
+     * <code>optional .BlitzMessage.FetchPurchaseDescription fetchPurchaseDescription = 25;</code>
+     */
+    com.blitzhere.BlitzMessage.Payments.FetchPurchaseDescriptionOrBuilder getFetchPurchaseDescriptionOrBuilder();
   }
   /**
    * Protobuf type {@code BlitzMessage.ResponseType}
@@ -13355,6 +13557,19 @@ public final class Server {
                 loginAsAdmin_ = subBuilder.buildPartial();
               }
               bitField0_ |= 0x00200000;
+              break;
+            }
+            case 202: {
+              com.blitzhere.BlitzMessage.Payments.FetchPurchaseDescription.Builder subBuilder = null;
+              if (((bitField0_ & 0x00400000) == 0x00400000)) {
+                subBuilder = fetchPurchaseDescription_.toBuilder();
+              }
+              fetchPurchaseDescription_ = input.readMessage(com.blitzhere.BlitzMessage.Payments.FetchPurchaseDescription.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(fetchPurchaseDescription_);
+                fetchPurchaseDescription_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00400000;
               break;
             }
           }
@@ -13874,6 +14089,27 @@ public final class Server {
       return loginAsAdmin_;
     }
 
+    public static final int FETCHPURCHASEDESCRIPTION_FIELD_NUMBER = 25;
+    private com.blitzhere.BlitzMessage.Payments.FetchPurchaseDescription fetchPurchaseDescription_;
+    /**
+     * <code>optional .BlitzMessage.FetchPurchaseDescription fetchPurchaseDescription = 25;</code>
+     */
+    public boolean hasFetchPurchaseDescription() {
+      return ((bitField0_ & 0x00400000) == 0x00400000);
+    }
+    /**
+     * <code>optional .BlitzMessage.FetchPurchaseDescription fetchPurchaseDescription = 25;</code>
+     */
+    public com.blitzhere.BlitzMessage.Payments.FetchPurchaseDescription getFetchPurchaseDescription() {
+      return fetchPurchaseDescription_;
+    }
+    /**
+     * <code>optional .BlitzMessage.FetchPurchaseDescription fetchPurchaseDescription = 25;</code>
+     */
+    public com.blitzhere.BlitzMessage.Payments.FetchPurchaseDescriptionOrBuilder getFetchPurchaseDescriptionOrBuilder() {
+      return fetchPurchaseDescription_;
+    }
+
     private void initFields() {
       sessionResponse_ = com.blitzhere.BlitzMessage.Server.SessionResponse.getDefaultInstance();
       userEventBatchResponse_ = com.blitzhere.BlitzMessage.UserEvents.UserEventBatchResponse.getDefaultInstance();
@@ -13897,6 +14133,7 @@ public final class Server {
       editProfile_ = com.blitzhere.BlitzMessage.UserProfiles.EditProfile.getDefaultInstance();
       fetchConversationGroups_ = com.blitzhere.BlitzMessage.UserMessages.FetchConversationGroups.getDefaultInstance();
       loginAsAdmin_ = com.blitzhere.BlitzMessage.Server.LoginAsAdmin.getDefaultInstance();
+      fetchPurchaseDescription_ = com.blitzhere.BlitzMessage.Payments.FetchPurchaseDescription.getDefaultInstance();
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -14031,6 +14268,9 @@ public final class Server {
       if (((bitField0_ & 0x00200000) == 0x00200000)) {
         output.writeMessage(24, loginAsAdmin_);
       }
+      if (((bitField0_ & 0x00400000) == 0x00400000)) {
+        output.writeMessage(25, fetchPurchaseDescription_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -14127,6 +14367,10 @@ public final class Server {
       if (((bitField0_ & 0x00200000) == 0x00200000)) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(24, loginAsAdmin_);
+      }
+      if (((bitField0_ & 0x00400000) == 0x00400000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(25, fetchPurchaseDescription_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -14259,6 +14503,7 @@ public final class Server {
           getEditProfileFieldBuilder();
           getFetchConversationGroupsFieldBuilder();
           getLoginAsAdminFieldBuilder();
+          getFetchPurchaseDescriptionFieldBuilder();
         }
       }
       private static Builder create() {
@@ -14399,6 +14644,12 @@ public final class Server {
           loginAsAdminBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00200000);
+        if (fetchPurchaseDescriptionBuilder_ == null) {
+          fetchPurchaseDescription_ = com.blitzhere.BlitzMessage.Payments.FetchPurchaseDescription.getDefaultInstance();
+        } else {
+          fetchPurchaseDescriptionBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00400000);
         return this;
       }
 
@@ -14603,6 +14854,14 @@ public final class Server {
         } else {
           result.loginAsAdmin_ = loginAsAdminBuilder_.build();
         }
+        if (((from_bitField0_ & 0x00400000) == 0x00400000)) {
+          to_bitField0_ |= 0x00400000;
+        }
+        if (fetchPurchaseDescriptionBuilder_ == null) {
+          result.fetchPurchaseDescription_ = fetchPurchaseDescription_;
+        } else {
+          result.fetchPurchaseDescription_ = fetchPurchaseDescriptionBuilder_.build();
+        }
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -14684,6 +14943,9 @@ public final class Server {
         }
         if (other.hasLoginAsAdmin()) {
           mergeLoginAsAdmin(other.getLoginAsAdmin());
+        }
+        if (other.hasFetchPurchaseDescription()) {
+          mergeFetchPurchaseDescription(other.getFetchPurchaseDescription());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -17363,6 +17625,122 @@ public final class Server {
         return loginAsAdminBuilder_;
       }
 
+      private com.blitzhere.BlitzMessage.Payments.FetchPurchaseDescription fetchPurchaseDescription_ = com.blitzhere.BlitzMessage.Payments.FetchPurchaseDescription.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          com.blitzhere.BlitzMessage.Payments.FetchPurchaseDescription, com.blitzhere.BlitzMessage.Payments.FetchPurchaseDescription.Builder, com.blitzhere.BlitzMessage.Payments.FetchPurchaseDescriptionOrBuilder> fetchPurchaseDescriptionBuilder_;
+      /**
+       * <code>optional .BlitzMessage.FetchPurchaseDescription fetchPurchaseDescription = 25;</code>
+       */
+      public boolean hasFetchPurchaseDescription() {
+        return ((bitField0_ & 0x00400000) == 0x00400000);
+      }
+      /**
+       * <code>optional .BlitzMessage.FetchPurchaseDescription fetchPurchaseDescription = 25;</code>
+       */
+      public com.blitzhere.BlitzMessage.Payments.FetchPurchaseDescription getFetchPurchaseDescription() {
+        if (fetchPurchaseDescriptionBuilder_ == null) {
+          return fetchPurchaseDescription_;
+        } else {
+          return fetchPurchaseDescriptionBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .BlitzMessage.FetchPurchaseDescription fetchPurchaseDescription = 25;</code>
+       */
+      public Builder setFetchPurchaseDescription(com.blitzhere.BlitzMessage.Payments.FetchPurchaseDescription value) {
+        if (fetchPurchaseDescriptionBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          fetchPurchaseDescription_ = value;
+          onChanged();
+        } else {
+          fetchPurchaseDescriptionBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00400000;
+        return this;
+      }
+      /**
+       * <code>optional .BlitzMessage.FetchPurchaseDescription fetchPurchaseDescription = 25;</code>
+       */
+      public Builder setFetchPurchaseDescription(
+          com.blitzhere.BlitzMessage.Payments.FetchPurchaseDescription.Builder builderForValue) {
+        if (fetchPurchaseDescriptionBuilder_ == null) {
+          fetchPurchaseDescription_ = builderForValue.build();
+          onChanged();
+        } else {
+          fetchPurchaseDescriptionBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00400000;
+        return this;
+      }
+      /**
+       * <code>optional .BlitzMessage.FetchPurchaseDescription fetchPurchaseDescription = 25;</code>
+       */
+      public Builder mergeFetchPurchaseDescription(com.blitzhere.BlitzMessage.Payments.FetchPurchaseDescription value) {
+        if (fetchPurchaseDescriptionBuilder_ == null) {
+          if (((bitField0_ & 0x00400000) == 0x00400000) &&
+              fetchPurchaseDescription_ != com.blitzhere.BlitzMessage.Payments.FetchPurchaseDescription.getDefaultInstance()) {
+            fetchPurchaseDescription_ =
+              com.blitzhere.BlitzMessage.Payments.FetchPurchaseDescription.newBuilder(fetchPurchaseDescription_).mergeFrom(value).buildPartial();
+          } else {
+            fetchPurchaseDescription_ = value;
+          }
+          onChanged();
+        } else {
+          fetchPurchaseDescriptionBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00400000;
+        return this;
+      }
+      /**
+       * <code>optional .BlitzMessage.FetchPurchaseDescription fetchPurchaseDescription = 25;</code>
+       */
+      public Builder clearFetchPurchaseDescription() {
+        if (fetchPurchaseDescriptionBuilder_ == null) {
+          fetchPurchaseDescription_ = com.blitzhere.BlitzMessage.Payments.FetchPurchaseDescription.getDefaultInstance();
+          onChanged();
+        } else {
+          fetchPurchaseDescriptionBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00400000);
+        return this;
+      }
+      /**
+       * <code>optional .BlitzMessage.FetchPurchaseDescription fetchPurchaseDescription = 25;</code>
+       */
+      public com.blitzhere.BlitzMessage.Payments.FetchPurchaseDescription.Builder getFetchPurchaseDescriptionBuilder() {
+        bitField0_ |= 0x00400000;
+        onChanged();
+        return getFetchPurchaseDescriptionFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .BlitzMessage.FetchPurchaseDescription fetchPurchaseDescription = 25;</code>
+       */
+      public com.blitzhere.BlitzMessage.Payments.FetchPurchaseDescriptionOrBuilder getFetchPurchaseDescriptionOrBuilder() {
+        if (fetchPurchaseDescriptionBuilder_ != null) {
+          return fetchPurchaseDescriptionBuilder_.getMessageOrBuilder();
+        } else {
+          return fetchPurchaseDescription_;
+        }
+      }
+      /**
+       * <code>optional .BlitzMessage.FetchPurchaseDescription fetchPurchaseDescription = 25;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          com.blitzhere.BlitzMessage.Payments.FetchPurchaseDescription, com.blitzhere.BlitzMessage.Payments.FetchPurchaseDescription.Builder, com.blitzhere.BlitzMessage.Payments.FetchPurchaseDescriptionOrBuilder> 
+          getFetchPurchaseDescriptionFieldBuilder() {
+        if (fetchPurchaseDescriptionBuilder_ == null) {
+          fetchPurchaseDescriptionBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.blitzhere.BlitzMessage.Payments.FetchPurchaseDescription, com.blitzhere.BlitzMessage.Payments.FetchPurchaseDescription.Builder, com.blitzhere.BlitzMessage.Payments.FetchPurchaseDescriptionOrBuilder>(
+                  getFetchPurchaseDescription(),
+                  getParentForChildren(),
+                  isClean());
+          fetchPurchaseDescription_ = null;
+        }
+        return fetchPurchaseDescriptionBuilder_;
+      }
+
       // @@protoc_insertion_point(builder_scope:BlitzMessage.ResponseType)
     }
 
@@ -18232,7 +18610,7 @@ public final class Server {
       "zMessage.UserProfile\"T\n\013PushConnect\022\016\n\006u" +
       "serID\030\001 \001(\t\0225\n\024lastMessageTimestamp\030\002 \001(" +
       "\0132\027.BlitzMessage.Timestamp\"\020\n\016PushDiscon" +
-      "nect\"\210\r\n\013RequestType\0224\n\016sessionRequest\030\001" +
+      "nect\"\322\r\n\013RequestType\0224\n\016sessionRequest\030\001" +
       " \001(\0132\034.BlitzMessage.SessionRequest\0224\n\016us" +
       "erEventBatch\030\002 \001(\0132\034.BlitzMessage.UserEv" +
       "entBatch\022:\n\021userProfileUpdate\030\003 \001(\0132\037.Bl" +
@@ -18273,52 +18651,56 @@ public final class Server {
       "file\030\033 \001(\0132\031.BlitzMessage.EditProfile\022F\n" +
       "\027fetchConversationGroups\030\034 \001(\0132%.BlitzMe" +
       "ssage.FetchConversationGroups\0220\n\014loginAs" +
-      "Admin\030\035 \001(\0132\032.BlitzMessage.LoginAsAdmin\"" +
-      "U\n\rServerRequest\022\024\n\014sessionToken\030\001 \001(\t\022." +
-      "\n\013requestType\030\002 \001(\0132\031.BlitzMessage.Reque" +
-      "stType\"\217\n\n\014ResponseType\0226\n\017sessionRespon",
-      "se\030\001 \001(\0132\035.BlitzMessage.SessionResponse\022" +
-      "D\n\026userEventBatchResponse\030\002 \001(\0132$.BlitzM" +
-      "essage.UserEventBatchResponse\022:\n\021userPro" +
-      "fileUpdate\030\003 \001(\0132\037.BlitzMessage.UserProf" +
-      "ileUpdate\0228\n\020userProfileQuery\030\004 \001(\0132\036.Bl" +
-      "itzMessage.UserProfileQuery\022>\n\023confirmat" +
-      "ionRequest\030\005 \001(\0132!.BlitzMessage.Confirma" +
-      "tionRequest\022:\n\021userMessageUpdate\030\006 \001(\0132\037" +
-      ".BlitzMessage.UserMessageUpdate\0220\n\014debug" +
-      "Message\030\007 \001(\0132\032.BlitzMessage.DebugMessag",
-      "e\0223\n\020imageUploadReply\030\010 \001(\0132\031.BlitzMessa" +
-      "ge.ImageUpload\0226\n\024acceptInviteResponse\030\t" +
-      " \001(\0132\030.BlitzMessage.UserInvite\022@\n\024autoco" +
-      "mpleteResponse\030\014 \001(\0132\".BlitzMessage.Auto" +
-      "completeResponse\022<\n\022userSearchResponse\030\r" +
-      " \001(\0132 .BlitzMessage.UserSearchResponse\022@" +
-      "\n\024conversationResponse\030\016 \001(\0132\".BlitzMess" +
-      "age.ConversationResponse\022<\n\022fetchConvers" +
-      "ations\030\017 \001(\0132 .BlitzMessage.FetchConvers" +
-      "ations\0220\n\014userCardInfo\030\020 \001(\0132\032.BlitzMess",
-      "age.UserCardInfo\022,\n\016chargeResponse\030\021 \001(\013" +
-      "2\024.BlitzMessage.Charge\0222\n\016friendResponse" +
-      "\030\022 \001(\0132\032.BlitzMessage.FriendUpdate\0228\n\020se" +
-      "archCategories\030\023 \001(\0132\036.BlitzMessage.Sear" +
-      "chCategories\0228\n\020feedPostResponse\030\024 \001(\0132\036" +
-      ".BlitzMessage.FeedPostResponse\022>\n\023purcha" +
-      "seDescription\030\025 \001(\0132!.BlitzMessage.Purch" +
-      "aseDescription\022.\n\013editProfile\030\026 \001(\0132\031.Bl" +
-      "itzMessage.EditProfile\022F\n\027fetchConversat" +
-      "ionGroups\030\027 \001(\0132%.BlitzMessage.FetchConv",
-      "ersationGroups\0220\n\014loginAsAdmin\030\030 \001(\0132\032.B" +
-      "litzMessage.LoginAsAdmin\"\215\001\n\016ServerRespo" +
-      "nse\0220\n\014responseCode\030\001 \001(\0162\032.BlitzMessage" +
-      ".ResponseCode\022\027\n\017responseMessage\030\002 \001(\t\0220" +
-      "\n\014responseType\030\003 \001(\0132\032.BlitzMessage.Resp" +
-      "onseType*\302\001\n\014ResponseCode\022\r\n\tRCSuccess\020\001" +
-      "\022\022\n\016RCInputCorrupt\020\002\022\022\n\016RCInputInvalid\020\003" +
-      "\022\023\n\017RCServerWarning\020\004\022\021\n\rRCServerError\020\005" +
-      "\022\023\n\017RCNotAuthorized\020\006\022\022\n\016RCClientTooOld\020" +
-      "\007\022\022\n\016RCPaymentError\020\010\022\026\n\022RCPurchaseRequi",
-      "red\020\tB/\n\032com.blitzhere.BlitzMessage\210\001\001\322>" +
-      "\002\n\000\322>\003\022\001B\322>\002\030\001"
+      "Admin\030\035 \001(\0132\032.BlitzMessage.LoginAsAdmin\022" +
+      "H\n\030fetchPurchaseDescription\030\036 \001(\0132&.Blit" +
+      "zMessage.FetchPurchaseDescription\"U\n\rSer" +
+      "verRequest\022\024\n\014sessionToken\030\001 \001(\t\022.\n\013requ",
+      "estType\030\002 \001(\0132\031.BlitzMessage.RequestType" +
+      "\"\331\n\n\014ResponseType\0226\n\017sessionResponse\030\001 \001" +
+      "(\0132\035.BlitzMessage.SessionResponse\022D\n\026use" +
+      "rEventBatchResponse\030\002 \001(\0132$.BlitzMessage" +
+      ".UserEventBatchResponse\022:\n\021userProfileUp" +
+      "date\030\003 \001(\0132\037.BlitzMessage.UserProfileUpd" +
+      "ate\0228\n\020userProfileQuery\030\004 \001(\0132\036.BlitzMes" +
+      "sage.UserProfileQuery\022>\n\023confirmationReq" +
+      "uest\030\005 \001(\0132!.BlitzMessage.ConfirmationRe" +
+      "quest\022:\n\021userMessageUpdate\030\006 \001(\0132\037.Blitz",
+      "Message.UserMessageUpdate\0220\n\014debugMessag" +
+      "e\030\007 \001(\0132\032.BlitzMessage.DebugMessage\0223\n\020i" +
+      "mageUploadReply\030\010 \001(\0132\031.BlitzMessage.Ima" +
+      "geUpload\0226\n\024acceptInviteResponse\030\t \001(\0132\030" +
+      ".BlitzMessage.UserInvite\022@\n\024autocomplete" +
+      "Response\030\014 \001(\0132\".BlitzMessage.Autocomple" +
+      "teResponse\022<\n\022userSearchResponse\030\r \001(\0132 " +
+      ".BlitzMessage.UserSearchResponse\022@\n\024conv" +
+      "ersationResponse\030\016 \001(\0132\".BlitzMessage.Co" +
+      "nversationResponse\022<\n\022fetchConversations",
+      "\030\017 \001(\0132 .BlitzMessage.FetchConversations" +
+      "\0220\n\014userCardInfo\030\020 \001(\0132\032.BlitzMessage.Us" +
+      "erCardInfo\022,\n\016chargeResponse\030\021 \001(\0132\024.Bli" +
+      "tzMessage.Charge\0222\n\016friendResponse\030\022 \001(\013" +
+      "2\032.BlitzMessage.FriendUpdate\0228\n\020searchCa" +
+      "tegories\030\023 \001(\0132\036.BlitzMessage.SearchCate" +
+      "gories\0228\n\020feedPostResponse\030\024 \001(\0132\036.Blitz" +
+      "Message.FeedPostResponse\022>\n\023purchaseDesc" +
+      "ription\030\025 \001(\0132!.BlitzMessage.PurchaseDes" +
+      "cription\022.\n\013editProfile\030\026 \001(\0132\031.BlitzMes",
+      "sage.EditProfile\022F\n\027fetchConversationGro" +
+      "ups\030\027 \001(\0132%.BlitzMessage.FetchConversati" +
+      "onGroups\0220\n\014loginAsAdmin\030\030 \001(\0132\032.BlitzMe" +
+      "ssage.LoginAsAdmin\022H\n\030fetchPurchaseDescr" +
+      "iption\030\031 \001(\0132&.BlitzMessage.FetchPurchas" +
+      "eDescription\"\215\001\n\016ServerResponse\0220\n\014respo" +
+      "nseCode\030\001 \001(\0162\032.BlitzMessage.ResponseCod" +
+      "e\022\027\n\017responseMessage\030\002 \001(\t\0220\n\014responseTy" +
+      "pe\030\003 \001(\0132\032.BlitzMessage.ResponseType*\302\001\n" +
+      "\014ResponseCode\022\r\n\tRCSuccess\020\001\022\022\n\016RCInputC",
+      "orrupt\020\002\022\022\n\016RCInputInvalid\020\003\022\023\n\017RCServer" +
+      "Warning\020\004\022\021\n\rRCServerError\020\005\022\023\n\017RCNotAut" +
+      "horized\020\006\022\022\n\016RCClientTooOld\020\007\022\022\n\016RCPayme" +
+      "ntError\020\010\022\026\n\022RCPurchaseRequired\020\tB/\n\032com" +
+      ".blitzhere.BlitzMessage\210\001\001\322>\002\n\000\322>\003\022\001B\322>\002" +
+      "\030\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -18395,7 +18777,7 @@ public final class Server {
     internal_static_BlitzMessage_RequestType_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_BlitzMessage_RequestType_descriptor,
-        new java.lang.String[] { "SessionRequest", "UserEventBatch", "UserProfileUpdate", "UserProfileQuery", "ConfirmationRequest", "MessageSendRequestDeprecated", "MessageFetchRequest", "DebugMessage", "ImageUpload", "AcceptInviteRequest", "FeedPostFetchRequest", "FeedPostUpdateRequest", "AutocompleteRequest", "EntityTagUpdate", "UserSearchRequest", "PushConnect", "PushDisconnect", "ConversationRequest", "FetchConversations", "UserReview", "UpdateConversationStatus", "UserCardInfo", "ChargeRequest", "FriendRequest", "SearchCategories", "SendMessage", "EditProfile", "FetchConversationGroups", "LoginAsAdmin", });
+        new java.lang.String[] { "SessionRequest", "UserEventBatch", "UserProfileUpdate", "UserProfileQuery", "ConfirmationRequest", "MessageSendRequestDeprecated", "MessageFetchRequest", "DebugMessage", "ImageUpload", "AcceptInviteRequest", "FeedPostFetchRequest", "FeedPostUpdateRequest", "AutocompleteRequest", "EntityTagUpdate", "UserSearchRequest", "PushConnect", "PushDisconnect", "ConversationRequest", "FetchConversations", "UserReview", "UpdateConversationStatus", "UserCardInfo", "ChargeRequest", "FriendRequest", "SearchCategories", "SendMessage", "EditProfile", "FetchConversationGroups", "LoginAsAdmin", "FetchPurchaseDescription", });
     internal_static_BlitzMessage_ServerRequest_descriptor =
       getDescriptor().getMessageTypes().get(9);
     internal_static_BlitzMessage_ServerRequest_fieldAccessorTable = new
@@ -18407,7 +18789,7 @@ public final class Server {
     internal_static_BlitzMessage_ResponseType_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_BlitzMessage_ResponseType_descriptor,
-        new java.lang.String[] { "SessionResponse", "UserEventBatchResponse", "UserProfileUpdate", "UserProfileQuery", "ConfirmationRequest", "UserMessageUpdate", "DebugMessage", "ImageUploadReply", "AcceptInviteResponse", "AutocompleteResponse", "UserSearchResponse", "ConversationResponse", "FetchConversations", "UserCardInfo", "ChargeResponse", "FriendResponse", "SearchCategories", "FeedPostResponse", "PurchaseDescription", "EditProfile", "FetchConversationGroups", "LoginAsAdmin", });
+        new java.lang.String[] { "SessionResponse", "UserEventBatchResponse", "UserProfileUpdate", "UserProfileQuery", "ConfirmationRequest", "UserMessageUpdate", "DebugMessage", "ImageUploadReply", "AcceptInviteResponse", "AutocompleteResponse", "UserSearchResponse", "ConversationResponse", "FetchConversations", "UserCardInfo", "ChargeResponse", "FriendResponse", "SearchCategories", "FeedPostResponse", "PurchaseDescription", "EditProfile", "FetchConversationGroups", "LoginAsAdmin", "FetchPurchaseDescription", });
     internal_static_BlitzMessage_ServerResponse_descriptor =
       getDescriptor().getMessageTypes().get(11);
     internal_static_BlitzMessage_ServerResponse_fieldAccessorTable = new

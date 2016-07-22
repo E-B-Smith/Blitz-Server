@@ -2482,6 +2482,7 @@ static BPushDisconnect* defaultBPushDisconnectInstance = nil;
 @property (strong) BEditProfile* editProfile;
 @property (strong) BFetchConversationGroups* fetchConversationGroups;
 @property (strong) BLoginAsAdmin* loginAsAdmin;
+@property (strong) BFetchPurchaseDescription* fetchPurchaseDescription;
 @end
 
 @implementation BRequestType
@@ -2689,6 +2690,13 @@ static BPushDisconnect* defaultBPushDisconnectInstance = nil;
   hasLoginAsAdmin_ = !!_value_;
 }
 @synthesize loginAsAdmin;
+- (BOOL) hasFetchPurchaseDescription {
+  return !!hasFetchPurchaseDescription_;
+}
+- (void) setHasFetchPurchaseDescription:(BOOL) _value_ {
+  hasFetchPurchaseDescription_ = !!_value_;
+}
+@synthesize fetchPurchaseDescription;
 - (instancetype) init {
   if ((self = [super init])) {
     self.sessionRequest = [BSessionRequest defaultInstance];
@@ -2720,6 +2728,7 @@ static BPushDisconnect* defaultBPushDisconnectInstance = nil;
     self.editProfile = [BEditProfile defaultInstance];
     self.fetchConversationGroups = [BFetchConversationGroups defaultInstance];
     self.loginAsAdmin = [BLoginAsAdmin defaultInstance];
+    self.fetchPurchaseDescription = [BFetchPurchaseDescription defaultInstance];
   }
   return self;
 }
@@ -2866,6 +2875,9 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   if (self.hasLoginAsAdmin) {
     [output writeMessage:29 value:self.loginAsAdmin];
   }
+  if (self.hasFetchPurchaseDescription) {
+    [output writeMessage:30 value:self.fetchPurchaseDescription];
+  }
   [self.unknownFields writeToCodedOutputStream:output];
 }
 - (SInt32) serializedSize {
@@ -2961,6 +2973,9 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   }
   if (self.hasLoginAsAdmin) {
     size_ += computeMessageSize(29, self.loginAsAdmin);
+  }
+  if (self.hasFetchPurchaseDescription) {
+    size_ += computeMessageSize(30, self.fetchPurchaseDescription);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -3171,6 +3186,12 @@ static BRequestType* defaultBRequestTypeInstance = nil;
                          withIndent:[NSString stringWithFormat:@"%@  ", indent]];
     [output appendFormat:@"%@}\n", indent];
   }
+  if (self.hasFetchPurchaseDescription) {
+    [output appendFormat:@"%@%@ {\n", indent, @"fetchPurchaseDescription"];
+    [self.fetchPurchaseDescription writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (void) storeInDictionary:(NSMutableDictionary *)dictionary {
@@ -3319,6 +3340,11 @@ static BRequestType* defaultBRequestTypeInstance = nil;
    [self.loginAsAdmin storeInDictionary:messageDictionary];
    [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"loginAsAdmin"];
   }
+  if (self.hasFetchPurchaseDescription) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.fetchPurchaseDescription storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"fetchPurchaseDescription"];
+  }
   [self.unknownFields storeInDictionary:dictionary];
 }
 - (BOOL) isEqual:(id)other {
@@ -3388,6 +3414,8 @@ static BRequestType* defaultBRequestTypeInstance = nil;
       (!self.hasFetchConversationGroups || [self.fetchConversationGroups isEqual:otherMessage.fetchConversationGroups]) &&
       self.hasLoginAsAdmin == otherMessage.hasLoginAsAdmin &&
       (!self.hasLoginAsAdmin || [self.loginAsAdmin isEqual:otherMessage.loginAsAdmin]) &&
+      self.hasFetchPurchaseDescription == otherMessage.hasFetchPurchaseDescription &&
+      (!self.hasFetchPurchaseDescription || [self.fetchPurchaseDescription isEqual:otherMessage.fetchPurchaseDescription]) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
@@ -3478,6 +3506,9 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   }
   if (self.hasLoginAsAdmin) {
     hashCode = hashCode * 31 + [self.loginAsAdmin hash];
+  }
+  if (self.hasFetchPurchaseDescription) {
+    hashCode = hashCode * 31 + [self.fetchPurchaseDescription hash];
   }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
@@ -3608,6 +3639,9 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   }
   if (other.hasLoginAsAdmin) {
     [self mergeLoginAsAdmin:other.loginAsAdmin];
+  }
+  if (other.hasFetchPurchaseDescription) {
+    [self mergeFetchPurchaseDescription:other.fetchPurchaseDescription];
   }
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -3889,6 +3923,15 @@ static BRequestType* defaultBRequestTypeInstance = nil;
         }
         [input readMessage:subBuilder extensionRegistry:extensionRegistry];
         [self setLoginAsAdmin:[subBuilder buildPartial]];
+        break;
+      }
+      case 242: {
+        BFetchPurchaseDescriptionBuilder* subBuilder = [BFetchPurchaseDescription builder];
+        if (self.hasFetchPurchaseDescription) {
+          [subBuilder mergeFrom:self.fetchPurchaseDescription];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setFetchPurchaseDescription:[subBuilder buildPartial]];
         break;
       }
     }
@@ -4764,6 +4807,36 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   resultRequestType.loginAsAdmin = [BLoginAsAdmin defaultInstance];
   return self;
 }
+- (BOOL) hasFetchPurchaseDescription {
+  return resultRequestType.hasFetchPurchaseDescription;
+}
+- (BFetchPurchaseDescription*) fetchPurchaseDescription {
+  return resultRequestType.fetchPurchaseDescription;
+}
+- (BRequestTypeBuilder*) setFetchPurchaseDescription:(BFetchPurchaseDescription*) value {
+  resultRequestType.hasFetchPurchaseDescription = YES;
+  resultRequestType.fetchPurchaseDescription = value;
+  return self;
+}
+- (BRequestTypeBuilder*) setFetchPurchaseDescriptionBuilder:(BFetchPurchaseDescriptionBuilder*) builderForValue {
+  return [self setFetchPurchaseDescription:[builderForValue build]];
+}
+- (BRequestTypeBuilder*) mergeFetchPurchaseDescription:(BFetchPurchaseDescription*) value {
+  if (resultRequestType.hasFetchPurchaseDescription &&
+      resultRequestType.fetchPurchaseDescription != [BFetchPurchaseDescription defaultInstance]) {
+    resultRequestType.fetchPurchaseDescription =
+      [[[BFetchPurchaseDescription builderWithPrototype:resultRequestType.fetchPurchaseDescription] mergeFrom:value] buildPartial];
+  } else {
+    resultRequestType.fetchPurchaseDescription = value;
+  }
+  resultRequestType.hasFetchPurchaseDescription = YES;
+  return self;
+}
+- (BRequestTypeBuilder*) clearFetchPurchaseDescription {
+  resultRequestType.hasFetchPurchaseDescription = NO;
+  resultRequestType.fetchPurchaseDescription = [BFetchPurchaseDescription defaultInstance];
+  return self;
+}
 @end
 
 @interface BServerRequest ()
@@ -5073,6 +5146,7 @@ static BServerRequest* defaultBServerRequestInstance = nil;
 @property (strong) BEditProfile* editProfile;
 @property (strong) BFetchConversationGroups* fetchConversationGroups;
 @property (strong) BLoginAsAdmin* loginAsAdmin;
+@property (strong) BFetchPurchaseDescription* fetchPurchaseDescription;
 @end
 
 @implementation BResponseType
@@ -5231,6 +5305,13 @@ static BServerRequest* defaultBServerRequestInstance = nil;
   hasLoginAsAdmin_ = !!_value_;
 }
 @synthesize loginAsAdmin;
+- (BOOL) hasFetchPurchaseDescription {
+  return !!hasFetchPurchaseDescription_;
+}
+- (void) setHasFetchPurchaseDescription:(BOOL) _value_ {
+  hasFetchPurchaseDescription_ = !!_value_;
+}
+@synthesize fetchPurchaseDescription;
 - (instancetype) init {
   if ((self = [super init])) {
     self.sessionResponse = [BSessionResponse defaultInstance];
@@ -5255,6 +5336,7 @@ static BServerRequest* defaultBServerRequestInstance = nil;
     self.editProfile = [BEditProfile defaultInstance];
     self.fetchConversationGroups = [BFetchConversationGroups defaultInstance];
     self.loginAsAdmin = [BLoginAsAdmin defaultInstance];
+    self.fetchPurchaseDescription = [BFetchPurchaseDescription defaultInstance];
   }
   return self;
 }
@@ -5385,6 +5467,9 @@ static BResponseType* defaultBResponseTypeInstance = nil;
   if (self.hasLoginAsAdmin) {
     [output writeMessage:24 value:self.loginAsAdmin];
   }
+  if (self.hasFetchPurchaseDescription) {
+    [output writeMessage:25 value:self.fetchPurchaseDescription];
+  }
   [self.unknownFields writeToCodedOutputStream:output];
 }
 - (SInt32) serializedSize {
@@ -5459,6 +5544,9 @@ static BResponseType* defaultBResponseTypeInstance = nil;
   }
   if (self.hasLoginAsAdmin) {
     size_ += computeMessageSize(24, self.loginAsAdmin);
+  }
+  if (self.hasFetchPurchaseDescription) {
+    size_ += computeMessageSize(25, self.fetchPurchaseDescription);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -5627,6 +5715,12 @@ static BResponseType* defaultBResponseTypeInstance = nil;
                          withIndent:[NSString stringWithFormat:@"%@  ", indent]];
     [output appendFormat:@"%@}\n", indent];
   }
+  if (self.hasFetchPurchaseDescription) {
+    [output appendFormat:@"%@%@ {\n", indent, @"fetchPurchaseDescription"];
+    [self.fetchPurchaseDescription writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (void) storeInDictionary:(NSMutableDictionary *)dictionary {
@@ -5740,6 +5834,11 @@ static BResponseType* defaultBResponseTypeInstance = nil;
    [self.loginAsAdmin storeInDictionary:messageDictionary];
    [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"loginAsAdmin"];
   }
+  if (self.hasFetchPurchaseDescription) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.fetchPurchaseDescription storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"fetchPurchaseDescription"];
+  }
   [self.unknownFields storeInDictionary:dictionary];
 }
 - (BOOL) isEqual:(id)other {
@@ -5795,6 +5894,8 @@ static BResponseType* defaultBResponseTypeInstance = nil;
       (!self.hasFetchConversationGroups || [self.fetchConversationGroups isEqual:otherMessage.fetchConversationGroups]) &&
       self.hasLoginAsAdmin == otherMessage.hasLoginAsAdmin &&
       (!self.hasLoginAsAdmin || [self.loginAsAdmin isEqual:otherMessage.loginAsAdmin]) &&
+      self.hasFetchPurchaseDescription == otherMessage.hasFetchPurchaseDescription &&
+      (!self.hasFetchPurchaseDescription || [self.fetchPurchaseDescription isEqual:otherMessage.fetchPurchaseDescription]) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
@@ -5864,6 +5965,9 @@ static BResponseType* defaultBResponseTypeInstance = nil;
   }
   if (self.hasLoginAsAdmin) {
     hashCode = hashCode * 31 + [self.loginAsAdmin hash];
+  }
+  if (self.hasFetchPurchaseDescription) {
+    hashCode = hashCode * 31 + [self.fetchPurchaseDescription hash];
   }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
@@ -5973,6 +6077,9 @@ static BResponseType* defaultBResponseTypeInstance = nil;
   }
   if (other.hasLoginAsAdmin) {
     [self mergeLoginAsAdmin:other.loginAsAdmin];
+  }
+  if (other.hasFetchPurchaseDescription) {
+    [self mergeFetchPurchaseDescription:other.fetchPurchaseDescription];
   }
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -6191,6 +6298,15 @@ static BResponseType* defaultBResponseTypeInstance = nil;
         }
         [input readMessage:subBuilder extensionRegistry:extensionRegistry];
         [self setLoginAsAdmin:[subBuilder buildPartial]];
+        break;
+      }
+      case 202: {
+        BFetchPurchaseDescriptionBuilder* subBuilder = [BFetchPurchaseDescription builder];
+        if (self.hasFetchPurchaseDescription) {
+          [subBuilder mergeFrom:self.fetchPurchaseDescription];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setFetchPurchaseDescription:[subBuilder buildPartial]];
         break;
       }
     }
@@ -6854,6 +6970,36 @@ static BResponseType* defaultBResponseTypeInstance = nil;
 - (BResponseTypeBuilder*) clearLoginAsAdmin {
   resultResponseType.hasLoginAsAdmin = NO;
   resultResponseType.loginAsAdmin = [BLoginAsAdmin defaultInstance];
+  return self;
+}
+- (BOOL) hasFetchPurchaseDescription {
+  return resultResponseType.hasFetchPurchaseDescription;
+}
+- (BFetchPurchaseDescription*) fetchPurchaseDescription {
+  return resultResponseType.fetchPurchaseDescription;
+}
+- (BResponseTypeBuilder*) setFetchPurchaseDescription:(BFetchPurchaseDescription*) value {
+  resultResponseType.hasFetchPurchaseDescription = YES;
+  resultResponseType.fetchPurchaseDescription = value;
+  return self;
+}
+- (BResponseTypeBuilder*) setFetchPurchaseDescriptionBuilder:(BFetchPurchaseDescriptionBuilder*) builderForValue {
+  return [self setFetchPurchaseDescription:[builderForValue build]];
+}
+- (BResponseTypeBuilder*) mergeFetchPurchaseDescription:(BFetchPurchaseDescription*) value {
+  if (resultResponseType.hasFetchPurchaseDescription &&
+      resultResponseType.fetchPurchaseDescription != [BFetchPurchaseDescription defaultInstance]) {
+    resultResponseType.fetchPurchaseDescription =
+      [[[BFetchPurchaseDescription builderWithPrototype:resultResponseType.fetchPurchaseDescription] mergeFrom:value] buildPartial];
+  } else {
+    resultResponseType.fetchPurchaseDescription = value;
+  }
+  resultResponseType.hasFetchPurchaseDescription = YES;
+  return self;
+}
+- (BResponseTypeBuilder*) clearFetchPurchaseDescription {
+  resultResponseType.hasFetchPurchaseDescription = NO;
+  resultResponseType.fetchPurchaseDescription = [BFetchPurchaseDescription defaultInstance];
   return self;
 }
 @end
