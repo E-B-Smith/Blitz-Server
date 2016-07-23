@@ -114,6 +114,7 @@ message UpdateConversationStatus {
   optional string             conversationID  = 1;
   optional UserMessageStatus  status          = 2;
   optional ConversationType   conversationType= 3;
+  optional PaymentStatus      paymentStatus   = 4;
 }
 
 
