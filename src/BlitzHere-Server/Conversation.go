@@ -726,16 +726,100 @@ func FetchConversations(session *Session, req *BlitzMessage.FetchConversations) 
 //----------------------------------------------------------------------------------------
 
 
+func UpdateConversationPaymentStatus(session *Session, updateStatus *BlitzMessage.UpdateConversationStatus,
+    ) *BlitzMessage.ServerResponse {
+    Log.LogFunctionName()
+
+    var message string
+    clientName := PrettyNameForUserID(clientID)
+    expertName := PrettyNameForUserID(expertID)
+
+    switch *updateStatus.PaymentStatus {
+
+    case BlitzMessage.PaymentStatus_PSExpertAccepted:
+        message = fmt.Sprintf(
+            "%s has accepted your invitation.  Enjoy your chat.",
+            expertName,
+        )
+
+    case BlitzMessage.PaymentStatus_PSExpertRejected:
+        message = fmt.Sprintf(
+            "Sorry, %s is unavailable now.",
+            expertName,
+        )
+
+    default:
+        return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, fmt.Errorf("Invalid input"))
+    }
+
+    result, error := config.DB.Exec(
+        `update ConversationTable set
+            paymentStatus = $1
+            where conversationID = $2;`,
+        *updateStatus.PaymentStatus,
+        updateStatus.ConversationID,
+    )
+    error = pgsql.UpdateResultError(result, error)
+    if error != nil {
+        Log.LogError(error)
+        return ServerResponseForError(BlitzMessage.ResponseCode_RCServerError, error)
+    }
+
+    actionURL :=
+        fmt.Sprintf("%s?action=showchat&chatid=%s",
+            config.AppLinkURL,
+            *updateStatus.ConversationID,
+        )
+
+    error = SendUserMessageInternal(
+        BlitzMessage.Default_Global_SystemUserID,
+        MembersForConversationID(*updateStatus.ConversationID),
+        *updateStatus.ConversationID,
+        message,
+        BlitzMessage.UserMessageType_MTConversation,
+        "",
+        actionURL,
+    )
+    if error != nil {
+        Log.LogError(error)
+    }
+
+    conversation, _ := ReadUserConversation(session.UserID, *updateStatus.ConversationID)
+    response := BlitzMessage.ConversationResponse {
+        Conversation:   conversation,
+    }
+    serverResponse := &BlitzMessage.ServerResponse {
+        ResponseCode:       BlitzMessage.ResponseCode(BlitzMessage.ResponseCode_RCSuccess).Enum(),
+        ResponseType:       &BlitzMessage.ResponseType { ConversationResponse: &response },
+    }
+
+    return serverResponse
+}
+
+
+//----------------------------------------------------------------------------------------
+//                                                                UpdateConversationStatus
+//----------------------------------------------------------------------------------------
+
+
 func UpdateConversationStatus(session *Session, updateStatus *BlitzMessage.UpdateConversationStatus,
     ) *BlitzMessage.ServerResponse {
     Log.LogFunctionName()
 
     if  updateStatus.ConversationID == nil ||
-        updateStatus.Status == nil ||
         updateStatus.ConversationType == nil ||
         *updateStatus.Status != BlitzMessage.UserMessageStatus_MSRead {
         return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, fmt.Errorf("Invalid input"))
     }
+    if  *updateStatus.ConversationType == BlitzMessage.ConversationType_CTConversation &&
+        updateStatus.PaymentStatus != nil {
+        return UpdateConversationPaymentStatus(session, updateStatus)
+    }
+    if  updateStatus.Status == nil ||
+        *updateStatus.Status != BlitzMessage.UserMessageStatus_MSRead {
+        return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, fmt.Errorf("Invalid input"))
+    }
+
 
     var error error
     switch (*updateStatus.ConversationType) {
