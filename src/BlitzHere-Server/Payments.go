@@ -434,9 +434,12 @@ func ChargeRequest(session *Session, chargeReq *BlitzMessage.Charge) *BlitzMessa
         var conversationID string = *chargeReq.PurchaseTypeID
 
         result, error = config.DB.Exec(
-            `update ConversationTable set chargeID = $1
-                where conversationID = $2;`,
+            `update ConversationTable set
+                chargeID = $1,
+                paymentStatus = $2
+                where conversationID = $3;`,
             chargeReq.ChargeID,
+            BlitzMessage.PaymentStatus_PSExpertNeedsAccept,
             conversationID,
         )
         error = pgsql.UpdateResultError(result, error)
@@ -444,18 +447,6 @@ func ChargeRequest(session *Session, chargeReq *BlitzMessage.Charge) *BlitzMessa
             Log.LogError(error)
             return ServerResponseForError(BlitzMessage.ResponseCode_RCServerError, error)
         }
-
-        expertMessage := fmt.Sprintf(
-            "Congratulations, %s has requested for your expertise.\nPlease reply immediately" +
-            " to ensure the best service experience. This chat window will be open for the" +
-            " next 5 days, unless your requester may be satisfied earlier.",
-            PrettyNameForUserID(session.UserID),
-        )
-
-        actionURL := fmt.Sprintf("%s?action=showchat&chatid=%s",
-            config.AppLinkURL,
-            conversationID,
-        )
 
         members := MembersForConversationID(conversationID)
         var otherMember string
@@ -465,6 +456,21 @@ func ChargeRequest(session *Session, chargeReq *BlitzMessage.Charge) *BlitzMessa
                 break
             }
         }
+
+        memberName := PrettyNameForUserID(session.UserID)
+        expertName := PrettyNameForUserID(otherMember)
+
+        expertMessage := fmt.Sprintf(
+            "Congratulations, %s has requested your expertise.\nPlease reply immediately" +
+            " to ensure the best service experience. This chat window will be open for the" +
+            " next 24 hours, unless your requester may be satisfied earlier.",
+            memberName,
+        )
+
+        actionURL := fmt.Sprintf("%s?action=showchat&chatid=%s",
+            config.AppLinkURL,
+            conversationID,
+        )
 
         error = SendUserMessageInternal(
             BlitzMessage.Default_Global_SystemUserID,
@@ -477,10 +483,11 @@ func ChargeRequest(session *Session, chargeReq *BlitzMessage.Charge) *BlitzMessa
         )
 
         userMessage := fmt.Sprintf(
-            "Congrats! You are now connected with %s for the next 5 days.\n" +
-            "This session will remain open until your request is resolved.\n" +
-            "Good luck!'",
-            PrettyNameForUserID(otherMember),
+            "Congrats! You are now connected with\n%s.\n"+
+            "%s has 24 hours to accept or regret your request.\n"+
+            "If they regret your money will be automatically refunded to you.",
+            expertName,
+            expertName,
         )
 
         error = SendUserMessageInternal(

@@ -358,6 +358,9 @@ func StartConversation(session *Session, req *BlitzMessage.ConversationRequest) 
         error = row.Scan(&otherIsExpert)
         if error != nil { Log.LogError(error) }
 
+        memberName := PrettyNameForUserID(session.UserID)
+        expertName := PrettyNameForUserID(otherMember)
+
         if isExpert.Bool {
             if otherIsExpert.Bool {
                 conversation.PaymentStatus = BlitzMessage.PaymentStatus(BlitzMessage.PaymentStatus_PSIsFree).Enum()
@@ -377,9 +380,14 @@ func StartConversation(session *Session, req *BlitzMessage.ConversationRequest) 
             if otherIsExpert.Bool {
                 if len(introMessage) <= 0 {
                     introMessage =
-                        "You can send one free message to an expert.\nPlease state your objective and provide "+
-                        "time for the expert to respond.\nFor guaranteeing a response, please make a payment "+
-                        "– Good luck!"
+                        fmt.Sprintf(
+                        "%s – you have one free message to connect\nwith %s.\n" +
+                        "After this message, you'll be prompted to make a payment " +
+                        "to continue\nyour chat with %s.",
+                        memberName,
+                        expertName,
+                        expertName,
+                    )
                 }
             } else {
                 conversation.PaymentStatus = BlitzMessage.PaymentStatus(BlitzMessage.PaymentStatus_PSIsFree).Enum()
@@ -406,8 +414,8 @@ func StartConversation(session *Session, req *BlitzMessage.ConversationRequest) 
 
         if len(introMessage) <= 0 {
             introMessage = fmt.Sprintf("Chat with %s and %s.",
-                PrettyNameForUserID(memberArray[0]),
-                PrettyNameForUserID(memberArray[1]),
+                memberName,
+                expertName,
             )
         }
 
@@ -865,14 +873,21 @@ func UpdatePurchaseDescriptionForConversation(session *Session, purchase *BlitzM
         `select
             name,
             chatCharge,
-            callCharge
+            callCharge,
+            isExpert
             from UserTable where userID = $1;`,
         expertID,
     )
     var name sql.NullString
     var chatCharge, callCharge sql.NullFloat64
-    error = row.Scan(&chatCharge, &callCharge)
-    if error != nil {
+    var isExpert sql.NullBool
+    error = row.Scan(
+        &name,
+        &chatCharge,
+        &callCharge,
+        &isExpert,
+    )
+    if error != nil || ! isExpert.Bool {
         Log.LogError(error)
         return errors.New("Expert not available")
     }

@@ -208,6 +208,9 @@ func arrayFromMap(stringMap map[string]bool) []string {
 }
 
 
+var ErrorPaymentRequired = errors.New("Payment required")
+
+
 func UpdateConversationMessage(
         session *Session,
         message *BlitzMessage.UserMessage,
@@ -221,14 +224,6 @@ func UpdateConversationMessage(
         return error
     }
 
-    //  Add recipients --
-
-    if len(conversation.MemberIDs) < 2 {
-        return errors.New("Not enough conversation members.")
-    }
-
-    message.Recipients = conversation.MemberIDs
-
     //  Add an action to the message --
 
     if  message.ActionURL == nil || len(*message.ActionURL) == 0 {
@@ -238,6 +233,14 @@ func UpdateConversationMessage(
                 *message.ConversationID,
         ))
     }
+
+    //  Add recipients --
+
+    if len(conversation.MemberIDs) < 2 {
+        return errors.New("Not enough conversation members.")
+    }
+
+    message.Recipients = conversation.MemberIDs
 
     if conversation.ClosedDate != nil {
         return errors.New("The conversation is closed.")
@@ -257,6 +260,11 @@ func UpdateConversationMessage(
     case BlitzMessage.PaymentStatus_PSUnknown,
          BlitzMessage.PaymentStatus_PSTrialPeriod:
         //  Get the trial count messages:
+
+        if  conversation.InitiatorUserID!= nil &&
+            session.UserID != *conversation.InitiatorUserID {
+            return nil
+        }
 
         row := config.DB.QueryRow(
             `select count(*) from UserMessageTable
@@ -288,10 +296,14 @@ func UpdateConversationMessage(
         if messagesSent.Int64 < trialCount {
             return nil
         }
-        return errors.New("Payment required")
+        return ErrorPaymentRequired
 
     case BlitzMessage.PaymentStatus_PSPaymentRequired:
-        return errors.New("Payment required")
+        if  conversation.InitiatorUserID != nil &&
+            session.UserID != *conversation.InitiatorUserID {
+            return nil
+        }
+        return ErrorPaymentRequired
 
     case BlitzMessage.PaymentStatus_PSExpertNeedsAccept:
         return errors.New("Waiting for expert")
@@ -327,7 +339,9 @@ func SendUserMessage(
     if message.ConversationID != nil &&
         *message.MessageType == BlitzMessage.UserMessageType_MTConversation {
         error = UpdateConversationMessage(session, message)
-        if error != nil {
+        if error == ErrorPaymentRequired {
+            return ServerResponseForError(BlitzMessage.ResponseCode_RCPurchaseRequired, error)
+        } else if error != nil {
             return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
         }
     }

@@ -38,8 +38,8 @@ message CardInfo {
 
 
 message UserCardInfo {
-  optional string         userID        = 1;
-  repeated CardInfo       cardInfo      = 2;
+  optional string        userID         = 1;
+  repeated CardInfo      cardInfo       = 2;
 }
 
 
