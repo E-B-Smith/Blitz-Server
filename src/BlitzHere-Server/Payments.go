@@ -323,7 +323,7 @@ func ChargeRequest(session *Session, chargeReq *BlitzMessage.Charge) *BlitzMessa
     )
     var total sql.NullFloat64
     error = row.Scan(&total)
-    if error != nil || total.Float64 > 200.0 {
+    if error != nil || total.Float64 >= 400.0 {     //  eDebug -- set this down
         Log.Errorf("Charge limit reached! Total: %1.2f Error: %v.", total.Float64, error)
         error = fmt.Errorf("Sorry, we aren't able to submit charges at the moment.")
         return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
@@ -461,7 +461,7 @@ func ChargeRequest(session *Session, chargeReq *BlitzMessage.Charge) *BlitzMessa
         expertName := PrettyNameForUserID(otherMember)
 
         expertMessage := fmt.Sprintf(
-            "Congratulations, %s has requested your expertise.\nPlease reply immediately" +
+            "Congratulations, %s\nhas requested your expertise.\nPlease reply immediately" +
             " to ensure the best service experience. This chat window will be open for the" +
             " next 24 hours, unless your requester may be satisfied earlier.",
             memberName,
@@ -483,9 +483,9 @@ func ChargeRequest(session *Session, chargeReq *BlitzMessage.Charge) *BlitzMessa
         )
 
         userMessage := fmt.Sprintf(
-            "Congrats! You are now connected with\n%s.\n"+
-            "%s has 24 hours to accept or regret your request.\n"+
-            "If they regret your money will be automatically refunded to you.",
+            "Congrats!\nYou are now connected with %s.\n"+
+            "%s has 24 hours to accept your request.\n"+
+            "Otherwise your money will be automatically refunded to you.",
             expertName,
             expertName,
         )

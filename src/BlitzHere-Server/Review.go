@@ -167,6 +167,7 @@ func AddReviewsToProfile(profile *BlitzMessage.UserProfile) error {
     reviews := make([]*BlitzMessage.UserReview, 0)
 
     for rows.Next() {
+        ratingCount++
         var (
             reviewerID      string
             timestamp       pq.NullTime

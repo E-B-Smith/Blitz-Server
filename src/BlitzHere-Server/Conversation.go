@@ -374,7 +374,7 @@ func StartConversation(session *Session, req *BlitzMessage.ConversationRequest) 
                 conversation.PaymentStatus = BlitzMessage.PaymentStatus(BlitzMessage.PaymentStatus_PSIsFree).Enum()
                 if len(introMessage) <= 0 {
                     introMessage =
-                    "A Blitz expert would like to chat with you!\nThis chat session will remain open for the next 5 days."
+                    "A Blitz expert would like to chat with you!\nThis chat session will remain open for the next 24 hours."
                 }
             }
         } else {
@@ -382,9 +382,9 @@ func StartConversation(session *Session, req *BlitzMessage.ConversationRequest) 
                 if len(introMessage) <= 0 {
                     introMessage =
                         fmt.Sprintf(
-                        "%s – you have one free message to connect\nwith %s.\n" +
-                        "After this message, you'll be prompted to make a payment " +
-                        "to continue\nyour chat with %s.",
+                        "%s – you have one free message\nto connect with %s.\n" +
+                        "After this message, you'll be prompted to make\na payment " +
+                        "to continue your chat with %s.",
                         memberName,
                         expertName,
                         expertName,

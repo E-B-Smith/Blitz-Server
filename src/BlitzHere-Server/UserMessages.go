@@ -243,7 +243,7 @@ func UpdateConversationMessage(
     message.Recipients = conversation.MemberIDs
 
     if conversation.ClosedDate != nil {
-        return errors.New("The conversation is closed.")
+        return errors.New("This conversation is closed.")
     }
 
     if conversation.PaymentStatus == nil {
@@ -365,6 +365,24 @@ func WriteUserMessage(message *BlitzMessage.UserMessage) error {
 
     if len(message.Recipients) == 0 {
         return errors.New("No recipients")
+    }
+
+    if message.ConversationID != nil &&
+        len(*message.ConversationID) > 0 &&
+        (message.PaymentStatus == nil ||
+         *message.PaymentStatus == BlitzMessage.PaymentStatus_PSUnknown) {
+
+        row := config.DB.QueryRow(
+            `select paymentStatus from ConversationTable
+                where conversationID = $1;`,
+            message.ConversationID,
+        )
+        var paymentStatus sql.NullInt64
+        error := row.Scan(&paymentStatus)
+        if error != nil { Log.LogError(error) }
+        if paymentStatus.Valid {
+            message.PaymentStatus = BlitzMessage.PaymentStatus(paymentStatus.Int64).Enum()
+        }
     }
 
     for _, recipientID := range message.Recipients {
