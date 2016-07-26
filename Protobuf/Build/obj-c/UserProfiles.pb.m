@@ -3215,6 +3215,9 @@ static BUserReview* defaultBUserReviewInstance = nil;
 @property SInt64 userInfo;
 @property (strong) NSString* editProfileID;
 @property BOOL isAdmin;
+@property (strong) NSString* shortQAFee;
+@property (strong) NSString* longQAFee;
+@property Float64 charityPercent;
 @end
 
 @implementation BUserProfile
@@ -3404,6 +3407,27 @@ static BUserReview* defaultBUserReviewInstance = nil;
 - (void) setIsAdmin:(BOOL) _value_ {
   isAdmin_ = !!_value_;
 }
+- (BOOL) hasShortQAFee {
+  return !!hasShortQAFee_;
+}
+- (void) setHasShortQAFee:(BOOL) _value_ {
+  hasShortQAFee_ = !!_value_;
+}
+@synthesize shortQAFee;
+- (BOOL) hasLongQAFee {
+  return !!hasLongQAFee_;
+}
+- (void) setHasLongQAFee:(BOOL) _value_ {
+  hasLongQAFee_ = !!_value_;
+}
+@synthesize longQAFee;
+- (BOOL) hasCharityPercent {
+  return !!hasCharityPercent_;
+}
+- (void) setHasCharityPercent:(BOOL) _value_ {
+  hasCharityPercent_ = !!_value_;
+}
+@synthesize charityPercent;
 - (instancetype) init {
   if ((self = [super init])) {
     self.userID = @"";
@@ -3428,6 +3452,9 @@ static BUserReview* defaultBUserReviewInstance = nil;
     self.userInfo = 0L;
     self.editProfileID = @"";
     self.isAdmin = NO;
+    self.shortQAFee = @"";
+    self.longQAFee = @"";
+    self.charityPercent = 0;
   }
   return self;
 }
@@ -3601,6 +3628,15 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   if (self.hasCallFee) {
     [output writeString:30 value:self.callFee];
   }
+  if (self.hasShortQAFee) {
+    [output writeString:31 value:self.shortQAFee];
+  }
+  if (self.hasLongQAFee) {
+    [output writeString:32 value:self.longQAFee];
+  }
+  if (self.hasCharityPercent) {
+    [output writeDouble:33 value:self.charityPercent];
+  }
   [self.unknownFields writeToCodedOutputStream:output];
 }
 - (SInt32) serializedSize {
@@ -3705,6 +3741,15 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   }
   if (self.hasCallFee) {
     size_ += computeStringSize(30, self.callFee);
+  }
+  if (self.hasShortQAFee) {
+    size_ += computeStringSize(31, self.shortQAFee);
+  }
+  if (self.hasLongQAFee) {
+    size_ += computeStringSize(32, self.longQAFee);
+  }
+  if (self.hasCharityPercent) {
+    size_ += computeDoubleSize(33, self.charityPercent);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -3864,6 +3909,15 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   if (self.hasCallFee) {
     [output appendFormat:@"%@%@: %@\n", indent, @"callFee", self.callFee];
   }
+  if (self.hasShortQAFee) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"shortQAFee", self.shortQAFee];
+  }
+  if (self.hasLongQAFee) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"longQAFee", self.longQAFee];
+  }
+  if (self.hasCharityPercent) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"charityPercent", [NSNumber numberWithDouble:self.charityPercent]];
+  }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (void) storeInDictionary:(NSMutableDictionary *)dictionary {
@@ -3977,6 +4031,15 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   if (self.hasCallFee) {
     [dictionary setObject: self.callFee forKey: @"callFee"];
   }
+  if (self.hasShortQAFee) {
+    [dictionary setObject: self.shortQAFee forKey: @"shortQAFee"];
+  }
+  if (self.hasLongQAFee) {
+    [dictionary setObject: self.longQAFee forKey: @"longQAFee"];
+  }
+  if (self.hasCharityPercent) {
+    [dictionary setObject: [NSNumber numberWithDouble:self.charityPercent] forKey: @"charityPercent"];
+  }
   [self.unknownFields storeInDictionary:dictionary];
 }
 - (BOOL) isEqual:(id)other {
@@ -4040,6 +4103,12 @@ static BUserProfile* defaultBUserProfileInstance = nil;
       (!self.hasIsAdmin || self.isAdmin == otherMessage.isAdmin) &&
       self.hasCallFee == otherMessage.hasCallFee &&
       (!self.hasCallFee || [self.callFee isEqual:otherMessage.callFee]) &&
+      self.hasShortQAFee == otherMessage.hasShortQAFee &&
+      (!self.hasShortQAFee || [self.shortQAFee isEqual:otherMessage.shortQAFee]) &&
+      self.hasLongQAFee == otherMessage.hasLongQAFee &&
+      (!self.hasLongQAFee || [self.longQAFee isEqual:otherMessage.longQAFee]) &&
+      self.hasCharityPercent == otherMessage.hasCharityPercent &&
+      (!self.hasCharityPercent || self.charityPercent == otherMessage.charityPercent) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
@@ -4133,6 +4202,15 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   }
   if (self.hasCallFee) {
     hashCode = hashCode * 31 + [self.callFee hash];
+  }
+  if (self.hasShortQAFee) {
+    hashCode = hashCode * 31 + [self.shortQAFee hash];
+  }
+  if (self.hasLongQAFee) {
+    hashCode = hashCode * 31 + [self.longQAFee hash];
+  }
+  if (self.hasCharityPercent) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithDouble:self.charityPercent] hash];
   }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
@@ -4298,6 +4376,15 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   }
   if (other.hasIsAdmin) {
     [self setIsAdmin:other.isAdmin];
+  }
+  if (other.hasShortQAFee) {
+    [self setShortQAFee:other.shortQAFee];
+  }
+  if (other.hasLongQAFee) {
+    [self setLongQAFee:other.longQAFee];
+  }
+  if (other.hasCharityPercent) {
+    [self setCharityPercent:other.charityPercent];
   }
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -4482,6 +4569,18 @@ static BUserProfile* defaultBUserProfileInstance = nil;
       }
       case 242: {
         [self setCallFee:[input readString]];
+        break;
+      }
+      case 250: {
+        [self setShortQAFee:[input readString]];
+        break;
+      }
+      case 258: {
+        [self setLongQAFee:[input readString]];
+        break;
+      }
+      case 265: {
+        [self setCharityPercent:[input readDouble]];
         break;
       }
     }
@@ -5061,6 +5160,54 @@ static BUserProfile* defaultBUserProfileInstance = nil;
 - (BUserProfileBuilder*) clearIsAdmin {
   resultUserProfile.hasIsAdmin = NO;
   resultUserProfile.isAdmin = NO;
+  return self;
+}
+- (BOOL) hasShortQAFee {
+  return resultUserProfile.hasShortQAFee;
+}
+- (NSString*) shortQAFee {
+  return resultUserProfile.shortQAFee;
+}
+- (BUserProfileBuilder*) setShortQAFee:(NSString*) value {
+  resultUserProfile.hasShortQAFee = YES;
+  resultUserProfile.shortQAFee = value;
+  return self;
+}
+- (BUserProfileBuilder*) clearShortQAFee {
+  resultUserProfile.hasShortQAFee = NO;
+  resultUserProfile.shortQAFee = @"";
+  return self;
+}
+- (BOOL) hasLongQAFee {
+  return resultUserProfile.hasLongQAFee;
+}
+- (NSString*) longQAFee {
+  return resultUserProfile.longQAFee;
+}
+- (BUserProfileBuilder*) setLongQAFee:(NSString*) value {
+  resultUserProfile.hasLongQAFee = YES;
+  resultUserProfile.longQAFee = value;
+  return self;
+}
+- (BUserProfileBuilder*) clearLongQAFee {
+  resultUserProfile.hasLongQAFee = NO;
+  resultUserProfile.longQAFee = @"";
+  return self;
+}
+- (BOOL) hasCharityPercent {
+  return resultUserProfile.hasCharityPercent;
+}
+- (Float64) charityPercent {
+  return resultUserProfile.charityPercent;
+}
+- (BUserProfileBuilder*) setCharityPercent:(Float64) value {
+  resultUserProfile.hasCharityPercent = YES;
+  resultUserProfile.charityPercent = value;
+  return self;
+}
+- (BUserProfileBuilder*) clearCharityPercent {
+  resultUserProfile.hasCharityPercent = NO;
+  resultUserProfile.charityPercent = 0;
   return self;
 }
 @end

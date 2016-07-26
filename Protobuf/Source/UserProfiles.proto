@@ -163,6 +163,9 @@ message UserProfile {
   optional string       editProfileID     = 28;
   optional bool         isAdmin           = 29;
 
+  optional string       shortQAFee        = 31;
+  optional string       longQAFee         = 32;
+  optional double       charityPercent    = 33;
 }
 
 

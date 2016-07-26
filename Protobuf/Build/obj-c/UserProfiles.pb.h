@@ -839,59 +839,68 @@ NSString *NSStringFromBFriendStatus(BFriendStatus value);
 #define UserProfile_userInfo @"userInfo"
 #define UserProfile_editProfileID @"editProfileID"
 #define UserProfile_isAdmin @"isAdmin"
+#define UserProfile_shortQAFee @"shortQAFee"
+#define UserProfile_longQAFee @"longQAFee"
+#define UserProfile_charityPercent @"charityPercent"
 @interface BUserProfile : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
-  BOOL hasIsExpert_:1;
-  BOOL hasServiceIsFreeForUser_:1;
   BOOL hasIsAdmin_:1;
-  BOOL hasRatingResponsive_:1;
-  BOOL hasRatingOutgoing_:1;
-  BOOL hasRatingRecommended_:1;
+  BOOL hasServiceIsFreeForUser_:1;
+  BOOL hasIsExpert_:1;
+  BOOL hasCharityPercent_:1;
   BOOL hasResponseSeconds_:1;
+  BOOL hasRatingRecommended_:1;
+  BOOL hasRatingOutgoing_:1;
+  BOOL hasRatingResponsive_:1;
   BOOL hasUserInfo_:1;
   BOOL hasRatingCount_:1;
-  BOOL hasUserID_:1;
-  BOOL hasName_:1;
   BOOL hasBackgroundSummary_:1;
+  BOOL hasName_:1;
   BOOL hasStripeAccount_:1;
   BOOL hasChatFee_:1;
   BOOL hasCallFee_:1;
   BOOL hasEditProfileID_:1;
-  BOOL hasCreationDate_:1;
-  BOOL hasLastSeen_:1;
-  BOOL hasBirthday_:1;
+  BOOL hasShortQAFee_:1;
+  BOOL hasLongQAFee_:1;
+  BOOL hasUserID_:1;
   BOOL hasHeadlineEmployment_:1;
-  BOOL hasUserStatus_:1;
+  BOOL hasBirthday_:1;
+  BOOL hasLastSeen_:1;
+  BOOL hasCreationDate_:1;
   BOOL hasGender_:1;
-  BOOL isExpert_:1;
-  BOOL serviceIsFreeForUser_:1;
+  BOOL hasUserStatus_:1;
   BOOL isAdmin_:1;
-  Float64 ratingResponsive;
-  Float64 ratingOutgoing;
-  Float64 ratingRecommended;
+  BOOL serviceIsFreeForUser_:1;
+  BOOL isExpert_:1;
+  Float64 charityPercent;
   Float64 responseSeconds;
+  Float64 ratingRecommended;
+  Float64 ratingOutgoing;
+  Float64 ratingResponsive;
   SInt64 userInfo;
   SInt32 ratingCount;
-  NSString* userID;
-  NSString* name;
   NSString* backgroundSummary;
+  NSString* name;
   NSString* stripeAccount;
   NSString* chatFee;
   NSString* callFee;
   NSString* editProfileID;
-  BTimestamp* creationDate;
-  BTimestamp* lastSeen;
-  BTimestamp* birthday;
+  NSString* shortQAFee;
+  NSString* longQAFee;
+  NSString* userID;
   BEmployment* headlineEmployment;
-  BUserStatus userStatus;
+  BTimestamp* birthday;
+  BTimestamp* lastSeen;
+  BTimestamp* creationDate;
   BGender gender;
+  BUserStatus userStatus;
   NSMutableArray * interestTagsArray;
-  NSMutableArray * imagesArray;
-  NSMutableArray * socialIdentitiesArray;
-  NSMutableArray * contactInfoArray;
   NSMutableArray * employmentArray;
   NSMutableArray * educationArray;
   NSMutableArray * entityTagsArray;
+  NSMutableArray * contactInfoArray;
+  NSMutableArray * socialIdentitiesArray;
+  NSMutableArray * imagesArray;
   NSMutableArray * reviewsArray;
 }
 - (BOOL) hasUserID;
@@ -916,6 +925,9 @@ NSString *NSStringFromBFriendStatus(BFriendStatus value);
 - (BOOL) hasUserInfo;
 - (BOOL) hasEditProfileID;
 - (BOOL) hasIsAdmin;
+- (BOOL) hasShortQAFee;
+- (BOOL) hasLongQAFee;
+- (BOOL) hasCharityPercent;
 @property (readonly, strong) NSString* userID;
 @property (readonly) BUserStatus userStatus;
 @property (readonly, strong) BTimestamp* creationDate;
@@ -946,6 +958,9 @@ NSString *NSStringFromBFriendStatus(BFriendStatus value);
 @property (readonly) SInt64 userInfo;
 @property (readonly, strong) NSString* editProfileID;
 - (BOOL) isAdmin;
+@property (readonly, strong) NSString* shortQAFee;
+@property (readonly, strong) NSString* longQAFee;
+@property (readonly) Float64 charityPercent;
 - (BImageData*)imagesAtIndex:(NSUInteger)index;
 - (BSocialIdentity*)socialIdentitiesAtIndex:(NSUInteger)index;
 - (BContactInfo*)contactInfoAtIndex:(NSUInteger)index;
@@ -1155,6 +1170,21 @@ NSString *NSStringFromBFriendStatus(BFriendStatus value);
 - (BOOL) isAdmin;
 - (BUserProfileBuilder*) setIsAdmin:(BOOL) value;
 - (BUserProfileBuilder*) clearIsAdmin;
+
+- (BOOL) hasShortQAFee;
+- (NSString*) shortQAFee;
+- (BUserProfileBuilder*) setShortQAFee:(NSString*) value;
+- (BUserProfileBuilder*) clearShortQAFee;
+
+- (BOOL) hasLongQAFee;
+- (NSString*) longQAFee;
+- (BUserProfileBuilder*) setLongQAFee:(NSString*) value;
+- (BUserProfileBuilder*) clearLongQAFee;
+
+- (BOOL) hasCharityPercent;
+- (Float64) charityPercent;
+- (BUserProfileBuilder*) setCharityPercent:(Float64) value;
+- (BUserProfileBuilder*) clearCharityPercent;
 @end
 
 #define ImageUpload_imageData @"imageData"

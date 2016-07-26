@@ -179,8 +179,11 @@ func UpdateProfile(profile *BlitzMessage.UserProfile) error {
             ,editProfileID
             ,chatCharge
             ,callCharge
-        ) = ($1, $2, $3, $4, $5, $6, $7, $8, $9)
-                where userID = $10;`,
+            ,shortQACharge
+            ,longQACharge
+            ,charityPercent
+        ) = ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+                where userID = $13;`,
         profile.Name,
         profile.Gender,
         profile.Birthday.NullTime(),
@@ -190,6 +193,9 @@ func UpdateProfile(profile *BlitzMessage.UserProfile) error {
         profile.EditProfileID,
         profile.ChatFee,
         profile.CallFee,
+        profile.ShortQAFee,
+        profile.LongQAFee,
+        profile.CharityPercent,
         profile.UserID,
     )
     if error != nil {
