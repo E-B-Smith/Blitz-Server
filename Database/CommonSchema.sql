@@ -83,6 +83,9 @@ create table UserTable
 
     ,chatCharge         text
     ,callCharge         text
+    ,shortQACharge      text
+    ,longQACharge       text
+    ,charityPercent     real
     );
 create index UserSearchIndex on UserTable using gin(search);
 

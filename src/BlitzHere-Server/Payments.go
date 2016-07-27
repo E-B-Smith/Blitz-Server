@@ -290,8 +290,10 @@ func ChargeRequest(session *Session, chargeReq *BlitzMessage.Charge) *BlitzMessa
 
     //  Get the Stripe customerID --
 
-    stripeCID, error := StripeCIDFromUserID(*chargeReq.PayerID)
+    //stripeCID, error := StripeCIDFromUserID(*chargeReq.PayerID)
+    stripeCID, error := CreateStripeCIDFromUserIDToken(*chargeReq.PayerID, "")
     if error != nil {
+        Log.Errorf("StripeCIDFromUserID returned '%+v': %+v.", stripeCID, error)
         return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
     }
 
