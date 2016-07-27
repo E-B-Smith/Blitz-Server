@@ -323,7 +323,7 @@ func ChargeRequest(session *Session, chargeReq *BlitzMessage.Charge) *BlitzMessa
     )
     var total sql.NullFloat64
     error = row.Scan(&total)
-    if error != nil || total.Float64 >= 400.0 {     //  eDebug -- set this down
+    if error != nil || total.Float64 >= 400.0 {
         Log.Errorf("Charge limit reached! Total: %1.2f Error: %v.", total.Float64, error)
         error = fmt.Errorf("Sorry, we aren't able to submit charges at the moment.")
         return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
@@ -369,46 +369,48 @@ func ChargeRequest(session *Session, chargeReq *BlitzMessage.Charge) *BlitzMessa
 
     //  Charge stripe --
 
-    chargeParams := &stripe.ChargeParams{
-      Amount:           uint64(amountI),
-      Currency:         "usd",
-      Customer:         stripeCID,
-    }
-    error = chargeParams.SetSource(*chargeReq.ChargeToken)
-    if error != nil {
-        Log.LogError(error)
-        return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
-    }
-
-    if chargeReq.MemoText != nil {
-        chargeParams.Desc = *chargeReq.MemoText
-    }
-
-    //  We're charging the customer rather than the card.
-    //  Not Needed:
-    // error = chargeParams.SetSource(stripeCID)
-    // if error != nil { Log.LogError(error) }
-
-    Log.Debugf("Charge params: %+v", *chargeParams)
-    stripeCharge, stripeError := charge.New(chargeParams)
-    if stripeError != nil {
-        Log.LogError(stripeError)
-        Log.Debugf("Charge: %+v.", stripeCharge)
-        responseCode = BlitzMessage.ResponseCode_RCPaymentError
-        chargeReq.ChargeStatus = BlitzMessage.ChargeStatus(BlitzMessage.ChargeStatus_CSDeclined).Enum()
-
-        chargeReq.ProcessorReason = proto.String("Your card was declined (1).")
-        if stripeCharge != nil && len(stripeCharge.FailMsg) > 0 {
-            chargeReq.ProcessorReason = &stripeCharge.FailMsg
-        } else {
-            if stripeErrorType, ok := stripeError.(*stripe.Error); ok {
-                chargeReq.ProcessorReason = &stripeErrorType.Msg
-            }
+    if amountI > 0 {
+        chargeParams := &stripe.ChargeParams{
+          Amount:           uint64(amountI),
+          Currency:         "usd",
+          Customer:         stripeCID,
+        }
+        error = chargeParams.SetSource(*chargeReq.ChargeToken)
+        if error != nil {
+            Log.LogError(error)
+            return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
         }
 
-    } else {
-        stripeChargeID = stripeCharge.ID
-        chargeReq.ProcessorReason = &stripeReason
+        if chargeReq.MemoText != nil {
+            chargeParams.Desc = *chargeReq.MemoText
+        }
+
+        //  We're charging the customer rather than the card.
+        //  Not Needed:
+        // error = chargeParams.SetSource(stripeCID)
+        // if error != nil { Log.LogError(error) }
+
+        Log.Debugf("Charge params: %+v", *chargeParams)
+        stripeCharge, stripeError := charge.New(chargeParams)
+        if stripeError != nil {
+            Log.LogError(stripeError)
+            Log.Debugf("Charge: %+v.", stripeCharge)
+            responseCode = BlitzMessage.ResponseCode_RCPaymentError
+            chargeReq.ChargeStatus = BlitzMessage.ChargeStatus(BlitzMessage.ChargeStatus_CSDeclined).Enum()
+
+            chargeReq.ProcessorReason = proto.String("Your card was declined (1).")
+            if stripeCharge != nil && len(stripeCharge.FailMsg) > 0 {
+                chargeReq.ProcessorReason = &stripeCharge.FailMsg
+            } else {
+                if stripeErrorType, ok := stripeError.(*stripe.Error); ok {
+                    chargeReq.ProcessorReason = &stripeErrorType.Msg
+                }
+            }
+
+        } else {
+            stripeChargeID = stripeCharge.ID
+            chargeReq.ProcessorReason = &stripeReason
+        }
     }
 
     result, error = config.DB.Exec(
