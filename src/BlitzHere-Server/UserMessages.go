@@ -354,20 +354,12 @@ func SendUserMessage(
 }
 
 
-func WriteUserMessage(message *BlitzMessage.UserMessage) error {
-    Log.LogFunctionName()
+func paymentStatusForMessage(message *BlitzMessage.UserMessage) *BlitzMessage.PaymentStatus {
 
-    var firstError error
-    recipients := make(map[string]bool)
-    recipients = mapAppendFromArray(recipients, message.Recipients)
-    recipients = mapAppendFromArray(recipients, []string {*message.SenderID} )
-    message.Recipients = arrayFromMap(recipients)
+    var ps *BlitzMessage.PaymentStatus = nil
 
-    if len(message.Recipients) == 0 {
-        return errors.New("No recipients")
-    }
-
-    if message.ConversationID != nil &&
+    if  message != nil &&
+        message.ConversationID != nil &&
         len(*message.ConversationID) > 0 &&
         (message.PaymentStatus == nil ||
          *message.PaymentStatus == BlitzMessage.PaymentStatus_PSUnknown) {
@@ -381,9 +373,28 @@ func WriteUserMessage(message *BlitzMessage.UserMessage) error {
         error := row.Scan(&paymentStatus)
         if error != nil { Log.LogError(error) }
         if paymentStatus.Valid {
-            message.PaymentStatus = BlitzMessage.PaymentStatus(paymentStatus.Int64).Enum()
+            ps = BlitzMessage.PaymentStatus(paymentStatus.Int64).Enum()
         }
     }
+
+    return ps
+}
+
+
+func WriteUserMessage(message *BlitzMessage.UserMessage) error {
+    Log.LogFunctionName()
+
+    var firstError error
+    recipients := make(map[string]bool)
+    recipients = mapAppendFromArray(recipients, message.Recipients)
+    recipients = mapAppendFromArray(recipients, []string {*message.SenderID} )
+    message.Recipients = arrayFromMap(recipients)
+
+    if len(message.Recipients) == 0 {
+        return errors.New("No recipients")
+    }
+
+    message.PaymentStatus = paymentStatusForMessage(message)
 
     for _, recipientID := range message.Recipients {
         _, error := config.DB.Exec(
@@ -547,6 +558,7 @@ func UserDidConnectToPusher(
     for rows.Next() {
         message := ScanUserMessageTableRow(rows)
         if message != nil {
+            message.PaymentStatus = paymentStatusForMessage(message)
             user.SendMessage(message)
             messageCount++
         }

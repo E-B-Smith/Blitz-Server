@@ -831,6 +831,40 @@ func UpdateConversationPaymentStatus(session *Session, updateStatus *BlitzMessag
 }
 
 
+func CloseConversationID(conversationID string) error {
+    Log.LogFunctionName()
+
+    result, error := config.DB.Exec(
+        `update ConversationTable set
+            closedDate = current_timestamp
+            where conversationID = $1;`,
+        conversationID,
+    )
+    error = pgsql.UpdateResultError(result, error)
+    if error != nil {
+        Log.LogError(error)
+        return error
+    }
+
+    //  Add a system to the participants --
+
+    message := fmt.Sprintf("This conversation has been closed.")
+    error = SendUserMessageInternal(
+        BlitzMessage.Default_Global_SystemUserID,
+        MembersForConversationID(conversationID),
+        conversationID,
+        message,
+        BlitzMessage.UserMessageType_MTConversation,
+        "",
+        "",
+    )
+    if error != nil {
+        Log.LogError(error)
+    }
+    return error
+}
+
+
 //----------------------------------------------------------------------------------------
 //                                                                UpdateConversationStatus
 //----------------------------------------------------------------------------------------
@@ -848,8 +882,14 @@ func UpdateConversationStatus(session *Session, updateStatus *BlitzMessage.Updat
         updateStatus.PaymentStatus != nil {
         return UpdateConversationPaymentStatus(session, updateStatus)
     }
-    if  updateStatus.Status == nil ||
-        *updateStatus.Status != BlitzMessage.UserMessageStatus_MSRead {
+    if updateStatus.Status == nil {
+        return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, fmt.Errorf("Invalid input"))
+    }
+    if *updateStatus.Status == BlitzMessage.UserMessageStatus_MSClosed {
+        error := CloseConversationID(*updateStatus.ConversationID)
+        return ServerResponseForError(BlitzMessage.ResponseCode_RCSuccess, error)
+    }
+    if *updateStatus.Status != BlitzMessage.UserMessageStatus_MSRead {
         return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, fmt.Errorf("Invalid input"))
     }
 
@@ -995,8 +1035,7 @@ func UpdatePurchaseDescriptionForConversation(session *Session, purchase *BlitzM
             from UserTable where userID = $1;`,
         expertID,
     )
-    var name sql.NullString
-    var chatCharge, callCharge sql.NullFloat64
+    var name, chatCharge, callCharge sql.NullString
     var isExpert sql.NullBool
     error = row.Scan(
         &name,
@@ -1009,7 +1048,7 @@ func UpdatePurchaseDescriptionForConversation(session *Session, purchase *BlitzM
         return errors.New("Expert not available")
     }
 
-    purchase.Amount   = proto.String(fmt.Sprintf("%1.02f", chatCharge.Float64))
+    purchase.Amount   = proto.String(chatCharge.String)
     purchase.Currency = proto.String("usd")
     purchase.MemoText = proto.String(fmt.Sprintf("Chat with %s to get expert views and opinions.", name.String))
 

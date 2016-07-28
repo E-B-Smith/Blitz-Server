@@ -103,30 +103,10 @@ func WriteReview(session *Session, review *BlitzMessage.UserReview,
         return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
     }
 
-    result, error = config.DB.Exec(
-        `update ConversationTable set
-            closedDate = current_timestamp
-            where conversationID = $1;`,
-        review.ConversationID,
-    )
-    error = pgsql.UpdateResultError(result, error)
+    error = CloseConversationID(*review.ConversationID)
     if error != nil {
         return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
     }
-
-    //  Add a system to the participants --
-
-    message := fmt.Sprintf("This conversation has been closed.")
-    error = SendUserMessageInternal(
-        BlitzMessage.Default_Global_SystemUserID,
-        MembersForConversationID(*review.ConversationID),
-        *review.ConversationID,
-        message,
-        BlitzMessage.UserMessageType_MTConversation,
-        "",
-        "",
-    )
-    if error != nil { Log.LogError(error) }
 
     return ServerResponseForError(BlitzMessage.ResponseCode_RCSuccess, nil)
 }

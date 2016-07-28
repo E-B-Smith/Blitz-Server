@@ -26,6 +26,7 @@ enum UserMessageStatus {
   MSNew       = 2;
   MSRead      = 3;
   MSArchived  = 4;
+  MSClosed    = 5;
 }
 
 
