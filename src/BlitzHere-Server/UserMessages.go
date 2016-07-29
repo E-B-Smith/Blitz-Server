@@ -261,7 +261,7 @@ func UpdateConversationMessage(
          BlitzMessage.PaymentStatus_PSTrialPeriod:
         //  Get the trial count messages:
 
-        if  conversation.InitiatorUserID!= nil &&
+        if  conversation.InitiatorUserID != nil &&
             session.UserID != *conversation.InitiatorUserID {
             return nil
         }
@@ -291,7 +291,10 @@ func UpdateConversationMessage(
             conversation.ConversationID,
         )
         error = pgsql.UpdateResultError(result, error)
-        if error != nil { Log.LogError(error) }
+        if error != nil {
+            Log.LogError(error)
+            return error
+        }
 
         if messagesSent.Int64 < trialCount {
             return nil
@@ -346,6 +349,8 @@ func SendUserMessage(
         }
     }
 
+    Log.Debugf("Payment status is: %v.", message.PaymentStatus)
+
     error = WriteUserMessage(message)
     if error != nil {
         return ServerResponseForError(BlitzMessage.ResponseCode_RCServerError, error)
@@ -356,10 +361,12 @@ func SendUserMessage(
 
 func paymentStatusForMessage(message *BlitzMessage.UserMessage) *BlitzMessage.PaymentStatus {
 
-    var ps *BlitzMessage.PaymentStatus = nil
+    if message == nil {
+        return nil
+    }
+    var ps *BlitzMessage.PaymentStatus = message.PaymentStatus
 
-    if  message != nil &&
-        message.ConversationID != nil &&
+    if  message.ConversationID != nil &&
         len(*message.ConversationID) > 0 &&
         (message.PaymentStatus == nil ||
          *message.PaymentStatus == BlitzMessage.PaymentStatus_PSUnknown) {
@@ -395,6 +402,7 @@ func WriteUserMessage(message *BlitzMessage.UserMessage) error {
     }
 
     message.PaymentStatus = paymentStatusForMessage(message)
+    Log.Debugf("Payment status is: %v.", message.PaymentStatus)
 
     for _, recipientID := range message.Recipients {
         _, error := config.DB.Exec(
@@ -565,6 +573,4 @@ func UserDidConnectToPusher(
     }
     Log.Debugf("Sent %d catchup messages.", messageCount)
 }
-
-
 

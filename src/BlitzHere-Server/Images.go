@@ -56,6 +56,24 @@ func UploadImage(session *Session, imageUpload *BlitzMessage.ImageUpload,
     }
     imageData := imageUpload.ImageData[0]
 
+    //  If the profile is in edit mode, save as the editProfileID.
+
+    var error error
+    userID := session.UserID
+    row := config.DB.QueryRow(
+        `select editProfileID from UserTable
+            where userID = $1;`,
+        session.UserID,
+    )
+    var editID sql.NullString
+    error = row.Scan(&editID)
+    if error != nil {
+        Log.LogError(error)
+    }
+    if editID.Valid && len(editID.String) > 10 {
+        userID = editID.String
+    }
+
     //  Deleted?
 
     if imageData.Deleted != nil && *imageData.Deleted {
@@ -63,7 +81,7 @@ func UploadImage(session *Session, imageUpload *BlitzMessage.ImageUpload,
             `update ImageTable set deleted = true
                 where userID = $1
                   and crc32 = $2`,
-            session.UserID,
+            userID,
             imageData.Crc32,
         )
         error = pgsql.UpdateResultError(result, error)
@@ -108,7 +126,6 @@ func UploadImage(session *Session, imageUpload *BlitzMessage.ImageUpload,
         imageData.DateAdded = BlitzMessage.TimestampPtr(time.Now())
     }
 
-    var error error
     var result sql.Result
     result, error = config.DB.Exec(
         `insert into ImageTable (
@@ -118,7 +135,7 @@ func UploadImage(session *Session, imageUpload *BlitzMessage.ImageUpload,
            crc32,
            imageData,
            dateAdded) values ($1, $2, $3, $4, $5, $6);`,
-             session.UserID,
+             userID,
              imageData.ImageContent,
              imageData.ContentType,
              imageData.Crc32,
@@ -138,7 +155,7 @@ func UploadImage(session *Session, imageUpload *BlitzMessage.ImageUpload,
                  imageData.ContentType,
                  imageData.ImageBytes,
                  imageData.DateAdded.TimePtr(),
-                 session.UserID,
+                 userID,
                  imageData.Crc32,
         )
     }
@@ -146,7 +163,7 @@ func UploadImage(session *Session, imageUpload *BlitzMessage.ImageUpload,
         return ServerResponseForError(BlitzMessage.ResponseCode_RCServerError, error)
     }
 
-    imageData.ImageURL = StringPtrFromString(ImageURLForImageData(session.UserID, imageData))
+    imageData.ImageURL = StringPtrFromString(ImageURLForImageData(userID, imageData))
     Log.Debugf("ImageURL: %s Updated: %d Error: %v.", *imageData.ImageURL, pgsql.RowsUpdated(result), error)
     if error != nil {
         return ServerResponseForError(BlitzMessage.ResponseCode_RCServerError, error)

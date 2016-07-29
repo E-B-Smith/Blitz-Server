@@ -20,6 +20,7 @@ import (
     "strings"
     "strconv"
     "database/sql"
+    "github.com/lib/pq"
     "github.com/stripe/stripe-go"
     "github.com/stripe/stripe-go/card"
     "github.com/stripe/stripe-go/charge"
@@ -189,6 +190,9 @@ func CardsForStripeCID(stripeCID string) []*BlitzMessage.CardInfo {
             last4 = stripeCard.DynLastFour
         }
         memoText := stripeCard.Meta["MemoText"]
+        if stripeCard.TokenizationMethod == "apple_pay" {
+            continue
+        }
 
         card := BlitzMessage.CardInfo {
             CardStatus:         BlitzMessage.CardStatus(BlitzMessage.CardStatus_CSStandard).Enum(),
@@ -269,8 +273,10 @@ func ChargeRequest(session *Session, chargeReq *BlitzMessage.Charge) *BlitzMessa
     Log.LogFunctionName()
 
     var amountI int = 0
+    var amountS = "0.00"
     if chargeReq.Amount != nil {
         amountF, _ := strconv.ParseFloat(*chargeReq.Amount, 64)
+        amountS = fmt.Sprintf("%1.00f", amountF)
         amountI = int(amountF * 100)
     }
 
@@ -280,7 +286,7 @@ func ChargeRequest(session *Session, chargeReq *BlitzMessage.Charge) *BlitzMessa
         len(*chargeReq.PayerID) == 0 ||
         chargeReq.ChargeToken == nil ||
         len(*chargeReq.ChargeToken) == 0 ||
-        chargeReq.ChargeToken == nil ||
+        chargeReq.TokenType == nil ||
         chargeReq.PurchaseType == nil ||
         chargeReq.PurchaseTypeID == nil ||
         len(*chargeReq.PurchaseTypeID) == 0 ||
@@ -325,10 +331,34 @@ func ChargeRequest(session *Session, chargeReq *BlitzMessage.Charge) *BlitzMessa
     )
     var total sql.NullFloat64
     error = row.Scan(&total)
-    if error != nil || total.Float64 >= 400.0 {
+    if error != nil || total.Float64 >= 600.0 {
         Log.Errorf("Charge limit reached! Total: %1.2f Error: %v.", total.Float64, error)
         error = fmt.Errorf("Sorry, we aren't able to submit charges at the moment.")
         return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
+    }
+
+    //  Check to see if conversation is still open --
+
+    if *chargeReq.PurchaseType == BlitzMessage.PurchaseType_PTChatConversation {
+
+        row := config.DB.QueryRow(
+            `select
+                closedDate,
+                paymentStatus
+                    from ConversationTable
+                    where conversationID = $1;`,
+            chargeReq.PurchaseTypeID,
+        )
+        var (closedDate pq.NullTime; paymentStatus sql.NullInt64)
+        error = row.Scan(&closedDate, &paymentStatus)
+        if error != nil { Log.LogError(error) }
+
+        if error != nil || closedDate.Valid {
+            return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, errors.New("Conversation is closed"))
+        }
+        if paymentStatus.Int64 > int64(BlitzMessage.PaymentStatus_PSPaymentRequired) {
+            return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, errors.New("Already paid"))
+        }
     }
 
     //  Insert charge status:
@@ -354,7 +384,7 @@ func ChargeRequest(session *Session, chargeReq *BlitzMessage.Charge) *BlitzMessa
         chargeReq.PurchaseType,
         chargeReq.PurchaseTypeID,
         chargeReq.MemoText,
-        chargeReq.Amount,
+        amountS,
         chargeReq.Currency,
         chargeReq.ChargeToken,
     )

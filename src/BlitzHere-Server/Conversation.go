@@ -727,20 +727,27 @@ func FetchConversations(session *Session, req *BlitzMessage.FetchConversations) 
 //----------------------------------------------------------------------------------------
 
 
-func UpdateConversationPaymentStatus(session *Session, updateStatus *BlitzMessage.UpdateConversationStatus,
+func UpdateConversationPaymentStatus(
+        session *Session,
+        updateStatus *BlitzMessage.UpdateConversationStatus,
     ) *BlitzMessage.ServerResponse {
     Log.LogFunctionName()
 
     row := config.DB.QueryRow(
-        `select initiatorUserID, paymentStatus from ConversationTable
-            where conversationID = $1;`,
+        `select
+            initiatorUserID,
+            paymentStatus,
+            closedDate
+            from ConversationTable
+                where conversationID = $1;`,
         updateStatus.ConversationID,
     )
     var (
-        clientID sql.NullString
-        status   sql.NullInt64
+        clientID    sql.NullString
+        status      sql.NullInt64
+        closedDate  pq.NullTime
     )
-    error := row.Scan(&clientID, &status)
+    error := row.Scan(&clientID, &status, &closedDate)
     if error != nil {
         Log.LogError(error)
         return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, fmt.Errorf("Invalid input"))
@@ -758,9 +765,11 @@ func UpdateConversationPaymentStatus(session *Session, updateStatus *BlitzMessag
         BlitzMessage.PaymentStatus_PSExpertNeedsAccept {
         return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, fmt.Errorf("Invalid input"))
     }
+    if closedDate.Valid {
+        return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, fmt.Errorf("This conversation is closed"))
+    }
 
     var message string
-    var closedDate pq.NullTime
     //clientName := PrettyNameForUserID(clientID.String)
     expertName := PrettyNameForUserID(expertID)
 
