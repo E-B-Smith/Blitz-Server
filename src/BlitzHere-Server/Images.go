@@ -214,7 +214,7 @@ func GetImage(writer http.ResponseWriter, httpRequest *http.Request) {
         return
     }
 
-    Log.Debugf("Getting image for '%s' '%d'...", uid, crc32)
+    Log.Debugf("Method: %s. Getting image for '%s' '%d'...", httpRequest.Method, uid, crc32)
     rows, error := config.DB.Query(
         "select contentType, imageData from ImageTable where userID = $1 and crc32 = $2;",
             uid, crc32)

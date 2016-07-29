@@ -517,10 +517,9 @@ func ChargeRequest(session *Session, chargeReq *BlitzMessage.Charge) *BlitzMessa
         )
 
         userMessage := fmt.Sprintf(
-            "Congrats!\nYou are now connected with %s.\n"+
+            "Thank you for your payment!\n"+
             "%s has 24 hours to accept your request.\n"+
             "Otherwise your money will be automatically refunded to you.",
-            expertName,
             expertName,
         )
 

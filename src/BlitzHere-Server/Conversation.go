@@ -777,7 +777,7 @@ func UpdateConversationPaymentStatus(
 
     case BlitzMessage.PaymentStatus_PSExpertAccepted:
         message = fmt.Sprintf(
-            "%s has accepted your invitation.  Enjoy your chat.",
+            "Congrats!  %s has accepted your invitation.\nEnjoy your chat.",
             expertName,
         )
 
