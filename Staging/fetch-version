@@ -28,7 +28,7 @@ USAGE
 }
 
 
-baseurl="https://shimmering.blue/version"
+baseurl="https://violent.blue/version"
 username="blitzhere"
 host="shimmering.blue"
 versionfile="/home/shimmering/www/blue.shimmering/version"
@@ -55,13 +55,13 @@ function fetchVersion() {
 
 
 function incrementBuild() {
-    #echo "`hostname` $host $USER $username" 1>&2
+    # echo "`hostname` $host $USER $username" 1>&2
     if [[ "$host" =~ `hostname` && "$USER" == "$username" ]]; then
-       #echo ">>> Local update." 1>&2
+       # echo ">>> Local update." 1>&2
        let Build+=1
        echo "$Major.$Minor.$Revision.$Build" > "$versionfile"
     else
-       #echo ">>> Remote update for '$packagename'." 1>&2
+       # echo ">>> Remote update for '$packagename'." 1>&2
        ssh -T $username@$host fetch-version -i $packagename &> /dev/null
     fi
     local newversion=$(curl -fs "$url") || true

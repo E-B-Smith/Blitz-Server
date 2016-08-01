@@ -153,7 +153,7 @@ func UserIsConfirming(session *Session, confirmation *BlitzMessage.ConfirmationR
 
     var oldestUserID sql.NullString
     error = row.Scan(&oldestUserID)
-    if error == nil && oldestUserID.Valid {
+    if oldestUserID.Valid {
 
         //  An older profile exists.  Merge current profile
         //  into profile.
@@ -191,27 +191,81 @@ func UserIsConfirming(session *Session, confirmation *BlitzMessage.ConfirmationR
             return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
         }
         session.UserID = dbUserID.String
+        SetupNewUser(session)
     }
 
     UpdateProfileStatusForUserID(session.UserID, BlitzMessage.UserStatus_USConfirmed)
     profile := ProfileForUserID(session.UserID, session.UserID)
 
+    var message *string
+    if oldestUserID.Valid && len(*profile.Name) > 0 {
+        messageS :=
+            config.Localizef(
+                "kConfirmConfirmedWelcome", "Hello %s\nWelcome back to %s",
+                *profile.Name,
+                config.AppName,
+            )
+        message = &messageS
+    }
+
     confirmed := BlitzMessage.ConfirmationRequest {
         UserProfile: profile,
     }
     responseCode    := BlitzMessage.ResponseCode_RCSuccess
-    responseMessage :=
-        config.Localizef(
-            "kConfirmConfirmedWelcome", "Hello %s\nWelcome back to %s",
-            *profile.Name,
-            config.AppName,
-        )
     response := &BlitzMessage.ServerResponse {
         ResponseCode:       &responseCode,
-        ResponseMessage:    &responseMessage,
+        ResponseMessage:    message,
         ResponseType:       &BlitzMessage.ResponseType { ConfirmationRequest: &confirmed },
     }
     return response
+}
+
+
+//----------------------------------------------------------------------------------------
+//                                                                            SetupNewUser
+//----------------------------------------------------------------------------------------
+
+
+func SetupNewUser(session *Session) {
+    Log.LogFunctionName()
+
+    //  Add Blitz Assistant as a friend and follow user:
+
+    result, error := config.DB.Exec(
+        `insert into entitytagtable
+            (entityid, entitytype, entitytag, userid) values
+            ($1::uuid, 1, '.friend', $2),
+            ($2::uuid, 1, '.friend', $1),
+            ($1::uuid, 1, '.followed', $2)
+            on conflict do nothing;`,
+        session.UserID,
+        BlitzMessage.Default_Global_BlitzUserID,
+    )
+    error = pgsql.UpdateResultError(result, error)
+    if error != nil {
+        Log.LogError(error)
+    }
+
+    //  Send a welcome message:
+
+    //  Create a conversation:
+
+    convReq := BlitzMessage.ConversationRequest {
+        UserIDs:    [] string { session.UserID, BlitzMessage.Default_Global_BlitzUserID },
+    }
+
+    resp := StartConversation(session, &convReq)
+    message := "Hello, I'm here to help you."
+
+    error = SendUserMessageInternal(
+        BlitzMessage.Default_Global_BlitzUserID,
+        []string { session.UserID },
+        *resp.ResponseType.ConversationResponse.Conversation.ConversationID,
+        message,
+        BlitzMessage.UserMessageType_MTConversation,
+        "",
+        "",
+    )
 }
 
 

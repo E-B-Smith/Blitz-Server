@@ -91,3 +91,20 @@ from EntityTagTable
 group by entityTag
 where entityID = '1559e965-3c89-4ddb-9384-264309c36e26'
   and entityType = 2;
+
+
+-- Make Bobby Blitz a friend to all!
+
+insert into entitytagtable
+    (entityid, entitytype, entitytag, userid)
+    select 'a8277a5e-b461-476b-9f4a-922a50b97f26', 1, '.friend', userid
+        from usertable
+        on conflict do nothing;
+
+insert into entitytagtable
+    (userid, entitytype, entitytag, entityid)
+    select 'a8277a5e-b461-476b-9f4a-922a50b97f26', 1, '.followed', userid::uuid
+        from usertable
+        on conflict do nothing;
+
+
