@@ -1,32 +1,34 @@
 
 #  Development BlitzLabs server configuration
 
-service-name        BlitzLabs-Server
-service-prefix      "/blitzlabs"
-service-file-path   BlitzLabs
-service-port        10002
-server-url          "https://blitzhere.com"
+service-name                BlitzLabs-Server
+service-prefix              "/blitzlabs"
+service-file-path           BlitzLabs
+service-port                10002
+server-url                  "https://blitzhere.com"
 
-testing-enabled     true
+testing-enabled             true
 
-database-url        "postgres://blitzlabs:blitzlabs@localhost:5432/blitzlabs"
+database-url                "postgres://blitzlabs:blitzlabs@localhost:5432/blitzlabs"
 
-log-level           LogLevelAll
-log-filename        "~/log/BlitzLabs-Server.log"
+log-level                   LogLevelAll
+log-filename                "~/log/BlitzLabs-Server.log"
 
-templates-path      templates
-localization-file   strings.local
+templates-path              templates
+localization-file           strings.local
 
-app-name            BlitzLabs
-app-link-scheme     blitzlabs
-app-link-url        https://blitzhere.com/blitzlabs/link
-app-store-url       https://blitzhere.com/ios/blitz-labs
-short-link-url      https://blitzhere.com/bl
+app-name                    BlitzLabs
+app-link-scheme             blitzlabs
+app-link-url                https://blitzhere.com/blitzlabs/link
+app-store-url               https://blitzhere.com/ios/blitz-labs
+short-link-url              https://blitzhere.com/bl
 
-email-address       "BlitzLabs <blitzlabs@blitzhere.com>"
-email-account       SMTP_Injection
-# email-password      2d39b713d65cda9d44bb375ad2396e2933d9d23c
-# email-smtp-server   smtp.sparkpostmail.com:587
+email-address               "BlitzLabs <blitzlabs@blitzhere.com>"
+email-account               SMTP_Injection
+# email-password            2d39b713d65cda9d44bb375ad2396e2933d9d23c
+# email-smtp-server         smtp.sparkpostmail.com:587
 
-stripe-key          sk_test_MOcjUJm7UBHhZKLRwYk27TBC
-service-is-free     false
+stripe-key                  sk_test_MOcjUJm7UBHhZKLRwYk27TBC
+service-is-free             false
+daily-charge-limit-dollars  500.00
+chat-limit-hours            0.030

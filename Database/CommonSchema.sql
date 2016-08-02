@@ -464,6 +464,7 @@ create table ConversationTable
     ,initiatorUserID            UserID      not null
     ,parentFeedPostID           UUID
     ,creationDate               timestamptz not null
+    ,acceptDate                 timestamptz
     ,closedDate                 timestamptz
     ,paymentStatus              smallint
     ,chargeID                   uuid
@@ -1262,6 +1263,10 @@ create table ChargeTable
 
     ,processorReason    text
     ,processorChargeID  text
+
+    ,refundDate         timestamptz
+    ,refundProcessorID  text
+    ,refundMemo         text
     );
 
 

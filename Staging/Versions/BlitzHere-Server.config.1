@@ -1,32 +1,34 @@
 
 #  Development BlitzHere server configuration
 
-service-name        BlitzHere-Server
-service-prefix      "/blitzhere"
-service-file-path   BlitzHere
-service-port        10004
-server-url          "https://blitzhere.com"
+service-name                BlitzHere-Server
+service-prefix              "/blitzhere"
+service-file-path           BlitzHere
+service-port                10004
+server-url                  "https://blitzhere.com"
 
-testing-enabled     true
+testing-enabled             true
 
-database-url        "postgres://blitzhere:blitzhere@localhost:5432/blitzhere"
+database-url                "postgres://blitzhere:blitzhere@localhost:5432/blitzhere"
 
-log-level           LogLevelAll
-log-filename        "~/log/BlitzHere-Server.log"
+log-level                   LogLevelAll
+log-filename                "~/log/BlitzHere-Server.log"
 
-templates-path      templates
-localization-file   strings.local
+templates-path              templates
+localization-file           strings.local
 
-app-name            Blitz
-app-link-scheme     blitzhere
-app-link-url        https://blitzhere.com/blitzhere/link
-app-store-url       https://itunes.apple.com/us/app/xprt/id1047734098?ls=1&mt=8
-short-link-url      https://blitzhere.com/bh
+app-name                    Blitz
+app-link-scheme             blitzhere
+app-link-url                https://blitzhere.com/blitzhere/link
+app-store-url               https://itunes.apple.com/us/app/xprt/id1047734098?ls=1&mt=8
+short-link-url              https://blitzhere.com/bh
 
-email-address       "BlitzHere <blitzhere@blitzhere.com>"
-email-account       SMTP_Injection
-# email-password      2d39b713d65cda9d44bb375ad2396e2933d9d23c
-# email-smtp-server   smtp.sparkpostmail.com:587
+email-address               "BlitzHere <blitzhere@blitzhere.com>"
+email-account               SMTP_Injection
+# email-password            2d39b713d65cda9d44bb375ad2396e2933d9d23c
+# email-smtp-server         smtp.sparkpostmail.com:587
 
-stripe-key          sk_live_Rb3unPbqIiSHuXuX07D9vZym
-service-is-free     false
+stripe-key                  sk_live_Rb3unPbqIiSHuXuX07D9vZym
+service-is-free             false
+# daily-charge-limit-dollars  200.00
+# chat-limit-hours            24

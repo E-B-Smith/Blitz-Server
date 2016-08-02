@@ -25,6 +25,7 @@ import (
     "github.com/stripe/stripe-go/card"
     "github.com/stripe/stripe-go/charge"
     "github.com/stripe/stripe-go/customer"
+    "github.com/stripe/stripe-go/refund"
     "github.com/golang/protobuf/proto"
     "violent.blue/GoKit/Log"
     "violent.blue/GoKit/pgsql"
@@ -325,13 +326,13 @@ func ChargeRequest(session *Session, chargeReq *BlitzMessage.Charge) *BlitzMessa
 
     row := config.DB.QueryRow(
         `select sum(amount) from ChargeTable
-            where age(now(), timestamp) < '24 hours'
+            where (now() - timestamp) < '24 hours'
               and chargeStatus = $1;`,
         BlitzMessage.ChargeStatus_CSCharged,
     )
     var total sql.NullFloat64
     error = row.Scan(&total)
-    if error != nil || total.Float64 >= 600.0 {
+    if error != nil || total.Float64 >= config.DailyChargeLimitDollars {
         Log.Errorf("Charge limit reached! Total: %1.2f Error: %v.", total.Float64, error)
         error = fmt.Errorf("Sorry, we aren't able to submit charges at the moment.")
         return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
@@ -585,5 +586,69 @@ func FetchPurchaseDescription(session *Session,
     }
 
     return response
+}
+
+
+//----------------------------------------------------------------------------------------
+//
+//                                                                          RefundChargeID
+//
+//----------------------------------------------------------------------------------------
+
+
+func RefundChargeID(chargeID string, reason string) error {
+    Log.LogFunctionName()
+
+    row := config.DB.QueryRow(
+        `select chargeStatus, processorChargeID
+            from ChargeTable
+            where chargeID = $1
+            for update;`,
+        chargeID,
+    )
+    var ( chargeStatus sql.NullInt64; processorChargeID sql.NullString)
+    error := row.Scan(&chargeStatus, &processorChargeID)
+    if error != nil {
+        Log.LogError(error)
+        return error
+    }
+    if  BlitzMessage.ChargeStatus(chargeStatus.Int64) == BlitzMessage.ChargeStatus_CSRefunded {
+        return errors.New("Already refunded")
+    }
+    if  BlitzMessage.ChargeStatus(chargeStatus.Int64) != BlitzMessage.ChargeStatus_CSCharged ||
+        ! processorChargeID.Valid {
+        return errors.New("No charges")
+    }
+
+    params := &stripe.RefundParams{
+        Charge:     processorChargeID.String,
+        Reason:     "requested_by_customer",
+    }
+    params.Meta = map[string]string { "MemoText": reason }
+
+    var resp *stripe.Refund
+    resp, error = refund.New(params)
+    if error != nil {
+        Log.LogError(error)
+        return error
+    }
+    var result sql.Result
+    result, error = config.DB.Exec(
+        `update ChargeTable set
+            chargeStatus = $1,
+            refundDate = transaction_timestamp(),
+            refundProcessorID = $2,
+            refundMemo = $3
+                where chargeID = $4;`,
+        BlitzMessage.ChargeStatus_CSRefunded,
+        resp.ID,
+        reason,
+        chargeID,
+    )
+    error = pgsql.UpdateResultError(result, error)
+    if error != nil {
+        Log.LogError(error)
+    }
+    return error
 }
 

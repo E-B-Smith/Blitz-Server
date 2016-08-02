@@ -45,6 +45,8 @@ type BlitzConfiguration struct {
     ServerUtil.Configuration
     StripeKey                   string
     ServiceIsFree               bool
+    DailyChargeLimitDollars     float64
+    ChatLimitHours              float64
 }
 
 
@@ -461,7 +463,9 @@ func Server() (returnValue int) {
         return 1
     }
     stripe.Key = config.StripeKey
-
+    if config.ChatLimitHours <= 0 {
+        config.ChatLimitHours = 24
+    }
 
     //  Start --
 
@@ -514,6 +518,10 @@ func Server() (returnValue int) {
     StartNotifier()
     defer StopNotifier()
 
+    StartScheduler()
+    defer StopScheduler()
+    ScheduleTask(time.Minute, ConversationCloser)
+
     //  Set up & start our http handlers --
 
     Session_InitializeSessions()
@@ -553,7 +561,7 @@ func Server() (returnValue int) {
         http.StripPrefix(config.ServicePrefix,
         http.FileServer(http.Dir(config.ServiceFilePath))))
 
-    //  Push messages --
+    //  Handle push messages --
 
     globalMessagePusher = MessagePusher.NewMessagePusher()
     globalMessagePusher.UserDidConnect = UserDidConnectToPusher

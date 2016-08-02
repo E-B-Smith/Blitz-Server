@@ -770,7 +770,7 @@ func UpdateConversationPaymentStatus(
     }
 
     var message string
-    //clientName := PrettyNameForUserID(clientID.String)
+    var acceptDate pq.NullTime
     expertName := PrettyNameForUserID(expertID)
 
     switch *updateStatus.PaymentStatus {
@@ -780,6 +780,8 @@ func UpdateConversationPaymentStatus(
             "Congrats!  %s has accepted your invitation.\nEnjoy your chat.",
             expertName,
         )
+        acceptDate.Time = time.Now()
+        acceptDate.Valid = true
 
     case BlitzMessage.PaymentStatus_PSExpertRejected:
         closedDate.Valid = true
@@ -796,10 +798,12 @@ func UpdateConversationPaymentStatus(
     result, error := config.DB.Exec(
         `update ConversationTable set
             paymentStatus = $1,
-            closedDate = $2
-            where conversationID = $3;`,
+            closedDate = $2,
+            acceptDate = $3
+              where conversationID = $4;`,
         *updateStatus.PaymentStatus,
         closedDate,
+        acceptDate,
         updateStatus.ConversationID,
     )
     error = pgsql.UpdateResultError(result, error)
@@ -1062,5 +1066,120 @@ func UpdatePurchaseDescriptionForConversation(session *Session, purchase *BlitzM
     purchase.MemoText = proto.String(fmt.Sprintf("Chat with %s to get expert views and opinions.", name.String))
 
     return nil
+}
+
+
+
+//----------------------------------------------------------------------------------------
+//
+//                                                                      ConversationCloser
+//                                           Closes expired conversations.  Refunds Money.
+//
+//----------------------------------------------------------------------------------------
+
+
+func CloseConversationIDTestMode(conversationID string) {
+    //Log.Debugf("Would close conversation %s.", conversationID)
+    CloseConversationID(conversationID)
+}
+
+
+func RefundChargeIDTestMode(chargeID string, memoText string) {
+    //Log.Debugf("Would refund chargeID %s.", chargeID)
+    RefundChargeID(chargeID, memoText)
+}
+
+
+func ConversationCloser() {
+    Log.LogFunctionName()
+
+    //  Close & refund non-accepted expert conversaations --
+    Log.Debugf("Close non-accepted conversations...")
+
+    rows, error := config.DB.Query(
+        `select conversationID, chargeID from ConversationTable
+            where paymentStatus > $1
+              and paymentStatus < $2
+              and closedDate is null
+              and (now() - creationDate) >= (to_char($3::real, '999D999') || ' hours')::interval;`,
+        BlitzMessage.PaymentStatus_PSIsFree,
+        BlitzMessage.PaymentStatus_PSExpertAccepted,
+        config.ChatLimitHours,
+    )
+    if error != nil {
+        Log.LogError(error)
+    }
+    defer pgsql.CloseRows(rows)
+
+    for rows != nil  && rows.Next() {
+        var conversationID, chargeID sql.NullString
+        error = rows.Scan(&conversationID, &chargeID)
+        if error != nil {
+            Log.LogError(error)
+            continue
+        }
+        CloseConversationIDTestMode(conversationID.String)
+        if chargeID.Valid {
+            RefundChargeIDTestMode(chargeID.String, "Expert not available.")
+        }
+    }
+
+    //  Close old open expert conversations --
+    Log.Debugf("Close old paid expert conversations...")
+
+    rows, error = config.DB.Query(
+        `select conversationID from ConversationTable
+            where paymentStatus = $1
+              and closedDate is null
+              and (now() - acceptDate) >= (to_char($2::real, '999D999') || ' hours')::interval;`,
+        BlitzMessage.PaymentStatus_PSExpertAccepted,
+        config.ChatLimitHours,
+    )
+    if error != nil {
+        Log.LogError(error)
+    }
+    defer pgsql.CloseRows(rows)
+
+    for rows != nil  && rows.Next() {
+        var conversationID string
+        error = rows.Scan(&conversationID)
+        if error != nil {
+            Log.LogError(error)
+            continue
+        }
+        CloseConversationIDTestMode(conversationID)
+    }
+
+    //  Close expert to non-expert conversations --
+    Log.Debugf("Close old expert to non-expert conversations...")
+
+    rows, error = config.DB.Query(
+        `select ct.conversationID from ConversationTable ct
+            join UserTable ut on ut.userID = ct.initiatorUserID
+            join ConversationMemberTable cmt on
+                (cmt.conversationID = ct.conversationID and cmt.memberID <> ut.userID)
+            join UserTable utx on utx.userID = cmt.memberID
+            where closedDate is null
+              and paymentStatus <= $1
+              and ut.isExpert = true
+              and (utx.isExpert = false or utx.isExpert is null)
+              and (now() - ct.creationDate) >= (to_char($2::real, '999D999') || ' hours')::interval;`,
+        BlitzMessage.PaymentStatus_PSIsFree,
+        config.ChatLimitHours,
+    )
+    if error != nil {
+        Log.LogError(error)
+    }
+    defer pgsql.CloseRows(rows)
+
+    for rows != nil  && rows.Next() {
+        var conversationID string
+        error = rows.Scan(&conversationID)
+        if error != nil {
+            Log.LogError(error)
+            continue
+        }
+        CloseConversationIDTestMode(conversationID)
+    }
 }
 

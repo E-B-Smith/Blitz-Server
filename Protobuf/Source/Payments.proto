@@ -49,6 +49,7 @@ enum ChargeStatus {
   CSDeclined      = 2;
   CSPreauthorized = 3;
   CSCharged       = 4;
+  CSRefunded      = 5;
 }
 
 
