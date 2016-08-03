@@ -111,6 +111,11 @@ func WebUserList(writer http.ResponseWriter, httpRequest *http.Request) {
         }
         user.LastSeen = lastSeen.Time.String()
 
+        if len(user.Name.String) == 0 {
+            user.Name.String = "< no name given >"
+            user.Name.Valid = true
+        }
+
         const bLen = 30
         if len(user.Background.String) > bLen {
             user.Background.String = user.Background.String[:bLen] + "..."
@@ -132,6 +137,10 @@ func WebUserList(writer http.ResponseWriter, httpRequest *http.Request) {
             if error == nil && count > 0 {
                 user.Annotation = "Applied"
             }
+        }
+
+        if isExpert.Bool {
+            user.Annotation += "*"
         }
 
         listUsers.Users = append(listUsers.Users, user)
@@ -241,6 +250,38 @@ func WebUpdateProfile(writer http.ResponseWriter, httpRequest *http.Request) {
     updateProfile.Profile = ProfileForUserID(userID, userID)
     if updateProfile.Profile == nil {
         updateProfile.ErrorMessage = fmt.Sprintf("Invalid UserID '%s'.", userID)
+        return
+    }
+
+    //  Erase user?
+
+    eraseUser := httpRequest.PostFormValue("EraseUser")
+    if  eraseUser == "EraseUser" {
+        result, error := config.DB.Exec(
+            `select eraseUserID($1);`,
+            userID,
+        )
+        error = pgsql.UpdateResultError(result, error)
+        if error != nil {
+            Log.LogError(error)
+            updateProfile.ErrorMessage = error.Error()
+            return
+        }
+        if updateProfile.Profile.EditProfileID != nil &&
+           len(*updateProfile.Profile.EditProfileID) > 0 {
+            result, error := config.DB.Exec(
+                `select eraseUserID($1);`,
+                updateProfile.Profile.EditProfileID,
+            )
+            error = pgsql.UpdateResultError(result, error)
+            if error != nil {
+                Log.LogError(error)
+                updateProfile.ErrorMessage = error.Error()
+                return
+            }
+        }
+        updateProfile.ErrorMessage = "User erased."
+        return
     }
 
     updateProfile.Profile.Name = Util.CleanStringPtrFromString(httpRequest.PostFormValue("Name"))
