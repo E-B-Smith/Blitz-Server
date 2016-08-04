@@ -7121,6 +7121,7 @@ static BFriendUpdate* defaultBFriendUpdateInstance = nil;
 @property (strong) BContactInfo* contactInfo;
 @property (strong) NSMutableArray * profilesArray;
 @property (strong) NSString* confirmationCode;
+@property (strong) NSString* name;
 @end
 
 @implementation BUserInvite
@@ -7162,6 +7163,13 @@ static BFriendUpdate* defaultBFriendUpdateInstance = nil;
   hasConfirmationCode_ = !!_value_;
 }
 @synthesize confirmationCode;
+- (BOOL) hasName {
+  return !!hasName_;
+}
+- (void) setHasName:(BOOL) _value_ {
+  hasName_ = !!_value_;
+}
+@synthesize name;
 - (instancetype) init {
   if ((self = [super init])) {
     self.userID = @"";
@@ -7169,6 +7177,7 @@ static BFriendUpdate* defaultBFriendUpdateInstance = nil;
     self.message = @"";
     self.contactInfo = [BContactInfo defaultInstance];
     self.confirmationCode = @"";
+    self.name = @"";
   }
   return self;
 }
@@ -7225,6 +7234,9 @@ static BUserInvite* defaultBUserInviteInstance = nil;
   if (self.hasConfirmationCode) {
     [output writeString:6 value:self.confirmationCode];
   }
+  if (self.hasName) {
+    [output writeString:7 value:self.name];
+  }
   [self.unknownFields writeToCodedOutputStream:output];
 }
 - (SInt32) serializedSize {
@@ -7251,6 +7263,9 @@ static BUserInvite* defaultBUserInviteInstance = nil;
   }];
   if (self.hasConfirmationCode) {
     size_ += computeStringSize(6, self.confirmationCode);
+  }
+  if (self.hasName) {
+    size_ += computeStringSize(7, self.name);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -7311,6 +7326,9 @@ static BUserInvite* defaultBUserInviteInstance = nil;
   if (self.hasConfirmationCode) {
     [output appendFormat:@"%@%@: %@\n", indent, @"confirmationCode", self.confirmationCode];
   }
+  if (self.hasName) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"name", self.name];
+  }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (void) storeInDictionary:(NSMutableDictionary *)dictionary {
@@ -7336,6 +7354,9 @@ static BUserInvite* defaultBUserInviteInstance = nil;
   if (self.hasConfirmationCode) {
     [dictionary setObject: self.confirmationCode forKey: @"confirmationCode"];
   }
+  if (self.hasName) {
+    [dictionary setObject: self.name forKey: @"name"];
+  }
   [self.unknownFields storeInDictionary:dictionary];
 }
 - (BOOL) isEqual:(id)other {
@@ -7358,6 +7379,8 @@ static BUserInvite* defaultBUserInviteInstance = nil;
       [self.profilesArray isEqualToArray:otherMessage.profilesArray] &&
       self.hasConfirmationCode == otherMessage.hasConfirmationCode &&
       (!self.hasConfirmationCode || [self.confirmationCode isEqual:otherMessage.confirmationCode]) &&
+      self.hasName == otherMessage.hasName &&
+      (!self.hasName || [self.name isEqual:otherMessage.name]) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
@@ -7379,6 +7402,9 @@ static BUserInvite* defaultBUserInviteInstance = nil;
   }];
   if (self.hasConfirmationCode) {
     hashCode = hashCode * 31 + [self.confirmationCode hash];
+  }
+  if (self.hasName) {
+    hashCode = hashCode * 31 + [self.name hash];
   }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
@@ -7445,6 +7471,9 @@ static BUserInvite* defaultBUserInviteInstance = nil;
   if (other.hasConfirmationCode) {
     [self setConfirmationCode:other.confirmationCode];
   }
+  if (other.hasName) {
+    [self setName:other.name];
+  }
   [self mergeUnknownFields:other.unknownFields];
   return self;
 }
@@ -7495,6 +7524,10 @@ static BUserInvite* defaultBUserInviteInstance = nil;
       }
       case 50: {
         [self setConfirmationCode:[input readString]];
+        break;
+      }
+      case 58: {
+        [self setName:[input readString]];
         break;
       }
     }
@@ -7613,6 +7646,251 @@ static BUserInvite* defaultBUserInviteInstance = nil;
 - (BUserInviteBuilder*) clearConfirmationCode {
   resultUserInvite.hasConfirmationCode = NO;
   resultUserInvite.confirmationCode = @"";
+  return self;
+}
+- (BOOL) hasName {
+  return resultUserInvite.hasName;
+}
+- (NSString*) name {
+  return resultUserInvite.name;
+}
+- (BUserInviteBuilder*) setName:(NSString*) value {
+  resultUserInvite.hasName = YES;
+  resultUserInvite.name = value;
+  return self;
+}
+- (BUserInviteBuilder*) clearName {
+  resultUserInvite.hasName = NO;
+  resultUserInvite.name = @"";
+  return self;
+}
+@end
+
+@interface BUserInvites ()
+@property (strong) NSMutableArray * userInvitesArray;
+@end
+
+@implementation BUserInvites
+
+@synthesize userInvitesArray;
+@dynamic userInvites;
+- (instancetype) init {
+  if ((self = [super init])) {
+  }
+  return self;
+}
+static BUserInvites* defaultBUserInvitesInstance = nil;
++ (void) initialize {
+  if (self == [BUserInvites class]) {
+    defaultBUserInvitesInstance = [[BUserInvites alloc] init];
+  }
+}
++ (instancetype) defaultInstance {
+  return defaultBUserInvitesInstance;
+}
+- (instancetype) defaultInstance {
+  return defaultBUserInvitesInstance;
+}
+- (NSArray *)userInvites {
+  return userInvitesArray;
+}
+- (BUserInvite*)userInvitesAtIndex:(NSUInteger)index {
+  return [userInvitesArray objectAtIndex:index];
+}
+- (BOOL) isInitialized {
+  __block BOOL isInituserInvites = YES;
+   [self.userInvites enumerateObjectsUsingBlock:^(BUserInvite *element, NSUInteger idx, BOOL *stop) {
+    if (!element.isInitialized) {
+      isInituserInvites = NO;
+      *stop = YES;
+    }
+  }];
+  if (!isInituserInvites) return isInituserInvites;
+  return YES;
+}
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
+  [self.userInvitesArray enumerateObjectsUsingBlock:^(BUserInvite *element, NSUInteger idx, BOOL *stop) {
+    [output writeMessage:1 value:element];
+  }];
+  [self.unknownFields writeToCodedOutputStream:output];
+}
+- (SInt32) serializedSize {
+  __block SInt32 size_ = memoizedSerializedSize;
+  if (size_ != -1) {
+    return size_;
+  }
+
+  size_ = 0;
+  [self.userInvitesArray enumerateObjectsUsingBlock:^(BUserInvite *element, NSUInteger idx, BOOL *stop) {
+    size_ += computeMessageSize(1, element);
+  }];
+  size_ += self.unknownFields.serializedSize;
+  memoizedSerializedSize = size_;
+  return size_;
+}
++ (BUserInvites*) parseFromData:(NSData*) data {
+  return (BUserInvites*)[[[BUserInvites builder] mergeFromData:data] build];
+}
++ (BUserInvites*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BUserInvites*)[[[BUserInvites builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
+}
++ (BUserInvites*) parseFromInputStream:(NSInputStream*) input {
+  return (BUserInvites*)[[[BUserInvites builder] mergeFromInputStream:input] build];
+}
++ (BUserInvites*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BUserInvites*)[[[BUserInvites builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (BUserInvites*) parseFromCodedInputStream:(PBCodedInputStream*) input {
+  return (BUserInvites*)[[[BUserInvites builder] mergeFromCodedInputStream:input] build];
+}
++ (BUserInvites*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BUserInvites*)[[[BUserInvites builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (BUserInvitesBuilder*) builder {
+  return [[BUserInvitesBuilder alloc] init];
+}
++ (BUserInvitesBuilder*) builderWithPrototype:(BUserInvites*) prototype {
+  return [[BUserInvites builder] mergeFrom:prototype];
+}
+- (BUserInvitesBuilder*) builder {
+  return [BUserInvites builder];
+}
+- (BUserInvitesBuilder*) toBuilder {
+  return [BUserInvites builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  [self.userInvitesArray enumerateObjectsUsingBlock:^(BUserInvite *element, NSUInteger idx, BOOL *stop) {
+    [output appendFormat:@"%@%@ {\n", indent, @"userInvites"];
+    [element writeDescriptionTo:output
+                     withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }];
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (void) storeInDictionary:(NSMutableDictionary *)dictionary {
+  for (BUserInvite* element in self.userInvitesArray) {
+    NSMutableDictionary *elementDictionary = [NSMutableDictionary dictionary];
+    [element storeInDictionary:elementDictionary];
+    [dictionary setObject:[NSDictionary dictionaryWithDictionary:elementDictionary] forKey:@"userInvites"];
+  }
+  [self.unknownFields storeInDictionary:dictionary];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[BUserInvites class]]) {
+    return NO;
+  }
+  BUserInvites *otherMessage = other;
+  return
+      [self.userInvitesArray isEqualToArray:otherMessage.userInvitesArray] &&
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  __block NSUInteger hashCode = 7;
+  [self.userInvitesArray enumerateObjectsUsingBlock:^(BUserInvite *element, NSUInteger idx, BOOL *stop) {
+    hashCode = hashCode * 31 + [element hash];
+  }];
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
+}
+@end
+
+@interface BUserInvitesBuilder()
+@property (strong) BUserInvites* resultUserInvites;
+@end
+
+@implementation BUserInvitesBuilder
+@synthesize resultUserInvites;
+- (instancetype) init {
+  if ((self = [super init])) {
+    self.resultUserInvites = [[BUserInvites alloc] init];
+  }
+  return self;
+}
+- (PBGeneratedMessage*) internalGetResult {
+  return resultUserInvites;
+}
+- (BUserInvitesBuilder*) clear {
+  self.resultUserInvites = [[BUserInvites alloc] init];
+  return self;
+}
+- (BUserInvitesBuilder*) clone {
+  return [BUserInvites builderWithPrototype:resultUserInvites];
+}
+- (BUserInvites*) defaultInstance {
+  return [BUserInvites defaultInstance];
+}
+- (BUserInvites*) build {
+  [self checkInitialized];
+  return [self buildPartial];
+}
+- (BUserInvites*) buildPartial {
+  BUserInvites* returnMe = resultUserInvites;
+  self.resultUserInvites = nil;
+  return returnMe;
+}
+- (BUserInvitesBuilder*) mergeFrom:(BUserInvites*) other {
+  if (other == [BUserInvites defaultInstance]) {
+    return self;
+  }
+  if (other.userInvitesArray.count > 0) {
+    if (resultUserInvites.userInvitesArray == nil) {
+      resultUserInvites.userInvitesArray = [[NSMutableArray alloc] initWithArray:other.userInvitesArray];
+    } else {
+      [resultUserInvites.userInvitesArray addObjectsFromArray:other.userInvitesArray];
+    }
+  }
+  [self mergeUnknownFields:other.unknownFields];
+  return self;
+}
+- (BUserInvitesBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
+  return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
+}
+- (BUserInvitesBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  PBUnknownFieldSetBuilder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
+  while (YES) {
+    SInt32 tag = [input readTag];
+    switch (tag) {
+      case 0:
+        [self setUnknownFields:[unknownFields build]];
+        return self;
+      default: {
+        if (![self parseUnknownField:input unknownFields:unknownFields extensionRegistry:extensionRegistry tag:tag]) {
+          [self setUnknownFields:[unknownFields build]];
+          return self;
+        }
+        break;
+      }
+      case 10: {
+        BUserInviteBuilder* subBuilder = [BUserInvite builder];
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self addUserInvites:[subBuilder buildPartial]];
+        break;
+      }
+    }
+  }
+}
+- (NSMutableArray *)userInvites {
+  return resultUserInvites.userInvitesArray;
+}
+- (BUserInvite*)userInvitesAtIndex:(NSUInteger)index {
+  return [resultUserInvites userInvitesAtIndex:index];
+}
+- (BUserInvitesBuilder *)addUserInvites:(BUserInvite*)value {
+  if (resultUserInvites.userInvitesArray == nil) {
+    resultUserInvites.userInvitesArray = [[NSMutableArray alloc]init];
+  }
+  [resultUserInvites.userInvitesArray addObject:value];
+  return self;
+}
+- (BUserInvitesBuilder *)setUserInvitesArray:(NSArray *)array {
+  resultUserInvites.userInvitesArray = [[NSMutableArray alloc]initWithArray:array];
+  return self;
+}
+- (BUserInvitesBuilder *)clearUserInvites {
+  resultUserInvites.userInvitesArray = nil;
   return self;
 }
 @end

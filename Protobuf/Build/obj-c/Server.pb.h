@@ -129,6 +129,8 @@
 @class BUserEventBuilder;
 @class BUserInvite;
 @class BUserInviteBuilder;
+@class BUserInvites;
+@class BUserInvitesBuilder;
 @class BUserMessage;
 @class BUserMessageBuilder;
 @class BUserMessageUpdate;
@@ -757,6 +759,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 #define RequestType_fetchConversationGroups @"fetchConversationGroups"
 #define RequestType_loginAsAdmin @"loginAsAdmin"
 #define RequestType_fetchPurchaseDescription @"fetchPurchaseDescription"
+#define RequestType_userInvitesRequest @"userInvitesRequest"
 @interface BRequestType : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
   BOOL hasSessionRequest_:1;
@@ -789,6 +792,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
   BOOL hasFetchConversationGroups_:1;
   BOOL hasLoginAsAdmin_:1;
   BOOL hasFetchPurchaseDescription_:1;
+  BOOL hasUserInvitesRequest_:1;
   BSessionRequest* sessionRequest;
   BUserEventBatch* userEventBatch;
   BUserProfileUpdate* userProfileUpdate;
@@ -819,6 +823,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
   BFetchConversationGroups* fetchConversationGroups;
   BLoginAsAdmin* loginAsAdmin;
   BFetchPurchaseDescription* fetchPurchaseDescription;
+  BUserInvites* userInvitesRequest;
 }
 - (BOOL) hasSessionRequest;
 - (BOOL) hasUserEventBatch;
@@ -850,6 +855,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BOOL) hasFetchConversationGroups;
 - (BOOL) hasLoginAsAdmin;
 - (BOOL) hasFetchPurchaseDescription;
+- (BOOL) hasUserInvitesRequest;
 @property (readonly, strong) BSessionRequest* sessionRequest;
 @property (readonly, strong) BUserEventBatch* userEventBatch;
 @property (readonly, strong) BUserProfileUpdate* userProfileUpdate;
@@ -880,6 +886,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 @property (readonly, strong) BFetchConversationGroups* fetchConversationGroups;
 @property (readonly, strong) BLoginAsAdmin* loginAsAdmin;
 @property (readonly, strong) BFetchPurchaseDescription* fetchPurchaseDescription;
+@property (readonly, strong) BUserInvites* userInvitesRequest;
 
 + (instancetype) defaultInstance;
 - (instancetype) defaultInstance;
@@ -1125,6 +1132,13 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BRequestTypeBuilder*) setFetchPurchaseDescriptionBuilder:(BFetchPurchaseDescriptionBuilder*) builderForValue;
 - (BRequestTypeBuilder*) mergeFetchPurchaseDescription:(BFetchPurchaseDescription*) value;
 - (BRequestTypeBuilder*) clearFetchPurchaseDescription;
+
+- (BOOL) hasUserInvitesRequest;
+- (BUserInvites*) userInvitesRequest;
+- (BRequestTypeBuilder*) setUserInvitesRequest:(BUserInvites*) value;
+- (BRequestTypeBuilder*) setUserInvitesRequestBuilder:(BUserInvitesBuilder*) builderForValue;
+- (BRequestTypeBuilder*) mergeUserInvitesRequest:(BUserInvites*) value;
+- (BRequestTypeBuilder*) clearUserInvitesRequest;
 @end
 
 #define ServerRequest_sessionToken @"sessionToken"
@@ -1212,6 +1226,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 #define ResponseType_fetchConversationGroups @"fetchConversationGroups"
 #define ResponseType_loginAsAdmin @"loginAsAdmin"
 #define ResponseType_fetchPurchaseDescription @"fetchPurchaseDescription"
+#define ResponseType_userInvitesResponse @"userInvitesResponse"
 @interface BResponseType : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
   BOOL hasSessionResponse_:1;
@@ -1237,6 +1252,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
   BOOL hasFetchConversationGroups_:1;
   BOOL hasLoginAsAdmin_:1;
   BOOL hasFetchPurchaseDescription_:1;
+  BOOL hasUserInvitesResponse_:1;
   BSessionResponse* sessionResponse;
   BUserEventBatchResponse* userEventBatchResponse;
   BUserProfileUpdate* userProfileUpdate;
@@ -1260,6 +1276,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
   BFetchConversationGroups* fetchConversationGroups;
   BLoginAsAdmin* loginAsAdmin;
   BFetchPurchaseDescription* fetchPurchaseDescription;
+  BUserInvites* userInvitesResponse;
 }
 - (BOOL) hasSessionResponse;
 - (BOOL) hasUserEventBatchResponse;
@@ -1284,6 +1301,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BOOL) hasFetchConversationGroups;
 - (BOOL) hasLoginAsAdmin;
 - (BOOL) hasFetchPurchaseDescription;
+- (BOOL) hasUserInvitesResponse;
 @property (readonly, strong) BSessionResponse* sessionResponse;
 @property (readonly, strong) BUserEventBatchResponse* userEventBatchResponse;
 @property (readonly, strong) BUserProfileUpdate* userProfileUpdate;
@@ -1307,6 +1325,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 @property (readonly, strong) BFetchConversationGroups* fetchConversationGroups;
 @property (readonly, strong) BLoginAsAdmin* loginAsAdmin;
 @property (readonly, strong) BFetchPurchaseDescription* fetchPurchaseDescription;
+@property (readonly, strong) BUserInvites* userInvitesResponse;
 
 + (instancetype) defaultInstance;
 - (instancetype) defaultInstance;
@@ -1503,6 +1522,13 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BResponseTypeBuilder*) setFetchPurchaseDescriptionBuilder:(BFetchPurchaseDescriptionBuilder*) builderForValue;
 - (BResponseTypeBuilder*) mergeFetchPurchaseDescription:(BFetchPurchaseDescription*) value;
 - (BResponseTypeBuilder*) clearFetchPurchaseDescription;
+
+- (BOOL) hasUserInvitesResponse;
+- (BUserInvites*) userInvitesResponse;
+- (BResponseTypeBuilder*) setUserInvitesResponse:(BUserInvites*) value;
+- (BResponseTypeBuilder*) setUserInvitesResponseBuilder:(BUserInvitesBuilder*) builderForValue;
+- (BResponseTypeBuilder*) mergeUserInvitesResponse:(BUserInvites*) value;
+- (BResponseTypeBuilder*) clearUserInvitesResponse;
 @end
 
 #define ServerResponse_responseCode @"responseCode"

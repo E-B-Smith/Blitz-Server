@@ -57,6 +57,8 @@
 @class BTimestampBuilder;
 @class BUserInvite;
 @class BUserInviteBuilder;
+@class BUserInvites;
+@class BUserInvitesBuilder;
 @class BUserProfile;
 @class BUserProfileBuilder;
 @class BUserProfileQuery;

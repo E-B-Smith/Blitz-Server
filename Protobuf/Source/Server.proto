@@ -121,6 +121,7 @@ message RequestType {
   optional FetchConversationGroups  fetchConversationGroups = 28;
   optional LoginAsAdmin             loginAsAdmin        = 29;
   optional FetchPurchaseDescription fetchPurchaseDescription = 30;
+  optional UserInvites              userInvitesRequest  = 31;
 }
 
 
@@ -169,6 +170,7 @@ message ResponseType {
   optional FetchConversationGroups  fetchConversationGroups = 23;
   optional LoginAsAdmin             loginAsAdmin          = 24;
   optional FetchPurchaseDescription fetchPurchaseDescription = 25;
+  optional UserInvites              userInvitesResponse   = 26;
 }
 
 

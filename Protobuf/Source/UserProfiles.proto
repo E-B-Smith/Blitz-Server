@@ -231,6 +231,12 @@ message UserInvite {
   optional ContactInfo  contactInfo = 4;
   repeated UserProfile  profiles    = 5;
   optional string       confirmationCode = 6;
+  optional string       name        = 7;
+}
+
+
+message UserInvites {
+  repeated UserInvite   UserInvites     = 1;
 }
 
 

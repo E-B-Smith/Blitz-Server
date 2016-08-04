@@ -86,6 +86,7 @@ It has these top-level messages:
 	ProfilesFromContactInfo
 	FriendUpdate
 	UserInvite
+	UserInvites
 	EditProfile
 */
 package BlitzMessage

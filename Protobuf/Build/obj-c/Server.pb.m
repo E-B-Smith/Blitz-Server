@@ -2483,6 +2483,7 @@ static BPushDisconnect* defaultBPushDisconnectInstance = nil;
 @property (strong) BFetchConversationGroups* fetchConversationGroups;
 @property (strong) BLoginAsAdmin* loginAsAdmin;
 @property (strong) BFetchPurchaseDescription* fetchPurchaseDescription;
+@property (strong) BUserInvites* userInvitesRequest;
 @end
 
 @implementation BRequestType
@@ -2697,6 +2698,13 @@ static BPushDisconnect* defaultBPushDisconnectInstance = nil;
   hasFetchPurchaseDescription_ = !!_value_;
 }
 @synthesize fetchPurchaseDescription;
+- (BOOL) hasUserInvitesRequest {
+  return !!hasUserInvitesRequest_;
+}
+- (void) setHasUserInvitesRequest:(BOOL) _value_ {
+  hasUserInvitesRequest_ = !!_value_;
+}
+@synthesize userInvitesRequest;
 - (instancetype) init {
   if ((self = [super init])) {
     self.sessionRequest = [BSessionRequest defaultInstance];
@@ -2729,6 +2737,7 @@ static BPushDisconnect* defaultBPushDisconnectInstance = nil;
     self.fetchConversationGroups = [BFetchConversationGroups defaultInstance];
     self.loginAsAdmin = [BLoginAsAdmin defaultInstance];
     self.fetchPurchaseDescription = [BFetchPurchaseDescription defaultInstance];
+    self.userInvitesRequest = [BUserInvites defaultInstance];
   }
   return self;
 }
@@ -2782,6 +2791,11 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   }
   if (self.hasLoginAsAdmin) {
     if (!self.loginAsAdmin.isInitialized) {
+      return NO;
+    }
+  }
+  if (self.hasUserInvitesRequest) {
+    if (!self.userInvitesRequest.isInitialized) {
       return NO;
     }
   }
@@ -2877,6 +2891,9 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   }
   if (self.hasFetchPurchaseDescription) {
     [output writeMessage:30 value:self.fetchPurchaseDescription];
+  }
+  if (self.hasUserInvitesRequest) {
+    [output writeMessage:31 value:self.userInvitesRequest];
   }
   [self.unknownFields writeToCodedOutputStream:output];
 }
@@ -2976,6 +2993,9 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   }
   if (self.hasFetchPurchaseDescription) {
     size_ += computeMessageSize(30, self.fetchPurchaseDescription);
+  }
+  if (self.hasUserInvitesRequest) {
+    size_ += computeMessageSize(31, self.userInvitesRequest);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -3192,6 +3212,12 @@ static BRequestType* defaultBRequestTypeInstance = nil;
                          withIndent:[NSString stringWithFormat:@"%@  ", indent]];
     [output appendFormat:@"%@}\n", indent];
   }
+  if (self.hasUserInvitesRequest) {
+    [output appendFormat:@"%@%@ {\n", indent, @"userInvitesRequest"];
+    [self.userInvitesRequest writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (void) storeInDictionary:(NSMutableDictionary *)dictionary {
@@ -3345,6 +3371,11 @@ static BRequestType* defaultBRequestTypeInstance = nil;
    [self.fetchPurchaseDescription storeInDictionary:messageDictionary];
    [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"fetchPurchaseDescription"];
   }
+  if (self.hasUserInvitesRequest) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.userInvitesRequest storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"userInvitesRequest"];
+  }
   [self.unknownFields storeInDictionary:dictionary];
 }
 - (BOOL) isEqual:(id)other {
@@ -3416,6 +3447,8 @@ static BRequestType* defaultBRequestTypeInstance = nil;
       (!self.hasLoginAsAdmin || [self.loginAsAdmin isEqual:otherMessage.loginAsAdmin]) &&
       self.hasFetchPurchaseDescription == otherMessage.hasFetchPurchaseDescription &&
       (!self.hasFetchPurchaseDescription || [self.fetchPurchaseDescription isEqual:otherMessage.fetchPurchaseDescription]) &&
+      self.hasUserInvitesRequest == otherMessage.hasUserInvitesRequest &&
+      (!self.hasUserInvitesRequest || [self.userInvitesRequest isEqual:otherMessage.userInvitesRequest]) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
@@ -3509,6 +3542,9 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   }
   if (self.hasFetchPurchaseDescription) {
     hashCode = hashCode * 31 + [self.fetchPurchaseDescription hash];
+  }
+  if (self.hasUserInvitesRequest) {
+    hashCode = hashCode * 31 + [self.userInvitesRequest hash];
   }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
@@ -3642,6 +3678,9 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   }
   if (other.hasFetchPurchaseDescription) {
     [self mergeFetchPurchaseDescription:other.fetchPurchaseDescription];
+  }
+  if (other.hasUserInvitesRequest) {
+    [self mergeUserInvitesRequest:other.userInvitesRequest];
   }
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -3932,6 +3971,15 @@ static BRequestType* defaultBRequestTypeInstance = nil;
         }
         [input readMessage:subBuilder extensionRegistry:extensionRegistry];
         [self setFetchPurchaseDescription:[subBuilder buildPartial]];
+        break;
+      }
+      case 250: {
+        BUserInvitesBuilder* subBuilder = [BUserInvites builder];
+        if (self.hasUserInvitesRequest) {
+          [subBuilder mergeFrom:self.userInvitesRequest];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setUserInvitesRequest:[subBuilder buildPartial]];
         break;
       }
     }
@@ -4837,6 +4885,36 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   resultRequestType.fetchPurchaseDescription = [BFetchPurchaseDescription defaultInstance];
   return self;
 }
+- (BOOL) hasUserInvitesRequest {
+  return resultRequestType.hasUserInvitesRequest;
+}
+- (BUserInvites*) userInvitesRequest {
+  return resultRequestType.userInvitesRequest;
+}
+- (BRequestTypeBuilder*) setUserInvitesRequest:(BUserInvites*) value {
+  resultRequestType.hasUserInvitesRequest = YES;
+  resultRequestType.userInvitesRequest = value;
+  return self;
+}
+- (BRequestTypeBuilder*) setUserInvitesRequestBuilder:(BUserInvitesBuilder*) builderForValue {
+  return [self setUserInvitesRequest:[builderForValue build]];
+}
+- (BRequestTypeBuilder*) mergeUserInvitesRequest:(BUserInvites*) value {
+  if (resultRequestType.hasUserInvitesRequest &&
+      resultRequestType.userInvitesRequest != [BUserInvites defaultInstance]) {
+    resultRequestType.userInvitesRequest =
+      [[[BUserInvites builderWithPrototype:resultRequestType.userInvitesRequest] mergeFrom:value] buildPartial];
+  } else {
+    resultRequestType.userInvitesRequest = value;
+  }
+  resultRequestType.hasUserInvitesRequest = YES;
+  return self;
+}
+- (BRequestTypeBuilder*) clearUserInvitesRequest {
+  resultRequestType.hasUserInvitesRequest = NO;
+  resultRequestType.userInvitesRequest = [BUserInvites defaultInstance];
+  return self;
+}
 @end
 
 @interface BServerRequest ()
@@ -5147,6 +5225,7 @@ static BServerRequest* defaultBServerRequestInstance = nil;
 @property (strong) BFetchConversationGroups* fetchConversationGroups;
 @property (strong) BLoginAsAdmin* loginAsAdmin;
 @property (strong) BFetchPurchaseDescription* fetchPurchaseDescription;
+@property (strong) BUserInvites* userInvitesResponse;
 @end
 
 @implementation BResponseType
@@ -5312,6 +5391,13 @@ static BServerRequest* defaultBServerRequestInstance = nil;
   hasFetchPurchaseDescription_ = !!_value_;
 }
 @synthesize fetchPurchaseDescription;
+- (BOOL) hasUserInvitesResponse {
+  return !!hasUserInvitesResponse_;
+}
+- (void) setHasUserInvitesResponse:(BOOL) _value_ {
+  hasUserInvitesResponse_ = !!_value_;
+}
+@synthesize userInvitesResponse;
 - (instancetype) init {
   if ((self = [super init])) {
     self.sessionResponse = [BSessionResponse defaultInstance];
@@ -5337,6 +5423,7 @@ static BServerRequest* defaultBServerRequestInstance = nil;
     self.fetchConversationGroups = [BFetchConversationGroups defaultInstance];
     self.loginAsAdmin = [BLoginAsAdmin defaultInstance];
     self.fetchPurchaseDescription = [BFetchPurchaseDescription defaultInstance];
+    self.userInvitesResponse = [BUserInvites defaultInstance];
   }
   return self;
 }
@@ -5395,6 +5482,11 @@ static BResponseType* defaultBResponseTypeInstance = nil;
   }
   if (self.hasLoginAsAdmin) {
     if (!self.loginAsAdmin.isInitialized) {
+      return NO;
+    }
+  }
+  if (self.hasUserInvitesResponse) {
+    if (!self.userInvitesResponse.isInitialized) {
       return NO;
     }
   }
@@ -5469,6 +5561,9 @@ static BResponseType* defaultBResponseTypeInstance = nil;
   }
   if (self.hasFetchPurchaseDescription) {
     [output writeMessage:25 value:self.fetchPurchaseDescription];
+  }
+  if (self.hasUserInvitesResponse) {
+    [output writeMessage:26 value:self.userInvitesResponse];
   }
   [self.unknownFields writeToCodedOutputStream:output];
 }
@@ -5547,6 +5642,9 @@ static BResponseType* defaultBResponseTypeInstance = nil;
   }
   if (self.hasFetchPurchaseDescription) {
     size_ += computeMessageSize(25, self.fetchPurchaseDescription);
+  }
+  if (self.hasUserInvitesResponse) {
+    size_ += computeMessageSize(26, self.userInvitesResponse);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -5721,6 +5819,12 @@ static BResponseType* defaultBResponseTypeInstance = nil;
                          withIndent:[NSString stringWithFormat:@"%@  ", indent]];
     [output appendFormat:@"%@}\n", indent];
   }
+  if (self.hasUserInvitesResponse) {
+    [output appendFormat:@"%@%@ {\n", indent, @"userInvitesResponse"];
+    [self.userInvitesResponse writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (void) storeInDictionary:(NSMutableDictionary *)dictionary {
@@ -5839,6 +5943,11 @@ static BResponseType* defaultBResponseTypeInstance = nil;
    [self.fetchPurchaseDescription storeInDictionary:messageDictionary];
    [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"fetchPurchaseDescription"];
   }
+  if (self.hasUserInvitesResponse) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.userInvitesResponse storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"userInvitesResponse"];
+  }
   [self.unknownFields storeInDictionary:dictionary];
 }
 - (BOOL) isEqual:(id)other {
@@ -5896,6 +6005,8 @@ static BResponseType* defaultBResponseTypeInstance = nil;
       (!self.hasLoginAsAdmin || [self.loginAsAdmin isEqual:otherMessage.loginAsAdmin]) &&
       self.hasFetchPurchaseDescription == otherMessage.hasFetchPurchaseDescription &&
       (!self.hasFetchPurchaseDescription || [self.fetchPurchaseDescription isEqual:otherMessage.fetchPurchaseDescription]) &&
+      self.hasUserInvitesResponse == otherMessage.hasUserInvitesResponse &&
+      (!self.hasUserInvitesResponse || [self.userInvitesResponse isEqual:otherMessage.userInvitesResponse]) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
@@ -5968,6 +6079,9 @@ static BResponseType* defaultBResponseTypeInstance = nil;
   }
   if (self.hasFetchPurchaseDescription) {
     hashCode = hashCode * 31 + [self.fetchPurchaseDescription hash];
+  }
+  if (self.hasUserInvitesResponse) {
+    hashCode = hashCode * 31 + [self.userInvitesResponse hash];
   }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
@@ -6080,6 +6194,9 @@ static BResponseType* defaultBResponseTypeInstance = nil;
   }
   if (other.hasFetchPurchaseDescription) {
     [self mergeFetchPurchaseDescription:other.fetchPurchaseDescription];
+  }
+  if (other.hasUserInvitesResponse) {
+    [self mergeUserInvitesResponse:other.userInvitesResponse];
   }
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -6307,6 +6424,15 @@ static BResponseType* defaultBResponseTypeInstance = nil;
         }
         [input readMessage:subBuilder extensionRegistry:extensionRegistry];
         [self setFetchPurchaseDescription:[subBuilder buildPartial]];
+        break;
+      }
+      case 210: {
+        BUserInvitesBuilder* subBuilder = [BUserInvites builder];
+        if (self.hasUserInvitesResponse) {
+          [subBuilder mergeFrom:self.userInvitesResponse];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setUserInvitesResponse:[subBuilder buildPartial]];
         break;
       }
     }
@@ -7000,6 +7126,36 @@ static BResponseType* defaultBResponseTypeInstance = nil;
 - (BResponseTypeBuilder*) clearFetchPurchaseDescription {
   resultResponseType.hasFetchPurchaseDescription = NO;
   resultResponseType.fetchPurchaseDescription = [BFetchPurchaseDescription defaultInstance];
+  return self;
+}
+- (BOOL) hasUserInvitesResponse {
+  return resultResponseType.hasUserInvitesResponse;
+}
+- (BUserInvites*) userInvitesResponse {
+  return resultResponseType.userInvitesResponse;
+}
+- (BResponseTypeBuilder*) setUserInvitesResponse:(BUserInvites*) value {
+  resultResponseType.hasUserInvitesResponse = YES;
+  resultResponseType.userInvitesResponse = value;
+  return self;
+}
+- (BResponseTypeBuilder*) setUserInvitesResponseBuilder:(BUserInvitesBuilder*) builderForValue {
+  return [self setUserInvitesResponse:[builderForValue build]];
+}
+- (BResponseTypeBuilder*) mergeUserInvitesResponse:(BUserInvites*) value {
+  if (resultResponseType.hasUserInvitesResponse &&
+      resultResponseType.userInvitesResponse != [BUserInvites defaultInstance]) {
+    resultResponseType.userInvitesResponse =
+      [[[BUserInvites builderWithPrototype:resultResponseType.userInvitesResponse] mergeFrom:value] buildPartial];
+  } else {
+    resultResponseType.userInvitesResponse = value;
+  }
+  resultResponseType.hasUserInvitesResponse = YES;
+  return self;
+}
+- (BResponseTypeBuilder*) clearUserInvitesResponse {
+  resultResponseType.hasUserInvitesResponse = NO;
+  resultResponseType.userInvitesResponse = [BUserInvites defaultInstance];
   return self;
 }
 @end

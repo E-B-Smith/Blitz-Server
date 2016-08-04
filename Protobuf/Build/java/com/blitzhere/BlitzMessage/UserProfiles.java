@@ -19726,6 +19726,20 @@ public final class UserProfiles {
      */
     com.google.protobuf.ByteString
         getConfirmationCodeBytes();
+
+    /**
+     * <code>optional string name = 7;</code>
+     */
+    boolean hasName();
+    /**
+     * <code>optional string name = 7;</code>
+     */
+    java.lang.String getName();
+    /**
+     * <code>optional string name = 7;</code>
+     */
+    com.google.protobuf.ByteString
+        getNameBytes();
   }
   /**
    * Protobuf type {@code BlitzMessage.UserInvite}
@@ -19822,6 +19836,12 @@ public final class UserProfiles {
               com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000010;
               confirmationCode_ = bs;
+              break;
+            }
+            case 58: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000020;
+              name_ = bs;
               break;
             }
           }
@@ -20091,6 +20111,48 @@ public final class UserProfiles {
       }
     }
 
+    public static final int NAME_FIELD_NUMBER = 7;
+    private java.lang.Object name_;
+    /**
+     * <code>optional string name = 7;</code>
+     */
+    public boolean hasName() {
+      return ((bitField0_ & 0x00000020) == 0x00000020);
+    }
+    /**
+     * <code>optional string name = 7;</code>
+     */
+    public java.lang.String getName() {
+      java.lang.Object ref = name_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          name_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string name = 7;</code>
+     */
+    public com.google.protobuf.ByteString
+        getNameBytes() {
+      java.lang.Object ref = name_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        name_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private void initFields() {
       userID_ = "";
       friendID_ = "";
@@ -20098,6 +20160,7 @@ public final class UserProfiles {
       contactInfo_ = com.blitzhere.BlitzMessage.UserProfiles.ContactInfo.getDefaultInstance();
       profiles_ = java.util.Collections.emptyList();
       confirmationCode_ = "";
+      name_ = "";
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -20142,6 +20205,9 @@ public final class UserProfiles {
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
         output.writeBytes(6, getConfirmationCodeBytes());
       }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        output.writeBytes(7, getNameBytes());
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -20174,6 +20240,10 @@ public final class UserProfiles {
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(6, getConfirmationCodeBytes());
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(7, getNameBytes());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -20314,6 +20384,8 @@ public final class UserProfiles {
         }
         confirmationCode_ = "";
         bitField0_ = (bitField0_ & ~0x00000020);
+        name_ = "";
+        bitField0_ = (bitField0_ & ~0x00000040);
         return this;
       }
 
@@ -20375,6 +20447,10 @@ public final class UserProfiles {
           to_bitField0_ |= 0x00000010;
         }
         result.confirmationCode_ = confirmationCode_;
+        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
+          to_bitField0_ |= 0x00000020;
+        }
+        result.name_ = name_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -20438,6 +20514,11 @@ public final class UserProfiles {
         if (other.hasConfirmationCode()) {
           bitField0_ |= 0x00000020;
           confirmationCode_ = other.confirmationCode_;
+          onChanged();
+        }
+        if (other.hasName()) {
+          bitField0_ |= 0x00000040;
+          name_ = other.name_;
           onChanged();
         }
         this.mergeUnknownFields(other.getUnknownFields());
@@ -21139,6 +21220,82 @@ public final class UserProfiles {
         return this;
       }
 
+      private java.lang.Object name_ = "";
+      /**
+       * <code>optional string name = 7;</code>
+       */
+      public boolean hasName() {
+        return ((bitField0_ & 0x00000040) == 0x00000040);
+      }
+      /**
+       * <code>optional string name = 7;</code>
+       */
+      public java.lang.String getName() {
+        java.lang.Object ref = name_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            name_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string name = 7;</code>
+       */
+      public com.google.protobuf.ByteString
+          getNameBytes() {
+        java.lang.Object ref = name_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          name_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string name = 7;</code>
+       */
+      public Builder setName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000040;
+        name_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string name = 7;</code>
+       */
+      public Builder clearName() {
+        bitField0_ = (bitField0_ & ~0x00000040);
+        name_ = getDefaultInstance().getName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string name = 7;</code>
+       */
+      public Builder setNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000040;
+        name_ = value;
+        onChanged();
+        return this;
+      }
+
       // @@protoc_insertion_point(builder_scope:BlitzMessage.UserInvite)
     }
 
@@ -21148,6 +21305,694 @@ public final class UserProfiles {
     }
 
     // @@protoc_insertion_point(class_scope:BlitzMessage.UserInvite)
+  }
+
+  public interface UserInvitesOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:BlitzMessage.UserInvites)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>repeated .BlitzMessage.UserInvite UserInvites = 1;</code>
+     */
+    java.util.List<com.blitzhere.BlitzMessage.UserProfiles.UserInvite> 
+        getUserInvitesList();
+    /**
+     * <code>repeated .BlitzMessage.UserInvite UserInvites = 1;</code>
+     */
+    com.blitzhere.BlitzMessage.UserProfiles.UserInvite getUserInvites(int index);
+    /**
+     * <code>repeated .BlitzMessage.UserInvite UserInvites = 1;</code>
+     */
+    int getUserInvitesCount();
+    /**
+     * <code>repeated .BlitzMessage.UserInvite UserInvites = 1;</code>
+     */
+    java.util.List<? extends com.blitzhere.BlitzMessage.UserProfiles.UserInviteOrBuilder> 
+        getUserInvitesOrBuilderList();
+    /**
+     * <code>repeated .BlitzMessage.UserInvite UserInvites = 1;</code>
+     */
+    com.blitzhere.BlitzMessage.UserProfiles.UserInviteOrBuilder getUserInvitesOrBuilder(
+        int index);
+  }
+  /**
+   * Protobuf type {@code BlitzMessage.UserInvites}
+   */
+  public static final class UserInvites extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:BlitzMessage.UserInvites)
+      UserInvitesOrBuilder {
+    // Use UserInvites.newBuilder() to construct.
+    private UserInvites(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private UserInvites(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final UserInvites defaultInstance;
+    public static UserInvites getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public UserInvites getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private UserInvites(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              if (!((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
+                userInvites_ = new java.util.ArrayList<com.blitzhere.BlitzMessage.UserProfiles.UserInvite>();
+                mutable_bitField0_ |= 0x00000001;
+              }
+              userInvites_.add(input.readMessage(com.blitzhere.BlitzMessage.UserProfiles.UserInvite.PARSER, extensionRegistry));
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        if (((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
+          userInvites_ = java.util.Collections.unmodifiableList(userInvites_);
+        }
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.blitzhere.BlitzMessage.UserProfiles.internal_static_BlitzMessage_UserInvites_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.blitzhere.BlitzMessage.UserProfiles.internal_static_BlitzMessage_UserInvites_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.blitzhere.BlitzMessage.UserProfiles.UserInvites.class, com.blitzhere.BlitzMessage.UserProfiles.UserInvites.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<UserInvites> PARSER =
+        new com.google.protobuf.AbstractParser<UserInvites>() {
+      public UserInvites parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new UserInvites(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<UserInvites> getParserForType() {
+      return PARSER;
+    }
+
+    public static final int USERINVITES_FIELD_NUMBER = 1;
+    private java.util.List<com.blitzhere.BlitzMessage.UserProfiles.UserInvite> userInvites_;
+    /**
+     * <code>repeated .BlitzMessage.UserInvite UserInvites = 1;</code>
+     */
+    public java.util.List<com.blitzhere.BlitzMessage.UserProfiles.UserInvite> getUserInvitesList() {
+      return userInvites_;
+    }
+    /**
+     * <code>repeated .BlitzMessage.UserInvite UserInvites = 1;</code>
+     */
+    public java.util.List<? extends com.blitzhere.BlitzMessage.UserProfiles.UserInviteOrBuilder> 
+        getUserInvitesOrBuilderList() {
+      return userInvites_;
+    }
+    /**
+     * <code>repeated .BlitzMessage.UserInvite UserInvites = 1;</code>
+     */
+    public int getUserInvitesCount() {
+      return userInvites_.size();
+    }
+    /**
+     * <code>repeated .BlitzMessage.UserInvite UserInvites = 1;</code>
+     */
+    public com.blitzhere.BlitzMessage.UserProfiles.UserInvite getUserInvites(int index) {
+      return userInvites_.get(index);
+    }
+    /**
+     * <code>repeated .BlitzMessage.UserInvite UserInvites = 1;</code>
+     */
+    public com.blitzhere.BlitzMessage.UserProfiles.UserInviteOrBuilder getUserInvitesOrBuilder(
+        int index) {
+      return userInvites_.get(index);
+    }
+
+    private void initFields() {
+      userInvites_ = java.util.Collections.emptyList();
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      for (int i = 0; i < getUserInvitesCount(); i++) {
+        if (!getUserInvites(i).isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      for (int i = 0; i < userInvites_.size(); i++) {
+        output.writeMessage(1, userInvites_.get(i));
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      for (int i = 0; i < userInvites_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(1, userInvites_.get(i));
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.blitzhere.BlitzMessage.UserProfiles.UserInvites parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.blitzhere.BlitzMessage.UserProfiles.UserInvites parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.blitzhere.BlitzMessage.UserProfiles.UserInvites parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.blitzhere.BlitzMessage.UserProfiles.UserInvites parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.blitzhere.BlitzMessage.UserProfiles.UserInvites parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.blitzhere.BlitzMessage.UserProfiles.UserInvites parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.blitzhere.BlitzMessage.UserProfiles.UserInvites parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.blitzhere.BlitzMessage.UserProfiles.UserInvites parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.blitzhere.BlitzMessage.UserProfiles.UserInvites parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.blitzhere.BlitzMessage.UserProfiles.UserInvites parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.blitzhere.BlitzMessage.UserProfiles.UserInvites prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code BlitzMessage.UserInvites}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:BlitzMessage.UserInvites)
+        com.blitzhere.BlitzMessage.UserProfiles.UserInvitesOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.blitzhere.BlitzMessage.UserProfiles.internal_static_BlitzMessage_UserInvites_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.blitzhere.BlitzMessage.UserProfiles.internal_static_BlitzMessage_UserInvites_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.blitzhere.BlitzMessage.UserProfiles.UserInvites.class, com.blitzhere.BlitzMessage.UserProfiles.UserInvites.Builder.class);
+      }
+
+      // Construct using com.blitzhere.BlitzMessage.UserProfiles.UserInvites.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getUserInvitesFieldBuilder();
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        if (userInvitesBuilder_ == null) {
+          userInvites_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+        } else {
+          userInvitesBuilder_.clear();
+        }
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.blitzhere.BlitzMessage.UserProfiles.internal_static_BlitzMessage_UserInvites_descriptor;
+      }
+
+      public com.blitzhere.BlitzMessage.UserProfiles.UserInvites getDefaultInstanceForType() {
+        return com.blitzhere.BlitzMessage.UserProfiles.UserInvites.getDefaultInstance();
+      }
+
+      public com.blitzhere.BlitzMessage.UserProfiles.UserInvites build() {
+        com.blitzhere.BlitzMessage.UserProfiles.UserInvites result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.blitzhere.BlitzMessage.UserProfiles.UserInvites buildPartial() {
+        com.blitzhere.BlitzMessage.UserProfiles.UserInvites result = new com.blitzhere.BlitzMessage.UserProfiles.UserInvites(this);
+        int from_bitField0_ = bitField0_;
+        if (userInvitesBuilder_ == null) {
+          if (((bitField0_ & 0x00000001) == 0x00000001)) {
+            userInvites_ = java.util.Collections.unmodifiableList(userInvites_);
+            bitField0_ = (bitField0_ & ~0x00000001);
+          }
+          result.userInvites_ = userInvites_;
+        } else {
+          result.userInvites_ = userInvitesBuilder_.build();
+        }
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.blitzhere.BlitzMessage.UserProfiles.UserInvites) {
+          return mergeFrom((com.blitzhere.BlitzMessage.UserProfiles.UserInvites)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.blitzhere.BlitzMessage.UserProfiles.UserInvites other) {
+        if (other == com.blitzhere.BlitzMessage.UserProfiles.UserInvites.getDefaultInstance()) return this;
+        if (userInvitesBuilder_ == null) {
+          if (!other.userInvites_.isEmpty()) {
+            if (userInvites_.isEmpty()) {
+              userInvites_ = other.userInvites_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+            } else {
+              ensureUserInvitesIsMutable();
+              userInvites_.addAll(other.userInvites_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.userInvites_.isEmpty()) {
+            if (userInvitesBuilder_.isEmpty()) {
+              userInvitesBuilder_.dispose();
+              userInvitesBuilder_ = null;
+              userInvites_ = other.userInvites_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+              userInvitesBuilder_ = 
+                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                   getUserInvitesFieldBuilder() : null;
+            } else {
+              userInvitesBuilder_.addAllMessages(other.userInvites_);
+            }
+          }
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        for (int i = 0; i < getUserInvitesCount(); i++) {
+          if (!getUserInvites(i).isInitialized()) {
+            
+            return false;
+          }
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.blitzhere.BlitzMessage.UserProfiles.UserInvites parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.blitzhere.BlitzMessage.UserProfiles.UserInvites) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private java.util.List<com.blitzhere.BlitzMessage.UserProfiles.UserInvite> userInvites_ =
+        java.util.Collections.emptyList();
+      private void ensureUserInvitesIsMutable() {
+        if (!((bitField0_ & 0x00000001) == 0x00000001)) {
+          userInvites_ = new java.util.ArrayList<com.blitzhere.BlitzMessage.UserProfiles.UserInvite>(userInvites_);
+          bitField0_ |= 0x00000001;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.blitzhere.BlitzMessage.UserProfiles.UserInvite, com.blitzhere.BlitzMessage.UserProfiles.UserInvite.Builder, com.blitzhere.BlitzMessage.UserProfiles.UserInviteOrBuilder> userInvitesBuilder_;
+
+      /**
+       * <code>repeated .BlitzMessage.UserInvite UserInvites = 1;</code>
+       */
+      public java.util.List<com.blitzhere.BlitzMessage.UserProfiles.UserInvite> getUserInvitesList() {
+        if (userInvitesBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(userInvites_);
+        } else {
+          return userInvitesBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .BlitzMessage.UserInvite UserInvites = 1;</code>
+       */
+      public int getUserInvitesCount() {
+        if (userInvitesBuilder_ == null) {
+          return userInvites_.size();
+        } else {
+          return userInvitesBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .BlitzMessage.UserInvite UserInvites = 1;</code>
+       */
+      public com.blitzhere.BlitzMessage.UserProfiles.UserInvite getUserInvites(int index) {
+        if (userInvitesBuilder_ == null) {
+          return userInvites_.get(index);
+        } else {
+          return userInvitesBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .BlitzMessage.UserInvite UserInvites = 1;</code>
+       */
+      public Builder setUserInvites(
+          int index, com.blitzhere.BlitzMessage.UserProfiles.UserInvite value) {
+        if (userInvitesBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureUserInvitesIsMutable();
+          userInvites_.set(index, value);
+          onChanged();
+        } else {
+          userInvitesBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .BlitzMessage.UserInvite UserInvites = 1;</code>
+       */
+      public Builder setUserInvites(
+          int index, com.blitzhere.BlitzMessage.UserProfiles.UserInvite.Builder builderForValue) {
+        if (userInvitesBuilder_ == null) {
+          ensureUserInvitesIsMutable();
+          userInvites_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          userInvitesBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .BlitzMessage.UserInvite UserInvites = 1;</code>
+       */
+      public Builder addUserInvites(com.blitzhere.BlitzMessage.UserProfiles.UserInvite value) {
+        if (userInvitesBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureUserInvitesIsMutable();
+          userInvites_.add(value);
+          onChanged();
+        } else {
+          userInvitesBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .BlitzMessage.UserInvite UserInvites = 1;</code>
+       */
+      public Builder addUserInvites(
+          int index, com.blitzhere.BlitzMessage.UserProfiles.UserInvite value) {
+        if (userInvitesBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureUserInvitesIsMutable();
+          userInvites_.add(index, value);
+          onChanged();
+        } else {
+          userInvitesBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .BlitzMessage.UserInvite UserInvites = 1;</code>
+       */
+      public Builder addUserInvites(
+          com.blitzhere.BlitzMessage.UserProfiles.UserInvite.Builder builderForValue) {
+        if (userInvitesBuilder_ == null) {
+          ensureUserInvitesIsMutable();
+          userInvites_.add(builderForValue.build());
+          onChanged();
+        } else {
+          userInvitesBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .BlitzMessage.UserInvite UserInvites = 1;</code>
+       */
+      public Builder addUserInvites(
+          int index, com.blitzhere.BlitzMessage.UserProfiles.UserInvite.Builder builderForValue) {
+        if (userInvitesBuilder_ == null) {
+          ensureUserInvitesIsMutable();
+          userInvites_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          userInvitesBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .BlitzMessage.UserInvite UserInvites = 1;</code>
+       */
+      public Builder addAllUserInvites(
+          java.lang.Iterable<? extends com.blitzhere.BlitzMessage.UserProfiles.UserInvite> values) {
+        if (userInvitesBuilder_ == null) {
+          ensureUserInvitesIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, userInvites_);
+          onChanged();
+        } else {
+          userInvitesBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .BlitzMessage.UserInvite UserInvites = 1;</code>
+       */
+      public Builder clearUserInvites() {
+        if (userInvitesBuilder_ == null) {
+          userInvites_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+          onChanged();
+        } else {
+          userInvitesBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .BlitzMessage.UserInvite UserInvites = 1;</code>
+       */
+      public Builder removeUserInvites(int index) {
+        if (userInvitesBuilder_ == null) {
+          ensureUserInvitesIsMutable();
+          userInvites_.remove(index);
+          onChanged();
+        } else {
+          userInvitesBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .BlitzMessage.UserInvite UserInvites = 1;</code>
+       */
+      public com.blitzhere.BlitzMessage.UserProfiles.UserInvite.Builder getUserInvitesBuilder(
+          int index) {
+        return getUserInvitesFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .BlitzMessage.UserInvite UserInvites = 1;</code>
+       */
+      public com.blitzhere.BlitzMessage.UserProfiles.UserInviteOrBuilder getUserInvitesOrBuilder(
+          int index) {
+        if (userInvitesBuilder_ == null) {
+          return userInvites_.get(index);  } else {
+          return userInvitesBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .BlitzMessage.UserInvite UserInvites = 1;</code>
+       */
+      public java.util.List<? extends com.blitzhere.BlitzMessage.UserProfiles.UserInviteOrBuilder> 
+           getUserInvitesOrBuilderList() {
+        if (userInvitesBuilder_ != null) {
+          return userInvitesBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(userInvites_);
+        }
+      }
+      /**
+       * <code>repeated .BlitzMessage.UserInvite UserInvites = 1;</code>
+       */
+      public com.blitzhere.BlitzMessage.UserProfiles.UserInvite.Builder addUserInvitesBuilder() {
+        return getUserInvitesFieldBuilder().addBuilder(
+            com.blitzhere.BlitzMessage.UserProfiles.UserInvite.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .BlitzMessage.UserInvite UserInvites = 1;</code>
+       */
+      public com.blitzhere.BlitzMessage.UserProfiles.UserInvite.Builder addUserInvitesBuilder(
+          int index) {
+        return getUserInvitesFieldBuilder().addBuilder(
+            index, com.blitzhere.BlitzMessage.UserProfiles.UserInvite.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .BlitzMessage.UserInvite UserInvites = 1;</code>
+       */
+      public java.util.List<com.blitzhere.BlitzMessage.UserProfiles.UserInvite.Builder> 
+           getUserInvitesBuilderList() {
+        return getUserInvitesFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.blitzhere.BlitzMessage.UserProfiles.UserInvite, com.blitzhere.BlitzMessage.UserProfiles.UserInvite.Builder, com.blitzhere.BlitzMessage.UserProfiles.UserInviteOrBuilder> 
+          getUserInvitesFieldBuilder() {
+        if (userInvitesBuilder_ == null) {
+          userInvitesBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+              com.blitzhere.BlitzMessage.UserProfiles.UserInvite, com.blitzhere.BlitzMessage.UserProfiles.UserInvite.Builder, com.blitzhere.BlitzMessage.UserProfiles.UserInviteOrBuilder>(
+                  userInvites_,
+                  ((bitField0_ & 0x00000001) == 0x00000001),
+                  getParentForChildren(),
+                  isClean());
+          userInvites_ = null;
+        }
+        return userInvitesBuilder_;
+      }
+
+      // @@protoc_insertion_point(builder_scope:BlitzMessage.UserInvites)
+    }
+
+    static {
+      defaultInstance = new UserInvites(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:BlitzMessage.UserInvites)
   }
 
   public interface EditProfileOrBuilder extends
@@ -22177,6 +23022,11 @@ public final class UserProfiles {
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_BlitzMessage_UserInvite_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_BlitzMessage_UserInvites_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_BlitzMessage_UserInvites_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_BlitzMessage_EditProfile_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
@@ -22259,28 +23109,30 @@ public final class UserProfiles {
       "litzMessage.UserProfile\"\177\n\014FriendUpdate\022" +
       "0\n\014friendStatus\030\001 \001(\0162\032.BlitzMessage.Fri" +
       "endStatus\022\020\n\010friendID\030\002 \001(\t\022+\n\010profiles\030" +
-      "\003 \003(\0132\031.BlitzMessage.UserProfile\"\266\001\n\nUse",
+      "\003 \003(\0132\031.BlitzMessage.UserProfile\"\304\001\n\nUse",
       "rInvite\022\016\n\006userID\030\001 \001(\t\022\020\n\010friendID\030\002 \001(" +
       "\t\022\017\n\007message\030\003 \001(\t\022.\n\013contactInfo\030\004 \001(\0132" +
       "\031.BlitzMessage.ContactInfo\022+\n\010profiles\030\005" +
       " \003(\0132\031.BlitzMessage.UserProfile\022\030\n\020confi" +
-      "rmationCode\030\006 \001(\t\"\221\001\n\013EditProfile\022\021\n\tpro" +
-      "fileID\030\001 \001(\t\022*\n\007profile\030\002 \001(\0132\031.BlitzMes" +
-      "sage.UserProfile\022.\n\013editProfile\030\003 \001(\0132\031." +
-      "BlitzMessage.UserProfile\022\023\n\013discardEdit\030" +
-      "\004 \001(\010*Z\n\013ContactType\022\r\n\tCTUnknown\020\000\022\016\n\nC" +
-      "TPhoneSMS\020\001\022\013\n\007CTEmail\020\002\022\n\n\006CTChat\020\003\022\023\n\017",
-      "CTSocialService\020\004*j\n\nUserStatus\022\r\n\tUSUnk" +
-      "nown\020\000\022\r\n\tUSBlocked\020\001\022\r\n\tUSInvited\020\002\022\014\n\010" +
-      "USActive\020\003\022\020\n\014USConfirming\020\004\022\017\n\013USConfir" +
-      "med\020\005*:\n\006Gender\022\014\n\010GUnknown\020\000\022\013\n\007GFemale" +
-      "\020\001\022\t\n\005GMale\020\002\022\n\n\006GOther\020\003*F\n\014ImageConten" +
-      "t\022\r\n\tICUnknown\020\000\022\021\n\rICUserProfile\020\001\022\024\n\020I" +
-      "CUserBackground\020\002*i\n\014FriendStatus\022\r\n\tFSU" +
-      "nknown\020\000\022\014\n\010FSDidAsk\020\001\022\r\n\tFSIgnored\020\002\022\016\n" +
-      "\nFSAccepted\020\003\022\016\n\nFSWasAsked\020\004\022\r\n\tFSFrien" +
-      "ds\020\005B/\n\032com.blitzhere.BlitzMessage\210\001\001\322>\002",
-      "\n\000\322>\003\022\001B\322>\002\030\001"
+      "rmationCode\030\006 \001(\t\022\014\n\004name\030\007 \001(\t\"<\n\013UserI" +
+      "nvites\022-\n\013UserInvites\030\001 \003(\0132\030.BlitzMessa" +
+      "ge.UserInvite\"\221\001\n\013EditProfile\022\021\n\tprofile" +
+      "ID\030\001 \001(\t\022*\n\007profile\030\002 \001(\0132\031.BlitzMessage" +
+      ".UserProfile\022.\n\013editProfile\030\003 \001(\0132\031.Blit" +
+      "zMessage.UserProfile\022\023\n\013discardEdit\030\004 \001(",
+      "\010*Z\n\013ContactType\022\r\n\tCTUnknown\020\000\022\016\n\nCTPho" +
+      "neSMS\020\001\022\013\n\007CTEmail\020\002\022\n\n\006CTChat\020\003\022\023\n\017CTSo" +
+      "cialService\020\004*j\n\nUserStatus\022\r\n\tUSUnknown" +
+      "\020\000\022\r\n\tUSBlocked\020\001\022\r\n\tUSInvited\020\002\022\014\n\010USAc" +
+      "tive\020\003\022\020\n\014USConfirming\020\004\022\017\n\013USConfirmed\020" +
+      "\005*:\n\006Gender\022\014\n\010GUnknown\020\000\022\013\n\007GFemale\020\001\022\t" +
+      "\n\005GMale\020\002\022\n\n\006GOther\020\003*F\n\014ImageContent\022\r\n" +
+      "\tICUnknown\020\000\022\021\n\rICUserProfile\020\001\022\024\n\020ICUse" +
+      "rBackground\020\002*i\n\014FriendStatus\022\r\n\tFSUnkno" +
+      "wn\020\000\022\014\n\010FSDidAsk\020\001\022\r\n\tFSIgnored\020\002\022\016\n\nFSA",
+      "ccepted\020\003\022\016\n\nFSWasAsked\020\004\022\r\n\tFSFriends\020\005" +
+      "B/\n\032com.blitzhere.BlitzMessage\210\001\001\322>\002\n\000\322>" +
+      "\003\022\001B\322>\002\030\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -22380,9 +23232,15 @@ public final class UserProfiles {
     internal_static_BlitzMessage_UserInvite_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_BlitzMessage_UserInvite_descriptor,
-        new java.lang.String[] { "UserID", "FriendID", "Message", "ContactInfo", "Profiles", "ConfirmationCode", });
-    internal_static_BlitzMessage_EditProfile_descriptor =
+        new java.lang.String[] { "UserID", "FriendID", "Message", "ContactInfo", "Profiles", "ConfirmationCode", "Name", });
+    internal_static_BlitzMessage_UserInvites_descriptor =
       getDescriptor().getMessageTypes().get(14);
+    internal_static_BlitzMessage_UserInvites_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_BlitzMessage_UserInvites_descriptor,
+        new java.lang.String[] { "UserInvites", });
+    internal_static_BlitzMessage_EditProfile_descriptor =
+      getDescriptor().getMessageTypes().get(15);
     internal_static_BlitzMessage_EditProfile_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_BlitzMessage_EditProfile_descriptor,

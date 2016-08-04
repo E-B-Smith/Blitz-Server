@@ -50,6 +50,8 @@
 @class BTimestampBuilder;
 @class BUserInvite;
 @class BUserInviteBuilder;
+@class BUserInvites;
+@class BUserInvitesBuilder;
 @class BUserProfile;
 @class BUserProfileBuilder;
 @class BUserProfileQuery;
@@ -1597,17 +1599,20 @@ NSString *NSStringFromBFriendStatus(BFriendStatus value);
 #define UserInvite_contactInfo @"contactInfo"
 #define UserInvite_profiles @"profiles"
 #define UserInvite_confirmationCode @"confirmationCode"
+#define UserInvite_name @"name"
 @interface BUserInvite : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
   BOOL hasUserID_:1;
   BOOL hasFriendID_:1;
   BOOL hasMessage_:1;
   BOOL hasConfirmationCode_:1;
+  BOOL hasName_:1;
   BOOL hasContactInfo_:1;
   NSString* userID;
   NSString* friendID;
   NSString* message;
   NSString* confirmationCode;
+  NSString* name;
   BContactInfo* contactInfo;
   NSMutableArray * profilesArray;
 }
@@ -1616,12 +1621,14 @@ NSString *NSStringFromBFriendStatus(BFriendStatus value);
 - (BOOL) hasMessage;
 - (BOOL) hasContactInfo;
 - (BOOL) hasConfirmationCode;
+- (BOOL) hasName;
 @property (readonly, strong) NSString* userID;
 @property (readonly, strong) NSString* friendID;
 @property (readonly, strong) NSString* message;
 @property (readonly, strong) BContactInfo* contactInfo;
 @property (readonly, strong) NSArray * profiles;
 @property (readonly, strong) NSString* confirmationCode;
+@property (readonly, strong) NSString* name;
 - (BUserProfile*)profilesAtIndex:(NSUInteger)index;
 
 + (instancetype) defaultInstance;
@@ -1691,6 +1698,61 @@ NSString *NSStringFromBFriendStatus(BFriendStatus value);
 - (NSString*) confirmationCode;
 - (BUserInviteBuilder*) setConfirmationCode:(NSString*) value;
 - (BUserInviteBuilder*) clearConfirmationCode;
+
+- (BOOL) hasName;
+- (NSString*) name;
+- (BUserInviteBuilder*) setName:(NSString*) value;
+- (BUserInviteBuilder*) clearName;
+@end
+
+#define UserInvites_UserInvites @"userInvites"
+@interface BUserInvites : PBGeneratedMessage<GeneratedMessageProtocol> {
+@private
+  NSMutableArray * userInvitesArray;
+}
+@property (readonly, strong) NSArray * userInvites;
+- (BUserInvite*)userInvitesAtIndex:(NSUInteger)index;
+
++ (instancetype) defaultInstance;
+- (instancetype) defaultInstance;
+
+- (BOOL) isInitialized;
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
+- (BUserInvitesBuilder*) builder;
++ (BUserInvitesBuilder*) builder;
++ (BUserInvitesBuilder*) builderWithPrototype:(BUserInvites*) prototype;
+- (BUserInvitesBuilder*) toBuilder;
+
++ (BUserInvites*) parseFromData:(NSData*) data;
++ (BUserInvites*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (BUserInvites*) parseFromInputStream:(NSInputStream*) input;
++ (BUserInvites*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (BUserInvites*) parseFromCodedInputStream:(PBCodedInputStream*) input;
++ (BUserInvites*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+@end
+
+@interface BUserInvitesBuilder : PBGeneratedMessageBuilder {
+@private
+  BUserInvites* resultUserInvites;
+}
+
+- (BUserInvites*) defaultInstance;
+
+- (BUserInvitesBuilder*) clear;
+- (BUserInvitesBuilder*) clone;
+
+- (BUserInvites*) build;
+- (BUserInvites*) buildPartial;
+
+- (BUserInvitesBuilder*) mergeFrom:(BUserInvites*) other;
+- (BUserInvitesBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
+- (BUserInvitesBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+
+- (NSMutableArray *)userInvites;
+- (BUserInvite*)userInvitesAtIndex:(NSUInteger)index;
+- (BUserInvitesBuilder *)addUserInvites:(BUserInvite*)value;
+- (BUserInvitesBuilder *)setUserInvitesArray:(NSArray *)array;
+- (BUserInvitesBuilder *)clearUserInvites;
 @end
 
 #define EditProfile_profileID @"profileID"
