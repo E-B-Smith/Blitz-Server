@@ -42,6 +42,7 @@ message SessionRequest {
   optional DeviceInfo deviceInfo = 2;
   optional UserProfile profile   = 3;
   optional Timestamp lastAppDataResetDate = 4;
+  optional bool      logout      = 5;
 }
 
 

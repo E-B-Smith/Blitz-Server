@@ -33,6 +33,37 @@ import (
 
 
 func AddContactInfoToUserID(userID string, contact *BlitzMessage.ContactInfo) {
+
+    if contact.ContactType == nil {
+        return
+    }
+
+    switch *contact.ContactType {
+    case BlitzMessage.ContactType_CTEmail:
+        email, error := Util.ValidatedEmailAddress(*contact.Contact)
+        if error != nil {
+            contact.Contact = nil
+        } else {
+            contact.Contact = &email
+        }
+
+    case BlitzMessage.ContactType_CTPhoneSMS:
+        phone, error := Util.ValidatedPhoneNumber(*contact.Contact)
+        if error != nil {
+            contact.Contact = nil
+        } else {
+            contact.Contact = &phone
+        }
+
+    default:
+        contact.Contact = Util.CleanStringPtr(contact.Contact)
+
+    }
+
+    if contact.Contact == nil {
+        return
+    }
+
     result, error := config.DB.Exec(
         `insert into UserContactTable
         (userID, contactType, contact)

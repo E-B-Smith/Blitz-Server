@@ -266,10 +266,11 @@ func Session_InitializeSessions() {
 //----------------------------------------------------------------------------------------
 
 
-func UpdateSession(ipAddress string,
-                   sessionToken string,
-                   request *BlitzMessage.SessionRequest,
-                   ) *BlitzMessage.ServerResponse {
+func UpdateSession(
+        ipAddress string,
+        sessionToken string,
+        request *BlitzMessage.SessionRequest,
+        ) *BlitzMessage.ServerResponse {
 
     //  * If the User doesn't exist:
     //      - Check the vendorID, otherwise
@@ -280,6 +281,18 @@ func UpdateSession(ipAddress string,
     //  * Update the user session state.
 
     Log.LogFunctionName()
+
+    //  Log out --
+
+    if request.Logout != nil && *request.Logout {
+        result, error := config.DB.Exec(
+            `delete from SessionTable where sessionToken = $1;`,
+            sessionToken,
+        )
+        error = pgsql.UpdateResultError(result, error)
+        if error != nil { Log.LogError(error) }
+        return ServerResponseForError(BlitzMessage.ResponseCode_RCSuccess, error)
+    }
 
     //  Validate the userID --
 
@@ -293,6 +306,16 @@ func UpdateSession(ipAddress string,
 
     if request.DeviceInfo == nil || request.DeviceInfo.VendorUID == nil || request.DeviceInfo.AppID == nil {
         return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
+    }
+
+    //  Check the session --
+
+    session := Session_SessionFromToken(sessionToken)
+    if session == nil {
+        session  = Session_CreateSession(userID, *request.DeviceInfo.VendorUID)
+        if session == nil {
+            return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
+        }
     }
 
     //  Check the app version --
@@ -313,16 +336,6 @@ func UpdateSession(ipAddress string,
         if request.DeviceInfo.AppVersion != nil { version = *request.DeviceInfo.AppVersion }
         error = fmt.Errorf("Client too old.  %s < %s.", version, minAppVersion)
         return ServerResponseForError(BlitzMessage.ResponseCode_RCClientTooOld, error)
-    }
-
-    //  Check the session --
-
-    session := Session_SessionFromToken(sessionToken)
-    if session == nil {
-        session  = Session_CreateSession(userID, *request.DeviceInfo.VendorUID)
-        if session == nil {
-            return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
-        }
     }
 
     request.DeviceInfo.IPAddress = &ipAddress

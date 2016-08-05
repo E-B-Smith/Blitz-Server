@@ -16,20 +16,16 @@ package main
 
 import (
     "fmt"
-    // "time"
-    // "errors"
-    // "strings"
+    "net/url"
     "database/sql"
-    // "github.com/lib/pq"
     "github.com/golang/protobuf/proto"
     "violent.blue/GoKit/Log"
     "violent.blue/GoKit/Util"
-    // "violent.blue/GoKit/pgsql"
     "BlitzMessage"
 )
 
 
-func SendInvite(invitorUserID string, invite *BlitzMessage.UserInvite) {
+func SendInvite(inviterUserID string, invite *BlitzMessage.UserInvite) {
     //  No: If already a friend on Blitz, do nothing.  Done.
     //  No: If already on Blitz, send a friend request.  Done.
     //  If not on Blitz, create a user profile.
@@ -68,30 +64,31 @@ func SendInvite(invitorUserID string, invite *BlitzMessage.UserInvite) {
             UserStatus:     BlitzMessage.UserStatus(BlitzMessage.UserStatus_USInvited).Enum(),
         }
         UpdateProfile(friendProfile)
+        friendProfile = ProfileForUserID("", *friendProfile.UserID)
     }
     if friendProfile.UserStatus == nil {
         friendProfile.UserStatus = BlitzMessage.UserStatus(BlitzMessage.UserStatus_USInvited).Enum()
     }
-    if *friendProfile.UserStatus >= BlitzMessage.UserStatus_USConfirming {
-        return
-    }
+    // if *friendProfile.UserStatus >= BlitzMessage.UserStatus_USConfirming {
+    //     return
+    // }
 
-    message := ""
-    if invite.Message != nil {
-        message = *invite.Message
+    name := PrettyNameForUserID(inviterUserID)
+    message := fmt.Sprintf("%s sent you an invitation to Blitz", name)
+    if invite.Message != nil && len(*invite.Message) > 0 {
+        message += ":\n\n" + *invite.Message
     }
 
     inviteURL := fmt.Sprintf(
-        "%s?action=invited&friendid=%s&userid=%s&contacttype=%d&contact=%s&message=%s",
+        "%s?action=invited&inviteeid=%s&contacttype=%d&contact=%s&message=%s",
         config.AppLinkURL,
         *friendProfile.UserID,
-        invitorUserID,
         *invite.ContactInfo.ContactType,
-        *invite.ContactInfo.Contact,
-        message,
+        url.QueryEscape(*invite.ContactInfo.Contact),
+        url.QueryEscape(message),
     )
     shortLink, _ := LinkShortner_ShortLinkFromLink(inviteURL)
-    message += "\n" + shortLink
+    message += "\nGet Blitz here: " + shortLink
 
     Log.Debugf("Invite is: %s.", message)
 
@@ -101,12 +98,12 @@ func SendInvite(invitorUserID string, invite *BlitzMessage.UserInvite) {
         Util.SendSMS(*invite.ContactInfo.Contact, message)
 
     case BlitzMessage.ContactType_CTEmail:
-        config.SendEmail(*invite.ContactInfo.Contact, "Join Blitz", message)
+        config.SendEmail(*invite.ContactInfo.Contact, "Join Blitz, a network of vetted experts", message)
 
     default:
         Log.Errorf("Unkown contactType %d.", *invite.ContactInfo.ContactType)
     }
-
+    invite.Profiles = []*BlitzMessage.UserProfile { friendProfile }
 }
 
 

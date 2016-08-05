@@ -294,6 +294,7 @@ static BDebugMessage* defaultBDebugMessageInstance = nil;
 @property (strong) BDeviceInfo* deviceInfo;
 @property (strong) BUserProfile* profile;
 @property (strong) BTimestamp* lastAppDataResetDate;
+@property BOOL logout;
 @end
 
 @implementation BSessionRequest
@@ -326,12 +327,25 @@ static BDebugMessage* defaultBDebugMessageInstance = nil;
   hasLastAppDataResetDate_ = !!_value_;
 }
 @synthesize lastAppDataResetDate;
+- (BOOL) hasLogout {
+  return !!hasLogout_;
+}
+- (void) setHasLogout:(BOOL) _value_ {
+  hasLogout_ = !!_value_;
+}
+- (BOOL) logout {
+  return !!logout_;
+}
+- (void) setLogout:(BOOL) _value_ {
+  logout_ = !!_value_;
+}
 - (instancetype) init {
   if ((self = [super init])) {
     self.location = [BLocation defaultInstance];
     self.deviceInfo = [BDeviceInfo defaultInstance];
     self.profile = [BUserProfile defaultInstance];
     self.lastAppDataResetDate = [BTimestamp defaultInstance];
+    self.logout = NO;
   }
   return self;
 }
@@ -368,6 +382,9 @@ static BSessionRequest* defaultBSessionRequestInstance = nil;
   if (self.hasLastAppDataResetDate) {
     [output writeMessage:4 value:self.lastAppDataResetDate];
   }
+  if (self.hasLogout) {
+    [output writeBool:5 value:self.logout];
+  }
   [self.unknownFields writeToCodedOutputStream:output];
 }
 - (SInt32) serializedSize {
@@ -388,6 +405,9 @@ static BSessionRequest* defaultBSessionRequestInstance = nil;
   }
   if (self.hasLastAppDataResetDate) {
     size_ += computeMessageSize(4, self.lastAppDataResetDate);
+  }
+  if (self.hasLogout) {
+    size_ += computeBoolSize(5, self.logout);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -448,6 +468,9 @@ static BSessionRequest* defaultBSessionRequestInstance = nil;
                          withIndent:[NSString stringWithFormat:@"%@  ", indent]];
     [output appendFormat:@"%@}\n", indent];
   }
+  if (self.hasLogout) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"logout", [NSNumber numberWithBool:self.logout]];
+  }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (void) storeInDictionary:(NSMutableDictionary *)dictionary {
@@ -471,6 +494,9 @@ static BSessionRequest* defaultBSessionRequestInstance = nil;
    [self.lastAppDataResetDate storeInDictionary:messageDictionary];
    [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"lastAppDataResetDate"];
   }
+  if (self.hasLogout) {
+    [dictionary setObject: [NSNumber numberWithBool:self.logout] forKey: @"logout"];
+  }
   [self.unknownFields storeInDictionary:dictionary];
 }
 - (BOOL) isEqual:(id)other {
@@ -490,6 +516,8 @@ static BSessionRequest* defaultBSessionRequestInstance = nil;
       (!self.hasProfile || [self.profile isEqual:otherMessage.profile]) &&
       self.hasLastAppDataResetDate == otherMessage.hasLastAppDataResetDate &&
       (!self.hasLastAppDataResetDate || [self.lastAppDataResetDate isEqual:otherMessage.lastAppDataResetDate]) &&
+      self.hasLogout == otherMessage.hasLogout &&
+      (!self.hasLogout || self.logout == otherMessage.logout) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
@@ -505,6 +533,9 @@ static BSessionRequest* defaultBSessionRequestInstance = nil;
   }
   if (self.hasLastAppDataResetDate) {
     hashCode = hashCode * 31 + [self.lastAppDataResetDate hash];
+  }
+  if (self.hasLogout) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithBool:self.logout] hash];
   }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
@@ -561,6 +592,9 @@ static BSessionRequest* defaultBSessionRequestInstance = nil;
   if (other.hasLastAppDataResetDate) {
     [self mergeLastAppDataResetDate:other.lastAppDataResetDate];
   }
+  if (other.hasLogout) {
+    [self setLogout:other.logout];
+  }
   [self mergeUnknownFields:other.unknownFields];
   return self;
 }
@@ -616,6 +650,10 @@ static BSessionRequest* defaultBSessionRequestInstance = nil;
         }
         [input readMessage:subBuilder extensionRegistry:extensionRegistry];
         [self setLastAppDataResetDate:[subBuilder buildPartial]];
+        break;
+      }
+      case 40: {
+        [self setLogout:[input readBool]];
         break;
       }
     }
@@ -739,6 +777,22 @@ static BSessionRequest* defaultBSessionRequestInstance = nil;
 - (BSessionRequestBuilder*) clearLastAppDataResetDate {
   resultSessionRequest.hasLastAppDataResetDate = NO;
   resultSessionRequest.lastAppDataResetDate = [BTimestamp defaultInstance];
+  return self;
+}
+- (BOOL) hasLogout {
+  return resultSessionRequest.hasLogout;
+}
+- (BOOL) logout {
+  return resultSessionRequest.logout;
+}
+- (BSessionRequestBuilder*) setLogout:(BOOL) value {
+  resultSessionRequest.hasLogout = YES;
+  resultSessionRequest.logout = value;
+  return self;
+}
+- (BSessionRequestBuilder*) clearLogout {
+  resultSessionRequest.hasLogout = NO;
+  resultSessionRequest.logout = NO;
   return self;
 }
 @end
