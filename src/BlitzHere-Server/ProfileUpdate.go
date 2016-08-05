@@ -200,7 +200,7 @@ func UpdateProfile(profile *BlitzMessage.UserProfile) error {
         profile.StripeAccount,
         profile.EditProfileID,
         profile.ChatFee,
-        profile.CallFee,
+        profile.CallFeePerHour,
         profile.ShortQAFee,
         profile.LongQAFee,
         profile.CharityPercent,

@@ -65,6 +65,7 @@ enum PurchaseType {
   PurchaseTypeUnknown = 0;
   PTChatConversation  = 1;
   PTFeedPost          = 2;
+  PTCall              = 3;
 }
 
 

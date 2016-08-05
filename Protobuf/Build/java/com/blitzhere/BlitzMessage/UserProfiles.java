@@ -8417,18 +8417,18 @@ public final class UserProfiles {
         getChatFeeBytes();
 
     /**
-     * <code>optional string callFee = 30;</code>
+     * <code>optional string callFeePerHour = 30;</code>
      */
-    boolean hasCallFee();
+    boolean hasCallFeePerHour();
     /**
-     * <code>optional string callFee = 30;</code>
+     * <code>optional string callFeePerHour = 30;</code>
      */
-    java.lang.String getCallFee();
+    java.lang.String getCallFeePerHour();
     /**
-     * <code>optional string callFee = 30;</code>
+     * <code>optional string callFeePerHour = 30;</code>
      */
     com.google.protobuf.ByteString
-        getCallFeeBytes();
+        getCallFeePerHourBytes();
 
     /**
      * <code>optional int64 userInfo = 27;</code>
@@ -8783,7 +8783,7 @@ public final class UserProfiles {
             case 242: {
               com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00040000;
-              callFee_ = bs;
+              callFeePerHour_ = bs;
               break;
             }
             case 250: {
@@ -9570,19 +9570,19 @@ public final class UserProfiles {
       }
     }
 
-    public static final int CALLFEE_FIELD_NUMBER = 30;
-    private java.lang.Object callFee_;
+    public static final int CALLFEEPERHOUR_FIELD_NUMBER = 30;
+    private java.lang.Object callFeePerHour_;
     /**
-     * <code>optional string callFee = 30;</code>
+     * <code>optional string callFeePerHour = 30;</code>
      */
-    public boolean hasCallFee() {
+    public boolean hasCallFeePerHour() {
       return ((bitField0_ & 0x00040000) == 0x00040000);
     }
     /**
-     * <code>optional string callFee = 30;</code>
+     * <code>optional string callFeePerHour = 30;</code>
      */
-    public java.lang.String getCallFee() {
-      java.lang.Object ref = callFee_;
+    public java.lang.String getCallFeePerHour() {
+      java.lang.Object ref = callFeePerHour_;
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
@@ -9590,22 +9590,22 @@ public final class UserProfiles {
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         if (bs.isValidUtf8()) {
-          callFee_ = s;
+          callFeePerHour_ = s;
         }
         return s;
       }
     }
     /**
-     * <code>optional string callFee = 30;</code>
+     * <code>optional string callFeePerHour = 30;</code>
      */
     public com.google.protobuf.ByteString
-        getCallFeeBytes() {
-      java.lang.Object ref = callFee_;
+        getCallFeePerHourBytes() {
+      java.lang.Object ref = callFeePerHour_;
       if (ref instanceof java.lang.String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
-        callFee_ = b;
+        callFeePerHour_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
@@ -9818,7 +9818,7 @@ public final class UserProfiles {
       stripeAccount_ = "";
       serviceIsFreeForUser_ = false;
       chatFee_ = "";
-      callFee_ = "";
+      callFeePerHour_ = "";
       userInfo_ = 0L;
       editProfileID_ = "";
       isAdmin_ = false;
@@ -9939,7 +9939,7 @@ public final class UserProfiles {
         output.writeBool(29, isAdmin_);
       }
       if (((bitField0_ & 0x00040000) == 0x00040000)) {
-        output.writeBytes(30, getCallFeeBytes());
+        output.writeBytes(30, getCallFeePerHourBytes());
       }
       if (((bitField0_ & 0x00400000) == 0x00400000)) {
         output.writeBytes(31, getShortQAFeeBytes());
@@ -10082,7 +10082,7 @@ public final class UserProfiles {
       }
       if (((bitField0_ & 0x00040000) == 0x00040000)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(30, getCallFeeBytes());
+          .computeBytesSize(30, getCallFeePerHourBytes());
       }
       if (((bitField0_ & 0x00400000) == 0x00400000)) {
         size += com.google.protobuf.CodedOutputStream
@@ -10320,7 +10320,7 @@ public final class UserProfiles {
         bitField0_ = (bitField0_ & ~0x01000000);
         chatFee_ = "";
         bitField0_ = (bitField0_ & ~0x02000000);
-        callFee_ = "";
+        callFeePerHour_ = "";
         bitField0_ = (bitField0_ & ~0x04000000);
         userInfo_ = 0L;
         bitField0_ = (bitField0_ & ~0x08000000);
@@ -10522,7 +10522,7 @@ public final class UserProfiles {
         if (((from_bitField0_ & 0x04000000) == 0x04000000)) {
           to_bitField0_ |= 0x00040000;
         }
-        result.callFee_ = callFee_;
+        result.callFeePerHour_ = callFeePerHour_;
         if (((from_bitField0_ & 0x08000000) == 0x08000000)) {
           to_bitField0_ |= 0x00080000;
         }
@@ -10819,9 +10819,9 @@ public final class UserProfiles {
           chatFee_ = other.chatFee_;
           onChanged();
         }
-        if (other.hasCallFee()) {
+        if (other.hasCallFeePerHour()) {
           bitField0_ |= 0x04000000;
-          callFee_ = other.callFee_;
+          callFeePerHour_ = other.callFeePerHour_;
           onChanged();
         }
         if (other.hasUserInfo()) {
@@ -13799,24 +13799,24 @@ public final class UserProfiles {
         return this;
       }
 
-      private java.lang.Object callFee_ = "";
+      private java.lang.Object callFeePerHour_ = "";
       /**
-       * <code>optional string callFee = 30;</code>
+       * <code>optional string callFeePerHour = 30;</code>
        */
-      public boolean hasCallFee() {
+      public boolean hasCallFeePerHour() {
         return ((bitField0_ & 0x04000000) == 0x04000000);
       }
       /**
-       * <code>optional string callFee = 30;</code>
+       * <code>optional string callFeePerHour = 30;</code>
        */
-      public java.lang.String getCallFee() {
-        java.lang.Object ref = callFee_;
+      public java.lang.String getCallFeePerHour() {
+        java.lang.Object ref = callFeePerHour_;
         if (!(ref instanceof java.lang.String)) {
           com.google.protobuf.ByteString bs =
               (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
           if (bs.isValidUtf8()) {
-            callFee_ = s;
+            callFeePerHour_ = s;
           }
           return s;
         } else {
@@ -13824,53 +13824,53 @@ public final class UserProfiles {
         }
       }
       /**
-       * <code>optional string callFee = 30;</code>
+       * <code>optional string callFeePerHour = 30;</code>
        */
       public com.google.protobuf.ByteString
-          getCallFeeBytes() {
-        java.lang.Object ref = callFee_;
+          getCallFeePerHourBytes() {
+        java.lang.Object ref = callFeePerHour_;
         if (ref instanceof String) {
           com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
-          callFee_ = b;
+          callFeePerHour_ = b;
           return b;
         } else {
           return (com.google.protobuf.ByteString) ref;
         }
       }
       /**
-       * <code>optional string callFee = 30;</code>
+       * <code>optional string callFeePerHour = 30;</code>
        */
-      public Builder setCallFee(
+      public Builder setCallFeePerHour(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
   bitField0_ |= 0x04000000;
-        callFee_ = value;
+        callFeePerHour_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional string callFee = 30;</code>
+       * <code>optional string callFeePerHour = 30;</code>
        */
-      public Builder clearCallFee() {
+      public Builder clearCallFeePerHour() {
         bitField0_ = (bitField0_ & ~0x04000000);
-        callFee_ = getDefaultInstance().getCallFee();
+        callFeePerHour_ = getDefaultInstance().getCallFeePerHour();
         onChanged();
         return this;
       }
       /**
-       * <code>optional string callFee = 30;</code>
+       * <code>optional string callFeePerHour = 30;</code>
        */
-      public Builder setCallFeeBytes(
+      public Builder setCallFeePerHourBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
   bitField0_ |= 0x04000000;
-        callFee_ = value;
+        callFeePerHour_ = value;
         onChanged();
         return this;
       }
@@ -23067,7 +23067,7 @@ public final class UserProfiles {
       "(\0132\027.BlitzMessage.Timestamp\022\026\n\016conversat" +
       "ionID\030\004 \001(\t\022\022\n\nresponsive\030\005 \001(\001\022\020\n\010outgo" +
       "ing\030\006 \001(\001\022\023\n\013recommended\030\007 \001(\001\022\022\n\nreview" +
-      "Text\030\010 \001(\t\022\014\n\004tags\030\t \003(\t\"\213\010\n\013UserProfile" +
+      "Text\030\010 \001(\t\022\014\n\004tags\030\t \003(\t\"\222\010\n\013UserProfile" +
       "\022\016\n\006userID\030\001 \001(\t\022,\n\nuserStatus\030\002 \001(\0162\030.B" +
       "litzMessage.UserStatus\022-\n\014creationDate\030\003",
       " \001(\0132\027.BlitzMessage.Timestamp\022)\n\010lastSee" +
@@ -23090,49 +23090,49 @@ public final class UserProfiles {
       "iews\030\026 \003(\0132\030.BlitzMessage.UserReview\022\020\n\010" +
       "isExpert\030\027 \001(\010\022\025\n\rstripeAccount\030\030 \001(\t\022\034\n" +
       "\024serviceIsFreeForUser\030\031 \001(\010\022\017\n\007chatFee\030\032",
-      " \001(\t\022\017\n\007callFee\030\036 \001(\t\022\020\n\010userInfo\030\033 \001(\003\022" +
-      "\025\n\reditProfileID\030\034 \001(\t\022\017\n\007isAdmin\030\035 \001(\010\022" +
-      "\022\n\nshortQAFee\030\037 \001(\t\022\021\n\tlongQAFee\030  \001(\t\022\026" +
-      "\n\016charityPercent\030! \001(\001\"9\n\013ImageUpload\022*\n" +
-      "\timageData\030\001 \003(\0132\027.BlitzMessage.ImageDat" +
-      "a\"@\n\021UserProfileUpdate\022+\n\010profiles\030\001 \003(\013" +
-      "2\031.BlitzMessage.UserProfile\"\230\001\n\020UserProf" +
-      "ileQuery\022\017\n\007userIDs\030\001 \003(\t\022\031\n\021fetchDemoPr" +
-      "ofiles\030\002 \001(\010\022\034\n\024entityTag_deprecated\030\003 \001" +
-      "(\t\022\024\n\014entityUserID\030\004 \001(\t\022\020\n\010entityID\030\005 \001",
-      "(\t\022\022\n\nentityTags\030\006 \003(\t\"\246\001\n\023ConfirmationR" +
-      "equest\022.\n\013contactInfo\030\001 \001(\0132\031.BlitzMessa" +
-      "ge.ContactInfo\022.\n\013userProfile\030\002 \001(\0132\031.Bl" +
-      "itzMessage.UserProfile\022\030\n\020confirmationCo" +
-      "de\030\003 \001(\t\022\025\n\rinviterUserID\030\004 \001(\t\"F\n\027Profi" +
-      "lesFromContactInfo\022+\n\010profiles\030\001 \003(\0132\031.B" +
-      "litzMessage.UserProfile\"\177\n\014FriendUpdate\022" +
-      "0\n\014friendStatus\030\001 \001(\0162\032.BlitzMessage.Fri" +
-      "endStatus\022\020\n\010friendID\030\002 \001(\t\022+\n\010profiles\030" +
-      "\003 \003(\0132\031.BlitzMessage.UserProfile\"\304\001\n\nUse",
-      "rInvite\022\016\n\006userID\030\001 \001(\t\022\020\n\010friendID\030\002 \001(" +
-      "\t\022\017\n\007message\030\003 \001(\t\022.\n\013contactInfo\030\004 \001(\0132" +
-      "\031.BlitzMessage.ContactInfo\022+\n\010profiles\030\005" +
-      " \003(\0132\031.BlitzMessage.UserProfile\022\030\n\020confi" +
-      "rmationCode\030\006 \001(\t\022\014\n\004name\030\007 \001(\t\"<\n\013UserI" +
-      "nvites\022-\n\013UserInvites\030\001 \003(\0132\030.BlitzMessa" +
-      "ge.UserInvite\"\221\001\n\013EditProfile\022\021\n\tprofile" +
-      "ID\030\001 \001(\t\022*\n\007profile\030\002 \001(\0132\031.BlitzMessage" +
-      ".UserProfile\022.\n\013editProfile\030\003 \001(\0132\031.Blit" +
-      "zMessage.UserProfile\022\023\n\013discardEdit\030\004 \001(",
-      "\010*Z\n\013ContactType\022\r\n\tCTUnknown\020\000\022\016\n\nCTPho" +
-      "neSMS\020\001\022\013\n\007CTEmail\020\002\022\n\n\006CTChat\020\003\022\023\n\017CTSo" +
-      "cialService\020\004*j\n\nUserStatus\022\r\n\tUSUnknown" +
-      "\020\000\022\r\n\tUSBlocked\020\001\022\r\n\tUSInvited\020\002\022\014\n\010USAc" +
-      "tive\020\003\022\020\n\014USConfirming\020\004\022\017\n\013USConfirmed\020" +
-      "\005*:\n\006Gender\022\014\n\010GUnknown\020\000\022\013\n\007GFemale\020\001\022\t" +
-      "\n\005GMale\020\002\022\n\n\006GOther\020\003*F\n\014ImageContent\022\r\n" +
-      "\tICUnknown\020\000\022\021\n\rICUserProfile\020\001\022\024\n\020ICUse" +
-      "rBackground\020\002*i\n\014FriendStatus\022\r\n\tFSUnkno" +
-      "wn\020\000\022\014\n\010FSDidAsk\020\001\022\r\n\tFSIgnored\020\002\022\016\n\nFSA",
-      "ccepted\020\003\022\016\n\nFSWasAsked\020\004\022\r\n\tFSFriends\020\005" +
-      "B/\n\032com.blitzhere.BlitzMessage\210\001\001\322>\002\n\000\322>" +
-      "\003\022\001B\322>\002\030\001"
+      " \001(\t\022\026\n\016callFeePerHour\030\036 \001(\t\022\020\n\010userInfo" +
+      "\030\033 \001(\003\022\025\n\reditProfileID\030\034 \001(\t\022\017\n\007isAdmin" +
+      "\030\035 \001(\010\022\022\n\nshortQAFee\030\037 \001(\t\022\021\n\tlongQAFee\030" +
+      "  \001(\t\022\026\n\016charityPercent\030! \001(\001\"9\n\013ImageUp" +
+      "load\022*\n\timageData\030\001 \003(\0132\027.BlitzMessage.I" +
+      "mageData\"@\n\021UserProfileUpdate\022+\n\010profile" +
+      "s\030\001 \003(\0132\031.BlitzMessage.UserProfile\"\230\001\n\020U" +
+      "serProfileQuery\022\017\n\007userIDs\030\001 \003(\t\022\031\n\021fetc" +
+      "hDemoProfiles\030\002 \001(\010\022\034\n\024entityTag_depreca" +
+      "ted\030\003 \001(\t\022\024\n\014entityUserID\030\004 \001(\t\022\020\n\010entit",
+      "yID\030\005 \001(\t\022\022\n\nentityTags\030\006 \003(\t\"\246\001\n\023Confir" +
+      "mationRequest\022.\n\013contactInfo\030\001 \001(\0132\031.Bli" +
+      "tzMessage.ContactInfo\022.\n\013userProfile\030\002 \001" +
+      "(\0132\031.BlitzMessage.UserProfile\022\030\n\020confirm" +
+      "ationCode\030\003 \001(\t\022\025\n\rinviterUserID\030\004 \001(\t\"F" +
+      "\n\027ProfilesFromContactInfo\022+\n\010profiles\030\001 " +
+      "\003(\0132\031.BlitzMessage.UserProfile\"\177\n\014Friend" +
+      "Update\0220\n\014friendStatus\030\001 \001(\0162\032.BlitzMess" +
+      "age.FriendStatus\022\020\n\010friendID\030\002 \001(\t\022+\n\010pr" +
+      "ofiles\030\003 \003(\0132\031.BlitzMessage.UserProfile\"",
+      "\304\001\n\nUserInvite\022\016\n\006userID\030\001 \001(\t\022\020\n\010friend" +
+      "ID\030\002 \001(\t\022\017\n\007message\030\003 \001(\t\022.\n\013contactInfo" +
+      "\030\004 \001(\0132\031.BlitzMessage.ContactInfo\022+\n\010pro" +
+      "files\030\005 \003(\0132\031.BlitzMessage.UserProfile\022\030" +
+      "\n\020confirmationCode\030\006 \001(\t\022\014\n\004name\030\007 \001(\t\"<" +
+      "\n\013UserInvites\022-\n\013UserInvites\030\001 \003(\0132\030.Bli" +
+      "tzMessage.UserInvite\"\221\001\n\013EditProfile\022\021\n\t" +
+      "profileID\030\001 \001(\t\022*\n\007profile\030\002 \001(\0132\031.Blitz" +
+      "Message.UserProfile\022.\n\013editProfile\030\003 \001(\013" +
+      "2\031.BlitzMessage.UserProfile\022\023\n\013discardEd",
+      "it\030\004 \001(\010*Z\n\013ContactType\022\r\n\tCTUnknown\020\000\022\016" +
+      "\n\nCTPhoneSMS\020\001\022\013\n\007CTEmail\020\002\022\n\n\006CTChat\020\003\022" +
+      "\023\n\017CTSocialService\020\004*j\n\nUserStatus\022\r\n\tUS" +
+      "Unknown\020\000\022\r\n\tUSBlocked\020\001\022\r\n\tUSInvited\020\002\022" +
+      "\014\n\010USActive\020\003\022\020\n\014USConfirming\020\004\022\017\n\013USCon" +
+      "firmed\020\005*:\n\006Gender\022\014\n\010GUnknown\020\000\022\013\n\007GFem" +
+      "ale\020\001\022\t\n\005GMale\020\002\022\n\n\006GOther\020\003*F\n\014ImageCon" +
+      "tent\022\r\n\tICUnknown\020\000\022\021\n\rICUserProfile\020\001\022\024" +
+      "\n\020ICUserBackground\020\002*i\n\014FriendStatus\022\r\n\t" +
+      "FSUnknown\020\000\022\014\n\010FSDidAsk\020\001\022\r\n\tFSIgnored\020\002",
+      "\022\016\n\nFSAccepted\020\003\022\016\n\nFSWasAsked\020\004\022\r\n\tFSFr" +
+      "iends\020\005B/\n\032com.blitzhere.BlitzMessage\210\001\001" +
+      "\322>\002\n\000\322>\003\022\001B\322>\002\030\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -23190,7 +23190,7 @@ public final class UserProfiles {
     internal_static_BlitzMessage_UserProfile_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_BlitzMessage_UserProfile_descriptor,
-        new java.lang.String[] { "UserID", "UserStatus", "CreationDate", "LastSeen", "Name", "Gender", "Birthday", "Images", "SocialIdentities", "ContactInfo", "HeadlineEmployment", "Employment", "Education", "EntityTags", "InterestTags", "BackgroundSummary", "RatingCount", "RatingResponsive", "RatingOutgoing", "RatingRecommended", "ResponseSeconds", "Reviews", "IsExpert", "StripeAccount", "ServiceIsFreeForUser", "ChatFee", "CallFee", "UserInfo", "EditProfileID", "IsAdmin", "ShortQAFee", "LongQAFee", "CharityPercent", });
+        new java.lang.String[] { "UserID", "UserStatus", "CreationDate", "LastSeen", "Name", "Gender", "Birthday", "Images", "SocialIdentities", "ContactInfo", "HeadlineEmployment", "Employment", "Education", "EntityTags", "InterestTags", "BackgroundSummary", "RatingCount", "RatingResponsive", "RatingOutgoing", "RatingRecommended", "ResponseSeconds", "Reviews", "IsExpert", "StripeAccount", "ServiceIsFreeForUser", "ChatFee", "CallFeePerHour", "UserInfo", "EditProfileID", "IsAdmin", "ShortQAFee", "LongQAFee", "CharityPercent", });
     internal_static_BlitzMessage_ImageUpload_descriptor =
       getDescriptor().getMessageTypes().get(7);
     internal_static_BlitzMessage_ImageUpload_fieldAccessorTable = new

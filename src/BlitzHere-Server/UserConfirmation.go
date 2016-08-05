@@ -153,7 +153,7 @@ func UserIsConfirming(session *Session, confirmation *BlitzMessage.ConfirmationR
 
     var oldestUserID sql.NullString
     error = row.Scan(&oldestUserID)
-    if oldestUserID.Valid {
+    if error == nil && oldestUserID.Valid && len(oldestUserID.String) > 10 {
 
         //  An older profile exists.  Merge current profile
         //  into profile.
@@ -193,6 +193,23 @@ func UserIsConfirming(session *Session, confirmation *BlitzMessage.ConfirmationR
         session.UserID = dbUserID.String
         SetupNewUser(session)
     }
+
+    //  Delete old un-confirmed contact info --
+
+    var result sql.Result
+    result, error = config.DB.Exec(
+        `delete from UserContactTable
+            where contactType = $1
+              and contact = $2
+              and (isVerified = false or isVerfied is null);`,
+        confirmation.ContactInfo.ContactType,
+        confirmation.ContactInfo.Contact,
+    )
+    var r int64
+    if error == nil {
+        r, _ = result.RowsAffected()
+    }
+    Log.Debugf("Deleted %d old contacts with error %+v.", r, error)
 
     UpdateProfileStatusForUserID(session.UserID, BlitzMessage.UserStatus_USConfirmed)
     profile := ProfileForUserID(session.UserID, session.UserID)

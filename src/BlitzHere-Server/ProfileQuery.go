@@ -16,6 +16,7 @@ package main
 
 import (
     "fmt"
+    "errors"
     "strings"
     "database/sql"
     "github.com/lib/pq"
@@ -32,10 +33,14 @@ import (
 //----------------------------------------------------------------------------------------
 
 
-func AddContactInfoToUserID(userID string, contact *BlitzMessage.ContactInfo) {
+func CleanContactInfo(contact *BlitzMessage.ContactInfo) error {
 
-    if contact.ContactType == nil {
-        return
+    var BadContactInfo = errors.New("Invalid contact info")
+
+    if contact == nil ||
+       contact.ContactType == nil ||
+       contact.Contact == nil {
+        return BadContactInfo
     }
 
     switch *contact.ContactType {
@@ -61,6 +66,18 @@ func AddContactInfoToUserID(userID string, contact *BlitzMessage.ContactInfo) {
     }
 
     if contact.Contact == nil {
+        return BadContactInfo
+    }
+
+    return nil
+}
+
+
+func AddContactInfoToUserID(userID string, contact *BlitzMessage.ContactInfo) {
+
+    var error error
+    error = CleanContactInfo(contact)
+    if error != nil {
         return
     }
 
@@ -420,7 +437,7 @@ func ProfileForUserID(sessionUserID string, userID string) *BlitzMessage.UserPro
     profile.IsExpert      = proto.Bool(isExpert.Bool)
     profile.IsAdmin       = proto.Bool(isAdmin.Bool)
     profile.ChatFee       = proto.String(chatCharge.String)
-    profile.CallFee       = proto.String(callCharge.String)
+    profile.CallFeePerHour= proto.String(callCharge.String)
     profile.ShortQAFee    = proto.String(shortQACharge.String)
     profile.LongQAFee     = proto.String(longQACharge.String)
     profile.CharityPercent= proto.Float64(charityPercent.Float64)

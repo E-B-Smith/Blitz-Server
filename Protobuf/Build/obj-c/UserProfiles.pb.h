@@ -837,7 +837,7 @@ NSString *NSStringFromBFriendStatus(BFriendStatus value);
 #define UserProfile_stripeAccount @"stripeAccount"
 #define UserProfile_serviceIsFreeForUser @"serviceIsFreeForUser"
 #define UserProfile_chatFee @"chatFee"
-#define UserProfile_callFee @"callFee"
+#define UserProfile_callFeePerHour @"callFeePerHour"
 #define UserProfile_userInfo @"userInfo"
 #define UserProfile_editProfileID @"editProfileID"
 #define UserProfile_isAdmin @"isAdmin"
@@ -860,7 +860,7 @@ NSString *NSStringFromBFriendStatus(BFriendStatus value);
   BOOL hasName_:1;
   BOOL hasStripeAccount_:1;
   BOOL hasChatFee_:1;
-  BOOL hasCallFee_:1;
+  BOOL hasCallFeePerHour_:1;
   BOOL hasEditProfileID_:1;
   BOOL hasShortQAFee_:1;
   BOOL hasLongQAFee_:1;
@@ -885,7 +885,7 @@ NSString *NSStringFromBFriendStatus(BFriendStatus value);
   NSString* name;
   NSString* stripeAccount;
   NSString* chatFee;
-  NSString* callFee;
+  NSString* callFeePerHour;
   NSString* editProfileID;
   NSString* shortQAFee;
   NSString* longQAFee;
@@ -923,7 +923,7 @@ NSString *NSStringFromBFriendStatus(BFriendStatus value);
 - (BOOL) hasStripeAccount;
 - (BOOL) hasServiceIsFreeForUser;
 - (BOOL) hasChatFee;
-- (BOOL) hasCallFee;
+- (BOOL) hasCallFeePerHour;
 - (BOOL) hasUserInfo;
 - (BOOL) hasEditProfileID;
 - (BOOL) hasIsAdmin;
@@ -956,7 +956,7 @@ NSString *NSStringFromBFriendStatus(BFriendStatus value);
 @property (readonly, strong) NSString* stripeAccount;
 - (BOOL) serviceIsFreeForUser;
 @property (readonly, strong) NSString* chatFee;
-@property (readonly, strong) NSString* callFee;
+@property (readonly, strong) NSString* callFeePerHour;
 @property (readonly) SInt64 userInfo;
 @property (readonly, strong) NSString* editProfileID;
 - (BOOL) isAdmin;
@@ -1153,10 +1153,10 @@ NSString *NSStringFromBFriendStatus(BFriendStatus value);
 - (BUserProfileBuilder*) setChatFee:(NSString*) value;
 - (BUserProfileBuilder*) clearChatFee;
 
-- (BOOL) hasCallFee;
-- (NSString*) callFee;
-- (BUserProfileBuilder*) setCallFee:(NSString*) value;
-- (BUserProfileBuilder*) clearCallFee;
+- (BOOL) hasCallFeePerHour;
+- (NSString*) callFeePerHour;
+- (BUserProfileBuilder*) setCallFeePerHour:(NSString*) value;
+- (BUserProfileBuilder*) clearCallFeePerHour;
 
 - (BOOL) hasUserInfo;
 - (SInt64) userInfo;
