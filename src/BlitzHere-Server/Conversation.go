@@ -83,7 +83,8 @@ func MembersForConversationID(conversationID string) []string {
 
     rows, error := config.DB.Query(
         `select memberID from ConversationMemberTable where conversationID = $1;`,
-        conversationID)
+        conversationID,
+    )
     if error != nil {
         Log.LogError(error)
         return members
@@ -242,7 +243,10 @@ func ReadUserConversation(userID string, conversationID string) (*BlitzMessage.C
 //----------------------------------------------------------------------------------------
 
 
-func StartConversation(session *Session, req *BlitzMessage.ConversationRequest) *BlitzMessage.ServerResponse {
+func StartConversation(
+        session *Session,
+        req *BlitzMessage.ConversationRequest
+    ) *BlitzMessage.ServerResponse {
     Log.LogFunctionName()
 
     //  Check the members --
