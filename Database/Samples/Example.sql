@@ -102,6 +102,13 @@ insert into entitytagtable
         on conflict do nothing;
 
 insert into entitytagtable
+    (entityid, entitytype, entitytag, userid)
+    select userid::uuid, 1, '.friend', 'a8277a5e-b461-476b-9f4a-922a50b97f26'
+        from usertable
+        on conflict do nothing;
+
+
+insert into entitytagtable
     (userid, entitytype, entitytag, entityid)
     select 'a8277a5e-b461-476b-9f4a-922a50b97f26', 1, '.followed', userid::uuid
         from usertable
