@@ -3,7 +3,7 @@
 //----------------------------------------------------------------------------------------
 //
 //                                                         BlitzHere-Server : Scheduler.go
-//                                                        Periodicaly runs scheduled tasks
+//                                Periodicaly runs scheduled tasks.  Naive task scheduler.
 //
 //                                                                 E.B. Smith, August 2016
 //                        -©- Copyright © 2014-2016 Edward Smith, all rights reserved. -©-
@@ -15,13 +15,10 @@ package main
 
 
 import (
-    "sort"
     "time"
+    "container/heap"
     "violent.blue/GoKit/Log"
 )
-
-
-//  Not done... Not thread safe (yet)...
 
 
 //----------------------------------------------------------------------------------------
@@ -58,50 +55,81 @@ func (si ScheduledItems) Less(i, j int) bool {
     return si[i].nextTime.Before(si[j].nextTime)
 }
 
+func (si *ScheduledItems) Push(x interface{}) {
+    *si = append(*si, x.(ScheduledItem))
+}
+
+func (si *ScheduledItems) Pop() interface{} {
+    old := *si
+    n := len(old)
+    x := old[n-1]
+    *si = old[0 : n-1]
+    return x
+}
+
+func (si ScheduledItems) Head() *ScheduledItem {
+    if si.Len() > 0 {
+        return &si[0]
+    } else {
+        return nil
+    }
+}
+
 
 //----------------------------------------------------------------------------------------
 //                                                                       Scheduler Control
 //----------------------------------------------------------------------------------------
 
 
-var schedulerChannel chan bool
-var scheduledItems   ScheduledItems    //  Switch array to heap....
+var schedulerChannel chan ScheduledItem
 
+
+//  Two possible problems:
+//  - Long running tasks can get re-scheduled.
+//  - Short-intervaled tasks can starve other
+//    tasks by always being scheduled first.
 
 func scheduler() {
     Log.LogFunctionName()
     defer Log.Debugf("=> Exit Scheduler <=")
 
-    //  Runs a single scheduled item at a time.
-
-    runScheduledItem := func(item *ScheduledItem) {
-        item.Task()
-        item.nextTime = time.Now().Add(item.Interval)
-    }
+    scheduledItems := new(ScheduledItems)
+    heap.Init(scheduledItems)
 
     var shouldContinue bool = true
     for shouldContinue {
 
-        var waitTime time.Duration = time.Second
-        if len(scheduledItems) > 0 {
-            sort.Sort(scheduledItems)
-            waitTime = time.Since(scheduledItems[0].nextTime) * -1
+        var item *ScheduledItem
+        if scheduledItems.Len() > 0 {
+            item = scheduledItems.Head()
         }
 
-        if waitTime < 0 {
-            runScheduledItem(&scheduledItems[0])
-            continue
+        for item != nil && item.nextTime.Before(time.Now()) {
+            go item.Task()
+            item.nextTime = time.Now().Add(item.Interval)
+            heap.Fix(scheduledItems, 0)
+            item = scheduledItems.Head()
+        }
+
+        var waitTime time.Duration = time.Hour
+        if  item != nil {
+            waitTime = time.Since(item.nextTime) * -1
         }
 
         var timer *time.Timer = time.NewTimer(waitTime)
         select {
-            case shouldContinue = <- schedulerChannel:
-                Log.Debugf("Scheduler should continue: %v.", shouldContinue)
 
-            case <- timer.C:
-                if len(scheduledItems) > 0 {
-                    runScheduledItem(&scheduledItems[0])
-                }
+        case newItem := <- schedulerChannel:
+            Log.Debugf("New scheduler item.")
+            if newItem.Interval < 0 {
+                shouldContinue = false
+            } else {
+                newItem.nextTime = time.Now().Add(newItem.Interval)
+                heap.Push(scheduledItems, newItem)
+            }
+
+        case <- timer.C:
+            Log.Debugf("Run scheduler item.")
         }
     }
 }
@@ -109,23 +137,29 @@ func scheduler() {
 
 func StartScheduler() {
     Log.LogFunctionName()
-    schedulerChannel = make(chan bool)
+    schedulerChannel = make(chan ScheduledItem)
     go scheduler()
 }
 
 
 func StopScheduler() {
     Log.LogFunctionName()
-    schedulerChannel <- false
+    item := ScheduledItem {
+        Interval:   -1,
+    }
+    schedulerChannel <- item
 }
 
 
 func ScheduleTask(frequency time.Duration, task func()) {
+    Log.LogFunctionName()
+    if frequency <= 0 {
+        frequency = time.Millisecond * 100
+    }
     item := ScheduledItem {
         Interval:   frequency,
         Task:       task,
-        nextTime:   time.Now().Add(frequency),
     }
-    scheduledItems = append(scheduledItems, item)
+    schedulerChannel <- item
 }
 

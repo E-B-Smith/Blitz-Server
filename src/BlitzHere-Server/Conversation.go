@@ -245,7 +245,7 @@ func ReadUserConversation(userID string, conversationID string) (*BlitzMessage.C
 
 func StartConversation(
         session *Session,
-        req *BlitzMessage.ConversationRequest
+        req *BlitzMessage.ConversationRequest,
     ) *BlitzMessage.ServerResponse {
     Log.LogFunctionName()
 
