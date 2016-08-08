@@ -2,7 +2,7 @@
 
 //----------------------------------------------------------------------------------------
 //
-//                                                         BlitzHere-Server : Scheduler.go
+//                                                               GoKit/Util : Scheduler.go
 //                                Periodicaly runs scheduled tasks.  Naive task scheduler.
 //
 //                                                                 E.B. Smith, August 2016
@@ -11,7 +11,7 @@
 //----------------------------------------------------------------------------------------
 
 
-package main
+package Util
 
 
 import (
@@ -85,7 +85,7 @@ var schedulerChannel chan ScheduledItem
 
 
 //  Two possible problems:
-//  - Long running tasks can get re-scheduled.
+//  - Long running tasks can get re-scheduled before finished.
 //  - Short-intervaled tasks can starve other
 //    tasks by always being scheduled first.
 
@@ -129,7 +129,7 @@ func scheduler() {
             }
 
         case <- timer.C:
-            Log.Debugf("Run scheduler item.")
+            //Log.Debugf("Run scheduler item.")
         }
     }
 }
