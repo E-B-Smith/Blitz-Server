@@ -74,9 +74,9 @@ message Conversation {
 
   optional string             expertID        = 19;
   optional string             topic           = 20;
-  optional Timestamp          callTime        = 21;
+  optional Timestamp          callDate        = 21;
   optional double             suggestedDuration = 22;
-  repeated Timestamp          suggestedTimes  = 23;
+  repeated Timestamp          suggestedDates  = 23;
   optional Timestamp          acceptDate      = 24;
 }
 
@@ -127,6 +127,7 @@ message UpdateConversationStatus {
   optional UserMessageStatus  status          = 2;
   optional ConversationType   conversationType= 3;
   optional PaymentStatus      paymentStatus   = 4;
+  optional Timestamp          callDate        = 5;
 }
 
 

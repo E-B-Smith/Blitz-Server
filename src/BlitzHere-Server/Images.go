@@ -207,6 +207,15 @@ func GetImage(writer http.ResponseWriter, httpRequest *http.Request) {
         return
     }
 
+    eTag := httpRequest.Header.Get("If-None-Match")
+    if eTag == crc {
+        Log.Debugf("Found ETag. Return 304 not modified.")
+        writer.Header().Add("Cache-Control", "max-age=86400")
+        writer.Header().Add("ETag", crc)
+        http.Error(writer, "Not Modified", 304)
+        return
+    }
+
     var crc32 int64
     crc32, error = strconv.ParseInt(crc, 16, 64)
     if error != nil {
@@ -229,6 +238,8 @@ func GetImage(writer http.ResponseWriter, httpRequest *http.Request) {
         error = rows.Scan(&contentType, &imageData)
         if error == nil {
             writer.Header().Add("Content-Type", contentType)
+            writer.Header().Add("Cache-Control", "max-age=86400")
+            writer.Header().Add("ETag", crc)
             bytes, error := writer.Write(imageData)
             Log.Debugf("Wrote %d of %d bytes. Error: %v.", bytes, len(imageData), error)
             return

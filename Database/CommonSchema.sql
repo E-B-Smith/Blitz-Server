@@ -475,9 +475,9 @@ create table ConversationTable
     ,expertID                   userID
     ,conversationType           smallint
     ,topic                      text
-    ,callTime                   timestamptz
+    ,callDate                   timestamptz
     ,suggestedDuration          interval
-    ,suggestedTimes             timestamptz[]
+    ,suggestedDates             timestamptz[]
 
     );
 

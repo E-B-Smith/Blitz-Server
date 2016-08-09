@@ -31,11 +31,11 @@ import (
 func WriteConversation(conv *BlitzMessage.Conversation) error {
     Log.LogFunctionName()
 
-    suggestedTimes := make([]time.Time, 0)
-    for _, btime := range conv.SuggestedTimes {
-        suggestedTimes = append(suggestedTimes, btime.Time())
+    suggestedDates := make([]time.Time, 0)
+    for _, btime := range conv.SuggestedDates {
+        suggestedDates = append(suggestedDates, btime.Time())
     }
-    suggestedTimeString := pgsql.NullStringFromTimeArray(suggestedTimes)
+    suggestedDatesString := pgsql.NullStringFromTimeArray(suggestedDates)
 
     result, error := config.DB.Exec(
         `insert into ConversationTable (
@@ -49,16 +49,16 @@ func WriteConversation(conv *BlitzMessage.Conversation) error {
             paymentStatus,
             expertID,
             topic,
-            callTime,
+            callDate,
             suggestedDuration,
-            suggestedTimes
+            suggestedDates
         ) values (
             $1, $2, $3, $4, $5, current_timestamp, $6, $7, $8, $9, $10, $11, $12
         )
         on conflict(conversationID) do update set (
             status,
             closedDate,
-            callTime
+            callDate
         ) = ($2, $6, $10);`,
         conv.ConversationID,
         conv.Status,
@@ -69,9 +69,9 @@ func WriteConversation(conv *BlitzMessage.Conversation) error {
         conv.PaymentStatus,
         conv.ExpertID,
         conv.Topic,
-        conv.CallTime,
+        conv.CallDate,
         conv.SuggestedDuration,
-        suggestedTimeString,
+        suggestedDatesString,
     )
     Log.Debugf("Conversation Create status: %v.", error)
 
@@ -151,9 +151,9 @@ func ReadUserConversation(userID string, conversationID string) (*BlitzMessage.C
             expertID,
             conversationType,
             topic,
-            callTime,
+            callDate,
             extract(epoch from suggestedDuration),
-            suggestedTimes
+            suggestedDates
                 from ConversationTable
                 where conversationID = $1;`,
         conversationID,
@@ -172,9 +172,9 @@ func ReadUserConversation(userID string, conversationID string) (*BlitzMessage.C
         expertID            sql.NullString
         conversationType    sql.NullInt64
         topic               sql.NullString
-        callTime            pq.NullTime
+        callDate            pq.NullTime
         suggestedDuration   sql.NullFloat64
-        suggestedTimesString sql.NullString
+        suggestedDatesString sql.NullString
     )
 
     error := row.Scan(
@@ -190,9 +190,9 @@ func ReadUserConversation(userID string, conversationID string) (*BlitzMessage.C
         &expertID,
         &conversationType,
         &topic,
-        &callTime,
+        &callDate,
         &suggestedDuration,
-        &suggestedTimesString,
+        &suggestedDatesString,
     )
     if error != nil {
         Log.LogError(error)
@@ -211,12 +211,12 @@ func ReadUserConversation(userID string, conversationID string) (*BlitzMessage.C
         ExpertID:           proto.String(expertID.String),
         ConversationType:   BlitzMessage.ConversationType(conversationType.Int64).Enum(),
         Topic:              proto.String(topic.String),
-        CallTime:           BlitzMessage.TimestampPtr(callTime),
+        CallDate:           BlitzMessage.TimestampPtr(callDate),
         SuggestedDuration:  proto.Float64(suggestedDuration.Float64),
     }
-    suggestedTimes := pgsql.TimeArrayFromNullString(&suggestedTimesString)
-    for _, time := range suggestedTimes {
-        conv.SuggestedTimes = append(conv.SuggestedTimes, BlitzMessage.TimestampPtr(time))
+    suggestedDates := pgsql.TimeArrayFromNullString(&suggestedDatesString)
+    for _, time := range suggestedDates {
+        conv.SuggestedDates = append(conv.SuggestedDates, BlitzMessage.TimestampPtr(time))
     }
 
     row = config.DB.QueryRow(
@@ -461,7 +461,7 @@ func StartCallConversation(
     conversation.Topic = Util.CleanStringPtr(conversation.Topic)
     if conversation.Topic == nil ||
         conversation.SuggestedDuration == nil ||
-        len(conversation.SuggestedTimes) == 0 {
+        len(conversation.SuggestedDates) == 0 {
         return errors.New("Missing fields")
     }
 
