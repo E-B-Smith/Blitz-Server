@@ -902,7 +902,15 @@ func UpdateConversationPaymentStatus(
     if closedDate.Valid {
         return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, fmt.Errorf("This conversation is closed"))
     }
-
+    var callDate pq.NullTime
+    if updateStatus.CallDate != nil {
+        callDate.Time = updateStatus.CallDate.Time()
+        callDate.Valid = true
+    }
+    if *updateStatus.ConversationType == BlitzMessage.ConversationType_CTCall &&
+        (updateStatus.CallDate == nil || time.Since(callDate.Time) < 0) {
+        return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, fmt.Errorf("Must select a date in the future"))
+    }
     var message string
     var acceptDate pq.NullTime
     expertName := PrettyNameForUserID(expertID)
@@ -910,10 +918,17 @@ func UpdateConversationPaymentStatus(
     switch *updateStatus.PaymentStatus {
 
     case BlitzMessage.PaymentStatus_PSExpertAccepted:
-        message = fmt.Sprintf(
-            "Congrats!  %s has accepted your invitation.\nEnjoy your chat.",
-            expertName,
-        )
+        if *updateStatus.ConversationType == BlitzMessage.ConversationType_CTCall {
+            message = fmt.Sprintf(
+                "Congrats!  %s has accepted your scheduled call.",
+                expertName,
+            )
+        } else {
+            message = fmt.Sprintf(
+                "Congrats!  %s has accepted your invitation.\nEnjoy your chat.",
+                expertName,
+            )
+        }
         acceptDate.Time = time.Now()
         acceptDate.Valid = true
 
@@ -933,11 +948,13 @@ func UpdateConversationPaymentStatus(
         `update ConversationTable set
             paymentStatus = $1,
             closedDate = $2,
-            acceptDate = $3
-              where conversationID = $4;`,
+            acceptDate = $3,
+            callDate = $4
+              where conversationID = $5;`,
         *updateStatus.PaymentStatus,
         closedDate,
         acceptDate,
+        callDate,
         updateStatus.ConversationID,
     )
     error = pgsql.UpdateResultError(result, error)
@@ -1025,7 +1042,8 @@ func UpdateConversationStatus(session *Session, updateStatus *BlitzMessage.Updat
         updateStatus.ConversationType == nil {
         return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, fmt.Errorf("Invalid input"))
     }
-    if  *updateStatus.ConversationType == BlitzMessage.ConversationType_CTConversation &&
+    if  (*updateStatus.ConversationType == BlitzMessage.ConversationType_CTConversation ||
+         *updateStatus.ConversationType == BlitzMessage.ConversationType_CTCall) &&
         updateStatus.PaymentStatus != nil {
         return UpdateConversationPaymentStatus(session, updateStatus)
     }
