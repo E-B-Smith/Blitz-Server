@@ -478,7 +478,7 @@ create table ConversationTable
     ,callDate                   timestamptz
     ,suggestedDuration          interval
     ,suggestedDates             timestamptz[]
-
+    ,callPhoneNumber            text
     );
 
 
@@ -541,6 +541,24 @@ function ResponseTimeForConversationUser(conversationIDIn text, userIDIn text) r
     $$
     language plpgsql immutable
     returns null on null input;
+
+
+------------------------------------------------------------------------------------------
+--
+--                                                                        PhoneNumberTable
+--
+------------------------------------------------------------------------------------------
+
+
+create table PhoneNumberTable
+    (
+     phoneNumber        text    unique not null primary key
+    ,conversationID     text
+    ,clientPhoneNumber  text
+    ,expertPhoneNumber  text
+    ,callDate           timestamptz
+    ,callDuration       interval
+    );
 
 
 ------------------------------------------------------------------------------------------

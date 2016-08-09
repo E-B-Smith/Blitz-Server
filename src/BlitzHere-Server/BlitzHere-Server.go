@@ -524,11 +524,13 @@ func Server() (returnValue int) {
     Util.StartScheduler()
     defer Util.StopScheduler()
     Util.ScheduleTask(time.Minute, ConversationCloser)
+    Util.ScheduleTask(time.Second * 30, MaintainPhoneSwitchboard)
 
     //  Set up & start our http handlers --
 
     Session_InitializeSessions()
     http.HandleFunc(config.ServicePrefix+"/api", DispatchServiceRequests)
+    http.HandleFunc(config.ServicePrefix+"/voice", ConnectTwilioCall)
     http.HandleFunc(config.ServicePrefix+"/hello", sendHello)
     http.HandleFunc(config.ServicePrefix+"/image", GetImage)
     http.HandleFunc(config.ServicePrefix+"/downloadapp", DownloadAppRequest)

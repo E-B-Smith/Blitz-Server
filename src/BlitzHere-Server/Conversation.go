@@ -908,8 +908,8 @@ func UpdateConversationPaymentStatus(
         callDate.Valid = true
     }
     if *updateStatus.ConversationType == BlitzMessage.ConversationType_CTCall &&
-        (updateStatus.CallDate == nil || time.Since(callDate.Time) < 0) {
-        return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, fmt.Errorf("Must select a date in the future"))
+        (updateStatus.CallDate == nil || time.Since(callDate.Time) > 0) {
+        return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, fmt.Errorf("You must select a date in the future"))
     }
     var message string
     var acceptDate pq.NullTime
