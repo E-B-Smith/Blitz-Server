@@ -459,6 +459,7 @@ create index EntityTagTableAutocompleteIndex
 
 create table ConversationTable
     (
+
      conversationID             UUID        unique not null primary key
     ,status                     smallint    not null
     ,initiatorUserID            UserID      not null
@@ -468,6 +469,16 @@ create table ConversationTable
     ,closedDate                 timestamptz
     ,paymentStatus              smallint
     ,chargeID                   uuid
+
+    --  Added to support calls:
+
+    ,expertID                   userID
+    ,conversationType           smallint
+    ,topic                      text
+    ,callTime                   timestamptz
+    ,suggestedDuration          interval
+    ,suggestedTimes             timestamptz[]
+
     );
 
 

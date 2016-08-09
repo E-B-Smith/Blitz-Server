@@ -31,18 +31,47 @@ import (
 func WriteConversation(conv *BlitzMessage.Conversation) error {
     Log.LogFunctionName()
 
+    suggestedTimes := make([]time.Time, 0)
+    for _, btime := range conv.SuggestedTimes {
+        suggestedTimes = append(suggestedTimes, btime.Time())
+    }
+    suggestedTimeString := pgsql.NullStringFromTimeArray(suggestedTimes)
+
     result, error := config.DB.Exec(
-        `insert into ConversationTable
-            (conversationID, status, initiatorUserID, parentFeedPostID, creationDate, closedDate, paymentStatus)
-            values ($1, $2, $3, $4, current_timestamp, $5, $6)
-         on conflict(conversationID) do
-            update set (status, parentFeedPostID, closedDate) = ($2, $4, $5);`,
+        `insert into ConversationTable (
+            conversationID,
+            status,
+            conversationType,
+            initiatorID,
+            parentFeedPostID,
+            creationDate,
+            closedDate,
+            paymentStatus,
+            expertID,
+            topic,
+            callTime,
+            suggestedDuration,
+            suggestedTimes
+        ) values (
+            $1, $2, $3, $4, $5, current_timestamp, $6, $7, $8, $9, $10, $11, $12
+        )
+        on conflict(conversationID) do update set (
+            status,
+            closedDate,
+            callTime
+        ) = ($2, $6, $10);`,
         conv.ConversationID,
         conv.Status,
-        conv.InitiatorUserID,
+        conv.ConversationType,
+        conv.InitiatorID,
         conv.ParentFeedPostID,
         conv.ClosedDate,
         conv.PaymentStatus,
+        conv.ExpertID,
+        conv.Topic,
+        conv.CallTime,
+        conv.SuggestedDuration,
+        suggestedTimeString,
     )
     Log.Debugf("Conversation Create status: %v.", error)
 
@@ -112,34 +141,58 @@ func ReadUserConversation(userID string, conversationID string) (*BlitzMessage.C
         `select
             conversationID,
             status,
-            initiatorUserID,
+            initiatorID,
             parentFeedPostID,
             creationDate,
             closedDate,
             paymentStatus,
-            chargeID
+            chargeID,
+            acceptDate,
+            expertID,
+            conversationType,
+            topic,
+            callTime,
+            extract(epoch from suggestedDuration),
+            suggestedTimes
                 from ConversationTable
-                where conversationID = $1;`, conversationID)
+                where conversationID = $1;`,
+        conversationID,
+    )
 
     var (
+        conversationIDX     sql.NullString
         status              sql.NullInt64
-        initiatorUserID     sql.NullString
+        initiatorID         sql.NullString
         parentFeedPostID    sql.NullString
         creationDate        pq.NullTime
         closedDate          pq.NullTime
         paymentStatus       sql.NullInt64
         chargeID            sql.NullString
+        acceptDate          pq.NullTime
+        expertID            sql.NullString
+        conversationType    sql.NullInt64
+        topic               sql.NullString
+        callTime            pq.NullTime
+        suggestedDuration   sql.NullFloat64
+        suggestedTimesString sql.NullString
     )
 
     error := row.Scan(
-        &conversationID,
+        &conversationIDX,
         &status,
-        &initiatorUserID,
+        &initiatorID,
         &parentFeedPostID,
         &creationDate,
         &closedDate,
         &paymentStatus,
         &chargeID,
+        &acceptDate,
+        &expertID,
+        &conversationType,
+        &topic,
+        &callTime,
+        &suggestedDuration,
+        &suggestedTimesString,
     )
     if error != nil {
         Log.LogError(error)
@@ -148,13 +201,22 @@ func ReadUserConversation(userID string, conversationID string) (*BlitzMessage.C
     var conv = BlitzMessage.Conversation {
         ConversationID:     &conversationID,
         Status:             BlitzMessage.UserMessageStatus(status.Int64).Enum(),
-        InitiatorUserID:    &initiatorUserID.String,
+        InitiatorID:        &initiatorID.String,
         ParentFeedPostID:   StringPtr(parentFeedPostID.String),
         CreationDate:       BlitzMessage.TimestampPtr(creationDate),
         ClosedDate:         BlitzMessage.TimestampPtr(closedDate),
-        ConversationType:   BlitzMessage.ConversationType(BlitzMessage.ConversationType_CTConversation).Enum(),
         PaymentStatus:      BlitzMessage.PaymentStatus(paymentStatus.Int64).Enum(),
         ChargeID:           proto.String(chargeID.String),
+        AcceptDate:         BlitzMessage.TimestampPtr(acceptDate),
+        ExpertID:           proto.String(expertID.String),
+        ConversationType:   BlitzMessage.ConversationType(conversationType.Int64).Enum(),
+        Topic:              proto.String(topic.String),
+        CallTime:           BlitzMessage.TimestampPtr(callTime),
+        SuggestedDuration:  proto.Float64(suggestedDuration.Float64),
+    }
+    suggestedTimes := pgsql.TimeArrayFromNullString(&suggestedTimesString)
+    for _, time := range suggestedTimes {
+        conv.SuggestedTimes = append(conv.SuggestedTimes, BlitzMessage.TimestampPtr(time))
     }
 
     row = config.DB.QueryRow(
@@ -239,6 +301,182 @@ func ReadUserConversation(userID string, conversationID string) (*BlitzMessage.C
 
 
 //----------------------------------------------------------------------------------------
+//
+//                                                                       StartConversation
+//                                                            Start conversation functions
+//
+//----------------------------------------------------------------------------------------
+
+
+//----------------------------------------------------------------------------------------
+//                                                        PaymentStatusForChatConversation
+//----------------------------------------------------------------------------------------
+
+
+func PaymentStatusForChatConversation(
+        session *Session,
+        conversation *BlitzMessage.Conversation,
+    ) (message string, paymentStatus *BlitzMessage.PaymentStatus) {
+    Log.LogFunctionName()
+
+    var error error
+
+    if  config.ServiceIsFree {
+        conversation.PaymentStatus = BlitzMessage.PaymentStatus(BlitzMessage.PaymentStatus_PSIsFree).Enum()
+        Log.Debugf("Conversation is free: Service is free.")
+        conversation.PaymentStatus = BlitzMessage.PaymentStatus_PSIsFree.Enum()
+        return "Blitz is in free mode.\nEnjoy you chat.", conversation.PaymentStatus
+    }
+
+    //  Friends?
+
+    tags := GetEntityTagMapForUserIDEntityIDType(
+        session.UserID,
+        *conversation.ExpertID,
+        BlitzMessage.EntityType_ETUser,
+    )
+    if val, ok := tags[kTagFriend]; ok && val {
+        Log.Debugf("Conversation is between friends.")
+        conversation.PaymentStatus = BlitzMessage.PaymentStatus_PSIsFree.Enum()
+        return "Chat between friends is free.\nEnjoy your chat.", conversation.PaymentStatus
+    }
+
+    //  Free for user?
+
+    row := config.DB.QueryRow(
+        `select isFree, isExpert from UserTable where userID = $1;`,
+        session.UserID,
+    )
+    var isFree, isExpert sql.NullBool
+    error = row.Scan(&isFree, &isExpert)
+    if error != nil { Log.LogError(error) }
+    if isFree.Bool {
+        Log.Debugf("Conversation is free for user.")
+        conversation.PaymentStatus = BlitzMessage.PaymentStatus_PSIsFree.Enum()
+        return "This chat is free.", conversation.PaymentStatus
+    }
+
+    //  Other user is expert?
+
+    row = config.DB.QueryRow(
+        `select isExpert from UserTable where userID = $1;`,
+        conversation.ExpertID,
+    )
+    var otherIsExpert sql.NullBool
+    error = row.Scan(&otherIsExpert)
+    if error != nil { Log.LogError(error) }
+
+    memberName := PrettyNameForUserID(session.UserID)
+    expertName := PrettyNameForUserID(*conversation.ExpertID)
+
+    if isExpert.Bool {
+        if otherIsExpert.Bool {
+            conversation.PaymentStatus = BlitzMessage.PaymentStatus_PSIsFree.Enum()
+            return  "As Blitz experts, you have unrestricted access to chat with other experts.\n"+
+                    "Please state your objective and provide time for the expert to respond.",
+                    conversation.PaymentStatus
+        } else {
+            conversation.PaymentStatus = BlitzMessage.PaymentStatus_PSIsFree.Enum()
+            return "A Blitz expert would like to chat with you!\nThis chat session will remain open for the next 24 hours.",
+                conversation.PaymentStatus
+        }
+    } else {
+        if otherIsExpert.Bool {
+            msg := fmt.Sprintf(
+                    "%s – you have one free message\nto connect with %s.\n" +
+                    "After this message, you'll be prompted to make\na payment " +
+                    "to continue your chat with %s.",
+                    memberName,
+                    expertName,
+                    expertName,
+                )
+            conversation.PaymentStatus = BlitzMessage.PaymentStatus_PSTrialPeriod.Enum()
+            return msg, conversation.PaymentStatus
+        } else {
+            conversation.PaymentStatus = BlitzMessage.PaymentStatus_PSIsFree.Enum()
+            return "Chat with non-experts is free.\nEnjoy your chat.", conversation.PaymentStatus
+        }
+    }
+}
+
+
+func StartChatConversation(
+        session *Session,
+        conversation *BlitzMessage.Conversation,
+    ) error {
+
+    var error error
+    var introMessage string
+    introMessage, conversation.PaymentStatus =
+        PaymentStatusForChatConversation(session, conversation)
+
+    if  conversation.PaymentStatus == nil {
+        return errors.New("Server chat payment error")
+    }
+
+    error = WriteConversation(conversation)
+    if error != nil {
+        Log.LogError(error)
+        return error
+    }
+
+    error = SendUserMessageInternal(
+        BlitzMessage.Default_Global_SystemUserID,
+        conversation.MemberIDs,
+        *conversation.ConversationID,
+        introMessage,
+        BlitzMessage.UserMessageType_MTConversation,
+        "",
+        "",
+    )
+    if error != nil { Log.LogError(error) }
+
+    return error
+}
+
+
+//----------------------------------------------------------------------------------------
+//                                                                   StartCallConversation
+//----------------------------------------------------------------------------------------
+
+
+func StartCallConversation(
+        session *Session,
+        conversation *BlitzMessage.Conversation,
+    ) error {
+
+    var error error
+    row := config.DB.QueryRow(
+        `select isExpert from UserTable where userID = $1;`,
+        conversation.ExpertID,
+    )
+    var otherIsExpert sql.NullBool
+    error = row.Scan(&otherIsExpert)
+    if error != nil { Log.LogError(error) }
+    if ! (otherIsExpert.Valid && otherIsExpert.Bool) {
+        error = errors.New("You can only talk with an expert")
+        return error
+    }
+
+    conversation.Topic = Util.CleanStringPtr(conversation.Topic)
+    if conversation.Topic == nil ||
+        conversation.SuggestedDuration == nil ||
+        len(conversation.SuggestedTimes) == 0 {
+        return errors.New("Missing fields")
+    }
+
+    conversation.PaymentStatus = BlitzMessage.PaymentStatus_PSTrialPeriod.Enum()
+    error = WriteConversation(conversation)
+    if error != nil {
+        Log.LogError(error)
+        return error
+    }
+
+    return nil
+}
+
+
+//----------------------------------------------------------------------------------------
 //                                                                       StartConversation
 //----------------------------------------------------------------------------------------
 
@@ -249,205 +487,97 @@ func StartConversation(
     ) *BlitzMessage.ServerResponse {
     Log.LogFunctionName()
 
-    //  Check the members --
-
-    memberMap := make(map[string]bool)
-    memberMap[session.UserID] = true
-    for _, memID := range req.UserIDs {
-        memberMap[memID] = true
-    }
-
-    if len(memberMap) < 2 {
-        error := fmt.Errorf("Not enough conversation members")
-        return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
-    }
-
-    idx := 0
-    memberArray := make([]string, len(memberMap))
-    for memID, _ := range memberMap {
-        memberArray[idx] = memID
-        idx++
+    conversation := req.Conversation
+    if conversation == nil ||
+       conversation.ConversationType == nil ||
+       conversation.InitiatorID == nil ||
+       conversation.ExpertID == nil ||
+       conversation.ConversationType == nil ||
+       *conversation.InitiatorID == *conversation.ExpertID {
+        return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, errors.New("Missing fields"))
     }
 
     //  Check for an existing conversation --
 
     row := config.DB.QueryRow(
-        `select A.conversationID
-            from ConversationMemberTable A
-            inner join ConversationMemberTable B
-               on A.conversationID = B.conversationID
-            inner join ConversationTable C
-               on A.conversationID = C.conversationID
-            where A.memberID = $1
-              and B.memberID = $2
-              and C.closedDate is null
-         order by C.creationDate asc
+        `select conversationID from conversationTable
+            where (initiatorID = $1 or initiatorID = $2)
+              and (expertID = $1 or expertID = $2)
+              and conversationType = $3
+              and closedDate is null
+            order by creationDate
             limit 1;`,
-        memberArray[0],
-        memberArray[1],
+        conversation.InitiatorID,
+        conversation.ExpertID,
+        conversation.ConversationType,
     )
-
     var conversationID string
-    var conversation *BlitzMessage.Conversation
     error := row.Scan(&conversationID)
-    if error != nil {
+    if error == nil {
 
-        var introMessage string
+        //  Found an existing conversation.  Return it:
 
-        //  Create a new conversation --
-
-        conversationID = Util.NewUUIDString()
-        Log.Debugf("Find existing error was +%v'.", error)
-        Log.Debugf("Creating new conversation '%s'.", conversationID)
-        conversation = &BlitzMessage.Conversation {
-            ConversationID:     &conversationID,
-            InitiatorUserID:    &session.UserID,
-            Status:             BlitzMessage.UserMessageStatus(BlitzMessage.UserMessageStatus_MSNew).Enum(),
-            ParentFeedPostID:   req.ParentFeedPostID,
-            MemberIDs:          memberArray,
-        }
-
-        if  config.ServiceIsFree {
-            conversation.PaymentStatus = BlitzMessage.PaymentStatus(BlitzMessage.PaymentStatus_PSIsFree).Enum()
-            Log.Debugf("Conversation is free: Service is free.")
-            introMessage = "Blitz is in free mode.\nEnjoy you chat."
-        }
-
-        //  Friends?
-
-        var otherMember string
-        for _, member := range conversation.MemberIDs {
-            if member != session.UserID {
-                otherMember = member
-                break
-            }
-        }
-
-        tags := GetEntityTagMapForUserIDEntityIDType(
-            session.UserID,
-            otherMember,
-            BlitzMessage.EntityType_ETUser,
-        )
-        if val, ok := tags[kTagFriend]; ok && val {
-            Log.Debugf("Conversation is between friends.")
-            conversation.PaymentStatus = BlitzMessage.PaymentStatus(BlitzMessage.PaymentStatus_PSIsFree).Enum()
-            if len(introMessage) <= 0 {
-                introMessage = "Chat between friends is free.\nEnjoy your chat."
-            }
-        }
-
-        //  Free for user?
-
-        row := config.DB.QueryRow(
-            `select isFree, isExpert from UserTable where userID = $1;`,
-            session.UserID,
-        )
-        var isFree, isExpert sql.NullBool
-        error = row.Scan(&isFree, &isExpert)
-        if error != nil { Log.LogError(error) }
-        if isFree.Bool {
-            Log.Debugf("Conversation is free for user.")
-            conversation.PaymentStatus = BlitzMessage.PaymentStatus(BlitzMessage.PaymentStatus_PSIsFree).Enum()
-            if len(introMessage) <= 0 {
-                introMessage = "This chat is free."
-            }
-        }
-
-        //  Other user is expert?
-
-        row = config.DB.QueryRow(
-            `select isExpert from UserTable where userID = $1;`,
-            otherMember,
-        )
-        var otherIsExpert sql.NullBool
-        error = row.Scan(&otherIsExpert)
-        if error != nil { Log.LogError(error) }
-
-        memberName := PrettyNameForUserID(session.UserID)
-        expertName := PrettyNameForUserID(otherMember)
-
-        if isExpert.Bool {
-            if otherIsExpert.Bool {
-                conversation.PaymentStatus = BlitzMessage.PaymentStatus(BlitzMessage.PaymentStatus_PSIsFree).Enum()
-                if len(introMessage) <= 0 {
-                    introMessage =
-                        "As Blitz experts, you have unrestricted access to chat with other experts.\n"+
-                        "Please state your objective and provide time for the expert to respond."
-                }
-            } else {
-                conversation.PaymentStatus = BlitzMessage.PaymentStatus(BlitzMessage.PaymentStatus_PSIsFree).Enum()
-                if len(introMessage) <= 0 {
-                    introMessage =
-                    "A Blitz expert would like to chat with you!\nThis chat session will remain open for the next 24 hours."
-                }
-            }
-        } else {
-            if otherIsExpert.Bool {
-                if len(introMessage) <= 0 {
-                    introMessage =
-                        fmt.Sprintf(
-                        "%s – you have one free message\nto connect with %s.\n" +
-                        "After this message, you'll be prompted to make\na payment " +
-                        "to continue your chat with %s.",
-                        memberName,
-                        expertName,
-                        expertName,
-                    )
-                }
-            } else {
-                conversation.PaymentStatus = BlitzMessage.PaymentStatus(BlitzMessage.PaymentStatus_PSIsFree).Enum()
-                if len(introMessage) <= 0 {
-                    introMessage = "Chat with non-experts is free.\nEnjoy your chat."
-                }
-            }
-        }
-
-        if  conversation.PaymentStatus != nil  &&
-            *conversation.PaymentStatus == BlitzMessage.PaymentStatus_PSIsFree {
-            Log.Debugf("Conversation is free.")
-        } else {
-            conversation.PaymentStatus = BlitzMessage.PaymentStatus(BlitzMessage.PaymentStatus_PSTrialPeriod).Enum()
-            Log.Debugf("Conversation is paid.")
-        }
-
-        error = WriteConversation(conversation)
+        var response BlitzMessage.ConversationResponse
+        response.Conversation, error = ReadUserConversation(session.UserID, conversationID)
         if error != nil {
-            return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
+            return ServerResponseForError(BlitzMessage.ResponseCode_RCServerError, error)
         }
 
-        //  Send a system message to the participants --
+        response.Profiles = make([]*BlitzMessage.UserProfile, 2)
+        response.Profiles[0] = ProfileForUserID(session.UserID, *conversation.InitiatorID)
+        response.Profiles[1] = ProfileForUserID(session.UserID, *conversation.ExpertID)
 
-        if len(introMessage) <= 0 {
-            introMessage = fmt.Sprintf("Chat with %s and %s.",
-                memberName,
-                expertName,
-            )
+        serverResponse := &BlitzMessage.ServerResponse {
+            ResponseCode:       BlitzMessage.ResponseCode(BlitzMessage.ResponseCode_RCSuccess).Enum(),
+            ResponseType:       &BlitzMessage.ResponseType { ConversationResponse: &response },
         }
-
-        error = SendUserMessageInternal(
-            BlitzMessage.Default_Global_SystemUserID,
-            memberArray,
-            conversationID,
-            introMessage,
-            BlitzMessage.UserMessageType_MTConversation,
-            "",
-            "",
-        )
-        if error != nil { Log.LogError(error) }
+        return serverResponse
     }
+
+    if session.UserID != *conversation.InitiatorID {
+        return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, errors.New("Can't start conversation for another user."))
+    }
+
+    //  Create a new conversation --
+
+    conversationID = Util.NewUUIDString()
+    Log.Debugf("Find existing error was +%v'.", error)
+    Log.Debugf("Creating new conversation '%s'.", conversationID)
+    conversation.ConversationID = proto.String(conversationID)
+    conversation.Status = BlitzMessage.UserMessageStatus(BlitzMessage.UserMessageStatus_MSNew).Enum()
+    conversation.MemberIDs = []string { *conversation.InitiatorID, *conversation.ExpertID }
+    conversation.CreationDate = BlitzMessage.TimestampPtr(time.Now())
+    conversation.LastActivityDate = conversation.CreationDate
+
+    //  Figure out the payment status --
+
+    switch *conversation.ConversationType {
+
+    case BlitzMessage.ConversationType_CTConversation:
+        error = StartChatConversation(session, conversation)
+
+    case BlitzMessage.ConversationType_CTCall:
+        error = StartCallConversation(session, conversation)
+
+    default:
+        error = fmt.Errorf("Invalid conversation type %d.", *conversation.ConversationType)
+    }
+
+    if error != nil {
+        Log.LogError(error)
+        return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
+    }
+
+    //  Send back a conversation --
 
     conversation, error = ReadUserConversation(session.UserID, conversationID)
     if error != nil {
         return ServerResponseForError(BlitzMessage.ResponseCode_RCServerError, error)
     }
 
-    profiles := make([]*BlitzMessage.UserProfile, 0, 3)
-    for _, memberID := range memberArray {
-        profile := ProfileForUserID(session.UserID, memberID)
-        if profile != nil {
-            profiles = append(profiles, profile)
-        }
-    }
+    profiles := make([]*BlitzMessage.UserProfile, 2)
+    profiles[0] = ProfileForUserID(session.UserID, *conversation.InitiatorID)
+    profiles[1] = ProfileForUserID(session.UserID, *conversation.ExpertID)
 
     response := BlitzMessage.ConversationResponse {
         Conversation:   conversation,
@@ -545,7 +675,7 @@ func FetchFeedPostsAsConversations(userID string) []*BlitzMessage.Conversation {
         }
 
         var conv BlitzMessage.Conversation
-        conv.InitiatorUserID    =   &userID.String
+        conv.InitiatorID        =   &userID.String
         conv.ParentFeedPostID   =   &postID.String
         conv.Status             =   BlitzMessage.UserMessageStatus(BlitzMessage.UserMessageStatus_MSRead).Enum()
         conv.CreationDate       =   BlitzMessage.TimestampPtr(createDate)
@@ -637,7 +767,7 @@ func FetchNotificationsAsConversations(userID string) []*BlitzMessage.Conversati
 
         var conv BlitzMessage.Conversation
         conv.ConversationID     =   &messageID.String
-        conv.InitiatorUserID    =   &senderID.String
+        conv.InitiatorID        =   &senderID.String
         conv.Status             =   BlitzMessage.UserMessageStatus(status.Int64).Enum()
         conv.CreationDate       =   BlitzMessage.TimestampPtr(creationDate)
         conv.MessageCount       =   proto.Int32(1)
@@ -739,7 +869,7 @@ func UpdateConversationPaymentStatus(
 
     row := config.DB.QueryRow(
         `select
-            initiatorUserID,
+            initiatorID,
             paymentStatus,
             closedDate
             from ConversationTable
@@ -976,7 +1106,7 @@ func UpdatePurchaseDescriptionForConversation(session *Session, purchase *BlitzM
     row := config.DB.QueryRow(
         `select
             conversationID,
-            initiatorUserID,
+            initiatorID,
             closedDate,
             paymentStatus,
             chargeID
@@ -985,7 +1115,7 @@ func UpdatePurchaseDescriptionForConversation(session *Session, purchase *BlitzM
 
     var (
         conversationID      sql.NullString
-        initiatorUserID     sql.NullString
+        initiatorID         sql.NullString
         closedDate          pq.NullTime
         paymentStatus       sql.NullInt64
         chargeID            sql.NullString
@@ -993,7 +1123,7 @@ func UpdatePurchaseDescriptionForConversation(session *Session, purchase *BlitzM
 
     error = row.Scan(
         &conversationID,
-        &initiatorUserID,
+        &initiatorID,
         &closedDate,
         &paymentStatus,
         &chargeID,
@@ -1027,7 +1157,7 @@ func UpdatePurchaseDescriptionForConversation(session *Session, purchase *BlitzM
 
     }
 
-    if initiatorUserID.String != session.UserID {
+    if initiatorID.String != session.UserID {
         return errors.New("Not buyer")
     }
 
@@ -1159,7 +1289,7 @@ func ConversationCloser() {
 
     rows, error = config.DB.Query(
         `select ct.conversationID from ConversationTable ct
-            join UserTable ut on ut.userID = ct.initiatorUserID
+            join UserTable ut on ut.userID = ct.initiatorID
             join ConversationMemberTable cmt on
                 (cmt.conversationID = ct.conversationID and cmt.memberID <> ut.userID)
             join UserTable utx on utx.userID = cmt.memberID

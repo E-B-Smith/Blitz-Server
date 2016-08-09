@@ -17,6 +17,7 @@ import (
     "html/template"
     "database/sql"
     "github.com/lib/pq"
+    "github.com/golang/protobuf/proto"
     "violent.blue/GoKit/Log"
     "violent.blue/GoKit/Util"
     "violent.blue/GoKit/pgsql"
@@ -263,16 +264,21 @@ func SetupNewUser(session *Session) {
         Log.LogError(error)
     }
 
-    //  Send a welcome message:
+    //  Send a welcome message
 
     //  Create a conversation:
 
     convReq := BlitzMessage.ConversationRequest {
-        UserIDs:    [] string { session.UserID, BlitzMessage.Default_Global_BlitzUserID },
+        Conversation:           &BlitzMessage.Conversation {
+            InitiatorID:        proto.String(BlitzMessage.Default_Global_BlitzUserID),
+            ExpertID:           proto.String(session.UserID),
+            ConversationType:   BlitzMessage.ConversationType_CTConversation.Enum(),
+        },
     }
-
     resp := StartConversation(session, &convReq)
     message := "Hello, I'm here to help you."
+
+    //  Send an initial message:
 
     error = SendUserMessageInternal(
         BlitzMessage.Default_Global_BlitzUserID,

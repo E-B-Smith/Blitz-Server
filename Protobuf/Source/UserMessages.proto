@@ -35,6 +35,7 @@ enum ConversationType {
   CTConversation  = 1;
   CTFeedPost      = 2;
   CTNotification  = 3;
+  CTCall          = 4;
 }
 
 
@@ -51,7 +52,7 @@ enum PaymentStatus {
 
 message Conversation {
   optional string             conversationID  = 1;
-  optional string             initiatorUserID = 2;
+  optional string             initiatorID     = 2;
   optional UserMessageStatus  status          = 3;
   optional string             parentFeedPostID= 4;
   optional Timestamp          creationDate    = 5;
@@ -68,6 +69,15 @@ message Conversation {
   optional bool               isFree_deprecated   = 16;
   optional string             chargeID        = 17;
   optional PaymentStatus      PaymentStatus   = 18;
+
+  //  Fields added to support calls --
+
+  optional string             expertID        = 19;
+  optional string             topic           = 20;
+  optional Timestamp          callTime        = 21;
+  optional double             suggestedDuration = 22;
+  repeated Timestamp          suggestedTimes  = 23;
+  optional Timestamp          acceptDate      = 24;
 }
 
 
@@ -87,8 +97,9 @@ message ConversationGroup {
 
 
 message ConversationRequest {
-  repeated string             userIDs          = 1;
-  optional string             parentFeedPostID = 2;
+  repeated string             userIDs_deprecated          = 1;
+  optional string             parentFeedPostID_deprecated = 2;
+  optional Conversation       conversation    = 3;
 }
 
 
@@ -142,6 +153,7 @@ message UserMessage {
   optional string           actionIcon        = 11;
   optional string           actionURL         = 12;
   optional PaymentStatus    paymentStatus     = 13;
+  optional Conversation     conversation      = 14;
 }
 
 

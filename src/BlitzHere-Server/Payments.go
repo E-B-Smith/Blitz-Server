@@ -464,7 +464,8 @@ func ChargeRequest(session *Session, chargeReq *BlitzMessage.Charge) *BlitzMessa
     }
 
     if responseCode == BlitzMessage.ResponseCode_RCSuccess &&
-       *chargeReq.PurchaseType == BlitzMessage.PurchaseType_PTChatConversation {
+       (*chargeReq.PurchaseType == BlitzMessage.PurchaseType_PTChatConversation ||
+        *chargeReq.PurchaseType == BlitzMessage.PurchaseType_PTCall) {
 
         var conversationID string = *chargeReq.PurchaseTypeID
 

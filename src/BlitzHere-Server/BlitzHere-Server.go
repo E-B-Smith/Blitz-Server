@@ -521,9 +521,9 @@ func Server() (returnValue int) {
     StartNotifier()
     defer StopNotifier()
 
-    StartScheduler()
-    defer StopScheduler()
-    ScheduleTask(time.Minute, ConversationCloser)
+    Util.StartScheduler()
+    defer Util.StopScheduler()
+    Util.ScheduleTask(time.Minute, ConversationCloser)
 
     //  Set up & start our http handlers --
 

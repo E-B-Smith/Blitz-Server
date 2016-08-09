@@ -261,8 +261,8 @@ func UpdateConversationMessage(
          BlitzMessage.PaymentStatus_PSTrialPeriod:
         //  Get the trial count messages:
 
-        if  conversation.InitiatorUserID != nil &&
-            session.UserID != *conversation.InitiatorUserID {
+        if  conversation.InitiatorID != nil &&
+            session.UserID != *conversation.InitiatorID {
             return nil
         }
 
@@ -302,8 +302,8 @@ func UpdateConversationMessage(
         return ErrorPaymentRequired
 
     case BlitzMessage.PaymentStatus_PSPaymentRequired:
-        if  conversation.InitiatorUserID != nil &&
-            session.UserID != *conversation.InitiatorUserID {
+        if  conversation.InitiatorID != nil &&
+            session.UserID != *conversation.InitiatorID {
             return nil
         }
         return ErrorPaymentRequired
