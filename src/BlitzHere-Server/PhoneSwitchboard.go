@@ -37,7 +37,11 @@ func ConnectTwilioCall(writer http.ResponseWriter, httpRequest *http.Request) {
     body     := httpRequest.URL.Query().Get("Body")
 
 
-    Log.Debugf("Got voice call from '%s': '%s'.", from, body);
+    Log.Debugf("Got voice call from '%s' to: '%s' body: '%s'.",
+        from,
+        twilio,
+        body,
+    )
 
     body = strings.ToLower(strings.TrimSpace(body))
     from = strings.ToLower(strings.TrimSpace(from))
@@ -53,7 +57,7 @@ func ConnectTwilioCall(writer http.ResponseWriter, httpRequest *http.Request) {
             expertPhoneNumber,
             clientPhoneNumber,
             callDate,
-            extract(epoch from suggestedDuration)
+            extract(epoch from callDuration)
                 from PhoneNumberTable
                 where phoneNumber = $1;`,
         twilio,
@@ -63,45 +67,51 @@ func ConnectTwilioCall(writer http.ResponseWriter, httpRequest *http.Request) {
         expertPhoneNumber       sql.NullString
         clientPhoneNumber       sql.NullString
         callDate                pq.NullTime
-        suggestedDuration       sql.NullFloat64
+        callDuration            sql.NullFloat64
     )
     error := row.Scan(
         &conversationID,
         &expertPhoneNumber,
         &clientPhoneNumber,
         &callDate,
-        &suggestedDuration,
+        &callDuration,
     )
     if error != nil {
         Log.LogError(error)
         tml :=
 `<Response>
-    <Say>Welcome to Blitz, Inc.  There is no call scheduled at this time.</Say>
+    <Say>Welcome to Blitz Experts.  There is no call scheduled at this time.</Say>
+    <Say>Welcome to Blitz Experts.  There is no call scheduled at this time.</Say>
+    <Say>Goodbye</Say>
+    <Hangup/>
 </Response>`
         fmt.Fprintf(writer, tml)
         return
     }
 
-    numberToCall := clientPhoneNumber.String
+    numberToCall := expertPhoneNumber.String
     if from == numberToCall {
-        numberToCall = expertPhoneNumber.String
+        numberToCall = clientPhoneNumber.String
     }
+    Log.Debugf("Number to call: '%s'.", numberToCall)
 
     if len(numberToCall) == 0 {
         tml :=
 `<Response>
-    <Say>Welcome to Blitz, Inc.  The other party has not configured their phone number.</Say>
+    <Say>Welcome to Blitz Experts.  The other party has not configured their phone number.</Say>
+    <Say>Welcome to Blitz Experts.  The other party has not configured their phone number.</Say>
+    <Say>Goodbye</Say>
+    <Hangup/>
 </Response>`
         fmt.Fprintf(writer, tml)
         return
     }
 
-    Log.Debugf("Number: %s.", numberToCall)
     writer.Header().Set("Content-Type", "text/xml")
     fmt.Fprintf(writer, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n")
     tml := fmt.Sprintf(
 `<Response>
-    <Say>You are connecting via Blitz, Inc.</Say>
+    <Say>You are connecting to your expert with Blitz Experts</Say>
     <Dial>+1%s</Dial>
 </Response>`,
         numberToCall,
@@ -113,6 +123,28 @@ func ConnectTwilioCall(writer http.ResponseWriter, httpRequest *http.Request) {
 //----------------------------------------------------------------------------------------
 //                                                                MaintainPhoneSwitchboard
 //----------------------------------------------------------------------------------------
+
+
+func SendCallNotificationToConversationID(conversationID string) {
+
+    actionURL := fmt.Sprintf(
+        "%s?action=showchat&chatid=%s",
+        config.AppLinkURL,
+        conversationID,
+    )
+    error := SendUserMessageInternal(
+        BlitzMessage.Default_Global_SystemUserID,
+        MembersForConversationID(conversationID),
+        conversationID,
+        "You have a Blitz call right now.",
+        BlitzMessage.UserMessageType_MTConversation,
+        "",
+        actionURL,
+    )
+    if error != nil {
+        Log.LogError(error)
+    }
+}
 
 
 func MaintainPhoneSwitchboard() {
@@ -223,7 +255,7 @@ func MaintainPhoneSwitchboard() {
             if error != nil {
                 Log.LogError(error)
             }
-            //  Send a "Call is now message here"
+            SendCallNotificationToConversationID(conversationID)
             continue
         }
         //  Else we're out of phone numbers.

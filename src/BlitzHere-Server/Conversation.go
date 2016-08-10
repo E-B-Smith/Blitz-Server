@@ -907,12 +907,13 @@ func UpdateConversationPaymentStatus(
         return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, fmt.Errorf("This conversation is closed"))
     }
     var callDate pq.NullTime
-    if updateStatus.CallDate != nil {
+    if updateStatus.CallDate.Epoch != nil {
         callDate.Time = updateStatus.CallDate.Time()
         callDate.Valid = true
     }
-    if *updateStatus.ConversationType == BlitzMessage.ConversationType_CTCall &&
-        (updateStatus.CallDate == nil || time.Since(callDate.Time) > 0) {
+    if *updateStatus.PaymentStatus == BlitzMessage.PaymentStatus_PSExpertAccepted &&
+       *updateStatus.ConversationType == BlitzMessage.ConversationType_CTCall &&
+        (updateStatus.CallDate.Epoch == nil || time.Since(callDate.Time) > 0) {
         return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, fmt.Errorf("You must select a date in the future"))
     }
     var message string
@@ -924,8 +925,9 @@ func UpdateConversationPaymentStatus(
     case BlitzMessage.PaymentStatus_PSExpertAccepted:
         if *updateStatus.ConversationType == BlitzMessage.ConversationType_CTCall {
             message = fmt.Sprintf(
-                "Congrats!  %s has accepted your scheduled call.",
+                "Congrats!  %s has accepted your call.\nThe call is scheduled at %s",
                 expertName,
+                callDate.Time.Format("Mon Jan 2 3:04 PM"),
             )
         } else {
             message = fmt.Sprintf(
