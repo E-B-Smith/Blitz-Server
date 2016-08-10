@@ -111,7 +111,7 @@ func ConnectTwilioCall(writer http.ResponseWriter, httpRequest *http.Request) {
     fmt.Fprintf(writer, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n")
     tml := fmt.Sprintf(
 `<Response>
-    <Say>You are connecting to your expert with Blitz Experts</Say>
+    <Say>You are connecting to your expert through Blitz</Say>
     <Dial>+1%s</Dial>
 </Response>`,
         numberToCall,

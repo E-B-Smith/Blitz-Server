@@ -925,7 +925,7 @@ func UpdateConversationPaymentStatus(
     case BlitzMessage.PaymentStatus_PSExpertAccepted:
         if *updateStatus.ConversationType == BlitzMessage.ConversationType_CTCall {
             message = fmt.Sprintf(
-                "Congrats!  %s has accepted your call.\nThe call is scheduled at %s",
+                "Congrats!  %s has accepted your scheduled call.",
                 expertName,
                 callDate.Time.Format("Mon Jan 2 3:04 PM"),
             )
