@@ -927,7 +927,6 @@ func UpdateConversationPaymentStatus(
             message = fmt.Sprintf(
                 "Congrats!  %s has accepted your scheduled call.",
                 expertName,
-                callDate.Time.Format("Mon Jan 2 3:04 PM"),
             )
         } else {
             message = fmt.Sprintf(

@@ -309,7 +309,9 @@ func UpdateConversationMessage(
         return ErrorPaymentRequired
 
     case BlitzMessage.PaymentStatus_PSExpertNeedsAccept:
-        return errors.New("Waiting for expert to accept")
+        if *message.SenderID == *conversation.InitiatorID {
+            return errors.New("Waiting for expert to accept")
+        }
 
     case BlitzMessage.PaymentStatus_PSExpertRejected:
         return errors.New("Sorry, your expert is unavailable")

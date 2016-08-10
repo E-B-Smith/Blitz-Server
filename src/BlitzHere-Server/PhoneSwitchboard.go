@@ -78,6 +78,11 @@ func ConnectTwilioCall(writer http.ResponseWriter, httpRequest *http.Request) {
     )
     if error != nil {
         Log.LogError(error)
+    }
+
+    if error != nil ||
+        !(from == expertPhoneNumber.String ||
+         from == clientPhoneNumber.String) {
         tml :=
 `<Response>
     <Say>Welcome to Blitz Experts.  There is no call scheduled at this time.</Say>
