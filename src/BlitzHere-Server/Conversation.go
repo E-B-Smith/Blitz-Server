@@ -153,7 +153,8 @@ func ReadUserConversation(userID string, conversationID string) (*BlitzMessage.C
             topic,
             callDate,
             extract(epoch from suggestedDuration),
-            suggestedDates
+            suggestedDates,
+            callPhoneNumber
                 from ConversationTable
                 where conversationID = $1;`,
         conversationID,
@@ -175,6 +176,7 @@ func ReadUserConversation(userID string, conversationID string) (*BlitzMessage.C
         callDate            pq.NullTime
         suggestedDuration   sql.NullFloat64
         suggestedDatesString sql.NullString
+        callPhoneNumber     sql.NullString
     )
 
     error := row.Scan(
@@ -193,6 +195,7 @@ func ReadUserConversation(userID string, conversationID string) (*BlitzMessage.C
         &callDate,
         &suggestedDuration,
         &suggestedDatesString,
+        &callPhoneNumber,
     )
     if error != nil {
         Log.LogError(error)
@@ -213,6 +216,7 @@ func ReadUserConversation(userID string, conversationID string) (*BlitzMessage.C
         Topic:              proto.String(topic.String),
         CallDate:           BlitzMessage.TimestampPtr(callDate),
         SuggestedDuration:  proto.Float64(suggestedDuration.Float64),
+        CallPhoneNumber:    proto.String(callPhoneNumber.String),
     }
     suggestedDates := pgsql.TimeArrayFromNullString(&suggestedDatesString)
     for _, time := range suggestedDates {

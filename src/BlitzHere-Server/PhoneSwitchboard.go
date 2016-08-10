@@ -74,7 +74,11 @@ func ConnectTwilioCall(writer http.ResponseWriter, httpRequest *http.Request) {
     )
     if error != nil {
         Log.LogError(error)
-        http.Error(writer, "Forbidden", 403)
+        tml :=
+`<Response>
+    <Say>Welcome to Blitz, Inc.  There is no call scheduled at this time.</Say>
+</Response>`
+        fmt.Fprintf(writer, tml)
         return
     }
 
@@ -84,7 +88,11 @@ func ConnectTwilioCall(writer http.ResponseWriter, httpRequest *http.Request) {
     }
 
     if len(numberToCall) == 0 {
-        http.Error(writer, "Not found", 404)
+        tml :=
+`<Response>
+    <Say>Welcome to Blitz, Inc.  The other party has not configured their phone number.</Say>
+</Response>`
+        fmt.Fprintf(writer, tml)
         return
     }
 
@@ -93,7 +101,7 @@ func ConnectTwilioCall(writer http.ResponseWriter, httpRequest *http.Request) {
     fmt.Fprintf(writer, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n")
     tml := fmt.Sprintf(
 `<Response>
-    <Say>You are connect via Blitz, Inc.</Say>
+    <Say>You are connecting via Blitz, Inc.</Say>
     <Dial>+1%s</Dial>
 </Response>`,
         numberToCall,

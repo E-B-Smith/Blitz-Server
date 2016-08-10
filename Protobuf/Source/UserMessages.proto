@@ -78,6 +78,7 @@ message Conversation {
   optional double             suggestedDuration = 22;
   repeated Timestamp          suggestedDates  = 23;
   optional Timestamp          acceptDate      = 24;
+  optional string             callPhoneNumber = 25;
 }
 
 
