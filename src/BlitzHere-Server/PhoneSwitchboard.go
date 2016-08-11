@@ -16,6 +16,7 @@ package main
 
 import (
     "fmt"
+    "time"
     "strings"
     "net/http"
     "database/sql"
@@ -56,8 +57,8 @@ func ConnectTwilioCall(writer http.ResponseWriter, httpRequest *http.Request) {
             conversationID,
             expertPhoneNumber,
             clientPhoneNumber,
-            callDate,
-            extract(epoch from callDuration)
+            startDate,
+            stopDate
                 from PhoneNumberTable
                 where phoneNumber = $1;`,
         twilio,
@@ -66,15 +67,15 @@ func ConnectTwilioCall(writer http.ResponseWriter, httpRequest *http.Request) {
         conversationID          sql.NullString
         expertPhoneNumber       sql.NullString
         clientPhoneNumber       sql.NullString
-        callDate                pq.NullTime
-        callDuration            sql.NullFloat64
+        startDate                pq.NullTime
+        stopDate                 pq.NullTime
     )
     error := row.Scan(
         &conversationID,
         &expertPhoneNumber,
         &clientPhoneNumber,
-        &callDate,
-        &callDuration,
+        &startDate,
+        &stopDate,
     )
     if error != nil {
         Log.LogError(error)
@@ -82,7 +83,8 @@ func ConnectTwilioCall(writer http.ResponseWriter, httpRequest *http.Request) {
 
     if error != nil ||
         !(from == expertPhoneNumber.String ||
-         from == clientPhoneNumber.String) {
+         from == clientPhoneNumber.String) ||
+        ! stopDate.Valid || time.Since(stopDate.Time) > 0 {
         tml :=
 `<Response>
     <Say>Welcome to Blitz Experts.  There is no call scheduled at this time.</Say>
@@ -152,6 +154,23 @@ func SendCallNotificationToConversationID(conversationID string) {
 }
 
 
+func CloseCallForConversationID(conversationID string) {
+    Log.LogFunctionName()
+
+    _, error := config.DB.Exec(
+        `update PhoneNumberTable set
+            expertPhoneNumber = null,
+            clientPhoneNumber = null,
+            conversationID = null,
+            startDate = null,
+            stopDate = null
+                where conversationID = $1;`,
+        conversationID,
+    )
+    if error != nil { Log.LogError(error) }
+}
+
+
 func MaintainPhoneSwitchboard() {
     Log.LogFunctionName()
 
@@ -163,9 +182,9 @@ func MaintainPhoneSwitchboard() {
             expertPhoneNumber = null,
             clientPhoneNumber = null,
             conversationID = null,
-            callDate = null,
-            callDuration = null
-                where callDate + callDuration < transaction_timestamp();`,
+            startDate = null,
+            stopDate = null
+                where stopDate < transaction_timestamp();`,
     )
     if error != nil {
         Log.LogError(error)
@@ -180,6 +199,7 @@ func MaintainPhoneSwitchboard() {
             conversationID,
             c.contact,
             e.contact,
+            acceptDate,
             callDate,
             extract(epoch from suggestedDuration)
          from conversationTable
@@ -191,9 +211,12 @@ func MaintainPhoneSwitchboard() {
                 (conversationTable.expertID = e.userID
                 and e.contactType = $1
                 and e.isVerified = true)
-            where callDate - '1 minute'::interval < transaction_timestamp()
-              and callPhoneNumber is null;`,
+            where callPhoneNumber is null
+              and conversationType = $2
+              and closedDate is null
+              and acceptDate is not null;`,
         BlitzMessage.ContactType_CTPhoneSMS,
+        BlitzMessage.ConversationType_CTCall,
     )
     if error != nil {
         Log.LogError(error)
@@ -206,6 +229,7 @@ func MaintainPhoneSwitchboard() {
             conversationID      string
             clientContact       sql.NullString
             expertContact       sql.NullString
+            acceptDate          pq.NullTime
             callDate            pq.NullTime
             suggestedDuration   sql.NullFloat64
         )
@@ -213,6 +237,7 @@ func MaintainPhoneSwitchboard() {
             &conversationID,
             &clientContact,
             &expertContact,
+            &acceptDate,
             &callDate,
             &suggestedDuration,
         )
@@ -223,23 +248,26 @@ func MaintainPhoneSwitchboard() {
 
         Log.Debugf("Getting Phone# for conversationID %s.", conversationID)
 
+        startTime := acceptDate.Time
+        stopTime  := callDate.Time.Add(time.Duration(suggestedDuration.Float64) + 60*time.Minute)
+
         var row *sql.Row
         row = config.DB.QueryRow(
             `update PhoneNumberTable set
                 conversationID = $1,
                 clientPhoneNumber = $2,
                 expertPhoneNumber = $3,
-                callDate = $4,
-                callDuration = $5
+                startDate = $4,
+                stopDate  = $5
                     where phonenumber =
                         (select phonenumber from phonenumbertable
                                 where conversationID is null limit 1)
                 returning phonenumber;`,
-            &conversationID,
-            &clientContact,
-            &expertContact,
-            &callDate,
-            &suggestedDuration,
+            conversationID,
+            clientContact,
+            expertContact,
+            startTime,
+            stopTime,
         )
         var phoneNumber sql.NullString
         error = row.Scan(&phoneNumber)
@@ -260,7 +288,6 @@ func MaintainPhoneSwitchboard() {
             if error != nil {
                 Log.LogError(error)
             }
-            SendCallNotificationToConversationID(conversationID)
             continue
         }
         //  Else we're out of phone numbers.

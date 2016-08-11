@@ -556,8 +556,8 @@ create table PhoneNumberTable
     ,conversationID     text
     ,clientPhoneNumber  text
     ,expertPhoneNumber  text
-    ,callDate           timestamptz
-    ,callDuration       interval
+    ,startDate          timestamptz
+    ,stopDate           timestamptz
     );
 
 

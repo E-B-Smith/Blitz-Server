@@ -1014,8 +1014,9 @@ func CloseConversationID(conversationID string) error {
         Log.LogError(error)
         return error
     }
+    CloseCallForConversationID(conversationID)
 
-    //  Add a system to the participants --
+    //  Add 'system' to the participants --
 
     message := fmt.Sprintf("This conversation has been closed.")
     error = SendUserMessageInternal(
@@ -1287,9 +1288,11 @@ func ConversationCloser() {
     rows, error = config.DB.Query(
         `select conversationID from ConversationTable
             where paymentStatus = $1
+              and conversationType = $2
               and closedDate is null
-              and (now() - acceptDate) >= (to_char($2::real, '999D999') || ' hours')::interval;`,
+              and (now() - acceptDate) >= (to_char($3::real, '999D999') || ' hours')::interval;`,
         BlitzMessage.PaymentStatus_PSExpertAccepted,
+        BlitzMessage.ConversationType_CTConversation,
         config.ChatLimitHours,
     )
     if error != nil {
@@ -1317,12 +1320,43 @@ func ConversationCloser() {
                 (cmt.conversationID = ct.conversationID and cmt.memberID <> ut.userID)
             join UserTable utx on utx.userID = cmt.memberID
             where closedDate is null
-              and paymentStatus <= $1
+              and conversationType = $1
+              and paymentStatus <= $2
               and ut.isExpert = true
               and (utx.isExpert = false or utx.isExpert is null)
-              and (now() - ct.creationDate) >= (to_char($2::real, '999D999') || ' hours')::interval;`,
+              and (now() - ct.creationDate) >= (to_char($3::real, '999D999') || ' hours')::interval;`,
+        BlitzMessage.ConversationType_CTConversation,
         BlitzMessage.PaymentStatus_PSIsFree,
         config.ChatLimitHours,
+    )
+    if error != nil {
+        Log.LogError(error)
+    }
+    defer pgsql.CloseRows(rows)
+
+    for rows != nil  && rows.Next() {
+        var conversationID string
+        error = rows.Scan(&conversationID)
+        if error != nil {
+            Log.LogError(error)
+            continue
+        }
+        if conversationID == BlitzMessage.Default_Global_SystemUserID ||
+           conversationID == BlitzMessage.Default_Global_BlitzUserID {
+            continue
+        }
+        CloseConversationIDTestMode(conversationID)
+    }
+
+    //  Close expert calls --
+    Log.Debugf("Close old expert calls...")
+
+    rows, error = config.DB.Query(
+        `select conversationID from ConversationTable
+            where conversationType = $1
+              and closedDate is null
+              and (callDate + suggestedDuration + '1 hour'::interval) <= now();`,
+        BlitzMessage.ConversationType_CTCall,
     )
     if error != nil {
         Log.LogError(error)
