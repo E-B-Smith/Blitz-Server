@@ -44,13 +44,21 @@ func ConnectTwilioCall(writer http.ResponseWriter, httpRequest *http.Request) {
         body,
     )
 
+    writer.Header().Set("Content-Type", "text/xml")
+    fmt.Fprint(writer, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n")
+
     body = strings.ToLower(strings.TrimSpace(body))
-    from = strings.ToLower(strings.TrimSpace(from))
     from = Util.StringIncludingCharactersInSet(from, "0123456789")
     from = strings.TrimLeft(from, "1")
 
     twilio = Util.StringIncludingCharactersInSet(twilio, "0123456789")
     twilio = strings.TrimLeft(twilio, "1")
+
+    Log.Debugf("Fixed: '%s' to: '%s' body: '%s'.",
+        from,
+        twilio,
+        body,
+    )
 
     row := config.DB.QueryRow(
         `select
@@ -79,51 +87,60 @@ func ConnectTwilioCall(writer http.ResponseWriter, httpRequest *http.Request) {
     )
     if error != nil {
         Log.LogError(error)
-    }
-
-    if error != nil ||
-        !(from == expertPhoneNumber.String ||
-         from == clientPhoneNumber.String) ||
-        ! stopDate.Valid || time.Since(stopDate.Time) > 0 {
-        tml :=
+        fmt.Fprint(writer,
 `<Response>
-    <Say>Welcome to Blitz Experts.  There is no call scheduled at this time.</Say>
-    <Say>Welcome to Blitz Experts.  There is no call scheduled at this time.</Say>
+    <Say>Welcome to Blitz Experts.  This number is configured yet.</Say>
     <Say>Goodbye</Say>
     <Hangup/>
-</Response>`
-        fmt.Fprintf(writer, tml)
+</Response>
+`)
         return
     }
 
-    numberToCall := expertPhoneNumber.String
-    if from == numberToCall {
+
+    var numberToCall string
+    switch from {
+
+    case expertPhoneNumber.String:
         numberToCall = clientPhoneNumber.String
+
+    case clientPhoneNumber.String:
+        numberToCall = expertPhoneNumber.String
+
+    default:
+        fmt.Fprint(writer,
+`<Response>
+    <Say>Welcome to Blitz Experts.  There is no call scheduled at this time.</Say>
+    <Say>Goodbye</Say>
+    <Hangup/>
+</Response>
+`)
+        return
     }
     Log.Debugf("Number to call: '%s'.", numberToCall)
 
+
     if len(numberToCall) == 0 {
-        tml :=
+        fmt.Fprint(writer,
 `<Response>
-    <Say>Welcome to Blitz Experts.  The other party has not configured their phone number.</Say>
     <Say>Welcome to Blitz Experts.  The other party has not configured their phone number.</Say>
     <Say>Goodbye</Say>
     <Hangup/>
-</Response>`
-        fmt.Fprintf(writer, tml)
+</Response>
+`)
         return
     }
 
-    writer.Header().Set("Content-Type", "text/xml")
-    fmt.Fprintf(writer, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n")
-    tml := fmt.Sprintf(
+
+    fmt.Fprintf(writer,
 `<Response>
     <Say>You are connecting to your expert through Blitz</Say>
-    <Dial>+1%s</Dial>
-</Response>`,
+    <Dial callerId="+1%s">+1%s</Dial>
+</Response>
+`,
+        twilio,
         numberToCall,
     )
-    fmt.Fprintf(writer, tml)
 }
 
 
@@ -250,6 +267,8 @@ func MaintainPhoneSwitchboard() {
 
         startTime := acceptDate.Time
         stopTime  := callDate.Time.Add(time.Duration(suggestedDuration.Float64) + 60*time.Minute)
+
+        Log.Debugf("Updating start %v and stop %v.", startTime, stopTime)
 
         var row *sql.Row
         row = config.DB.QueryRow(
