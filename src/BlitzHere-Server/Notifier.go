@@ -20,6 +20,7 @@ import (
     "database/sql"
     "ApplePushService"
     "violent.blue/GoKit/Log"
+    "BlitzMessage"
 )
 
 
@@ -31,25 +32,6 @@ import (
 
 
 /*
-
-select distinct on (1)
-    UserMessageTable.recipientID,
-    UserMessageTable.messageText,
-    DeviceTable.appID,
-    DeviceTable.notificationToken,
-    DeviceTable.appIsReleaseVersion
-      from UserMessageTable
-      join DeviceTable on DeviceTable.userID = UserMessageTable.recipientID
-        where UserMessageTable.notificationDate is null
-          and DeviceTable.notificationToken is not null
-          and DeviceTable.appID is not null
-        order by UserMessageTable.recipientID, UserMessageTable.creationDate
-
-    and UserMessageTable.senderID <> UserMessageTable.recipientID
-
-*/
-
-
 func UnreadCountForUserID(userID string) int64 {
     Log.LogFunctionName()
     row := config.DB.QueryRow(
@@ -65,6 +47,28 @@ func UnreadCountForUserID(userID string) int64 {
     if error != nil { Log.LogError(error) }
     return count
 }
+*/
+
+
+func UnreadCountForUserID(userID string) int64 {
+
+    response := FetchConversationGroupsForUserID(userID, &BlitzMessage.FetchConversationGroups {})
+    if  response == nil ||
+        response.ResponseType == nil ||
+        response.ResponseType.FetchConversationGroups == nil {
+        return 0
+    }
+    groups := response.ResponseType.FetchConversationGroups
+
+    var unread int32
+    for _, c := range groups.Conversations {
+        if c.UnreadCount != nil {
+            unread += *c.UnreadCount
+        }
+    }
+    return int64(unread)
+}
+
 
 
 func notifyTask() {
@@ -99,7 +103,7 @@ func notifyTask() {
                   and UserMessageTable.recipientID <> UserMessageTable.senderID
                   and DeviceTable.notificationToken is not null
                   and DeviceTable.appID is not null
-                order by UserMessageTable.recipientID, UserMessageTable.creationDate;`)
+                order by UserMessageTable.recipientID, UserMessageTable.creationDate desc;`)
     if error != nil {
         Log.LogError(error)
         return

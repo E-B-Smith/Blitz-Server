@@ -524,7 +524,8 @@ func Server() (returnValue int) {
     Util.StartScheduler()
     defer Util.StopScheduler()
     Util.ScheduleTask(time.Minute, ConversationCloser)
-    Util.ScheduleTask(time.Second * 30, MaintainPhoneSwitchboard)
+    Util.ScheduleTask(time.Second * 25, MaintainPhoneSwitchboard)
+    Util.ScheduleTask(time.Second * 35, CallNotifier)
 
     //  Set up & start our http handlers --
 

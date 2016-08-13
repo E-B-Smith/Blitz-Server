@@ -149,24 +149,91 @@ func ConnectTwilioCall(writer http.ResponseWriter, httpRequest *http.Request) {
 //----------------------------------------------------------------------------------------
 
 
-func SendCallNotificationToConversationID(conversationID string) {
+func CallNotifier() {
+    Log.LogFunctionName()
 
-    actionURL := fmt.Sprintf(
-        "%s?action=showchat&chatid=%s",
-        config.AppLinkURL,
-        conversationID,
-    )
-    error := SendUserMessageInternal(
-        BlitzMessage.Default_Global_SystemUserID,
-        MembersForConversationID(conversationID),
-        conversationID,
-        "You have a Blitz call right now.",
-        BlitzMessage.UserMessageType_MTConversation,
-        "",
-        actionURL,
+    rows, error := config.DB.Query(
+        `select conversationID, callStatus, callDate from ConversationTable
+            where conversationType = $1
+              and callDate is not null
+              and (callStatus < $2 or callStatus is null)
+              and callDate >= (now() - '15 minutes'::interval);`,
+        BlitzMessage.ConversationType_CTCall,
+        BlitzMessage.CallStatus_CSCallAlertSent,
     )
     if error != nil {
         Log.LogError(error)
+        return
+    }
+    defer rows.Close()
+
+    for rows.Next() {
+        var (
+            conversationID string
+            callStatus  sql.NullInt64
+            callTime    time.Time
+        )
+
+        error = rows.Scan(&conversationID, &callStatus, &callTime)
+        if error != nil {
+            Log.LogError(error)
+            continue
+        }
+
+        var message string
+        var nextStatus BlitzMessage.CallStatus
+        elapsed := time.Since(callTime)
+        Log.Debugf("Elapsed: %+v.", elapsed)
+
+        switch {
+        case elapsed > time.Hour:
+            //  Ignore old, expired alerts
+
+        case elapsed >= 0:
+            //  Send a 'call now' alert
+            message = "You have a Blitz call right now."
+            nextStatus = BlitzMessage.CallStatus_CSCallAlertSent
+
+        case elapsed >=  time.Minute * -15 &&
+            callStatus.Int64 < int64(BlitzMessage.CallStatus_CSCallWarningSent):
+            //  Send a 'call warning' alert
+            message = "You have a Blitz call in 15 minutes."
+            nextStatus = BlitzMessage.CallStatus_CSCallWarningSent
+
+        default:
+            //  Nothing to do now.
+        }
+
+        if len(message) > 0 {
+            actionURL := fmt.Sprintf(
+                "%s?action=showchat&chatid=%s",
+                config.AppLinkURL,
+                conversationID,
+            )
+            error := SendUserMessageInternal(
+                BlitzMessage.Default_Global_SystemUserID,
+                MembersForConversationID(conversationID),
+                conversationID,
+                message,
+                BlitzMessage.UserMessageType_MTConversation,
+                "",
+                actionURL,
+            )
+            if error != nil {
+                Log.LogError(error)
+            }
+            var result sql.Result
+            result, error = config.DB.Exec(
+                `update ConversationTable set callStatus = $1
+                    where conversationID = $2;`,
+                nextStatus,
+                conversationID,
+            )
+            error = pgsql.UpdateResultError(result, error)
+            if error != nil {
+                Log.LogError(error)
+            }
+        }
     }
 }
 

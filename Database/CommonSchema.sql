@@ -462,7 +462,7 @@ create table ConversationTable
 
      conversationID             UUID        unique not null primary key
     ,status                     smallint    not null
-    ,initiatorUserID            UserID      not null
+    ,initiatorID                UserID      not null
     ,parentFeedPostID           UUID
     ,creationDate               timestamptz not null
     ,acceptDate                 timestamptz
@@ -479,6 +479,7 @@ create table ConversationTable
     ,suggestedDuration          interval
     ,suggestedDates             timestamptz[]
     ,callPhoneNumber            text
+    ,callStatus                 smallint
     );
 
 

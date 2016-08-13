@@ -50,6 +50,13 @@ enum PaymentStatus {
 }
 
 
+enum CallStatus {
+  CSUnknownX          = 0;
+  CSCallWarningSent   = 1;  //  15 min warning
+  CSCallAlertSent     = 2;  //  Call now sent
+}
+
+
 message Conversation {
   optional string             conversationID  = 1;
   optional string             initiatorID     = 2;

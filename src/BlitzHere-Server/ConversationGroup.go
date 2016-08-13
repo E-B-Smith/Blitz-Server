@@ -230,8 +230,9 @@ message ConversationGroup {
 }
 */
 
-func FetchConversationGroups(
-        session *Session, req *BlitzMessage.FetchConversationGroups,
+func FetchConversationGroupsForUserID(
+        userID string,
+        req *BlitzMessage.FetchConversationGroups,
     ) *BlitzMessage.ServerResponse {
     Log.LogFunctionName()
 
@@ -255,7 +256,7 @@ func FetchConversationGroups(
             from UserMessageTable umt, convosdistinct
            where umt.conversationID = convosdistinct.cid
             order by umt.conversationID, umt.senderID, umt.creationDate desc;`,
-        session.UserID,
+        userID,
     )
     if error != nil {
         return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
@@ -308,7 +309,11 @@ func FetchConversationGroups(
     for _, group = range groups {
         row := config.DB.QueryRow(
             `select count(*),
-                sum(case when messageStatus <= 2 or messageStatus is null then 1 else 0 end)
+                sum (
+                    case
+                        when (  (messageStatus <= 2 or messageStatus is null)
+                                and senderID <> $2)
+                        then 1 else 0 end)
                 from (
                     select a.conversationID as cid, a.memberID as mid, b.memberID
                         from conversationMemberTable a
@@ -320,7 +325,7 @@ func FetchConversationGroups(
                 usermessagetable
                     where conversationID = conv.cid and recipientID = conv.mid;`,
             group.GroupID,
-            session.UserID,
+            userID,
         )
         var total, unread sql.NullInt64
         error = row.Scan(&total, &unread)
@@ -331,8 +336,8 @@ func FetchConversationGroups(
         group.UnreadCount = Int32PtrFromInt64(unread.Int64)
     }
 
-    groups = append(groups, FetchFeedPostsAsConversationGroup(session.UserID)...)
-    groups = append(groups, FetchNotificationsAsConversationGroup(session.UserID)...)
+    groups = append(groups, FetchFeedPostsAsConversationGroup(userID)...)
+    groups = append(groups, FetchNotificationsAsConversationGroup(userID)...)
 
     users := make(map[string]bool)
     for _, group := range groups {
@@ -341,8 +346,8 @@ func FetchConversationGroups(
         }
     }
     profiles := make([]*BlitzMessage.UserProfile, 0, len(users))
-    for userID, _ := range users {
-        p := ProfileForUserID(session.UserID, userID)
+    for pID, _ := range users {
+        p := ProfileForUserID(userID, pID)
         if p != nil {
             profiles = append(profiles, p)
         }
@@ -359,4 +364,13 @@ func FetchConversationGroups(
 
     return serverResponse
 }
+
+
+func FetchConversationGroups(
+        session *Session, req *BlitzMessage.FetchConversationGroups,
+    ) *BlitzMessage.ServerResponse {
+    Log.LogFunctionName()
+    return FetchConversationGroupsForUserID(session.UserID, req)
+}
+
 
