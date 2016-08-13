@@ -334,7 +334,24 @@ func FetchConversationGroups(
     groups = append(groups, FetchFeedPostsAsConversationGroup(session.UserID)...)
     groups = append(groups, FetchNotificationsAsConversationGroup(session.UserID)...)
 
-    response := BlitzMessage.FetchConversationGroups { Conversations: groups }
+    users := make(map[string]bool)
+    for _, group := range groups {
+        if group.UserID != nil {
+            users[*group.UserID] = true
+        }
+    }
+    profiles := make([]*BlitzMessage.UserProfile, 0, len(users))
+    for userID, _ := range users {
+        p := ProfileForUserID(session.UserID, userID)
+        if p != nil {
+            profiles = append(profiles, p)
+        }
+    }
+
+    response := BlitzMessage.FetchConversationGroups {
+        Conversations:  groups,
+        Profiles:       profiles,
+    }
     serverResponse := &BlitzMessage.ServerResponse {
         ResponseCode:       BlitzMessage.ResponseCode(BlitzMessage.ResponseCode_RCSuccess).Enum(),
         ResponseType:       &BlitzMessage.ResponseType { FetchConversationGroups: &response },

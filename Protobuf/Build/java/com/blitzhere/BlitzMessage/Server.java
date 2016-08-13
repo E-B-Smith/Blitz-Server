@@ -7853,6 +7853,12 @@ public final class Server {
           return false;
         }
       }
+      if (hasFetchConversationGroups()) {
+        if (!getFetchConversationGroups().isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
       if (hasLoginAsAdmin()) {
         if (!getLoginAsAdmin().isInitialized()) {
           memoizedIsInitialized = 0;
@@ -8860,6 +8866,12 @@ public final class Server {
         }
         if (hasEditProfile()) {
           if (!getEditProfile().isInitialized()) {
+            
+            return false;
+          }
+        }
+        if (hasFetchConversationGroups()) {
+          if (!getFetchConversationGroups().isInitialized()) {
             
             return false;
           }
@@ -14516,6 +14528,12 @@ public final class Server {
           return false;
         }
       }
+      if (hasFetchConversationGroups()) {
+        if (!getFetchConversationGroups().isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
       if (hasLoginAsAdmin()) {
         if (!getLoginAsAdmin().isInitialized()) {
           memoizedIsInitialized = 0;
@@ -15354,6 +15372,12 @@ public final class Server {
         }
         if (hasEditProfile()) {
           if (!getEditProfile().isInitialized()) {
+            
+            return false;
+          }
+        }
+        if (hasFetchConversationGroups()) {
+          if (!getFetchConversationGroups().isInitialized()) {
             
             return false;
           }

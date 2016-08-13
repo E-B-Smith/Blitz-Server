@@ -118,8 +118,9 @@ message FetchConversations {
 
 
 message FetchConversationGroups {
-  optional Timespan           timespan            = 1;
-  repeated ConversationGroup   conversations      = 2;
+  optional Timespan           timespan        = 1;
+  repeated ConversationGroup  conversations   = 2;
+  repeated UserProfile        profiles        = 3;
 }
 
 

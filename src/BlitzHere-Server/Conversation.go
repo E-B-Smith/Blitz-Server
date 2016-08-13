@@ -538,7 +538,9 @@ func StartConversation(
         return serverResponse
     }
 
-    if session.UserID != *conversation.InitiatorID {
+    if  ! (*conversation.InitiatorID == session.UserID ||
+        *conversation.InitiatorID == BlitzMessage.Default_Global_BlitzUserID ||
+        *conversation.InitiatorID == BlitzMessage.Default_Global_SystemUserID) {
         return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, errors.New("Can't start conversation for another user."))
     }
 

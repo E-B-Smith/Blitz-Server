@@ -2843,6 +2843,11 @@ static BRequestType* defaultBRequestTypeInstance = nil;
       return NO;
     }
   }
+  if (self.hasFetchConversationGroups) {
+    if (!self.fetchConversationGroups.isInitialized) {
+      return NO;
+    }
+  }
   if (self.hasLoginAsAdmin) {
     if (!self.loginAsAdmin.isInitialized) {
       return NO;
@@ -5531,6 +5536,11 @@ static BResponseType* defaultBResponseTypeInstance = nil;
   }
   if (self.hasEditProfile) {
     if (!self.editProfile.isInitialized) {
+      return NO;
+    }
+  }
+  if (self.hasFetchConversationGroups) {
+    if (!self.fetchConversationGroups.isInitialized) {
       return NO;
     }
   }
