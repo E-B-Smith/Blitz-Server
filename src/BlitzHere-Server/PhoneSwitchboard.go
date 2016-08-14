@@ -155,6 +155,7 @@ func CallNotifier() {
     rows, error := config.DB.Query(
         `select conversationID, callStatus, callDate from ConversationTable
             where conversationType = $1
+              and closedDate is null
               and callDate is not null
               and (callStatus < $2 or callStatus is null)
               and callDate >= (now() - '15 minutes'::interval);`,
