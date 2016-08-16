@@ -1,3 +1,16 @@
+16.7.0 2016-08-11
+	Add support for 3-D Secure
+
+16.6.0 2016-08-09
+	Add `ReceiptNumber` to `Invoice`
+
+16.5.0 2016-08-08
+	Add `Meta` to `Account`
+
+16.4.0 2016-08-05
+	Allow the migration of recipients to accounts
+	Add `MigratedTo` to `Recipient`
+
 16.3.1 2016-07-25
 	URL-escape the IDs of coupons and plans when making API requests
 
