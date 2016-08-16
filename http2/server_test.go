@@ -55,11 +55,6 @@ type serverTester struct {
 	// writing headers:
 	headerBuf bytes.Buffer
 	hpackEnc  *hpack.Encoder
-
-	// reading frames:
-	frc       chan Frame
-	frErrc    chan error
-	readTimer *time.Timer
 }
 
 func init() {
@@ -117,8 +112,6 @@ func newServerTester(t testing.TB, handler http.HandlerFunc, opts ...interface{}
 		t:      t,
 		ts:     ts,
 		logBuf: logBuf,
-		frc:    make(chan Frame, 1),
-		frErrc: make(chan error, 1),
 	}
 	st.hpackEnc = hpack.NewEncoder(&st.headerBuf)
 	st.hpackDec = hpack.NewDecoder(initialHeaderTableSize, st.onHeaderField)
@@ -359,30 +352,37 @@ func (st *serverTester) writeData(streamID uint32, endStream bool, data []byte) 
 	}
 }
 
-func (st *serverTester) readFrame() (Frame, error) {
+func (st *serverTester) writeDataPadded(streamID uint32, endStream bool, data, pad []byte) {
+	if err := st.fr.WriteDataPadded(streamID, endStream, data, pad); err != nil {
+		st.t.Fatalf("Error writing DATA: %v", err)
+	}
+}
+
+func readFrameTimeout(fr *Framer, wait time.Duration) (Frame, error) {
+	ch := make(chan interface{}, 1)
 	go func() {
-		fr, err := st.fr.ReadFrame()
+		fr, err := fr.ReadFrame()
 		if err != nil {
-			st.frErrc <- err
+			ch <- err
 		} else {
-			st.frc <- fr
+			ch <- fr
 		}
 	}()
-	t := st.readTimer
-	if t == nil {
-		t = time.NewTimer(2 * time.Second)
-		st.readTimer = t
-	}
-	t.Reset(2 * time.Second)
-	defer t.Stop()
+	t := time.NewTimer(wait)
 	select {
-	case f := <-st.frc:
-		return f, nil
-	case err := <-st.frErrc:
-		return nil, err
+	case v := <-ch:
+		t.Stop()
+		if fr, ok := v.(Frame); ok {
+			return fr, nil
+		}
+		return nil, v.(error)
 	case <-t.C:
 		return nil, errors.New("timeout waiting for frame")
 	}
+}
+
+func (st *serverTester) readFrame() (Frame, error) {
+	return readFrameTimeout(st.fr, 2*time.Second)
 }
 
 func (st *serverTester) wantHeaders() *HeadersFrame {
@@ -1081,6 +1081,40 @@ func TestServer_Handler_Sends_WindowUpdate(t *testing.T) {
 	puppet.do(readBodyHandler(t, "jkl"))
 	st.wantWindowUpdate(0, 3)
 	st.wantWindowUpdate(0, 3) // no more stream-level, since END_STREAM
+}
+
+// the version of the TestServer_Handler_Sends_WindowUpdate with padding.
+// See golang.org/issue/16556
+func TestServer_Handler_Sends_WindowUpdate_Padding(t *testing.T) {
+	puppet := newHandlerPuppet()
+	st := newServerTester(t, func(w http.ResponseWriter, r *http.Request) {
+		puppet.act(w, r)
+	})
+	defer st.Close()
+	defer puppet.done()
+
+	st.greet()
+
+	st.writeHeaders(HeadersFrameParam{
+		StreamID:      1,
+		BlockFragment: st.encodeHeader(":method", "POST"),
+		EndStream:     false,
+		EndHeaders:    true,
+	})
+	st.writeDataPadded(1, false, []byte("abcdef"), []byte("1234"))
+
+	// Expect to immediately get our 5 bytes of padding back for
+	// both the connection and stream (4 bytes of padding + 1 byte of length)
+	st.wantWindowUpdate(0, 5)
+	st.wantWindowUpdate(1, 5)
+
+	puppet.do(readBodyHandler(t, "abc"))
+	st.wantWindowUpdate(0, 3)
+	st.wantWindowUpdate(1, 3)
+
+	puppet.do(readBodyHandler(t, "def"))
+	st.wantWindowUpdate(0, 3)
+	st.wantWindowUpdate(1, 3)
 }
 
 func TestServer_Send_GoAway_After_Bogus_WindowUpdate(t *testing.T) {
