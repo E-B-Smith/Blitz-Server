@@ -55,12 +55,13 @@ const (
 type AccountParams struct {
 	Params
 	Country, Email, DefaultCurrency, Statement, BusinessName, BusinessUrl,
-	BusinessPrimaryColor, SupportPhone, SupportEmail, SupportUrl string
-	ExternalAccount           *AccountExternalAccountParams
-	LegalEntity               *LegalEntity
-	TransferSchedule          *TransferScheduleParams
-	Managed, DebitNegativeBal bool
-	TOSAcceptance             *TOSAcceptanceParams
+	BusinessPrimaryColor, SupportPhone, SupportEmail, SupportUrl,
+	FromRecipient string
+	ExternalAccount                               *AccountExternalAccountParams
+	LegalEntity                                   *LegalEntity
+	TransferSchedule                              *TransferScheduleParams
+	Managed, DebitNegativeBal, NoDebitNegativeBal bool
+	TOSAcceptance                                 *TOSAcceptanceParams
 }
 
 // AccountListParams are the parameters allowed during account listing.
@@ -123,8 +124,9 @@ type Account struct {
 		IP        string `json:"ip"`
 		UserAgent string `json:"user_agent"`
 	} `json:"tos_acceptance"`
-	SupportAddress *Address `json:"support_address"`
-	Deleted        bool     `json:"deleted"`
+	SupportAddress *Address          `json:"support_address"`
+	Deleted        bool              `json:"deleted"`
+	Meta           map[string]string `json:"metadata"`
 }
 
 // AccountType is the type of an external account.
