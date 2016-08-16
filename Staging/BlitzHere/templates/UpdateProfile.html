@@ -20,15 +20,35 @@ pre {
     margin-top: 0;
     margin-bottom: 0;
 }
-td
-    {
+td {
     vertical-align: text-bottom;
-    }
-table
-    {
+}
+table {
     border: 1px solid #7f7f7f;
-    }
+}
+#pictures img {
+    width: 320px;
+    height: 360px;
+    border: 1px solid grey;
+    border-radius: 3px;
+}
+#pictures figure {
+    float: left;
+    margin: 0 5em 0.5em 0;
+}
+#pictures br {
+    clear: both;
+}
 </style>
+<script>
+function picButton() {
+    'use strict';
+    var r = confirm("Edit pictures?\n(Unsaved changed will be lost.)");
+    if (r == true) {
+        window.open("imageedit?uid={{.Profile.UserID}}", "_parent");
+    }
+}
+</script>
 </head>
 
 <body>
@@ -50,6 +70,7 @@ table
 <p class="error">{{.ErrorMessage}}</p>
 
 {{if .Profile}}
+
     <form method="post" action="updateprofile">
     <label>
     <input type="hidden"
@@ -66,6 +87,22 @@ table
         ><b style="color: red;">Erase User</b>
     </label>
     <br>
+    <br>
+
+    <div id="pictures">
+        <figure>
+            <img src="{{.ProfileImage}}" alt=""/>
+            <figcaption>Profile</figcaption>
+        </figure>
+        <figure>
+            <img src="{{.BackgroundImage}}" alt=""/>
+            <figcaption>Background</figcaption>
+        </figure>
+        <br>
+        <button type="button" onclick="picButton()">Edit Pictures...</button>
+        <br>
+        <br>
+    </div>
     <br>
 
     <label>

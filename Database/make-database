@@ -62,8 +62,8 @@ alter user ${database} set search_path to ${database}Schema, public;
 
 truncate AppTable;
 insert into AppTable (appID, appName, minAppVersion, minAppDataDate) values
-     ('com.blitzhere.blitzhere-labs',   'BlitzLabs',     '1.3.0',   '2016-06-01 05:48:42.357598+00')
-    ,('com.blitzhere.blitzhere',        'Blitz',         '1.3.0',   '2016-06-01 05:48:42.357598+00')
+     ('com.blitzhere.blitzhere-labs',   'BlitzLabs',     '1.4.0',   '2016-07-01 05:48:42.357598+00')
+    ,('com.blitzhere.blitzhere',        'Blitz',         '1.4.0',   '2016-07-01 05:48:42.357598+00')
     ;
 
 DATABASE
