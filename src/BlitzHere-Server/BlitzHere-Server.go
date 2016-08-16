@@ -540,6 +540,7 @@ func Server() (returnValue int) {
     http.HandleFunc(config.ServicePrefix+"/admin/shortlink", LinkShortnerFormRequest)
     http.HandleFunc(config.ServicePrefix+"/admin/userlist", WebUserList)
     http.HandleFunc(config.ServicePrefix+"/admin/updateprofile", WebUpdateProfile)
+    http.HandleFunc(config.ServicePrefix+"/admin/imageedit", WebImageEdit)
 
     //  Set up short links --
 

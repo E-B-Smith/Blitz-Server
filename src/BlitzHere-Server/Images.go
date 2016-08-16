@@ -47,6 +47,57 @@ func ImageURLForImageData(userID string, imageData *BlitzMessage.ImageData) stri
 }
 
 
+func SaveImage(
+        userID string,
+        imageContent BlitzMessage.ImageContent,
+        contentType string,
+        imageBytes []byte,
+    ) error {
+    Log.LogFunctionName()
+
+    if contentType == "" {
+        contentType = "image/jpeg"
+    }
+    if len(imageBytes) > 1000000 {
+        return errors.New("Image > 1 megabyte")
+    }
+
+    var crc int64
+    crc = int64(crc32.ChecksumIEEE(imageBytes))
+
+    var error error
+    var result sql.Result
+    result, error = config.DB.Exec(
+        `insert into ImageTable (
+           userID,
+           imageContent,
+           contentType,
+           crc32,
+           imageData,
+           dateAdded
+        ) values (
+           $1, $2, $3, $4, $5, $6
+        ) on conflict (userID, crc32)
+        do update set (
+           imageContent,
+           contentType,
+           deleted
+        ) = ($2, $3, false);`,
+        userID,
+        imageContent,
+        contentType,
+        crc,
+        imageBytes,
+        time.Now(),
+    )
+    error = pgsql.UpdateResultError(result, error)
+    if error != nil {
+        Log.LogError(error)
+    }
+    return error
+}
+
+
 func UploadImage(session *Session, imageUpload *BlitzMessage.ImageUpload,
         ) *BlitzMessage.ServerResponse {
     Log.LogFunctionName()
@@ -134,7 +185,10 @@ func UploadImage(session *Session, imageUpload *BlitzMessage.ImageUpload,
            contentType,
            crc32,
            imageData,
-           dateAdded) values ($1, $2, $3, $4, $5, $6);`,
+           dateAdded
+        ) values (
+           $1, $2, $3, $4, $5, $6
+        );`,
              userID,
              imageData.ImageContent,
              imageData.ContentType,

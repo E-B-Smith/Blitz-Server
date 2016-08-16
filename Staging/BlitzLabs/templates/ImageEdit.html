@@ -1,0 +1,223 @@
+{{define "ImageEdit.html"}}
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-type" content="text/html; charset=UTF-8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="viewport" content="width=device-width, minimal-ui">
+<link href="../favicon.png"  type="image/png" rel="shortcut icon">
+<title>{{ .AppName }} : Update Images</title>
+<link rel="stylesheet" type="text/css" href="../style-admin.css">
+<script src="../script.js"></script>
+<script>
+var imageCount={{len .Images}}
+var imageCaptions=[
+    {{range $index, $element := .Images}}
+        { caption: "{{$element.Caption}}", crc: "{{$element.CRC}}" },
+    {{else}}
+        { caption: "None 0 / 0", crc: 0 },
+    {{end}}
+        { caption: "Stop", crc: 0 }
+];
+var scrollDy;
+var scrollDt;
+var scrollTo;
+function scrollAnim() {
+    'use strict';
+    var pictures = document.getElementById('pictures');
+    var nextY = pictures.scrollLeft + scrollDy;
+    if (scrollDy < 0.0) {
+        if (nextY <= scrollTo) {
+            pictures.scrollTop = 0;
+            pictures.scrollLeft = scrollTo;
+            updateLabel();
+            return;
+        }
+    } else {
+        if (nextY >= scrollTo) {
+            pictures.scrollTop = 0;
+            pictures.scrollLeft = scrollTo;
+            updateLabel();
+            return;
+        }
+    }
+    pictures.scrollLeft = nextY;
+    window.setTimeout(scrollAnim, scrollDt);
+}
+function animateScrollTo(to) {
+    'use strict';
+    var pictures = document.getElementById('pictures');
+    scrollTo = to;
+    scrollDt = 200.0 / 6.0;
+    scrollDy = (to - pictures.scrollLeft) / 6.00;
+    window.setTimeout(scrollAnim, scrollDt);
+}
+function leftButton() {
+    'use strict';
+    var pictures = document.getElementById('pictures');
+    if (pictures.scrollLeft > 0) {
+        var to = pictures.scrollLeft - 320;
+        if (to < 0) { to = 0; }
+        animateScrollTo(to);
+    }
+}
+function rightButton() {
+    'use strict';
+    var pictures = document.getElementById('pictures');
+    if (pictures.scrollLeft < (imageCount-1)*320) {
+        var to = pictures.scrollLeft + 320;
+        animateScrollTo(to);
+    }
+}
+var drag = {
+    start: {x: 0, y: 0},
+    isDragging: false,
+    client: {x: 0, y: 0}
+}
+function dragBegin(event) {
+    'use strict';
+    drag.isDragging = true;
+    drag.start.x = event.clientX;
+    drag.start.y = event.clientY;
+    var pictures = document.getElementById('pictures');
+    drag.client.x = pictures.scrollLeft;
+    drag.client.y = pictures.scrollTop;
+}
+function dragMove(event) {
+    'use strict';
+    if (!drag.isDragging) {
+        return
+    }
+    var newX = drag.start.x - event.clientX + drag.client.x;
+    var pictures = document.getElementById('pictures');
+    pictures.scrollLeft = newX;
+}
+function dragEnd(event) {
+    'use strict';
+    if (!drag.isDragging) {
+        return;
+    }
+    drag.isDragging = false;
+    var newX = drag.start.x - event.clientX + drag.client.x;
+    newX = Math.max(0, Math.min(newX, (imageCount-1)*320));
+    newX = Math.round(newX / 320) * 320;
+    animateScrollTo(newX);
+}
+function updateLabel() {
+    'use strict';
+    var pictures = document.getElementById('pictures');
+    var idx = Math.round(pictures.scrollLeft / 320);
+    var label = document.getElementById('label');
+    while( label.firstChild ) {
+        label.removeChild( label.firstChild );
+    }
+    label.appendChild( document.createTextNode(imageCaptions[idx].caption) );
+}
+function deleteButton() {
+    'use strict';
+    var r = confirm("Delete picture?");
+    if (r == true) {
+        var pictures = document.getElementById('pictures');
+        var idx = Math.round(pictures.scrollLeft / 320);
+        window.location="imageedit?uid={{.UserID}}&delete="+imageCaptions[idx].crc;
+    }
+
+}
+window.addEventListener('mousemove', dragMove, true);
+window.addEventListener('mouseup', dragEnd, true);
+window.addEventListener('load', updateLabel, false);
+</script>
+<style>
+#pictures {
+    width: 320px;
+    height: 360px;
+    overflow: scroll;
+    border: 1px solid grey;
+    border-radius: 3px;
+  -webkit-overflow-scrolling: touch;
+  -webkit-scroll-snap-type: mandatory;
+      -ms-scroll-snap-type: mandatory;
+          scroll-snap-type: mandatory;
+  /* older spec implementation */
+  -webkit-scroll-snap-destination: 0% 100%;
+      -ms-scroll-snap-destination: 0% 100%;
+          scroll-snap-destination: 0% 100%;
+  -webkit-scroll-snap-points-x: repeat(100%);
+      -ms-scroll-snap-points-x: repeat(100%);
+          scroll-snap-points-x: repeat(100%);
+}
+#pictures-inner {
+    width:1280px;
+    height: 360px;
+}
+#pictures-inner div {
+    width:320px;
+    height: 360px;
+    float:left;
+}
+#pictures-inner img {
+    width:320px;
+    height: 360px;
+}
+</style>
+</head>
+<body>
+<div id="header">
+<a href="../admin">
+<div>
+<img id="logo" src="../Logo.png" alt="Logo">
+<div>
+<span id="app-name">{{.AppName}}</span>
+</div>
+</div>
+</a>
+</div>
+
+<div id="stats-body">
+<h1>Profile Images</h1>
+<div id='form-div'>
+<h2>{{.Name}}</h2>
+<p class="error">{{.ErrorMessage}}</p>
+
+<div id="pictures">
+<div id="pictures-inner" onmousedown="dragBegin(event)">
+
+    {{range $index, $element := .Images}}
+        <div>
+            <img src="{{$element.URL}}" alt="" draggable="false"/>
+        </div>
+    {{else}}
+        <div>
+            <img src="" alt="" draggable="false"/>
+        </div>
+    {{end}}
+
+</div>
+</div>
+
+<div style="position: relative; width:320px;">
+<button type="button" onclick="leftButton()">&lt;</button>
+<button type="button" onclick="rightButton()">&gt;</button>
+<span id="label" style="padding-left: 20px;">profile 1/4</span>
+<button
+    id="deleteButton"
+    onclick="deleteButton()"
+    type="button"
+    style="position: absolute; right: 0px;">delete</button>
+<br><br>
+Upload
+<form action="imageedit?uid={{.UserID}}" method="post" enctype="multipart/form-data" id="imageForm">
+  <input type="file" name="pic" accept="image/*"/><br>
+    <select name="imageContent" form="imageForm">
+      <option value="1" selected>profile picture</option>
+      <option value="2">background picture</option>
+    </select><br>
+  <input  id="uploadButton" type="submit" value="upload"/>
+</form>
+</div>
+</div>
+</div>
+</body>
+</html>
+{{end}}

@@ -20,6 +20,7 @@ import (
     "strconv"
     "strings"
     "net/http"
+    "io/ioutil"
     "database/sql"
     "github.com/lib/pq"
     "violent.blue/GoKit/Log"
@@ -166,6 +167,8 @@ func WebUpdateProfile(writer http.ResponseWriter, httpRequest *http.Request) {
     updateProfile := struct {
         AppName         string
         ErrorMessage    string
+        ProfileImage    string
+        BackgroundImage string
         Profile         *BlitzMessage.UserProfile
         Expertise       string
     } {
@@ -217,6 +220,22 @@ func WebUpdateProfile(writer http.ResponseWriter, httpRequest *http.Request) {
         }
         for _, edu := range updateProfile.Profile.Education {
             edu.Timespan = fixNullTimespan(edu.Timespan)
+        }
+
+        //  Images --
+        for _, img := range updateProfile.Profile.Images {
+            switch *img.ImageContent {
+            case BlitzMessage.ImageContent_ICUserProfile:
+                if len(updateProfile.ProfileImage) == 0 {
+                    updateProfile.ProfileImage =
+                        ImageURLForImageData(*updateProfile.Profile.UserID, img)
+                }
+            case BlitzMessage.ImageContent_ICUserBackground:
+                if len(updateProfile.BackgroundImage) == 0 {
+                    updateProfile.BackgroundImage =
+                        ImageURLForImageData(*updateProfile.Profile.UserID, img)
+                }
+            }
         }
     }
 
@@ -434,5 +453,134 @@ func WebUpdateProfile(writer http.ResponseWriter, httpRequest *http.Request) {
 
     fillFormFromProfile()
     updateProfile.ErrorMessage = "User updated."
+}
+
+
+//----------------------------------------------------------------------------------------
+//
+//                                                                            WebImageEdit
+//
+//----------------------------------------------------------------------------------------
+
+
+func WebImageEdit(writer http.ResponseWriter, httpRequest *http.Request) {
+    Log.LogFunctionName()
+
+    type ImageType struct {
+        Caption     string
+        CRC         int64
+        URL         string
+    }
+    imageEdit := struct {
+        AppName         string
+        Name            string
+        ErrorMessage    string
+        UserID          string
+        Images          []ImageType
+    } {
+        AppName: config.AppName,
+    }
+
+    defer func() {
+        ie := &imageEdit
+        error := config.Template.ExecuteTemplate(writer, "ImageEdit.html", ie)
+        if error != nil {
+            Log.LogError(error)
+        }
+    } ()
+
+    Log.Debugf("Request: %+v.", httpRequest)
+
+    var error error
+    userID := httpRequest.URL.Query().Get("uid")
+    if len(userID) == 0 {
+        imageEdit.ErrorMessage = "User ID required."
+    }
+    imageEdit.UserID = userID
+    imageEdit.Name = PrettyNameForUserID(userID)
+
+    deleteCRC := httpRequest.URL.Query().Get("delete")
+    if len(deleteCRC) > 0 {
+        var result sql.Result
+        result, error = config.DB.Exec(
+            `update ImageTable set deleted = true
+                where userID = $1
+                  and crc32 = $2;`,
+            userID,
+            deleteCRC,
+        )
+        error = pgsql.UpdateResultError(result, error)
+        if error != nil {
+            Log.LogError(error)
+            imageEdit.ErrorMessage = error.Error()
+        } else {
+            imageEdit.ErrorMessage = "Deleted"
+        }
+    }
+
+
+    //  Parse a form upload --
+    if httpRequest.Method == "POST" {
+        error = httpRequest.ParseMultipartForm(10000000)
+        if error != nil {
+            Log.LogError(error)
+            imageEdit.ErrorMessage = error.Error()
+            return
+        }
+
+        //Log.Debugf("Form: %+v.", httpRequest.Form)
+        //Log.Debugf("Post: %+v.", httpRequest.PostForm)
+
+        file, header, error := httpRequest.FormFile("pic")
+        if error != nil {
+            Log.LogError(error)
+            imageEdit.ErrorMessage = error.Error()
+            return
+        }
+        defer file.Close()
+        imageBytes, error := ioutil.ReadAll(file)
+        if error != nil {
+            Log.LogError(error)
+            imageEdit.ErrorMessage = error.Error()
+            return
+        }
+        contentType := header.Header.Get("Content-Type")
+        imageContent, _ := strconv.Atoi(httpRequest.FormValue("imageContent"))
+
+        Log.Debugf("Content Type: %s Image Type: %d.", contentType, imageContent);
+
+        error = SaveImage(
+            userID,
+            BlitzMessage.ImageContent(imageContent),
+            contentType,
+            imageBytes,
+        )
+        if error != nil {
+            imageEdit.ErrorMessage = error.Error()
+        }
+    }
+
+
+    images := ImagesForUserID(userID)
+    for idx, img := range images {
+
+        s := "Unknown"
+        switch {
+        case img.ImageContent == nil:
+        case *img.ImageContent == BlitzMessage.ImageContent_ICUserProfile:
+            s = "Profile"
+        case *img.ImageContent == BlitzMessage.ImageContent_ICUserBackground:
+            s = "Background"
+        }
+        s = fmt.Sprintf("%s %d / %d", s, idx+1, len(images))
+
+        newImg := ImageType {
+            Caption:    s,
+            CRC:        *img.Crc32,
+            URL:        ImageURLForImageData(userID, img),
+        }
+
+        imageEdit.Images = append(imageEdit.Images, newImg)
+    }
 }
 
