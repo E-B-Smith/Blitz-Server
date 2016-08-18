@@ -33,6 +33,14 @@ public final class Feed {
      * <code>FPSurveyAnswer = 4;</code>
      */
     FPSurveyAnswer(4, 4),
+    /**
+     * <code>FPWantedQuestion = 5;</code>
+     */
+    FPWantedQuestion(5, 5),
+    /**
+     * <code>FPWantedAnswer = 6;</code>
+     */
+    FPWantedAnswer(6, 6),
     ;
 
     /**
@@ -55,6 +63,14 @@ public final class Feed {
      * <code>FPSurveyAnswer = 4;</code>
      */
     public static final int FPSurveyAnswer_VALUE = 4;
+    /**
+     * <code>FPWantedQuestion = 5;</code>
+     */
+    public static final int FPWantedQuestion_VALUE = 5;
+    /**
+     * <code>FPWantedAnswer = 6;</code>
+     */
+    public static final int FPWantedAnswer_VALUE = 6;
 
 
     public final int getNumber() { return value; }
@@ -66,6 +82,8 @@ public final class Feed {
         case 2: return FPOpenEndedReply;
         case 3: return FPSurveyQuestion;
         case 4: return FPSurveyAnswer;
+        case 5: return FPWantedQuestion;
+        case 6: return FPWantedAnswer;
         default: return null;
       }
     }
@@ -6402,17 +6420,18 @@ public final class Feed {
       "essage.Timespan\022.\n\tfeedScope\030\002 \001(\0162\033.Bli" +
       "tzMessage.FeedPostScope\022\020\n\010parentID\030\003 \001(" +
       "\t\"=\n\020FeedPostResponse\022)\n\tfeedPosts\030\001 \003(\013" +
-      "2\026.BlitzMessage.FeedPost*v\n\014FeedPostType" +
-      "\022\r\n\tFPUnknown\020\000\022\027\n\023FPOpenEndedQuestion\020\001" +
-      "\022\024\n\020FPOpenEndedReply\020\002\022\024\n\020FPSurveyQuesti" +
-      "on\020\003\022\022\n\016FPSurveyAnswer\020\004*V\n\rFeedPostScop",
-      "e\022\022\n\016FPScopeUnknown\020\000\022\027\n\023FPScopeLocalNet" +
-      "work\020\001\022\030\n\024FPScopeGlobalNetwork\020\002*P\n\016Feed" +
-      "PostStatus\022\016\n\nFPSUnknown\020\000\022\r\n\tFPSActive\020" +
-      "\001\022\016\n\nFPSDeleted\020\002\022\017\n\013FPSAnswered\020\003*6\n\nUp" +
-      "dateVerb\022\014\n\010UVCreate\020\001\022\014\n\010UVUpdate\020\002\022\014\n\010" +
-      "UVDelete\020\003B/\n\032com.blitzhere.BlitzMessage" +
-      "\210\001\001\322>\002\n\000\322>\003\022\001B\322>\002\030\001"
+      "2\026.BlitzMessage.FeedPost*\240\001\n\014FeedPostTyp" +
+      "e\022\r\n\tFPUnknown\020\000\022\027\n\023FPOpenEndedQuestion\020" +
+      "\001\022\024\n\020FPOpenEndedReply\020\002\022\024\n\020FPSurveyQuest" +
+      "ion\020\003\022\022\n\016FPSurveyAnswer\020\004\022\024\n\020FPWantedQue",
+      "stion\020\005\022\022\n\016FPWantedAnswer\020\006*V\n\rFeedPostS" +
+      "cope\022\022\n\016FPScopeUnknown\020\000\022\027\n\023FPScopeLocal" +
+      "Network\020\001\022\030\n\024FPScopeGlobalNetwork\020\002*P\n\016F" +
+      "eedPostStatus\022\016\n\nFPSUnknown\020\000\022\r\n\tFPSActi" +
+      "ve\020\001\022\016\n\nFPSDeleted\020\002\022\017\n\013FPSAnswered\020\003*6\n" +
+      "\nUpdateVerb\022\014\n\010UVCreate\020\001\022\014\n\010UVUpdate\020\002\022" +
+      "\014\n\010UVDelete\020\003B/\n\032com.blitzhere.BlitzMess" +
+      "age\210\001\001\322>\002\n\000\322>\003\022\001B\322>\002\030\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {

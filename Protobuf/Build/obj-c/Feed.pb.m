@@ -30,6 +30,8 @@ BOOL BFeedPostTypeIsValidValue(BFeedPostType value) {
     case BFeedPostTypeFPOpenEndedReply:
     case BFeedPostTypeFPSurveyQuestion:
     case BFeedPostTypeFPSurveyAnswer:
+    case BFeedPostTypeFPWantedQuestion:
+    case BFeedPostTypeFPWantedAnswer:
       return YES;
     default:
       return NO;
@@ -47,6 +49,10 @@ NSString *NSStringFromBFeedPostType(BFeedPostType value) {
       return @"BFeedPostTypeFPSurveyQuestion";
     case BFeedPostTypeFPSurveyAnswer:
       return @"BFeedPostTypeFPSurveyAnswer";
+    case BFeedPostTypeFPWantedQuestion:
+      return @"BFeedPostTypeFPWantedQuestion";
+    case BFeedPostTypeFPWantedAnswer:
+      return @"BFeedPostTypeFPWantedAnswer";
     default:
       return nil;
   }

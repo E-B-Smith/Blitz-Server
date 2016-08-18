@@ -92,6 +92,8 @@ typedef NS_ENUM(SInt32, BFeedPostType) {
   BFeedPostTypeFPOpenEndedReply = 2,
   BFeedPostTypeFPSurveyQuestion = 3,
   BFeedPostTypeFPSurveyAnswer = 4,
+  BFeedPostTypeFPWantedQuestion = 5,
+  BFeedPostTypeFPWantedAnswer = 6,
 };
 
 BOOL BFeedPostTypeIsValidValue(BFeedPostType value);

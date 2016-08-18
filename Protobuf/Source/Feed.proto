@@ -25,6 +25,8 @@ enum FeedPostType {
   FPOpenEndedReply      = 2;
   FPSurveyQuestion      = 3;
   FPSurveyAnswer        = 4;
+  FPWantedQuestion      = 5;
+  FPWantedAnswer        = 6;
 }
 
 
