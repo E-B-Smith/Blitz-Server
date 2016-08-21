@@ -447,6 +447,9 @@ func Server() (returnValue int) {
             return 1
         }
     }
+    if flagVerbose {
+        config.LogLevel = Log.LogLevelDebug
+    }
     if flagPID {
         fmt.Fprintf(os.Stdout, "%s\n", config.PIDFileName())
         return 0
@@ -454,9 +457,6 @@ func Server() (returnValue int) {
     if error = config.OpenConfig(); error != nil {
         Log.Errorf("Configuration error: %v", error)
         return 1
-    }
-    if flagVerbose {
-        config.LogLevel = Log.LogLevelDebug
     }
 
     //  Check the configuration --

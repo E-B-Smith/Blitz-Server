@@ -23,7 +23,7 @@ type ServerInfo struct {
 
 
 func (serverInfo *ServerInfo) LoadConfiguration() error {
-    filename := filepath.Dir(flagInputFilename)
+    filename := filepath.Dir(flagConfigFilename)
     filename  = filepath.Join(filename, serverInfo.ConfigFilename)
     Log.Debugf("Loading config from file '%s'.", filename)
     error := ServerUtil.ParseConfigFileNamed(&serverInfo.Config, filename)
