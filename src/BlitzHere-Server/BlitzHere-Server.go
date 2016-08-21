@@ -470,8 +470,7 @@ func Server() (returnValue int) {
         config.ChatLimitHours = 24
     }
 
-    //  Start --
-
+    //  Start
     //  Add a start time to the database --
 
     _, error = config.DB.Exec("insert into ServerStatTable "+

@@ -32,10 +32,6 @@ drop database if exists ${database};
 drop user if exists ${database};
 
 
-create extension if not exists "uuid-ossp";
-create extension if not exists adminpack;
-
-
 create user ${database}
    with createdb superuser;
 
@@ -44,7 +40,9 @@ create database ${database}
    with encoding 'UTF8' owner ${database};
 
 
-create extension if not exists pg_trgm with schema ${database}Schema;
+create extension if not exists "uuid-ossp" with schema public;
+create extension if not exists adminpack with schema public;
+create extension if not exists pg_trgm with schema public;
 
 
 alter user ${database}
@@ -59,6 +57,7 @@ alter user ${database} set search_path to ${database}Schema, public;
 
 
 \include_relative CommonSchema.sql
+
 
 truncate AppTable;
 insert into AppTable (appID, appName, minAppVersion, minAppDataDate) values

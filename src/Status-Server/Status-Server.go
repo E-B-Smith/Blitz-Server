@@ -38,7 +38,7 @@ var (
     flagVersion         bool
     flagVerbose         bool
     flagPID             bool
-    flagInputFilename   string
+    flagConfigFilename  string
 )
 
 

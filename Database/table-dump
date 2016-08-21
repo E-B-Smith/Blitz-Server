@@ -6,16 +6,18 @@ if [ -z ${1+x} ]; then
     exit 1
 fi
 
-database="$1"
-if  ! askYN "Dump database '$database'?"; then
+databaseUpper="$1"
+if  ! askYN "Dump database '$databaseUpper'?"; then
     exit 1
 fi
+
+database=$(echo "$databaseUpper" | tr '[:upper:]' '[:lower:]')
 
 
 databaseuser=$database
 schema=${database}schema
 
-dumppath=~/dump/$database
+dumppath=~/dump/$databaseUpper
 rm -Rf $dumppath
 mkdir -p $dumppath
 

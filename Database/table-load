@@ -6,17 +6,16 @@ if [ -z ${1+x} ]; then
     exit 1
 fi
 
-olddatabase="$1"
-if  ! askYN "Load database tables '$olddatabase'?"; then
+databaseUpper="$1"
+if  ! askYN "Load database tables '$databaseUpper'?"; then
     exit 1
 fi
 
-
-database=${olddatabase}
+database=$(echo "$databaseUpper" | tr '[:upper:]' '[:lower:]')
 databaseuser=${database}
 
 loaded=0
-dumppath=~/dump/$olddatabase
+dumppath=~/dump/$databaseUpper
 
 
 for file in $dumppath/*.csv
