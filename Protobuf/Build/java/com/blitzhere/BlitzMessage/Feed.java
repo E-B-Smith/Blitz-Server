@@ -417,6 +417,828 @@ public final class Feed {
     // @@protoc_insertion_point(enum_scope:BlitzMessage.UpdateVerb)
   }
 
+  public interface FeedPanelMemberOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:BlitzMessage.FeedPanelMember)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional string userID = 1;</code>
+     */
+    boolean hasUserID();
+    /**
+     * <code>optional string userID = 1;</code>
+     */
+    java.lang.String getUserID();
+    /**
+     * <code>optional string userID = 1;</code>
+     */
+    com.google.protobuf.ByteString
+        getUserIDBytes();
+
+    /**
+     * <code>optional string bountyAmount = 2;</code>
+     */
+    boolean hasBountyAmount();
+    /**
+     * <code>optional string bountyAmount = 2;</code>
+     */
+    java.lang.String getBountyAmount();
+    /**
+     * <code>optional string bountyAmount = 2;</code>
+     */
+    com.google.protobuf.ByteString
+        getBountyAmountBytes();
+
+    /**
+     * <code>optional .BlitzMessage.Timestamp dateAnswered = 3;</code>
+     */
+    boolean hasDateAnswered();
+    /**
+     * <code>optional .BlitzMessage.Timestamp dateAnswered = 3;</code>
+     */
+    com.blitzhere.BlitzMessage.Types.Timestamp getDateAnswered();
+    /**
+     * <code>optional .BlitzMessage.Timestamp dateAnswered = 3;</code>
+     */
+    com.blitzhere.BlitzMessage.Types.TimestampOrBuilder getDateAnsweredOrBuilder();
+  }
+  /**
+   * Protobuf type {@code BlitzMessage.FeedPanelMember}
+   */
+  public static final class FeedPanelMember extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:BlitzMessage.FeedPanelMember)
+      FeedPanelMemberOrBuilder {
+    // Use FeedPanelMember.newBuilder() to construct.
+    private FeedPanelMember(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private FeedPanelMember(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final FeedPanelMember defaultInstance;
+    public static FeedPanelMember getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public FeedPanelMember getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private FeedPanelMember(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000001;
+              userID_ = bs;
+              break;
+            }
+            case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000002;
+              bountyAmount_ = bs;
+              break;
+            }
+            case 26: {
+              com.blitzhere.BlitzMessage.Types.Timestamp.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000004) == 0x00000004)) {
+                subBuilder = dateAnswered_.toBuilder();
+              }
+              dateAnswered_ = input.readMessage(com.blitzhere.BlitzMessage.Types.Timestamp.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(dateAnswered_);
+                dateAnswered_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000004;
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.blitzhere.BlitzMessage.Feed.internal_static_BlitzMessage_FeedPanelMember_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.blitzhere.BlitzMessage.Feed.internal_static_BlitzMessage_FeedPanelMember_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.blitzhere.BlitzMessage.Feed.FeedPanelMember.class, com.blitzhere.BlitzMessage.Feed.FeedPanelMember.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<FeedPanelMember> PARSER =
+        new com.google.protobuf.AbstractParser<FeedPanelMember>() {
+      public FeedPanelMember parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new FeedPanelMember(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<FeedPanelMember> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int USERID_FIELD_NUMBER = 1;
+    private java.lang.Object userID_;
+    /**
+     * <code>optional string userID = 1;</code>
+     */
+    public boolean hasUserID() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional string userID = 1;</code>
+     */
+    public java.lang.String getUserID() {
+      java.lang.Object ref = userID_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          userID_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string userID = 1;</code>
+     */
+    public com.google.protobuf.ByteString
+        getUserIDBytes() {
+      java.lang.Object ref = userID_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        userID_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int BOUNTYAMOUNT_FIELD_NUMBER = 2;
+    private java.lang.Object bountyAmount_;
+    /**
+     * <code>optional string bountyAmount = 2;</code>
+     */
+    public boolean hasBountyAmount() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional string bountyAmount = 2;</code>
+     */
+    public java.lang.String getBountyAmount() {
+      java.lang.Object ref = bountyAmount_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          bountyAmount_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string bountyAmount = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getBountyAmountBytes() {
+      java.lang.Object ref = bountyAmount_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        bountyAmount_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int DATEANSWERED_FIELD_NUMBER = 3;
+    private com.blitzhere.BlitzMessage.Types.Timestamp dateAnswered_;
+    /**
+     * <code>optional .BlitzMessage.Timestamp dateAnswered = 3;</code>
+     */
+    public boolean hasDateAnswered() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional .BlitzMessage.Timestamp dateAnswered = 3;</code>
+     */
+    public com.blitzhere.BlitzMessage.Types.Timestamp getDateAnswered() {
+      return dateAnswered_;
+    }
+    /**
+     * <code>optional .BlitzMessage.Timestamp dateAnswered = 3;</code>
+     */
+    public com.blitzhere.BlitzMessage.Types.TimestampOrBuilder getDateAnsweredOrBuilder() {
+      return dateAnswered_;
+    }
+
+    private void initFields() {
+      userID_ = "";
+      bountyAmount_ = "";
+      dateAnswered_ = com.blitzhere.BlitzMessage.Types.Timestamp.getDefaultInstance();
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeBytes(1, getUserIDBytes());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeBytes(2, getBountyAmountBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeMessage(3, dateAnswered_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(1, getUserIDBytes());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, getBountyAmountBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(3, dateAnswered_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.blitzhere.BlitzMessage.Feed.FeedPanelMember parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.blitzhere.BlitzMessage.Feed.FeedPanelMember parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.blitzhere.BlitzMessage.Feed.FeedPanelMember parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.blitzhere.BlitzMessage.Feed.FeedPanelMember parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.blitzhere.BlitzMessage.Feed.FeedPanelMember parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.blitzhere.BlitzMessage.Feed.FeedPanelMember parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.blitzhere.BlitzMessage.Feed.FeedPanelMember parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.blitzhere.BlitzMessage.Feed.FeedPanelMember parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.blitzhere.BlitzMessage.Feed.FeedPanelMember parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.blitzhere.BlitzMessage.Feed.FeedPanelMember parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.blitzhere.BlitzMessage.Feed.FeedPanelMember prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code BlitzMessage.FeedPanelMember}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:BlitzMessage.FeedPanelMember)
+        com.blitzhere.BlitzMessage.Feed.FeedPanelMemberOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.blitzhere.BlitzMessage.Feed.internal_static_BlitzMessage_FeedPanelMember_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.blitzhere.BlitzMessage.Feed.internal_static_BlitzMessage_FeedPanelMember_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.blitzhere.BlitzMessage.Feed.FeedPanelMember.class, com.blitzhere.BlitzMessage.Feed.FeedPanelMember.Builder.class);
+      }
+
+      // Construct using com.blitzhere.BlitzMessage.Feed.FeedPanelMember.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getDateAnsweredFieldBuilder();
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        userID_ = "";
+        bitField0_ = (bitField0_ & ~0x00000001);
+        bountyAmount_ = "";
+        bitField0_ = (bitField0_ & ~0x00000002);
+        if (dateAnsweredBuilder_ == null) {
+          dateAnswered_ = com.blitzhere.BlitzMessage.Types.Timestamp.getDefaultInstance();
+        } else {
+          dateAnsweredBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000004);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.blitzhere.BlitzMessage.Feed.internal_static_BlitzMessage_FeedPanelMember_descriptor;
+      }
+
+      public com.blitzhere.BlitzMessage.Feed.FeedPanelMember getDefaultInstanceForType() {
+        return com.blitzhere.BlitzMessage.Feed.FeedPanelMember.getDefaultInstance();
+      }
+
+      public com.blitzhere.BlitzMessage.Feed.FeedPanelMember build() {
+        com.blitzhere.BlitzMessage.Feed.FeedPanelMember result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.blitzhere.BlitzMessage.Feed.FeedPanelMember buildPartial() {
+        com.blitzhere.BlitzMessage.Feed.FeedPanelMember result = new com.blitzhere.BlitzMessage.Feed.FeedPanelMember(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.userID_ = userID_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.bountyAmount_ = bountyAmount_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        if (dateAnsweredBuilder_ == null) {
+          result.dateAnswered_ = dateAnswered_;
+        } else {
+          result.dateAnswered_ = dateAnsweredBuilder_.build();
+        }
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.blitzhere.BlitzMessage.Feed.FeedPanelMember) {
+          return mergeFrom((com.blitzhere.BlitzMessage.Feed.FeedPanelMember)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.blitzhere.BlitzMessage.Feed.FeedPanelMember other) {
+        if (other == com.blitzhere.BlitzMessage.Feed.FeedPanelMember.getDefaultInstance()) return this;
+        if (other.hasUserID()) {
+          bitField0_ |= 0x00000001;
+          userID_ = other.userID_;
+          onChanged();
+        }
+        if (other.hasBountyAmount()) {
+          bitField0_ |= 0x00000002;
+          bountyAmount_ = other.bountyAmount_;
+          onChanged();
+        }
+        if (other.hasDateAnswered()) {
+          mergeDateAnswered(other.getDateAnswered());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.blitzhere.BlitzMessage.Feed.FeedPanelMember parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.blitzhere.BlitzMessage.Feed.FeedPanelMember) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private java.lang.Object userID_ = "";
+      /**
+       * <code>optional string userID = 1;</code>
+       */
+      public boolean hasUserID() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional string userID = 1;</code>
+       */
+      public java.lang.String getUserID() {
+        java.lang.Object ref = userID_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            userID_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string userID = 1;</code>
+       */
+      public com.google.protobuf.ByteString
+          getUserIDBytes() {
+        java.lang.Object ref = userID_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          userID_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string userID = 1;</code>
+       */
+      public Builder setUserID(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        userID_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string userID = 1;</code>
+       */
+      public Builder clearUserID() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        userID_ = getDefaultInstance().getUserID();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string userID = 1;</code>
+       */
+      public Builder setUserIDBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        userID_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object bountyAmount_ = "";
+      /**
+       * <code>optional string bountyAmount = 2;</code>
+       */
+      public boolean hasBountyAmount() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional string bountyAmount = 2;</code>
+       */
+      public java.lang.String getBountyAmount() {
+        java.lang.Object ref = bountyAmount_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            bountyAmount_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string bountyAmount = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getBountyAmountBytes() {
+        java.lang.Object ref = bountyAmount_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          bountyAmount_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string bountyAmount = 2;</code>
+       */
+      public Builder setBountyAmount(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        bountyAmount_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string bountyAmount = 2;</code>
+       */
+      public Builder clearBountyAmount() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        bountyAmount_ = getDefaultInstance().getBountyAmount();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string bountyAmount = 2;</code>
+       */
+      public Builder setBountyAmountBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        bountyAmount_ = value;
+        onChanged();
+        return this;
+      }
+
+      private com.blitzhere.BlitzMessage.Types.Timestamp dateAnswered_ = com.blitzhere.BlitzMessage.Types.Timestamp.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          com.blitzhere.BlitzMessage.Types.Timestamp, com.blitzhere.BlitzMessage.Types.Timestamp.Builder, com.blitzhere.BlitzMessage.Types.TimestampOrBuilder> dateAnsweredBuilder_;
+      /**
+       * <code>optional .BlitzMessage.Timestamp dateAnswered = 3;</code>
+       */
+      public boolean hasDateAnswered() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional .BlitzMessage.Timestamp dateAnswered = 3;</code>
+       */
+      public com.blitzhere.BlitzMessage.Types.Timestamp getDateAnswered() {
+        if (dateAnsweredBuilder_ == null) {
+          return dateAnswered_;
+        } else {
+          return dateAnsweredBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .BlitzMessage.Timestamp dateAnswered = 3;</code>
+       */
+      public Builder setDateAnswered(com.blitzhere.BlitzMessage.Types.Timestamp value) {
+        if (dateAnsweredBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          dateAnswered_ = value;
+          onChanged();
+        } else {
+          dateAnsweredBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000004;
+        return this;
+      }
+      /**
+       * <code>optional .BlitzMessage.Timestamp dateAnswered = 3;</code>
+       */
+      public Builder setDateAnswered(
+          com.blitzhere.BlitzMessage.Types.Timestamp.Builder builderForValue) {
+        if (dateAnsweredBuilder_ == null) {
+          dateAnswered_ = builderForValue.build();
+          onChanged();
+        } else {
+          dateAnsweredBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000004;
+        return this;
+      }
+      /**
+       * <code>optional .BlitzMessage.Timestamp dateAnswered = 3;</code>
+       */
+      public Builder mergeDateAnswered(com.blitzhere.BlitzMessage.Types.Timestamp value) {
+        if (dateAnsweredBuilder_ == null) {
+          if (((bitField0_ & 0x00000004) == 0x00000004) &&
+              dateAnswered_ != com.blitzhere.BlitzMessage.Types.Timestamp.getDefaultInstance()) {
+            dateAnswered_ =
+              com.blitzhere.BlitzMessage.Types.Timestamp.newBuilder(dateAnswered_).mergeFrom(value).buildPartial();
+          } else {
+            dateAnswered_ = value;
+          }
+          onChanged();
+        } else {
+          dateAnsweredBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000004;
+        return this;
+      }
+      /**
+       * <code>optional .BlitzMessage.Timestamp dateAnswered = 3;</code>
+       */
+      public Builder clearDateAnswered() {
+        if (dateAnsweredBuilder_ == null) {
+          dateAnswered_ = com.blitzhere.BlitzMessage.Types.Timestamp.getDefaultInstance();
+          onChanged();
+        } else {
+          dateAnsweredBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000004);
+        return this;
+      }
+      /**
+       * <code>optional .BlitzMessage.Timestamp dateAnswered = 3;</code>
+       */
+      public com.blitzhere.BlitzMessage.Types.Timestamp.Builder getDateAnsweredBuilder() {
+        bitField0_ |= 0x00000004;
+        onChanged();
+        return getDateAnsweredFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .BlitzMessage.Timestamp dateAnswered = 3;</code>
+       */
+      public com.blitzhere.BlitzMessage.Types.TimestampOrBuilder getDateAnsweredOrBuilder() {
+        if (dateAnsweredBuilder_ != null) {
+          return dateAnsweredBuilder_.getMessageOrBuilder();
+        } else {
+          return dateAnswered_;
+        }
+      }
+      /**
+       * <code>optional .BlitzMessage.Timestamp dateAnswered = 3;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          com.blitzhere.BlitzMessage.Types.Timestamp, com.blitzhere.BlitzMessage.Types.Timestamp.Builder, com.blitzhere.BlitzMessage.Types.TimestampOrBuilder> 
+          getDateAnsweredFieldBuilder() {
+        if (dateAnsweredBuilder_ == null) {
+          dateAnsweredBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              com.blitzhere.BlitzMessage.Types.Timestamp, com.blitzhere.BlitzMessage.Types.Timestamp.Builder, com.blitzhere.BlitzMessage.Types.TimestampOrBuilder>(
+                  getDateAnswered(),
+                  getParentForChildren(),
+                  isClean());
+          dateAnswered_ = null;
+        }
+        return dateAnsweredBuilder_;
+      }
+
+      // @@protoc_insertion_point(builder_scope:BlitzMessage.FeedPanelMember)
+    }
+
+    static {
+      defaultInstance = new FeedPanelMember(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:BlitzMessage.FeedPanelMember)
+  }
+
   public interface FeedPostOrBuilder extends
       // @@protoc_insertion_point(interface_extends:BlitzMessage.FeedPost)
       com.google.protobuf.MessageOrBuilder {
@@ -686,23 +1508,47 @@ public final class Feed {
         getAmountTotalBytes();
 
     /**
-     * <code>repeated string panelUserIDs = 21;</code>
+     * <code>repeated string panelUserIDs_deprecated = 21;</code>
      */
     com.google.protobuf.ProtocolStringList
-        getPanelUserIDsList();
+        getPanelUserIDsDeprecatedList();
     /**
-     * <code>repeated string panelUserIDs = 21;</code>
+     * <code>repeated string panelUserIDs_deprecated = 21;</code>
      */
-    int getPanelUserIDsCount();
+    int getPanelUserIDsDeprecatedCount();
     /**
-     * <code>repeated string panelUserIDs = 21;</code>
+     * <code>repeated string panelUserIDs_deprecated = 21;</code>
      */
-    java.lang.String getPanelUserIDs(int index);
+    java.lang.String getPanelUserIDsDeprecated(int index);
     /**
-     * <code>repeated string panelUserIDs = 21;</code>
+     * <code>repeated string panelUserIDs_deprecated = 21;</code>
      */
     com.google.protobuf.ByteString
-        getPanelUserIDsBytes(int index);
+        getPanelUserIDsDeprecatedBytes(int index);
+
+    /**
+     * <code>repeated .BlitzMessage.FeedPanelMember panel = 22;</code>
+     */
+    java.util.List<com.blitzhere.BlitzMessage.Feed.FeedPanelMember> 
+        getPanelList();
+    /**
+     * <code>repeated .BlitzMessage.FeedPanelMember panel = 22;</code>
+     */
+    com.blitzhere.BlitzMessage.Feed.FeedPanelMember getPanel(int index);
+    /**
+     * <code>repeated .BlitzMessage.FeedPanelMember panel = 22;</code>
+     */
+    int getPanelCount();
+    /**
+     * <code>repeated .BlitzMessage.FeedPanelMember panel = 22;</code>
+     */
+    java.util.List<? extends com.blitzhere.BlitzMessage.Feed.FeedPanelMemberOrBuilder> 
+        getPanelOrBuilderList();
+    /**
+     * <code>repeated .BlitzMessage.FeedPanelMember panel = 22;</code>
+     */
+    com.blitzhere.BlitzMessage.Feed.FeedPanelMemberOrBuilder getPanelOrBuilder(
+        int index);
   }
   /**
    * Protobuf type {@code BlitzMessage.FeedPost}
@@ -895,10 +1741,18 @@ public final class Feed {
             case 170: {
               com.google.protobuf.ByteString bs = input.readBytes();
               if (!((mutable_bitField0_ & 0x00080000) == 0x00080000)) {
-                panelUserIDs_ = new com.google.protobuf.LazyStringArrayList();
+                panelUserIDsDeprecated_ = new com.google.protobuf.LazyStringArrayList();
                 mutable_bitField0_ |= 0x00080000;
               }
-              panelUserIDs_.add(bs);
+              panelUserIDsDeprecated_.add(bs);
+              break;
+            }
+            case 178: {
+              if (!((mutable_bitField0_ & 0x00100000) == 0x00100000)) {
+                panel_ = new java.util.ArrayList<com.blitzhere.BlitzMessage.Feed.FeedPanelMember>();
+                mutable_bitField0_ |= 0x00100000;
+              }
+              panel_.add(input.readMessage(com.blitzhere.BlitzMessage.Feed.FeedPanelMember.PARSER, extensionRegistry));
               break;
             }
           }
@@ -916,7 +1770,10 @@ public final class Feed {
           repliesDeprecated_ = java.util.Collections.unmodifiableList(repliesDeprecated_);
         }
         if (((mutable_bitField0_ & 0x00080000) == 0x00080000)) {
-          panelUserIDs_ = panelUserIDs_.getUnmodifiableView();
+          panelUserIDsDeprecated_ = panelUserIDsDeprecated_.getUnmodifiableView();
+        }
+        if (((mutable_bitField0_ & 0x00100000) == 0x00100000)) {
+          panel_ = java.util.Collections.unmodifiableList(panel_);
         }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
@@ -1496,33 +2353,68 @@ public final class Feed {
       }
     }
 
-    public static final int PANELUSERIDS_FIELD_NUMBER = 21;
-    private com.google.protobuf.LazyStringList panelUserIDs_;
+    public static final int PANELUSERIDS_DEPRECATED_FIELD_NUMBER = 21;
+    private com.google.protobuf.LazyStringList panelUserIDsDeprecated_;
     /**
-     * <code>repeated string panelUserIDs = 21;</code>
+     * <code>repeated string panelUserIDs_deprecated = 21;</code>
      */
     public com.google.protobuf.ProtocolStringList
-        getPanelUserIDsList() {
-      return panelUserIDs_;
+        getPanelUserIDsDeprecatedList() {
+      return panelUserIDsDeprecated_;
     }
     /**
-     * <code>repeated string panelUserIDs = 21;</code>
+     * <code>repeated string panelUserIDs_deprecated = 21;</code>
      */
-    public int getPanelUserIDsCount() {
-      return panelUserIDs_.size();
+    public int getPanelUserIDsDeprecatedCount() {
+      return panelUserIDsDeprecated_.size();
     }
     /**
-     * <code>repeated string panelUserIDs = 21;</code>
+     * <code>repeated string panelUserIDs_deprecated = 21;</code>
      */
-    public java.lang.String getPanelUserIDs(int index) {
-      return panelUserIDs_.get(index);
+    public java.lang.String getPanelUserIDsDeprecated(int index) {
+      return panelUserIDsDeprecated_.get(index);
     }
     /**
-     * <code>repeated string panelUserIDs = 21;</code>
+     * <code>repeated string panelUserIDs_deprecated = 21;</code>
      */
     public com.google.protobuf.ByteString
-        getPanelUserIDsBytes(int index) {
-      return panelUserIDs_.getByteString(index);
+        getPanelUserIDsDeprecatedBytes(int index) {
+      return panelUserIDsDeprecated_.getByteString(index);
+    }
+
+    public static final int PANEL_FIELD_NUMBER = 22;
+    private java.util.List<com.blitzhere.BlitzMessage.Feed.FeedPanelMember> panel_;
+    /**
+     * <code>repeated .BlitzMessage.FeedPanelMember panel = 22;</code>
+     */
+    public java.util.List<com.blitzhere.BlitzMessage.Feed.FeedPanelMember> getPanelList() {
+      return panel_;
+    }
+    /**
+     * <code>repeated .BlitzMessage.FeedPanelMember panel = 22;</code>
+     */
+    public java.util.List<? extends com.blitzhere.BlitzMessage.Feed.FeedPanelMemberOrBuilder> 
+        getPanelOrBuilderList() {
+      return panel_;
+    }
+    /**
+     * <code>repeated .BlitzMessage.FeedPanelMember panel = 22;</code>
+     */
+    public int getPanelCount() {
+      return panel_.size();
+    }
+    /**
+     * <code>repeated .BlitzMessage.FeedPanelMember panel = 22;</code>
+     */
+    public com.blitzhere.BlitzMessage.Feed.FeedPanelMember getPanel(int index) {
+      return panel_.get(index);
+    }
+    /**
+     * <code>repeated .BlitzMessage.FeedPanelMember panel = 22;</code>
+     */
+    public com.blitzhere.BlitzMessage.Feed.FeedPanelMemberOrBuilder getPanelOrBuilder(
+        int index) {
+      return panel_.get(index);
     }
 
     private void initFields() {
@@ -1545,7 +2437,8 @@ public final class Feed {
       totalVoteCount_ = 0;
       amountPerReply_ = "";
       amountTotal_ = "";
-      panelUserIDs_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      panelUserIDsDeprecated_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      panel_ = java.util.Collections.emptyList();
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -1617,8 +2510,11 @@ public final class Feed {
       if (((bitField0_ & 0x00010000) == 0x00010000)) {
         output.writeBytes(20, getAmountTotalBytes());
       }
-      for (int i = 0; i < panelUserIDs_.size(); i++) {
-        output.writeBytes(21, panelUserIDs_.getByteString(i));
+      for (int i = 0; i < panelUserIDsDeprecated_.size(); i++) {
+        output.writeBytes(21, panelUserIDsDeprecated_.getByteString(i));
+      }
+      for (int i = 0; i < panel_.size(); i++) {
+        output.writeMessage(22, panel_.get(i));
       }
       getUnknownFields().writeTo(output);
     }
@@ -1707,12 +2603,16 @@ public final class Feed {
       }
       {
         int dataSize = 0;
-        for (int i = 0; i < panelUserIDs_.size(); i++) {
+        for (int i = 0; i < panelUserIDsDeprecated_.size(); i++) {
           dataSize += com.google.protobuf.CodedOutputStream
-            .computeBytesSizeNoTag(panelUserIDs_.getByteString(i));
+            .computeBytesSizeNoTag(panelUserIDsDeprecated_.getByteString(i));
         }
         size += dataSize;
-        size += 2 * getPanelUserIDsList().size();
+        size += 2 * getPanelUserIDsDeprecatedList().size();
+      }
+      for (int i = 0; i < panel_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(22, panel_.get(i));
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -1827,6 +2727,7 @@ public final class Feed {
           getTimespanActiveFieldBuilder();
           getPostTagsFieldBuilder();
           getRepliesDeprecatedFieldBuilder();
+          getPanelFieldBuilder();
         }
       }
       private static Builder create() {
@@ -1889,8 +2790,14 @@ public final class Feed {
         bitField0_ = (bitField0_ & ~0x00020000);
         amountTotal_ = "";
         bitField0_ = (bitField0_ & ~0x00040000);
-        panelUserIDs_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        panelUserIDsDeprecated_ = com.google.protobuf.LazyStringArrayList.EMPTY;
         bitField0_ = (bitField0_ & ~0x00080000);
+        if (panelBuilder_ == null) {
+          panel_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00100000);
+        } else {
+          panelBuilder_.clear();
+        }
         return this;
       }
 
@@ -2014,10 +2921,19 @@ public final class Feed {
         }
         result.amountTotal_ = amountTotal_;
         if (((bitField0_ & 0x00080000) == 0x00080000)) {
-          panelUserIDs_ = panelUserIDs_.getUnmodifiableView();
+          panelUserIDsDeprecated_ = panelUserIDsDeprecated_.getUnmodifiableView();
           bitField0_ = (bitField0_ & ~0x00080000);
         }
-        result.panelUserIDs_ = panelUserIDs_;
+        result.panelUserIDsDeprecated_ = panelUserIDsDeprecated_;
+        if (panelBuilder_ == null) {
+          if (((bitField0_ & 0x00100000) == 0x00100000)) {
+            panel_ = java.util.Collections.unmodifiableList(panel_);
+            bitField0_ = (bitField0_ & ~0x00100000);
+          }
+          result.panel_ = panel_;
+        } else {
+          result.panel_ = panelBuilder_.build();
+        }
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -2151,15 +3067,41 @@ public final class Feed {
           amountTotal_ = other.amountTotal_;
           onChanged();
         }
-        if (!other.panelUserIDs_.isEmpty()) {
-          if (panelUserIDs_.isEmpty()) {
-            panelUserIDs_ = other.panelUserIDs_;
+        if (!other.panelUserIDsDeprecated_.isEmpty()) {
+          if (panelUserIDsDeprecated_.isEmpty()) {
+            panelUserIDsDeprecated_ = other.panelUserIDsDeprecated_;
             bitField0_ = (bitField0_ & ~0x00080000);
           } else {
-            ensurePanelUserIDsIsMutable();
-            panelUserIDs_.addAll(other.panelUserIDs_);
+            ensurePanelUserIDsDeprecatedIsMutable();
+            panelUserIDsDeprecated_.addAll(other.panelUserIDsDeprecated_);
           }
           onChanged();
+        }
+        if (panelBuilder_ == null) {
+          if (!other.panel_.isEmpty()) {
+            if (panel_.isEmpty()) {
+              panel_ = other.panel_;
+              bitField0_ = (bitField0_ & ~0x00100000);
+            } else {
+              ensurePanelIsMutable();
+              panel_.addAll(other.panel_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.panel_.isEmpty()) {
+            if (panelBuilder_.isEmpty()) {
+              panelBuilder_.dispose();
+              panelBuilder_ = null;
+              panel_ = other.panel_;
+              bitField0_ = (bitField0_ & ~0x00100000);
+              panelBuilder_ = 
+                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                   getPanelFieldBuilder() : null;
+            } else {
+              panelBuilder_.addAllMessages(other.panel_);
+            }
+          }
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -3766,97 +4708,337 @@ public final class Feed {
         return this;
       }
 
-      private com.google.protobuf.LazyStringList panelUserIDs_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      private void ensurePanelUserIDsIsMutable() {
+      private com.google.protobuf.LazyStringList panelUserIDsDeprecated_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      private void ensurePanelUserIDsDeprecatedIsMutable() {
         if (!((bitField0_ & 0x00080000) == 0x00080000)) {
-          panelUserIDs_ = new com.google.protobuf.LazyStringArrayList(panelUserIDs_);
+          panelUserIDsDeprecated_ = new com.google.protobuf.LazyStringArrayList(panelUserIDsDeprecated_);
           bitField0_ |= 0x00080000;
          }
       }
       /**
-       * <code>repeated string panelUserIDs = 21;</code>
+       * <code>repeated string panelUserIDs_deprecated = 21;</code>
        */
       public com.google.protobuf.ProtocolStringList
-          getPanelUserIDsList() {
-        return panelUserIDs_.getUnmodifiableView();
+          getPanelUserIDsDeprecatedList() {
+        return panelUserIDsDeprecated_.getUnmodifiableView();
       }
       /**
-       * <code>repeated string panelUserIDs = 21;</code>
+       * <code>repeated string panelUserIDs_deprecated = 21;</code>
        */
-      public int getPanelUserIDsCount() {
-        return panelUserIDs_.size();
+      public int getPanelUserIDsDeprecatedCount() {
+        return panelUserIDsDeprecated_.size();
       }
       /**
-       * <code>repeated string panelUserIDs = 21;</code>
+       * <code>repeated string panelUserIDs_deprecated = 21;</code>
        */
-      public java.lang.String getPanelUserIDs(int index) {
-        return panelUserIDs_.get(index);
+      public java.lang.String getPanelUserIDsDeprecated(int index) {
+        return panelUserIDsDeprecated_.get(index);
       }
       /**
-       * <code>repeated string panelUserIDs = 21;</code>
+       * <code>repeated string panelUserIDs_deprecated = 21;</code>
        */
       public com.google.protobuf.ByteString
-          getPanelUserIDsBytes(int index) {
-        return panelUserIDs_.getByteString(index);
+          getPanelUserIDsDeprecatedBytes(int index) {
+        return panelUserIDsDeprecated_.getByteString(index);
       }
       /**
-       * <code>repeated string panelUserIDs = 21;</code>
+       * <code>repeated string panelUserIDs_deprecated = 21;</code>
        */
-      public Builder setPanelUserIDs(
+      public Builder setPanelUserIDsDeprecated(
           int index, java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  ensurePanelUserIDsIsMutable();
-        panelUserIDs_.set(index, value);
+  ensurePanelUserIDsDeprecatedIsMutable();
+        panelUserIDsDeprecated_.set(index, value);
         onChanged();
         return this;
       }
       /**
-       * <code>repeated string panelUserIDs = 21;</code>
+       * <code>repeated string panelUserIDs_deprecated = 21;</code>
        */
-      public Builder addPanelUserIDs(
+      public Builder addPanelUserIDsDeprecated(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  ensurePanelUserIDsIsMutable();
-        panelUserIDs_.add(value);
+  ensurePanelUserIDsDeprecatedIsMutable();
+        panelUserIDsDeprecated_.add(value);
         onChanged();
         return this;
       }
       /**
-       * <code>repeated string panelUserIDs = 21;</code>
+       * <code>repeated string panelUserIDs_deprecated = 21;</code>
        */
-      public Builder addAllPanelUserIDs(
+      public Builder addAllPanelUserIDsDeprecated(
           java.lang.Iterable<java.lang.String> values) {
-        ensurePanelUserIDsIsMutable();
+        ensurePanelUserIDsDeprecatedIsMutable();
         com.google.protobuf.AbstractMessageLite.Builder.addAll(
-            values, panelUserIDs_);
+            values, panelUserIDsDeprecated_);
         onChanged();
         return this;
       }
       /**
-       * <code>repeated string panelUserIDs = 21;</code>
+       * <code>repeated string panelUserIDs_deprecated = 21;</code>
        */
-      public Builder clearPanelUserIDs() {
-        panelUserIDs_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      public Builder clearPanelUserIDsDeprecated() {
+        panelUserIDsDeprecated_ = com.google.protobuf.LazyStringArrayList.EMPTY;
         bitField0_ = (bitField0_ & ~0x00080000);
         onChanged();
         return this;
       }
       /**
-       * <code>repeated string panelUserIDs = 21;</code>
+       * <code>repeated string panelUserIDs_deprecated = 21;</code>
        */
-      public Builder addPanelUserIDsBytes(
+      public Builder addPanelUserIDsDeprecatedBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  ensurePanelUserIDsIsMutable();
-        panelUserIDs_.add(value);
+  ensurePanelUserIDsDeprecatedIsMutable();
+        panelUserIDsDeprecated_.add(value);
         onChanged();
         return this;
+      }
+
+      private java.util.List<com.blitzhere.BlitzMessage.Feed.FeedPanelMember> panel_ =
+        java.util.Collections.emptyList();
+      private void ensurePanelIsMutable() {
+        if (!((bitField0_ & 0x00100000) == 0x00100000)) {
+          panel_ = new java.util.ArrayList<com.blitzhere.BlitzMessage.Feed.FeedPanelMember>(panel_);
+          bitField0_ |= 0x00100000;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.blitzhere.BlitzMessage.Feed.FeedPanelMember, com.blitzhere.BlitzMessage.Feed.FeedPanelMember.Builder, com.blitzhere.BlitzMessage.Feed.FeedPanelMemberOrBuilder> panelBuilder_;
+
+      /**
+       * <code>repeated .BlitzMessage.FeedPanelMember panel = 22;</code>
+       */
+      public java.util.List<com.blitzhere.BlitzMessage.Feed.FeedPanelMember> getPanelList() {
+        if (panelBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(panel_);
+        } else {
+          return panelBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .BlitzMessage.FeedPanelMember panel = 22;</code>
+       */
+      public int getPanelCount() {
+        if (panelBuilder_ == null) {
+          return panel_.size();
+        } else {
+          return panelBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .BlitzMessage.FeedPanelMember panel = 22;</code>
+       */
+      public com.blitzhere.BlitzMessage.Feed.FeedPanelMember getPanel(int index) {
+        if (panelBuilder_ == null) {
+          return panel_.get(index);
+        } else {
+          return panelBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .BlitzMessage.FeedPanelMember panel = 22;</code>
+       */
+      public Builder setPanel(
+          int index, com.blitzhere.BlitzMessage.Feed.FeedPanelMember value) {
+        if (panelBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensurePanelIsMutable();
+          panel_.set(index, value);
+          onChanged();
+        } else {
+          panelBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .BlitzMessage.FeedPanelMember panel = 22;</code>
+       */
+      public Builder setPanel(
+          int index, com.blitzhere.BlitzMessage.Feed.FeedPanelMember.Builder builderForValue) {
+        if (panelBuilder_ == null) {
+          ensurePanelIsMutable();
+          panel_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          panelBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .BlitzMessage.FeedPanelMember panel = 22;</code>
+       */
+      public Builder addPanel(com.blitzhere.BlitzMessage.Feed.FeedPanelMember value) {
+        if (panelBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensurePanelIsMutable();
+          panel_.add(value);
+          onChanged();
+        } else {
+          panelBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .BlitzMessage.FeedPanelMember panel = 22;</code>
+       */
+      public Builder addPanel(
+          int index, com.blitzhere.BlitzMessage.Feed.FeedPanelMember value) {
+        if (panelBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensurePanelIsMutable();
+          panel_.add(index, value);
+          onChanged();
+        } else {
+          panelBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .BlitzMessage.FeedPanelMember panel = 22;</code>
+       */
+      public Builder addPanel(
+          com.blitzhere.BlitzMessage.Feed.FeedPanelMember.Builder builderForValue) {
+        if (panelBuilder_ == null) {
+          ensurePanelIsMutable();
+          panel_.add(builderForValue.build());
+          onChanged();
+        } else {
+          panelBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .BlitzMessage.FeedPanelMember panel = 22;</code>
+       */
+      public Builder addPanel(
+          int index, com.blitzhere.BlitzMessage.Feed.FeedPanelMember.Builder builderForValue) {
+        if (panelBuilder_ == null) {
+          ensurePanelIsMutable();
+          panel_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          panelBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .BlitzMessage.FeedPanelMember panel = 22;</code>
+       */
+      public Builder addAllPanel(
+          java.lang.Iterable<? extends com.blitzhere.BlitzMessage.Feed.FeedPanelMember> values) {
+        if (panelBuilder_ == null) {
+          ensurePanelIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, panel_);
+          onChanged();
+        } else {
+          panelBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .BlitzMessage.FeedPanelMember panel = 22;</code>
+       */
+      public Builder clearPanel() {
+        if (panelBuilder_ == null) {
+          panel_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00100000);
+          onChanged();
+        } else {
+          panelBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .BlitzMessage.FeedPanelMember panel = 22;</code>
+       */
+      public Builder removePanel(int index) {
+        if (panelBuilder_ == null) {
+          ensurePanelIsMutable();
+          panel_.remove(index);
+          onChanged();
+        } else {
+          panelBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .BlitzMessage.FeedPanelMember panel = 22;</code>
+       */
+      public com.blitzhere.BlitzMessage.Feed.FeedPanelMember.Builder getPanelBuilder(
+          int index) {
+        return getPanelFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .BlitzMessage.FeedPanelMember panel = 22;</code>
+       */
+      public com.blitzhere.BlitzMessage.Feed.FeedPanelMemberOrBuilder getPanelOrBuilder(
+          int index) {
+        if (panelBuilder_ == null) {
+          return panel_.get(index);  } else {
+          return panelBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .BlitzMessage.FeedPanelMember panel = 22;</code>
+       */
+      public java.util.List<? extends com.blitzhere.BlitzMessage.Feed.FeedPanelMemberOrBuilder> 
+           getPanelOrBuilderList() {
+        if (panelBuilder_ != null) {
+          return panelBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(panel_);
+        }
+      }
+      /**
+       * <code>repeated .BlitzMessage.FeedPanelMember panel = 22;</code>
+       */
+      public com.blitzhere.BlitzMessage.Feed.FeedPanelMember.Builder addPanelBuilder() {
+        return getPanelFieldBuilder().addBuilder(
+            com.blitzhere.BlitzMessage.Feed.FeedPanelMember.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .BlitzMessage.FeedPanelMember panel = 22;</code>
+       */
+      public com.blitzhere.BlitzMessage.Feed.FeedPanelMember.Builder addPanelBuilder(
+          int index) {
+        return getPanelFieldBuilder().addBuilder(
+            index, com.blitzhere.BlitzMessage.Feed.FeedPanelMember.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .BlitzMessage.FeedPanelMember panel = 22;</code>
+       */
+      public java.util.List<com.blitzhere.BlitzMessage.Feed.FeedPanelMember.Builder> 
+           getPanelBuilderList() {
+        return getPanelFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.blitzhere.BlitzMessage.Feed.FeedPanelMember, com.blitzhere.BlitzMessage.Feed.FeedPanelMember.Builder, com.blitzhere.BlitzMessage.Feed.FeedPanelMemberOrBuilder> 
+          getPanelFieldBuilder() {
+        if (panelBuilder_ == null) {
+          panelBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+              com.blitzhere.BlitzMessage.Feed.FeedPanelMember, com.blitzhere.BlitzMessage.Feed.FeedPanelMember.Builder, com.blitzhere.BlitzMessage.Feed.FeedPanelMemberOrBuilder>(
+                  panel_,
+                  ((bitField0_ & 0x00100000) == 0x00100000),
+                  getParentForChildren(),
+                  isClean());
+          panel_ = null;
+        }
+        return panelBuilder_;
       }
 
       // @@protoc_insertion_point(builder_scope:BlitzMessage.FeedPost)
@@ -6366,6 +7548,11 @@ public final class Feed {
   }
 
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_BlitzMessage_FeedPanelMember_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_BlitzMessage_FeedPanelMember_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_BlitzMessage_FeedPost_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
@@ -6396,42 +7583,46 @@ public final class Feed {
     java.lang.String[] descriptorData = {
       "\n\nFeed.proto\022\014BlitzMessage\032\033objectivec-d" +
       "escriptor.proto\032\013Types.proto\032\020EntityTags" +
-      ".proto\"\343\004\n\010FeedPost\022\016\n\006postID\030\001 \001(\t\022\020\n\010p" +
-      "arentID\030\002 \001(\t\022,\n\010postType\030\003 \001(\0162\032.BlitzM" +
-      "essage.FeedPostType\022.\n\tpostScope\030\004 \001(\0162\033" +
-      ".BlitzMessage.FeedPostScope\022\016\n\006userID\030\005 " +
-      "\001(\t\022\034\n\ranonymousPost\030\006 \001(\010:\005false\022*\n\ttim" +
-      "estamp\030\007 \001(\0132\027.BlitzMessage.Timestamp\022.\n" +
-      "\016timespanActive\030\010 \001(\0132\026.BlitzMessage.Tim" +
-      "espan\022\024\n\014headlineText\030\t \001(\t\022\020\n\010bodyText\030",
-      "\n \001(\t\022)\n\010postTags\030\014 \003(\0132\027.BlitzMessage.E" +
-      "ntityTag\0222\n\022replies_deprecated\030\r \003(\0132\026.B" +
-      "litzMessage.FeedPost\022\023\n\013mayAddReply\030\016 \001(" +
-      "\010\022 \n\030mayChooseMulitpleReplies\030\017 \001(\010\022\034\n\024s" +
-      "urveyAnswerSequence\030\020 \001(\005\022\026\n\016areMoreRepl" +
-      "ies\030\021 \001(\010\022\026\n\016totalVoteCount\030\022 \001(\005\022\026\n\016amo" +
-      "untPerReply\030\023 \001(\t\022\023\n\013amountTotal\030\024 \001(\t\022\024" +
-      "\n\014panelUserIDs\030\025 \003(\t\"\245\001\n\025FeedPostUpdateR" +
-      "equest\022,\n\nupdateVerb\030\001 \001(\0162\030.BlitzMessag" +
-      "e.UpdateVerb\0223\n\023feedPost_deprecated\030\002 \001(",
-      "\0132\026.BlitzMessage.FeedPost\022)\n\tfeedPosts\030\003" +
-      " \003(\0132\026.BlitzMessage.FeedPost\"\202\001\n\024FeedPos" +
-      "tFetchRequest\022(\n\010timespan\030\001 \001(\0132\026.BlitzM" +
-      "essage.Timespan\022.\n\tfeedScope\030\002 \001(\0162\033.Bli" +
-      "tzMessage.FeedPostScope\022\020\n\010parentID\030\003 \001(" +
-      "\t\"=\n\020FeedPostResponse\022)\n\tfeedPosts\030\001 \003(\013" +
-      "2\026.BlitzMessage.FeedPost*\240\001\n\014FeedPostTyp" +
-      "e\022\r\n\tFPUnknown\020\000\022\027\n\023FPOpenEndedQuestion\020" +
-      "\001\022\024\n\020FPOpenEndedReply\020\002\022\024\n\020FPSurveyQuest" +
-      "ion\020\003\022\022\n\016FPSurveyAnswer\020\004\022\024\n\020FPWantedQue",
-      "stion\020\005\022\022\n\016FPWantedAnswer\020\006*V\n\rFeedPostS" +
-      "cope\022\022\n\016FPScopeUnknown\020\000\022\027\n\023FPScopeLocal" +
-      "Network\020\001\022\030\n\024FPScopeGlobalNetwork\020\002*P\n\016F" +
-      "eedPostStatus\022\016\n\nFPSUnknown\020\000\022\r\n\tFPSActi" +
-      "ve\020\001\022\016\n\nFPSDeleted\020\002\022\017\n\013FPSAnswered\020\003*6\n" +
-      "\nUpdateVerb\022\014\n\010UVCreate\020\001\022\014\n\010UVUpdate\020\002\022" +
-      "\014\n\010UVDelete\020\003B/\n\032com.blitzhere.BlitzMess" +
-      "age\210\001\001\322>\002\n\000\322>\003\022\001B\322>\002\030\001"
+      ".proto\"f\n\017FeedPanelMember\022\016\n\006userID\030\001 \001(" +
+      "\t\022\024\n\014bountyAmount\030\002 \001(\t\022-\n\014dateAnswered\030" +
+      "\003 \001(\0132\027.BlitzMessage.Timestamp\"\234\005\n\010FeedP" +
+      "ost\022\016\n\006postID\030\001 \001(\t\022\020\n\010parentID\030\002 \001(\t\022,\n" +
+      "\010postType\030\003 \001(\0162\032.BlitzMessage.FeedPostT" +
+      "ype\022.\n\tpostScope\030\004 \001(\0162\033.BlitzMessage.Fe" +
+      "edPostScope\022\016\n\006userID\030\005 \001(\t\022\034\n\ranonymous" +
+      "Post\030\006 \001(\010:\005false\022*\n\ttimestamp\030\007 \001(\0132\027.B",
+      "litzMessage.Timestamp\022.\n\016timespanActive\030" +
+      "\010 \001(\0132\026.BlitzMessage.Timespan\022\024\n\014headlin" +
+      "eText\030\t \001(\t\022\020\n\010bodyText\030\n \001(\t\022)\n\010postTag" +
+      "s\030\014 \003(\0132\027.BlitzMessage.EntityTag\0222\n\022repl" +
+      "ies_deprecated\030\r \003(\0132\026.BlitzMessage.Feed" +
+      "Post\022\023\n\013mayAddReply\030\016 \001(\010\022 \n\030mayChooseMu" +
+      "litpleReplies\030\017 \001(\010\022\034\n\024surveyAnswerSeque" +
+      "nce\030\020 \001(\005\022\026\n\016areMoreReplies\030\021 \001(\010\022\026\n\016tot" +
+      "alVoteCount\030\022 \001(\005\022\026\n\016amountPerReply\030\023 \001(" +
+      "\t\022\023\n\013amountTotal\030\024 \001(\t\022\037\n\027panelUserIDs_d",
+      "eprecated\030\025 \003(\t\022,\n\005panel\030\026 \003(\0132\035.BlitzMe" +
+      "ssage.FeedPanelMember\"\245\001\n\025FeedPostUpdate" +
+      "Request\022,\n\nupdateVerb\030\001 \001(\0162\030.BlitzMessa" +
+      "ge.UpdateVerb\0223\n\023feedPost_deprecated\030\002 \001" +
+      "(\0132\026.BlitzMessage.FeedPost\022)\n\tfeedPosts\030" +
+      "\003 \003(\0132\026.BlitzMessage.FeedPost\"\202\001\n\024FeedPo" +
+      "stFetchRequest\022(\n\010timespan\030\001 \001(\0132\026.Blitz" +
+      "Message.Timespan\022.\n\tfeedScope\030\002 \001(\0162\033.Bl" +
+      "itzMessage.FeedPostScope\022\020\n\010parentID\030\003 \001" +
+      "(\t\"=\n\020FeedPostResponse\022)\n\tfeedPosts\030\001 \003(",
+      "\0132\026.BlitzMessage.FeedPost*\240\001\n\014FeedPostTy" +
+      "pe\022\r\n\tFPUnknown\020\000\022\027\n\023FPOpenEndedQuestion" +
+      "\020\001\022\024\n\020FPOpenEndedReply\020\002\022\024\n\020FPSurveyQues" +
+      "tion\020\003\022\022\n\016FPSurveyAnswer\020\004\022\024\n\020FPWantedQu" +
+      "estion\020\005\022\022\n\016FPWantedAnswer\020\006*V\n\rFeedPost" +
+      "Scope\022\022\n\016FPScopeUnknown\020\000\022\027\n\023FPScopeLoca" +
+      "lNetwork\020\001\022\030\n\024FPScopeGlobalNetwork\020\002*P\n\016" +
+      "FeedPostStatus\022\016\n\nFPSUnknown\020\000\022\r\n\tFPSAct" +
+      "ive\020\001\022\016\n\nFPSDeleted\020\002\022\017\n\013FPSAnswered\020\003*6" +
+      "\n\nUpdateVerb\022\014\n\010UVCreate\020\001\022\014\n\010UVUpdate\020\002",
+      "\022\014\n\010UVDelete\020\003B/\n\032com.blitzhere.BlitzMes" +
+      "sage\210\001\001\322>\002\n\000\322>\003\022\001B\322>\002\030\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -6448,26 +7639,32 @@ public final class Feed {
           com.blitzhere.BlitzMessage.Types.getDescriptor(),
           com.blitzhere.BlitzMessage.EntityTags.getDescriptor(),
         }, assigner);
-    internal_static_BlitzMessage_FeedPost_descriptor =
+    internal_static_BlitzMessage_FeedPanelMember_descriptor =
       getDescriptor().getMessageTypes().get(0);
+    internal_static_BlitzMessage_FeedPanelMember_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_BlitzMessage_FeedPanelMember_descriptor,
+        new java.lang.String[] { "UserID", "BountyAmount", "DateAnswered", });
+    internal_static_BlitzMessage_FeedPost_descriptor =
+      getDescriptor().getMessageTypes().get(1);
     internal_static_BlitzMessage_FeedPost_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_BlitzMessage_FeedPost_descriptor,
-        new java.lang.String[] { "PostID", "ParentID", "PostType", "PostScope", "UserID", "AnonymousPost", "Timestamp", "TimespanActive", "HeadlineText", "BodyText", "PostTags", "RepliesDeprecated", "MayAddReply", "MayChooseMulitpleReplies", "SurveyAnswerSequence", "AreMoreReplies", "TotalVoteCount", "AmountPerReply", "AmountTotal", "PanelUserIDs", });
+        new java.lang.String[] { "PostID", "ParentID", "PostType", "PostScope", "UserID", "AnonymousPost", "Timestamp", "TimespanActive", "HeadlineText", "BodyText", "PostTags", "RepliesDeprecated", "MayAddReply", "MayChooseMulitpleReplies", "SurveyAnswerSequence", "AreMoreReplies", "TotalVoteCount", "AmountPerReply", "AmountTotal", "PanelUserIDsDeprecated", "Panel", });
     internal_static_BlitzMessage_FeedPostUpdateRequest_descriptor =
-      getDescriptor().getMessageTypes().get(1);
+      getDescriptor().getMessageTypes().get(2);
     internal_static_BlitzMessage_FeedPostUpdateRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_BlitzMessage_FeedPostUpdateRequest_descriptor,
         new java.lang.String[] { "UpdateVerb", "FeedPostDeprecated", "FeedPosts", });
     internal_static_BlitzMessage_FeedPostFetchRequest_descriptor =
-      getDescriptor().getMessageTypes().get(2);
+      getDescriptor().getMessageTypes().get(3);
     internal_static_BlitzMessage_FeedPostFetchRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_BlitzMessage_FeedPostFetchRequest_descriptor,
         new java.lang.String[] { "Timespan", "FeedScope", "ParentID", });
     internal_static_BlitzMessage_FeedPostResponse_descriptor =
-      getDescriptor().getMessageTypes().get(3);
+      getDescriptor().getMessageTypes().get(4);
     internal_static_BlitzMessage_FeedPostResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_BlitzMessage_FeedPostResponse_descriptor,

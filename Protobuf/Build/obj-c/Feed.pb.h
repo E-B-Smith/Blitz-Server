@@ -16,6 +16,8 @@
 @class BEntityTagBuilder;
 @class BEntityTagList;
 @class BEntityTagListBuilder;
+@class BFeedPanelMember;
+@class BFeedPanelMemberBuilder;
 @class BFeedPost;
 @class BFeedPostBuilder;
 @class BFeedPostFetchRequest;
@@ -134,6 +136,78 @@ NSString *NSStringFromBUpdateVerb(BUpdateVerb value);
 + (void) registerAllExtensions:(PBMutableExtensionRegistry*) registry;
 @end
 
+#define FeedPanelMember_userID @"userID"
+#define FeedPanelMember_bountyAmount @"bountyAmount"
+#define FeedPanelMember_dateAnswered @"dateAnswered"
+@interface BFeedPanelMember : PBGeneratedMessage<GeneratedMessageProtocol> {
+@private
+  BOOL hasUserID_:1;
+  BOOL hasBountyAmount_:1;
+  BOOL hasDateAnswered_:1;
+  NSString* userID;
+  NSString* bountyAmount;
+  BTimestamp* dateAnswered;
+}
+- (BOOL) hasUserID;
+- (BOOL) hasBountyAmount;
+- (BOOL) hasDateAnswered;
+@property (readonly, strong) NSString* userID;
+@property (readonly, strong) NSString* bountyAmount;
+@property (readonly, strong) BTimestamp* dateAnswered;
+
++ (instancetype) defaultInstance;
+- (instancetype) defaultInstance;
+
+- (BOOL) isInitialized;
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
+- (BFeedPanelMemberBuilder*) builder;
++ (BFeedPanelMemberBuilder*) builder;
++ (BFeedPanelMemberBuilder*) builderWithPrototype:(BFeedPanelMember*) prototype;
+- (BFeedPanelMemberBuilder*) toBuilder;
+
++ (BFeedPanelMember*) parseFromData:(NSData*) data;
++ (BFeedPanelMember*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (BFeedPanelMember*) parseFromInputStream:(NSInputStream*) input;
++ (BFeedPanelMember*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (BFeedPanelMember*) parseFromCodedInputStream:(PBCodedInputStream*) input;
++ (BFeedPanelMember*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+@end
+
+@interface BFeedPanelMemberBuilder : PBGeneratedMessageBuilder {
+@private
+  BFeedPanelMember* resultFeedPanelMember;
+}
+
+- (BFeedPanelMember*) defaultInstance;
+
+- (BFeedPanelMemberBuilder*) clear;
+- (BFeedPanelMemberBuilder*) clone;
+
+- (BFeedPanelMember*) build;
+- (BFeedPanelMember*) buildPartial;
+
+- (BFeedPanelMemberBuilder*) mergeFrom:(BFeedPanelMember*) other;
+- (BFeedPanelMemberBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
+- (BFeedPanelMemberBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+
+- (BOOL) hasUserID;
+- (NSString*) userID;
+- (BFeedPanelMemberBuilder*) setUserID:(NSString*) value;
+- (BFeedPanelMemberBuilder*) clearUserID;
+
+- (BOOL) hasBountyAmount;
+- (NSString*) bountyAmount;
+- (BFeedPanelMemberBuilder*) setBountyAmount:(NSString*) value;
+- (BFeedPanelMemberBuilder*) clearBountyAmount;
+
+- (BOOL) hasDateAnswered;
+- (BTimestamp*) dateAnswered;
+- (BFeedPanelMemberBuilder*) setDateAnswered:(BTimestamp*) value;
+- (BFeedPanelMemberBuilder*) setDateAnsweredBuilder:(BTimestampBuilder*) builderForValue;
+- (BFeedPanelMemberBuilder*) mergeDateAnswered:(BTimestamp*) value;
+- (BFeedPanelMemberBuilder*) clearDateAnswered;
+@end
+
 #define FeedPost_postID @"postID"
 #define FeedPost_parentID @"parentID"
 #define FeedPost_postType @"postType"
@@ -153,7 +227,8 @@ NSString *NSStringFromBUpdateVerb(BUpdateVerb value);
 #define FeedPost_totalVoteCount @"totalVoteCount"
 #define FeedPost_amountPerReply @"amountPerReply"
 #define FeedPost_amountTotal @"amountTotal"
-#define FeedPost_panelUserIDs @"panelUserIDs"
+#define FeedPost_panelUserIDs_deprecated @"panelUserIDsDeprecated"
+#define FeedPost_panel @"panel"
 @interface BFeedPost : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
   BOOL hasAnonymousPost_:1;
@@ -190,9 +265,10 @@ NSString *NSStringFromBUpdateVerb(BUpdateVerb value);
   BTimespan* timespanActive;
   BFeedPostType postType;
   BFeedPostScope postScope;
-  NSMutableArray * panelUserIDsArray;
+  NSMutableArray * panelUserIDsDeprecatedArray;
   NSMutableArray * postTagsArray;
   NSMutableArray * repliesDeprecatedArray;
+  NSMutableArray * panelArray;
 }
 - (BOOL) hasPostID;
 - (BOOL) hasParentID;
@@ -230,10 +306,12 @@ NSString *NSStringFromBUpdateVerb(BUpdateVerb value);
 @property (readonly) SInt32 totalVoteCount;
 @property (readonly, strong) NSString* amountPerReply;
 @property (readonly, strong) NSString* amountTotal;
-@property (readonly, strong) NSArray * panelUserIDs;
+@property (readonly, strong) NSArray * panelUserIDsDeprecated;
+@property (readonly, strong) NSArray * panel;
 - (BEntityTag*)postTagsAtIndex:(NSUInteger)index;
 - (BFeedPost*)repliesDeprecatedAtIndex:(NSUInteger)index;
-- (NSString*)panelUserIDsAtIndex:(NSUInteger)index;
+- (NSString*)panelUserIDsDeprecatedAtIndex:(NSUInteger)index;
+- (BFeedPanelMember*)panelAtIndex:(NSUInteger)index;
 
 + (instancetype) defaultInstance;
 - (instancetype) defaultInstance;
@@ -371,11 +449,17 @@ NSString *NSStringFromBUpdateVerb(BUpdateVerb value);
 - (BFeedPostBuilder*) setAmountTotal:(NSString*) value;
 - (BFeedPostBuilder*) clearAmountTotal;
 
-- (NSMutableArray *)panelUserIDs;
-- (NSString*)panelUserIDsAtIndex:(NSUInteger)index;
-- (BFeedPostBuilder *)addPanelUserIDs:(NSString*)value;
-- (BFeedPostBuilder *)setPanelUserIDsArray:(NSArray *)array;
-- (BFeedPostBuilder *)clearPanelUserIDs;
+- (NSMutableArray *)panelUserIDsDeprecated;
+- (NSString*)panelUserIDsDeprecatedAtIndex:(NSUInteger)index;
+- (BFeedPostBuilder *)addPanelUserIDsDeprecated:(NSString*)value;
+- (BFeedPostBuilder *)setPanelUserIDsDeprecatedArray:(NSArray *)array;
+- (BFeedPostBuilder *)clearPanelUserIDsDeprecated;
+
+- (NSMutableArray *)panel;
+- (BFeedPanelMember*)panelAtIndex:(NSUInteger)index;
+- (BFeedPostBuilder *)addPanel:(BFeedPanelMember*)value;
+- (BFeedPostBuilder *)setPanelArray:(NSArray *)array;
+- (BFeedPostBuilder *)clearPanel;
 @end
 
 #define FeedPostUpdateRequest_updateVerb @"updateVerb"

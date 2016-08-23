@@ -57,6 +57,8 @@
 @class BEntityTagBuilder;
 @class BEntityTagList;
 @class BEntityTagListBuilder;
+@class BFeedPanelMember;
+@class BFeedPanelMemberBuilder;
 @class BFeedPost;
 @class BFeedPostBuilder;
 @class BFeedPostFetchRequest;

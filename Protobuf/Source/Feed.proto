@@ -45,6 +45,13 @@ enum FeedPostStatus {
 }
 
 
+message FeedPanelMember {
+  optional string         userID        = 1;
+  optional string         bountyAmount  = 2;
+  optional Timestamp      dateAnswered  = 3;
+}
+
+
 message FeedPost {
   optional string         postID          = 1;
   optional string         parentID        = 2;
@@ -65,7 +72,8 @@ message FeedPost {
   optional int32          totalVoteCount  = 18;
   optional string         amountPerReply  = 19;
   optional string         amountTotal     = 20;
-  repeated string         panelUserIDs    = 21;
+  repeated string         panelUserIDs_deprecated = 21;
+  repeated FeedPanelMember panel          = 22;
 }
 
 

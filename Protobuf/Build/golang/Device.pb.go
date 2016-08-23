@@ -22,6 +22,7 @@ It has these top-level messages:
 	DeviceInfo
 	EntityTag
 	EntityTagList
+	FeedPanelMember
 	FeedPost
 	FeedPostUpdateRequest
 	FeedPostFetchRequest

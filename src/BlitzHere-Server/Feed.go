@@ -22,6 +22,7 @@ import (
     "github.com/lib/pq"
     "violent.blue/GoKit/Log"
     "violent.blue/GoKit/pgsql"
+    "github.com/golang/protobuf/proto"
     "BlitzMessage"
 )
 
@@ -180,6 +181,43 @@ func ScanFeedPostRowForUserID(queryUserID string, row RowScanner) (*BlitzMessage
 
     feedPost.PostTags = GetEntityTagsWithUserID(queryUserID, *feedPost.PostID, BlitzMessage.EntityType_ETFeedPost)
 
+    var rows *sql.Rows
+    rows, error = config.DB.Query(
+        `select
+             memberID
+            ,bountyAmount
+            ,dateAnswered
+            from FeedPanelTable
+            where postID = $1;`,
+        postID,
+    )
+    if error != nil {
+        Log.LogError(error)
+        return nil, error
+    }
+
+    for rows.Next() {
+        var (
+            memberID        string
+            bountyAmount    sql.NullString
+            dateAnswered    pq.NullTime
+        )
+        error = row.Scan(
+            memberID,
+            bountyAmount,
+            dateAnswered,
+        )
+        if error != nil {
+            Log.LogError(error)
+            continue
+        }
+        member := BlitzMessage.FeedPanelMember {
+            UserID:         proto.String(memberID),
+            BountyAmount:   proto.String(bountyAmount.String),
+            DateAnswered:   BlitzMessage.TimestampPtr(dateAnswered.Time),
+        }
+        feedPost.Panel = append(feedPost.Panel, &member)
+    }
     return &feedPost, nil
 }
 
@@ -284,19 +322,40 @@ func CreateFeedPost(session *Session, feedPost *BlitzMessage.FeedPost) error {
 
     //  If there's a panel, update the tags --
 
-    for _, userID := range feedPost.PanelUserIDs {
+    for _, panelMember := range feedPost.Panel {
         _, error = config.DB.Exec(
-            `insert into EntityTagTable
-                (userID, entityID, entityType, entityTag)
-                values ($1, $2, $3, $4);`,
-            userID,
+            `insert into EntityTagTable (
+                userID,
+                entityID,
+                entityType,
+                entityTag
+            ) values ($1, $2, $3, $4);`,
+            panelMember.UserID,
             feedPost.PostID,
             BlitzMessage.EntityType_ETFeedPost,
             ".panel",
         )
-        if error != nil  { Log.LogError(error) }
+        if error != nil  {
+            Log.LogError(error)
+        }
+
+        _, error = config.DB.Exec(
+            `insert into FeedPanelTable (
+                postID,
+                memberID,
+                bountyAmount
+            ) values ($1, $2, $3, $4);`,
+            feedPost.PostID,
+            panelMember.UserID,
+            panelMember.BountyAmount,
+        )
+        if error != nil {
+            Log.LogError(error)
+        }
     }
-    Log.Debugf("Added %d panel members.", len(feedPost.PanelUserIDs))
+    Log.Debugf("Added %d panel members.", len(feedPost.Panel))
+
+    //  Save the panel --
 
     //  Send a notification if it's a response --
 

@@ -130,6 +130,334 @@ NSString *NSStringFromBUpdateVerb(BUpdateVerb value) {
   }
 }
 
+@interface BFeedPanelMember ()
+@property (strong) NSString* userID;
+@property (strong) NSString* bountyAmount;
+@property (strong) BTimestamp* dateAnswered;
+@end
+
+@implementation BFeedPanelMember
+
+- (BOOL) hasUserID {
+  return !!hasUserID_;
+}
+- (void) setHasUserID:(BOOL) _value_ {
+  hasUserID_ = !!_value_;
+}
+@synthesize userID;
+- (BOOL) hasBountyAmount {
+  return !!hasBountyAmount_;
+}
+- (void) setHasBountyAmount:(BOOL) _value_ {
+  hasBountyAmount_ = !!_value_;
+}
+@synthesize bountyAmount;
+- (BOOL) hasDateAnswered {
+  return !!hasDateAnswered_;
+}
+- (void) setHasDateAnswered:(BOOL) _value_ {
+  hasDateAnswered_ = !!_value_;
+}
+@synthesize dateAnswered;
+- (instancetype) init {
+  if ((self = [super init])) {
+    self.userID = @"";
+    self.bountyAmount = @"";
+    self.dateAnswered = [BTimestamp defaultInstance];
+  }
+  return self;
+}
+static BFeedPanelMember* defaultBFeedPanelMemberInstance = nil;
++ (void) initialize {
+  if (self == [BFeedPanelMember class]) {
+    defaultBFeedPanelMemberInstance = [[BFeedPanelMember alloc] init];
+  }
+}
++ (instancetype) defaultInstance {
+  return defaultBFeedPanelMemberInstance;
+}
+- (instancetype) defaultInstance {
+  return defaultBFeedPanelMemberInstance;
+}
+- (BOOL) isInitialized {
+  return YES;
+}
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
+  if (self.hasUserID) {
+    [output writeString:1 value:self.userID];
+  }
+  if (self.hasBountyAmount) {
+    [output writeString:2 value:self.bountyAmount];
+  }
+  if (self.hasDateAnswered) {
+    [output writeMessage:3 value:self.dateAnswered];
+  }
+  [self.unknownFields writeToCodedOutputStream:output];
+}
+- (SInt32) serializedSize {
+  __block SInt32 size_ = memoizedSerializedSize;
+  if (size_ != -1) {
+    return size_;
+  }
+
+  size_ = 0;
+  if (self.hasUserID) {
+    size_ += computeStringSize(1, self.userID);
+  }
+  if (self.hasBountyAmount) {
+    size_ += computeStringSize(2, self.bountyAmount);
+  }
+  if (self.hasDateAnswered) {
+    size_ += computeMessageSize(3, self.dateAnswered);
+  }
+  size_ += self.unknownFields.serializedSize;
+  memoizedSerializedSize = size_;
+  return size_;
+}
++ (BFeedPanelMember*) parseFromData:(NSData*) data {
+  return (BFeedPanelMember*)[[[BFeedPanelMember builder] mergeFromData:data] build];
+}
++ (BFeedPanelMember*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BFeedPanelMember*)[[[BFeedPanelMember builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
+}
++ (BFeedPanelMember*) parseFromInputStream:(NSInputStream*) input {
+  return (BFeedPanelMember*)[[[BFeedPanelMember builder] mergeFromInputStream:input] build];
+}
++ (BFeedPanelMember*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BFeedPanelMember*)[[[BFeedPanelMember builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (BFeedPanelMember*) parseFromCodedInputStream:(PBCodedInputStream*) input {
+  return (BFeedPanelMember*)[[[BFeedPanelMember builder] mergeFromCodedInputStream:input] build];
+}
++ (BFeedPanelMember*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BFeedPanelMember*)[[[BFeedPanelMember builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (BFeedPanelMemberBuilder*) builder {
+  return [[BFeedPanelMemberBuilder alloc] init];
+}
++ (BFeedPanelMemberBuilder*) builderWithPrototype:(BFeedPanelMember*) prototype {
+  return [[BFeedPanelMember builder] mergeFrom:prototype];
+}
+- (BFeedPanelMemberBuilder*) builder {
+  return [BFeedPanelMember builder];
+}
+- (BFeedPanelMemberBuilder*) toBuilder {
+  return [BFeedPanelMember builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  if (self.hasUserID) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"userID", self.userID];
+  }
+  if (self.hasBountyAmount) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"bountyAmount", self.bountyAmount];
+  }
+  if (self.hasDateAnswered) {
+    [output appendFormat:@"%@%@ {\n", indent, @"dateAnswered"];
+    [self.dateAnswered writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (void) storeInDictionary:(NSMutableDictionary *)dictionary {
+  if (self.hasUserID) {
+    [dictionary setObject: self.userID forKey: @"userID"];
+  }
+  if (self.hasBountyAmount) {
+    [dictionary setObject: self.bountyAmount forKey: @"bountyAmount"];
+  }
+  if (self.hasDateAnswered) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.dateAnswered storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"dateAnswered"];
+  }
+  [self.unknownFields storeInDictionary:dictionary];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[BFeedPanelMember class]]) {
+    return NO;
+  }
+  BFeedPanelMember *otherMessage = other;
+  return
+      self.hasUserID == otherMessage.hasUserID &&
+      (!self.hasUserID || [self.userID isEqual:otherMessage.userID]) &&
+      self.hasBountyAmount == otherMessage.hasBountyAmount &&
+      (!self.hasBountyAmount || [self.bountyAmount isEqual:otherMessage.bountyAmount]) &&
+      self.hasDateAnswered == otherMessage.hasDateAnswered &&
+      (!self.hasDateAnswered || [self.dateAnswered isEqual:otherMessage.dateAnswered]) &&
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  __block NSUInteger hashCode = 7;
+  if (self.hasUserID) {
+    hashCode = hashCode * 31 + [self.userID hash];
+  }
+  if (self.hasBountyAmount) {
+    hashCode = hashCode * 31 + [self.bountyAmount hash];
+  }
+  if (self.hasDateAnswered) {
+    hashCode = hashCode * 31 + [self.dateAnswered hash];
+  }
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
+}
+@end
+
+@interface BFeedPanelMemberBuilder()
+@property (strong) BFeedPanelMember* resultFeedPanelMember;
+@end
+
+@implementation BFeedPanelMemberBuilder
+@synthesize resultFeedPanelMember;
+- (instancetype) init {
+  if ((self = [super init])) {
+    self.resultFeedPanelMember = [[BFeedPanelMember alloc] init];
+  }
+  return self;
+}
+- (PBGeneratedMessage*) internalGetResult {
+  return resultFeedPanelMember;
+}
+- (BFeedPanelMemberBuilder*) clear {
+  self.resultFeedPanelMember = [[BFeedPanelMember alloc] init];
+  return self;
+}
+- (BFeedPanelMemberBuilder*) clone {
+  return [BFeedPanelMember builderWithPrototype:resultFeedPanelMember];
+}
+- (BFeedPanelMember*) defaultInstance {
+  return [BFeedPanelMember defaultInstance];
+}
+- (BFeedPanelMember*) build {
+  [self checkInitialized];
+  return [self buildPartial];
+}
+- (BFeedPanelMember*) buildPartial {
+  BFeedPanelMember* returnMe = resultFeedPanelMember;
+  self.resultFeedPanelMember = nil;
+  return returnMe;
+}
+- (BFeedPanelMemberBuilder*) mergeFrom:(BFeedPanelMember*) other {
+  if (other == [BFeedPanelMember defaultInstance]) {
+    return self;
+  }
+  if (other.hasUserID) {
+    [self setUserID:other.userID];
+  }
+  if (other.hasBountyAmount) {
+    [self setBountyAmount:other.bountyAmount];
+  }
+  if (other.hasDateAnswered) {
+    [self mergeDateAnswered:other.dateAnswered];
+  }
+  [self mergeUnknownFields:other.unknownFields];
+  return self;
+}
+- (BFeedPanelMemberBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
+  return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
+}
+- (BFeedPanelMemberBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  PBUnknownFieldSetBuilder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
+  while (YES) {
+    SInt32 tag = [input readTag];
+    switch (tag) {
+      case 0:
+        [self setUnknownFields:[unknownFields build]];
+        return self;
+      default: {
+        if (![self parseUnknownField:input unknownFields:unknownFields extensionRegistry:extensionRegistry tag:tag]) {
+          [self setUnknownFields:[unknownFields build]];
+          return self;
+        }
+        break;
+      }
+      case 10: {
+        [self setUserID:[input readString]];
+        break;
+      }
+      case 18: {
+        [self setBountyAmount:[input readString]];
+        break;
+      }
+      case 26: {
+        BTimestampBuilder* subBuilder = [BTimestamp builder];
+        if (self.hasDateAnswered) {
+          [subBuilder mergeFrom:self.dateAnswered];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setDateAnswered:[subBuilder buildPartial]];
+        break;
+      }
+    }
+  }
+}
+- (BOOL) hasUserID {
+  return resultFeedPanelMember.hasUserID;
+}
+- (NSString*) userID {
+  return resultFeedPanelMember.userID;
+}
+- (BFeedPanelMemberBuilder*) setUserID:(NSString*) value {
+  resultFeedPanelMember.hasUserID = YES;
+  resultFeedPanelMember.userID = value;
+  return self;
+}
+- (BFeedPanelMemberBuilder*) clearUserID {
+  resultFeedPanelMember.hasUserID = NO;
+  resultFeedPanelMember.userID = @"";
+  return self;
+}
+- (BOOL) hasBountyAmount {
+  return resultFeedPanelMember.hasBountyAmount;
+}
+- (NSString*) bountyAmount {
+  return resultFeedPanelMember.bountyAmount;
+}
+- (BFeedPanelMemberBuilder*) setBountyAmount:(NSString*) value {
+  resultFeedPanelMember.hasBountyAmount = YES;
+  resultFeedPanelMember.bountyAmount = value;
+  return self;
+}
+- (BFeedPanelMemberBuilder*) clearBountyAmount {
+  resultFeedPanelMember.hasBountyAmount = NO;
+  resultFeedPanelMember.bountyAmount = @"";
+  return self;
+}
+- (BOOL) hasDateAnswered {
+  return resultFeedPanelMember.hasDateAnswered;
+}
+- (BTimestamp*) dateAnswered {
+  return resultFeedPanelMember.dateAnswered;
+}
+- (BFeedPanelMemberBuilder*) setDateAnswered:(BTimestamp*) value {
+  resultFeedPanelMember.hasDateAnswered = YES;
+  resultFeedPanelMember.dateAnswered = value;
+  return self;
+}
+- (BFeedPanelMemberBuilder*) setDateAnsweredBuilder:(BTimestampBuilder*) builderForValue {
+  return [self setDateAnswered:[builderForValue build]];
+}
+- (BFeedPanelMemberBuilder*) mergeDateAnswered:(BTimestamp*) value {
+  if (resultFeedPanelMember.hasDateAnswered &&
+      resultFeedPanelMember.dateAnswered != [BTimestamp defaultInstance]) {
+    resultFeedPanelMember.dateAnswered =
+      [[[BTimestamp builderWithPrototype:resultFeedPanelMember.dateAnswered] mergeFrom:value] buildPartial];
+  } else {
+    resultFeedPanelMember.dateAnswered = value;
+  }
+  resultFeedPanelMember.hasDateAnswered = YES;
+  return self;
+}
+- (BFeedPanelMemberBuilder*) clearDateAnswered {
+  resultFeedPanelMember.hasDateAnswered = NO;
+  resultFeedPanelMember.dateAnswered = [BTimestamp defaultInstance];
+  return self;
+}
+@end
+
 @interface BFeedPost ()
 @property (strong) NSString* postID;
 @property (strong) NSString* parentID;
@@ -150,7 +478,8 @@ NSString *NSStringFromBUpdateVerb(BUpdateVerb value) {
 @property SInt32 totalVoteCount;
 @property (strong) NSString* amountPerReply;
 @property (strong) NSString* amountTotal;
-@property (strong) NSMutableArray * panelUserIDsArray;
+@property (strong) NSMutableArray * panelUserIDsDeprecatedArray;
+@property (strong) NSMutableArray * panelArray;
 @end
 
 @implementation BFeedPost
@@ -298,8 +627,10 @@ NSString *NSStringFromBUpdateVerb(BUpdateVerb value) {
   hasAmountTotal_ = !!_value_;
 }
 @synthesize amountTotal;
-@synthesize panelUserIDsArray;
-@dynamic panelUserIDs;
+@synthesize panelUserIDsDeprecatedArray;
+@dynamic panelUserIDsDeprecated;
+@synthesize panelArray;
+@dynamic panel;
 - (instancetype) init {
   if ((self = [super init])) {
     self.postID = @"";
@@ -346,11 +677,17 @@ static BFeedPost* defaultBFeedPostInstance = nil;
 - (BFeedPost*)repliesDeprecatedAtIndex:(NSUInteger)index {
   return [repliesDeprecatedArray objectAtIndex:index];
 }
-- (NSArray *)panelUserIDs {
-  return panelUserIDsArray;
+- (NSArray *)panelUserIDsDeprecated {
+  return panelUserIDsDeprecatedArray;
 }
-- (NSString*)panelUserIDsAtIndex:(NSUInteger)index {
-  return [panelUserIDsArray objectAtIndex:index];
+- (NSString*)panelUserIDsDeprecatedAtIndex:(NSUInteger)index {
+  return [panelUserIDsDeprecatedArray objectAtIndex:index];
+}
+- (NSArray *)panel {
+  return panelArray;
+}
+- (BFeedPanelMember*)panelAtIndex:(NSUInteger)index {
+  return [panelArray objectAtIndex:index];
 }
 - (BOOL) isInitialized {
   return YES;
@@ -413,8 +750,11 @@ static BFeedPost* defaultBFeedPostInstance = nil;
   if (self.hasAmountTotal) {
     [output writeString:20 value:self.amountTotal];
   }
-  [self.panelUserIDsArray enumerateObjectsUsingBlock:^(NSString *element, NSUInteger idx, BOOL *stop) {
+  [self.panelUserIDsDeprecatedArray enumerateObjectsUsingBlock:^(NSString *element, NSUInteger idx, BOOL *stop) {
     [output writeString:21 value:element];
+  }];
+  [self.panelArray enumerateObjectsUsingBlock:^(BFeedPanelMember *element, NSUInteger idx, BOOL *stop) {
+    [output writeMessage:22 value:element];
   }];
   [self.unknownFields writeToCodedOutputStream:output];
 }
@@ -484,13 +824,16 @@ static BFeedPost* defaultBFeedPostInstance = nil;
   }
   {
     __block SInt32 dataSize = 0;
-    const NSUInteger count = self.panelUserIDsArray.count;
-    [self.panelUserIDsArray enumerateObjectsUsingBlock:^(NSString *element, NSUInteger idx, BOOL *stop) {
+    const NSUInteger count = self.panelUserIDsDeprecatedArray.count;
+    [self.panelUserIDsDeprecatedArray enumerateObjectsUsingBlock:^(NSString *element, NSUInteger idx, BOOL *stop) {
       dataSize += computeStringSizeNoTag(element);
     }];
     size_ += dataSize;
     size_ += (SInt32)(2 * count);
   }
+  [self.panelArray enumerateObjectsUsingBlock:^(BFeedPanelMember *element, NSUInteger idx, BOOL *stop) {
+    size_ += computeMessageSize(22, element);
+  }];
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
   return size_;
@@ -595,8 +938,14 @@ static BFeedPost* defaultBFeedPostInstance = nil;
   if (self.hasAmountTotal) {
     [output appendFormat:@"%@%@: %@\n", indent, @"amountTotal", self.amountTotal];
   }
-  [self.panelUserIDsArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-    [output appendFormat:@"%@%@: %@\n", indent, @"panelUserIDs", obj];
+  [self.panelUserIDsDeprecatedArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"panelUserIDsDeprecated", obj];
+  }];
+  [self.panelArray enumerateObjectsUsingBlock:^(BFeedPanelMember *element, NSUInteger idx, BOOL *stop) {
+    [output appendFormat:@"%@%@ {\n", indent, @"panel"];
+    [element writeDescriptionTo:output
+                     withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
   }];
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
@@ -666,7 +1015,12 @@ static BFeedPost* defaultBFeedPostInstance = nil;
   if (self.hasAmountTotal) {
     [dictionary setObject: self.amountTotal forKey: @"amountTotal"];
   }
-  [dictionary setObject:self.panelUserIDs forKey: @"panelUserIDs"];
+  [dictionary setObject:self.panelUserIDsDeprecated forKey: @"panelUserIDsDeprecated"];
+  for (BFeedPanelMember* element in self.panelArray) {
+    NSMutableDictionary *elementDictionary = [NSMutableDictionary dictionary];
+    [element storeInDictionary:elementDictionary];
+    [dictionary setObject:[NSDictionary dictionaryWithDictionary:elementDictionary] forKey:@"panel"];
+  }
   [self.unknownFields storeInDictionary:dictionary];
 }
 - (BOOL) isEqual:(id)other {
@@ -714,7 +1068,8 @@ static BFeedPost* defaultBFeedPostInstance = nil;
       (!self.hasAmountPerReply || [self.amountPerReply isEqual:otherMessage.amountPerReply]) &&
       self.hasAmountTotal == otherMessage.hasAmountTotal &&
       (!self.hasAmountTotal || [self.amountTotal isEqual:otherMessage.amountTotal]) &&
-      [self.panelUserIDsArray isEqualToArray:otherMessage.panelUserIDsArray] &&
+      [self.panelUserIDsDeprecatedArray isEqualToArray:otherMessage.panelUserIDsDeprecatedArray] &&
+      [self.panelArray isEqualToArray:otherMessage.panelArray] &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
@@ -776,7 +1131,10 @@ static BFeedPost* defaultBFeedPostInstance = nil;
   if (self.hasAmountTotal) {
     hashCode = hashCode * 31 + [self.amountTotal hash];
   }
-  [self.panelUserIDsArray enumerateObjectsUsingBlock:^(NSString *element, NSUInteger idx, BOOL *stop) {
+  [self.panelUserIDsDeprecatedArray enumerateObjectsUsingBlock:^(NSString *element, NSUInteger idx, BOOL *stop) {
+    hashCode = hashCode * 31 + [element hash];
+  }];
+  [self.panelArray enumerateObjectsUsingBlock:^(BFeedPanelMember *element, NSUInteger idx, BOOL *stop) {
     hashCode = hashCode * 31 + [element hash];
   }];
   hashCode = hashCode * 31 + [self.unknownFields hash];
@@ -887,11 +1245,18 @@ static BFeedPost* defaultBFeedPostInstance = nil;
   if (other.hasAmountTotal) {
     [self setAmountTotal:other.amountTotal];
   }
-  if (other.panelUserIDsArray.count > 0) {
-    if (resultFeedPost.panelUserIDsArray == nil) {
-      resultFeedPost.panelUserIDsArray = [[NSMutableArray alloc] initWithArray:other.panelUserIDsArray];
+  if (other.panelUserIDsDeprecatedArray.count > 0) {
+    if (resultFeedPost.panelUserIDsDeprecatedArray == nil) {
+      resultFeedPost.panelUserIDsDeprecatedArray = [[NSMutableArray alloc] initWithArray:other.panelUserIDsDeprecatedArray];
     } else {
-      [resultFeedPost.panelUserIDsArray addObjectsFromArray:other.panelUserIDsArray];
+      [resultFeedPost.panelUserIDsDeprecatedArray addObjectsFromArray:other.panelUserIDsDeprecatedArray];
+    }
+  }
+  if (other.panelArray.count > 0) {
+    if (resultFeedPost.panelArray == nil) {
+      resultFeedPost.panelArray = [[NSMutableArray alloc] initWithArray:other.panelArray];
+    } else {
+      [resultFeedPost.panelArray addObjectsFromArray:other.panelArray];
     }
   }
   [self mergeUnknownFields:other.unknownFields];
@@ -1016,7 +1381,13 @@ static BFeedPost* defaultBFeedPostInstance = nil;
         break;
       }
       case 170: {
-        [self addPanelUserIDs:[input readString]];
+        [self addPanelUserIDsDeprecated:[input readString]];
+        break;
+      }
+      case 178: {
+        BFeedPanelMemberBuilder* subBuilder = [BFeedPanelMember builder];
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self addPanel:[subBuilder buildPartial]];
         break;
       }
     }
@@ -1364,25 +1735,46 @@ static BFeedPost* defaultBFeedPostInstance = nil;
   resultFeedPost.amountTotal = @"";
   return self;
 }
-- (NSMutableArray *)panelUserIDs {
-  return resultFeedPost.panelUserIDsArray;
+- (NSMutableArray *)panelUserIDsDeprecated {
+  return resultFeedPost.panelUserIDsDeprecatedArray;
 }
-- (NSString*)panelUserIDsAtIndex:(NSUInteger)index {
-  return [resultFeedPost panelUserIDsAtIndex:index];
+- (NSString*)panelUserIDsDeprecatedAtIndex:(NSUInteger)index {
+  return [resultFeedPost panelUserIDsDeprecatedAtIndex:index];
 }
-- (BFeedPostBuilder *)addPanelUserIDs:(NSString*)value {
-  if (resultFeedPost.panelUserIDsArray == nil) {
-    resultFeedPost.panelUserIDsArray = [[NSMutableArray alloc]init];
+- (BFeedPostBuilder *)addPanelUserIDsDeprecated:(NSString*)value {
+  if (resultFeedPost.panelUserIDsDeprecatedArray == nil) {
+    resultFeedPost.panelUserIDsDeprecatedArray = [[NSMutableArray alloc]init];
   }
-  [resultFeedPost.panelUserIDsArray addObject:value];
+  [resultFeedPost.panelUserIDsDeprecatedArray addObject:value];
   return self;
 }
-- (BFeedPostBuilder *)setPanelUserIDsArray:(NSArray *)array {
-  resultFeedPost.panelUserIDsArray = [[NSMutableArray alloc] initWithArray:array];
+- (BFeedPostBuilder *)setPanelUserIDsDeprecatedArray:(NSArray *)array {
+  resultFeedPost.panelUserIDsDeprecatedArray = [[NSMutableArray alloc] initWithArray:array];
   return self;
 }
-- (BFeedPostBuilder *)clearPanelUserIDs {
-  resultFeedPost.panelUserIDsArray = nil;
+- (BFeedPostBuilder *)clearPanelUserIDsDeprecated {
+  resultFeedPost.panelUserIDsDeprecatedArray = nil;
+  return self;
+}
+- (NSMutableArray *)panel {
+  return resultFeedPost.panelArray;
+}
+- (BFeedPanelMember*)panelAtIndex:(NSUInteger)index {
+  return [resultFeedPost panelAtIndex:index];
+}
+- (BFeedPostBuilder *)addPanel:(BFeedPanelMember*)value {
+  if (resultFeedPost.panelArray == nil) {
+    resultFeedPost.panelArray = [[NSMutableArray alloc]init];
+  }
+  [resultFeedPost.panelArray addObject:value];
+  return self;
+}
+- (BFeedPostBuilder *)setPanelArray:(NSArray *)array {
+  resultFeedPost.panelArray = [[NSMutableArray alloc]initWithArray:array];
+  return self;
+}
+- (BFeedPostBuilder *)clearPanel {
+  resultFeedPost.panelArray = nil;
   return self;
 }
 @end

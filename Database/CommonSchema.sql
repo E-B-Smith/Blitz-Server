@@ -426,6 +426,16 @@ create index FeedPostTimestampIndex on FeedPostTable(timestamp desc);
 create index FeedReplyTable         on FeedPostTable(parentID);
 
 
+create table FeedPanelTable
+    (
+     postID                     UUID        not null
+    ,memberID                   UserID      not null
+    ,bountyAmount               text
+    ,dateAnswered               timestamptz
+    );
+create unique index FeedPanelTableIndex on FeedPanelTable(postID, memberID);
+
+
 ------------------------------------------------------------------------------------------
 --
 --                                                                          EntityTagTable
