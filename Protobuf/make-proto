@@ -49,3 +49,10 @@ if [ -d "$path" ]; then
     done
     rsync -a --exclude=".*" Build/golang/  "$path"/
 fi
+
+path=../../Blitz-Android
+if [ -d "$path" ]; then
+    echo ">>> Installing java files in '$path'."
+    (rm -Rf "$path/src/com/blitzhere/BlitzMessage" || true)
+    rsync -a --exclude=".*" Build/java/ "$path"/src/
+fi
