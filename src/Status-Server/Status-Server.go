@@ -217,14 +217,13 @@ func ShowRequest(writer http.ResponseWriter, request *http.Request) {
 func StatsServer() int {
     var error error
     Log.LogLevel = Log.LogLevelAll
-    commandLine := strings.Trim(fmt.Sprint(os.Args), "[]")
 
     flag.BoolVar(&flagUsage,   "h", false, "Help.  Print usage and exit.")
     flag.BoolVar(&flagUsage,   "?", false, "Help.  Print usage and exit.")
     flag.BoolVar(&flagVersion, "v", false, "Version.  Print version and exit.")
     flag.BoolVar(&flagVerbose, "V", false, "Verbose.  Verbose output.")
     flag.BoolVar(&flagPID,     "p", false, "PID filename.  Print the pid filename and exit.")
-    flag.StringVar(&flagInputFilename, "c", "", "Configuration.  The file from which to read the configuration.")
+    flag.StringVar(&flagConfigFilename, "c", "", "Configuration.  The file from which to read the configuration.")
     flag.Parse()
 
     if (flagUsage) {
@@ -238,53 +237,28 @@ func StatsServer() int {
 
     //  Parse the config file --
 
-    flagInputFilename, error = filepath.Abs(flagInputFilename)
-    if len(flagInputFilename) > 0 {
-        error = ServerUtil.ParseConfigFileNamed(&config, flagInputFilename)
+    flagConfigFilename, error = filepath.Abs(flagConfigFilename)
+    if len(flagConfigFilename) > 0 {
+        error = ServerUtil.ParseConfigFileNamed(&config, flagConfigFilename)
         if error != nil {
             fmt.Fprintf(os.Stderr, "Configuration error: %v.\n", error)
             return 1
         }
     }
+    if flagVerbose {
+        config.LogLevel = Log.LogLevelDebug
+    }
     if flagPID {
         fmt.Fprintf(os.Stdout, "%s\n", config.PIDFileName())
         return 0
     }
-    if flagVerbose {
-        config.LogLevel = Log.LogLevelDebug
-    }
-
-    Log.SetFilename(config.LogFilename);
-    Log.Startf("Stats-Server version %s pid %d.", Util.CompileVersion(), os.Getpid())
-    Log.Infof ("Command line: %s.",  commandLine)
-    Log.Debugf("Configuration: %v.", config)
-
-    //  Lock our PID file --
-
-    error = config.CreatePIDFile()
-    if error != nil {
-        Log.Errorf("%v", error)
+    if error = config.OpenConfig(); error != nil {
+        Log.Errorf("Configuration error: %v", error)
         return 1
     }
-    defer config.RemovePIDFile()
+    defer config.CloseConfig()
 
-    //  Set our path --
-
-    if error = os.Chdir(config.ServiceFilePath); error != nil {
-        Log.Errorf("Error setting the home path '%s': %v.", config.ServiceFilePath, error)
-        return 1
-    } else {
-        config.ServiceFilePath, _ = os.Getwd()
-        Log.Debugf("Working directory: '%s'", config.ServiceFilePath)
-    }
-
-    //  Start database --
-
-    error = config.ConnectDatabase()
-    if error != nil { return 1 }
-    defer config.DisconnectDatabase();
-
-    //  Load configurations --
+    //  Load server configurations --
 
     for _, server := range servers {
         server.LoadConfiguration()
