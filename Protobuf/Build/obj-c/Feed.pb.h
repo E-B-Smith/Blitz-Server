@@ -225,7 +225,7 @@ NSString *NSStringFromBUpdateVerb(BUpdateVerb value);
 #define FeedPost_surveyAnswerSequence @"surveyAnswerSequence"
 #define FeedPost_areMoreReplies @"areMoreReplies"
 #define FeedPost_totalVoteCount @"totalVoteCount"
-#define FeedPost_amountPerReply @"amountPerReply"
+#define FeedPost_amountPerReply_deprecated @"amountPerReplyDeprecated"
 #define FeedPost_amountTotal @"amountTotal"
 #define FeedPost_panelUserIDs_deprecated @"panelUserIDsDeprecated"
 #define FeedPost_panel @"panel"
@@ -242,7 +242,7 @@ NSString *NSStringFromBUpdateVerb(BUpdateVerb value);
   BOOL hasUserID_:1;
   BOOL hasHeadlineText_:1;
   BOOL hasBodyText_:1;
-  BOOL hasAmountPerReply_:1;
+  BOOL hasAmountPerReplyDeprecated_:1;
   BOOL hasAmountTotal_:1;
   BOOL hasTimestamp_:1;
   BOOL hasTimespanActive_:1;
@@ -259,7 +259,7 @@ NSString *NSStringFromBUpdateVerb(BUpdateVerb value);
   NSString* userID;
   NSString* headlineText;
   NSString* bodyText;
-  NSString* amountPerReply;
+  NSString* amountPerReplyDeprecated;
   NSString* amountTotal;
   BTimestamp* timestamp;
   BTimespan* timespanActive;
@@ -285,7 +285,7 @@ NSString *NSStringFromBUpdateVerb(BUpdateVerb value);
 - (BOOL) hasSurveyAnswerSequence;
 - (BOOL) hasAreMoreReplies;
 - (BOOL) hasTotalVoteCount;
-- (BOOL) hasAmountPerReply;
+- (BOOL) hasAmountPerReplyDeprecated;
 - (BOOL) hasAmountTotal;
 @property (readonly, strong) NSString* postID;
 @property (readonly, strong) NSString* parentID;
@@ -304,7 +304,7 @@ NSString *NSStringFromBUpdateVerb(BUpdateVerb value);
 @property (readonly) SInt32 surveyAnswerSequence;
 - (BOOL) areMoreReplies;
 @property (readonly) SInt32 totalVoteCount;
-@property (readonly, strong) NSString* amountPerReply;
+@property (readonly, strong) NSString* amountPerReplyDeprecated;
 @property (readonly, strong) NSString* amountTotal;
 @property (readonly, strong) NSArray * panelUserIDsDeprecated;
 @property (readonly, strong) NSArray * panel;
@@ -439,10 +439,10 @@ NSString *NSStringFromBUpdateVerb(BUpdateVerb value);
 - (BFeedPostBuilder*) setTotalVoteCount:(SInt32) value;
 - (BFeedPostBuilder*) clearTotalVoteCount;
 
-- (BOOL) hasAmountPerReply;
-- (NSString*) amountPerReply;
-- (BFeedPostBuilder*) setAmountPerReply:(NSString*) value;
-- (BFeedPostBuilder*) clearAmountPerReply;
+- (BOOL) hasAmountPerReplyDeprecated;
+- (NSString*) amountPerReplyDeprecated;
+- (BFeedPostBuilder*) setAmountPerReplyDeprecated:(NSString*) value;
+- (BFeedPostBuilder*) clearAmountPerReplyDeprecated;
 
 - (BOOL) hasAmountTotal;
 - (NSString*) amountTotal;

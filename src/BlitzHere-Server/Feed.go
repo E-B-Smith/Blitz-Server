@@ -71,7 +71,7 @@ func WriteFeedPost(feedPost *BlitzMessage.FeedPost) error {
             feedPost.MayAddReply,
             feedPost.MayChooseMulitpleReplies,
             feedPost.SurveyAnswerSequence,
-            feedPost.AmountPerReply,
+//          feedPost.AmountPerReply,
             feedPost.AmountTotal,
             feedPost.PostID,
         )
@@ -175,7 +175,7 @@ func ScanFeedPostRowForUserID(queryUserID string, row RowScanner) (*BlitzMessage
         MayAddReply:        BoolPtrFromNullBool(mayAddReply),
         MayChooseMulitpleReplies:   BoolPtrFromNullBool(mayChooseMulitpleReplies),
         SurveyAnswerSequence:       Int32PtrFromNullInt64(surveyAnswerSequence),
-        AmountPerReply:     StringPtrFromNullString(amountPerReply),
+//      AmountPerReply:     StringPtrFromNullString(amountPerReply),
         AmountTotal:        StringPtrFromNullString(amountTotal),
     }
 

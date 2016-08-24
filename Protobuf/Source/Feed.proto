@@ -70,7 +70,7 @@ message FeedPost {
   optional int32          surveyAnswerSequence = 16;
   optional bool           areMoreReplies  = 17;
   optional int32          totalVoteCount  = 18;
-  optional string         amountPerReply  = 19;
+  optional string         amountPerReply_deprecated  = 19;
   optional string         amountTotal     = 20;
   repeated string         panelUserIDs_deprecated = 21;
   repeated FeedPanelMember panel          = 22;

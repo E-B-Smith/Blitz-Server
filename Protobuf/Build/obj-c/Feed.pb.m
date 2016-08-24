@@ -476,7 +476,7 @@ static BFeedPanelMember* defaultBFeedPanelMemberInstance = nil;
 @property SInt32 surveyAnswerSequence;
 @property BOOL areMoreReplies;
 @property SInt32 totalVoteCount;
-@property (strong) NSString* amountPerReply;
+@property (strong) NSString* amountPerReplyDeprecated;
 @property (strong) NSString* amountTotal;
 @property (strong) NSMutableArray * panelUserIDsDeprecatedArray;
 @property (strong) NSMutableArray * panelArray;
@@ -613,13 +613,13 @@ static BFeedPanelMember* defaultBFeedPanelMemberInstance = nil;
   hasTotalVoteCount_ = !!_value_;
 }
 @synthesize totalVoteCount;
-- (BOOL) hasAmountPerReply {
-  return !!hasAmountPerReply_;
+- (BOOL) hasAmountPerReplyDeprecated {
+  return !!hasAmountPerReplyDeprecated_;
 }
-- (void) setHasAmountPerReply:(BOOL) _value_ {
-  hasAmountPerReply_ = !!_value_;
+- (void) setHasAmountPerReplyDeprecated:(BOOL) _value_ {
+  hasAmountPerReplyDeprecated_ = !!_value_;
 }
-@synthesize amountPerReply;
+@synthesize amountPerReplyDeprecated;
 - (BOOL) hasAmountTotal {
   return !!hasAmountTotal_;
 }
@@ -648,7 +648,7 @@ static BFeedPanelMember* defaultBFeedPanelMemberInstance = nil;
     self.surveyAnswerSequence = 0;
     self.areMoreReplies = NO;
     self.totalVoteCount = 0;
-    self.amountPerReply = @"";
+    self.amountPerReplyDeprecated = @"";
     self.amountTotal = @"";
   }
   return self;
@@ -744,8 +744,8 @@ static BFeedPost* defaultBFeedPostInstance = nil;
   if (self.hasTotalVoteCount) {
     [output writeInt32:18 value:self.totalVoteCount];
   }
-  if (self.hasAmountPerReply) {
-    [output writeString:19 value:self.amountPerReply];
+  if (self.hasAmountPerReplyDeprecated) {
+    [output writeString:19 value:self.amountPerReplyDeprecated];
   }
   if (self.hasAmountTotal) {
     [output writeString:20 value:self.amountTotal];
@@ -816,8 +816,8 @@ static BFeedPost* defaultBFeedPostInstance = nil;
   if (self.hasTotalVoteCount) {
     size_ += computeInt32Size(18, self.totalVoteCount);
   }
-  if (self.hasAmountPerReply) {
-    size_ += computeStringSize(19, self.amountPerReply);
+  if (self.hasAmountPerReplyDeprecated) {
+    size_ += computeStringSize(19, self.amountPerReplyDeprecated);
   }
   if (self.hasAmountTotal) {
     size_ += computeStringSize(20, self.amountTotal);
@@ -932,8 +932,8 @@ static BFeedPost* defaultBFeedPostInstance = nil;
   if (self.hasTotalVoteCount) {
     [output appendFormat:@"%@%@: %@\n", indent, @"totalVoteCount", [NSNumber numberWithInteger:self.totalVoteCount]];
   }
-  if (self.hasAmountPerReply) {
-    [output appendFormat:@"%@%@: %@\n", indent, @"amountPerReply", self.amountPerReply];
+  if (self.hasAmountPerReplyDeprecated) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"amountPerReplyDeprecated", self.amountPerReplyDeprecated];
   }
   if (self.hasAmountTotal) {
     [output appendFormat:@"%@%@: %@\n", indent, @"amountTotal", self.amountTotal];
@@ -1009,8 +1009,8 @@ static BFeedPost* defaultBFeedPostInstance = nil;
   if (self.hasTotalVoteCount) {
     [dictionary setObject: [NSNumber numberWithInteger:self.totalVoteCount] forKey: @"totalVoteCount"];
   }
-  if (self.hasAmountPerReply) {
-    [dictionary setObject: self.amountPerReply forKey: @"amountPerReply"];
+  if (self.hasAmountPerReplyDeprecated) {
+    [dictionary setObject: self.amountPerReplyDeprecated forKey: @"amountPerReplyDeprecated"];
   }
   if (self.hasAmountTotal) {
     [dictionary setObject: self.amountTotal forKey: @"amountTotal"];
@@ -1064,8 +1064,8 @@ static BFeedPost* defaultBFeedPostInstance = nil;
       (!self.hasAreMoreReplies || self.areMoreReplies == otherMessage.areMoreReplies) &&
       self.hasTotalVoteCount == otherMessage.hasTotalVoteCount &&
       (!self.hasTotalVoteCount || self.totalVoteCount == otherMessage.totalVoteCount) &&
-      self.hasAmountPerReply == otherMessage.hasAmountPerReply &&
-      (!self.hasAmountPerReply || [self.amountPerReply isEqual:otherMessage.amountPerReply]) &&
+      self.hasAmountPerReplyDeprecated == otherMessage.hasAmountPerReplyDeprecated &&
+      (!self.hasAmountPerReplyDeprecated || [self.amountPerReplyDeprecated isEqual:otherMessage.amountPerReplyDeprecated]) &&
       self.hasAmountTotal == otherMessage.hasAmountTotal &&
       (!self.hasAmountTotal || [self.amountTotal isEqual:otherMessage.amountTotal]) &&
       [self.panelUserIDsDeprecatedArray isEqualToArray:otherMessage.panelUserIDsDeprecatedArray] &&
@@ -1125,8 +1125,8 @@ static BFeedPost* defaultBFeedPostInstance = nil;
   if (self.hasTotalVoteCount) {
     hashCode = hashCode * 31 + [[NSNumber numberWithInteger:self.totalVoteCount] hash];
   }
-  if (self.hasAmountPerReply) {
-    hashCode = hashCode * 31 + [self.amountPerReply hash];
+  if (self.hasAmountPerReplyDeprecated) {
+    hashCode = hashCode * 31 + [self.amountPerReplyDeprecated hash];
   }
   if (self.hasAmountTotal) {
     hashCode = hashCode * 31 + [self.amountTotal hash];
@@ -1239,8 +1239,8 @@ static BFeedPost* defaultBFeedPostInstance = nil;
   if (other.hasTotalVoteCount) {
     [self setTotalVoteCount:other.totalVoteCount];
   }
-  if (other.hasAmountPerReply) {
-    [self setAmountPerReply:other.amountPerReply];
+  if (other.hasAmountPerReplyDeprecated) {
+    [self setAmountPerReplyDeprecated:other.amountPerReplyDeprecated];
   }
   if (other.hasAmountTotal) {
     [self setAmountTotal:other.amountTotal];
@@ -1373,7 +1373,7 @@ static BFeedPost* defaultBFeedPostInstance = nil;
         break;
       }
       case 154: {
-        [self setAmountPerReply:[input readString]];
+        [self setAmountPerReplyDeprecated:[input readString]];
         break;
       }
       case 162: {
@@ -1703,20 +1703,20 @@ static BFeedPost* defaultBFeedPostInstance = nil;
   resultFeedPost.totalVoteCount = 0;
   return self;
 }
-- (BOOL) hasAmountPerReply {
-  return resultFeedPost.hasAmountPerReply;
+- (BOOL) hasAmountPerReplyDeprecated {
+  return resultFeedPost.hasAmountPerReplyDeprecated;
 }
-- (NSString*) amountPerReply {
-  return resultFeedPost.amountPerReply;
+- (NSString*) amountPerReplyDeprecated {
+  return resultFeedPost.amountPerReplyDeprecated;
 }
-- (BFeedPostBuilder*) setAmountPerReply:(NSString*) value {
-  resultFeedPost.hasAmountPerReply = YES;
-  resultFeedPost.amountPerReply = value;
+- (BFeedPostBuilder*) setAmountPerReplyDeprecated:(NSString*) value {
+  resultFeedPost.hasAmountPerReplyDeprecated = YES;
+  resultFeedPost.amountPerReplyDeprecated = value;
   return self;
 }
-- (BFeedPostBuilder*) clearAmountPerReply {
-  resultFeedPost.hasAmountPerReply = NO;
-  resultFeedPost.amountPerReply = @"";
+- (BFeedPostBuilder*) clearAmountPerReplyDeprecated {
+  resultFeedPost.hasAmountPerReplyDeprecated = NO;
+  resultFeedPost.amountPerReplyDeprecated = @"";
   return self;
 }
 - (BOOL) hasAmountTotal {

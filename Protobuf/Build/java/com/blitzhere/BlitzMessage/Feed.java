@@ -1480,18 +1480,18 @@ public final class Feed {
     int getTotalVoteCount();
 
     /**
-     * <code>optional string amountPerReply = 19;</code>
+     * <code>optional string amountPerReply_deprecated = 19;</code>
      */
-    boolean hasAmountPerReply();
+    boolean hasAmountPerReplyDeprecated();
     /**
-     * <code>optional string amountPerReply = 19;</code>
+     * <code>optional string amountPerReply_deprecated = 19;</code>
      */
-    java.lang.String getAmountPerReply();
+    java.lang.String getAmountPerReplyDeprecated();
     /**
-     * <code>optional string amountPerReply = 19;</code>
+     * <code>optional string amountPerReply_deprecated = 19;</code>
      */
     com.google.protobuf.ByteString
-        getAmountPerReplyBytes();
+        getAmountPerReplyDeprecatedBytes();
 
     /**
      * <code>optional string amountTotal = 20;</code>
@@ -1729,7 +1729,7 @@ public final class Feed {
             case 154: {
               com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00008000;
-              amountPerReply_ = bs;
+              amountPerReplyDeprecated_ = bs;
               break;
             }
             case 162: {
@@ -2269,19 +2269,19 @@ public final class Feed {
       return totalVoteCount_;
     }
 
-    public static final int AMOUNTPERREPLY_FIELD_NUMBER = 19;
-    private java.lang.Object amountPerReply_;
+    public static final int AMOUNTPERREPLY_DEPRECATED_FIELD_NUMBER = 19;
+    private java.lang.Object amountPerReplyDeprecated_;
     /**
-     * <code>optional string amountPerReply = 19;</code>
+     * <code>optional string amountPerReply_deprecated = 19;</code>
      */
-    public boolean hasAmountPerReply() {
+    public boolean hasAmountPerReplyDeprecated() {
       return ((bitField0_ & 0x00008000) == 0x00008000);
     }
     /**
-     * <code>optional string amountPerReply = 19;</code>
+     * <code>optional string amountPerReply_deprecated = 19;</code>
      */
-    public java.lang.String getAmountPerReply() {
-      java.lang.Object ref = amountPerReply_;
+    public java.lang.String getAmountPerReplyDeprecated() {
+      java.lang.Object ref = amountPerReplyDeprecated_;
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
@@ -2289,22 +2289,22 @@ public final class Feed {
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         if (bs.isValidUtf8()) {
-          amountPerReply_ = s;
+          amountPerReplyDeprecated_ = s;
         }
         return s;
       }
     }
     /**
-     * <code>optional string amountPerReply = 19;</code>
+     * <code>optional string amountPerReply_deprecated = 19;</code>
      */
     public com.google.protobuf.ByteString
-        getAmountPerReplyBytes() {
-      java.lang.Object ref = amountPerReply_;
+        getAmountPerReplyDeprecatedBytes() {
+      java.lang.Object ref = amountPerReplyDeprecated_;
       if (ref instanceof java.lang.String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
-        amountPerReply_ = b;
+        amountPerReplyDeprecated_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
@@ -2435,7 +2435,7 @@ public final class Feed {
       surveyAnswerSequence_ = 0;
       areMoreReplies_ = false;
       totalVoteCount_ = 0;
-      amountPerReply_ = "";
+      amountPerReplyDeprecated_ = "";
       amountTotal_ = "";
       panelUserIDsDeprecated_ = com.google.protobuf.LazyStringArrayList.EMPTY;
       panel_ = java.util.Collections.emptyList();
@@ -2505,7 +2505,7 @@ public final class Feed {
         output.writeInt32(18, totalVoteCount_);
       }
       if (((bitField0_ & 0x00008000) == 0x00008000)) {
-        output.writeBytes(19, getAmountPerReplyBytes());
+        output.writeBytes(19, getAmountPerReplyDeprecatedBytes());
       }
       if (((bitField0_ & 0x00010000) == 0x00010000)) {
         output.writeBytes(20, getAmountTotalBytes());
@@ -2595,7 +2595,7 @@ public final class Feed {
       }
       if (((bitField0_ & 0x00008000) == 0x00008000)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(19, getAmountPerReplyBytes());
+          .computeBytesSize(19, getAmountPerReplyDeprecatedBytes());
       }
       if (((bitField0_ & 0x00010000) == 0x00010000)) {
         size += com.google.protobuf.CodedOutputStream
@@ -2786,7 +2786,7 @@ public final class Feed {
         bitField0_ = (bitField0_ & ~0x00008000);
         totalVoteCount_ = 0;
         bitField0_ = (bitField0_ & ~0x00010000);
-        amountPerReply_ = "";
+        amountPerReplyDeprecated_ = "";
         bitField0_ = (bitField0_ & ~0x00020000);
         amountTotal_ = "";
         bitField0_ = (bitField0_ & ~0x00040000);
@@ -2915,7 +2915,7 @@ public final class Feed {
         if (((from_bitField0_ & 0x00020000) == 0x00020000)) {
           to_bitField0_ |= 0x00008000;
         }
-        result.amountPerReply_ = amountPerReply_;
+        result.amountPerReplyDeprecated_ = amountPerReplyDeprecated_;
         if (((from_bitField0_ & 0x00040000) == 0x00040000)) {
           to_bitField0_ |= 0x00010000;
         }
@@ -3057,9 +3057,9 @@ public final class Feed {
         if (other.hasTotalVoteCount()) {
           setTotalVoteCount(other.getTotalVoteCount());
         }
-        if (other.hasAmountPerReply()) {
+        if (other.hasAmountPerReplyDeprecated()) {
           bitField0_ |= 0x00020000;
-          amountPerReply_ = other.amountPerReply_;
+          amountPerReplyDeprecated_ = other.amountPerReplyDeprecated_;
           onChanged();
         }
         if (other.hasAmountTotal()) {
@@ -4556,24 +4556,24 @@ public final class Feed {
         return this;
       }
 
-      private java.lang.Object amountPerReply_ = "";
+      private java.lang.Object amountPerReplyDeprecated_ = "";
       /**
-       * <code>optional string amountPerReply = 19;</code>
+       * <code>optional string amountPerReply_deprecated = 19;</code>
        */
-      public boolean hasAmountPerReply() {
+      public boolean hasAmountPerReplyDeprecated() {
         return ((bitField0_ & 0x00020000) == 0x00020000);
       }
       /**
-       * <code>optional string amountPerReply = 19;</code>
+       * <code>optional string amountPerReply_deprecated = 19;</code>
        */
-      public java.lang.String getAmountPerReply() {
-        java.lang.Object ref = amountPerReply_;
+      public java.lang.String getAmountPerReplyDeprecated() {
+        java.lang.Object ref = amountPerReplyDeprecated_;
         if (!(ref instanceof java.lang.String)) {
           com.google.protobuf.ByteString bs =
               (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
           if (bs.isValidUtf8()) {
-            amountPerReply_ = s;
+            amountPerReplyDeprecated_ = s;
           }
           return s;
         } else {
@@ -4581,53 +4581,53 @@ public final class Feed {
         }
       }
       /**
-       * <code>optional string amountPerReply = 19;</code>
+       * <code>optional string amountPerReply_deprecated = 19;</code>
        */
       public com.google.protobuf.ByteString
-          getAmountPerReplyBytes() {
-        java.lang.Object ref = amountPerReply_;
+          getAmountPerReplyDeprecatedBytes() {
+        java.lang.Object ref = amountPerReplyDeprecated_;
         if (ref instanceof String) {
           com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
-          amountPerReply_ = b;
+          amountPerReplyDeprecated_ = b;
           return b;
         } else {
           return (com.google.protobuf.ByteString) ref;
         }
       }
       /**
-       * <code>optional string amountPerReply = 19;</code>
+       * <code>optional string amountPerReply_deprecated = 19;</code>
        */
-      public Builder setAmountPerReply(
+      public Builder setAmountPerReplyDeprecated(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
   bitField0_ |= 0x00020000;
-        amountPerReply_ = value;
+        amountPerReplyDeprecated_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional string amountPerReply = 19;</code>
+       * <code>optional string amountPerReply_deprecated = 19;</code>
        */
-      public Builder clearAmountPerReply() {
+      public Builder clearAmountPerReplyDeprecated() {
         bitField0_ = (bitField0_ & ~0x00020000);
-        amountPerReply_ = getDefaultInstance().getAmountPerReply();
+        amountPerReplyDeprecated_ = getDefaultInstance().getAmountPerReplyDeprecated();
         onChanged();
         return this;
       }
       /**
-       * <code>optional string amountPerReply = 19;</code>
+       * <code>optional string amountPerReply_deprecated = 19;</code>
        */
-      public Builder setAmountPerReplyBytes(
+      public Builder setAmountPerReplyDeprecatedBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
   bitField0_ |= 0x00020000;
-        amountPerReply_ = value;
+        amountPerReplyDeprecated_ = value;
         onChanged();
         return this;
       }
@@ -7585,7 +7585,7 @@ public final class Feed {
       "escriptor.proto\032\013Types.proto\032\020EntityTags" +
       ".proto\"f\n\017FeedPanelMember\022\016\n\006userID\030\001 \001(" +
       "\t\022\024\n\014bountyAmount\030\002 \001(\t\022-\n\014dateAnswered\030" +
-      "\003 \001(\0132\027.BlitzMessage.Timestamp\"\234\005\n\010FeedP" +
+      "\003 \001(\0132\027.BlitzMessage.Timestamp\"\247\005\n\010FeedP" +
       "ost\022\016\n\006postID\030\001 \001(\t\022\020\n\010parentID\030\002 \001(\t\022,\n" +
       "\010postType\030\003 \001(\0162\032.BlitzMessage.FeedPostT" +
       "ype\022.\n\tpostScope\030\004 \001(\0162\033.BlitzMessage.Fe" +
@@ -7599,30 +7599,30 @@ public final class Feed {
       "Post\022\023\n\013mayAddReply\030\016 \001(\010\022 \n\030mayChooseMu" +
       "litpleReplies\030\017 \001(\010\022\034\n\024surveyAnswerSeque" +
       "nce\030\020 \001(\005\022\026\n\016areMoreReplies\030\021 \001(\010\022\026\n\016tot" +
-      "alVoteCount\030\022 \001(\005\022\026\n\016amountPerReply\030\023 \001(" +
-      "\t\022\023\n\013amountTotal\030\024 \001(\t\022\037\n\027panelUserIDs_d",
-      "eprecated\030\025 \003(\t\022,\n\005panel\030\026 \003(\0132\035.BlitzMe" +
-      "ssage.FeedPanelMember\"\245\001\n\025FeedPostUpdate" +
-      "Request\022,\n\nupdateVerb\030\001 \001(\0162\030.BlitzMessa" +
-      "ge.UpdateVerb\0223\n\023feedPost_deprecated\030\002 \001" +
-      "(\0132\026.BlitzMessage.FeedPost\022)\n\tfeedPosts\030" +
-      "\003 \003(\0132\026.BlitzMessage.FeedPost\"\202\001\n\024FeedPo" +
-      "stFetchRequest\022(\n\010timespan\030\001 \001(\0132\026.Blitz" +
-      "Message.Timespan\022.\n\tfeedScope\030\002 \001(\0162\033.Bl" +
-      "itzMessage.FeedPostScope\022\020\n\010parentID\030\003 \001" +
-      "(\t\"=\n\020FeedPostResponse\022)\n\tfeedPosts\030\001 \003(",
-      "\0132\026.BlitzMessage.FeedPost*\240\001\n\014FeedPostTy" +
-      "pe\022\r\n\tFPUnknown\020\000\022\027\n\023FPOpenEndedQuestion" +
-      "\020\001\022\024\n\020FPOpenEndedReply\020\002\022\024\n\020FPSurveyQues" +
-      "tion\020\003\022\022\n\016FPSurveyAnswer\020\004\022\024\n\020FPWantedQu" +
-      "estion\020\005\022\022\n\016FPWantedAnswer\020\006*V\n\rFeedPost" +
-      "Scope\022\022\n\016FPScopeUnknown\020\000\022\027\n\023FPScopeLoca" +
-      "lNetwork\020\001\022\030\n\024FPScopeGlobalNetwork\020\002*P\n\016" +
-      "FeedPostStatus\022\016\n\nFPSUnknown\020\000\022\r\n\tFPSAct" +
-      "ive\020\001\022\016\n\nFPSDeleted\020\002\022\017\n\013FPSAnswered\020\003*6" +
-      "\n\nUpdateVerb\022\014\n\010UVCreate\020\001\022\014\n\010UVUpdate\020\002",
-      "\022\014\n\010UVDelete\020\003B/\n\032com.blitzhere.BlitzMes" +
-      "sage\210\001\001\322>\002\n\000\322>\003\022\001B\322>\002\030\001"
+      "alVoteCount\030\022 \001(\005\022!\n\031amountPerReply_depr" +
+      "ecated\030\023 \001(\t\022\023\n\013amountTotal\030\024 \001(\t\022\037\n\027pan",
+      "elUserIDs_deprecated\030\025 \003(\t\022,\n\005panel\030\026 \003(" +
+      "\0132\035.BlitzMessage.FeedPanelMember\"\245\001\n\025Fee" +
+      "dPostUpdateRequest\022,\n\nupdateVerb\030\001 \001(\0162\030" +
+      ".BlitzMessage.UpdateVerb\0223\n\023feedPost_dep" +
+      "recated\030\002 \001(\0132\026.BlitzMessage.FeedPost\022)\n" +
+      "\tfeedPosts\030\003 \003(\0132\026.BlitzMessage.FeedPost" +
+      "\"\202\001\n\024FeedPostFetchRequest\022(\n\010timespan\030\001 " +
+      "\001(\0132\026.BlitzMessage.Timespan\022.\n\tfeedScope" +
+      "\030\002 \001(\0162\033.BlitzMessage.FeedPostScope\022\020\n\010p" +
+      "arentID\030\003 \001(\t\"=\n\020FeedPostResponse\022)\n\tfee",
+      "dPosts\030\001 \003(\0132\026.BlitzMessage.FeedPost*\240\001\n" +
+      "\014FeedPostType\022\r\n\tFPUnknown\020\000\022\027\n\023FPOpenEn" +
+      "dedQuestion\020\001\022\024\n\020FPOpenEndedReply\020\002\022\024\n\020F" +
+      "PSurveyQuestion\020\003\022\022\n\016FPSurveyAnswer\020\004\022\024\n" +
+      "\020FPWantedQuestion\020\005\022\022\n\016FPWantedAnswer\020\006*" +
+      "V\n\rFeedPostScope\022\022\n\016FPScopeUnknown\020\000\022\027\n\023" +
+      "FPScopeLocalNetwork\020\001\022\030\n\024FPScopeGlobalNe" +
+      "twork\020\002*P\n\016FeedPostStatus\022\016\n\nFPSUnknown\020" +
+      "\000\022\r\n\tFPSActive\020\001\022\016\n\nFPSDeleted\020\002\022\017\n\013FPSA" +
+      "nswered\020\003*6\n\nUpdateVerb\022\014\n\010UVCreate\020\001\022\014\n",
+      "\010UVUpdate\020\002\022\014\n\010UVDelete\020\003B/\n\032com.blitzhe" +
+      "re.BlitzMessage\210\001\001\322>\002\n\000\322>\003\022\001B\322>\002\030\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -7650,7 +7650,7 @@ public final class Feed {
     internal_static_BlitzMessage_FeedPost_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_BlitzMessage_FeedPost_descriptor,
-        new java.lang.String[] { "PostID", "ParentID", "PostType", "PostScope", "UserID", "AnonymousPost", "Timestamp", "TimespanActive", "HeadlineText", "BodyText", "PostTags", "RepliesDeprecated", "MayAddReply", "MayChooseMulitpleReplies", "SurveyAnswerSequence", "AreMoreReplies", "TotalVoteCount", "AmountPerReply", "AmountTotal", "PanelUserIDsDeprecated", "Panel", });
+        new java.lang.String[] { "PostID", "ParentID", "PostType", "PostScope", "UserID", "AnonymousPost", "Timestamp", "TimespanActive", "HeadlineText", "BodyText", "PostTags", "RepliesDeprecated", "MayAddReply", "MayChooseMulitpleReplies", "SurveyAnswerSequence", "AreMoreReplies", "TotalVoteCount", "AmountPerReplyDeprecated", "AmountTotal", "PanelUserIDsDeprecated", "Panel", });
     internal_static_BlitzMessage_FeedPostUpdateRequest_descriptor =
       getDescriptor().getMessageTypes().get(2);
     internal_static_BlitzMessage_FeedPostUpdateRequest_fieldAccessorTable = new
