@@ -544,6 +544,97 @@ public final class UserProfiles {
     // @@protoc_insertion_point(enum_scope:BlitzMessage.FriendStatus)
   }
 
+  /**
+   * Protobuf enum {@code BlitzMessage.InviteType}
+   */
+  public enum InviteType
+      implements com.google.protobuf.ProtocolMessageEnum {
+    /**
+     * <code>ITUnknown = 0;</code>
+     */
+    ITUnknown(0, 0),
+    /**
+     * <code>ITFriendInvite = 1;</code>
+     */
+    ITFriendInvite(1, 1),
+    /**
+     * <code>ITFeedPost = 2;</code>
+     */
+    ITFeedPost(2, 2),
+    ;
+
+    /**
+     * <code>ITUnknown = 0;</code>
+     */
+    public static final int ITUnknown_VALUE = 0;
+    /**
+     * <code>ITFriendInvite = 1;</code>
+     */
+    public static final int ITFriendInvite_VALUE = 1;
+    /**
+     * <code>ITFeedPost = 2;</code>
+     */
+    public static final int ITFeedPost_VALUE = 2;
+
+
+    public final int getNumber() { return value; }
+
+    public static InviteType valueOf(int value) {
+      switch (value) {
+        case 0: return ITUnknown;
+        case 1: return ITFriendInvite;
+        case 2: return ITFeedPost;
+        default: return null;
+      }
+    }
+
+    public static com.google.protobuf.Internal.EnumLiteMap<InviteType>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static com.google.protobuf.Internal.EnumLiteMap<InviteType>
+        internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<InviteType>() {
+            public InviteType findValueByNumber(int number) {
+              return InviteType.valueOf(number);
+            }
+          };
+
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+        getValueDescriptor() {
+      return getDescriptor().getValues().get(index);
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptor() {
+      return com.blitzhere.BlitzMessage.UserProfiles.getDescriptor().getEnumTypes().get(5);
+    }
+
+    private static final InviteType[] VALUES = values();
+
+    public static InviteType valueOf(
+        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new java.lang.IllegalArgumentException(
+          "EnumValueDescriptor is not for this type.");
+      }
+      return VALUES[desc.getIndex()];
+    }
+
+    private final int index;
+    private final int value;
+
+    private InviteType(int index, int value) {
+      this.index = index;
+      this.value = value;
+    }
+
+    // @@protoc_insertion_point(enum_scope:BlitzMessage.InviteType)
+  }
+
   public interface SocialIdentityOrBuilder extends
       // @@protoc_insertion_point(interface_extends:BlitzMessage.SocialIdentity)
       com.google.protobuf.MessageOrBuilder {
@@ -19740,6 +19831,29 @@ public final class UserProfiles {
      */
     com.google.protobuf.ByteString
         getNameBytes();
+
+    /**
+     * <code>optional .BlitzMessage.InviteType inviteType = 8;</code>
+     */
+    boolean hasInviteType();
+    /**
+     * <code>optional .BlitzMessage.InviteType inviteType = 8;</code>
+     */
+    com.blitzhere.BlitzMessage.UserProfiles.InviteType getInviteType();
+
+    /**
+     * <code>optional string referenceID = 9;</code>
+     */
+    boolean hasReferenceID();
+    /**
+     * <code>optional string referenceID = 9;</code>
+     */
+    java.lang.String getReferenceID();
+    /**
+     * <code>optional string referenceID = 9;</code>
+     */
+    com.google.protobuf.ByteString
+        getReferenceIDBytes();
   }
   /**
    * Protobuf type {@code BlitzMessage.UserInvite}
@@ -19842,6 +19956,23 @@ public final class UserProfiles {
               com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000020;
               name_ = bs;
+              break;
+            }
+            case 64: {
+              int rawValue = input.readEnum();
+              com.blitzhere.BlitzMessage.UserProfiles.InviteType value = com.blitzhere.BlitzMessage.UserProfiles.InviteType.valueOf(rawValue);
+              if (value == null) {
+                unknownFields.mergeVarintField(8, rawValue);
+              } else {
+                bitField0_ |= 0x00000040;
+                inviteType_ = value;
+              }
+              break;
+            }
+            case 74: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000080;
+              referenceID_ = bs;
               break;
             }
           }
@@ -20153,6 +20284,63 @@ public final class UserProfiles {
       }
     }
 
+    public static final int INVITETYPE_FIELD_NUMBER = 8;
+    private com.blitzhere.BlitzMessage.UserProfiles.InviteType inviteType_;
+    /**
+     * <code>optional .BlitzMessage.InviteType inviteType = 8;</code>
+     */
+    public boolean hasInviteType() {
+      return ((bitField0_ & 0x00000040) == 0x00000040);
+    }
+    /**
+     * <code>optional .BlitzMessage.InviteType inviteType = 8;</code>
+     */
+    public com.blitzhere.BlitzMessage.UserProfiles.InviteType getInviteType() {
+      return inviteType_;
+    }
+
+    public static final int REFERENCEID_FIELD_NUMBER = 9;
+    private java.lang.Object referenceID_;
+    /**
+     * <code>optional string referenceID = 9;</code>
+     */
+    public boolean hasReferenceID() {
+      return ((bitField0_ & 0x00000080) == 0x00000080);
+    }
+    /**
+     * <code>optional string referenceID = 9;</code>
+     */
+    public java.lang.String getReferenceID() {
+      java.lang.Object ref = referenceID_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          referenceID_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string referenceID = 9;</code>
+     */
+    public com.google.protobuf.ByteString
+        getReferenceIDBytes() {
+      java.lang.Object ref = referenceID_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        referenceID_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private void initFields() {
       userID_ = "";
       friendID_ = "";
@@ -20161,6 +20349,8 @@ public final class UserProfiles {
       profiles_ = java.util.Collections.emptyList();
       confirmationCode_ = "";
       name_ = "";
+      inviteType_ = com.blitzhere.BlitzMessage.UserProfiles.InviteType.ITUnknown;
+      referenceID_ = "";
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -20208,6 +20398,12 @@ public final class UserProfiles {
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
         output.writeBytes(7, getNameBytes());
       }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        output.writeEnum(8, inviteType_.getNumber());
+      }
+      if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        output.writeBytes(9, getReferenceIDBytes());
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -20244,6 +20440,14 @@ public final class UserProfiles {
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(7, getNameBytes());
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(8, inviteType_.getNumber());
+      }
+      if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(9, getReferenceIDBytes());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -20386,6 +20590,10 @@ public final class UserProfiles {
         bitField0_ = (bitField0_ & ~0x00000020);
         name_ = "";
         bitField0_ = (bitField0_ & ~0x00000040);
+        inviteType_ = com.blitzhere.BlitzMessage.UserProfiles.InviteType.ITUnknown;
+        bitField0_ = (bitField0_ & ~0x00000080);
+        referenceID_ = "";
+        bitField0_ = (bitField0_ & ~0x00000100);
         return this;
       }
 
@@ -20451,6 +20659,14 @@ public final class UserProfiles {
           to_bitField0_ |= 0x00000020;
         }
         result.name_ = name_;
+        if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
+          to_bitField0_ |= 0x00000040;
+        }
+        result.inviteType_ = inviteType_;
+        if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
+          to_bitField0_ |= 0x00000080;
+        }
+        result.referenceID_ = referenceID_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -20519,6 +20735,14 @@ public final class UserProfiles {
         if (other.hasName()) {
           bitField0_ |= 0x00000040;
           name_ = other.name_;
+          onChanged();
+        }
+        if (other.hasInviteType()) {
+          setInviteType(other.getInviteType());
+        }
+        if (other.hasReferenceID()) {
+          bitField0_ |= 0x00000100;
+          referenceID_ = other.referenceID_;
           onChanged();
         }
         this.mergeUnknownFields(other.getUnknownFields());
@@ -21292,6 +21516,117 @@ public final class UserProfiles {
   }
   bitField0_ |= 0x00000040;
         name_ = value;
+        onChanged();
+        return this;
+      }
+
+      private com.blitzhere.BlitzMessage.UserProfiles.InviteType inviteType_ = com.blitzhere.BlitzMessage.UserProfiles.InviteType.ITUnknown;
+      /**
+       * <code>optional .BlitzMessage.InviteType inviteType = 8;</code>
+       */
+      public boolean hasInviteType() {
+        return ((bitField0_ & 0x00000080) == 0x00000080);
+      }
+      /**
+       * <code>optional .BlitzMessage.InviteType inviteType = 8;</code>
+       */
+      public com.blitzhere.BlitzMessage.UserProfiles.InviteType getInviteType() {
+        return inviteType_;
+      }
+      /**
+       * <code>optional .BlitzMessage.InviteType inviteType = 8;</code>
+       */
+      public Builder setInviteType(com.blitzhere.BlitzMessage.UserProfiles.InviteType value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000080;
+        inviteType_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional .BlitzMessage.InviteType inviteType = 8;</code>
+       */
+      public Builder clearInviteType() {
+        bitField0_ = (bitField0_ & ~0x00000080);
+        inviteType_ = com.blitzhere.BlitzMessage.UserProfiles.InviteType.ITUnknown;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object referenceID_ = "";
+      /**
+       * <code>optional string referenceID = 9;</code>
+       */
+      public boolean hasReferenceID() {
+        return ((bitField0_ & 0x00000100) == 0x00000100);
+      }
+      /**
+       * <code>optional string referenceID = 9;</code>
+       */
+      public java.lang.String getReferenceID() {
+        java.lang.Object ref = referenceID_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            referenceID_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string referenceID = 9;</code>
+       */
+      public com.google.protobuf.ByteString
+          getReferenceIDBytes() {
+        java.lang.Object ref = referenceID_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          referenceID_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string referenceID = 9;</code>
+       */
+      public Builder setReferenceID(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000100;
+        referenceID_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string referenceID = 9;</code>
+       */
+      public Builder clearReferenceID() {
+        bitField0_ = (bitField0_ & ~0x00000100);
+        referenceID_ = getDefaultInstance().getReferenceID();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string referenceID = 9;</code>
+       */
+      public Builder setReferenceIDBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000100;
+        referenceID_ = value;
         onChanged();
         return this;
       }
@@ -23110,29 +23445,32 @@ public final class UserProfiles {
       "Update\0220\n\014friendStatus\030\001 \001(\0162\032.BlitzMess" +
       "age.FriendStatus\022\020\n\010friendID\030\002 \001(\t\022+\n\010pr" +
       "ofiles\030\003 \003(\0132\031.BlitzMessage.UserProfile\"",
-      "\304\001\n\nUserInvite\022\016\n\006userID\030\001 \001(\t\022\020\n\010friend" +
+      "\207\002\n\nUserInvite\022\016\n\006userID\030\001 \001(\t\022\020\n\010friend" +
       "ID\030\002 \001(\t\022\017\n\007message\030\003 \001(\t\022.\n\013contactInfo" +
       "\030\004 \001(\0132\031.BlitzMessage.ContactInfo\022+\n\010pro" +
       "files\030\005 \003(\0132\031.BlitzMessage.UserProfile\022\030" +
-      "\n\020confirmationCode\030\006 \001(\t\022\014\n\004name\030\007 \001(\t\"<" +
-      "\n\013UserInvites\022-\n\013UserInvites\030\001 \003(\0132\030.Bli" +
-      "tzMessage.UserInvite\"\221\001\n\013EditProfile\022\021\n\t" +
-      "profileID\030\001 \001(\t\022*\n\007profile\030\002 \001(\0132\031.Blitz" +
-      "Message.UserProfile\022.\n\013editProfile\030\003 \001(\013" +
-      "2\031.BlitzMessage.UserProfile\022\023\n\013discardEd",
-      "it\030\004 \001(\010*Z\n\013ContactType\022\r\n\tCTUnknown\020\000\022\016" +
-      "\n\nCTPhoneSMS\020\001\022\013\n\007CTEmail\020\002\022\n\n\006CTChat\020\003\022" +
-      "\023\n\017CTSocialService\020\004*j\n\nUserStatus\022\r\n\tUS" +
-      "Unknown\020\000\022\r\n\tUSBlocked\020\001\022\r\n\tUSInvited\020\002\022" +
-      "\014\n\010USActive\020\003\022\020\n\014USConfirming\020\004\022\017\n\013USCon" +
-      "firmed\020\005*:\n\006Gender\022\014\n\010GUnknown\020\000\022\013\n\007GFem" +
-      "ale\020\001\022\t\n\005GMale\020\002\022\n\n\006GOther\020\003*F\n\014ImageCon" +
-      "tent\022\r\n\tICUnknown\020\000\022\021\n\rICUserProfile\020\001\022\024" +
-      "\n\020ICUserBackground\020\002*i\n\014FriendStatus\022\r\n\t" +
-      "FSUnknown\020\000\022\014\n\010FSDidAsk\020\001\022\r\n\tFSIgnored\020\002",
-      "\022\016\n\nFSAccepted\020\003\022\016\n\nFSWasAsked\020\004\022\r\n\tFSFr" +
-      "iends\020\005B/\n\032com.blitzhere.BlitzMessage\210\001\001" +
-      "\322>\002\n\000\322>\003\022\001B\322>\002\030\001"
+      "\n\020confirmationCode\030\006 \001(\t\022\014\n\004name\030\007 \001(\t\022," +
+      "\n\ninviteType\030\010 \001(\0162\030.BlitzMessage.Invite" +
+      "Type\022\023\n\013referenceID\030\t \001(\t\"<\n\013UserInvites" +
+      "\022-\n\013UserInvites\030\001 \003(\0132\030.BlitzMessage.Use" +
+      "rInvite\"\221\001\n\013EditProfile\022\021\n\tprofileID\030\001 \001" +
+      "(\t\022*\n\007profile\030\002 \001(\0132\031.BlitzMessage.UserP",
+      "rofile\022.\n\013editProfile\030\003 \001(\0132\031.BlitzMessa" +
+      "ge.UserProfile\022\023\n\013discardEdit\030\004 \001(\010*Z\n\013C" +
+      "ontactType\022\r\n\tCTUnknown\020\000\022\016\n\nCTPhoneSMS\020" +
+      "\001\022\013\n\007CTEmail\020\002\022\n\n\006CTChat\020\003\022\023\n\017CTSocialSe" +
+      "rvice\020\004*j\n\nUserStatus\022\r\n\tUSUnknown\020\000\022\r\n\t" +
+      "USBlocked\020\001\022\r\n\tUSInvited\020\002\022\014\n\010USActive\020\003" +
+      "\022\020\n\014USConfirming\020\004\022\017\n\013USConfirmed\020\005*:\n\006G" +
+      "ender\022\014\n\010GUnknown\020\000\022\013\n\007GFemale\020\001\022\t\n\005GMal" +
+      "e\020\002\022\n\n\006GOther\020\003*F\n\014ImageContent\022\r\n\tICUnk" +
+      "nown\020\000\022\021\n\rICUserProfile\020\001\022\024\n\020ICUserBackg",
+      "round\020\002*i\n\014FriendStatus\022\r\n\tFSUnknown\020\000\022\014" +
+      "\n\010FSDidAsk\020\001\022\r\n\tFSIgnored\020\002\022\016\n\nFSAccepte" +
+      "d\020\003\022\016\n\nFSWasAsked\020\004\022\r\n\tFSFriends\020\005*?\n\nIn" +
+      "viteType\022\r\n\tITUnknown\020\000\022\022\n\016ITFriendInvit" +
+      "e\020\001\022\016\n\nITFeedPost\020\002B/\n\032com.blitzhere.Bli" +
+      "tzMessage\210\001\001\322>\002\n\000\322>\003\022\001B\322>\002\030\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -23232,7 +23570,7 @@ public final class UserProfiles {
     internal_static_BlitzMessage_UserInvite_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_BlitzMessage_UserInvite_descriptor,
-        new java.lang.String[] { "UserID", "FriendID", "Message", "ContactInfo", "Profiles", "ConfirmationCode", "Name", });
+        new java.lang.String[] { "UserID", "FriendID", "Message", "ContactInfo", "Profiles", "ConfirmationCode", "Name", "InviteType", "ReferenceID", });
     internal_static_BlitzMessage_UserInvites_descriptor =
       getDescriptor().getMessageTypes().get(14);
     internal_static_BlitzMessage_UserInvites_fieldAccessorTable = new

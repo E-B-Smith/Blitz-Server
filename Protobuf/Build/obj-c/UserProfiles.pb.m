@@ -165,6 +165,29 @@ NSString *NSStringFromBFriendStatus(BFriendStatus value) {
   }
 }
 
+BOOL BInviteTypeIsValidValue(BInviteType value) {
+  switch (value) {
+    case BInviteTypeITUnknown:
+    case BInviteTypeITFriendInvite:
+    case BInviteTypeITFeedPost:
+      return YES;
+    default:
+      return NO;
+  }
+}
+NSString *NSStringFromBInviteType(BInviteType value) {
+  switch (value) {
+    case BInviteTypeITUnknown:
+      return @"BInviteTypeITUnknown";
+    case BInviteTypeITFriendInvite:
+      return @"BInviteTypeITFriendInvite";
+    case BInviteTypeITFeedPost:
+      return @"BInviteTypeITFeedPost";
+    default:
+      return nil;
+  }
+}
+
 @interface BSocialIdentity ()
 @property (strong) NSString* socialService;
 @property (strong) NSString* socialID;
@@ -7122,6 +7145,8 @@ static BFriendUpdate* defaultBFriendUpdateInstance = nil;
 @property (strong) NSMutableArray * profilesArray;
 @property (strong) NSString* confirmationCode;
 @property (strong) NSString* name;
+@property BInviteType inviteType;
+@property (strong) NSString* referenceID;
 @end
 
 @implementation BUserInvite
@@ -7170,6 +7195,20 @@ static BFriendUpdate* defaultBFriendUpdateInstance = nil;
   hasName_ = !!_value_;
 }
 @synthesize name;
+- (BOOL) hasInviteType {
+  return !!hasInviteType_;
+}
+- (void) setHasInviteType:(BOOL) _value_ {
+  hasInviteType_ = !!_value_;
+}
+@synthesize inviteType;
+- (BOOL) hasReferenceID {
+  return !!hasReferenceID_;
+}
+- (void) setHasReferenceID:(BOOL) _value_ {
+  hasReferenceID_ = !!_value_;
+}
+@synthesize referenceID;
 - (instancetype) init {
   if ((self = [super init])) {
     self.userID = @"";
@@ -7178,6 +7217,8 @@ static BFriendUpdate* defaultBFriendUpdateInstance = nil;
     self.contactInfo = [BContactInfo defaultInstance];
     self.confirmationCode = @"";
     self.name = @"";
+    self.inviteType = BInviteTypeITUnknown;
+    self.referenceID = @"";
   }
   return self;
 }
@@ -7237,6 +7278,12 @@ static BUserInvite* defaultBUserInviteInstance = nil;
   if (self.hasName) {
     [output writeString:7 value:self.name];
   }
+  if (self.hasInviteType) {
+    [output writeEnum:8 value:self.inviteType];
+  }
+  if (self.hasReferenceID) {
+    [output writeString:9 value:self.referenceID];
+  }
   [self.unknownFields writeToCodedOutputStream:output];
 }
 - (SInt32) serializedSize {
@@ -7266,6 +7313,12 @@ static BUserInvite* defaultBUserInviteInstance = nil;
   }
   if (self.hasName) {
     size_ += computeStringSize(7, self.name);
+  }
+  if (self.hasInviteType) {
+    size_ += computeEnumSize(8, self.inviteType);
+  }
+  if (self.hasReferenceID) {
+    size_ += computeStringSize(9, self.referenceID);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -7329,6 +7382,12 @@ static BUserInvite* defaultBUserInviteInstance = nil;
   if (self.hasName) {
     [output appendFormat:@"%@%@: %@\n", indent, @"name", self.name];
   }
+  if (self.hasInviteType) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"inviteType", NSStringFromBInviteType(self.inviteType)];
+  }
+  if (self.hasReferenceID) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"referenceID", self.referenceID];
+  }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (void) storeInDictionary:(NSMutableDictionary *)dictionary {
@@ -7357,6 +7416,12 @@ static BUserInvite* defaultBUserInviteInstance = nil;
   if (self.hasName) {
     [dictionary setObject: self.name forKey: @"name"];
   }
+  if (self.hasInviteType) {
+    [dictionary setObject: @(self.inviteType) forKey: @"inviteType"];
+  }
+  if (self.hasReferenceID) {
+    [dictionary setObject: self.referenceID forKey: @"referenceID"];
+  }
   [self.unknownFields storeInDictionary:dictionary];
 }
 - (BOOL) isEqual:(id)other {
@@ -7381,6 +7446,10 @@ static BUserInvite* defaultBUserInviteInstance = nil;
       (!self.hasConfirmationCode || [self.confirmationCode isEqual:otherMessage.confirmationCode]) &&
       self.hasName == otherMessage.hasName &&
       (!self.hasName || [self.name isEqual:otherMessage.name]) &&
+      self.hasInviteType == otherMessage.hasInviteType &&
+      (!self.hasInviteType || self.inviteType == otherMessage.inviteType) &&
+      self.hasReferenceID == otherMessage.hasReferenceID &&
+      (!self.hasReferenceID || [self.referenceID isEqual:otherMessage.referenceID]) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
@@ -7405,6 +7474,12 @@ static BUserInvite* defaultBUserInviteInstance = nil;
   }
   if (self.hasName) {
     hashCode = hashCode * 31 + [self.name hash];
+  }
+  if (self.hasInviteType) {
+    hashCode = hashCode * 31 + self.inviteType;
+  }
+  if (self.hasReferenceID) {
+    hashCode = hashCode * 31 + [self.referenceID hash];
   }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
@@ -7474,6 +7549,12 @@ static BUserInvite* defaultBUserInviteInstance = nil;
   if (other.hasName) {
     [self setName:other.name];
   }
+  if (other.hasInviteType) {
+    [self setInviteType:other.inviteType];
+  }
+  if (other.hasReferenceID) {
+    [self setReferenceID:other.referenceID];
+  }
   [self mergeUnknownFields:other.unknownFields];
   return self;
 }
@@ -7528,6 +7609,19 @@ static BUserInvite* defaultBUserInviteInstance = nil;
       }
       case 58: {
         [self setName:[input readString]];
+        break;
+      }
+      case 64: {
+        BInviteType value = (BInviteType)[input readEnum];
+        if (BInviteTypeIsValidValue(value)) {
+          [self setInviteType:value];
+        } else {
+          [unknownFields mergeVarintField:8 value:value];
+        }
+        break;
+      }
+      case 74: {
+        [self setReferenceID:[input readString]];
         break;
       }
     }
@@ -7662,6 +7756,38 @@ static BUserInvite* defaultBUserInviteInstance = nil;
 - (BUserInviteBuilder*) clearName {
   resultUserInvite.hasName = NO;
   resultUserInvite.name = @"";
+  return self;
+}
+- (BOOL) hasInviteType {
+  return resultUserInvite.hasInviteType;
+}
+- (BInviteType) inviteType {
+  return resultUserInvite.inviteType;
+}
+- (BUserInviteBuilder*) setInviteType:(BInviteType) value {
+  resultUserInvite.hasInviteType = YES;
+  resultUserInvite.inviteType = value;
+  return self;
+}
+- (BUserInviteBuilder*) clearInviteType {
+  resultUserInvite.hasInviteType = NO;
+  resultUserInvite.inviteType = BInviteTypeITUnknown;
+  return self;
+}
+- (BOOL) hasReferenceID {
+  return resultUserInvite.hasReferenceID;
+}
+- (NSString*) referenceID {
+  return resultUserInvite.referenceID;
+}
+- (BUserInviteBuilder*) setReferenceID:(NSString*) value {
+  resultUserInvite.hasReferenceID = YES;
+  resultUserInvite.referenceID = value;
+  return self;
+}
+- (BUserInviteBuilder*) clearReferenceID {
+  resultUserInvite.hasReferenceID = NO;
+  resultUserInvite.referenceID = @"";
   return self;
 }
 @end

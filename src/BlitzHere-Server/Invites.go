@@ -16,18 +16,187 @@ package main
 
 import (
     "fmt"
+    "math"
+    "time"
     "errors"
+    "strings"
     "net/url"
     "database/sql"
+    "github.com/lib/pq"
     "github.com/golang/protobuf/proto"
     "violent.blue/GoKit/Log"
     "violent.blue/GoKit/Util"
+    "violent.blue/GoKit/pgsql"
     "BlitzMessage"
 )
 
 
+//----------------------------------------------------------------------------------------
+//                                                                          Referral Codes
+//----------------------------------------------------------------------------------------
+
+
+var encodeSymbols string = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+
+
+
+func referralNumberFromRowCount(rc int64) int64 {
+    return (rc * 100313) % 1679609
+}
+
+
+func rowCountFromReferralNumber(ref int64) int64 {
+    return (ref * 4638) % 1679609
+}
+
+
+func encodeReferralNumber(ref int64) string {
+    var result string
+    for i := 0; i < 4; i++ {
+        r := math.Remainder(float64(ref), 36)
+        if r < 0 { r += 36 }
+        result += string(encodeSymbols[int(r)])
+        ref = ref / 36
+    }
+    return result
+}
+
+
+func decodeReferralString(ref string) int64 {
+    var result int64
+    var m int64 = 1
+    for i := 0; i < 4; i++ {
+        idx := strings.Index(encodeSymbols, string(ref[i]))
+        if idx < 0 { return -1 }
+        result += m*int64(idx)
+        m *= 36
+    }
+    return result
+}
+
+
+func referralStringFromRowCount(rowCount int64) string {
+    return encodeReferralNumber(referralNumberFromRowCount(rowCount))
+}
+
+
+/*
+    Test
+
+func main() {
+    var i int64
+    for i = 1; i < 1679609; i++ {
+        if (i * 100313) % 1679609 == 1 {
+            fmt.Println("Inverse is ", i)
+            break
+        }
+    }
+
+    var rc1 int64 = 20
+    ref := referralNumberFromRowCount(rc1)
+    rc2 := rowCountFromReferralNumber(ref)
+    enc := encodeReferralNumber(ref)
+    dec := decodeReferralString(enc)
+    fmt.Println("Rc1:", rc1, "Ref: ", ref, "RC2:", rc2, "Enc:", enc, "Dec:", dec)
+}
+*/
+
+
+//----------------------------------------------------------------------------------------
+//                                                                                Referral
+//----------------------------------------------------------------------------------------
+
+
+type Referral struct {
+    referreeID         string
+    referrerID         string
+    creationDate       time.Time
+    referralType       *BlitzMessage.InviteType
+    referenceID        *string
+    validFromDate      pq.NullTime
+    validToDate        pq.NullTime
+    redemptionDate     pq.NullTime
+    referralCode       string
+}
+
+
+func (ref *Referral) InsertNew() (err error) {
+    Log.LogFunctionName()
+
+    var tx *sql.Tx
+    tx, err = config.DB.Begin()
+    if err != nil {
+        Log.LogError(err)
+        return err
+    }
+    defer func(tx *sql.Tx, err error) {
+        if err != nil {
+            Log.Errorf("Error was %v.", err)
+            Log.Debugf("Rolling back.")
+            tx.Rollback()
+        } else {
+            Log.Debugf("Commit.")
+            err = tx.Commit()
+            if err != nil {
+                Log.LogError(err)
+            }
+        }
+    } (tx, err)
+
+    _, err = tx.Exec(
+        `lock table ReferralTable in access exclusive mode;`,
+    )
+    if err != nil { return err }
+
+    row := tx.QueryRow(
+        `select count(*) from ReferralTable;`,
+    )
+    var rowCount int64
+    err = row.Scan(&rowCount)
+    if err != nil { return err }
+
+    ref.referralCode = referralStringFromRowCount(rowCount+1)
+
+    var result sql.Result
+    result, err = tx.Exec(
+        `insert into ReferralTable (
+            referreeID,
+            referrerID,
+            creationDate,
+            referralType,
+            referenceID,
+            validFromDate,
+            validToDate,
+            redemptionDate,
+            referralCode
+        ) values ($1, $2, $3, $4, $5, $6, $7, $8, $9);`,
+            ref.referreeID,
+            ref.referrerID,
+            ref.creationDate,
+            ref.referralType,
+            ref.referenceID,
+            ref.validFromDate,
+            ref.validToDate,
+            ref.redemptionDate,
+            ref.referralCode,
+    )
+    err = pgsql.UpdateResultError(result, err)
+    if err != nil {
+        Log.LogError(err)
+        return err
+    }
+
+    return nil
+}
+
+
+//----------------------------------------------------------------------------------------
+//                                                                              SendInvite
+//----------------------------------------------------------------------------------------
+
+
 func SendInvite(inviterUserID string, invite *BlitzMessage.UserInvite) error {
-    //  No: If already a friend on Blitz, do nothing.  Done.
+    //  No: If already a friend on Blitz, send message.  Done.
     //  No: If already on Blitz, send a friend request.  Done.
     //  If not on Blitz, create a user profile.
     //      - Generate an invite link.
@@ -46,7 +215,8 @@ func SendInvite(inviterUserID string, invite *BlitzMessage.UserInvite) error {
     row := config.DB.QueryRow(
         `select userID from UserContactTable
             where contactType = $1
-              and contact = $2;`,
+              and contact = $2
+            order by isVerified desc nulls last;`,
         invite.ContactInfo.ContactType,
         invite.ContactInfo.Contact,
     )
@@ -72,17 +242,37 @@ func SendInvite(inviterUserID string, invite *BlitzMessage.UserInvite) error {
         friendProfile = ProfileForUserID("", *friendProfile.UserID)
     }
     if friendProfile.UserStatus == nil {
-        friendProfile.UserStatus = BlitzMessage.UserStatus(BlitzMessage.UserStatus_USInvited).Enum()
+        friendProfile.UserStatus = BlitzMessage.UserStatus_USInvited.Enum()
     }
-    // if *friendProfile.UserStatus >= BlitzMessage.UserStatus_USConfirming {
-    //     return
-    // }
+
+    var fromDate, toDate pq.NullTime
+    if invite.InviteType != nil &&
+        *invite.InviteType == BlitzMessage.InviteType_ITFeedPost {
+        fromDate.Time = time.Now()
+        fromDate.Valid = true
+        toDate.Time = time.Now().Add(time.Hour * 24 * 30)
+        toDate.Valid = true
+    }
+    ref := Referral {
+        referreeID:     inviterUserID,
+        referrerID:     *friendProfile.UserID,
+        creationDate:   time.Now(),
+        referralType:   invite.InviteType,
+        referenceID:    invite.ReferenceID,
+        validFromDate:  fromDate,
+        validToDate:    toDate,
+    }
+    error = ref.InsertNew()
+    if error != nil {
+        return error
+    }
 
     name := PrettyNameForUserID(inviterUserID)
-    message := fmt.Sprintf("%s sent you an invitation to Blitz", name)
+    message := fmt.Sprintf("%s invitated you to Blitz", name)
     if invite.Message != nil && len(*invite.Message) > 0 {
         message += ":\n\n" + *invite.Message
     }
+    message += "\n\nReferral Code: " + ref.referralCode
 
     Log.Debugf("%v %v %v %v",
         friendProfile.UserID,
@@ -92,12 +282,13 @@ func SendInvite(inviterUserID string, invite *BlitzMessage.UserInvite) error {
     )
 
     inviteURL := fmt.Sprintf(
-        "%s?action=invited&inviteeid=%s&contacttype=%d&contact=%s&message=%s",
+        "%s?action=invited&inviteeid=%s&contacttype=%d&contact=%s&message=%s&ref=%s",
         config.AppLinkURL,
         *friendProfile.UserID,
         *invite.ContactInfo.ContactType,
         url.QueryEscape(*invite.ContactInfo.Contact),
         url.QueryEscape(message),
+        ref.referralCode,
     )
     shortLink, _ := LinkShortner_ShortLinkFromLink(inviteURL)
     message += "\nGet Blitz here: " + shortLink

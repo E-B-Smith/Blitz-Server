@@ -224,6 +224,13 @@ message FriendUpdate {
 }
 
 
+enum InviteType {
+  ITUnknown       = 0;
+  ITFriendInvite  = 1;
+  ITFeedPost      = 2;
+}
+
+
 message UserInvite {
   optional string       userID      = 1;
   optional string       friendID    = 2;
@@ -232,7 +239,8 @@ message UserInvite {
   repeated UserProfile  profiles    = 5;
   optional string       confirmationCode = 6;
   optional string       name        = 7;
-  optional string       feedPostID  = 8;
+  optional InviteType   inviteType  = 8;
+  optional string       referenceID = 9;
 }
 
 

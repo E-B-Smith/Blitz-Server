@@ -164,6 +164,15 @@ typedef NS_ENUM(SInt32, BFriendStatus) {
 BOOL BFriendStatusIsValidValue(BFriendStatus value);
 NSString *NSStringFromBFriendStatus(BFriendStatus value);
 
+typedef NS_ENUM(SInt32, BInviteType) {
+  BInviteTypeITUnknown = 0,
+  BInviteTypeITFriendInvite = 1,
+  BInviteTypeITFeedPost = 2,
+};
+
+BOOL BInviteTypeIsValidValue(BInviteType value);
+NSString *NSStringFromBInviteType(BInviteType value);
+
 
 @interface BUserProfilesRoot : NSObject {
 }
@@ -1600,6 +1609,8 @@ NSString *NSStringFromBFriendStatus(BFriendStatus value);
 #define UserInvite_profiles @"profiles"
 #define UserInvite_confirmationCode @"confirmationCode"
 #define UserInvite_name @"name"
+#define UserInvite_inviteType @"inviteType"
+#define UserInvite_referenceID @"referenceID"
 @interface BUserInvite : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
   BOOL hasUserID_:1;
@@ -1607,13 +1618,17 @@ NSString *NSStringFromBFriendStatus(BFriendStatus value);
   BOOL hasMessage_:1;
   BOOL hasConfirmationCode_:1;
   BOOL hasName_:1;
+  BOOL hasReferenceID_:1;
   BOOL hasContactInfo_:1;
+  BOOL hasInviteType_:1;
   NSString* userID;
   NSString* friendID;
   NSString* message;
   NSString* confirmationCode;
   NSString* name;
+  NSString* referenceID;
   BContactInfo* contactInfo;
+  BInviteType inviteType;
   NSMutableArray * profilesArray;
 }
 - (BOOL) hasUserID;
@@ -1622,6 +1637,8 @@ NSString *NSStringFromBFriendStatus(BFriendStatus value);
 - (BOOL) hasContactInfo;
 - (BOOL) hasConfirmationCode;
 - (BOOL) hasName;
+- (BOOL) hasInviteType;
+- (BOOL) hasReferenceID;
 @property (readonly, strong) NSString* userID;
 @property (readonly, strong) NSString* friendID;
 @property (readonly, strong) NSString* message;
@@ -1629,6 +1646,8 @@ NSString *NSStringFromBFriendStatus(BFriendStatus value);
 @property (readonly, strong) NSArray * profiles;
 @property (readonly, strong) NSString* confirmationCode;
 @property (readonly, strong) NSString* name;
+@property (readonly) BInviteType inviteType;
+@property (readonly, strong) NSString* referenceID;
 - (BUserProfile*)profilesAtIndex:(NSUInteger)index;
 
 + (instancetype) defaultInstance;
@@ -1703,6 +1722,16 @@ NSString *NSStringFromBFriendStatus(BFriendStatus value);
 - (NSString*) name;
 - (BUserInviteBuilder*) setName:(NSString*) value;
 - (BUserInviteBuilder*) clearName;
+
+- (BOOL) hasInviteType;
+- (BInviteType) inviteType;
+- (BUserInviteBuilder*) setInviteType:(BInviteType) value;
+- (BUserInviteBuilder*) clearInviteType;
+
+- (BOOL) hasReferenceID;
+- (NSString*) referenceID;
+- (BUserInviteBuilder*) setReferenceID:(NSString*) value;
+- (BUserInviteBuilder*) clearReferenceID;
 @end
 
 #define UserInvites_UserInvites @"userInvites"

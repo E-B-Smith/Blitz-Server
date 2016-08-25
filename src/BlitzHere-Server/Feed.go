@@ -179,8 +179,8 @@ func ScanFeedPostRowForUserID(queryUserID string, row RowScanner) (*BlitzMessage
 
     feedPost.PostTags = GetEntityTagsWithUserID(queryUserID, *feedPost.PostID, BlitzMessage.EntityType_ETFeedPost)
 
-    var rows *sql.Rows
-    rows, error = config.DB.Query(
+    var panelRows *sql.Rows
+    panelRows, error = config.DB.Query(
         `select
              memberID
             ,bountyAmount
@@ -194,16 +194,16 @@ func ScanFeedPostRowForUserID(queryUserID string, row RowScanner) (*BlitzMessage
         return nil, error
     }
 
-    for rows.Next() {
+    for panelRows.Next() {
         var (
             memberID        string
             bountyAmount    sql.NullString
             dateAnswered    pq.NullTime
         )
-        error = row.Scan(
-            memberID,
-            bountyAmount,
-            dateAnswered,
+        error = panelRows.Scan(
+            &memberID,
+            &bountyAmount,
+            &dateAnswered,
         )
         if error != nil {
             Log.LogError(error)
