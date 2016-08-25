@@ -232,6 +232,7 @@ message UserInvite {
   repeated UserProfile  profiles    = 5;
   optional string       confirmationCode = 6;
   optional string       name        = 7;
+  optional string       feedPostID  = 8;
 }
 
 

@@ -56,9 +56,8 @@ func WriteFeedPost(feedPost *BlitzMessage.FeedPost) error {
             mayAddReply,
             mayChooseMulitpleReplies,
             surveyAnswerSequence,
-            amountPerReply,
             amountTotal
-        ) = ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) where postID = $15;`,
+        ) = ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) where postID = $14;`,
             feedPost.ParentID,
             feedPost.PostType,
             feedPost.PostScope,
@@ -71,7 +70,6 @@ func WriteFeedPost(feedPost *BlitzMessage.FeedPost) error {
             feedPost.MayAddReply,
             feedPost.MayChooseMulitpleReplies,
             feedPost.SurveyAnswerSequence,
-//          feedPost.AmountPerReply,
             feedPost.AmountTotal,
             feedPost.PostID,
         )
@@ -344,7 +342,7 @@ func CreateFeedPost(session *Session, feedPost *BlitzMessage.FeedPost) error {
                 postID,
                 memberID,
                 bountyAmount
-            ) values ($1, $2, $3, $4);`,
+            ) values ($1, $2, $3);`,
             feedPost.PostID,
             panelMember.UserID,
             panelMember.BountyAmount,
