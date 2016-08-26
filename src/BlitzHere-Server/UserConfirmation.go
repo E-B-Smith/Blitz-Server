@@ -154,6 +154,7 @@ func UserIsConfirming(session *Session, confirmation *BlitzMessage.ConfirmationR
 
     confirmation.ReferralCode = Util.CleanStringPtr(confirmation.ReferralCode)
     if confirmation.ReferralCode != nil {
+        Log.Debugf("Referral: %s.", *confirmation.ReferralCode)
         row = config.DB.QueryRow(
             `select referreeID, createDate from ReferralTable
                 where referralCode = $1
@@ -165,6 +166,7 @@ func UserIsConfirming(session *Session, confirmation *BlitzMessage.ConfirmationR
         error = row.Scan(&referreeID, &referralDate)
         if error == nil && referreeID.Valid {
 
+            Log.Debugf("Referral valid.")
             if oldestUserID.Valid &&
                oldestUserID.String != referreeID.String {
 
@@ -244,7 +246,7 @@ func UserIsConfirming(session *Session, confirmation *BlitzMessage.ConfirmationR
         `delete from UserContactTable
             where contactType = $1
               and contact = $2
-              and (isVerified = false or isVerfied is null);`,
+              and (isVerified = false or isVerified is null);`,
         confirmation.ContactInfo.ContactType,
         confirmation.ContactInfo.Contact,
     )
