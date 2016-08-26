@@ -117,20 +117,22 @@ type Referral struct {
     validToDate        pq.NullTime
     redemptionDate     pq.NullTime
     referralCode       string
-    codeUseDate        pq.NullTime
+    claimDate          pq.NullTime
 }
 
 
-func (ref *Referral) InsertNew() (err error) {
+func (ref *Referral) InsertNew() (errRet error) {
     Log.LogFunctionName()
 
+    var err error
     var tx *sql.Tx
     tx, err = config.DB.Begin()
     if err != nil {
         Log.LogError(err)
         return err
     }
-    defer func(tx *sql.Tx, err error) {
+    defer func() {
+        Log.Debugf("tx: %+v error: %+v.", tx, err)
         if err != nil {
             Log.Errorf("Error was %v.", err)
             Log.Debugf("Rolling back.")
@@ -142,7 +144,8 @@ func (ref *Referral) InsertNew() (err error) {
                 Log.LogError(err)
             }
         }
-    } (tx, err)
+        errRet = err
+    } ()
 
     _, err = tx.Exec(
         `lock table ReferralTable in access exclusive mode;`,
@@ -157,6 +160,7 @@ func (ref *Referral) InsertNew() (err error) {
     if err != nil { return err }
 
     ref.referralCode = referralStringFromRowCount(rowCount+1)
+    Log.Debugf("Row count: %d Code: %s.", rowCount, ref.referralCode)
 
     var result sql.Result
     result, err = tx.Exec(
@@ -170,7 +174,7 @@ func (ref *Referral) InsertNew() (err error) {
             validToDate,
             redemptionDate,
             referralCode,
-            codeUseDate
+            claimDate
         ) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10);`,
             ref.referreeID,
             ref.referrerID,
@@ -181,7 +185,7 @@ func (ref *Referral) InsertNew() (err error) {
             ref.validToDate,
             ref.redemptionDate,
             ref.referralCode,
-            ref.codeUseDate,
+            ref.claimDate,
     )
     err = pgsql.UpdateResultError(result, err)
     if err != nil {
@@ -229,12 +233,12 @@ func SendInvite(inviterUserID string, invite *BlitzMessage.UserInvite) error {
         Log.LogError(error)
     }
 
-    var codeUseDate pq.NullTime
+    var claimDate pq.NullTime
     var friendProfile *BlitzMessage.UserProfile
     if userID.Valid {
         friendProfile = ProfileForUserID("", userID.String)
-        codeUseDate.Time = time.Now()
-        codeUseDate.Valid = true
+        claimDate.Time = time.Now()
+        claimDate.Valid = true
     }
 
     if friendProfile == nil {
@@ -267,7 +271,7 @@ func SendInvite(inviterUserID string, invite *BlitzMessage.UserInvite) error {
         referenceID:    invite.ReferenceID,
         validFromDate:  fromDate,
         validToDate:    toDate,
-        codeUseDate:    codeUseDate,
+        claimDate:      claimDate,
     }
     error = ref.InsertNew()
     if error != nil {
@@ -279,7 +283,6 @@ func SendInvite(inviterUserID string, invite *BlitzMessage.UserInvite) error {
     if invite.Message != nil && len(*invite.Message) > 0 {
         message += ":\n" + *invite.Message
     }
-    message += "\n\nReferral Code: " + ref.referralCode
 
     Log.Debugf("%v %v %v %v",
         friendProfile.UserID,
@@ -298,8 +301,9 @@ func SendInvite(inviterUserID string, invite *BlitzMessage.UserInvite) error {
         ref.referralCode,
     )
     shortLink, _ := LinkShortner_ShortLinkFromLink(inviteURL)
-    message += "\nGet Blitz here: " + shortLink
 
+    message += "\n\nReferral Code: " + ref.referralCode
+    message += "\nGet Blitz here: " + shortLink
     Log.Debugf("Invite is: %s.", message)
 
     switch *invite.ContactInfo.ContactType {
@@ -334,7 +338,7 @@ func SendUserInvites(session *Session, invites *BlitzMessage.UserInvites,
     var code BlitzMessage.ResponseCode = BlitzMessage.ResponseCode_RCSuccess
     if firstError != nil {
         code = BlitzMessage.ResponseCode_RCInputInvalid
-        message = proto.String("Some invites not sent. (Is the invite address correct?)")
+        message = proto.String("Some invites not sent. (Are all the invitee addresses correct?)")
     }
 
     return &BlitzMessage.ServerResponse {

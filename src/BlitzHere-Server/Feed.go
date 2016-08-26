@@ -611,13 +611,14 @@ func FetchFeedPosts(session *Session, fetchRequest *BlitzMessage.FeedPostFetchRe
                   and (parentID is null or parentID = postID)
                   and timeActiveStart <= current_timestamp
                   and timeActiveStop   > current_timestamp
-                  and (amountTotal is null
+                  and (postType = $4
                         or entityTag is not null
                         or FeedPostTable.userID = $1)
                 order by timestamp desc;`,
             session.UserID,
             BlitzMessage.EntityType_ETFeedPost,
             BlitzMessage.FeedPostStatus_FPSActive,
+            BlitzMessage.FeedPostType_FPWantedQuestion,
         )
 
     } else {
