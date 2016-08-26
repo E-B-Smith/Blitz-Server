@@ -166,7 +166,7 @@ NSString *NSStringFromBFriendStatus(BFriendStatus value);
 
 typedef NS_ENUM(SInt32, BInviteType) {
   BInviteTypeITUnknown = 0,
-  BInviteTypeITFriendInvite = 1,
+  BInviteTypeITFriend = 1,
   BInviteTypeITFeedPost = 2,
 };
 
@@ -1402,14 +1402,17 @@ NSString *NSStringFromBInviteType(BInviteType value);
 #define ConfirmationRequest_userProfile @"userProfile"
 #define ConfirmationRequest_confirmationCode @"confirmationCode"
 #define ConfirmationRequest_inviterUserID @"inviterUserID"
+#define ConfirmationRequest_referralCode @"referralCode"
 @interface BConfirmationRequest : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
   BOOL hasConfirmationCode_:1;
   BOOL hasInviterUserID_:1;
+  BOOL hasReferralCode_:1;
   BOOL hasContactInfo_:1;
   BOOL hasUserProfile_:1;
   NSString* confirmationCode;
   NSString* inviterUserID;
+  NSString* referralCode;
   BContactInfo* contactInfo;
   BUserProfile* userProfile;
 }
@@ -1417,10 +1420,12 @@ NSString *NSStringFromBInviteType(BInviteType value);
 - (BOOL) hasUserProfile;
 - (BOOL) hasConfirmationCode;
 - (BOOL) hasInviterUserID;
+- (BOOL) hasReferralCode;
 @property (readonly, strong) BContactInfo* contactInfo;
 @property (readonly, strong) BUserProfile* userProfile;
 @property (readonly, strong) NSString* confirmationCode;
 @property (readonly, strong) NSString* inviterUserID;
+@property (readonly, strong) NSString* referralCode;
 
 + (instancetype) defaultInstance;
 - (instancetype) defaultInstance;
@@ -1480,6 +1485,11 @@ NSString *NSStringFromBInviteType(BInviteType value);
 - (NSString*) inviterUserID;
 - (BConfirmationRequestBuilder*) setInviterUserID:(NSString*) value;
 - (BConfirmationRequestBuilder*) clearInviterUserID;
+
+- (BOOL) hasReferralCode;
+- (NSString*) referralCode;
+- (BConfirmationRequestBuilder*) setReferralCode:(NSString*) value;
+- (BConfirmationRequestBuilder*) clearReferralCode;
 @end
 
 #define ProfilesFromContactInfo_profiles @"profiles"

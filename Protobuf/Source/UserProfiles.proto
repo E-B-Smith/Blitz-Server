@@ -198,6 +198,7 @@ message ConfirmationRequest {
     optional UserProfile  userProfile     = 2;
     optional string       confirmationCode= 3;
     optional string       inviterUserID   = 4;
+    optional string       referralCode    = 5;
 }
 
 
@@ -226,7 +227,7 @@ message FriendUpdate {
 
 enum InviteType {
   ITUnknown       = 0;
-  ITFriendInvite  = 1;
+  ITFriend        = 1;
   ITFeedPost      = 2;
 }
 

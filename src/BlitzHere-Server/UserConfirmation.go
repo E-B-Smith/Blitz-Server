@@ -128,18 +128,13 @@ func UserIsConfirming(session *Session, confirmation *BlitzMessage.ConfirmationR
         error = fmt.Errorf("The confirmation code does not match or expired.")
     }
 
-    //  Is this inserted by mistake?
-    // if error != nil {
-    //     UpdateProfileStatusForUserID(session.UserID, BlitzMessage.UserStatus_USConfirming)
-    //     return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
-    // }
-
     //  Great!  We've confirmed.
-    //  Find the earliest verfied contact.
+
+    //  Now find the earliest verfied contact.
     //  This is our real profile.
 
     row = config.DB.QueryRow(
-        `select c.userID from usercontacttable c
+        `select c.userID, c.codeDate from usercontacttable c
              join UserTable u on u.userID = c.userID
             where contact = $1
               and contacttype = $2
@@ -151,10 +146,57 @@ func UserIsConfirming(session *Session, confirmation *BlitzMessage.ConfirmationR
         confirmation.ContactInfo.ContactType,
         BlitzMessage.UserStatus_USConfirming,
     )
-
     var oldestUserID sql.NullString
-    error = row.Scan(&oldestUserID)
-    if error == nil && oldestUserID.Valid && len(oldestUserID.String) > 10 {
+    var oldestDate pq.NullTime
+    error = row.Scan(&oldestUserID, &oldestDate)
+
+    //  Is it a referral?
+
+    confirmation.ReferralCode = Util.CleanStringPtr(confirmation.ReferralCode)
+    if confirmation.ReferralCode != nil {
+        row = config.DB.QueryRow(
+            `select referreeID, createDate from ReferralTable
+                where referralCode = $1
+                  and codeUseDate is null;`,
+            confirmation.ReferralCode,
+        )
+        var referreeID sql.NullString
+        var referralDate pq.NullTime
+        error = row.Scan(&referreeID, &referralDate)
+        if error == nil && referreeID.Valid {
+
+            if oldestUserID.Valid &&
+               oldestUserID.String != referreeID.String {
+
+                row = config.DB.QueryRow(
+                    `select MergeUserIDIntoUserID($1, $2);`,
+                    referreeID.String,
+                    oldestUserID.String,
+                )
+                var result sql.NullString
+                error = row.Scan(&result)
+                if error != nil || ! result.Valid || result.String != "User merged" {
+                    Log.Errorf("Can't merge user! Error: %v result: %+v.", error, result)
+                }
+                referreeID = oldestUserID
+            }
+
+            _, error = config.DB.Exec(
+                `update ReferralTable set
+                    referreeID = $1,
+                    codeUseDate = $2
+                    where referralCode = $3;`,
+                referreeID,
+                time.Now(),
+                confirmation.ReferralCode,
+            )
+            oldestUserID = referreeID
+        }
+    }
+
+    //  Now we've mybe got out userID --
+
+    if oldestUserID.Valid && len(oldestUserID.String) > 10 {
 
         //  An older profile exists.  Merge current profile
         //  into profile.

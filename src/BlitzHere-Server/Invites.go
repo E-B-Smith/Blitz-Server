@@ -117,6 +117,7 @@ type Referral struct {
     validToDate        pq.NullTime
     redemptionDate     pq.NullTime
     referralCode       string
+    codeUseDate        pq.NullTime
 }
 
 
@@ -168,8 +169,9 @@ func (ref *Referral) InsertNew() (err error) {
             validFromDate,
             validToDate,
             redemptionDate,
-            referralCode
-        ) values ($1, $2, $3, $4, $5, $6, $7, $8, $9);`,
+            referralCode,
+            codeUseDate
+        ) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10);`,
             ref.referreeID,
             ref.referrerID,
             ref.creationDate,
@@ -179,6 +181,7 @@ func (ref *Referral) InsertNew() (err error) {
             ref.validToDate,
             ref.redemptionDate,
             ref.referralCode,
+            ref.codeUseDate,
     )
     err = pgsql.UpdateResultError(result, err)
     if err != nil {
@@ -226,9 +229,12 @@ func SendInvite(inviterUserID string, invite *BlitzMessage.UserInvite) error {
         Log.LogError(error)
     }
 
+    var codeUseDate pq.NullTime
     var friendProfile *BlitzMessage.UserProfile
     if userID.Valid {
         friendProfile = ProfileForUserID("", userID.String)
+        codeUseDate.Time = time.Now()
+        codeUseDate.Valid = true
     }
 
     if friendProfile == nil {
@@ -261,6 +267,7 @@ func SendInvite(inviterUserID string, invite *BlitzMessage.UserInvite) error {
         referenceID:    invite.ReferenceID,
         validFromDate:  fromDate,
         validToDate:    toDate,
+        codeUseDate:    codeUseDate,
     }
     error = ref.InsertNew()
     if error != nil {
@@ -268,9 +275,9 @@ func SendInvite(inviterUserID string, invite *BlitzMessage.UserInvite) error {
     }
 
     name := PrettyNameForUserID(inviterUserID)
-    message := fmt.Sprintf("%s invitated you to Blitz", name)
+    message := fmt.Sprintf("%s invited you to Blitz", name)
     if invite.Message != nil && len(*invite.Message) > 0 {
-        message += ":\n\n" + *invite.Message
+        message += ":\n" + *invite.Message
     }
     message += "\n\nReferral Code: " + ref.referralCode
 

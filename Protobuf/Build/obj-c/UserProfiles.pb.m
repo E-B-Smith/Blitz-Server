@@ -168,7 +168,7 @@ NSString *NSStringFromBFriendStatus(BFriendStatus value) {
 BOOL BInviteTypeIsValidValue(BInviteType value) {
   switch (value) {
     case BInviteTypeITUnknown:
-    case BInviteTypeITFriendInvite:
+    case BInviteTypeITFriend:
     case BInviteTypeITFeedPost:
       return YES;
     default:
@@ -179,8 +179,8 @@ NSString *NSStringFromBInviteType(BInviteType value) {
   switch (value) {
     case BInviteTypeITUnknown:
       return @"BInviteTypeITUnknown";
-    case BInviteTypeITFriendInvite:
-      return @"BInviteTypeITFriendInvite";
+    case BInviteTypeITFriend:
+      return @"BInviteTypeITFriend";
     case BInviteTypeITFeedPost:
       return @"BInviteTypeITFeedPost";
     default:
@@ -6170,6 +6170,7 @@ static BUserProfileQuery* defaultBUserProfileQueryInstance = nil;
 @property (strong) BUserProfile* userProfile;
 @property (strong) NSString* confirmationCode;
 @property (strong) NSString* inviterUserID;
+@property (strong) NSString* referralCode;
 @end
 
 @implementation BConfirmationRequest
@@ -6202,12 +6203,20 @@ static BUserProfileQuery* defaultBUserProfileQueryInstance = nil;
   hasInviterUserID_ = !!_value_;
 }
 @synthesize inviterUserID;
+- (BOOL) hasReferralCode {
+  return !!hasReferralCode_;
+}
+- (void) setHasReferralCode:(BOOL) _value_ {
+  hasReferralCode_ = !!_value_;
+}
+@synthesize referralCode;
 - (instancetype) init {
   if ((self = [super init])) {
     self.contactInfo = [BContactInfo defaultInstance];
     self.userProfile = [BUserProfile defaultInstance];
     self.confirmationCode = @"";
     self.inviterUserID = @"";
+    self.referralCode = @"";
   }
   return self;
 }
@@ -6249,6 +6258,9 @@ static BConfirmationRequest* defaultBConfirmationRequestInstance = nil;
   if (self.hasInviterUserID) {
     [output writeString:4 value:self.inviterUserID];
   }
+  if (self.hasReferralCode) {
+    [output writeString:5 value:self.referralCode];
+  }
   [self.unknownFields writeToCodedOutputStream:output];
 }
 - (SInt32) serializedSize {
@@ -6269,6 +6281,9 @@ static BConfirmationRequest* defaultBConfirmationRequestInstance = nil;
   }
   if (self.hasInviterUserID) {
     size_ += computeStringSize(4, self.inviterUserID);
+  }
+  if (self.hasReferralCode) {
+    size_ += computeStringSize(5, self.referralCode);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -6323,6 +6338,9 @@ static BConfirmationRequest* defaultBConfirmationRequestInstance = nil;
   if (self.hasInviterUserID) {
     [output appendFormat:@"%@%@: %@\n", indent, @"inviterUserID", self.inviterUserID];
   }
+  if (self.hasReferralCode) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"referralCode", self.referralCode];
+  }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (void) storeInDictionary:(NSMutableDictionary *)dictionary {
@@ -6341,6 +6359,9 @@ static BConfirmationRequest* defaultBConfirmationRequestInstance = nil;
   }
   if (self.hasInviterUserID) {
     [dictionary setObject: self.inviterUserID forKey: @"inviterUserID"];
+  }
+  if (self.hasReferralCode) {
+    [dictionary setObject: self.referralCode forKey: @"referralCode"];
   }
   [self.unknownFields storeInDictionary:dictionary];
 }
@@ -6361,6 +6382,8 @@ static BConfirmationRequest* defaultBConfirmationRequestInstance = nil;
       (!self.hasConfirmationCode || [self.confirmationCode isEqual:otherMessage.confirmationCode]) &&
       self.hasInviterUserID == otherMessage.hasInviterUserID &&
       (!self.hasInviterUserID || [self.inviterUserID isEqual:otherMessage.inviterUserID]) &&
+      self.hasReferralCode == otherMessage.hasReferralCode &&
+      (!self.hasReferralCode || [self.referralCode isEqual:otherMessage.referralCode]) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
@@ -6376,6 +6399,9 @@ static BConfirmationRequest* defaultBConfirmationRequestInstance = nil;
   }
   if (self.hasInviterUserID) {
     hashCode = hashCode * 31 + [self.inviterUserID hash];
+  }
+  if (self.hasReferralCode) {
+    hashCode = hashCode * 31 + [self.referralCode hash];
   }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
@@ -6432,6 +6458,9 @@ static BConfirmationRequest* defaultBConfirmationRequestInstance = nil;
   if (other.hasInviterUserID) {
     [self setInviterUserID:other.inviterUserID];
   }
+  if (other.hasReferralCode) {
+    [self setReferralCode:other.referralCode];
+  }
   [self mergeUnknownFields:other.unknownFields];
   return self;
 }
@@ -6477,6 +6506,10 @@ static BConfirmationRequest* defaultBConfirmationRequestInstance = nil;
       }
       case 34: {
         [self setInviterUserID:[input readString]];
+        break;
+      }
+      case 42: {
+        [self setReferralCode:[input readString]];
         break;
       }
     }
@@ -6572,6 +6605,22 @@ static BConfirmationRequest* defaultBConfirmationRequestInstance = nil;
 - (BConfirmationRequestBuilder*) clearInviterUserID {
   resultConfirmationRequest.hasInviterUserID = NO;
   resultConfirmationRequest.inviterUserID = @"";
+  return self;
+}
+- (BOOL) hasReferralCode {
+  return resultConfirmationRequest.hasReferralCode;
+}
+- (NSString*) referralCode {
+  return resultConfirmationRequest.referralCode;
+}
+- (BConfirmationRequestBuilder*) setReferralCode:(NSString*) value {
+  resultConfirmationRequest.hasReferralCode = YES;
+  resultConfirmationRequest.referralCode = value;
+  return self;
+}
+- (BConfirmationRequestBuilder*) clearReferralCode {
+  resultConfirmationRequest.hasReferralCode = NO;
+  resultConfirmationRequest.referralCode = @"";
   return self;
 }
 @end
