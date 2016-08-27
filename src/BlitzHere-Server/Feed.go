@@ -353,8 +353,6 @@ func CreateFeedPost(session *Session, feedPost *BlitzMessage.FeedPost) error {
     }
     Log.Debugf("Added %d panel members.", len(feedPost.Panel))
 
-    //  Save the panel --
-
     //  Send a notification if it's a response --
 
     if  feedPost.ParentID != nil {
@@ -377,31 +375,34 @@ func CreateFeedPost(session *Session, feedPost *BlitzMessage.FeedPost) error {
         }
     }
 
-    //  Send a notification to the user's followers --
+    if *feedPost.PostType != BlitzMessage.FeedPostType_FPWantedAnswer {
 
-    followingUsers := GetUserIDArrayForEntity(
-        BlitzMessage.EntityType_ETUser,
-        *feedPost.UserID,
-        ".followed",
-    )
-    postID := *feedPost.PostID
-    if  feedPost.ParentID != nil {
-        postID = *feedPost.ParentID
-    }
-    actionURL := fmt.Sprintf("%s?action=showpost&postid=%s",
-        config.AppLinkURL, postID)
+        //  Send a notification to the user's followers --
 
-    name, _ := NameForUserID(*feedPost.UserID)
-    if len(followingUsers) > 0 && len(name) > 0 {
-        message := *feedPost.HeadlineText
-        SendUserMessageInternal(*feedPost.UserID,
-            followingUsers,
-            "",
-            message,
-            BlitzMessage.UserMessageType_MTNotification,
-            "AppIcon",
-            actionURL,
+        followingUsers := GetUserIDArrayForEntity(
+            BlitzMessage.EntityType_ETUser,
+            *feedPost.UserID,
+            ".followed",
         )
+        postID := *feedPost.PostID
+        if  feedPost.ParentID != nil {
+            postID = *feedPost.ParentID
+        }
+        actionURL := fmt.Sprintf("%s?action=showpost&postid=%s",
+            config.AppLinkURL, postID)
+
+        name, _ := NameForUserID(*feedPost.UserID)
+        if len(followingUsers) > 0 && len(name) > 0 {
+            message := *feedPost.HeadlineText
+            SendUserMessageInternal(*feedPost.UserID,
+                followingUsers,
+                "",
+                message,
+                BlitzMessage.UserMessageType_MTNotification,
+                "AppIcon",
+                actionURL,
+            )
+        }
     }
 
     return nil
@@ -665,6 +666,11 @@ func FetchFeedPosts(session *Session, fetchRequest *BlitzMessage.FeedPostFetchRe
 
         case BlitzMessage.FeedPostType_FPSurveyQuestion:
             replies = FetchTopSurveyRepliesForFeedPost(session.UserID, *feedPost.PostID, limit)
+
+        case BlitzMessage.FeedPostType_FPWantedQuestion:
+            if feedPost.UserID != nil && *feedPost.UserID == session.UserID {
+                replies = FetchTopOpenRepliesForFeedPost(session.UserID, *feedPost.PostID, limit)
+            }
 
         }
         feedPosts = append(feedPosts, replies...)

@@ -144,6 +144,25 @@ create table SocialTable
 create unique index SocialTableUniqueIndex on SocialTable(userID, service, socialID);
 
 
+create table ReferralTable
+    (
+     referreeID         UserID          not null
+    ,referrerID         UserID          not null
+    ,creationDate       timestamptz     not null
+    ,referralType       smallint
+    ,referenceID        text
+    ,validFromDate      timestamptz
+    ,validToDate        timestamptz
+    ,claimDate          timestamptz
+    ,redemptionDate     timestamptz
+    ,referralCode       text
+    );
+create unique index ReferralTableIndex on
+    ReferralTable(referreeID, referrerID, creationDate);
+create unique index ReferralCodeIndex on
+    ReferralTable(referralCode);
+
+
 create table DeviceTable
     (
      userID             UserID       unique not null primary key

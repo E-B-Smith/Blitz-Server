@@ -62,6 +62,27 @@ func CleanEntityTag(tag string) string {
 }
 
 
+func AddEntityTagsForUserIDEntityIDType(
+        userID,
+        entityID string,
+        entityType BlitzMessage.EntityType,
+        tags []string,
+    )  {
+    var error error
+    for _, val := range tags {
+        cleanTag := CleanEntityTag(val)
+        if len(cleanTag) > 0 {
+            _, error = config.DB.Exec(
+            `insert into EntityTagTable
+                (userID, entityID, entityType, entityTag)
+                values ($1, $2, $3, $4);`,
+            userID, entityID, entityType, cleanTag)
+            if error != nil { Log.LogError(error) }
+        }
+    }
+}
+
+
 func SetEntityTagsForUserIDEntityIDType(
         userID,
         entityID string,

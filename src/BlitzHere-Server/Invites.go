@@ -202,7 +202,7 @@ func (ref *Referral) InsertNew() (errRet error) {
 //----------------------------------------------------------------------------------------
 
 
-func SendInvite(inviterUserID string, invite *BlitzMessage.UserInvite) error {
+func SendInvite(session *Session, invite *BlitzMessage.UserInvite) error {
     //  No: If already a friend on Blitz, send message.  Done.
     //  No: If already on Blitz, send a friend request.  Done.
     //  If not on Blitz, create a user profile.
@@ -212,6 +212,8 @@ func SendInvite(inviterUserID string, invite *BlitzMessage.UserInvite) error {
     if invite == nil {
         return errors.New("No invite")
     }
+
+    inviterUserID := session.UserID
 
     var error error
     error = CleanContactInfo(invite.ContactInfo)
@@ -278,30 +280,94 @@ func SendInvite(inviterUserID string, invite *BlitzMessage.UserInvite) error {
         return error
     }
 
+    invite.Message = Util.CleanStringPtr(invite.Message)
     name := PrettyNameForUserID(inviterUserID)
-    message := fmt.Sprintf("%s invited you to Blitz", name)
-    if invite.Message != nil && len(*invite.Message) > 0 {
-        message += ":\n" + *invite.Message
+    var message, inviteURL string
+
+    if invite.InviteType != nil &&
+        *invite.InviteType == BlitzMessage.InviteType_ITFeedPost &&
+       invite.ReferenceID != nil {
+
+        message = fmt.Sprintf("%s referred you in Blitz", name)
+        if invite.Message != nil {
+            message += ":\n" + *invite.Message
+        }
+        inviteURL = fmt.Sprintf(
+            "%s?action=showpost&postid=%s&message=%s&ref=%s",
+            config.AppLinkURL,
+            *invite.ReferenceID,
+            url.QueryEscape(message),
+            ref.referralCode,
+        )
+
+        headline := fmt.Sprintf("%s referred %s.",
+            name,
+            *friendProfile.Name,
+        )
+        feedPost := BlitzMessage.FeedPost {
+            PostID:         proto.String(Util.NewUUIDString()),
+            ParentID:       invite.ReferenceID,
+            PostType:       BlitzMessage.FeedPostType_FPWantedAnswer.Enum(),
+            UserID:         proto.String(inviterUserID),
+            Timestamp:      BlitzMessage.TimestampPtr(time.Now()),
+            HeadlineText:   &headline,
+        }
+        CreateFeedPost(session, &feedPost)
+
+        headline = fmt.Sprintf("%s referred by %s.",
+            *friendProfile.Name,
+            name,
+        )
+        feedPost = BlitzMessage.FeedPost {
+            PostID:         proto.String(Util.NewUUIDString()),
+            ParentID:       invite.ReferenceID,
+            PostType:       BlitzMessage.FeedPostType_FPWantedAnswer.Enum(),
+            UserID:         friendProfile.UserID,
+            Timestamp:      BlitzMessage.TimestampPtr(time.Now()),
+            HeadlineText:   &headline,
+        }
+        CreateFeedPost(session, &feedPost)
+
+        error = SendUserMessageInternal(
+            inviterUserID,
+            [] string { *friendProfile.UserID },
+            "",
+            message,
+            BlitzMessage.UserMessageType_MTActionNotification,
+            "",
+            inviteURL,
+        )
+        if error != nil {
+            Log.LogError(error)
+        }
+
+    } else {
+
+        message = fmt.Sprintf("%s invited you to Blitz", name)
+        if invite.Message != nil {
+            message += ":\n" + *invite.Message
+        }
+        inviteURL = fmt.Sprintf(
+            "%s?action=invited&inviteeid=%s&contacttype=%d&contact=%s&message=%s&ref=%s",
+            config.AppLinkURL,
+            *friendProfile.UserID,
+            *invite.ContactInfo.ContactType,
+            url.QueryEscape(*invite.ContactInfo.Contact),
+            url.QueryEscape(message),
+            ref.referralCode,
+        )
+
     }
 
-    Log.Debugf("%v %v %v %v",
+    Log.Debugf(
+        "%v %v %v %v",
         friendProfile.UserID,
         invite.ContactInfo.ContactType,
         invite.ContactInfo.Contact,
         message,
     )
 
-    inviteURL := fmt.Sprintf(
-        "%s?action=invited&inviteeid=%s&contacttype=%d&contact=%s&message=%s&ref=%s",
-        config.AppLinkURL,
-        *friendProfile.UserID,
-        *invite.ContactInfo.ContactType,
-        url.QueryEscape(*invite.ContactInfo.Contact),
-        url.QueryEscape(message),
-        ref.referralCode,
-    )
     shortLink, _ := LinkShortner_ShortLinkFromLink(inviteURL)
-
     message += "\n\nReferral Code: " + ref.referralCode
     message += "\nGet Blitz here: " + shortLink
     Log.Debugf("Invite is: %s.", message)
@@ -328,7 +394,7 @@ func SendUserInvites(session *Session, invites *BlitzMessage.UserInvites,
 
     var firstError, error error
     for _, userInvite := range invites.UserInvites {
-        error = SendInvite(session.UserID, userInvite)
+        error = SendInvite(session, userInvite)
         if error != nil && firstError ==nil {
             firstError = error
         }
@@ -339,6 +405,20 @@ func SendUserInvites(session *Session, invites *BlitzMessage.UserInvites,
     if firstError != nil {
         code = BlitzMessage.ResponseCode_RCInputInvalid
         message = proto.String("Some invites not sent. (Are all the invitee addresses correct?)")
+    }
+
+    if len(invites.UserInvites) > 0 {
+        invite := invites.UserInvites[0]
+        if invite.InviteType != nil &&
+            *invite.InviteType == BlitzMessage.InviteType_ITFeedPost &&
+            invite.ReferenceID != nil {
+            AddEntityTagsForUserIDEntityIDType(
+                session.UserID,
+                *invite.ReferenceID,
+                BlitzMessage.EntityType_ETFeedPost,
+                []string { ".answered" },
+            )
+        }
     }
 
     return &BlitzMessage.ServerResponse {
