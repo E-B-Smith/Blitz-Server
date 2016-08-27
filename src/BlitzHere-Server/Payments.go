@@ -264,6 +264,70 @@ func UpdateCards(session *Session, cardUpdate *BlitzMessage.UserCardInfo) *Blitz
 
 
 //----------------------------------------------------------------------------------------
+//                                                  PayReferralIfMemberWasReferralToExpert
+//----------------------------------------------------------------------------------------
+
+
+func PayReferralIfMemberWasReferralToExpert(memberID, expertID string) {
+    Log.LogFunctionName()
+
+    var error error
+    row := config.DB.QueryRow(
+        `select rt.referrerID, rt.referralCode from ReferralTable rt
+             join FeedPostTable fp on postID = rt.referenceID::uuid
+            where rt.referreeID = $1
+              and rt.validFromDate <= transaction_timestamp()
+              and rt.validToDate >= transaction_timestamp()
+              and fp.userID = $2
+         order by creationDate limit 1;`,
+         expertID,
+         memberID,
+    )
+    var referrerID, referralCode string
+    error = row.Scan(&referrerID, &referralCode)
+    if error != nil {
+        Log.LogError(error)
+        return
+    }
+
+    var result sql.Result
+    result, error = config.DB.Exec(
+        `update ReferralTable set
+            redemptionDate = transaction_timestamp()
+            where referralCode = $1;`,
+        referralCode,
+    )
+    error = pgsql.UpdateResultError(result, error)
+    if error != nil {
+        Log.LogError(error)
+    }
+
+    memberName := PrettyNameForUserID(memberID)
+    expertName := PrettyNameForUserID(expertID)
+
+    message := fmt.Sprintf(
+        "Bounty!  %s accepted your referral of %s.",
+        memberName,
+        expertName,
+    )
+
+    error = SendUserMessageInternal(
+        BlitzMessage.Default_Global_SystemUserID,
+        [] string { referrerID },
+        "",
+        message,
+        BlitzMessage.UserMessageType_MTNotification,
+        "",
+        "",
+    )
+    if error != nil {
+        Log.LogError(error)
+    }
+
+}
+
+
+//----------------------------------------------------------------------------------------
 //
 //                                                                           ChargeRequest
 //
@@ -535,6 +599,9 @@ func ChargeRequest(session *Session, chargeReq *BlitzMessage.Charge) *BlitzMessa
             actionURL,
         )
 
+        //  See if we need to pay a referral fee --
+
+        PayReferralIfMemberWasReferralToExpert(session.UserID, otherMember)
     }
 
     response := &BlitzMessage.ServerResponse {
