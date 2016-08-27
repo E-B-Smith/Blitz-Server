@@ -266,8 +266,8 @@ func SendInvite(session *Session, invite *BlitzMessage.UserInvite) error {
         toDate.Valid = true
     }
     ref := Referral {
-        referreeID:     inviterUserID,
-        referrerID:     *friendProfile.UserID,
+        referreeID:     *friendProfile.UserID,
+        referrerID:     inviterUserID,
         creationDate:   time.Now(),
         referralType:   invite.InviteType,
         referenceID:    invite.ReferenceID,
@@ -304,29 +304,33 @@ func SendInvite(session *Session, invite *BlitzMessage.UserInvite) error {
             name,
             *friendProfile.Name,
         )
+        timestamp := time.Now()
         feedPost := BlitzMessage.FeedPost {
             PostID:         proto.String(Util.NewUUIDString()),
             ParentID:       invite.ReferenceID,
             PostType:       BlitzMessage.FeedPostType_FPWantedAnswer.Enum(),
             UserID:         proto.String(inviterUserID),
-            Timestamp:      BlitzMessage.TimestampPtr(time.Now()),
+            Timestamp:      BlitzMessage.TimestampPtr(timestamp),
             HeadlineText:   &headline,
         }
-        CreateFeedPost(session, &feedPost)
+        error = CreateFeedPost(session, &feedPost)
+        if error != nil  { Log.LogError(error) }
 
-        headline = fmt.Sprintf("%s referred by %s.",
+        headline = fmt.Sprintf("%s, referred by %s.",
             *friendProfile.Name,
             name,
         )
+        timestamp = timestamp.Add(time.Second)
         feedPost = BlitzMessage.FeedPost {
             PostID:         proto.String(Util.NewUUIDString()),
             ParentID:       invite.ReferenceID,
             PostType:       BlitzMessage.FeedPostType_FPWantedAnswer.Enum(),
             UserID:         friendProfile.UserID,
-            Timestamp:      BlitzMessage.TimestampPtr(time.Now()),
+            Timestamp:      BlitzMessage.TimestampPtr(timestamp),
             HeadlineText:   &headline,
         }
-        CreateFeedPost(session, &feedPost)
+        error = CreateFeedPost(session, &feedPost)
+        if error != nil  { Log.LogError(error) }
 
         error = SendUserMessageInternal(
             inviterUserID,

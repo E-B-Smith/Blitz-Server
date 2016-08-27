@@ -19,6 +19,7 @@ import (
     "errors"
     "strings"
     "strconv"
+    "net/url"
     "database/sql"
     "github.com/lib/pq"
     "github.com/stripe/stripe-go"
@@ -273,18 +274,22 @@ func PayReferralIfMemberWasReferralToExpert(memberID, expertID string) {
 
     var error error
     row := config.DB.QueryRow(
-        `select rt.referrerID, rt.referralCode from ReferralTable rt
-             join FeedPostTable fp on postID = rt.referenceID::uuid
+        `select rt.referrerID, rt.referralCode, rt.referenceID
+             from ReferralTable rt
+             join FeedPostTable fp on fp.postID = rt.referenceID::uuid
             where rt.referreeID = $1
+              and rt.referenceID is not null
+              and character_length(rt.referenceID) > 0
               and rt.validFromDate <= transaction_timestamp()
               and rt.validToDate >= transaction_timestamp()
               and fp.userID = $2
+              and redemptionDate is null
          order by creationDate limit 1;`,
          expertID,
          memberID,
     )
-    var referrerID, referralCode string
-    error = row.Scan(&referrerID, &referralCode)
+    var referrerID, referralCode, referenceID string
+    error = row.Scan(&referrerID, &referralCode, &referenceID)
     if error != nil {
         Log.LogError(error)
         return
@@ -310,15 +315,23 @@ func PayReferralIfMemberWasReferralToExpert(memberID, expertID string) {
         memberName,
         expertName,
     )
+    Log.Debugf("Sending to %s: %s.", referrerID, message)
+
+    feedURL := fmt.Sprintf(
+        "%s?action=showpost&postid=%s&message=%s",
+        config.AppLinkURL,
+        referenceID,
+        url.QueryEscape(message),
+    )
 
     error = SendUserMessageInternal(
         BlitzMessage.Default_Global_SystemUserID,
         [] string { referrerID },
         "",
         message,
-        BlitzMessage.UserMessageType_MTNotification,
+        BlitzMessage.UserMessageType_MTActionNotification,
         "",
-        "",
+        feedURL,
     )
     if error != nil {
         Log.LogError(error)

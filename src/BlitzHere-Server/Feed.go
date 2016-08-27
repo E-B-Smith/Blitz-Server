@@ -307,7 +307,7 @@ func CreateFeedPost(session *Session, feedPost *BlitzMessage.FeedPost) error {
     Log.LogFunctionName()
 
     if  feedPost.UserID == nil ||
-        session.UserID != *feedPost.UserID ||
+//      session.UserID != *feedPost.UserID ||
         feedPost.HeadlineText == nil {
         return errors.New("Not authorized")
     }
