@@ -41,7 +41,7 @@ The `"format": "Servers-JSON-1",` key-value is the format, which you should chec
 
 After the format, a dictionary of app identifiers is listed, each with a list of server end points.  The app identifier distiguishes between various production and development environments.   The app identifier `com.blitzhere.blitzhere-lab2` contains our current development server end points. 
 
-The `apiURL` key value is the server to which to POST protobuff (preferred) or JSON formed requests.
+The `apiURL` key value is the API server to which to POST protobuff (preferred) or JSON formed requests.
 
 The `pushURL` key value is the web socket connection URL for chat messages.
 
