@@ -375,7 +375,8 @@ func CreateFeedPost(session *Session, feedPost *BlitzMessage.FeedPost) error {
         }
     }
 
-    if *feedPost.PostType != BlitzMessage.FeedPostType_FPWantedAnswer {
+    if feedPost.PostType != nil &&
+      *feedPost.PostType != BlitzMessage.FeedPostType_FPWantedAnswer {
 
         //  Send a notification to the user's followers --
 

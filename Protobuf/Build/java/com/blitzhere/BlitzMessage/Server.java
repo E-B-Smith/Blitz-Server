@@ -716,6 +716,34 @@ public final class Server {
      * <code>optional bool logout = 5;</code>
      */
     boolean getLogout();
+
+    /**
+     * <code>optional string login = 6;</code>
+     */
+    boolean hasLogin();
+    /**
+     * <code>optional string login = 6;</code>
+     */
+    java.lang.String getLogin();
+    /**
+     * <code>optional string login = 6;</code>
+     */
+    com.google.protobuf.ByteString
+        getLoginBytes();
+
+    /**
+     * <code>optional string secret = 7;</code>
+     */
+    boolean hasSecret();
+    /**
+     * <code>optional string secret = 7;</code>
+     */
+    java.lang.String getSecret();
+    /**
+     * <code>optional string secret = 7;</code>
+     */
+    com.google.protobuf.ByteString
+        getSecretBytes();
   }
   /**
    * Protobuf type {@code BlitzMessage.SessionRequest}
@@ -824,6 +852,18 @@ public final class Server {
             case 40: {
               bitField0_ |= 0x00000010;
               logout_ = input.readBool();
+              break;
+            }
+            case 50: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000020;
+              login_ = bs;
+              break;
+            }
+            case 58: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000040;
+              secret_ = bs;
               break;
             }
           }
@@ -965,12 +1005,98 @@ public final class Server {
       return logout_;
     }
 
+    public static final int LOGIN_FIELD_NUMBER = 6;
+    private java.lang.Object login_;
+    /**
+     * <code>optional string login = 6;</code>
+     */
+    public boolean hasLogin() {
+      return ((bitField0_ & 0x00000020) == 0x00000020);
+    }
+    /**
+     * <code>optional string login = 6;</code>
+     */
+    public java.lang.String getLogin() {
+      java.lang.Object ref = login_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          login_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string login = 6;</code>
+     */
+    public com.google.protobuf.ByteString
+        getLoginBytes() {
+      java.lang.Object ref = login_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        login_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int SECRET_FIELD_NUMBER = 7;
+    private java.lang.Object secret_;
+    /**
+     * <code>optional string secret = 7;</code>
+     */
+    public boolean hasSecret() {
+      return ((bitField0_ & 0x00000040) == 0x00000040);
+    }
+    /**
+     * <code>optional string secret = 7;</code>
+     */
+    public java.lang.String getSecret() {
+      java.lang.Object ref = secret_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          secret_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string secret = 7;</code>
+     */
+    public com.google.protobuf.ByteString
+        getSecretBytes() {
+      java.lang.Object ref = secret_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        secret_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private void initFields() {
       location_ = com.blitzhere.BlitzMessage.Types.Location.getDefaultInstance();
       deviceInfo_ = com.blitzhere.BlitzMessage.Device.DeviceInfo.getDefaultInstance();
       profile_ = com.blitzhere.BlitzMessage.UserProfiles.UserProfile.getDefaultInstance();
       lastAppDataResetDate_ = com.blitzhere.BlitzMessage.Types.Timestamp.getDefaultInstance();
       logout_ = false;
+      login_ = "";
+      secret_ = "";
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -1006,6 +1132,12 @@ public final class Server {
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
         output.writeBool(5, logout_);
       }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        output.writeBytes(6, getLoginBytes());
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        output.writeBytes(7, getSecretBytes());
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -1034,6 +1166,14 @@ public final class Server {
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBoolSize(5, logout_);
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(6, getLoginBytes());
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(7, getSecretBytes());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -1182,6 +1322,10 @@ public final class Server {
         bitField0_ = (bitField0_ & ~0x00000008);
         logout_ = false;
         bitField0_ = (bitField0_ & ~0x00000010);
+        login_ = "";
+        bitField0_ = (bitField0_ & ~0x00000020);
+        secret_ = "";
+        bitField0_ = (bitField0_ & ~0x00000040);
         return this;
       }
 
@@ -1246,6 +1390,14 @@ public final class Server {
           to_bitField0_ |= 0x00000010;
         }
         result.logout_ = logout_;
+        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
+          to_bitField0_ |= 0x00000020;
+        }
+        result.login_ = login_;
+        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
+          to_bitField0_ |= 0x00000040;
+        }
+        result.secret_ = secret_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -1276,6 +1428,16 @@ public final class Server {
         }
         if (other.hasLogout()) {
           setLogout(other.getLogout());
+        }
+        if (other.hasLogin()) {
+          bitField0_ |= 0x00000020;
+          login_ = other.login_;
+          onChanged();
+        }
+        if (other.hasSecret()) {
+          bitField0_ |= 0x00000040;
+          secret_ = other.secret_;
+          onChanged();
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -1802,6 +1964,158 @@ public final class Server {
       public Builder clearLogout() {
         bitField0_ = (bitField0_ & ~0x00000010);
         logout_ = false;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object login_ = "";
+      /**
+       * <code>optional string login = 6;</code>
+       */
+      public boolean hasLogin() {
+        return ((bitField0_ & 0x00000020) == 0x00000020);
+      }
+      /**
+       * <code>optional string login = 6;</code>
+       */
+      public java.lang.String getLogin() {
+        java.lang.Object ref = login_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            login_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string login = 6;</code>
+       */
+      public com.google.protobuf.ByteString
+          getLoginBytes() {
+        java.lang.Object ref = login_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          login_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string login = 6;</code>
+       */
+      public Builder setLogin(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000020;
+        login_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string login = 6;</code>
+       */
+      public Builder clearLogin() {
+        bitField0_ = (bitField0_ & ~0x00000020);
+        login_ = getDefaultInstance().getLogin();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string login = 6;</code>
+       */
+      public Builder setLoginBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000020;
+        login_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object secret_ = "";
+      /**
+       * <code>optional string secret = 7;</code>
+       */
+      public boolean hasSecret() {
+        return ((bitField0_ & 0x00000040) == 0x00000040);
+      }
+      /**
+       * <code>optional string secret = 7;</code>
+       */
+      public java.lang.String getSecret() {
+        java.lang.Object ref = secret_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            secret_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string secret = 7;</code>
+       */
+      public com.google.protobuf.ByteString
+          getSecretBytes() {
+        java.lang.Object ref = secret_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          secret_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string secret = 7;</code>
+       */
+      public Builder setSecret(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000040;
+        secret_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string secret = 7;</code>
+       */
+      public Builder clearSecret() {
+        bitField0_ = (bitField0_ & ~0x00000040);
+        secret_ = getDefaultInstance().getSecret();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string secret = 7;</code>
+       */
+      public Builder setSecretBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000040;
+        secret_ = value;
         onChanged();
         return this;
       }
@@ -19094,120 +19408,120 @@ public final class Server {
       "roto\032\020EntityTags.proto\032\nFeed.proto\032\016Paym" +
       "ents.proto\032\014Search.proto\032\020UserEvents.pro" +
       "to\032\022UserMessages.proto\032\022UserProfiles.pro" +
-      "to\"!\n\014DebugMessage\022\021\n\tdebugText\030\001 \003(\t\"\333\001" +
+      "to\"!\n\014DebugMessage\022\021\n\tdebugText\030\001 \003(\t\"\372\001" +
       "\n\016SessionRequest\022(\n\010location\030\001 \001(\0132\026.Bli" +
       "tzMessage.Location\022,\n\ndeviceInfo\030\002 \001(\0132\030" +
       ".BlitzMessage.DeviceInfo\022*\n\007profile\030\003 \001(" +
       "\0132\031.BlitzMessage.UserProfile\0225\n\024lastAppD",
       "ataResetDate\030\004 \001(\0132\027.BlitzMessage.Timest" +
-      "amp\022\016\n\006logout\030\005 \001(\010\"\025\n\023BlitzHereAppOptio" +
-      "ns\"I\n\nAppOptions\022;\n\020blitzHereOptions\030\001 \001" +
-      "(\0132!.BlitzMessage.BlitzHereAppOptions\"\243\002" +
-      "\n\017SessionResponse\022\016\n\006userID\030\001 \001(\t\022\024\n\014ses" +
-      "sionToken\030\002 \001(\t\022\021\n\tserverURL\030\003 \001(\t\022/\n\014us" +
-      "erMessages\030\004 \003(\0132\031.BlitzMessage.UserMess" +
-      "age\022.\n\013userProfile\030\005 \001(\0132\031.BlitzMessage." +
-      "UserProfile\022\027\n\017resetAllAppData\030\006 \001(\010\022/\n\r" +
-      "inviteRequest\030\007 \001(\0132\030.BlitzMessage.UserI",
-      "nvite\022,\n\nappOptions\030\010 \001(\0132\030.BlitzMessage" +
-      ".AppOptions\"?\n\014LoginAsAdmin\022/\n\014adminProf" +
-      "ile\030\001 \001(\0132\031.BlitzMessage.UserProfile\"T\n\013" +
-      "PushConnect\022\016\n\006userID\030\001 \001(\t\0225\n\024lastMessa" +
-      "geTimestamp\030\002 \001(\0132\027.BlitzMessage.Timesta" +
-      "mp\"\020\n\016PushDisconnect\"\211\016\n\013RequestType\0224\n\016" +
-      "sessionRequest\030\001 \001(\0132\034.BlitzMessage.Sess" +
-      "ionRequest\0224\n\016userEventBatch\030\002 \001(\0132\034.Bli" +
-      "tzMessage.UserEventBatch\022:\n\021userProfileU" +
-      "pdate\030\003 \001(\0132\037.BlitzMessage.UserProfileUp",
-      "date\0228\n\020userProfileQuery\030\004 \001(\0132\036.BlitzMe" +
-      "ssage.UserProfileQuery\022>\n\023confirmationRe" +
-      "quest\030\005 \001(\0132!.BlitzMessage.ConfirmationR" +
-      "equest\022F\n\035messageSendRequest_deprecated\030" +
-      "\006 \001(\0132\037.BlitzMessage.UserMessageUpdate\022<" +
-      "\n\023messageFetchRequest\030\007 \001(\0132\037.BlitzMessa" +
-      "ge.UserMessageUpdate\0220\n\014debugMessage\030\010 \001" +
-      "(\0132\032.BlitzMessage.DebugMessage\022.\n\013imageU" +
-      "pload\030\t \001(\0132\031.BlitzMessage.ImageUpload\0225" +
-      "\n\023acceptInviteRequest\030\n \001(\0132\030.BlitzMessa",
-      "ge.UserInvite\022@\n\024feedPostFetchRequest\030\013 " +
-      "\001(\0132\".BlitzMessage.FeedPostFetchRequest\022" +
-      "B\n\025feedPostUpdateRequest\030\014 \001(\0132#.BlitzMe" +
-      "ssage.FeedPostUpdateRequest\022>\n\023autocompl" +
-      "eteRequest\030\r \001(\0132!.BlitzMessage.Autocomp" +
-      "leteRequest\0224\n\017entityTagUpdate\030\016 \001(\0132\033.B" +
-      "litzMessage.EntityTagList\022:\n\021userSearchR" +
-      "equest\030\017 \001(\0132\037.BlitzMessage.UserSearchRe" +
-      "quest\022.\n\013pushConnect\030\020 \001(\0132\031.BlitzMessag" +
-      "e.PushConnect\0224\n\016pushDisconnect\030\021 \001(\0132\034.",
-      "BlitzMessage.PushDisconnect\022>\n\023conversat" +
-      "ionRequest\030\022 \001(\0132!.BlitzMessage.Conversa" +
-      "tionRequest\022<\n\022fetchConversations\030\023 \001(\0132" +
-      " .BlitzMessage.FetchConversations\022,\n\nuse" +
-      "rReview\030\024 \001(\0132\030.BlitzMessage.UserReview\022" +
-      "H\n\030updateConversationStatus\030\025 \001(\0132&.Blit" +
-      "zMessage.UpdateConversationStatus\0220\n\014use" +
-      "rCardInfo\030\026 \001(\0132\032.BlitzMessage.UserCardI" +
-      "nfo\022+\n\rchargeRequest\030\027 \001(\0132\024.BlitzMessag" +
-      "e.Charge\0221\n\rfriendRequest\030\030 \001(\0132\032.BlitzM",
-      "essage.FriendUpdate\0228\n\020searchCategories\030" +
-      "\031 \001(\0132\036.BlitzMessage.SearchCategories\022.\n" +
-      "\013sendMessage\030\032 \001(\0132\031.BlitzMessage.UserMe" +
-      "ssage\022.\n\013editProfile\030\033 \001(\0132\031.BlitzMessag" +
-      "e.EditProfile\022F\n\027fetchConversationGroups" +
-      "\030\034 \001(\0132%.BlitzMessage.FetchConversationG" +
-      "roups\0220\n\014loginAsAdmin\030\035 \001(\0132\032.BlitzMessa" +
-      "ge.LoginAsAdmin\022H\n\030fetchPurchaseDescript" +
-      "ion\030\036 \001(\0132&.BlitzMessage.FetchPurchaseDe" +
-      "scription\0225\n\022userInvitesRequest\030\037 \001(\0132\031.",
-      "BlitzMessage.UserInvites\"U\n\rServerReques" +
-      "t\022\024\n\014sessionToken\030\001 \001(\t\022.\n\013requestType\030\002" +
-      " \001(\0132\031.BlitzMessage.RequestType\"\221\013\n\014Resp" +
-      "onseType\0226\n\017sessionResponse\030\001 \001(\0132\035.Blit" +
-      "zMessage.SessionResponse\022D\n\026userEventBat" +
-      "chResponse\030\002 \001(\0132$.BlitzMessage.UserEven" +
-      "tBatchResponse\022:\n\021userProfileUpdate\030\003 \001(" +
-      "\0132\037.BlitzMessage.UserProfileUpdate\0228\n\020us" +
-      "erProfileQuery\030\004 \001(\0132\036.BlitzMessage.User" +
-      "ProfileQuery\022>\n\023confirmationRequest\030\005 \001(",
-      "\0132!.BlitzMessage.ConfirmationRequest\022:\n\021" +
-      "userMessageUpdate\030\006 \001(\0132\037.BlitzMessage.U" +
-      "serMessageUpdate\0220\n\014debugMessage\030\007 \001(\0132\032" +
-      ".BlitzMessage.DebugMessage\0223\n\020imageUploa" +
-      "dReply\030\010 \001(\0132\031.BlitzMessage.ImageUpload\022" +
-      "6\n\024acceptInviteResponse\030\t \001(\0132\030.BlitzMes" +
-      "sage.UserInvite\022@\n\024autocompleteResponse\030" +
-      "\014 \001(\0132\".BlitzMessage.AutocompleteRespons" +
-      "e\022<\n\022userSearchResponse\030\r \001(\0132 .BlitzMes" +
-      "sage.UserSearchResponse\022@\n\024conversationR",
-      "esponse\030\016 \001(\0132\".BlitzMessage.Conversatio" +
-      "nResponse\022<\n\022fetchConversations\030\017 \001(\0132 ." +
-      "BlitzMessage.FetchConversations\0220\n\014userC" +
-      "ardInfo\030\020 \001(\0132\032.BlitzMessage.UserCardInf" +
-      "o\022,\n\016chargeResponse\030\021 \001(\0132\024.BlitzMessage" +
-      ".Charge\0222\n\016friendResponse\030\022 \001(\0132\032.BlitzM" +
-      "essage.FriendUpdate\0228\n\020searchCategories\030" +
-      "\023 \001(\0132\036.BlitzMessage.SearchCategories\0228\n" +
-      "\020feedPostResponse\030\024 \001(\0132\036.BlitzMessage.F" +
-      "eedPostResponse\022>\n\023purchaseDescription\030\025",
-      " \001(\0132!.BlitzMessage.PurchaseDescription\022" +
-      ".\n\013editProfile\030\026 \001(\0132\031.BlitzMessage.Edit" +
-      "Profile\022F\n\027fetchConversationGroups\030\027 \001(\013" +
-      "2%.BlitzMessage.FetchConversationGroups\022" +
-      "0\n\014loginAsAdmin\030\030 \001(\0132\032.BlitzMessage.Log" +
-      "inAsAdmin\022H\n\030fetchPurchaseDescription\030\031 " +
-      "\001(\0132&.BlitzMessage.FetchPurchaseDescript" +
-      "ion\0226\n\023userInvitesResponse\030\032 \001(\0132\031.Blitz" +
-      "Message.UserInvites\"\215\001\n\016ServerResponse\0220" +
-      "\n\014responseCode\030\001 \001(\0162\032.BlitzMessage.Resp",
-      "onseCode\022\027\n\017responseMessage\030\002 \001(\t\0220\n\014res" +
-      "ponseType\030\003 \001(\0132\032.BlitzMessage.ResponseT" +
-      "ype*\302\001\n\014ResponseCode\022\r\n\tRCSuccess\020\001\022\022\n\016R" +
-      "CInputCorrupt\020\002\022\022\n\016RCInputInvalid\020\003\022\023\n\017R" +
-      "CServerWarning\020\004\022\021\n\rRCServerError\020\005\022\023\n\017R" +
-      "CNotAuthorized\020\006\022\022\n\016RCClientTooOld\020\007\022\022\n\016" +
-      "RCPaymentError\020\010\022\026\n\022RCPurchaseRequired\020\t" +
-      "B/\n\032com.blitzhere.BlitzMessage\210\001\001\322>\002\n\000\322>" +
-      "\003\022\001B\322>\002\030\001"
+      "amp\022\016\n\006logout\030\005 \001(\010\022\r\n\005login\030\006 \001(\t\022\016\n\006se" +
+      "cret\030\007 \001(\t\"\025\n\023BlitzHereAppOptions\"I\n\nApp" +
+      "Options\022;\n\020blitzHereOptions\030\001 \001(\0132!.Blit" +
+      "zMessage.BlitzHereAppOptions\"\243\002\n\017Session" +
+      "Response\022\016\n\006userID\030\001 \001(\t\022\024\n\014sessionToken" +
+      "\030\002 \001(\t\022\021\n\tserverURL\030\003 \001(\t\022/\n\014userMessage" +
+      "s\030\004 \003(\0132\031.BlitzMessage.UserMessage\022.\n\013us" +
+      "erProfile\030\005 \001(\0132\031.BlitzMessage.UserProfi" +
+      "le\022\027\n\017resetAllAppData\030\006 \001(\010\022/\n\rinviteReq",
+      "uest\030\007 \001(\0132\030.BlitzMessage.UserInvite\022,\n\n" +
+      "appOptions\030\010 \001(\0132\030.BlitzMessage.AppOptio" +
+      "ns\"?\n\014LoginAsAdmin\022/\n\014adminProfile\030\001 \001(\013" +
+      "2\031.BlitzMessage.UserProfile\"T\n\013PushConne" +
+      "ct\022\016\n\006userID\030\001 \001(\t\0225\n\024lastMessageTimesta" +
+      "mp\030\002 \001(\0132\027.BlitzMessage.Timestamp\"\020\n\016Pus" +
+      "hDisconnect\"\211\016\n\013RequestType\0224\n\016sessionRe" +
+      "quest\030\001 \001(\0132\034.BlitzMessage.SessionReques" +
+      "t\0224\n\016userEventBatch\030\002 \001(\0132\034.BlitzMessage" +
+      ".UserEventBatch\022:\n\021userProfileUpdate\030\003 \001",
+      "(\0132\037.BlitzMessage.UserProfileUpdate\0228\n\020u" +
+      "serProfileQuery\030\004 \001(\0132\036.BlitzMessage.Use" +
+      "rProfileQuery\022>\n\023confirmationRequest\030\005 \001" +
+      "(\0132!.BlitzMessage.ConfirmationRequest\022F\n" +
+      "\035messageSendRequest_deprecated\030\006 \001(\0132\037.B" +
+      "litzMessage.UserMessageUpdate\022<\n\023message" +
+      "FetchRequest\030\007 \001(\0132\037.BlitzMessage.UserMe" +
+      "ssageUpdate\0220\n\014debugMessage\030\010 \001(\0132\032.Blit" +
+      "zMessage.DebugMessage\022.\n\013imageUpload\030\t \001" +
+      "(\0132\031.BlitzMessage.ImageUpload\0225\n\023acceptI",
+      "nviteRequest\030\n \001(\0132\030.BlitzMessage.UserIn" +
+      "vite\022@\n\024feedPostFetchRequest\030\013 \001(\0132\".Bli" +
+      "tzMessage.FeedPostFetchRequest\022B\n\025feedPo" +
+      "stUpdateRequest\030\014 \001(\0132#.BlitzMessage.Fee" +
+      "dPostUpdateRequest\022>\n\023autocompleteReques" +
+      "t\030\r \001(\0132!.BlitzMessage.AutocompleteReque" +
+      "st\0224\n\017entityTagUpdate\030\016 \001(\0132\033.BlitzMessa" +
+      "ge.EntityTagList\022:\n\021userSearchRequest\030\017 " +
+      "\001(\0132\037.BlitzMessage.UserSearchRequest\022.\n\013" +
+      "pushConnect\030\020 \001(\0132\031.BlitzMessage.PushCon",
+      "nect\0224\n\016pushDisconnect\030\021 \001(\0132\034.BlitzMess" +
+      "age.PushDisconnect\022>\n\023conversationReques" +
+      "t\030\022 \001(\0132!.BlitzMessage.ConversationReque" +
+      "st\022<\n\022fetchConversations\030\023 \001(\0132 .BlitzMe" +
+      "ssage.FetchConversations\022,\n\nuserReview\030\024" +
+      " \001(\0132\030.BlitzMessage.UserReview\022H\n\030update" +
+      "ConversationStatus\030\025 \001(\0132&.BlitzMessage." +
+      "UpdateConversationStatus\0220\n\014userCardInfo" +
+      "\030\026 \001(\0132\032.BlitzMessage.UserCardInfo\022+\n\rch" +
+      "argeRequest\030\027 \001(\0132\024.BlitzMessage.Charge\022",
+      "1\n\rfriendRequest\030\030 \001(\0132\032.BlitzMessage.Fr" +
+      "iendUpdate\0228\n\020searchCategories\030\031 \001(\0132\036.B" +
+      "litzMessage.SearchCategories\022.\n\013sendMess" +
+      "age\030\032 \001(\0132\031.BlitzMessage.UserMessage\022.\n\013" +
+      "editProfile\030\033 \001(\0132\031.BlitzMessage.EditPro" +
+      "file\022F\n\027fetchConversationGroups\030\034 \001(\0132%." +
+      "BlitzMessage.FetchConversationGroups\0220\n\014" +
+      "loginAsAdmin\030\035 \001(\0132\032.BlitzMessage.LoginA" +
+      "sAdmin\022H\n\030fetchPurchaseDescription\030\036 \001(\013" +
+      "2&.BlitzMessage.FetchPurchaseDescription",
+      "\0225\n\022userInvitesRequest\030\037 \001(\0132\031.BlitzMess" +
+      "age.UserInvites\"U\n\rServerRequest\022\024\n\014sess" +
+      "ionToken\030\001 \001(\t\022.\n\013requestType\030\002 \001(\0132\031.Bl" +
+      "itzMessage.RequestType\"\221\013\n\014ResponseType\022" +
+      "6\n\017sessionResponse\030\001 \001(\0132\035.BlitzMessage." +
+      "SessionResponse\022D\n\026userEventBatchRespons" +
+      "e\030\002 \001(\0132$.BlitzMessage.UserEventBatchRes" +
+      "ponse\022:\n\021userProfileUpdate\030\003 \001(\0132\037.Blitz" +
+      "Message.UserProfileUpdate\0228\n\020userProfile" +
+      "Query\030\004 \001(\0132\036.BlitzMessage.UserProfileQu",
+      "ery\022>\n\023confirmationRequest\030\005 \001(\0132!.Blitz" +
+      "Message.ConfirmationRequest\022:\n\021userMessa" +
+      "geUpdate\030\006 \001(\0132\037.BlitzMessage.UserMessag" +
+      "eUpdate\0220\n\014debugMessage\030\007 \001(\0132\032.BlitzMes" +
+      "sage.DebugMessage\0223\n\020imageUploadReply\030\010 " +
+      "\001(\0132\031.BlitzMessage.ImageUpload\0226\n\024accept" +
+      "InviteResponse\030\t \001(\0132\030.BlitzMessage.User" +
+      "Invite\022@\n\024autocompleteResponse\030\014 \001(\0132\".B" +
+      "litzMessage.AutocompleteResponse\022<\n\022user" +
+      "SearchResponse\030\r \001(\0132 .BlitzMessage.User",
+      "SearchResponse\022@\n\024conversationResponse\030\016" +
+      " \001(\0132\".BlitzMessage.ConversationResponse" +
+      "\022<\n\022fetchConversations\030\017 \001(\0132 .BlitzMess" +
+      "age.FetchConversations\0220\n\014userCardInfo\030\020" +
+      " \001(\0132\032.BlitzMessage.UserCardInfo\022,\n\016char" +
+      "geResponse\030\021 \001(\0132\024.BlitzMessage.Charge\0222" +
+      "\n\016friendResponse\030\022 \001(\0132\032.BlitzMessage.Fr" +
+      "iendUpdate\0228\n\020searchCategories\030\023 \001(\0132\036.B" +
+      "litzMessage.SearchCategories\0228\n\020feedPost" +
+      "Response\030\024 \001(\0132\036.BlitzMessage.FeedPostRe",
+      "sponse\022>\n\023purchaseDescription\030\025 \001(\0132!.Bl" +
+      "itzMessage.PurchaseDescription\022.\n\013editPr" +
+      "ofile\030\026 \001(\0132\031.BlitzMessage.EditProfile\022F" +
+      "\n\027fetchConversationGroups\030\027 \001(\0132%.BlitzM" +
+      "essage.FetchConversationGroups\0220\n\014loginA" +
+      "sAdmin\030\030 \001(\0132\032.BlitzMessage.LoginAsAdmin" +
+      "\022H\n\030fetchPurchaseDescription\030\031 \001(\0132&.Bli" +
+      "tzMessage.FetchPurchaseDescription\0226\n\023us" +
+      "erInvitesResponse\030\032 \001(\0132\031.BlitzMessage.U" +
+      "serInvites\"\215\001\n\016ServerResponse\0220\n\014respons",
+      "eCode\030\001 \001(\0162\032.BlitzMessage.ResponseCode\022" +
+      "\027\n\017responseMessage\030\002 \001(\t\0220\n\014responseType" +
+      "\030\003 \001(\0132\032.BlitzMessage.ResponseType*\302\001\n\014R" +
+      "esponseCode\022\r\n\tRCSuccess\020\001\022\022\n\016RCInputCor" +
+      "rupt\020\002\022\022\n\016RCInputInvalid\020\003\022\023\n\017RCServerWa" +
+      "rning\020\004\022\021\n\rRCServerError\020\005\022\023\n\017RCNotAutho" +
+      "rized\020\006\022\022\n\016RCClientTooOld\020\007\022\022\n\016RCPayment" +
+      "Error\020\010\022\026\n\022RCPurchaseRequired\020\tB/\n\032com.b" +
+      "litzhere.BlitzMessage\210\001\001\322>\002\n\000\322>\003\022\001B\322>\002\030\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -19242,7 +19556,7 @@ public final class Server {
     internal_static_BlitzMessage_SessionRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_BlitzMessage_SessionRequest_descriptor,
-        new java.lang.String[] { "Location", "DeviceInfo", "Profile", "LastAppDataResetDate", "Logout", });
+        new java.lang.String[] { "Location", "DeviceInfo", "Profile", "LastAppDataResetDate", "Logout", "Login", "Secret", });
     internal_static_BlitzMessage_BlitzHereAppOptions_descriptor =
       getDescriptor().getMessageTypes().get(2);
     internal_static_BlitzMessage_BlitzHereAppOptions_fieldAccessorTable = new

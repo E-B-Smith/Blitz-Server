@@ -276,14 +276,20 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 #define SessionRequest_profile @"profile"
 #define SessionRequest_lastAppDataResetDate @"lastAppDataResetDate"
 #define SessionRequest_logout @"logout"
+#define SessionRequest_login @"login"
+#define SessionRequest_secret @"secret"
 @interface BSessionRequest : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
   BOOL hasLogout_:1;
+  BOOL hasLogin_:1;
+  BOOL hasSecret_:1;
   BOOL hasLocation_:1;
   BOOL hasDeviceInfo_:1;
   BOOL hasProfile_:1;
   BOOL hasLastAppDataResetDate_:1;
   BOOL logout_:1;
+  NSString* login;
+  NSString* secret;
   BLocation* location;
   BDeviceInfo* deviceInfo;
   BUserProfile* profile;
@@ -294,11 +300,15 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BOOL) hasProfile;
 - (BOOL) hasLastAppDataResetDate;
 - (BOOL) hasLogout;
+- (BOOL) hasLogin;
+- (BOOL) hasSecret;
 @property (readonly, strong) BLocation* location;
 @property (readonly, strong) BDeviceInfo* deviceInfo;
 @property (readonly, strong) BUserProfile* profile;
 @property (readonly, strong) BTimestamp* lastAppDataResetDate;
 - (BOOL) logout;
+@property (readonly, strong) NSString* login;
+@property (readonly, strong) NSString* secret;
 
 + (instancetype) defaultInstance;
 - (instancetype) defaultInstance;
@@ -367,6 +377,16 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BOOL) logout;
 - (BSessionRequestBuilder*) setLogout:(BOOL) value;
 - (BSessionRequestBuilder*) clearLogout;
+
+- (BOOL) hasLogin;
+- (NSString*) login;
+- (BSessionRequestBuilder*) setLogin:(NSString*) value;
+- (BSessionRequestBuilder*) clearLogin;
+
+- (BOOL) hasSecret;
+- (NSString*) secret;
+- (BSessionRequestBuilder*) setSecret:(NSString*) value;
+- (BSessionRequestBuilder*) clearSecret;
 @end
 
 @interface BBlitzHereAppOptions : PBGeneratedMessage<GeneratedMessageProtocol> {

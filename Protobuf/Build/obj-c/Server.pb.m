@@ -295,6 +295,8 @@ static BDebugMessage* defaultBDebugMessageInstance = nil;
 @property (strong) BUserProfile* profile;
 @property (strong) BTimestamp* lastAppDataResetDate;
 @property BOOL logout;
+@property (strong) NSString* login;
+@property (strong) NSString* secret;
 @end
 
 @implementation BSessionRequest
@@ -339,6 +341,20 @@ static BDebugMessage* defaultBDebugMessageInstance = nil;
 - (void) setLogout:(BOOL) _value_ {
   logout_ = !!_value_;
 }
+- (BOOL) hasLogin {
+  return !!hasLogin_;
+}
+- (void) setHasLogin:(BOOL) _value_ {
+  hasLogin_ = !!_value_;
+}
+@synthesize login;
+- (BOOL) hasSecret {
+  return !!hasSecret_;
+}
+- (void) setHasSecret:(BOOL) _value_ {
+  hasSecret_ = !!_value_;
+}
+@synthesize secret;
 - (instancetype) init {
   if ((self = [super init])) {
     self.location = [BLocation defaultInstance];
@@ -346,6 +362,8 @@ static BDebugMessage* defaultBDebugMessageInstance = nil;
     self.profile = [BUserProfile defaultInstance];
     self.lastAppDataResetDate = [BTimestamp defaultInstance];
     self.logout = NO;
+    self.login = @"";
+    self.secret = @"";
   }
   return self;
 }
@@ -385,6 +403,12 @@ static BSessionRequest* defaultBSessionRequestInstance = nil;
   if (self.hasLogout) {
     [output writeBool:5 value:self.logout];
   }
+  if (self.hasLogin) {
+    [output writeString:6 value:self.login];
+  }
+  if (self.hasSecret) {
+    [output writeString:7 value:self.secret];
+  }
   [self.unknownFields writeToCodedOutputStream:output];
 }
 - (SInt32) serializedSize {
@@ -408,6 +432,12 @@ static BSessionRequest* defaultBSessionRequestInstance = nil;
   }
   if (self.hasLogout) {
     size_ += computeBoolSize(5, self.logout);
+  }
+  if (self.hasLogin) {
+    size_ += computeStringSize(6, self.login);
+  }
+  if (self.hasSecret) {
+    size_ += computeStringSize(7, self.secret);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -471,6 +501,12 @@ static BSessionRequest* defaultBSessionRequestInstance = nil;
   if (self.hasLogout) {
     [output appendFormat:@"%@%@: %@\n", indent, @"logout", [NSNumber numberWithBool:self.logout]];
   }
+  if (self.hasLogin) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"login", self.login];
+  }
+  if (self.hasSecret) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"secret", self.secret];
+  }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (void) storeInDictionary:(NSMutableDictionary *)dictionary {
@@ -497,6 +533,12 @@ static BSessionRequest* defaultBSessionRequestInstance = nil;
   if (self.hasLogout) {
     [dictionary setObject: [NSNumber numberWithBool:self.logout] forKey: @"logout"];
   }
+  if (self.hasLogin) {
+    [dictionary setObject: self.login forKey: @"login"];
+  }
+  if (self.hasSecret) {
+    [dictionary setObject: self.secret forKey: @"secret"];
+  }
   [self.unknownFields storeInDictionary:dictionary];
 }
 - (BOOL) isEqual:(id)other {
@@ -518,6 +560,10 @@ static BSessionRequest* defaultBSessionRequestInstance = nil;
       (!self.hasLastAppDataResetDate || [self.lastAppDataResetDate isEqual:otherMessage.lastAppDataResetDate]) &&
       self.hasLogout == otherMessage.hasLogout &&
       (!self.hasLogout || self.logout == otherMessage.logout) &&
+      self.hasLogin == otherMessage.hasLogin &&
+      (!self.hasLogin || [self.login isEqual:otherMessage.login]) &&
+      self.hasSecret == otherMessage.hasSecret &&
+      (!self.hasSecret || [self.secret isEqual:otherMessage.secret]) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
@@ -536,6 +582,12 @@ static BSessionRequest* defaultBSessionRequestInstance = nil;
   }
   if (self.hasLogout) {
     hashCode = hashCode * 31 + [[NSNumber numberWithBool:self.logout] hash];
+  }
+  if (self.hasLogin) {
+    hashCode = hashCode * 31 + [self.login hash];
+  }
+  if (self.hasSecret) {
+    hashCode = hashCode * 31 + [self.secret hash];
   }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
@@ -594,6 +646,12 @@ static BSessionRequest* defaultBSessionRequestInstance = nil;
   }
   if (other.hasLogout) {
     [self setLogout:other.logout];
+  }
+  if (other.hasLogin) {
+    [self setLogin:other.login];
+  }
+  if (other.hasSecret) {
+    [self setSecret:other.secret];
   }
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -654,6 +712,14 @@ static BSessionRequest* defaultBSessionRequestInstance = nil;
       }
       case 40: {
         [self setLogout:[input readBool]];
+        break;
+      }
+      case 50: {
+        [self setLogin:[input readString]];
+        break;
+      }
+      case 58: {
+        [self setSecret:[input readString]];
         break;
       }
     }
@@ -793,6 +859,38 @@ static BSessionRequest* defaultBSessionRequestInstance = nil;
 - (BSessionRequestBuilder*) clearLogout {
   resultSessionRequest.hasLogout = NO;
   resultSessionRequest.logout = NO;
+  return self;
+}
+- (BOOL) hasLogin {
+  return resultSessionRequest.hasLogin;
+}
+- (NSString*) login {
+  return resultSessionRequest.login;
+}
+- (BSessionRequestBuilder*) setLogin:(NSString*) value {
+  resultSessionRequest.hasLogin = YES;
+  resultSessionRequest.login = value;
+  return self;
+}
+- (BSessionRequestBuilder*) clearLogin {
+  resultSessionRequest.hasLogin = NO;
+  resultSessionRequest.login = @"";
+  return self;
+}
+- (BOOL) hasSecret {
+  return resultSessionRequest.hasSecret;
+}
+- (NSString*) secret {
+  return resultSessionRequest.secret;
+}
+- (BSessionRequestBuilder*) setSecret:(NSString*) value {
+  resultSessionRequest.hasSecret = YES;
+  resultSessionRequest.secret = value;
+  return self;
+}
+- (BSessionRequestBuilder*) clearSecret {
+  resultSessionRequest.hasSecret = NO;
+  resultSessionRequest.secret = @"";
   return self;
 }
 @end

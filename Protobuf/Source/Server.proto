@@ -38,11 +38,13 @@ message DebugMessage {
 
 
 message SessionRequest {
-  optional Location location     = 1;
-  optional DeviceInfo deviceInfo = 2;
-  optional UserProfile profile   = 3;
-  optional Timestamp lastAppDataResetDate = 4;
-  optional bool      logout      = 5;
+  optional Location   location    = 1;
+  optional DeviceInfo deviceInfo  = 2;
+  optional UserProfile profile    = 3;
+  optional Timestamp  lastAppDataResetDate = 4;
+  optional bool       logout      = 5;
+  optional string     login       = 6;
+  optional string     secret      = 7;
 }
 
 
@@ -168,10 +170,10 @@ message ResponseType {
   optional FeedPostResponse       feedPostResponse        = 20;
   optional PurchaseDescription    purchaseDescription     = 21;
   optional EditProfile            editProfile             = 22;
-  optional FetchConversationGroups  fetchConversationGroups = 23;
-  optional LoginAsAdmin             loginAsAdmin          = 24;
+  optional FetchConversationGroups  fetchConversationGroups  = 23;
+  optional LoginAsAdmin             loginAsAdmin             = 24;
   optional FetchPurchaseDescription fetchPurchaseDescription = 25;
-  optional UserInvites              userInvitesResponse   = 26;
+  optional UserInvites              userInvitesResponse      = 26;
 }
 
 
