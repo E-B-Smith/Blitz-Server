@@ -480,6 +480,7 @@ static BFeedPanelMember* defaultBFeedPanelMemberInstance = nil;
 @property (strong) NSString* amountTotal;
 @property (strong) NSMutableArray * panelUserIDsDeprecatedArray;
 @property (strong) NSMutableArray * panelArray;
+@property BFeedPostStatus postStatus;
 @end
 
 @implementation BFeedPost
@@ -631,6 +632,13 @@ static BFeedPanelMember* defaultBFeedPanelMemberInstance = nil;
 @dynamic panelUserIDsDeprecated;
 @synthesize panelArray;
 @dynamic panel;
+- (BOOL) hasPostStatus {
+  return !!hasPostStatus_;
+}
+- (void) setHasPostStatus:(BOOL) _value_ {
+  hasPostStatus_ = !!_value_;
+}
+@synthesize postStatus;
 - (instancetype) init {
   if ((self = [super init])) {
     self.postID = @"";
@@ -650,6 +658,7 @@ static BFeedPanelMember* defaultBFeedPanelMemberInstance = nil;
     self.totalVoteCount = 0;
     self.amountPerReplyDeprecated = @"";
     self.amountTotal = @"";
+    self.postStatus = BFeedPostStatusFPSUnknown;
   }
   return self;
 }
@@ -756,6 +765,9 @@ static BFeedPost* defaultBFeedPostInstance = nil;
   [self.panelArray enumerateObjectsUsingBlock:^(BFeedPanelMember *element, NSUInteger idx, BOOL *stop) {
     [output writeMessage:22 value:element];
   }];
+  if (self.hasPostStatus) {
+    [output writeEnum:23 value:self.postStatus];
+  }
   [self.unknownFields writeToCodedOutputStream:output];
 }
 - (SInt32) serializedSize {
@@ -834,6 +846,9 @@ static BFeedPost* defaultBFeedPostInstance = nil;
   [self.panelArray enumerateObjectsUsingBlock:^(BFeedPanelMember *element, NSUInteger idx, BOOL *stop) {
     size_ += computeMessageSize(22, element);
   }];
+  if (self.hasPostStatus) {
+    size_ += computeEnumSize(23, self.postStatus);
+  }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
   return size_;
@@ -947,6 +962,9 @@ static BFeedPost* defaultBFeedPostInstance = nil;
                      withIndent:[NSString stringWithFormat:@"%@  ", indent]];
     [output appendFormat:@"%@}\n", indent];
   }];
+  if (self.hasPostStatus) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"postStatus", NSStringFromBFeedPostStatus(self.postStatus)];
+  }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (void) storeInDictionary:(NSMutableDictionary *)dictionary {
@@ -1021,6 +1039,9 @@ static BFeedPost* defaultBFeedPostInstance = nil;
     [element storeInDictionary:elementDictionary];
     [dictionary setObject:[NSDictionary dictionaryWithDictionary:elementDictionary] forKey:@"panel"];
   }
+  if (self.hasPostStatus) {
+    [dictionary setObject: @(self.postStatus) forKey: @"postStatus"];
+  }
   [self.unknownFields storeInDictionary:dictionary];
 }
 - (BOOL) isEqual:(id)other {
@@ -1070,6 +1091,8 @@ static BFeedPost* defaultBFeedPostInstance = nil;
       (!self.hasAmountTotal || [self.amountTotal isEqual:otherMessage.amountTotal]) &&
       [self.panelUserIDsDeprecatedArray isEqualToArray:otherMessage.panelUserIDsDeprecatedArray] &&
       [self.panelArray isEqualToArray:otherMessage.panelArray] &&
+      self.hasPostStatus == otherMessage.hasPostStatus &&
+      (!self.hasPostStatus || self.postStatus == otherMessage.postStatus) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
@@ -1137,6 +1160,9 @@ static BFeedPost* defaultBFeedPostInstance = nil;
   [self.panelArray enumerateObjectsUsingBlock:^(BFeedPanelMember *element, NSUInteger idx, BOOL *stop) {
     hashCode = hashCode * 31 + [element hash];
   }];
+  if (self.hasPostStatus) {
+    hashCode = hashCode * 31 + self.postStatus;
+  }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
 }
@@ -1258,6 +1284,9 @@ static BFeedPost* defaultBFeedPostInstance = nil;
     } else {
       [resultFeedPost.panelArray addObjectsFromArray:other.panelArray];
     }
+  }
+  if (other.hasPostStatus) {
+    [self setPostStatus:other.postStatus];
   }
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -1388,6 +1417,15 @@ static BFeedPost* defaultBFeedPostInstance = nil;
         BFeedPanelMemberBuilder* subBuilder = [BFeedPanelMember builder];
         [input readMessage:subBuilder extensionRegistry:extensionRegistry];
         [self addPanel:[subBuilder buildPartial]];
+        break;
+      }
+      case 184: {
+        BFeedPostStatus value = (BFeedPostStatus)[input readEnum];
+        if (BFeedPostStatusIsValidValue(value)) {
+          [self setPostStatus:value];
+        } else {
+          [unknownFields mergeVarintField:23 value:value];
+        }
         break;
       }
     }
@@ -1775,6 +1813,22 @@ static BFeedPost* defaultBFeedPostInstance = nil;
 }
 - (BFeedPostBuilder *)clearPanel {
   resultFeedPost.panelArray = nil;
+  return self;
+}
+- (BOOL) hasPostStatus {
+  return resultFeedPost.hasPostStatus;
+}
+- (BFeedPostStatus) postStatus {
+  return resultFeedPost.postStatus;
+}
+- (BFeedPostBuilder*) setPostStatus:(BFeedPostStatus) value {
+  resultFeedPost.hasPostStatus = YES;
+  resultFeedPost.postStatus = value;
+  return self;
+}
+- (BFeedPostBuilder*) clearPostStatus {
+  resultFeedPost.hasPostStatus = NO;
+  resultFeedPost.postStatus = BFeedPostStatusFPSUnknown;
   return self;
 }
 @end

@@ -74,6 +74,7 @@ message FeedPost {
   optional string         amountTotal     = 20;
   repeated string         panelUserIDs_deprecated = 21;
   repeated FeedPanelMember panel          = 22;
+  optional FeedPostStatus postStatus      = 23;
 }
 
 

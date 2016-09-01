@@ -229,6 +229,7 @@ NSString *NSStringFromBUpdateVerb(BUpdateVerb value);
 #define FeedPost_amountTotal @"amountTotal"
 #define FeedPost_panelUserIDs_deprecated @"panelUserIDsDeprecated"
 #define FeedPost_panel @"panel"
+#define FeedPost_postStatus @"postStatus"
 @interface BFeedPost : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
   BOOL hasAnonymousPost_:1;
@@ -248,6 +249,7 @@ NSString *NSStringFromBUpdateVerb(BUpdateVerb value);
   BOOL hasTimespanActive_:1;
   BOOL hasPostType_:1;
   BOOL hasPostScope_:1;
+  BOOL hasPostStatus_:1;
   BOOL anonymousPost_:1;
   BOOL mayAddReply_:1;
   BOOL mayChooseMulitpleReplies_:1;
@@ -265,6 +267,7 @@ NSString *NSStringFromBUpdateVerb(BUpdateVerb value);
   BTimespan* timespanActive;
   BFeedPostType postType;
   BFeedPostScope postScope;
+  BFeedPostStatus postStatus;
   NSMutableArray * panelUserIDsDeprecatedArray;
   NSMutableArray * postTagsArray;
   NSMutableArray * repliesDeprecatedArray;
@@ -287,6 +290,7 @@ NSString *NSStringFromBUpdateVerb(BUpdateVerb value);
 - (BOOL) hasTotalVoteCount;
 - (BOOL) hasAmountPerReplyDeprecated;
 - (BOOL) hasAmountTotal;
+- (BOOL) hasPostStatus;
 @property (readonly, strong) NSString* postID;
 @property (readonly, strong) NSString* parentID;
 @property (readonly) BFeedPostType postType;
@@ -308,6 +312,7 @@ NSString *NSStringFromBUpdateVerb(BUpdateVerb value);
 @property (readonly, strong) NSString* amountTotal;
 @property (readonly, strong) NSArray * panelUserIDsDeprecated;
 @property (readonly, strong) NSArray * panel;
+@property (readonly) BFeedPostStatus postStatus;
 - (BEntityTag*)postTagsAtIndex:(NSUInteger)index;
 - (BFeedPost*)repliesDeprecatedAtIndex:(NSUInteger)index;
 - (NSString*)panelUserIDsDeprecatedAtIndex:(NSUInteger)index;
@@ -460,6 +465,11 @@ NSString *NSStringFromBUpdateVerb(BUpdateVerb value);
 - (BFeedPostBuilder *)addPanel:(BFeedPanelMember*)value;
 - (BFeedPostBuilder *)setPanelArray:(NSArray *)array;
 - (BFeedPostBuilder *)clearPanel;
+
+- (BOOL) hasPostStatus;
+- (BFeedPostStatus) postStatus;
+- (BFeedPostBuilder*) setPostStatus:(BFeedPostStatus) value;
+- (BFeedPostBuilder*) clearPostStatus;
 @end
 
 #define FeedPostUpdateRequest_updateVerb @"updateVerb"

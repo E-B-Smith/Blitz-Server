@@ -1549,6 +1549,15 @@ public final class Feed {
      */
     com.blitzhere.BlitzMessage.Feed.FeedPanelMemberOrBuilder getPanelOrBuilder(
         int index);
+
+    /**
+     * <code>optional .BlitzMessage.FeedPostStatus postStatus = 23;</code>
+     */
+    boolean hasPostStatus();
+    /**
+     * <code>optional .BlitzMessage.FeedPostStatus postStatus = 23;</code>
+     */
+    com.blitzhere.BlitzMessage.Feed.FeedPostStatus getPostStatus();
   }
   /**
    * Protobuf type {@code BlitzMessage.FeedPost}
@@ -1753,6 +1762,17 @@ public final class Feed {
                 mutable_bitField0_ |= 0x00100000;
               }
               panel_.add(input.readMessage(com.blitzhere.BlitzMessage.Feed.FeedPanelMember.PARSER, extensionRegistry));
+              break;
+            }
+            case 184: {
+              int rawValue = input.readEnum();
+              com.blitzhere.BlitzMessage.Feed.FeedPostStatus value = com.blitzhere.BlitzMessage.Feed.FeedPostStatus.valueOf(rawValue);
+              if (value == null) {
+                unknownFields.mergeVarintField(23, rawValue);
+              } else {
+                bitField0_ |= 0x00020000;
+                postStatus_ = value;
+              }
               break;
             }
           }
@@ -2417,6 +2437,21 @@ public final class Feed {
       return panel_.get(index);
     }
 
+    public static final int POSTSTATUS_FIELD_NUMBER = 23;
+    private com.blitzhere.BlitzMessage.Feed.FeedPostStatus postStatus_;
+    /**
+     * <code>optional .BlitzMessage.FeedPostStatus postStatus = 23;</code>
+     */
+    public boolean hasPostStatus() {
+      return ((bitField0_ & 0x00020000) == 0x00020000);
+    }
+    /**
+     * <code>optional .BlitzMessage.FeedPostStatus postStatus = 23;</code>
+     */
+    public com.blitzhere.BlitzMessage.Feed.FeedPostStatus getPostStatus() {
+      return postStatus_;
+    }
+
     private void initFields() {
       postID_ = "";
       parentID_ = "";
@@ -2439,6 +2474,7 @@ public final class Feed {
       amountTotal_ = "";
       panelUserIDsDeprecated_ = com.google.protobuf.LazyStringArrayList.EMPTY;
       panel_ = java.util.Collections.emptyList();
+      postStatus_ = com.blitzhere.BlitzMessage.Feed.FeedPostStatus.FPSUnknown;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -2515,6 +2551,9 @@ public final class Feed {
       }
       for (int i = 0; i < panel_.size(); i++) {
         output.writeMessage(22, panel_.get(i));
+      }
+      if (((bitField0_ & 0x00020000) == 0x00020000)) {
+        output.writeEnum(23, postStatus_.getNumber());
       }
       getUnknownFields().writeTo(output);
     }
@@ -2613,6 +2652,10 @@ public final class Feed {
       for (int i = 0; i < panel_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(22, panel_.get(i));
+      }
+      if (((bitField0_ & 0x00020000) == 0x00020000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(23, postStatus_.getNumber());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -2798,6 +2841,8 @@ public final class Feed {
         } else {
           panelBuilder_.clear();
         }
+        postStatus_ = com.blitzhere.BlitzMessage.Feed.FeedPostStatus.FPSUnknown;
+        bitField0_ = (bitField0_ & ~0x00200000);
         return this;
       }
 
@@ -2934,6 +2979,10 @@ public final class Feed {
         } else {
           result.panel_ = panelBuilder_.build();
         }
+        if (((from_bitField0_ & 0x00200000) == 0x00200000)) {
+          to_bitField0_ |= 0x00020000;
+        }
+        result.postStatus_ = postStatus_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -3102,6 +3151,9 @@ public final class Feed {
               panelBuilder_.addAllMessages(other.panel_);
             }
           }
+        }
+        if (other.hasPostStatus()) {
+          setPostStatus(other.getPostStatus());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -5039,6 +5091,41 @@ public final class Feed {
           panel_ = null;
         }
         return panelBuilder_;
+      }
+
+      private com.blitzhere.BlitzMessage.Feed.FeedPostStatus postStatus_ = com.blitzhere.BlitzMessage.Feed.FeedPostStatus.FPSUnknown;
+      /**
+       * <code>optional .BlitzMessage.FeedPostStatus postStatus = 23;</code>
+       */
+      public boolean hasPostStatus() {
+        return ((bitField0_ & 0x00200000) == 0x00200000);
+      }
+      /**
+       * <code>optional .BlitzMessage.FeedPostStatus postStatus = 23;</code>
+       */
+      public com.blitzhere.BlitzMessage.Feed.FeedPostStatus getPostStatus() {
+        return postStatus_;
+      }
+      /**
+       * <code>optional .BlitzMessage.FeedPostStatus postStatus = 23;</code>
+       */
+      public Builder setPostStatus(com.blitzhere.BlitzMessage.Feed.FeedPostStatus value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00200000;
+        postStatus_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional .BlitzMessage.FeedPostStatus postStatus = 23;</code>
+       */
+      public Builder clearPostStatus() {
+        bitField0_ = (bitField0_ & ~0x00200000);
+        postStatus_ = com.blitzhere.BlitzMessage.Feed.FeedPostStatus.FPSUnknown;
+        onChanged();
+        return this;
       }
 
       // @@protoc_insertion_point(builder_scope:BlitzMessage.FeedPost)
@@ -7585,7 +7672,7 @@ public final class Feed {
       "escriptor.proto\032\013Types.proto\032\020EntityTags" +
       ".proto\"f\n\017FeedPanelMember\022\016\n\006userID\030\001 \001(" +
       "\t\022\024\n\014bountyAmount\030\002 \001(\t\022-\n\014dateAnswered\030" +
-      "\003 \001(\0132\027.BlitzMessage.Timestamp\"\247\005\n\010FeedP" +
+      "\003 \001(\0132\027.BlitzMessage.Timestamp\"\331\005\n\010FeedP" +
       "ost\022\016\n\006postID\030\001 \001(\t\022\020\n\010parentID\030\002 \001(\t\022,\n" +
       "\010postType\030\003 \001(\0162\032.BlitzMessage.FeedPostT" +
       "ype\022.\n\tpostScope\030\004 \001(\0162\033.BlitzMessage.Fe" +
@@ -7602,27 +7689,29 @@ public final class Feed {
       "alVoteCount\030\022 \001(\005\022!\n\031amountPerReply_depr" +
       "ecated\030\023 \001(\t\022\023\n\013amountTotal\030\024 \001(\t\022\037\n\027pan",
       "elUserIDs_deprecated\030\025 \003(\t\022,\n\005panel\030\026 \003(" +
-      "\0132\035.BlitzMessage.FeedPanelMember\"\245\001\n\025Fee" +
-      "dPostUpdateRequest\022,\n\nupdateVerb\030\001 \001(\0162\030" +
-      ".BlitzMessage.UpdateVerb\0223\n\023feedPost_dep" +
-      "recated\030\002 \001(\0132\026.BlitzMessage.FeedPost\022)\n" +
-      "\tfeedPosts\030\003 \003(\0132\026.BlitzMessage.FeedPost" +
-      "\"\202\001\n\024FeedPostFetchRequest\022(\n\010timespan\030\001 " +
-      "\001(\0132\026.BlitzMessage.Timespan\022.\n\tfeedScope" +
-      "\030\002 \001(\0162\033.BlitzMessage.FeedPostScope\022\020\n\010p" +
-      "arentID\030\003 \001(\t\"=\n\020FeedPostResponse\022)\n\tfee",
-      "dPosts\030\001 \003(\0132\026.BlitzMessage.FeedPost*\240\001\n" +
-      "\014FeedPostType\022\r\n\tFPUnknown\020\000\022\027\n\023FPOpenEn" +
-      "dedQuestion\020\001\022\024\n\020FPOpenEndedReply\020\002\022\024\n\020F" +
-      "PSurveyQuestion\020\003\022\022\n\016FPSurveyAnswer\020\004\022\024\n" +
-      "\020FPWantedQuestion\020\005\022\022\n\016FPWantedAnswer\020\006*" +
-      "V\n\rFeedPostScope\022\022\n\016FPScopeUnknown\020\000\022\027\n\023" +
-      "FPScopeLocalNetwork\020\001\022\030\n\024FPScopeGlobalNe" +
-      "twork\020\002*P\n\016FeedPostStatus\022\016\n\nFPSUnknown\020" +
-      "\000\022\r\n\tFPSActive\020\001\022\016\n\nFPSDeleted\020\002\022\017\n\013FPSA" +
-      "nswered\020\003*6\n\nUpdateVerb\022\014\n\010UVCreate\020\001\022\014\n",
-      "\010UVUpdate\020\002\022\014\n\010UVDelete\020\003B/\n\032com.blitzhe" +
-      "re.BlitzMessage\210\001\001\322>\002\n\000\322>\003\022\001B\322>\002\030\001"
+      "\0132\035.BlitzMessage.FeedPanelMember\0220\n\npost" +
+      "Status\030\027 \001(\0162\034.BlitzMessage.FeedPostStat" +
+      "us\"\245\001\n\025FeedPostUpdateRequest\022,\n\nupdateVe" +
+      "rb\030\001 \001(\0162\030.BlitzMessage.UpdateVerb\0223\n\023fe" +
+      "edPost_deprecated\030\002 \001(\0132\026.BlitzMessage.F" +
+      "eedPost\022)\n\tfeedPosts\030\003 \003(\0132\026.BlitzMessag" +
+      "e.FeedPost\"\202\001\n\024FeedPostFetchRequest\022(\n\010t" +
+      "imespan\030\001 \001(\0132\026.BlitzMessage.Timespan\022.\n" +
+      "\tfeedScope\030\002 \001(\0162\033.BlitzMessage.FeedPost",
+      "Scope\022\020\n\010parentID\030\003 \001(\t\"=\n\020FeedPostRespo" +
+      "nse\022)\n\tfeedPosts\030\001 \003(\0132\026.BlitzMessage.Fe" +
+      "edPost*\240\001\n\014FeedPostType\022\r\n\tFPUnknown\020\000\022\027" +
+      "\n\023FPOpenEndedQuestion\020\001\022\024\n\020FPOpenEndedRe" +
+      "ply\020\002\022\024\n\020FPSurveyQuestion\020\003\022\022\n\016FPSurveyA" +
+      "nswer\020\004\022\024\n\020FPWantedQuestion\020\005\022\022\n\016FPWante" +
+      "dAnswer\020\006*V\n\rFeedPostScope\022\022\n\016FPScopeUnk" +
+      "nown\020\000\022\027\n\023FPScopeLocalNetwork\020\001\022\030\n\024FPSco" +
+      "peGlobalNetwork\020\002*P\n\016FeedPostStatus\022\016\n\nF" +
+      "PSUnknown\020\000\022\r\n\tFPSActive\020\001\022\016\n\nFPSDeleted",
+      "\020\002\022\017\n\013FPSAnswered\020\003*6\n\nUpdateVerb\022\014\n\010UVC" +
+      "reate\020\001\022\014\n\010UVUpdate\020\002\022\014\n\010UVDelete\020\003B/\n\032c" +
+      "om.blitzhere.BlitzMessage\210\001\001\322>\002\n\000\322>\003\022\001B\322" +
+      ">\002\030\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -7650,7 +7739,7 @@ public final class Feed {
     internal_static_BlitzMessage_FeedPost_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_BlitzMessage_FeedPost_descriptor,
-        new java.lang.String[] { "PostID", "ParentID", "PostType", "PostScope", "UserID", "AnonymousPost", "Timestamp", "TimespanActive", "HeadlineText", "BodyText", "PostTags", "RepliesDeprecated", "MayAddReply", "MayChooseMulitpleReplies", "SurveyAnswerSequence", "AreMoreReplies", "TotalVoteCount", "AmountPerReplyDeprecated", "AmountTotal", "PanelUserIDsDeprecated", "Panel", });
+        new java.lang.String[] { "PostID", "ParentID", "PostType", "PostScope", "UserID", "AnonymousPost", "Timestamp", "TimespanActive", "HeadlineText", "BodyText", "PostTags", "RepliesDeprecated", "MayAddReply", "MayChooseMulitpleReplies", "SurveyAnswerSequence", "AreMoreReplies", "TotalVoteCount", "AmountPerReplyDeprecated", "AmountTotal", "PanelUserIDsDeprecated", "Panel", "PostStatus", });
     internal_static_BlitzMessage_FeedPostUpdateRequest_descriptor =
       getDescriptor().getMessageTypes().get(2);
     internal_static_BlitzMessage_FeedPostUpdateRequest_fieldAccessorTable = new

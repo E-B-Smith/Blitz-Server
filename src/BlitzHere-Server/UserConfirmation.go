@@ -198,7 +198,8 @@ func UserIsConfirming(session *Session, confirmation *BlitzMessage.ConfirmationR
 
     //  Now we've mybe got out userID --
 
-    if oldestUserID.Valid && len(oldestUserID.String) > 10 {
+    if oldestUserID.Valid && len(oldestUserID.String) > 10 &&
+       dbUserID.Valid && len(dbUserID.String) > 10 {
 
         //  An older profile exists.  Merge current profile
         //  into profile.

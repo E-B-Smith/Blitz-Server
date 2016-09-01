@@ -39,7 +39,10 @@ func WriteFeedPost(feedPost *BlitzMessage.FeedPost) error {
 
     _, error := config.DB.Exec(
         `insert into FeedPostTable (postID, postStatus, timestamp)
-            values ($1, $2, current_timestamp);`, feedPost.PostID, BlitzMessage.FeedPostStatus_FPSActive)
+            values ($1, $2, current_timestamp);`,
+        feedPost.PostID,
+        BlitzMessage.FeedPostStatus_FPSActive,
+    )
     Log.Debugf("FeedPost Create status: %v.", error)
 
     result, error := config.DB.Exec(
@@ -106,7 +109,8 @@ var kScanFeedRowString =
     FeedPostTable.mayChooseMulitpleReplies,
     FeedPostTable.surveyAnswerSequence,
     FeedPostTable.amountPerReply,
-    FeedPostTable.amountTotal
+    FeedPostTable.amountTotal,
+    FeedPostTable.postStatus
 `
 
 
@@ -135,6 +139,7 @@ func ScanFeedPostRowForUserID(queryUserID string, row RowScanner) (*BlitzMessage
         surveyAnswerSequence        sql.NullInt64
         amountPerReply  sql.NullString
         amountTotal     sql.NullString
+        postStatus      sql.NullInt64
     )
     error := row.Scan(
         &postID,
@@ -153,6 +158,7 @@ func ScanFeedPostRowForUserID(queryUserID string, row RowScanner) (*BlitzMessage
         &surveyAnswerSequence,
         &amountPerReply,
         &amountTotal,
+        &postStatus,
     )
     if error != nil {
         Log.LogError(error)
@@ -175,6 +181,7 @@ func ScanFeedPostRowForUserID(queryUserID string, row RowScanner) (*BlitzMessage
         SurveyAnswerSequence:       Int32PtrFromNullInt64(surveyAnswerSequence),
 //      AmountPerReply:     StringPtrFromNullString(amountPerReply),
         AmountTotal:        StringPtrFromNullString(amountTotal),
+        PostStatus:         BlitzMessage.FeedPostStatus(postStatus.Int64).Enum(),
     }
 
     feedPost.PostTags = GetEntityTagsWithUserID(queryUserID, *feedPost.PostID, BlitzMessage.EntityType_ETFeedPost)
@@ -498,10 +505,8 @@ func FetchTopOpenRepliesForFeedPost(queryUserID string, parentPostID string, lim
     rows, error := config.DB.Query(
         `select ` + kScanFeedRowString +
         `   from FeedPostTable
-            where postStatus = $1
-              and parentID = $2
-              order by timestamp limit $3 ;`,
-        BlitzMessage.FeedPostStatus_FPSActive,
+              where parentID = $1
+              order by timestamp limit $2 ;`,
         parentPostID,
         limit,
     )
@@ -537,13 +542,11 @@ func FetchTopSurveyRepliesForFeedPost(queryUserID string, parentPostID string, l
     rows, error := config.DB.Query(
         `select ` + kScanFeedRowString +
         `   from FeedPostTable
-            where postStatus = $1
-              and parentID = $2
+            where parentID = $1
               and surveyAnswerSequence is not null
               and surveyAnswerSequence <> 0
               order by surveyAnswerSequence, timestamp
-              limit $3;`,
-        BlitzMessage.FeedPostStatus_FPSActive,
+              limit $2;`,
         parentPostID,
         limit,
     )
@@ -609,17 +612,15 @@ func FetchFeedPosts(session *Session, fetchRequest *BlitzMessage.FeedPostFetchRe
                       and ett.entityTag = '.panel'
                       and ett.entityType = $2
                       and ett.entityID = FeedPostTable.postID)
-                where postStatus = $3
-                  and (parentID is null or parentID = postID)
+                where (parentID is null or parentID = postID)
                   and timeActiveStart <= current_timestamp
                   and timeActiveStop   > current_timestamp
-                  and (postType = $4
+                  and (postType = $3
                         or entityTag is not null
                         or FeedPostTable.userID = $1)
                 order by timestamp desc;`,
             session.UserID,
             BlitzMessage.EntityType_ETFeedPost,
-            BlitzMessage.FeedPostStatus_FPSActive,
             BlitzMessage.FeedPostType_FPWantedQuestion,
         )
 
@@ -630,10 +631,8 @@ func FetchFeedPosts(session *Session, fetchRequest *BlitzMessage.FeedPostFetchRe
             `   from FeedPostTable
                 where (postID = $1
                    or parentID = $1)
-                  and postStatus <> $2
                 order by timestamp desc;`,
             parentID,
-            BlitzMessage.FeedPostStatus_FPSDeleted,
         )
 
     }
