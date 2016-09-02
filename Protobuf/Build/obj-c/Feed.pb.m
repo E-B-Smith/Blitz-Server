@@ -481,6 +481,7 @@ static BFeedPanelMember* defaultBFeedPanelMemberInstance = nil;
 @property (strong) NSMutableArray * panelUserIDsDeprecatedArray;
 @property (strong) NSMutableArray * panelArray;
 @property BFeedPostStatus postStatus;
+@property (strong) NSString* referreeID;
 @end
 
 @implementation BFeedPost
@@ -639,6 +640,13 @@ static BFeedPanelMember* defaultBFeedPanelMemberInstance = nil;
   hasPostStatus_ = !!_value_;
 }
 @synthesize postStatus;
+- (BOOL) hasReferreeID {
+  return !!hasReferreeID_;
+}
+- (void) setHasReferreeID:(BOOL) _value_ {
+  hasReferreeID_ = !!_value_;
+}
+@synthesize referreeID;
 - (instancetype) init {
   if ((self = [super init])) {
     self.postID = @"";
@@ -659,6 +667,7 @@ static BFeedPanelMember* defaultBFeedPanelMemberInstance = nil;
     self.amountPerReplyDeprecated = @"";
     self.amountTotal = @"";
     self.postStatus = BFeedPostStatusFPSUnknown;
+    self.referreeID = @"";
   }
   return self;
 }
@@ -768,6 +777,9 @@ static BFeedPost* defaultBFeedPostInstance = nil;
   if (self.hasPostStatus) {
     [output writeEnum:23 value:self.postStatus];
   }
+  if (self.hasReferreeID) {
+    [output writeString:24 value:self.referreeID];
+  }
   [self.unknownFields writeToCodedOutputStream:output];
 }
 - (SInt32) serializedSize {
@@ -848,6 +860,9 @@ static BFeedPost* defaultBFeedPostInstance = nil;
   }];
   if (self.hasPostStatus) {
     size_ += computeEnumSize(23, self.postStatus);
+  }
+  if (self.hasReferreeID) {
+    size_ += computeStringSize(24, self.referreeID);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -965,6 +980,9 @@ static BFeedPost* defaultBFeedPostInstance = nil;
   if (self.hasPostStatus) {
     [output appendFormat:@"%@%@: %@\n", indent, @"postStatus", NSStringFromBFeedPostStatus(self.postStatus)];
   }
+  if (self.hasReferreeID) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"referreeID", self.referreeID];
+  }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (void) storeInDictionary:(NSMutableDictionary *)dictionary {
@@ -1042,6 +1060,9 @@ static BFeedPost* defaultBFeedPostInstance = nil;
   if (self.hasPostStatus) {
     [dictionary setObject: @(self.postStatus) forKey: @"postStatus"];
   }
+  if (self.hasReferreeID) {
+    [dictionary setObject: self.referreeID forKey: @"referreeID"];
+  }
   [self.unknownFields storeInDictionary:dictionary];
 }
 - (BOOL) isEqual:(id)other {
@@ -1093,6 +1114,8 @@ static BFeedPost* defaultBFeedPostInstance = nil;
       [self.panelArray isEqualToArray:otherMessage.panelArray] &&
       self.hasPostStatus == otherMessage.hasPostStatus &&
       (!self.hasPostStatus || self.postStatus == otherMessage.postStatus) &&
+      self.hasReferreeID == otherMessage.hasReferreeID &&
+      (!self.hasReferreeID || [self.referreeID isEqual:otherMessage.referreeID]) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
@@ -1162,6 +1185,9 @@ static BFeedPost* defaultBFeedPostInstance = nil;
   }];
   if (self.hasPostStatus) {
     hashCode = hashCode * 31 + self.postStatus;
+  }
+  if (self.hasReferreeID) {
+    hashCode = hashCode * 31 + [self.referreeID hash];
   }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
@@ -1287,6 +1313,9 @@ static BFeedPost* defaultBFeedPostInstance = nil;
   }
   if (other.hasPostStatus) {
     [self setPostStatus:other.postStatus];
+  }
+  if (other.hasReferreeID) {
+    [self setReferreeID:other.referreeID];
   }
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -1426,6 +1455,10 @@ static BFeedPost* defaultBFeedPostInstance = nil;
         } else {
           [unknownFields mergeVarintField:23 value:value];
         }
+        break;
+      }
+      case 194: {
+        [self setReferreeID:[input readString]];
         break;
       }
     }
@@ -1829,6 +1862,22 @@ static BFeedPost* defaultBFeedPostInstance = nil;
 - (BFeedPostBuilder*) clearPostStatus {
   resultFeedPost.hasPostStatus = NO;
   resultFeedPost.postStatus = BFeedPostStatusFPSUnknown;
+  return self;
+}
+- (BOOL) hasReferreeID {
+  return resultFeedPost.hasReferreeID;
+}
+- (NSString*) referreeID {
+  return resultFeedPost.referreeID;
+}
+- (BFeedPostBuilder*) setReferreeID:(NSString*) value {
+  resultFeedPost.hasReferreeID = YES;
+  resultFeedPost.referreeID = value;
+  return self;
+}
+- (BFeedPostBuilder*) clearReferreeID {
+  resultFeedPost.hasReferreeID = NO;
+  resultFeedPost.referreeID = @"";
   return self;
 }
 @end

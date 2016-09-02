@@ -312,22 +312,7 @@ func SendInvite(session *Session, invite *BlitzMessage.UserInvite) error {
             UserID:         proto.String(inviterUserID),
             Timestamp:      BlitzMessage.TimestampPtr(timestamp),
             HeadlineText:   &headline,
-        }
-        error = CreateFeedPost(session, &feedPost)
-        if error != nil  { Log.LogError(error) }
-
-        headline = fmt.Sprintf("%s, referred by %s.",
-            *friendProfile.Name,
-            name,
-        )
-        timestamp = timestamp.Add(time.Second)
-        feedPost = BlitzMessage.FeedPost {
-            PostID:         proto.String(Util.NewUUIDString()),
-            ParentID:       invite.ReferenceID,
-            PostType:       BlitzMessage.FeedPostType_FPWantedAnswer.Enum(),
-            UserID:         friendProfile.UserID,
-            Timestamp:      BlitzMessage.TimestampPtr(timestamp),
-            HeadlineText:   &headline,
+            ReferreeID:     friendProfile.UserID,
         }
         error = CreateFeedPost(session, &feedPost)
         if error != nil  { Log.LogError(error) }

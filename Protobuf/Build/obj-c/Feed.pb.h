@@ -230,6 +230,7 @@ NSString *NSStringFromBUpdateVerb(BUpdateVerb value);
 #define FeedPost_panelUserIDs_deprecated @"panelUserIDsDeprecated"
 #define FeedPost_panel @"panel"
 #define FeedPost_postStatus @"postStatus"
+#define FeedPost_referreeID @"referreeID"
 @interface BFeedPost : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
   BOOL hasAnonymousPost_:1;
@@ -245,6 +246,7 @@ NSString *NSStringFromBUpdateVerb(BUpdateVerb value);
   BOOL hasBodyText_:1;
   BOOL hasAmountPerReplyDeprecated_:1;
   BOOL hasAmountTotal_:1;
+  BOOL hasReferreeID_:1;
   BOOL hasTimestamp_:1;
   BOOL hasTimespanActive_:1;
   BOOL hasPostType_:1;
@@ -263,6 +265,7 @@ NSString *NSStringFromBUpdateVerb(BUpdateVerb value);
   NSString* bodyText;
   NSString* amountPerReplyDeprecated;
   NSString* amountTotal;
+  NSString* referreeID;
   BTimestamp* timestamp;
   BTimespan* timespanActive;
   BFeedPostType postType;
@@ -291,6 +294,7 @@ NSString *NSStringFromBUpdateVerb(BUpdateVerb value);
 - (BOOL) hasAmountPerReplyDeprecated;
 - (BOOL) hasAmountTotal;
 - (BOOL) hasPostStatus;
+- (BOOL) hasReferreeID;
 @property (readonly, strong) NSString* postID;
 @property (readonly, strong) NSString* parentID;
 @property (readonly) BFeedPostType postType;
@@ -313,6 +317,7 @@ NSString *NSStringFromBUpdateVerb(BUpdateVerb value);
 @property (readonly, strong) NSArray * panelUserIDsDeprecated;
 @property (readonly, strong) NSArray * panel;
 @property (readonly) BFeedPostStatus postStatus;
+@property (readonly, strong) NSString* referreeID;
 - (BEntityTag*)postTagsAtIndex:(NSUInteger)index;
 - (BFeedPost*)repliesDeprecatedAtIndex:(NSUInteger)index;
 - (NSString*)panelUserIDsDeprecatedAtIndex:(NSUInteger)index;
@@ -470,6 +475,11 @@ NSString *NSStringFromBUpdateVerb(BUpdateVerb value);
 - (BFeedPostStatus) postStatus;
 - (BFeedPostBuilder*) setPostStatus:(BFeedPostStatus) value;
 - (BFeedPostBuilder*) clearPostStatus;
+
+- (BOOL) hasReferreeID;
+- (NSString*) referreeID;
+- (BFeedPostBuilder*) setReferreeID:(NSString*) value;
+- (BFeedPostBuilder*) clearReferreeID;
 @end
 
 #define FeedPostUpdateRequest_updateVerb @"updateVerb"

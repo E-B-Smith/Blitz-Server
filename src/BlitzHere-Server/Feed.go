@@ -59,8 +59,10 @@ func WriteFeedPost(feedPost *BlitzMessage.FeedPost) error {
             mayAddReply,
             mayChooseMulitpleReplies,
             surveyAnswerSequence,
-            amountTotal
-        ) = ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) where postID = $14;`,
+            amountTotal,
+            referreeID
+        ) = ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
+                where postID = $15;`,
             feedPost.ParentID,
             feedPost.PostType,
             feedPost.PostScope,
@@ -74,6 +76,7 @@ func WriteFeedPost(feedPost *BlitzMessage.FeedPost) error {
             feedPost.MayChooseMulitpleReplies,
             feedPost.SurveyAnswerSequence,
             feedPost.AmountTotal,
+            feedPost.ReferreeID,
             feedPost.PostID,
         )
 
@@ -110,7 +113,8 @@ var kScanFeedRowString =
     FeedPostTable.surveyAnswerSequence,
     FeedPostTable.amountPerReply,
     FeedPostTable.amountTotal,
-    FeedPostTable.postStatus
+    FeedPostTable.postStatus,
+    FeedPostTable.referreeID
 `
 
 
@@ -140,6 +144,7 @@ func ScanFeedPostRowForUserID(queryUserID string, row RowScanner) (*BlitzMessage
         amountPerReply  sql.NullString
         amountTotal     sql.NullString
         postStatus      sql.NullInt64
+        referreeID      sql.NullString
     )
     error := row.Scan(
         &postID,
@@ -159,6 +164,7 @@ func ScanFeedPostRowForUserID(queryUserID string, row RowScanner) (*BlitzMessage
         &amountPerReply,
         &amountTotal,
         &postStatus,
+        &referreeID,
     )
     if error != nil {
         Log.LogError(error)
@@ -182,6 +188,7 @@ func ScanFeedPostRowForUserID(queryUserID string, row RowScanner) (*BlitzMessage
 //      AmountPerReply:     StringPtrFromNullString(amountPerReply),
         AmountTotal:        StringPtrFromNullString(amountTotal),
         PostStatus:         BlitzMessage.FeedPostStatus(postStatus.Int64).Enum(),
+        ReferreeID:         proto.String(referreeID.String),
     }
 
     feedPost.PostTags = GetEntityTagsWithUserID(queryUserID, *feedPost.PostID, BlitzMessage.EntityType_ETFeedPost)

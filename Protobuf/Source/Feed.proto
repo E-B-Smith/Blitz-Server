@@ -75,6 +75,7 @@ message FeedPost {
   repeated string         panelUserIDs_deprecated = 21;
   repeated FeedPanelMember panel          = 22;
   optional FeedPostStatus postStatus      = 23;
+  optional string         referreeID      = 24;
 }
 
 

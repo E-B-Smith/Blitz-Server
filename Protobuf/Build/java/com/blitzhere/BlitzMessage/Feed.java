@@ -1558,6 +1558,20 @@ public final class Feed {
      * <code>optional .BlitzMessage.FeedPostStatus postStatus = 23;</code>
      */
     com.blitzhere.BlitzMessage.Feed.FeedPostStatus getPostStatus();
+
+    /**
+     * <code>optional string referreeID = 24;</code>
+     */
+    boolean hasReferreeID();
+    /**
+     * <code>optional string referreeID = 24;</code>
+     */
+    java.lang.String getReferreeID();
+    /**
+     * <code>optional string referreeID = 24;</code>
+     */
+    com.google.protobuf.ByteString
+        getReferreeIDBytes();
   }
   /**
    * Protobuf type {@code BlitzMessage.FeedPost}
@@ -1773,6 +1787,12 @@ public final class Feed {
                 bitField0_ |= 0x00020000;
                 postStatus_ = value;
               }
+              break;
+            }
+            case 194: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00040000;
+              referreeID_ = bs;
               break;
             }
           }
@@ -2452,6 +2472,48 @@ public final class Feed {
       return postStatus_;
     }
 
+    public static final int REFERREEID_FIELD_NUMBER = 24;
+    private java.lang.Object referreeID_;
+    /**
+     * <code>optional string referreeID = 24;</code>
+     */
+    public boolean hasReferreeID() {
+      return ((bitField0_ & 0x00040000) == 0x00040000);
+    }
+    /**
+     * <code>optional string referreeID = 24;</code>
+     */
+    public java.lang.String getReferreeID() {
+      java.lang.Object ref = referreeID_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          referreeID_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string referreeID = 24;</code>
+     */
+    public com.google.protobuf.ByteString
+        getReferreeIDBytes() {
+      java.lang.Object ref = referreeID_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        referreeID_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private void initFields() {
       postID_ = "";
       parentID_ = "";
@@ -2475,6 +2537,7 @@ public final class Feed {
       panelUserIDsDeprecated_ = com.google.protobuf.LazyStringArrayList.EMPTY;
       panel_ = java.util.Collections.emptyList();
       postStatus_ = com.blitzhere.BlitzMessage.Feed.FeedPostStatus.FPSUnknown;
+      referreeID_ = "";
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -2554,6 +2617,9 @@ public final class Feed {
       }
       if (((bitField0_ & 0x00020000) == 0x00020000)) {
         output.writeEnum(23, postStatus_.getNumber());
+      }
+      if (((bitField0_ & 0x00040000) == 0x00040000)) {
+        output.writeBytes(24, getReferreeIDBytes());
       }
       getUnknownFields().writeTo(output);
     }
@@ -2656,6 +2722,10 @@ public final class Feed {
       if (((bitField0_ & 0x00020000) == 0x00020000)) {
         size += com.google.protobuf.CodedOutputStream
           .computeEnumSize(23, postStatus_.getNumber());
+      }
+      if (((bitField0_ & 0x00040000) == 0x00040000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(24, getReferreeIDBytes());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -2843,6 +2913,8 @@ public final class Feed {
         }
         postStatus_ = com.blitzhere.BlitzMessage.Feed.FeedPostStatus.FPSUnknown;
         bitField0_ = (bitField0_ & ~0x00200000);
+        referreeID_ = "";
+        bitField0_ = (bitField0_ & ~0x00400000);
         return this;
       }
 
@@ -2983,6 +3055,10 @@ public final class Feed {
           to_bitField0_ |= 0x00020000;
         }
         result.postStatus_ = postStatus_;
+        if (((from_bitField0_ & 0x00400000) == 0x00400000)) {
+          to_bitField0_ |= 0x00040000;
+        }
+        result.referreeID_ = referreeID_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -3154,6 +3230,11 @@ public final class Feed {
         }
         if (other.hasPostStatus()) {
           setPostStatus(other.getPostStatus());
+        }
+        if (other.hasReferreeID()) {
+          bitField0_ |= 0x00400000;
+          referreeID_ = other.referreeID_;
+          onChanged();
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -5124,6 +5205,82 @@ public final class Feed {
       public Builder clearPostStatus() {
         bitField0_ = (bitField0_ & ~0x00200000);
         postStatus_ = com.blitzhere.BlitzMessage.Feed.FeedPostStatus.FPSUnknown;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object referreeID_ = "";
+      /**
+       * <code>optional string referreeID = 24;</code>
+       */
+      public boolean hasReferreeID() {
+        return ((bitField0_ & 0x00400000) == 0x00400000);
+      }
+      /**
+       * <code>optional string referreeID = 24;</code>
+       */
+      public java.lang.String getReferreeID() {
+        java.lang.Object ref = referreeID_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            referreeID_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string referreeID = 24;</code>
+       */
+      public com.google.protobuf.ByteString
+          getReferreeIDBytes() {
+        java.lang.Object ref = referreeID_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          referreeID_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string referreeID = 24;</code>
+       */
+      public Builder setReferreeID(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00400000;
+        referreeID_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string referreeID = 24;</code>
+       */
+      public Builder clearReferreeID() {
+        bitField0_ = (bitField0_ & ~0x00400000);
+        referreeID_ = getDefaultInstance().getReferreeID();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string referreeID = 24;</code>
+       */
+      public Builder setReferreeIDBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00400000;
+        referreeID_ = value;
         onChanged();
         return this;
       }
@@ -7672,7 +7829,7 @@ public final class Feed {
       "escriptor.proto\032\013Types.proto\032\020EntityTags" +
       ".proto\"f\n\017FeedPanelMember\022\016\n\006userID\030\001 \001(" +
       "\t\022\024\n\014bountyAmount\030\002 \001(\t\022-\n\014dateAnswered\030" +
-      "\003 \001(\0132\027.BlitzMessage.Timestamp\"\331\005\n\010FeedP" +
+      "\003 \001(\0132\027.BlitzMessage.Timestamp\"\355\005\n\010FeedP" +
       "ost\022\016\n\006postID\030\001 \001(\t\022\020\n\010parentID\030\002 \001(\t\022,\n" +
       "\010postType\030\003 \001(\0162\032.BlitzMessage.FeedPostT" +
       "ype\022.\n\tpostScope\030\004 \001(\0162\033.BlitzMessage.Fe" +
@@ -7691,27 +7848,27 @@ public final class Feed {
       "elUserIDs_deprecated\030\025 \003(\t\022,\n\005panel\030\026 \003(" +
       "\0132\035.BlitzMessage.FeedPanelMember\0220\n\npost" +
       "Status\030\027 \001(\0162\034.BlitzMessage.FeedPostStat" +
-      "us\"\245\001\n\025FeedPostUpdateRequest\022,\n\nupdateVe" +
-      "rb\030\001 \001(\0162\030.BlitzMessage.UpdateVerb\0223\n\023fe" +
-      "edPost_deprecated\030\002 \001(\0132\026.BlitzMessage.F" +
-      "eedPost\022)\n\tfeedPosts\030\003 \003(\0132\026.BlitzMessag" +
-      "e.FeedPost\"\202\001\n\024FeedPostFetchRequest\022(\n\010t" +
-      "imespan\030\001 \001(\0132\026.BlitzMessage.Timespan\022.\n" +
-      "\tfeedScope\030\002 \001(\0162\033.BlitzMessage.FeedPost",
-      "Scope\022\020\n\010parentID\030\003 \001(\t\"=\n\020FeedPostRespo" +
-      "nse\022)\n\tfeedPosts\030\001 \003(\0132\026.BlitzMessage.Fe" +
-      "edPost*\240\001\n\014FeedPostType\022\r\n\tFPUnknown\020\000\022\027" +
-      "\n\023FPOpenEndedQuestion\020\001\022\024\n\020FPOpenEndedRe" +
-      "ply\020\002\022\024\n\020FPSurveyQuestion\020\003\022\022\n\016FPSurveyA" +
-      "nswer\020\004\022\024\n\020FPWantedQuestion\020\005\022\022\n\016FPWante" +
-      "dAnswer\020\006*V\n\rFeedPostScope\022\022\n\016FPScopeUnk" +
-      "nown\020\000\022\027\n\023FPScopeLocalNetwork\020\001\022\030\n\024FPSco" +
-      "peGlobalNetwork\020\002*P\n\016FeedPostStatus\022\016\n\nF" +
-      "PSUnknown\020\000\022\r\n\tFPSActive\020\001\022\016\n\nFPSDeleted",
-      "\020\002\022\017\n\013FPSAnswered\020\003*6\n\nUpdateVerb\022\014\n\010UVC" +
-      "reate\020\001\022\014\n\010UVUpdate\020\002\022\014\n\010UVDelete\020\003B/\n\032c" +
-      "om.blitzhere.BlitzMessage\210\001\001\322>\002\n\000\322>\003\022\001B\322" +
-      ">\002\030\001"
+      "us\022\022\n\nreferreeID\030\030 \001(\t\"\245\001\n\025FeedPostUpdat" +
+      "eRequest\022,\n\nupdateVerb\030\001 \001(\0162\030.BlitzMess" +
+      "age.UpdateVerb\0223\n\023feedPost_deprecated\030\002 " +
+      "\001(\0132\026.BlitzMessage.FeedPost\022)\n\tfeedPosts" +
+      "\030\003 \003(\0132\026.BlitzMessage.FeedPost\"\202\001\n\024FeedP" +
+      "ostFetchRequest\022(\n\010timespan\030\001 \001(\0132\026.Blit" +
+      "zMessage.Timespan\022.\n\tfeedScope\030\002 \001(\0162\033.B",
+      "litzMessage.FeedPostScope\022\020\n\010parentID\030\003 " +
+      "\001(\t\"=\n\020FeedPostResponse\022)\n\tfeedPosts\030\001 \003" +
+      "(\0132\026.BlitzMessage.FeedPost*\240\001\n\014FeedPostT" +
+      "ype\022\r\n\tFPUnknown\020\000\022\027\n\023FPOpenEndedQuestio" +
+      "n\020\001\022\024\n\020FPOpenEndedReply\020\002\022\024\n\020FPSurveyQue" +
+      "stion\020\003\022\022\n\016FPSurveyAnswer\020\004\022\024\n\020FPWantedQ" +
+      "uestion\020\005\022\022\n\016FPWantedAnswer\020\006*V\n\rFeedPos" +
+      "tScope\022\022\n\016FPScopeUnknown\020\000\022\027\n\023FPScopeLoc" +
+      "alNetwork\020\001\022\030\n\024FPScopeGlobalNetwork\020\002*P\n" +
+      "\016FeedPostStatus\022\016\n\nFPSUnknown\020\000\022\r\n\tFPSAc",
+      "tive\020\001\022\016\n\nFPSDeleted\020\002\022\017\n\013FPSAnswered\020\003*" +
+      "6\n\nUpdateVerb\022\014\n\010UVCreate\020\001\022\014\n\010UVUpdate\020" +
+      "\002\022\014\n\010UVDelete\020\003B/\n\032com.blitzhere.BlitzMe" +
+      "ssage\210\001\001\322>\002\n\000\322>\003\022\001B\322>\002\030\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -7739,7 +7896,7 @@ public final class Feed {
     internal_static_BlitzMessage_FeedPost_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_BlitzMessage_FeedPost_descriptor,
-        new java.lang.String[] { "PostID", "ParentID", "PostType", "PostScope", "UserID", "AnonymousPost", "Timestamp", "TimespanActive", "HeadlineText", "BodyText", "PostTags", "RepliesDeprecated", "MayAddReply", "MayChooseMulitpleReplies", "SurveyAnswerSequence", "AreMoreReplies", "TotalVoteCount", "AmountPerReplyDeprecated", "AmountTotal", "PanelUserIDsDeprecated", "Panel", "PostStatus", });
+        new java.lang.String[] { "PostID", "ParentID", "PostType", "PostScope", "UserID", "AnonymousPost", "Timestamp", "TimespanActive", "HeadlineText", "BodyText", "PostTags", "RepliesDeprecated", "MayAddReply", "MayChooseMulitpleReplies", "SurveyAnswerSequence", "AreMoreReplies", "TotalVoteCount", "AmountPerReplyDeprecated", "AmountTotal", "PanelUserIDsDeprecated", "Panel", "PostStatus", "ReferreeID", });
     internal_static_BlitzMessage_FeedPostUpdateRequest_descriptor =
       getDescriptor().getMessageTypes().get(2);
     internal_static_BlitzMessage_FeedPostUpdateRequest_fieldAccessorTable = new

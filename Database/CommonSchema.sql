@@ -440,6 +440,7 @@ create table FeedPostTable
     ,surveyAnswerSequence       int
     ,amountPerReply             text
     ,amountTotal                text
+    ,referreeID                 UserID
     );
 create index FeedPostTimestampIndex on FeedPostTable(timestamp desc);
 create index FeedReplyTable         on FeedPostTable(parentID);
