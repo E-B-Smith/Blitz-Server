@@ -336,7 +336,7 @@ func FetchConversationGroupsForUserID(
         group.UnreadCount = Int32PtrFromInt64(unread.Int64)
     }
 
-    groups = append(groups, FetchFeedPostsAsConversationGroup(userID)...)
+//  groups = append(groups, FetchFeedPostsAsConversationGroup(userID)...)
     groups = append(groups, FetchNotificationsAsConversationGroup(userID)...)
 
     users := make(map[string]bool)
