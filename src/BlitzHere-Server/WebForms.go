@@ -122,26 +122,26 @@ func WebUserList(writer http.ResponseWriter, httpRequest *http.Request) {
             user.Background.String = user.Background.String[:bLen] + "..."
         }
 
+        tagMap := GetEntityTagMapForUserIDEntityIDType(
+            user.UserID.String,
+            user.UserID.String,
+            BlitzMessage.EntityType_ETUser,
+        )
+
         if len(editprofileid.String) > 10 {
             user.Annotation = "Approve Edit"
         } else if ! isExpert.Bool {
-            row := config.DB.QueryRow(
-                `select count(*) from entitytagtable
-                    where userid = $1
-                      and entityid = $1::uuid
-                      and entitytype = 1
-                      and entitytag = '.appliedexpert'`,
-                user.UserID.String,
-            )
-            var count int64
-            error = row.Scan(&count)
-            if error == nil && count > 0 {
+            if _, ok := tagMap[".appliedexpert"]; ok {
                 user.Annotation = "Applied"
             }
         }
 
         if isExpert.Bool {
             user.Annotation += "*"
+        }
+
+        if _, ok := tagMap[".expertimporthelp"]; ok {
+            user.Annotation += " help"
         }
 
         listUsers.Users = append(listUsers.Users, user)
