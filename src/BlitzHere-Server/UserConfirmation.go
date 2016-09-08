@@ -67,7 +67,6 @@ func LoginAsAdmin(session *Session, login *BlitzMessage.LoginAsAdmin,
 func UserIsConfirming(session *Session, confirmation *BlitzMessage.ConfirmationRequest,
         ) *BlitzMessage.ServerResponse {
     Log.LogFunctionName()
-    Log.Debugf("Confirmation contact: %+v.", confirmation.ContactInfo.Contact)
 
     if  confirmation == nil ||
         confirmation.ContactInfo == nil ||
@@ -76,6 +75,7 @@ func UserIsConfirming(session *Session, confirmation *BlitzMessage.ConfirmationR
         confirmation.ConfirmationCode == nil {
         return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, nil)
     }
+    Log.Debugf("Confirmation contact: %v.", *confirmation.ContactInfo.Contact)
 
     var error error = nil
     code := strings.TrimSpace(*confirmation.ConfirmationCode)
@@ -84,7 +84,7 @@ func UserIsConfirming(session *Session, confirmation *BlitzMessage.ConfirmationR
     var dbUserID sql.NullString
     if config.TestingEnabled && strings.HasPrefix(*confirmation.ContactInfo.Contact, "555") {
 
-        //  Figure out the code for testing:
+        //  We are using a test code: Look up the confirm code for testing:
 
         row := config.DB.QueryRow(
             `select code from usercontacttable
@@ -126,6 +126,7 @@ func UserIsConfirming(session *Session, confirmation *BlitzMessage.ConfirmationR
         len(code) == 0 {
         Log.LogError(error)
         error = fmt.Errorf("The confirmation code does not match or expired.")
+        return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
     }
 
     //  Great!  We've confirmed.
@@ -149,6 +150,7 @@ func UserIsConfirming(session *Session, confirmation *BlitzMessage.ConfirmationR
     var oldestUserID sql.NullString
     var oldestDate pq.NullTime
     error = row.Scan(&oldestUserID, &oldestDate)
+    Log.Debugf("Oldest: %+v %+v.", oldestUserID, oldestDate)
 
     //  Is it a referral?
 
@@ -156,19 +158,25 @@ func UserIsConfirming(session *Session, confirmation *BlitzMessage.ConfirmationR
     if confirmation.ReferralCode != nil {
         Log.Debugf("Referral: %s.", *confirmation.ReferralCode)
         row = config.DB.QueryRow(
-            `select referreeID, createDate from ReferralTable
+            `select referreeID, claimDate from ReferralTable
                 where referralCode = $1
-                  and codeUseDate is null;`,
+                  and claimDate is null;`,
             confirmation.ReferralCode,
         )
         var referreeID sql.NullString
         var referralDate pq.NullTime
         error = row.Scan(&referreeID, &referralDate)
+        Log.Debugf("Scan error is %+v.", error)
         if error == nil && referreeID.Valid {
 
-            Log.Debugf("Referral valid.")
+            Log.Debugf("Referral valid. OldestID: %s referreeID: %s.",
+                oldestUserID.String,
+                referreeID.String,
+            )
+
             if oldestUserID.Valid &&
                oldestUserID.String != referreeID.String {
+                Log.Debugf("Merging referral...")
 
                 row = config.DB.QueryRow(
                     `select MergeUserIDIntoUserID($1, $2);`,
@@ -192,14 +200,15 @@ func UserIsConfirming(session *Session, confirmation *BlitzMessage.ConfirmationR
                 time.Now(),
                 confirmation.ReferralCode,
             )
-            oldestUserID = referreeID
+        oldestUserID = referreeID
         }
     }
 
-    //  Now we've mybe got out userID --
+    //  Now maybe we have the userID --
 
     if oldestUserID.Valid && len(oldestUserID.String) > 10 &&
-       dbUserID.Valid && len(dbUserID.String) > 10 {
+       dbUserID.Valid && len(dbUserID.String) > 10 &&
+       dbUserID.String != oldestUserID.String {
 
         //  An older profile exists.  Merge current profile
         //  into profile.
@@ -215,34 +224,37 @@ func UserIsConfirming(session *Session, confirmation *BlitzMessage.ConfirmationR
             Log.Errorf("Can't merge user! Error: %v result: %+v.", error, result)
         }
         session.UserID = oldestUserID.String
+        dbUserID.String = oldestUserID.String
 
     } else {
 
-        //  Else this is a new profile.  Mark it verified:
+        //  Else this is a new profile.
 
-        var result sql.Result
-        result, error = config.DB.Exec(
-            `update UserContactTable set
-                code = NULL, codeDate = current_timestamp, isVerified = true
-                where userid = $1
-                  and contacttype = $2
-                  and contact = $3`,
-            dbUserID.String,
-            confirmation.ContactInfo.ContactType,
-            confirmation.ContactInfo.Contact,
-        )
-        error = pgsql.UpdateResultError(result, error)
-        if error != nil {
-            Log.LogError(error)
-            return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
-        }
         session.UserID = dbUserID.String
         SetupNewUser(session)
     }
 
-    //  Delete old un-confirmed contact info --
+    //  Mark this user / contact as verified:
 
     var result sql.Result
+    result, error = config.DB.Exec(
+        `update UserContactTable set
+            code = NULL, codeDate = current_timestamp, isVerified = true
+            where userid = $1
+              and contacttype = $2
+              and contact = $3`,
+        dbUserID.String,
+        confirmation.ContactInfo.ContactType,
+        confirmation.ContactInfo.Contact,
+    )
+    error = pgsql.UpdateResultError(result, error)
+    if error != nil {
+        Log.LogError(error)
+        return ServerResponseForError(BlitzMessage.ResponseCode_RCInputInvalid, error)
+    }
+
+    //  Delete old un-confirmed contact info --
+
     result, error = config.DB.Exec(
         `delete from UserContactTable
             where contactType = $1
@@ -264,7 +276,7 @@ func UserIsConfirming(session *Session, confirmation *BlitzMessage.ConfirmationR
     if oldestUserID.Valid && len(*profile.Name) > 0 {
         messageS :=
             config.Localizef(
-                "kConfirmConfirmedWelcome", "Hello %s\nWelcome back to %s",
+                "kConfirmConfirmedWelcome", "Hello %s\nWelcome to %s",
                 *profile.Name,
                 config.AppName,
             )

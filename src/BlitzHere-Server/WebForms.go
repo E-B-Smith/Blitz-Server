@@ -141,7 +141,7 @@ func WebUserList(writer http.ResponseWriter, httpRequest *http.Request) {
         }
 
         if _, ok := tagMap[".expertimporthelp"]; ok {
-            user.Annotation += " help"
+            user.Annotation += " (import help)"
         }
 
         listUsers.Users = append(listUsers.Users, user)

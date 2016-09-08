@@ -538,6 +538,45 @@ func FetchTopOpenRepliesForFeedPost(queryUserID string, parentPostID string, lim
 
 
 //----------------------------------------------------------------------------------------
+//                                                           FetchWantedRepliesForFeedPost
+//----------------------------------------------------------------------------------------
+
+
+func FetchWantedRepliesForFeedPost(queryUserID string, parentPostID string, limit int) []*BlitzMessage.FeedPost {
+    Log.LogFunctionName()
+
+    feedPosts := make([]*BlitzMessage.FeedPost, 0, 10)
+    rows, error := config.DB.Query(
+        `select ` + kScanFeedRowString +
+        `   from FeedPostTable
+              where parentID = $1
+                and (userID = $2 or referreeID = $2)
+              order by timestamp limit $3 ;`,
+        parentPostID,
+        queryUserID,
+        limit,
+    )
+
+    if error != nil {
+        Log.LogError(error)
+        return feedPosts
+    }
+
+    for rows.Next() {
+        feedPost, error := ScanFeedPostRowForUserID(queryUserID, rows)
+        if error != nil {
+            Log.LogError(error)
+        } else {
+            feedPosts = append(feedPosts, feedPost)
+        }
+    }
+
+    Log.Debugf("Found %d wanted posts.", len(feedPosts))
+    return feedPosts
+}
+
+
+//----------------------------------------------------------------------------------------
 //                                                        FetchTopSurveyRepliesForFeedPost
 //----------------------------------------------------------------------------------------
 
@@ -677,6 +716,8 @@ func FetchFeedPosts(session *Session, fetchRequest *BlitzMessage.FeedPostFetchRe
         case BlitzMessage.FeedPostType_FPWantedQuestion:
             if feedPost.UserID != nil && *feedPost.UserID == session.UserID {
                 replies = FetchTopOpenRepliesForFeedPost(session.UserID, *feedPost.PostID, limit)
+            } else {
+                replies = FetchWantedRepliesForFeedPost(session.UserID, *feedPost.PostID, limit)
             }
 
         }

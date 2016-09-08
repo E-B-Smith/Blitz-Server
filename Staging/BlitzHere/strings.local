@@ -2,6 +2,6 @@
 #   BlitzHere localization file
 
 kLinkErrorRedirectURL       = "https://blitzhere.com/blitzhere/";
-kConfirmConfirmedWelcome    = "Hello %s\nWelcome back to %s";
+kConfirmConfirmedWelcome    = "Hello %s\nWelcome to %s";
 kConfirmConfirmingContact   = "Confirming contact info...";
 kConfirmAppURL              = "%s/?action=confirm&message=%s&code=%s&contact=%s";

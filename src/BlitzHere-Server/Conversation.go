@@ -373,18 +373,18 @@ func PaymentStatusForChatConversation(
     memberName := PrettyNameForUserID(session.UserID)
     expertName := PrettyNameForUserID(*conversation.ExpertID)
 
-    if isExpert.Bool {
-        if otherIsExpert.Bool {
-            conversation.PaymentStatus = BlitzMessage.PaymentStatus_PSIsFree.Enum()
-            return  "As Blitz experts, you have unrestricted access to chat with other experts.\n"+
-                    "Please state your objective and provide time for the expert to respond.",
-                    conversation.PaymentStatus
-        } else {
-            conversation.PaymentStatus = BlitzMessage.PaymentStatus_PSIsFree.Enum()
-            return "A Blitz expert would like to chat with you!\nThis chat session will remain open for the next 24 hours.",
-                conversation.PaymentStatus
-        }
-    } else {
+    // if isExpert.Bool {
+    //     if otherIsExpert.Bool {
+    //         conversation.PaymentStatus = BlitzMessage.PaymentStatus_PSIsFree.Enum()
+    //         return  "As Blitz experts, you have unrestricted access to chat with other experts.\n"+
+    //                 "Please state your objective and provide time for the expert to respond.",
+    //                 conversation.PaymentStatus
+    //     } else {
+    //         conversation.PaymentStatus = BlitzMessage.PaymentStatus_PSIsFree.Enum()
+    //         return "A Blitz expert would like to chat with you!\nThis chat session will remain open for the next 24 hours.",
+    //             conversation.PaymentStatus
+    //     }
+    // } else {
         if otherIsExpert.Bool {
             msg := fmt.Sprintf(
                     "%s – you have one free message\nto connect with %s.\n" +
@@ -400,7 +400,7 @@ func PaymentStatusForChatConversation(
             conversation.PaymentStatus = BlitzMessage.PaymentStatus_PSIsFree.Enum()
             return "Chat with non-experts is free.\nEnjoy your chat.", conversation.PaymentStatus
         }
-    }
+    //}
 }
 
 
