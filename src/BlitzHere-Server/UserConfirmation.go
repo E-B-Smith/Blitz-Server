@@ -311,7 +311,8 @@ func SetupNewUser(session *Session) {
             (entityid, entitytype, entitytag, userid) values
             ($1::uuid, 1, '.friend', $2),
             ($2::uuid, 1, '.friend', $1),
-            ($1::uuid, 1, '.followed', $2)
+            ($1::uuid, 1, '.followed', $2),
+            ($1::uuid, 1, 'example tag', $1)
             on conflict do nothing;`,
         session.UserID,
         BlitzMessage.Default_Global_BlitzUserID,
