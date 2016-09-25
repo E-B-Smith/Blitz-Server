@@ -340,9 +340,20 @@ func WebUpdateProfile(writer http.ResponseWriter, httpRequest *http.Request) {
     }
     updateProfile.Profile.EntityTags = dotTags
 
+    //  Get the headline info --
+
+    c := "Headline"
+    emp := BlitzMessage.Employment {
+        JobTitle:       Util.CleanStringPtrFromString(httpRequest.PostFormValue("Job-JobTitle-"+c)),
+        CompanyName:    Util.CleanStringPtrFromString(httpRequest.PostFormValue("Job-CompanyName-"+c)),
+        Location:       Util.CleanStringPtrFromString(httpRequest.PostFormValue("Job-Location-"+c)),
+        Industry:       Util.CleanStringPtrFromString(httpRequest.PostFormValue("Job-Industry-"+c)),
+    }
+    updateProfile.Profile.HeadlineEmployment = &emp;
+
     //  Get the employment info --
 
-    c := httpRequest.PostFormValue("JobCount")
+    c = httpRequest.PostFormValue("JobCount")
     count, _ := strconv.Atoi(c)
     updateProfile.Profile.Employment = make([]*BlitzMessage.Employment, 0, 10)
     for i := 0; i < count; i++ {

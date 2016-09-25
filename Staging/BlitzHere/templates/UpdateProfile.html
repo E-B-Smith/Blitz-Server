@@ -114,6 +114,27 @@ function picButton() {
     </label>
     <br>
 
+    <h2>Headline</h2>
+    <table>
+    <tr>
+        <td>Title:  </td>
+        <td><input type="text" name="Job-JobTitle-Headline" value="{{StringPtr .Profile.HeadlineEmployment.JobTitle}}"/></td>
+    </tr>
+    <tr>
+        <td>Company:</td>
+        <td><input type="text" name="Job-CompanyName-Headline" value="{{StringPtr .Profile.HeadlineEmployment.CompanyName}}"/></td>
+    </tr>
+    <tr>
+        <td>Location:   </td>
+        <td><input type="text" name="Job-Location-Headline" value="{{StringPtr .Profile.HeadlineEmployment.Location}}"/></td>
+    </tr>
+    <tr>
+        <td>Industry:   </td>
+        <td><input type="text" name="Job-Industry-Headline" value="{{StringPtr .Profile.HeadlineEmployment.Industry}}"/></td>
+    </tr>
+    </table>
+    <br>
+
     <label>
     <textarea style='height: 4.5em;'
         placeholder="Expertise"
