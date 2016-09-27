@@ -253,6 +253,9 @@ func WebUpdateProfile(writer http.ResponseWriter, httpRequest *http.Request) {
             userID = *updateProfile.Profile.EditProfileID
             updateProfile.Profile = ProfileForUserID(userID, userID)
         }
+        if updateProfile.Profile.HeadlineEmployment == nil {
+            updateProfile.Profile.HeadlineEmployment = &BlitzMessage.Employment {}
+        }
         fillFormFromProfile()
         return
     }
