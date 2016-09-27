@@ -29,6 +29,9 @@ protoc !(objectivec-descriptor).proto \
     --java_out=../Build/java  \
     --objc_out=../Build/obj-c
 
+protoc objectivec-descriptor.proto \
+    --java_out=../Build/java  \
+
 cd ..
 
 path=../../Blitz-iOS/Shared/ProtocolBuffers/Message
