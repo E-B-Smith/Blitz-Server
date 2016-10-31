@@ -3,8 +3,8 @@ AWS Instance Set Up
 ===================
 Root user is 'ubuntu'.
 
-1.  Set up external DNS: b1.bh.gy
-2.  Set host name: b1.
+1.  Set up external DNS: bl1.blitzhere.com
+2.  Set host name: bl1.
     - Edit /etc/hostname
     - Edit /etc/hosts
     - `sudo service hostname restart`
@@ -13,6 +13,8 @@ Root user is 'ubuntu'.
         sudo adduser sysadmin  --shell /bin/bash
         sudo usermod -a -G adm sysadmin
         sudo usermod -a -G admin sysadmin
+
+        sudo groupadd signers
 
 5.  Update su-doers file
 
@@ -24,6 +26,5 @@ Root user is 'ubuntu'.
 9.  sudo  ln -fsv /usr/share/zoneinfo/US/Pacific /etc/localtime
 10. Install postgres
 11. Install nginx
-12. Install go
 13. Configure nginx
 14. Upload object files to bin

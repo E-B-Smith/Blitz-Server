@@ -8,8 +8,7 @@ set -euo pipefail
 scriptname="$0"
 scriptpath="$( cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-# userhost="ubuntu@shimmering"
-userhost="ubuntu@b1"
+userhost="ubuntu@bl1"
 configpath=Files
 bUpload=false
 bTesting=false
@@ -98,13 +97,12 @@ fi
 
 UpdateHostFile  root:root    644 "/etc/ssh/ssh_config"
 UpdateHostFile  root:root    644 "/etc/ssh/sshd_config"
-UpdateHostFile  root:root    644 "/etc/nginx/sites-available/beinghappy-nginx.conf"
-UpdateHostFile  root:root    644 "/etc/hostname"
-UpdateHostFile  root:root    644 "/etc/hosts"
+UpdateHostFile  root:root    644 "/etc/nginx/sites-available/BlitzHere-nginx.conf"
+# UpdateHostFile  root:root    644 "/etc/hostname"
+# UpdateHostFile  root:root    644 "/etc/hosts"
 UpdateHostFile  root:signers 644 "/etc/keys/htpasswd"
-UpdateHostFile  root:signers 644 "/etc/keys/chain.crt"
-UpdateHostFile  root:signers 644 "/etc/keys/bh.gy.crt"
-UpdateHostFile  root:signers 640 "/etc/keys/bh.gy.key"
-UpdateHostFile  root:signers 640 "/etc/keys/bh.gy.pem"
-UpdateHostFile  root:signers 640 "/etc/keys/dhparams.pem"
+UpdateHostFile  root:signers 644 "/etc/keys/com.blitzhere.chain.crt"
+UpdateHostFile  root:signers 600 "/etc/keys/com.blitzhere.key"
+UpdateHostFile  root:signers 600 "/etc/keys/com.blitzhere.pem"
+UpdateHostFile  root:signers 600 "/etc/keys/dhparams.pem"
 UpdateHostFilePermissions    root:root    644 " /var/log/nginx/access.log"

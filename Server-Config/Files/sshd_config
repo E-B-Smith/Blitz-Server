@@ -91,6 +91,6 @@ UsePAM yes
 # Keep connecting alive to avoid broken pipe error
 ClientAliveInterval 30
 
-# Allow DNS roaming
+# Allow roaming
 UseDNS no
 
