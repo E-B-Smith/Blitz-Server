@@ -41,7 +41,7 @@ create database ${database}
 
 
 create extension if not exists "uuid-ossp" with schema public;
-create extension if not exists adminpack with schema public;
+create extension if not exists adminpack with schema pg_catalog;
 create extension if not exists pg_trgm with schema public;
 
 

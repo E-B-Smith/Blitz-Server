@@ -71,4 +71,4 @@ Root user is 'ubuntu'.
 
         sudo adduser blitzhere  --shell /bin/bash  --disabled-password
 
-13.
+13. Deploy, files, make database, run build.
