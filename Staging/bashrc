@@ -12,7 +12,7 @@ if  [ -z ${binpath+x} ]; then
 
     # Find pg_ctl --
 
-    export PATH=$PATH:/usr/lib/postgresql/9.5/bin
+    export PATH=$PATH:/usr/lib/postgresql/9.6/bin
 
     alias pg-stats='psql -X --pset pager=off -c "select datname, application_name, state, waiting, query_start, query from pg_stat_activity;"'
 fi

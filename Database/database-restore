@@ -11,14 +11,40 @@ if [[ `uname` == Darwin ]]; then
     backuppath=~/Development/Database-Backup
 fi
 
-database=blitzhere
-backupfile="${backuppath}"/blitzhere-2016-06-14-19-07.sql
-
-if  ! askYN "Restore database '$database' from '$backupfile'?"; then
+if [ -z ${1+x} ]; then
+    echo ">>> A database backup name is expected on the command line." 1>&2
     exit 1
 fi
 
-echo ">>> Restoring $database"
-psql --set ON_ERROR_STOP=on --username=$database $database < "$backupfile"
+database="${1%%-*}"
+
+backuppath="${backuppath}"/"$1"
+if [ ! -f "$backuppath" ]; then
+    echo ">>> The backup '$backuppath' doesn't exist." 1>&2
+    exit 1
+fi
+
+if  ! askYN "Restore database '$database' from '$backuppath'?"; then
+    exit 1
+fi
+
+echo ">>> Restoring database '$database'..."
+
+psql postgres -U postgres -X --pset pager=off -v ON_ERROR_STOP=0 <<PSQLCOMMANDS
+create user ${database};
+alter user ${database}
+   with createdb superuser;
+
+drop database ${database};
+create database ${database}
+   with encoding 'UTF8' owner ${database};
+PSQLCOMMANDS
+
+psql --set ON_ERROR_STOP=off  --pset pager=off  --username=$database $database < "$backuppath"
+
+psql postgres -U postgres -X --pset pager=off -v ON_ERROR_STOP=0 <<PSQLCOMMANDS
+alter user ${database}
+   with nocreatedb nosuperuser login;
+PSQLCOMMANDS
 
 echo "Done."
