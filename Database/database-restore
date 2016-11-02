@@ -44,7 +44,10 @@ psql --set ON_ERROR_STOP=off  --pset pager=off  --username=$database $database <
 
 psql postgres -U postgres -X --pset pager=off -v ON_ERROR_STOP=0 <<PSQLCOMMANDS
 alter user ${database}
-   with nocreatedb nosuperuser login;
+   with nocreatedb nosuperuser login password '${database}';
+alter user ${database}
+    set search_path to ${database}Schema, public;
+
 PSQLCOMMANDS
 
 echo "Done."

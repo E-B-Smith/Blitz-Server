@@ -1400,6 +1400,22 @@ function trimwhitespace(s text) returns text as
     returns null on null input;
 
 
+create or replace function
+table_row_count(schema text, tablename text) returns integer
+as
+$$
+declare
+  result integer;
+  query varchar;
+begin
+  query := 'SELECT count(1) FROM ' || schema || '.' || tablename;
+  execute query into result;
+  return result;
+end;
+$$
+language plpgsql;
+
+
 ------------------------------------------------------------------------------------------
 --
 --                                                                          Default Values
