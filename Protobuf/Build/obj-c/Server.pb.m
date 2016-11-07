@@ -2636,6 +2636,7 @@ static BPushDisconnect* defaultBPushDisconnectInstance = nil;
 @property (strong) BLoginAsAdmin* loginAsAdmin;
 @property (strong) BFetchPurchaseDescription* fetchPurchaseDescription;
 @property (strong) BUserInvites* userInvitesRequest;
+@property (strong) BFeedReplyFetchRequest* fetchFeedReplyUpvoteProfiles;
 @end
 
 @implementation BRequestType
@@ -2857,6 +2858,13 @@ static BPushDisconnect* defaultBPushDisconnectInstance = nil;
   hasUserInvitesRequest_ = !!_value_;
 }
 @synthesize userInvitesRequest;
+- (BOOL) hasFetchFeedReplyUpvoteProfiles {
+  return !!hasFetchFeedReplyUpvoteProfiles_;
+}
+- (void) setHasFetchFeedReplyUpvoteProfiles:(BOOL) _value_ {
+  hasFetchFeedReplyUpvoteProfiles_ = !!_value_;
+}
+@synthesize fetchFeedReplyUpvoteProfiles;
 - (instancetype) init {
   if ((self = [super init])) {
     self.sessionRequest = [BSessionRequest defaultInstance];
@@ -2890,6 +2898,7 @@ static BPushDisconnect* defaultBPushDisconnectInstance = nil;
     self.loginAsAdmin = [BLoginAsAdmin defaultInstance];
     self.fetchPurchaseDescription = [BFetchPurchaseDescription defaultInstance];
     self.userInvitesRequest = [BUserInvites defaultInstance];
+    self.fetchFeedReplyUpvoteProfiles = [BFeedReplyFetchRequest defaultInstance];
   }
   return self;
 }
@@ -3052,6 +3061,9 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   if (self.hasUserInvitesRequest) {
     [output writeMessage:31 value:self.userInvitesRequest];
   }
+  if (self.hasFetchFeedReplyUpvoteProfiles) {
+    [output writeMessage:32 value:self.fetchFeedReplyUpvoteProfiles];
+  }
   [self.unknownFields writeToCodedOutputStream:output];
 }
 - (SInt32) serializedSize {
@@ -3153,6 +3165,9 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   }
   if (self.hasUserInvitesRequest) {
     size_ += computeMessageSize(31, self.userInvitesRequest);
+  }
+  if (self.hasFetchFeedReplyUpvoteProfiles) {
+    size_ += computeMessageSize(32, self.fetchFeedReplyUpvoteProfiles);
   }
   size_ += self.unknownFields.serializedSize;
   memoizedSerializedSize = size_;
@@ -3375,6 +3390,12 @@ static BRequestType* defaultBRequestTypeInstance = nil;
                          withIndent:[NSString stringWithFormat:@"%@  ", indent]];
     [output appendFormat:@"%@}\n", indent];
   }
+  if (self.hasFetchFeedReplyUpvoteProfiles) {
+    [output appendFormat:@"%@%@ {\n", indent, @"fetchFeedReplyUpvoteProfiles"];
+    [self.fetchFeedReplyUpvoteProfiles writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
   [self.unknownFields writeDescriptionTo:output withIndent:indent];
 }
 - (void) storeInDictionary:(NSMutableDictionary *)dictionary {
@@ -3533,6 +3554,11 @@ static BRequestType* defaultBRequestTypeInstance = nil;
    [self.userInvitesRequest storeInDictionary:messageDictionary];
    [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"userInvitesRequest"];
   }
+  if (self.hasFetchFeedReplyUpvoteProfiles) {
+   NSMutableDictionary *messageDictionary = [NSMutableDictionary dictionary]; 
+   [self.fetchFeedReplyUpvoteProfiles storeInDictionary:messageDictionary];
+   [dictionary setObject:[NSDictionary dictionaryWithDictionary:messageDictionary] forKey:@"fetchFeedReplyUpvoteProfiles"];
+  }
   [self.unknownFields storeInDictionary:dictionary];
 }
 - (BOOL) isEqual:(id)other {
@@ -3606,6 +3632,8 @@ static BRequestType* defaultBRequestTypeInstance = nil;
       (!self.hasFetchPurchaseDescription || [self.fetchPurchaseDescription isEqual:otherMessage.fetchPurchaseDescription]) &&
       self.hasUserInvitesRequest == otherMessage.hasUserInvitesRequest &&
       (!self.hasUserInvitesRequest || [self.userInvitesRequest isEqual:otherMessage.userInvitesRequest]) &&
+      self.hasFetchFeedReplyUpvoteProfiles == otherMessage.hasFetchFeedReplyUpvoteProfiles &&
+      (!self.hasFetchFeedReplyUpvoteProfiles || [self.fetchFeedReplyUpvoteProfiles isEqual:otherMessage.fetchFeedReplyUpvoteProfiles]) &&
       (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
 }
 - (NSUInteger) hash {
@@ -3702,6 +3730,9 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   }
   if (self.hasUserInvitesRequest) {
     hashCode = hashCode * 31 + [self.userInvitesRequest hash];
+  }
+  if (self.hasFetchFeedReplyUpvoteProfiles) {
+    hashCode = hashCode * 31 + [self.fetchFeedReplyUpvoteProfiles hash];
   }
   hashCode = hashCode * 31 + [self.unknownFields hash];
   return hashCode;
@@ -3838,6 +3869,9 @@ static BRequestType* defaultBRequestTypeInstance = nil;
   }
   if (other.hasUserInvitesRequest) {
     [self mergeUserInvitesRequest:other.userInvitesRequest];
+  }
+  if (other.hasFetchFeedReplyUpvoteProfiles) {
+    [self mergeFetchFeedReplyUpvoteProfiles:other.fetchFeedReplyUpvoteProfiles];
   }
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -4137,6 +4171,15 @@ static BRequestType* defaultBRequestTypeInstance = nil;
         }
         [input readMessage:subBuilder extensionRegistry:extensionRegistry];
         [self setUserInvitesRequest:[subBuilder buildPartial]];
+        break;
+      }
+      case 258: {
+        BFeedReplyFetchRequestBuilder* subBuilder = [BFeedReplyFetchRequest builder];
+        if (self.hasFetchFeedReplyUpvoteProfiles) {
+          [subBuilder mergeFrom:self.fetchFeedReplyUpvoteProfiles];
+        }
+        [input readMessage:subBuilder extensionRegistry:extensionRegistry];
+        [self setFetchFeedReplyUpvoteProfiles:[subBuilder buildPartial]];
         break;
       }
     }
@@ -5070,6 +5113,36 @@ static BRequestType* defaultBRequestTypeInstance = nil;
 - (BRequestTypeBuilder*) clearUserInvitesRequest {
   resultRequestType.hasUserInvitesRequest = NO;
   resultRequestType.userInvitesRequest = [BUserInvites defaultInstance];
+  return self;
+}
+- (BOOL) hasFetchFeedReplyUpvoteProfiles {
+  return resultRequestType.hasFetchFeedReplyUpvoteProfiles;
+}
+- (BFeedReplyFetchRequest*) fetchFeedReplyUpvoteProfiles {
+  return resultRequestType.fetchFeedReplyUpvoteProfiles;
+}
+- (BRequestTypeBuilder*) setFetchFeedReplyUpvoteProfiles:(BFeedReplyFetchRequest*) value {
+  resultRequestType.hasFetchFeedReplyUpvoteProfiles = YES;
+  resultRequestType.fetchFeedReplyUpvoteProfiles = value;
+  return self;
+}
+- (BRequestTypeBuilder*) setFetchFeedReplyUpvoteProfilesBuilder:(BFeedReplyFetchRequestBuilder*) builderForValue {
+  return [self setFetchFeedReplyUpvoteProfiles:[builderForValue build]];
+}
+- (BRequestTypeBuilder*) mergeFetchFeedReplyUpvoteProfiles:(BFeedReplyFetchRequest*) value {
+  if (resultRequestType.hasFetchFeedReplyUpvoteProfiles &&
+      resultRequestType.fetchFeedReplyUpvoteProfiles != [BFeedReplyFetchRequest defaultInstance]) {
+    resultRequestType.fetchFeedReplyUpvoteProfiles =
+      [[[BFeedReplyFetchRequest builderWithPrototype:resultRequestType.fetchFeedReplyUpvoteProfiles] mergeFrom:value] buildPartial];
+  } else {
+    resultRequestType.fetchFeedReplyUpvoteProfiles = value;
+  }
+  resultRequestType.hasFetchFeedReplyUpvoteProfiles = YES;
+  return self;
+}
+- (BRequestTypeBuilder*) clearFetchFeedReplyUpvoteProfiles {
+  resultRequestType.hasFetchFeedReplyUpvoteProfiles = NO;
+  resultRequestType.fetchFeedReplyUpvoteProfiles = [BFeedReplyFetchRequest defaultInstance];
   return self;
 }
 @end

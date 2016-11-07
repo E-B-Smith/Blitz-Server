@@ -125,6 +125,7 @@ message RequestType {
   optional LoginAsAdmin             loginAsAdmin        = 29;
   optional FetchPurchaseDescription fetchPurchaseDescription = 30;
   optional UserInvites              userInvitesRequest  = 31;
+  optional FeedReplyFetchRequest    fetchFeedReplyUpvoteProfiles = 32;
 }
 
 

@@ -27,6 +27,7 @@ It has these top-level messages:
 	FeedPostUpdateRequest
 	FeedPostFetchRequest
 	FeedPostResponse
+	FeedReplyFetchRequest
 	Global
 	CardInfo
 	UserCardInfo

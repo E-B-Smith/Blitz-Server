@@ -738,3 +738,49 @@ func FetchFeedPosts(session *Session, fetchRequest *BlitzMessage.FeedPostFetchRe
     return response
 }
 
+
+//----------------------------------------------------------------------------------------
+//                                                            FetchFeedReplyUpvoteProfiles
+//----------------------------------------------------------------------------------------
+
+
+func FetchFeedReplyUpvoteProfiles(session *Session, replyRequest *BlitzMessage.FeedReplyFetchRequest,
+    ) *BlitzMessage.ServerResponse {
+
+    rows, error := config.DB.Query(
+        `select userID from EntityTagTable
+            where entityID = $1
+              and entityType = 2
+              and entityTag = '.upvote';`,
+            replyRequest.FeedReplyID,
+    )
+    if error != nil {
+        Log.LogError(error)
+        return ServerResponseForError(BlitzMessage.ResponseCode_RCServerError, error)
+    }
+
+    profiles := make([]*BlitzMessage.UserProfile, 0, 10)
+    for rows.Next() {
+        var userID string
+        error = rows.Scan(&userID)
+        if error != nil {
+            Log.LogError(error)
+            continue
+        }
+        profile := ProfileForUserID(session.UserID, userID)
+        if profile != nil {
+            profiles = append(profiles, profile)
+        }
+    }
+    Log.Debugf("Found %d profiles.", len(profiles))
+
+    var profileUpdate BlitzMessage.UserProfileUpdate
+    profileUpdate.Profiles = profiles
+
+    response := &BlitzMessage.ServerResponse {
+        ResponseCode:       BlitzMessage.ResponseCode_RCSuccess.Enum(),
+        ResponseType:       &BlitzMessage.ResponseType { UserProfileUpdate: &profileUpdate },
+    }
+    return response
+}
+

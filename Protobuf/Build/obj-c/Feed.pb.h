@@ -26,6 +26,8 @@
 @class BFeedPostResponseBuilder;
 @class BFeedPostUpdateRequest;
 @class BFeedPostUpdateRequestBuilder;
+@class BFeedReplyFetchRequest;
+@class BFeedReplyFetchRequestBuilder;
 @class BKeyValue;
 @class BKeyValueBuilder;
 @class BLocation;
@@ -674,6 +676,56 @@ NSString *NSStringFromBUpdateVerb(BUpdateVerb value);
 - (BFeedPostResponseBuilder *)addFeedPosts:(BFeedPost*)value;
 - (BFeedPostResponseBuilder *)setFeedPostsArray:(NSArray *)array;
 - (BFeedPostResponseBuilder *)clearFeedPosts;
+@end
+
+#define FeedReplyFetchRequest_feedReplyID @"feedReplyID"
+@interface BFeedReplyFetchRequest : PBGeneratedMessage<GeneratedMessageProtocol> {
+@private
+  BOOL hasFeedReplyID_:1;
+  NSString* feedReplyID;
+}
+- (BOOL) hasFeedReplyID;
+@property (readonly, strong) NSString* feedReplyID;
+
++ (instancetype) defaultInstance;
+- (instancetype) defaultInstance;
+
+- (BOOL) isInitialized;
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output;
+- (BFeedReplyFetchRequestBuilder*) builder;
++ (BFeedReplyFetchRequestBuilder*) builder;
++ (BFeedReplyFetchRequestBuilder*) builderWithPrototype:(BFeedReplyFetchRequest*) prototype;
+- (BFeedReplyFetchRequestBuilder*) toBuilder;
+
++ (BFeedReplyFetchRequest*) parseFromData:(NSData*) data;
++ (BFeedReplyFetchRequest*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (BFeedReplyFetchRequest*) parseFromInputStream:(NSInputStream*) input;
++ (BFeedReplyFetchRequest*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
++ (BFeedReplyFetchRequest*) parseFromCodedInputStream:(PBCodedInputStream*) input;
++ (BFeedReplyFetchRequest*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+@end
+
+@interface BFeedReplyFetchRequestBuilder : PBGeneratedMessageBuilder {
+@private
+  BFeedReplyFetchRequest* resultFeedReplyFetchRequest;
+}
+
+- (BFeedReplyFetchRequest*) defaultInstance;
+
+- (BFeedReplyFetchRequestBuilder*) clear;
+- (BFeedReplyFetchRequestBuilder*) clone;
+
+- (BFeedReplyFetchRequest*) build;
+- (BFeedReplyFetchRequest*) buildPartial;
+
+- (BFeedReplyFetchRequestBuilder*) mergeFrom:(BFeedReplyFetchRequest*) other;
+- (BFeedReplyFetchRequestBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
+- (BFeedReplyFetchRequestBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
+
+- (BOOL) hasFeedReplyID;
+- (NSString*) feedReplyID;
+- (BFeedReplyFetchRequestBuilder*) setFeedReplyID:(NSString*) value;
+- (BFeedReplyFetchRequestBuilder*) clearFeedReplyID;
 @end
 
 

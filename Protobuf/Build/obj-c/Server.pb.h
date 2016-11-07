@@ -67,6 +67,8 @@
 @class BFeedPostResponseBuilder;
 @class BFeedPostUpdateRequest;
 @class BFeedPostUpdateRequestBuilder;
+@class BFeedReplyFetchRequest;
+@class BFeedReplyFetchRequestBuilder;
 @class BFetchConversationGroups;
 @class BFetchConversationGroupsBuilder;
 @class BFetchConversations;
@@ -792,6 +794,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 #define RequestType_loginAsAdmin @"loginAsAdmin"
 #define RequestType_fetchPurchaseDescription @"fetchPurchaseDescription"
 #define RequestType_userInvitesRequest @"userInvitesRequest"
+#define RequestType_fetchFeedReplyUpvoteProfiles @"fetchFeedReplyUpvoteProfiles"
 @interface BRequestType : PBGeneratedMessage<GeneratedMessageProtocol> {
 @private
   BOOL hasSessionRequest_:1;
@@ -825,6 +828,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
   BOOL hasLoginAsAdmin_:1;
   BOOL hasFetchPurchaseDescription_:1;
   BOOL hasUserInvitesRequest_:1;
+  BOOL hasFetchFeedReplyUpvoteProfiles_:1;
   BSessionRequest* sessionRequest;
   BUserEventBatch* userEventBatch;
   BUserProfileUpdate* userProfileUpdate;
@@ -856,6 +860,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
   BLoginAsAdmin* loginAsAdmin;
   BFetchPurchaseDescription* fetchPurchaseDescription;
   BUserInvites* userInvitesRequest;
+  BFeedReplyFetchRequest* fetchFeedReplyUpvoteProfiles;
 }
 - (BOOL) hasSessionRequest;
 - (BOOL) hasUserEventBatch;
@@ -888,6 +893,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BOOL) hasLoginAsAdmin;
 - (BOOL) hasFetchPurchaseDescription;
 - (BOOL) hasUserInvitesRequest;
+- (BOOL) hasFetchFeedReplyUpvoteProfiles;
 @property (readonly, strong) BSessionRequest* sessionRequest;
 @property (readonly, strong) BUserEventBatch* userEventBatch;
 @property (readonly, strong) BUserProfileUpdate* userProfileUpdate;
@@ -919,6 +925,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 @property (readonly, strong) BLoginAsAdmin* loginAsAdmin;
 @property (readonly, strong) BFetchPurchaseDescription* fetchPurchaseDescription;
 @property (readonly, strong) BUserInvites* userInvitesRequest;
+@property (readonly, strong) BFeedReplyFetchRequest* fetchFeedReplyUpvoteProfiles;
 
 + (instancetype) defaultInstance;
 - (instancetype) defaultInstance;
@@ -1171,6 +1178,13 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BRequestTypeBuilder*) setUserInvitesRequestBuilder:(BUserInvitesBuilder*) builderForValue;
 - (BRequestTypeBuilder*) mergeUserInvitesRequest:(BUserInvites*) value;
 - (BRequestTypeBuilder*) clearUserInvitesRequest;
+
+- (BOOL) hasFetchFeedReplyUpvoteProfiles;
+- (BFeedReplyFetchRequest*) fetchFeedReplyUpvoteProfiles;
+- (BRequestTypeBuilder*) setFetchFeedReplyUpvoteProfiles:(BFeedReplyFetchRequest*) value;
+- (BRequestTypeBuilder*) setFetchFeedReplyUpvoteProfilesBuilder:(BFeedReplyFetchRequestBuilder*) builderForValue;
+- (BRequestTypeBuilder*) mergeFetchFeedReplyUpvoteProfiles:(BFeedReplyFetchRequest*) value;
+- (BRequestTypeBuilder*) clearFetchFeedReplyUpvoteProfiles;
 @end
 
 #define ServerRequest_sessionToken @"sessionToken"

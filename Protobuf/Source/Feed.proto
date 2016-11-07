@@ -104,3 +104,8 @@ message FeedPostResponse {
   repeated FeedPost  feedPosts = 1;    //  Feed posts in 'top' order.
 }
 
+
+message FeedReplyFetchRequest {
+  optional string  feedReplyID = 1;
+}
+

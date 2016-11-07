@@ -2784,5 +2784,211 @@ static BFeedPostResponse* defaultBFeedPostResponseInstance = nil;
 }
 @end
 
+@interface BFeedReplyFetchRequest ()
+@property (strong) NSString* feedReplyID;
+@end
+
+@implementation BFeedReplyFetchRequest
+
+- (BOOL) hasFeedReplyID {
+  return !!hasFeedReplyID_;
+}
+- (void) setHasFeedReplyID:(BOOL) _value_ {
+  hasFeedReplyID_ = !!_value_;
+}
+@synthesize feedReplyID;
+- (instancetype) init {
+  if ((self = [super init])) {
+    self.feedReplyID = @"";
+  }
+  return self;
+}
+static BFeedReplyFetchRequest* defaultBFeedReplyFetchRequestInstance = nil;
++ (void) initialize {
+  if (self == [BFeedReplyFetchRequest class]) {
+    defaultBFeedReplyFetchRequestInstance = [[BFeedReplyFetchRequest alloc] init];
+  }
+}
++ (instancetype) defaultInstance {
+  return defaultBFeedReplyFetchRequestInstance;
+}
+- (instancetype) defaultInstance {
+  return defaultBFeedReplyFetchRequestInstance;
+}
+- (BOOL) isInitialized {
+  return YES;
+}
+- (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
+  if (self.hasFeedReplyID) {
+    [output writeString:1 value:self.feedReplyID];
+  }
+  [self.unknownFields writeToCodedOutputStream:output];
+}
+- (SInt32) serializedSize {
+  __block SInt32 size_ = memoizedSerializedSize;
+  if (size_ != -1) {
+    return size_;
+  }
+
+  size_ = 0;
+  if (self.hasFeedReplyID) {
+    size_ += computeStringSize(1, self.feedReplyID);
+  }
+  size_ += self.unknownFields.serializedSize;
+  memoizedSerializedSize = size_;
+  return size_;
+}
++ (BFeedReplyFetchRequest*) parseFromData:(NSData*) data {
+  return (BFeedReplyFetchRequest*)[[[BFeedReplyFetchRequest builder] mergeFromData:data] build];
+}
++ (BFeedReplyFetchRequest*) parseFromData:(NSData*) data extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BFeedReplyFetchRequest*)[[[BFeedReplyFetchRequest builder] mergeFromData:data extensionRegistry:extensionRegistry] build];
+}
++ (BFeedReplyFetchRequest*) parseFromInputStream:(NSInputStream*) input {
+  return (BFeedReplyFetchRequest*)[[[BFeedReplyFetchRequest builder] mergeFromInputStream:input] build];
+}
++ (BFeedReplyFetchRequest*) parseFromInputStream:(NSInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BFeedReplyFetchRequest*)[[[BFeedReplyFetchRequest builder] mergeFromInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (BFeedReplyFetchRequest*) parseFromCodedInputStream:(PBCodedInputStream*) input {
+  return (BFeedReplyFetchRequest*)[[[BFeedReplyFetchRequest builder] mergeFromCodedInputStream:input] build];
+}
++ (BFeedReplyFetchRequest*) parseFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  return (BFeedReplyFetchRequest*)[[[BFeedReplyFetchRequest builder] mergeFromCodedInputStream:input extensionRegistry:extensionRegistry] build];
+}
++ (BFeedReplyFetchRequestBuilder*) builder {
+  return [[BFeedReplyFetchRequestBuilder alloc] init];
+}
++ (BFeedReplyFetchRequestBuilder*) builderWithPrototype:(BFeedReplyFetchRequest*) prototype {
+  return [[BFeedReplyFetchRequest builder] mergeFrom:prototype];
+}
+- (BFeedReplyFetchRequestBuilder*) builder {
+  return [BFeedReplyFetchRequest builder];
+}
+- (BFeedReplyFetchRequestBuilder*) toBuilder {
+  return [BFeedReplyFetchRequest builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  if (self.hasFeedReplyID) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"feedReplyID", self.feedReplyID];
+  }
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (void) storeInDictionary:(NSMutableDictionary *)dictionary {
+  if (self.hasFeedReplyID) {
+    [dictionary setObject: self.feedReplyID forKey: @"feedReplyID"];
+  }
+  [self.unknownFields storeInDictionary:dictionary];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[BFeedReplyFetchRequest class]]) {
+    return NO;
+  }
+  BFeedReplyFetchRequest *otherMessage = other;
+  return
+      self.hasFeedReplyID == otherMessage.hasFeedReplyID &&
+      (!self.hasFeedReplyID || [self.feedReplyID isEqual:otherMessage.feedReplyID]) &&
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  __block NSUInteger hashCode = 7;
+  if (self.hasFeedReplyID) {
+    hashCode = hashCode * 31 + [self.feedReplyID hash];
+  }
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
+}
+@end
+
+@interface BFeedReplyFetchRequestBuilder()
+@property (strong) BFeedReplyFetchRequest* resultFeedReplyFetchRequest;
+@end
+
+@implementation BFeedReplyFetchRequestBuilder
+@synthesize resultFeedReplyFetchRequest;
+- (instancetype) init {
+  if ((self = [super init])) {
+    self.resultFeedReplyFetchRequest = [[BFeedReplyFetchRequest alloc] init];
+  }
+  return self;
+}
+- (PBGeneratedMessage*) internalGetResult {
+  return resultFeedReplyFetchRequest;
+}
+- (BFeedReplyFetchRequestBuilder*) clear {
+  self.resultFeedReplyFetchRequest = [[BFeedReplyFetchRequest alloc] init];
+  return self;
+}
+- (BFeedReplyFetchRequestBuilder*) clone {
+  return [BFeedReplyFetchRequest builderWithPrototype:resultFeedReplyFetchRequest];
+}
+- (BFeedReplyFetchRequest*) defaultInstance {
+  return [BFeedReplyFetchRequest defaultInstance];
+}
+- (BFeedReplyFetchRequest*) build {
+  [self checkInitialized];
+  return [self buildPartial];
+}
+- (BFeedReplyFetchRequest*) buildPartial {
+  BFeedReplyFetchRequest* returnMe = resultFeedReplyFetchRequest;
+  self.resultFeedReplyFetchRequest = nil;
+  return returnMe;
+}
+- (BFeedReplyFetchRequestBuilder*) mergeFrom:(BFeedReplyFetchRequest*) other {
+  if (other == [BFeedReplyFetchRequest defaultInstance]) {
+    return self;
+  }
+  if (other.hasFeedReplyID) {
+    [self setFeedReplyID:other.feedReplyID];
+  }
+  [self mergeUnknownFields:other.unknownFields];
+  return self;
+}
+- (BFeedReplyFetchRequestBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input {
+  return [self mergeFromCodedInputStream:input extensionRegistry:[PBExtensionRegistry emptyRegistry]];
+}
+- (BFeedReplyFetchRequestBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry {
+  PBUnknownFieldSetBuilder* unknownFields = [PBUnknownFieldSet builderWithUnknownFields:self.unknownFields];
+  while (YES) {
+    SInt32 tag = [input readTag];
+    switch (tag) {
+      case 0:
+        [self setUnknownFields:[unknownFields build]];
+        return self;
+      default: {
+        if (![self parseUnknownField:input unknownFields:unknownFields extensionRegistry:extensionRegistry tag:tag]) {
+          [self setUnknownFields:[unknownFields build]];
+          return self;
+        }
+        break;
+      }
+      case 10: {
+        [self setFeedReplyID:[input readString]];
+        break;
+      }
+    }
+  }
+}
+- (BOOL) hasFeedReplyID {
+  return resultFeedReplyFetchRequest.hasFeedReplyID;
+}
+- (NSString*) feedReplyID {
+  return resultFeedReplyFetchRequest.feedReplyID;
+}
+- (BFeedReplyFetchRequestBuilder*) setFeedReplyID:(NSString*) value {
+  resultFeedReplyFetchRequest.hasFeedReplyID = YES;
+  resultFeedReplyFetchRequest.feedReplyID = value;
+  return self;
+}
+- (BFeedReplyFetchRequestBuilder*) clearFeedReplyID {
+  resultFeedReplyFetchRequest.hasFeedReplyID = NO;
+  resultFeedReplyFetchRequest.feedReplyID = @"";
+  return self;
+}
+@end
+
 
 // @@protoc_insertion_point(global_scope)

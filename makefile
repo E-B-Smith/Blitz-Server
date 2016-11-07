@@ -8,8 +8,7 @@ buildVersion = 0
 buildLinux   = 0
 buildDarwin  = 0
 
-export userhost     := blitzhere@bl1
-# export userhost     := blitzhere@blitzhere.com
+export userhost     := blitzhere@blitzhere.com
 export installpath  := /home/blitzhere
 export GOPATH       := $(makepath)
 export GOROOT       :=
