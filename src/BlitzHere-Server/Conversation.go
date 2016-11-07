@@ -398,7 +398,7 @@ func PaymentStatusForChatConversation(
             return msg, conversation.PaymentStatus
         } else {
             conversation.PaymentStatus = BlitzMessage.PaymentStatus_PSIsFree.Enum()
-            return "Chat with non-experts is free.\nEnjoy your chat.", conversation.PaymentStatus
+            return "Chat with non-experts is free for a limited time.\nEnjoy your chat.", conversation.PaymentStatus
         }
     //}
 }
