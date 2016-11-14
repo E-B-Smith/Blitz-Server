@@ -8,7 +8,7 @@ set -euo pipefail
 scriptname="$0"
 scriptpath="$( cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-userhost="ubuntu@bl1"
+userhost="sysadmin@blitzhere"
 configpath=Files
 bUpload=false
 bTesting=false
