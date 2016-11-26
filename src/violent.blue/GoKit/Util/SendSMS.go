@@ -19,11 +19,11 @@ import (
 
 
 var (
-    twilioAccount         = "AC5f879594f852bb0052429f9ac0090ec0"
-    twilioAuthToken       = "7de42f76a24d47854c4c909e7789b2bd"
+    twilioAccount         = "AC91d5a8ea4355beb46f4d449706d54cf2"
+    twilioAuthToken       = "7a089f2a8f63313f458fa2c3971b89d1"
     twilioEncodedAuth     = ""
-    twilioFromNumber      = "+14153196030"
-    twilioUrlString       = "https://api.twilio.com/2010-04-01/Accounts/"+twilioAccount+"/Messages.json"
+    twilioFromNumber      = "+14152002907"
+    twilioURLString       = "https://api.twilio.com/2010-04-01/Accounts/"+twilioAccount+"/Messages.json"
 )
 
 
@@ -41,7 +41,7 @@ func SendSMS(toNumber string, message string) error {
     formValues.Set("To", toNumber)
     formValues.Set("Body", message)
 
-    request, _ := http.NewRequest("POST", twilioUrlString, strings.NewReader(formValues.Encode()))
+    request, _ := http.NewRequest("POST", twilioURLString, strings.NewReader(formValues.Encode()))
     request.Header.Add("Content-Type", "application/x-www-form-urlencoded")
     request.Header.Add("Authorization", twilioEncodedAuth)
     //Log.Debugf("Request:\n%v", *request)
