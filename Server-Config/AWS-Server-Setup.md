@@ -3,12 +3,6 @@ AWS Instance Set Up
 ===================
 Root user is 'ubuntu'.
 
-1.  Set up external DNS: blitzhere.com / www.blitzhere.com.
-2.  Set host name: blitzhere
-    - Edit /etc/hostname
-    - Edit /etc/hosts
-    - `sudo service hostname restart`
-
 3.  Create 'sysadmin' sudo-capable user.
 
         sudo adduser sysadmin  --shell /bin/bash  --disabled-password
@@ -20,17 +14,22 @@ Root user is 'ubuntu'.
 
 4.  Update su-doers file
 
-        sysadmin   ALL=(ALL) NOPASSWD: ALL
+        sysadmin   ALL=(ALL:ALL) NOPASSWD:ALL
+
+6.  Update sshd settings
 
 5.  Add key to ~/.ssh/authorized_keys
-6.  Update sshd settings
-7.  Install time daemon:  sudo apt-get install ntp
-8.  sudo  ln -fsv /usr/share/zoneinfo/US/Pacific /etc/localtime
-9.  Install nginx
-10. Configure nginx:
 
-        sudo ln -svi /etc/nginx/sites-available/BlitzHere-nginx.conf  \
-            /etc/nginx/sites-enabled/BlitzHere-nginx.conf
+7.  Install time daemon:  sudo apt-get install ntp
+
+8.  sudo  ln -fsv /usr/share/zoneinfo/US/Pacific /etc/localtime
+
+2.  Set host name: blitzhere
+    - Edit /etc/hostname
+    - Edit /etc/hosts
+    - `sudo service hostname restart`
+
+1.  Set up external DNS: blitzhere.com / www.blitzhere.com.
 
 11. Install postgres
 
@@ -66,6 +65,13 @@ Root user is 'ubuntu'.
         # "local" is for Unix domain socket connections only
         local   blitzlabs       blitzlabs                               peer map=blitzmap
         local   blitzhere       blitzhere                               peer map=blitzmap
+
+9.  Install nginx:      sudo apt-get nginx
+
+10. Configure nginx:
+
+        sudo ln -svi /etc/nginx/sites-available/BlitzHere-nginx.conf  \
+            /etc/nginx/sites-enabled/BlitzHere-nginx.conf
 
 12. Create a blitzhere account as a regular user.
 
