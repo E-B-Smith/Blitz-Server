@@ -3,7 +3,7 @@
 ## Blitz-Server
 
 * [Git and Github](#Git-and-Github)
-* [Accessing the Server](#Accessing-the-BlitzHere-Server)
+* [Accessing the Server](#accessing-the-blitzhere-server)
 * [Server Users and Files](#Server-Users-and-Files)
 * [Building the Server App](#Building-the-Server-App)
 * [Server API Endpoints](#Server-API-Endpoints)
