@@ -28,10 +28,10 @@ USAGE
 }
 
 
-baseurl="https://violent.blue/version"
+baseurl="https://blitzhere.com/version"
 username="blitzhere"
-host="shimmering.blue"
-versionfile="/home/shimmering/www/blue.shimmering/version"
+host="blitzhere.com"
+versionfile="/home/blitzhere/www/version"
 packagename=""
 url=""
 
@@ -78,7 +78,8 @@ function incrementBuild() {
 #  Pre-parse our command line:
 
 #echo "Command line: $@." 1>&2
-while getopts ":hibBfF" option; do
+while getopts ":hibBfF" option
+do
     case "$option" in
     b|B|f|F|i) ;;
     h)  usage; exit 0 ;;
@@ -86,7 +87,8 @@ while getopts ":hibBfF" option; do
     esac
 done
 
-if (( $# < $OPTIND )); then
+if (( $# < $OPTIND ))
+then
    echo ">>> Error: Expected a package name."  1>&2
    exit 1
 fi
@@ -97,7 +99,8 @@ url="$baseurl"/"$packagename"
 versionfile="$versionfile"/"$packagename"
 let OPTIND+=1
 
-if (( $# >= $OPTIND )); then
+if (( $# >= $OPTIND ))
+then
    echo ">>> Error: Extraneous option '${@:$OPTIND:1}'." 1>&2
    exit 1
 fi
@@ -123,6 +126,11 @@ while getopts ":hibBfF" option; do
 done
 
 if ! $displayed; then
-   echo $Version
+   if (( ${#Version} == 0 ))
+   then
+      echo ">>> Error: Version not updated." 1>&2
+      exit 1
+    else
+      echo $Version
+    fi
 fi
-

@@ -63,7 +63,7 @@ compile : \
     src/ApplePushService/ResourceData.go \
     ; \
     $(eval buildVersion=$(shell Staging/fetch-version -i blitzhere)) \
-    if [[ $$? != 0 || "$(buildVersion)" == "" ]]; then exit 1; fi; \
+    if [[ $$? != 0 || "$(buildVersion)" == "" ]]; then echo ">>> Version update error."; exit 1; fi; \
     echo ">>> Build version $(buildVersion) $(buildDate)."; \
     $(call gobuild, src/BlitzHere-Server) \
     $(call gobuild, src/Signup-Server) \
