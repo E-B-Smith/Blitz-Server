@@ -442,7 +442,7 @@
 @private
   NSMutableArray * pointsArray;
 }
-@property (readonly, strong) NSArray * points;
+@property (readonly, strong) NSArray<BCoordinate*> * points;
 - (BCoordinate*)pointsAtIndex:(NSUInteger)index;
 
 + (instancetype) defaultInstance;
@@ -480,10 +480,10 @@
 - (BCoordinatePolygonBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
 - (BCoordinatePolygonBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
 
-- (NSMutableArray *)points;
+- (NSMutableArray<BCoordinate*> *)points;
 - (BCoordinate*)pointsAtIndex:(NSUInteger)index;
 - (BCoordinatePolygonBuilder *)addPoints:(BCoordinate*)value;
-- (BCoordinatePolygonBuilder *)setPointsArray:(NSArray *)array;
+- (BCoordinatePolygonBuilder *)setPointsArray:(NSArray<BCoordinate*> *)array;
 - (BCoordinatePolygonBuilder *)clearPoints;
 @end
 

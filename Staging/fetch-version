@@ -126,7 +126,7 @@ while getopts ":hibBfF" option; do
 done
 
 if ! $displayed; then
-   if (( ${#Version} == 0 ))
+   if (( ${#Version} == "" ))
    then
       echo ">>> Error: Version not updated." 1>&2
       exit 1

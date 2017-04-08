@@ -1,5 +1,5 @@
 //  ResourceData.go  -  Generated resource file.
-//  Resources - E.B.Smith  -  Mon Apr  3 01:23:56 PDT 2017
+//  Resources - E.B.Smith  -  Sat Apr  8 10:59:41 PDT 2017
 
 
 package ApplePushService
@@ -76,7 +76,7 @@ func (resource *ResourceData) Com_blitzhere_blitzhere_lab2_development_key() *Re
     name: "Com_blitzhere_blitzhere_lab2_development_key",
     data:
 `
-H4sIAJwG4lgCA21VR8+sCA688yu4o1UTG3iaXYnc5CaHG9CkJufw6/d7by5zmLqV
+H4sIAA0l6VgCA21VR8+sCA688yu4o1UTG3iaXYnc5CaHG9CkJufw6/d7by5zmLqV
 y7JLtiWzSQky6zrX6bbmCwD+oJjrvP+0l5F0+S9Q+BzJ/AFZ0OnqtfqT0A5Z0qr5
 JfO/QBQFURF8EqAogCIMYk9Q4EHk+TuCEyD7ExRBXARF8reEIr8p+wRZGuR5EPip
 8Y/mv8C/jOEf/H/Af36DFSTZAG2HAd+27DOuAKpC9EcBdFkWhlJmGUblGEtghqVD
@@ -116,7 +116,7 @@ func (resource *ResourceData) Com_blitzhere_blitzhere_lab2_development_pem() *Re
     name: "Com_blitzhere_blitzhere_lab2_development_pem",
     data:
 `
-H4sIAJwG4lgCA6VVybKqyBad8xXMjSoFbG/EGWTSmSgovTCjMwFpPIKk8PUvPee+
+H4sIAA4l6VgCA6VVybKqyBad8xXMjSoFbG/EGWTSmSgovTCjMwFpPIKk8PUvPee+
 V7duRdTkEWGYu2HvlbtZwAizoO8fRfzss45h6XN9FFmTVqMR1dkPFtzvVcZK2ZBV
 7b3Omp5FJ5s9P7uctbPHUCRZ94NN2vrPuCr6Kc8e2V+nP6oo5r9iVm0SVYdsRNIP
 ludZXmHXK1aRWWXBCmtWllhu/dYsVyykSoVdKqyyeZt47i3CNQt3rCSxTPeMyyzp
@@ -161,7 +161,7 @@ func (resource *ResourceData) Com_blitzhere_blitzhere_lab2_production_key() *Res
     name: "Com_blitzhere_blitzhere_lab2_production_key",
     data:
 `
-H4sIAJwG4lgCA21Vxw6zag7d8xTs0Yjefo1Gon1A6D2wC6GGFnrC09/Mnc1dzNlZ
+H4sIAA4l6VgCA21Vxw6zag7d8xTs0Yjefo1Gon1A6D2wC6GGFnrC09/Mnc1dzNlZ
 tuzjoyNbfNSwsG1Lm+9buULwD9XSlmPRf+3HUP6BleJ8LAUswsHQbs3fBf30fPRG
 +dXlP7AMYFyCWRYWBFiWYYGGMQBzCszTsELAMgYDHOZwWGFhhoYJFpYUWAEwQcMc
 gKFfj38M/wP/257+Ef8H+td/ISqqbsN+IMCur8dCqMCGkv6dgSxdV6ZTFwXBkARP
@@ -201,7 +201,7 @@ func (resource *ResourceData) Com_blitzhere_blitzhere_lab2_production_pem() *Res
     name: "Com_blitzhere_blitzhere_lab2_production_pem",
     data:
 `
-H4sIAJwG4lgCA5VW27KqOBO+5ym4t2ZEFA+7al0k4aygnES442RAQVTAgE8/Uf9Z
+H4sIAA4l6VgCA5VW27KqOBO+5ym4t2ZEFA+7al0k4aygnES442RAQVTAgE8/Uf9Z
 e3btqqn5qbJMujvdTfrrr4ERZkHb3ou4a7OGYelzvBfZJS0HM6qyHyy4XsuM3XVN
 zjrZ/VEkWfODTerqz7gs2mee3bOfqz/KKObfPso6icp1NmjiD1aU2QliFwsWAFYU
 WSCwnMwuJXYlsBLPihwrT9jlhJUW7Fxg+QWLJFaSWV5glzLLNF18ypL2a+xp4te/
@@ -248,7 +248,7 @@ func (resource *ResourceData) Com_blitzhere_blitzhere_labs_development_key() *Re
     name: "Com_blitzhere_blitzhere_labs_development_key",
     data:
 `
-H4sIAJwG4lgCA21Vxw6rVhDd8xXsUWKqgackEp1LMwZM29HBYDo28PVx3lski8xi
+H4sIAA4l6VgCA21Vxw6rVhDd8xXsUWKqgackEp1LMwZM29HBYDo28PVx3lski8xi
 NEejGR0dTeGTCubWdW7SbS0WCP5aOTdFn3eHlbyKH3A2vH5Pu2Y962Iu/o1+65J0
 +T0v3kU3jK+iX3+WdkOWdHpxAPEHTBIwysASDkskLFxhUoBRESZYmKD/gSgHkxTM
 fL0MyzyMXWFJgHEBlgmYkWHo2+M/tH7Af1jDf/Bf0G//GC8pwIIdl4NtB/icJ8G6
@@ -288,7 +288,7 @@ func (resource *ResourceData) Com_blitzhere_blitzhere_labs_development_pem() *Re
     name: "Com_blitzhere_blitzhere_labs_development_pem",
     data:
 `
-H4sIAJwG4lgCA6VWSbOqyBLe8yvYG90g6hFvxFlUMauAzMOOyQIEUQFL+PWvPKeH
+H4sIAA4l6VgCA6VWSbOqyBLe8yvYG90g6hFvxFlUMauAzMOOyQIEUQFL+PWvPKeH
 27cjevOIACqzkswk88sPYIJoMAyPKh2HoqdocpwfVXHNm8lI2uIHDW63pqDF4lk0
 3a0trgOtmQ59GvuSdorHs8qK/gedde3vaVMNc1k8ir9XvzVJ+u2z6bKkORSTJv6g
 1yua5WmJo6U1LXzQa4FmRXq1o1fbt8gCer2heXKVaRnSyw9aEmhOoOUVzcs01Y9p
@@ -333,7 +333,7 @@ func (resource *ResourceData) Com_blitzhere_blitzhere_labs_production_key() *Res
     name: "Com_blitzhere_blitzhere_labs_production_key",
     data:
 `
-H4sIAJwG4lgCA21Vx66sCA7d8xXsUTdFhqfRSORUUOS0I+cMVRRf3/d1L6YX45XD
+H4sIAA4l6VgCA21Vx66sCA7d8xXsUTdFhqfRSORUUOS0I+cMVRRf3/d1L6YX45XD
 sWUd6dhcWoPscWxtdh7lDoA/Vm1tORXD10zH8heYz+Of2dAed1Nu5f+8P4Y02/9c
 trk486Odp787hzlPB738qsIvUJRAnAcRDCR4EKVAVAQ5EsQIkJZARgQR6bfzkxfp
 3zAKBR/sb4xIgJQEAj8z/rXVL/A/5vyv+L/AH7+NE2XVBB2XBS1HDVhPBHUx/rsC
@@ -373,7 +373,7 @@ func (resource *ResourceData) Com_blitzhere_blitzhere_labs_production_pem() *Res
     name: "Com_blitzhere_blitzhere_labs_production_pem",
     data:
 `
-H4sIAJwG4lgCA5VWWa+jOBN951fwHs0EyN7SfbDZCZCwL29sF0hYcsNiyK//nOTr
+H4sIAA4l6VgCA5VWWa+jOBN951fwHs0EyN7SfbDZCZCwL29sF0hYcsNiyK//nOTr
 7ukZqTWDhGKXy1UV1znHwCgnQd/fy3jos44g8fN5L7MmrWY9qrNvJLjdqow8D11B
 Wtl9LJOs+0Ymbf1nXJX9o8ju2c/RH1UUv2NUbRJVx2yWuW8kL5BrlqRX5IYlmR3J
 8CTckqsNuRfIA0/SwnOA7fz+6bZjSAo8ffgNuRNIohviS5b0H0tH5j5+l3bJ6h//
@@ -420,7 +420,7 @@ func (resource *ResourceData) Com_blitzhere_blitzhere_development_key() *Resourc
     name: "Com_blitzhere_blitzhere_development_key",
     data:
 `
-H4sIAJwG4lgCA21Vx86rZhDd8xTsrQiwMeUqivTRi+mdnammg+k8ff6bbLLI2R3N
+H4sIAA4l6VgCA21Vx86rZhDd8xTsrQiwMeUqivTRi+mdnammg+k8ff6bbLLI2R3N
 aObM6GiGeZcwWJZvlaxLPkPwD4pvlfdZe+rvLv8F89n+/mYwAztdtXz+SWiH9N2q
 +Slzv2CUhFEcxlGYomGBh+8kTPEwRcF3AgY0DFCYfcI4B/N3+MHBQIABgAEOC+Rv
 Cv3U+E/zX/Cf+vAf/hf0x28wvCjrsO0A2LRlH7g8rPLRPxFIk2V+2GUGAJUFFg+m
@@ -460,7 +460,7 @@ func (resource *ResourceData) Com_blitzhere_blitzhere_development_pem() *Resourc
     name: "Com_blitzhere_blitzhere_development_pem",
     data:
 `
-H4sIAJwG4lgCA6VVya6jShLd8xXsrX4GPFLSXWQyYwNmNLBjMrPBBgzm6zvxfVWv
+H4sIAA4l6VgCA6VVya6jShLd8xXsrX4GPFLSXWQyYwNmNLBjMrPBBgzm6zvxfVWv
 WqXuTaeEFBkZGSeIiBMJgxQHff/Mw6FPOgxH6/bMk3tcvdWgTn7goG2rBGeTV1I1
 bZ3ce1zSTPwydBluJs9XHiXdDzxq6r/CKu/nLHkm/0gfd1UTBdUpeUvsD5w44MQW
 3xL4kcZ5DqcO+JHDj0ec2uOAxgGBMzt8y+IchW9YHPA4ADjY4vxh2WLdEBZJ1H+t
@@ -505,7 +505,7 @@ func (resource *ResourceData) Com_blitzhere_blitzhere_production_key() *Resource
     name: "Com_blitzhere_blitzhere_production_key",
     data:
 `
-H4sIAJwG4lgCA21Vx66shhLc8xXskUUOc2VbIg0w5DywI2dmyOHr3/H1xotXu1a1
+H4sIAA4l6VgCA21Vx66shhLc8xXskUUOc2VbIg0w5DywI2dmyOHr3/H1xotXu1a1
 ukulkopLKpBd17lJt7VYAPAH5dwUY95fRjIUv0AxP5I5BznQHZq1/r3Qf7KkV4tL
 EX6BOAdyFEg/QFEARQQUeZBDwScGEk8QZ0GSAjkG5DgQQUHiAdIEiOHg8wlSBIiL
 IPBz4z/Pf4F/Gp//zH8Df/wDTpQUA3RcFrQcJWA9EVTF6DcD6IoiflmFY1mVZ22R
@@ -545,7 +545,7 @@ func (resource *ResourceData) Com_blitzhere_blitzhere_production_pem() *Resource
     name: "Com_blitzhere_blitzhere_production_pem",
     data:
 `
-H4sIAJwG4lgCA5VW2bKqSBZ95yt4N7pABJWKOA+ZzCog8/DGJKBMAorw9Z16+tat
+H4sIAA4l6VgCA5VW2bKqSBZ95yt4N7pABJWKOA+ZzCog8/DGJKBMAorw9Z16+tat
 WxVdHU2EYbJn9t5rAYxyHIxjX8aPMRswHF2XvsyatJq1qM5+x0HXVRl+fgwFbmX9
 s0yy4Xc8aevf4qoclyLrs5+nj3vVJlF1zGaF/x3fQBxu8R2LCzwukLjA4XCNixRO
 i/gG4MwWh3scQpxc4zSL72ic2uCiiG9pfCPg2PCIr1kyfhGOwn/9l4wEp339PxUS
@@ -592,7 +592,7 @@ func (resource *ResourceData) Server_ca_cert_pem() *ResourceData {
     name: "Server_ca_cert_pem",
     data:
 `
-H4sIAJwG4lgCA2VUubajOBDN+YrJffoYDNgQTCBAgNhs8dgzNoPZjBfWrx/cr5N+
+H4sIAA4l6VgCA2VUubajOBDN+YrJffoYDNgQTCBAgNhs8dgzNoPZjBfWrx/cr5N+
 o0Q6pbql0q1b9evXtgSoIOsfEdoOkpEIHPgx/iJMhKBeiSKY9QJMSAAFgmflku8k
 YAlF/Sjrm8JPpACwKwNJFN4SdE0BKYByoViaBmH7LJl23pqJ7BAFeMYS2AmF5Qng
 5Vp0RmcL2ySdvWSBRRot22QiL7mydTUrQJ5FoSeS1hrTDgxI0Vikak10YwpdmfvE
