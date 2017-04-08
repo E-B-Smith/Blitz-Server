@@ -75,7 +75,7 @@ message Conversation {
   optional ConversationType   conversationType    = 15;
   optional bool               isFree_deprecated   = 16;
   optional string             chargeID        = 17;
-  optional PaymentStatus      PaymentStatus   = 18;
+  optional PaymentStatus      paymentStatus   = 18;
 
   //  Fields added to support calls --
 

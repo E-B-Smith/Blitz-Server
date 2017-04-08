@@ -53,9 +53,10 @@ if [ -d "$path" ]; then
     rsync -a --exclude=".*" Build/golang/  "$path"/
 fi
 
-path=../../Blitz-Android
-if [ -d "$path" ]; then
-    echo ">>> Installing java files in '$path'."
-    (rm -Rf "$path/Blitz/app/src/main/java/com/blitzhere/BlitzMessage" || true)
-    rsync -a --exclude=".*" Build/java/ "$path"/Blitz/app/src/main/java
-fi
+# Masroor is using Square's tool to generate the Android protobufs
+# path=../../Blitz-Android
+# if [ -d "$path" ]; then
+#     echo ">>> Installing java files in '$path'."
+#     (rm -Rf "$path/Blitz/app/src/main/java/com/blitzhere/BlitzMessage" || true)
+#     rsync -a --exclude=".*" Build/java/ "$path"/Blitz/app/src/main/java
+# fi
