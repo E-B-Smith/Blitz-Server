@@ -3215,13 +3215,13 @@ static BUserReview* defaultBUserReviewInstance = nil;
 @property (strong) NSString* name;
 @property BGender gender;
 @property (strong) BTimestamp* birthday;
-@property (strong) NSMutableArray * imagesArray;
-@property (strong) NSMutableArray * socialIdentitiesArray;
-@property (strong) NSMutableArray * contactInfoArray;
+@property (strong) NSMutableArray<BImageData*> * imagesArray;
+@property (strong) NSMutableArray<BSocialIdentity*> * socialIdentitiesArray;
+@property (strong) NSMutableArray<BContactInfo*> * contactInfoArray;
 @property (strong) BEmployment* headlineEmployment;
-@property (strong) NSMutableArray * employmentArray;
-@property (strong) NSMutableArray * educationArray;
-@property (strong) NSMutableArray * entityTagsArray;
+@property (strong) NSMutableArray<BEmployment*> * employmentArray;
+@property (strong) NSMutableArray<BEducation*> * educationArray;
+@property (strong) NSMutableArray<BEntityTag*> * entityTagsArray;
 @property (strong) NSMutableArray * interestTagsArray;
 @property (strong) NSString* backgroundSummary;
 @property SInt32 ratingCount;
@@ -3229,7 +3229,7 @@ static BUserReview* defaultBUserReviewInstance = nil;
 @property Float64 ratingOutgoing;
 @property Float64 ratingRecommended;
 @property Float64 responseSeconds;
-@property (strong) NSMutableArray * reviewsArray;
+@property (strong) NSMutableArray<BUserReview*> * reviewsArray;
 @property BOOL isExpert;
 @property (strong) NSString* stripeAccount;
 @property BOOL serviceIsFreeForUser;
@@ -3493,37 +3493,37 @@ static BUserProfile* defaultBUserProfileInstance = nil;
 - (instancetype) defaultInstance {
   return defaultBUserProfileInstance;
 }
-- (NSArray *)images {
+- (NSArray<BImageData*> *)images {
   return imagesArray;
 }
 - (BImageData*)imagesAtIndex:(NSUInteger)index {
   return [imagesArray objectAtIndex:index];
 }
-- (NSArray *)socialIdentities {
+- (NSArray<BSocialIdentity*> *)socialIdentities {
   return socialIdentitiesArray;
 }
 - (BSocialIdentity*)socialIdentitiesAtIndex:(NSUInteger)index {
   return [socialIdentitiesArray objectAtIndex:index];
 }
-- (NSArray *)contactInfo {
+- (NSArray<BContactInfo*> *)contactInfo {
   return contactInfoArray;
 }
 - (BContactInfo*)contactInfoAtIndex:(NSUInteger)index {
   return [contactInfoArray objectAtIndex:index];
 }
-- (NSArray *)employment {
+- (NSArray<BEmployment*> *)employment {
   return employmentArray;
 }
 - (BEmployment*)employmentAtIndex:(NSUInteger)index {
   return [employmentArray objectAtIndex:index];
 }
-- (NSArray *)education {
+- (NSArray<BEducation*> *)education {
   return educationArray;
 }
 - (BEducation*)educationAtIndex:(NSUInteger)index {
   return [educationArray objectAtIndex:index];
 }
-- (NSArray *)entityTags {
+- (NSArray<BEntityTag*> *)entityTags {
   return entityTagsArray;
 }
 - (BEntityTag*)entityTagsAtIndex:(NSUInteger)index {
@@ -3535,7 +3535,7 @@ static BUserProfile* defaultBUserProfileInstance = nil;
 - (NSString*)interestTagsAtIndex:(NSUInteger)index {
   return [interestTagsArray objectAtIndex:index];
 }
-- (NSArray *)reviews {
+- (NSArray<BUserReview*> *)reviews {
   return reviewsArray;
 }
 - (BUserReview*)reviewsAtIndex:(NSUInteger)index {
@@ -4763,7 +4763,7 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   resultUserProfile.birthday = [BTimestamp defaultInstance];
   return self;
 }
-- (NSMutableArray *)images {
+- (NSMutableArray<BImageData*> *)images {
   return resultUserProfile.imagesArray;
 }
 - (BImageData*)imagesAtIndex:(NSUInteger)index {
@@ -4776,7 +4776,7 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   [resultUserProfile.imagesArray addObject:value];
   return self;
 }
-- (BUserProfileBuilder *)setImagesArray:(NSArray *)array {
+- (BUserProfileBuilder *)setImagesArray:(NSArray<BImageData*> *)array {
   resultUserProfile.imagesArray = [[NSMutableArray alloc]initWithArray:array];
   return self;
 }
@@ -4784,7 +4784,7 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   resultUserProfile.imagesArray = nil;
   return self;
 }
-- (NSMutableArray *)socialIdentities {
+- (NSMutableArray<BSocialIdentity*> *)socialIdentities {
   return resultUserProfile.socialIdentitiesArray;
 }
 - (BSocialIdentity*)socialIdentitiesAtIndex:(NSUInteger)index {
@@ -4797,7 +4797,7 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   [resultUserProfile.socialIdentitiesArray addObject:value];
   return self;
 }
-- (BUserProfileBuilder *)setSocialIdentitiesArray:(NSArray *)array {
+- (BUserProfileBuilder *)setSocialIdentitiesArray:(NSArray<BSocialIdentity*> *)array {
   resultUserProfile.socialIdentitiesArray = [[NSMutableArray alloc]initWithArray:array];
   return self;
 }
@@ -4805,7 +4805,7 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   resultUserProfile.socialIdentitiesArray = nil;
   return self;
 }
-- (NSMutableArray *)contactInfo {
+- (NSMutableArray<BContactInfo*> *)contactInfo {
   return resultUserProfile.contactInfoArray;
 }
 - (BContactInfo*)contactInfoAtIndex:(NSUInteger)index {
@@ -4818,7 +4818,7 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   [resultUserProfile.contactInfoArray addObject:value];
   return self;
 }
-- (BUserProfileBuilder *)setContactInfoArray:(NSArray *)array {
+- (BUserProfileBuilder *)setContactInfoArray:(NSArray<BContactInfo*> *)array {
   resultUserProfile.contactInfoArray = [[NSMutableArray alloc]initWithArray:array];
   return self;
 }
@@ -4856,7 +4856,7 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   resultUserProfile.headlineEmployment = [BEmployment defaultInstance];
   return self;
 }
-- (NSMutableArray *)employment {
+- (NSMutableArray<BEmployment*> *)employment {
   return resultUserProfile.employmentArray;
 }
 - (BEmployment*)employmentAtIndex:(NSUInteger)index {
@@ -4869,7 +4869,7 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   [resultUserProfile.employmentArray addObject:value];
   return self;
 }
-- (BUserProfileBuilder *)setEmploymentArray:(NSArray *)array {
+- (BUserProfileBuilder *)setEmploymentArray:(NSArray<BEmployment*> *)array {
   resultUserProfile.employmentArray = [[NSMutableArray alloc]initWithArray:array];
   return self;
 }
@@ -4877,7 +4877,7 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   resultUserProfile.employmentArray = nil;
   return self;
 }
-- (NSMutableArray *)education {
+- (NSMutableArray<BEducation*> *)education {
   return resultUserProfile.educationArray;
 }
 - (BEducation*)educationAtIndex:(NSUInteger)index {
@@ -4890,7 +4890,7 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   [resultUserProfile.educationArray addObject:value];
   return self;
 }
-- (BUserProfileBuilder *)setEducationArray:(NSArray *)array {
+- (BUserProfileBuilder *)setEducationArray:(NSArray<BEducation*> *)array {
   resultUserProfile.educationArray = [[NSMutableArray alloc]initWithArray:array];
   return self;
 }
@@ -4898,7 +4898,7 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   resultUserProfile.educationArray = nil;
   return self;
 }
-- (NSMutableArray *)entityTags {
+- (NSMutableArray<BEntityTag*> *)entityTags {
   return resultUserProfile.entityTagsArray;
 }
 - (BEntityTag*)entityTagsAtIndex:(NSUInteger)index {
@@ -4911,7 +4911,7 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   [resultUserProfile.entityTagsArray addObject:value];
   return self;
 }
-- (BUserProfileBuilder *)setEntityTagsArray:(NSArray *)array {
+- (BUserProfileBuilder *)setEntityTagsArray:(NSArray<BEntityTag*> *)array {
   resultUserProfile.entityTagsArray = [[NSMutableArray alloc]initWithArray:array];
   return self;
 }
@@ -5036,7 +5036,7 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   resultUserProfile.responseSeconds = 0;
   return self;
 }
-- (NSMutableArray *)reviews {
+- (NSMutableArray<BUserReview*> *)reviews {
   return resultUserProfile.reviewsArray;
 }
 - (BUserReview*)reviewsAtIndex:(NSUInteger)index {
@@ -5049,7 +5049,7 @@ static BUserProfile* defaultBUserProfileInstance = nil;
   [resultUserProfile.reviewsArray addObject:value];
   return self;
 }
-- (BUserProfileBuilder *)setReviewsArray:(NSArray *)array {
+- (BUserProfileBuilder *)setReviewsArray:(NSArray<BUserReview*> *)array {
   resultUserProfile.reviewsArray = [[NSMutableArray alloc]initWithArray:array];
   return self;
 }
@@ -5236,7 +5236,7 @@ static BUserProfile* defaultBUserProfileInstance = nil;
 @end
 
 @interface BImageUpload ()
-@property (strong) NSMutableArray * imageDataArray;
+@property (strong) NSMutableArray<BImageData*> * imageDataArray;
 @end
 
 @implementation BImageUpload
@@ -5260,7 +5260,7 @@ static BImageUpload* defaultBImageUploadInstance = nil;
 - (instancetype) defaultInstance {
   return defaultBImageUploadInstance;
 }
-- (NSArray *)imageData {
+- (NSArray<BImageData*> *)imageData {
   return imageDataArray;
 }
 - (BImageData*)imageDataAtIndex:(NSUInteger)index {
@@ -5433,7 +5433,7 @@ static BImageUpload* defaultBImageUploadInstance = nil;
     }
   }
 }
-- (NSMutableArray *)imageData {
+- (NSMutableArray<BImageData*> *)imageData {
   return resultImageUpload.imageDataArray;
 }
 - (BImageData*)imageDataAtIndex:(NSUInteger)index {
@@ -5446,7 +5446,7 @@ static BImageUpload* defaultBImageUploadInstance = nil;
   [resultImageUpload.imageDataArray addObject:value];
   return self;
 }
-- (BImageUploadBuilder *)setImageDataArray:(NSArray *)array {
+- (BImageUploadBuilder *)setImageDataArray:(NSArray<BImageData*> *)array {
   resultImageUpload.imageDataArray = [[NSMutableArray alloc]initWithArray:array];
   return self;
 }
@@ -5457,7 +5457,7 @@ static BImageUpload* defaultBImageUploadInstance = nil;
 @end
 
 @interface BUserProfileUpdate ()
-@property (strong) NSMutableArray * profilesArray;
+@property (strong) NSMutableArray<BUserProfile*> * profilesArray;
 @end
 
 @implementation BUserProfileUpdate
@@ -5481,7 +5481,7 @@ static BUserProfileUpdate* defaultBUserProfileUpdateInstance = nil;
 - (instancetype) defaultInstance {
   return defaultBUserProfileUpdateInstance;
 }
-- (NSArray *)profiles {
+- (NSArray<BUserProfile*> *)profiles {
   return profilesArray;
 }
 - (BUserProfile*)profilesAtIndex:(NSUInteger)index {
@@ -5662,7 +5662,7 @@ static BUserProfileUpdate* defaultBUserProfileUpdateInstance = nil;
     }
   }
 }
-- (NSMutableArray *)profiles {
+- (NSMutableArray<BUserProfile*> *)profiles {
   return resultUserProfileUpdate.profilesArray;
 }
 - (BUserProfile*)profilesAtIndex:(NSUInteger)index {
@@ -5675,7 +5675,7 @@ static BUserProfileUpdate* defaultBUserProfileUpdateInstance = nil;
   [resultUserProfileUpdate.profilesArray addObject:value];
   return self;
 }
-- (BUserProfileUpdateBuilder *)setProfilesArray:(NSArray *)array {
+- (BUserProfileUpdateBuilder *)setProfilesArray:(NSArray<BUserProfile*> *)array {
   resultUserProfileUpdate.profilesArray = [[NSMutableArray alloc]initWithArray:array];
   return self;
 }
@@ -6626,7 +6626,7 @@ static BConfirmationRequest* defaultBConfirmationRequestInstance = nil;
 @end
 
 @interface BProfilesFromContactInfo ()
-@property (strong) NSMutableArray * profilesArray;
+@property (strong) NSMutableArray<BUserProfile*> * profilesArray;
 @end
 
 @implementation BProfilesFromContactInfo
@@ -6650,7 +6650,7 @@ static BProfilesFromContactInfo* defaultBProfilesFromContactInfoInstance = nil;
 - (instancetype) defaultInstance {
   return defaultBProfilesFromContactInfoInstance;
 }
-- (NSArray *)profiles {
+- (NSArray<BUserProfile*> *)profiles {
   return profilesArray;
 }
 - (BUserProfile*)profilesAtIndex:(NSUInteger)index {
@@ -6831,7 +6831,7 @@ static BProfilesFromContactInfo* defaultBProfilesFromContactInfoInstance = nil;
     }
   }
 }
-- (NSMutableArray *)profiles {
+- (NSMutableArray<BUserProfile*> *)profiles {
   return resultProfilesFromContactInfo.profilesArray;
 }
 - (BUserProfile*)profilesAtIndex:(NSUInteger)index {
@@ -6844,7 +6844,7 @@ static BProfilesFromContactInfo* defaultBProfilesFromContactInfoInstance = nil;
   [resultProfilesFromContactInfo.profilesArray addObject:value];
   return self;
 }
-- (BProfilesFromContactInfoBuilder *)setProfilesArray:(NSArray *)array {
+- (BProfilesFromContactInfoBuilder *)setProfilesArray:(NSArray<BUserProfile*> *)array {
   resultProfilesFromContactInfo.profilesArray = [[NSMutableArray alloc]initWithArray:array];
   return self;
 }
@@ -6857,7 +6857,7 @@ static BProfilesFromContactInfo* defaultBProfilesFromContactInfoInstance = nil;
 @interface BFriendUpdate ()
 @property BFriendStatus friendStatus;
 @property (strong) NSString* friendID;
-@property (strong) NSMutableArray * profilesArray;
+@property (strong) NSMutableArray<BUserProfile*> * profilesArray;
 @end
 
 @implementation BFriendUpdate
@@ -6897,7 +6897,7 @@ static BFriendUpdate* defaultBFriendUpdateInstance = nil;
 - (instancetype) defaultInstance {
   return defaultBFriendUpdateInstance;
 }
-- (NSArray *)profiles {
+- (NSArray<BUserProfile*> *)profiles {
   return profilesArray;
 }
 - (BUserProfile*)profilesAtIndex:(NSUInteger)index {
@@ -7163,7 +7163,7 @@ static BFriendUpdate* defaultBFriendUpdateInstance = nil;
   resultFriendUpdate.friendID = @"";
   return self;
 }
-- (NSMutableArray *)profiles {
+- (NSMutableArray<BUserProfile*> *)profiles {
   return resultFriendUpdate.profilesArray;
 }
 - (BUserProfile*)profilesAtIndex:(NSUInteger)index {
@@ -7176,7 +7176,7 @@ static BFriendUpdate* defaultBFriendUpdateInstance = nil;
   [resultFriendUpdate.profilesArray addObject:value];
   return self;
 }
-- (BFriendUpdateBuilder *)setProfilesArray:(NSArray *)array {
+- (BFriendUpdateBuilder *)setProfilesArray:(NSArray<BUserProfile*> *)array {
   resultFriendUpdate.profilesArray = [[NSMutableArray alloc]initWithArray:array];
   return self;
 }
@@ -7191,7 +7191,7 @@ static BFriendUpdate* defaultBFriendUpdateInstance = nil;
 @property (strong) NSString* friendID;
 @property (strong) NSString* message;
 @property (strong) BContactInfo* contactInfo;
-@property (strong) NSMutableArray * profilesArray;
+@property (strong) NSMutableArray<BUserProfile*> * profilesArray;
 @property (strong) NSString* confirmationCode;
 @property (strong) NSString* name;
 @property BInviteType inviteType;
@@ -7283,7 +7283,7 @@ static BUserInvite* defaultBUserInviteInstance = nil;
 - (instancetype) defaultInstance {
   return defaultBUserInviteInstance;
 }
-- (NSArray *)profiles {
+- (NSArray<BUserProfile*> *)profiles {
   return profilesArray;
 }
 - (BUserProfile*)profilesAtIndex:(NSUInteger)index {
@@ -7754,7 +7754,7 @@ static BUserInvite* defaultBUserInviteInstance = nil;
   resultUserInvite.contactInfo = [BContactInfo defaultInstance];
   return self;
 }
-- (NSMutableArray *)profiles {
+- (NSMutableArray<BUserProfile*> *)profiles {
   return resultUserInvite.profilesArray;
 }
 - (BUserProfile*)profilesAtIndex:(NSUInteger)index {
@@ -7767,7 +7767,7 @@ static BUserInvite* defaultBUserInviteInstance = nil;
   [resultUserInvite.profilesArray addObject:value];
   return self;
 }
-- (BUserInviteBuilder *)setProfilesArray:(NSArray *)array {
+- (BUserInviteBuilder *)setProfilesArray:(NSArray<BUserProfile*> *)array {
   resultUserInvite.profilesArray = [[NSMutableArray alloc]initWithArray:array];
   return self;
 }
@@ -7842,7 +7842,7 @@ static BUserInvite* defaultBUserInviteInstance = nil;
 @end
 
 @interface BUserInvites ()
-@property (strong) NSMutableArray * userInvitesArray;
+@property (strong) NSMutableArray<BUserInvite*> * userInvitesArray;
 @end
 
 @implementation BUserInvites
@@ -7866,7 +7866,7 @@ static BUserInvites* defaultBUserInvitesInstance = nil;
 - (instancetype) defaultInstance {
   return defaultBUserInvitesInstance;
 }
-- (NSArray *)userInvites {
+- (NSArray<BUserInvite*> *)userInvites {
   return userInvitesArray;
 }
 - (BUserInvite*)userInvitesAtIndex:(NSUInteger)index {
@@ -8047,7 +8047,7 @@ static BUserInvites* defaultBUserInvitesInstance = nil;
     }
   }
 }
-- (NSMutableArray *)userInvites {
+- (NSMutableArray<BUserInvite*> *)userInvites {
   return resultUserInvites.userInvitesArray;
 }
 - (BUserInvite*)userInvitesAtIndex:(NSUInteger)index {
@@ -8060,7 +8060,7 @@ static BUserInvites* defaultBUserInvitesInstance = nil;
   [resultUserInvites.userInvitesArray addObject:value];
   return self;
 }
-- (BUserInvitesBuilder *)setUserInvitesArray:(NSArray *)array {
+- (BUserInvitesBuilder *)setUserInvitesArray:(NSArray<BUserInvite*> *)array {
   resultUserInvites.userInvitesArray = [[NSMutableArray alloc]initWithArray:array];
   return self;
 }

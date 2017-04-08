@@ -469,8 +469,8 @@ static BFeedPanelMember* defaultBFeedPanelMemberInstance = nil;
 @property (strong) BTimespan* timespanActive;
 @property (strong) NSString* headlineText;
 @property (strong) NSString* bodyText;
-@property (strong) NSMutableArray * postTagsArray;
-@property (strong) NSMutableArray * repliesDeprecatedArray;
+@property (strong) NSMutableArray<BEntityTag*> * postTagsArray;
+@property (strong) NSMutableArray<BFeedPost*> * repliesDeprecatedArray;
 @property BOOL mayAddReply;
 @property BOOL mayChooseMulitpleReplies;
 @property SInt32 surveyAnswerSequence;
@@ -479,7 +479,7 @@ static BFeedPanelMember* defaultBFeedPanelMemberInstance = nil;
 @property (strong) NSString* amountPerReplyDeprecated;
 @property (strong) NSString* amountTotal;
 @property (strong) NSMutableArray * panelUserIDsDeprecatedArray;
-@property (strong) NSMutableArray * panelArray;
+@property (strong) NSMutableArray<BFeedPanelMember*> * panelArray;
 @property BFeedPostStatus postStatus;
 @property (strong) NSString* referreeID;
 @end
@@ -683,13 +683,13 @@ static BFeedPost* defaultBFeedPostInstance = nil;
 - (instancetype) defaultInstance {
   return defaultBFeedPostInstance;
 }
-- (NSArray *)postTags {
+- (NSArray<BEntityTag*> *)postTags {
   return postTagsArray;
 }
 - (BEntityTag*)postTagsAtIndex:(NSUInteger)index {
   return [postTagsArray objectAtIndex:index];
 }
-- (NSArray *)repliesDeprecated {
+- (NSArray<BFeedPost*> *)repliesDeprecated {
   return repliesDeprecatedArray;
 }
 - (BFeedPost*)repliesDeprecatedAtIndex:(NSUInteger)index {
@@ -701,7 +701,7 @@ static BFeedPost* defaultBFeedPostInstance = nil;
 - (NSString*)panelUserIDsDeprecatedAtIndex:(NSUInteger)index {
   return [panelUserIDsDeprecatedArray objectAtIndex:index];
 }
-- (NSArray *)panel {
+- (NSArray<BFeedPanelMember*> *)panel {
   return panelArray;
 }
 - (BFeedPanelMember*)panelAtIndex:(NSUInteger)index {
@@ -1652,7 +1652,7 @@ static BFeedPost* defaultBFeedPostInstance = nil;
   resultFeedPost.bodyText = @"";
   return self;
 }
-- (NSMutableArray *)postTags {
+- (NSMutableArray<BEntityTag*> *)postTags {
   return resultFeedPost.postTagsArray;
 }
 - (BEntityTag*)postTagsAtIndex:(NSUInteger)index {
@@ -1665,7 +1665,7 @@ static BFeedPost* defaultBFeedPostInstance = nil;
   [resultFeedPost.postTagsArray addObject:value];
   return self;
 }
-- (BFeedPostBuilder *)setPostTagsArray:(NSArray *)array {
+- (BFeedPostBuilder *)setPostTagsArray:(NSArray<BEntityTag*> *)array {
   resultFeedPost.postTagsArray = [[NSMutableArray alloc]initWithArray:array];
   return self;
 }
@@ -1673,7 +1673,7 @@ static BFeedPost* defaultBFeedPostInstance = nil;
   resultFeedPost.postTagsArray = nil;
   return self;
 }
-- (NSMutableArray *)repliesDeprecated {
+- (NSMutableArray<BFeedPost*> *)repliesDeprecated {
   return resultFeedPost.repliesDeprecatedArray;
 }
 - (BFeedPost*)repliesDeprecatedAtIndex:(NSUInteger)index {
@@ -1686,7 +1686,7 @@ static BFeedPost* defaultBFeedPostInstance = nil;
   [resultFeedPost.repliesDeprecatedArray addObject:value];
   return self;
 }
-- (BFeedPostBuilder *)setRepliesDeprecatedArray:(NSArray *)array {
+- (BFeedPostBuilder *)setRepliesDeprecatedArray:(NSArray<BFeedPost*> *)array {
   resultFeedPost.repliesDeprecatedArray = [[NSMutableArray alloc]initWithArray:array];
   return self;
 }
@@ -1827,7 +1827,7 @@ static BFeedPost* defaultBFeedPostInstance = nil;
   resultFeedPost.panelUserIDsDeprecatedArray = nil;
   return self;
 }
-- (NSMutableArray *)panel {
+- (NSMutableArray<BFeedPanelMember*> *)panel {
   return resultFeedPost.panelArray;
 }
 - (BFeedPanelMember*)panelAtIndex:(NSUInteger)index {
@@ -1840,7 +1840,7 @@ static BFeedPost* defaultBFeedPostInstance = nil;
   [resultFeedPost.panelArray addObject:value];
   return self;
 }
-- (BFeedPostBuilder *)setPanelArray:(NSArray *)array {
+- (BFeedPostBuilder *)setPanelArray:(NSArray<BFeedPanelMember*> *)array {
   resultFeedPost.panelArray = [[NSMutableArray alloc]initWithArray:array];
   return self;
 }
@@ -1885,7 +1885,7 @@ static BFeedPost* defaultBFeedPostInstance = nil;
 @interface BFeedPostUpdateRequest ()
 @property BUpdateVerb updateVerb;
 @property (strong) BFeedPost* feedPostDeprecated;
-@property (strong) NSMutableArray * feedPostsArray;
+@property (strong) NSMutableArray<BFeedPost*> * feedPostsArray;
 @end
 
 @implementation BFeedPostUpdateRequest
@@ -1925,7 +1925,7 @@ static BFeedPostUpdateRequest* defaultBFeedPostUpdateRequestInstance = nil;
 - (instancetype) defaultInstance {
   return defaultBFeedPostUpdateRequestInstance;
 }
-- (NSArray *)feedPosts {
+- (NSArray<BFeedPost*> *)feedPosts {
   return feedPostsArray;
 }
 - (BFeedPost*)feedPostsAtIndex:(NSUInteger)index {
@@ -2207,7 +2207,7 @@ static BFeedPostUpdateRequest* defaultBFeedPostUpdateRequestInstance = nil;
   resultFeedPostUpdateRequest.feedPostDeprecated = [BFeedPost defaultInstance];
   return self;
 }
-- (NSMutableArray *)feedPosts {
+- (NSMutableArray<BFeedPost*> *)feedPosts {
   return resultFeedPostUpdateRequest.feedPostsArray;
 }
 - (BFeedPost*)feedPostsAtIndex:(NSUInteger)index {
@@ -2220,7 +2220,7 @@ static BFeedPostUpdateRequest* defaultBFeedPostUpdateRequestInstance = nil;
   [resultFeedPostUpdateRequest.feedPostsArray addObject:value];
   return self;
 }
-- (BFeedPostUpdateRequestBuilder *)setFeedPostsArray:(NSArray *)array {
+- (BFeedPostUpdateRequestBuilder *)setFeedPostsArray:(NSArray<BFeedPost*> *)array {
   resultFeedPostUpdateRequest.feedPostsArray = [[NSMutableArray alloc]initWithArray:array];
   return self;
 }
@@ -2564,7 +2564,7 @@ static BFeedPostFetchRequest* defaultBFeedPostFetchRequestInstance = nil;
 @end
 
 @interface BFeedPostResponse ()
-@property (strong) NSMutableArray * feedPostsArray;
+@property (strong) NSMutableArray<BFeedPost*> * feedPostsArray;
 @end
 
 @implementation BFeedPostResponse
@@ -2588,7 +2588,7 @@ static BFeedPostResponse* defaultBFeedPostResponseInstance = nil;
 - (instancetype) defaultInstance {
   return defaultBFeedPostResponseInstance;
 }
-- (NSArray *)feedPosts {
+- (NSArray<BFeedPost*> *)feedPosts {
   return feedPostsArray;
 }
 - (BFeedPost*)feedPostsAtIndex:(NSUInteger)index {
@@ -2761,7 +2761,7 @@ static BFeedPostResponse* defaultBFeedPostResponseInstance = nil;
     }
   }
 }
-- (NSMutableArray *)feedPosts {
+- (NSMutableArray<BFeedPost*> *)feedPosts {
   return resultFeedPostResponse.feedPostsArray;
 }
 - (BFeedPost*)feedPostsAtIndex:(NSUInteger)index {
@@ -2774,7 +2774,7 @@ static BFeedPostResponse* defaultBFeedPostResponseInstance = nil;
   [resultFeedPostResponse.feedPostsArray addObject:value];
   return self;
 }
-- (BFeedPostResponseBuilder *)setFeedPostsArray:(NSArray *)array {
+- (BFeedPostResponseBuilder *)setFeedPostsArray:(NSArray<BFeedPost*> *)array {
   resultFeedPostResponse.feedPostsArray = [[NSMutableArray alloc]initWithArray:array];
   return self;
 }
