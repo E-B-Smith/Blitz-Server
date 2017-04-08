@@ -136,7 +136,17 @@ There are three users on the server:
 
 ### Building the Server App
 
-Clone the Server Code
+#### Prerequists
+
+You'll need to download and install some software:
+
+* The Go Compiler: [The Go Programming Language](https://golang.org/dl/)
+* Install home brew: [Homebrew](https://brew.sh)
+* Install `automake`. From the command line: `brew install automake`.
+* The protocol buffer 2.6.1 compiler: [Protocol Buffers v2.6.1](https://github.com/google/protobuf/releases/tag/v2.6.1)
+  - Download the [protobuf-2.6.1.zip](https://github.com/google/protobuf/releases/download/v2.6.1/protobuf-2.6.1.zip)
+  - Follow the instructions in the protobuf-2.6.1 `README.md` file to install the files.
+    * That is, `cd` to your `protobuf-2.6.1` directory and `./autogen.sh`, etc. etc.
 
 ### Server API Endpoints
 
