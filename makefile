@@ -167,7 +167,13 @@ restart: \
         ssh -T $$userhost sc restart all -f ;
 
 
-all: clean linux compile deploy restart
+status: \
+    ; \
+        echo ">>> Server status" ; \
+        ssh -T $$userhost sc status all ;
+
+
+all: clean linux compile deploy restart status
 
 
 server: linux compile deploy restart
