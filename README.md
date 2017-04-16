@@ -225,6 +225,7 @@ and make all the apps:
 ```
     git clone git@github.com:BlitzHere/Blitz-Server.git
     cd Blitz-Server
+    git pull
     make all
 ```
 
