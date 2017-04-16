@@ -161,13 +161,21 @@ There are three users on the server:
 The `sc` command controls the server apps.
 
 ```
-    sc  [ -f | --force ]  [ start | stop | restart | status ]  <server-app-name>
+    sc  [ -f | --force ]  [ start | stop | restart | status ]  [ <server-app-name> | all ]
 ```
 
 where `<server-app-name>` is one of `BlitzLabs-Server`, `BlitzHere-Server`, `Status-Server`.  The
 `--force` option will force a server to start, stop, or restart if it isn't responding to normal
 server commands.  When the `--force` option is used, the server isn't quit gracefully and some small
 amount of data may be lost.
+
+The `all` option applies the command to all the server apps, so
+
+```
+   sc -f restart all
+```
+
+will force restart all the server apps.
 
 #### Server Log Files
 
