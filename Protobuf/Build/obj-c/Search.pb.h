@@ -317,7 +317,7 @@ NSString *NSStringFromBSearchType(BSearchType value);
 }
 - (BOOL) hasQuery;
 @property (readonly, strong) NSString* query;
-@property (readonly, strong) NSArray<BUserProfile*> * profiles;
+@property (readonly, strong) NSArray * profiles;
 - (BUserProfile*)profilesAtIndex:(NSUInteger)index;
 
 + (instancetype) defaultInstance;
@@ -360,10 +360,10 @@ NSString *NSStringFromBSearchType(BSearchType value);
 - (BUserSearchResponseBuilder*) setQuery:(NSString*) value;
 - (BUserSearchResponseBuilder*) clearQuery;
 
-- (NSMutableArray<BUserProfile*> *)profiles;
+- (NSMutableArray *)profiles;
 - (BUserProfile*)profilesAtIndex:(NSUInteger)index;
 - (BUserSearchResponseBuilder *)addProfiles:(BUserProfile*)value;
-- (BUserSearchResponseBuilder *)setProfilesArray:(NSArray<BUserProfile*> *)array;
+- (BUserSearchResponseBuilder *)setProfilesArray:(NSArray *)array;
 - (BUserSearchResponseBuilder *)clearProfiles;
 @end
 
@@ -452,7 +452,7 @@ NSString *NSStringFromBSearchType(BSearchType value);
 @private
   NSMutableArray * categoriesArray;
 }
-@property (readonly, strong) NSArray<BSearchCategory*> * categories;
+@property (readonly, strong) NSArray * categories;
 - (BSearchCategory*)categoriesAtIndex:(NSUInteger)index;
 
 + (instancetype) defaultInstance;
@@ -490,10 +490,10 @@ NSString *NSStringFromBSearchType(BSearchType value);
 - (BSearchCategoriesBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
 - (BSearchCategoriesBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
 
-- (NSMutableArray<BSearchCategory*> *)categories;
+- (NSMutableArray *)categories;
 - (BSearchCategory*)categoriesAtIndex:(NSUInteger)index;
 - (BSearchCategoriesBuilder *)addCategories:(BSearchCategory*)value;
-- (BSearchCategoriesBuilder *)setCategoriesArray:(NSArray<BSearchCategory*> *)array;
+- (BSearchCategoriesBuilder *)setCategoriesArray:(NSArray *)array;
 - (BSearchCategoriesBuilder *)clearCategories;
 @end
 

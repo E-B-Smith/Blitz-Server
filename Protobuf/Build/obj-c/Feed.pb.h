@@ -307,8 +307,8 @@ NSString *NSStringFromBUpdateVerb(BUpdateVerb value);
 @property (readonly, strong) BTimespan* timespanActive;
 @property (readonly, strong) NSString* headlineText;
 @property (readonly, strong) NSString* bodyText;
-@property (readonly, strong) NSArray<BEntityTag*> * postTags;
-@property (readonly, strong) NSArray<BFeedPost*> * repliesDeprecated;
+@property (readonly, strong) NSArray * postTags;
+@property (readonly, strong) NSArray * repliesDeprecated;
 - (BOOL) mayAddReply;
 - (BOOL) mayChooseMulitpleReplies;
 @property (readonly) SInt32 surveyAnswerSequence;
@@ -317,7 +317,7 @@ NSString *NSStringFromBUpdateVerb(BUpdateVerb value);
 @property (readonly, strong) NSString* amountPerReplyDeprecated;
 @property (readonly, strong) NSString* amountTotal;
 @property (readonly, strong) NSArray * panelUserIDsDeprecated;
-@property (readonly, strong) NSArray<BFeedPanelMember*> * panel;
+@property (readonly, strong) NSArray * panel;
 @property (readonly) BFeedPostStatus postStatus;
 @property (readonly, strong) NSString* referreeID;
 - (BEntityTag*)postTagsAtIndex:(NSUInteger)index;
@@ -414,16 +414,16 @@ NSString *NSStringFromBUpdateVerb(BUpdateVerb value);
 - (BFeedPostBuilder*) setBodyText:(NSString*) value;
 - (BFeedPostBuilder*) clearBodyText;
 
-- (NSMutableArray<BEntityTag*> *)postTags;
+- (NSMutableArray *)postTags;
 - (BEntityTag*)postTagsAtIndex:(NSUInteger)index;
 - (BFeedPostBuilder *)addPostTags:(BEntityTag*)value;
-- (BFeedPostBuilder *)setPostTagsArray:(NSArray<BEntityTag*> *)array;
+- (BFeedPostBuilder *)setPostTagsArray:(NSArray *)array;
 - (BFeedPostBuilder *)clearPostTags;
 
-- (NSMutableArray<BFeedPost*> *)repliesDeprecated;
+- (NSMutableArray *)repliesDeprecated;
 - (BFeedPost*)repliesDeprecatedAtIndex:(NSUInteger)index;
 - (BFeedPostBuilder *)addRepliesDeprecated:(BFeedPost*)value;
-- (BFeedPostBuilder *)setRepliesDeprecatedArray:(NSArray<BFeedPost*> *)array;
+- (BFeedPostBuilder *)setRepliesDeprecatedArray:(NSArray *)array;
 - (BFeedPostBuilder *)clearRepliesDeprecated;
 
 - (BOOL) hasMayAddReply;
@@ -467,10 +467,10 @@ NSString *NSStringFromBUpdateVerb(BUpdateVerb value);
 - (BFeedPostBuilder *)setPanelUserIDsDeprecatedArray:(NSArray *)array;
 - (BFeedPostBuilder *)clearPanelUserIDsDeprecated;
 
-- (NSMutableArray<BFeedPanelMember*> *)panel;
+- (NSMutableArray *)panel;
 - (BFeedPanelMember*)panelAtIndex:(NSUInteger)index;
 - (BFeedPostBuilder *)addPanel:(BFeedPanelMember*)value;
-- (BFeedPostBuilder *)setPanelArray:(NSArray<BFeedPanelMember*> *)array;
+- (BFeedPostBuilder *)setPanelArray:(NSArray *)array;
 - (BFeedPostBuilder *)clearPanel;
 
 - (BOOL) hasPostStatus;
@@ -499,7 +499,7 @@ NSString *NSStringFromBUpdateVerb(BUpdateVerb value);
 - (BOOL) hasFeedPostDeprecated;
 @property (readonly) BUpdateVerb updateVerb;
 @property (readonly, strong) BFeedPost* feedPostDeprecated;
-@property (readonly, strong) NSArray<BFeedPost*> * feedPosts;
+@property (readonly, strong) NSArray * feedPosts;
 - (BFeedPost*)feedPostsAtIndex:(NSUInteger)index;
 
 + (instancetype) defaultInstance;
@@ -549,10 +549,10 @@ NSString *NSStringFromBUpdateVerb(BUpdateVerb value);
 - (BFeedPostUpdateRequestBuilder*) mergeFeedPostDeprecated:(BFeedPost*) value;
 - (BFeedPostUpdateRequestBuilder*) clearFeedPostDeprecated;
 
-- (NSMutableArray<BFeedPost*> *)feedPosts;
+- (NSMutableArray *)feedPosts;
 - (BFeedPost*)feedPostsAtIndex:(NSUInteger)index;
 - (BFeedPostUpdateRequestBuilder *)addFeedPosts:(BFeedPost*)value;
-- (BFeedPostUpdateRequestBuilder *)setFeedPostsArray:(NSArray<BFeedPost*> *)array;
+- (BFeedPostUpdateRequestBuilder *)setFeedPostsArray:(NSArray *)array;
 - (BFeedPostUpdateRequestBuilder *)clearFeedPosts;
 @end
 
@@ -633,7 +633,7 @@ NSString *NSStringFromBUpdateVerb(BUpdateVerb value);
 @private
   NSMutableArray * feedPostsArray;
 }
-@property (readonly, strong) NSArray<BFeedPost*> * feedPosts;
+@property (readonly, strong) NSArray * feedPosts;
 - (BFeedPost*)feedPostsAtIndex:(NSUInteger)index;
 
 + (instancetype) defaultInstance;
@@ -671,10 +671,10 @@ NSString *NSStringFromBUpdateVerb(BUpdateVerb value);
 - (BFeedPostResponseBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
 - (BFeedPostResponseBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
 
-- (NSMutableArray<BFeedPost*> *)feedPosts;
+- (NSMutableArray *)feedPosts;
 - (BFeedPost*)feedPostsAtIndex:(NSUInteger)index;
 - (BFeedPostResponseBuilder *)addFeedPosts:(BFeedPost*)value;
-- (BFeedPostResponseBuilder *)setFeedPostsArray:(NSArray<BFeedPost*> *)array;
+- (BFeedPostResponseBuilder *)setFeedPostsArray:(NSArray *)array;
 - (BFeedPostResponseBuilder *)clearFeedPosts;
 @end
 

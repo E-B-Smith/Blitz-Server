@@ -1286,7 +1286,7 @@ static BAppOptions* defaultBAppOptionsInstance = nil;
 @property (strong) NSString* userID;
 @property (strong) NSString* sessionToken;
 @property (strong) NSString* serverURL;
-@property (strong) NSMutableArray<BUserMessage*> * userMessagesArray;
+@property (strong) NSMutableArray * userMessagesArray;
 @property (strong) BUserProfile* userProfile;
 @property BOOL resetAllAppData;
 @property (strong) BUserInvite* inviteRequest;
@@ -1375,7 +1375,7 @@ static BSessionResponse* defaultBSessionResponseInstance = nil;
 - (instancetype) defaultInstance {
   return defaultBSessionResponseInstance;
 }
-- (NSArray<BUserMessage*> *)userMessages {
+- (NSArray *)userMessages {
   return userMessagesArray;
 }
 - (BUserMessage*)userMessagesAtIndex:(NSUInteger)index {
@@ -1804,7 +1804,7 @@ static BSessionResponse* defaultBSessionResponseInstance = nil;
   resultSessionResponse.serverURL = @"";
   return self;
 }
-- (NSMutableArray<BUserMessage*> *)userMessages {
+- (NSMutableArray *)userMessages {
   return resultSessionResponse.userMessagesArray;
 }
 - (BUserMessage*)userMessagesAtIndex:(NSUInteger)index {
@@ -1817,7 +1817,7 @@ static BSessionResponse* defaultBSessionResponseInstance = nil;
   [resultSessionResponse.userMessagesArray addObject:value];
   return self;
 }
-- (BSessionResponseBuilder *)setUserMessagesArray:(NSArray<BUserMessage*> *)array {
+- (BSessionResponseBuilder *)setUserMessagesArray:(NSArray *)array {
   resultSessionResponse.userMessagesArray = [[NSMutableArray alloc]initWithArray:array];
   return self;
 }

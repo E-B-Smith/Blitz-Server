@@ -946,13 +946,13 @@ NSString *NSStringFromBInviteType(BInviteType value);
 @property (readonly, strong) NSString* name;
 @property (readonly) BGender gender;
 @property (readonly, strong) BTimestamp* birthday;
-@property (readonly, strong) NSArray<BImageData*> * images;
-@property (readonly, strong) NSArray<BSocialIdentity*> * socialIdentities;
-@property (readonly, strong) NSArray<BContactInfo*> * contactInfo;
+@property (readonly, strong) NSArray * images;
+@property (readonly, strong) NSArray * socialIdentities;
+@property (readonly, strong) NSArray * contactInfo;
 @property (readonly, strong) BEmployment* headlineEmployment;
-@property (readonly, strong) NSArray<BEmployment*> * employment;
-@property (readonly, strong) NSArray<BEducation*> * education;
-@property (readonly, strong) NSArray<BEntityTag*> * entityTags;
+@property (readonly, strong) NSArray * employment;
+@property (readonly, strong) NSArray * education;
+@property (readonly, strong) NSArray * entityTags;
 @property (readonly, strong) NSArray * interestTags;
 @property (readonly, strong) NSString* backgroundSummary;
 @property (readonly) SInt32 ratingCount;
@@ -960,7 +960,7 @@ NSString *NSStringFromBInviteType(BInviteType value);
 @property (readonly) Float64 ratingOutgoing;
 @property (readonly) Float64 ratingRecommended;
 @property (readonly) Float64 responseSeconds;
-@property (readonly, strong) NSArray<BUserReview*> * reviews;
+@property (readonly, strong) NSArray * reviews;
 - (BOOL) isExpert;
 @property (readonly, strong) NSString* stripeAccount;
 - (BOOL) serviceIsFreeForUser;
@@ -1057,22 +1057,22 @@ NSString *NSStringFromBInviteType(BInviteType value);
 - (BUserProfileBuilder*) mergeBirthday:(BTimestamp*) value;
 - (BUserProfileBuilder*) clearBirthday;
 
-- (NSMutableArray<BImageData*> *)images;
+- (NSMutableArray *)images;
 - (BImageData*)imagesAtIndex:(NSUInteger)index;
 - (BUserProfileBuilder *)addImages:(BImageData*)value;
-- (BUserProfileBuilder *)setImagesArray:(NSArray<BImageData*> *)array;
+- (BUserProfileBuilder *)setImagesArray:(NSArray *)array;
 - (BUserProfileBuilder *)clearImages;
 
-- (NSMutableArray<BSocialIdentity*> *)socialIdentities;
+- (NSMutableArray *)socialIdentities;
 - (BSocialIdentity*)socialIdentitiesAtIndex:(NSUInteger)index;
 - (BUserProfileBuilder *)addSocialIdentities:(BSocialIdentity*)value;
-- (BUserProfileBuilder *)setSocialIdentitiesArray:(NSArray<BSocialIdentity*> *)array;
+- (BUserProfileBuilder *)setSocialIdentitiesArray:(NSArray *)array;
 - (BUserProfileBuilder *)clearSocialIdentities;
 
-- (NSMutableArray<BContactInfo*> *)contactInfo;
+- (NSMutableArray *)contactInfo;
 - (BContactInfo*)contactInfoAtIndex:(NSUInteger)index;
 - (BUserProfileBuilder *)addContactInfo:(BContactInfo*)value;
-- (BUserProfileBuilder *)setContactInfoArray:(NSArray<BContactInfo*> *)array;
+- (BUserProfileBuilder *)setContactInfoArray:(NSArray *)array;
 - (BUserProfileBuilder *)clearContactInfo;
 
 - (BOOL) hasHeadlineEmployment;
@@ -1082,22 +1082,22 @@ NSString *NSStringFromBInviteType(BInviteType value);
 - (BUserProfileBuilder*) mergeHeadlineEmployment:(BEmployment*) value;
 - (BUserProfileBuilder*) clearHeadlineEmployment;
 
-- (NSMutableArray<BEmployment*> *)employment;
+- (NSMutableArray *)employment;
 - (BEmployment*)employmentAtIndex:(NSUInteger)index;
 - (BUserProfileBuilder *)addEmployment:(BEmployment*)value;
-- (BUserProfileBuilder *)setEmploymentArray:(NSArray<BEmployment*> *)array;
+- (BUserProfileBuilder *)setEmploymentArray:(NSArray *)array;
 - (BUserProfileBuilder *)clearEmployment;
 
-- (NSMutableArray<BEducation*> *)education;
+- (NSMutableArray *)education;
 - (BEducation*)educationAtIndex:(NSUInteger)index;
 - (BUserProfileBuilder *)addEducation:(BEducation*)value;
-- (BUserProfileBuilder *)setEducationArray:(NSArray<BEducation*> *)array;
+- (BUserProfileBuilder *)setEducationArray:(NSArray *)array;
 - (BUserProfileBuilder *)clearEducation;
 
-- (NSMutableArray<BEntityTag*> *)entityTags;
+- (NSMutableArray *)entityTags;
 - (BEntityTag*)entityTagsAtIndex:(NSUInteger)index;
 - (BUserProfileBuilder *)addEntityTags:(BEntityTag*)value;
-- (BUserProfileBuilder *)setEntityTagsArray:(NSArray<BEntityTag*> *)array;
+- (BUserProfileBuilder *)setEntityTagsArray:(NSArray *)array;
 - (BUserProfileBuilder *)clearEntityTags;
 
 - (NSMutableArray *)interestTags;
@@ -1136,10 +1136,10 @@ NSString *NSStringFromBInviteType(BInviteType value);
 - (BUserProfileBuilder*) setResponseSeconds:(Float64) value;
 - (BUserProfileBuilder*) clearResponseSeconds;
 
-- (NSMutableArray<BUserReview*> *)reviews;
+- (NSMutableArray *)reviews;
 - (BUserReview*)reviewsAtIndex:(NSUInteger)index;
 - (BUserProfileBuilder *)addReviews:(BUserReview*)value;
-- (BUserProfileBuilder *)setReviewsArray:(NSArray<BUserReview*> *)array;
+- (BUserProfileBuilder *)setReviewsArray:(NSArray *)array;
 - (BUserProfileBuilder *)clearReviews;
 
 - (BOOL) hasIsExpert;
@@ -1203,7 +1203,7 @@ NSString *NSStringFromBInviteType(BInviteType value);
 @private
   NSMutableArray * imageDataArray;
 }
-@property (readonly, strong) NSArray<BImageData*> * imageData;
+@property (readonly, strong) NSArray * imageData;
 - (BImageData*)imageDataAtIndex:(NSUInteger)index;
 
 + (instancetype) defaultInstance;
@@ -1241,10 +1241,10 @@ NSString *NSStringFromBInviteType(BInviteType value);
 - (BImageUploadBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
 - (BImageUploadBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
 
-- (NSMutableArray<BImageData*> *)imageData;
+- (NSMutableArray *)imageData;
 - (BImageData*)imageDataAtIndex:(NSUInteger)index;
 - (BImageUploadBuilder *)addImageData:(BImageData*)value;
-- (BImageUploadBuilder *)setImageDataArray:(NSArray<BImageData*> *)array;
+- (BImageUploadBuilder *)setImageDataArray:(NSArray *)array;
 - (BImageUploadBuilder *)clearImageData;
 @end
 
@@ -1253,7 +1253,7 @@ NSString *NSStringFromBInviteType(BInviteType value);
 @private
   NSMutableArray * profilesArray;
 }
-@property (readonly, strong) NSArray<BUserProfile*> * profiles;
+@property (readonly, strong) NSArray * profiles;
 - (BUserProfile*)profilesAtIndex:(NSUInteger)index;
 
 + (instancetype) defaultInstance;
@@ -1291,10 +1291,10 @@ NSString *NSStringFromBInviteType(BInviteType value);
 - (BUserProfileUpdateBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
 - (BUserProfileUpdateBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
 
-- (NSMutableArray<BUserProfile*> *)profiles;
+- (NSMutableArray *)profiles;
 - (BUserProfile*)profilesAtIndex:(NSUInteger)index;
 - (BUserProfileUpdateBuilder *)addProfiles:(BUserProfile*)value;
-- (BUserProfileUpdateBuilder *)setProfilesArray:(NSArray<BUserProfile*> *)array;
+- (BUserProfileUpdateBuilder *)setProfilesArray:(NSArray *)array;
 - (BUserProfileUpdateBuilder *)clearProfiles;
 @end
 
@@ -1497,7 +1497,7 @@ NSString *NSStringFromBInviteType(BInviteType value);
 @private
   NSMutableArray * profilesArray;
 }
-@property (readonly, strong) NSArray<BUserProfile*> * profiles;
+@property (readonly, strong) NSArray * profiles;
 - (BUserProfile*)profilesAtIndex:(NSUInteger)index;
 
 + (instancetype) defaultInstance;
@@ -1535,10 +1535,10 @@ NSString *NSStringFromBInviteType(BInviteType value);
 - (BProfilesFromContactInfoBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
 - (BProfilesFromContactInfoBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
 
-- (NSMutableArray<BUserProfile*> *)profiles;
+- (NSMutableArray *)profiles;
 - (BUserProfile*)profilesAtIndex:(NSUInteger)index;
 - (BProfilesFromContactInfoBuilder *)addProfiles:(BUserProfile*)value;
-- (BProfilesFromContactInfoBuilder *)setProfilesArray:(NSArray<BUserProfile*> *)array;
+- (BProfilesFromContactInfoBuilder *)setProfilesArray:(NSArray *)array;
 - (BProfilesFromContactInfoBuilder *)clearProfiles;
 @end
 
@@ -1557,7 +1557,7 @@ NSString *NSStringFromBInviteType(BInviteType value);
 - (BOOL) hasFriendID;
 @property (readonly) BFriendStatus friendStatus;
 @property (readonly, strong) NSString* friendID;
-@property (readonly, strong) NSArray<BUserProfile*> * profiles;
+@property (readonly, strong) NSArray * profiles;
 - (BUserProfile*)profilesAtIndex:(NSUInteger)index;
 
 + (instancetype) defaultInstance;
@@ -1605,10 +1605,10 @@ NSString *NSStringFromBInviteType(BInviteType value);
 - (BFriendUpdateBuilder*) setFriendID:(NSString*) value;
 - (BFriendUpdateBuilder*) clearFriendID;
 
-- (NSMutableArray<BUserProfile*> *)profiles;
+- (NSMutableArray *)profiles;
 - (BUserProfile*)profilesAtIndex:(NSUInteger)index;
 - (BFriendUpdateBuilder *)addProfiles:(BUserProfile*)value;
-- (BFriendUpdateBuilder *)setProfilesArray:(NSArray<BUserProfile*> *)array;
+- (BFriendUpdateBuilder *)setProfilesArray:(NSArray *)array;
 - (BFriendUpdateBuilder *)clearProfiles;
 @end
 
@@ -1653,7 +1653,7 @@ NSString *NSStringFromBInviteType(BInviteType value);
 @property (readonly, strong) NSString* friendID;
 @property (readonly, strong) NSString* message;
 @property (readonly, strong) BContactInfo* contactInfo;
-@property (readonly, strong) NSArray<BUserProfile*> * profiles;
+@property (readonly, strong) NSArray * profiles;
 @property (readonly, strong) NSString* confirmationCode;
 @property (readonly, strong) NSString* name;
 @property (readonly) BInviteType inviteType;
@@ -1717,10 +1717,10 @@ NSString *NSStringFromBInviteType(BInviteType value);
 - (BUserInviteBuilder*) mergeContactInfo:(BContactInfo*) value;
 - (BUserInviteBuilder*) clearContactInfo;
 
-- (NSMutableArray<BUserProfile*> *)profiles;
+- (NSMutableArray *)profiles;
 - (BUserProfile*)profilesAtIndex:(NSUInteger)index;
 - (BUserInviteBuilder *)addProfiles:(BUserProfile*)value;
-- (BUserInviteBuilder *)setProfilesArray:(NSArray<BUserProfile*> *)array;
+- (BUserInviteBuilder *)setProfilesArray:(NSArray *)array;
 - (BUserInviteBuilder *)clearProfiles;
 
 - (BOOL) hasConfirmationCode;
@@ -1749,7 +1749,7 @@ NSString *NSStringFromBInviteType(BInviteType value);
 @private
   NSMutableArray * userInvitesArray;
 }
-@property (readonly, strong) NSArray<BUserInvite*> * userInvites;
+@property (readonly, strong) NSArray * userInvites;
 - (BUserInvite*)userInvitesAtIndex:(NSUInteger)index;
 
 + (instancetype) defaultInstance;
@@ -1787,10 +1787,10 @@ NSString *NSStringFromBInviteType(BInviteType value);
 - (BUserInvitesBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input;
 - (BUserInvitesBuilder*) mergeFromCodedInputStream:(PBCodedInputStream*) input extensionRegistry:(PBExtensionRegistry*) extensionRegistry;
 
-- (NSMutableArray<BUserInvite*> *)userInvites;
+- (NSMutableArray *)userInvites;
 - (BUserInvite*)userInvitesAtIndex:(NSUInteger)index;
 - (BUserInvitesBuilder *)addUserInvites:(BUserInvite*)value;
-- (BUserInvitesBuilder *)setUserInvitesArray:(NSArray<BUserInvite*> *)array;
+- (BUserInvitesBuilder *)setUserInvitesArray:(NSArray *)array;
 - (BUserInvitesBuilder *)clearUserInvites;
 @end
 

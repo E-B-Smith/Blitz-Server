@@ -519,7 +519,7 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 @property (readonly, strong) NSString* userID;
 @property (readonly, strong) NSString* sessionToken;
 @property (readonly, strong) NSString* serverURL;
-@property (readonly, strong) NSArray<BUserMessage*> * userMessages;
+@property (readonly, strong) NSArray * userMessages;
 @property (readonly, strong) BUserProfile* userProfile;
 - (BOOL) resetAllAppData;
 @property (readonly, strong) BUserInvite* inviteRequest;
@@ -576,10 +576,10 @@ NSString *NSStringFromBResponseCode(BResponseCode value);
 - (BSessionResponseBuilder*) setServerURL:(NSString*) value;
 - (BSessionResponseBuilder*) clearServerURL;
 
-- (NSMutableArray<BUserMessage*> *)userMessages;
+- (NSMutableArray *)userMessages;
 - (BUserMessage*)userMessagesAtIndex:(NSUInteger)index;
 - (BSessionResponseBuilder *)addUserMessages:(BUserMessage*)value;
-- (BSessionResponseBuilder *)setUserMessagesArray:(NSArray<BUserMessage*> *)array;
+- (BSessionResponseBuilder *)setUserMessagesArray:(NSArray *)array;
 - (BSessionResponseBuilder *)clearUserMessages;
 
 - (BOOL) hasUserProfile;

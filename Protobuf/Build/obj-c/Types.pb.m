@@ -1599,7 +1599,7 @@ static BCoordinateRegion* defaultBCoordinateRegionInstance = nil;
 @end
 
 @interface BCoordinatePolygon ()
-@property (strong) NSMutableArray<BCoordinate*> * pointsArray;
+@property (strong) NSMutableArray * pointsArray;
 @end
 
 @implementation BCoordinatePolygon
@@ -1623,7 +1623,7 @@ static BCoordinatePolygon* defaultBCoordinatePolygonInstance = nil;
 - (instancetype) defaultInstance {
   return defaultBCoordinatePolygonInstance;
 }
-- (NSArray<BCoordinate*> *)points {
+- (NSArray *)points {
   return pointsArray;
 }
 - (BCoordinate*)pointsAtIndex:(NSUInteger)index {
@@ -1796,7 +1796,7 @@ static BCoordinatePolygon* defaultBCoordinatePolygonInstance = nil;
     }
   }
 }
-- (NSMutableArray<BCoordinate*> *)points {
+- (NSMutableArray *)points {
   return resultCoordinatePolygon.pointsArray;
 }
 - (BCoordinate*)pointsAtIndex:(NSUInteger)index {
@@ -1809,7 +1809,7 @@ static BCoordinatePolygon* defaultBCoordinatePolygonInstance = nil;
   [resultCoordinatePolygon.pointsArray addObject:value];
   return self;
 }
-- (BCoordinatePolygonBuilder *)setPointsArray:(NSArray<BCoordinate*> *)array {
+- (BCoordinatePolygonBuilder *)setPointsArray:(NSArray *)array {
   resultCoordinatePolygon.pointsArray = [[NSMutableArray alloc]initWithArray:array];
   return self;
 }

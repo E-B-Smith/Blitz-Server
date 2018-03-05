@@ -780,7 +780,7 @@ static BUserSearchRequest* defaultBUserSearchRequestInstance = nil;
 
 @interface BUserSearchResponse ()
 @property (strong) NSString* query;
-@property (strong) NSMutableArray<BUserProfile*> * profilesArray;
+@property (strong) NSMutableArray * profilesArray;
 @end
 
 @implementation BUserSearchResponse
@@ -812,7 +812,7 @@ static BUserSearchResponse* defaultBUserSearchResponseInstance = nil;
 - (instancetype) defaultInstance {
   return defaultBUserSearchResponseInstance;
 }
-- (NSArray<BUserProfile*> *)profiles {
+- (NSArray *)profiles {
   return profilesArray;
 }
 - (BUserProfile*)profilesAtIndex:(NSUInteger)index {
@@ -1033,7 +1033,7 @@ static BUserSearchResponse* defaultBUserSearchResponseInstance = nil;
   resultUserSearchResponse.query = @"";
   return self;
 }
-- (NSMutableArray<BUserProfile*> *)profiles {
+- (NSMutableArray *)profiles {
   return resultUserSearchResponse.profilesArray;
 }
 - (BUserProfile*)profilesAtIndex:(NSUInteger)index {
@@ -1046,7 +1046,7 @@ static BUserSearchResponse* defaultBUserSearchResponseInstance = nil;
   [resultUserSearchResponse.profilesArray addObject:value];
   return self;
 }
-- (BUserSearchResponseBuilder *)setProfilesArray:(NSArray<BUserProfile*> *)array {
+- (BUserSearchResponseBuilder *)setProfilesArray:(NSArray *)array {
   resultUserSearchResponse.profilesArray = [[NSMutableArray alloc]initWithArray:array];
   return self;
 }
@@ -1415,7 +1415,7 @@ static BSearchCategory* defaultBSearchCategoryInstance = nil;
 @end
 
 @interface BSearchCategories ()
-@property (strong) NSMutableArray<BSearchCategory*> * categoriesArray;
+@property (strong) NSMutableArray * categoriesArray;
 @end
 
 @implementation BSearchCategories
@@ -1439,7 +1439,7 @@ static BSearchCategories* defaultBSearchCategoriesInstance = nil;
 - (instancetype) defaultInstance {
   return defaultBSearchCategoriesInstance;
 }
-- (NSArray<BSearchCategory*> *)categories {
+- (NSArray *)categories {
   return categoriesArray;
 }
 - (BSearchCategory*)categoriesAtIndex:(NSUInteger)index {
@@ -1612,7 +1612,7 @@ static BSearchCategories* defaultBSearchCategoriesInstance = nil;
     }
   }
 }
-- (NSMutableArray<BSearchCategory*> *)categories {
+- (NSMutableArray *)categories {
   return resultSearchCategories.categoriesArray;
 }
 - (BSearchCategory*)categoriesAtIndex:(NSUInteger)index {
@@ -1625,7 +1625,7 @@ static BSearchCategories* defaultBSearchCategoriesInstance = nil;
   [resultSearchCategories.categoriesArray addObject:value];
   return self;
 }
-- (BSearchCategoriesBuilder *)setCategoriesArray:(NSArray<BSearchCategory*> *)array {
+- (BSearchCategoriesBuilder *)setCategoriesArray:(NSArray *)array {
   resultSearchCategories.categoriesArray = [[NSMutableArray alloc]initWithArray:array];
   return self;
 }

@@ -1,0 +1,7 @@
+#!/bin/bash
+# Test the certs with the APNS binary interface.
+openssl s_client -debug -showcerts \
+  -connect gateway.push.apple.com:2195 \
+  -cert com.blitzhere.blitzhere.production.pem \
+  -key  com.blitzhere.blitzhere.production.key \
+  -CAfile server-ca-cert.pem
